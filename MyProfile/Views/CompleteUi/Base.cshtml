@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Base";
+    Layout = "Layouts/_CompleteUi";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">
+}
+
+@section Scripts {
+    <!-- Dependencies -->
+    <script src="~/vendor/js/dropdown-hover.js"></script>
+    <script src="~/vendor/js/mega-dropdown.js"></script>
+    <script src="~/vendor/js/sidenav.js"></script>
+    <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+}
+
+
+<!--
+=================================================================
+**************************** CONTENT ****************************
+-->
+
+@await Html.PartialAsync("_Typography")
+@await Html.PartialAsync("_Utilities")
+@await Html.PartialAsync("_Buttons")
+@await Html.PartialAsync("_Badges")
+@await Html.PartialAsync("_ButtonGroups")
+@await Html.PartialAsync("_ButtonDropdowns")
+@await Html.PartialAsync("_Dropdowns")
+@await Html.PartialAsync("_Spinners")
+@await Html.PartialAsync("_Navs")
+@await Html.PartialAsync("_Pagination")
+@await Html.PartialAsync("_ProgressBars")
+@await Html.PartialAsync("_ListGroups")
+@await Html.PartialAsync("_Alerts")
+@await Html.PartialAsync("_Toasts")
+@await Html.PartialAsync("_TooltipsAndPopovers")
+@await Html.PartialAsync("_Modals")
+@await Html.PartialAsync("_Breadcrumbs")
+@await Html.PartialAsync("_FormControls")
+@await Html.PartialAsync("_CustomCheckboxesAndRadios")
+@await Html.PartialAsync("_CustomSelect")
+@await Html.PartialAsync("_FileBrowser")
+@await Html.PartialAsync("_CustomRangeInput")
+@await Html.PartialAsync("_Forms")
+@await Html.PartialAsync("_InputGroups")
+@await Html.PartialAsync("_Switchers")
+@await Html.PartialAsync("_AppBrand")
+@await Html.PartialAsync("_Navbar")
+@await Html.PartialAsync("_Sidenav")
+@await Html.PartialAsync("_Footer")
+@await Html.PartialAsync("_Tables")
+@await Html.PartialAsync("_Media")
+@await Html.PartialAsync("_Thumbnails")
+@await Html.PartialAsync("_Cards")
+@await Html.PartialAsync("_Accordion")
+@await Html.PartialAsync("_Carousel")

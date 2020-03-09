@@ -1,0 +1,99 @@
+﻿@{
+	ViewData["Title"] = "DataTables - Tables";
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
+	<link rel="stylesheet" href="~/vendor/libs/bootstrap-select/bootstrap-select.css">
+}
+
+@section Scripts {
+	<!-- Dependencies -->
+	<script src="~/vendor/libs/datatables/datatables.js"></script>
+
+	<script src="~/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
+	@*<script src="~/js/tables_datatables.js"></script>*@
+
+	<script src="~/app_js/budget.js"></script>
+}
+
+<div class="demo-navbar-notifications nav-item dropdown mr-lg-3" id="record-container">
+	<a class="nav-link hide-arrow" v-on:click="$('#modal-record').modal('show')">
+		<i class="ion ion-md-add navbar-icon align-middle"></i>
+		<span class="d-lg-none align-middle">&nbsp; Add record</span>
+	</a>
+
+	<!-- Choose data type column modal -->
+	<div class="modal fade" id="modal-record">
+		<div class="modal-dialog">
+			<form class="modal-content">
+				<div class="modal-header">
+
+					<h5 class="modal-title">
+						Payment
+						<span class="font-weight-light">Information</span>
+						<br>
+						<small class="text-muted">We need payment information to process your order.</small>
+					</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-row">
+						<div class="form-group col">
+							<label class="form-label">Date</label>
+							<input type="text" class="form-control" id="record-date" v-model="dateTimeOfPayment">
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col">
+							<label class="form-label">Budget section</label>
+							<select id="budgetArea" class="selectpicker" data-style="btn-default">
+								<optgroup v-for="section in sections" v-bind:label="section.name" v-bind:value="section.id">
+									<option v-for="budgetSection in section.budgetSections" v-bind:value="budgetSection.id">{{ budgetSection.name }}</option>
+								</optgroup>
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col">
+							<label class="form-label">Money</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">$</span>
+								</div>
+								<input type="number" class="form-control" v-model="money">
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="card" id="budget-vue">
+	<h6 class="card-header">
+		DataTable within card
+	</h6>
+	<div class="card-datatable table-responsive">
+		<table class="datatables-demo table table-striped table-bordered" id="table">
+			<thead>
+				<tr>
+					<th v-for="column in template.columns" v-html="column.name"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="row in rows">
+					<td v-for="cell in row" v-html="cell.value">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+

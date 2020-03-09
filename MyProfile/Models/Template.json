@@ -1,0 +1,73 @@
+{
+	"template": {
+		"id": 1,
+		"periodTypeID": 0,
+		"period": "month",
+		"name": "test template",
+		"isCountCollectiveBudget": null,
+		"dateCreate": "24.02.2020",
+		"dateEdit": "24.02.2020",
+		"lastSeenDateTime": "24.02.2020",
+		"maxRowInAPage": "31",
+		"columns": [
+			{
+				"id": 1,
+				"name": "Salary",
+				"order": 0,
+				"isShow": true,
+				"totalAction": "SUM",
+				"templateAreaTypes": [
+					{
+						"id": 1
+
+					}
+				]
+			}
+		]
+	}
+},
+{
+	"operator": "+",
+	"operand1": {
+		"operator": "+",
+		"operand1": {
+			"operator": "+",
+			"operand1": {
+				"operator": "+",
+				"operand1": {
+					"value": {
+						"type": "unit",
+						"unit": 1
+					}
+				},
+				"operand2": {
+					"value": {
+						"type": "unit",
+						"unit": 2
+					}
+				}
+			},
+			"operand2": {
+				"value": {
+					"type": "unit",
+					"unit": 3
+				}
+			}
+		},
+		"operand2": {
+			"value": {
+				"type": "item",
+				"item": {
+					"value": 2,
+					"test": 2
+				}
+			}
+		}
+	},
+	"operand2": {
+		"value": {
+			"type": "unit",
+			"unit": 1
+		}
+	}
+}
