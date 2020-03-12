@@ -37,7 +37,8 @@ namespace MyProfile.Entity.ModelView
 		public int ID { get; set; }
 		public int BudgetAreaID { get; set; }
 		public string BudgetAreaName { get; set; }
-		public int BudgetSectionID { get; set; }
-		public string BudgetSectionName { get; set; }
+		public int SectionID { get; set; }
+		public string SectionName { get; set; }
+		public string SectionCodeName { get; set; }
 	}
 }

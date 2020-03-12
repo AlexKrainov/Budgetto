@@ -5,6 +5,9 @@
 @section Styles {
 	<link rel="stylesheet" href="~/vendor/libs/dragula/dragula.css">
 	<link rel="stylesheet" href="~/vendor/libs/bootstrap-select/bootstrap-select.css">
+	<link rel="stylesheet" href="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css">
+	<link rel="stylesheet" href="~/vendor/libs/dragula/dragula.css">
+
 	<link href="~/app_css/template.css" rel="stylesheet" />
 }
 
@@ -12,6 +15,8 @@
 	<!-- Dependencies -->
 	<script src="~/vendor/libs/dragula/dragula.js"></script>
 	<script src="~/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
+	<script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+	<link rel="stylesheet" href="~/vendor/libs/dragula/dragula.js">
 
 	<script src="~/js/pages_kanban-board.js"></script>
 
@@ -51,7 +56,7 @@
 				</div>
 
 				@*<h6 class="card-header text-center">{{ }}</h6>*@
-				<div v-html="column.formula"></div>
+				<div v-html="column.formula" v-on:click="openFormula(column.id)"></div>
 				@*https://www.pigno.se/barn/PIGNOSE-Formula/*@
 				<hr class="m-0" />
 				<div class="kanban-box px-2 pt-2">
@@ -63,7 +68,7 @@
 								<a class="dropdown-item" href="javascript:void(0)">Remove</a>
 							</div>
 						</div>
-						{{ templateBudgetSection.budgetSectionName }}
+						{{ templateBudgetSection.sectionName }}
 					</div>
 
 				</div>
@@ -110,6 +115,7 @@
 			</div>
 		</div>
 	</div>
+
 	<!-- Choose data type column modal -->
 	<div class="modal modal-slide fade" id="modalDataTypeColumn">
 		<div class="modal-dialog">
@@ -161,9 +167,73 @@
 	</div>
 </div>
 
-
 <button type="button" class="btn btn-primary" onclick="TemplateVue.saveTemplate()">Save</button>
 
+
+<!-- Modal template -->
+<div class="modal modal-top fade" id="modal-formula">
+	<div class="modal-dialog">
+		<form class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					Payment
+					<span class="font-weight-light">Information</span>
+					<br>
+					<small class="text-muted">We need payment information to process your order.</small>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<input type="text" class="form-control" id="formula">
+				</div>
+				<div class="form-row">
+					<div class="form-group col-8">
+						<ul>
+							<li v-for="field in fields" v-on:click="addField(field)">{{ field.name }}</li>
+						</ul>
+					</div>
+					<div class="form-group col-4">
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2"><</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">(</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">)</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" disabled>%</button>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2">7</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">8</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">9</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">/</button>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2">4</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">5</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">6</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">*</button>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2">1</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">2</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">3</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">-</button>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2"></button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">0</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">.</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2">+</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save</button>
+			</div>
+		</form>
+	</div>
+</div>
 
 
 <div class="form-row hidden">

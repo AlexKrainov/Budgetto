@@ -47,8 +47,9 @@ namespace MyProfile.Template.Service
 										.Select(z => new TemplateAreaType
 										{
 											ID = z.ID,
-											BudgetSectionID = z.BudgetSection.ID,
-											BudgetSectionName = z.BudgetSection.Name
+											SectionID = z.BudgetSection.ID,
+											SectionName = z.BudgetSection.Name,
+											SectionCodeName = z.BudgetSection.CodeName
 										})
 										.ToList()
 								})
@@ -95,7 +96,7 @@ namespace MyProfile.Template.Service
 						{
 							repository.Create(new TemplateBudgetSection
 							{
-								BudgetSectionID = templateAreaType.BudgetSectionID,
+								BudgetSectionID = templateAreaType.SectionID,
 								TemplateColumnID = templateColumnDB.ID
 							}, true);
 						}
@@ -139,7 +140,7 @@ namespace MyProfile.Template.Service
 						{
 							repository.Create(new TemplateBudgetSection
 							{
-								BudgetSectionID = templateAreaType.BudgetSectionID,
+								BudgetSectionID = templateAreaType.SectionID,
 								TemplateColumnID = templateColumnDB.ID
 							}, true);
 						}

@@ -52,12 +52,11 @@ namespace MyProfile.Budget.Service
 							foreach (var templateBudgetSection in column.TemplateBudgetSections)
 							{
 								total += budgetRecordsDay
-									.Where(x => x.SectionID == templateBudgetSection.BudgetSectionID)
+									.Where(x => x.SectionID == templateBudgetSection.SectionID)
 									.Sum(x => x.Total);
 							}
 							cells.Add(new Cell { Value = total.ToString() });
 						}
-
 					}
 				}
 				else
@@ -74,12 +73,10 @@ namespace MyProfile.Budget.Service
 						{
 							cells.Add(new Cell { Value = "0" });
 						}
-
 					}
 				}
 				rows.Add(cells);
 			}
-
 
 			return rows;
 		}
