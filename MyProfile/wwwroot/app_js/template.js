@@ -57,7 +57,7 @@
 				"order": this.template.columns.length,
 				"isShow": true,
 				"totalAction": 1,
-				"formula": "",
+				"formula": [],
 				templateBudgetSections: []
 			};
 		},
@@ -97,9 +97,10 @@
 			}
 
 			if (this.column.formula.length > 0) {
-				this.column.formula += " + <span class='badge badge-secondary'>" + sectionName + "</span>";
+				this.column.formula.push("+");
+				this.column.formula.push("sectionID=" + sectionID);
 			} else {
-				this.column.formula += "<span class='badge badge-secondary'>" + sectionName + "</span>";
+				this.column.formula.push("sectionID=" + sectionID);
 			}
 
 			this.column.templateBudgetSections.push({
@@ -127,9 +128,10 @@
 						name: this.template.columns[columnIndex].templateBudgetSections[i].sectionName
 					});
 				}
-
-				//FormulaVue.formula = this.template.columns[columnIndex].formula;
-				$("#modal-formula").modal("show");
+				if (this.template.columns[columnIndex].formula) {
+					FormulaVue.formula = this.template.columns[columnIndex].formula;
+				}
+				FormulaVue.init();
 			}
 		}
 	}
@@ -141,9 +143,10 @@ var FormulaVue = new Vue({
 	data: {
 		fields: [],
 		formula: [],
+		items: [],
 
-		number: [],
-		mark: [],
+		number: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+		mark: ["*", "/", "-", "+"],
 		parentheses: ["(", ")"],
 
 		isValid: null,
@@ -153,19 +156,37 @@ var FormulaVue = new Vue({
 	mounted: function () {
 	},
 	methods: {
-		addField: function (field) {
+		init: function () {
+			//for (var i = 0; i < this.fields.length; i++) {
+			//	this.formula.push(this.fields[i].sectionID + "_" + this.fields[i].codeName);
+			//}
+			this.refreshFormula();
 
+			$("#modal-formula").modal("show");
+		},
+		removeLast: function () {
+			this.formula.pop();
+			this.refreshFormula();
+		},
+		add: function (value) {
+			this.formula.push(value.target.innerHTML);
+			this.refreshFormula();
+		},
+		addField: function (field) {
+			this.formula.push("sectinoID=" + field.sectinoID);
+			this.refreshFormula();
 		},
 		refreshFormula: function () {
 			var $el = $('#formula');
 
 			$el.tagsinput({
+				cancelConfirmKeysOnEmpty: true,
 				tagClass: function (item) {
-					switch (item.continent) {
+					switch (item.css) {
 						case 'number': return 'badge badge-primary';
 						case 'mark': return 'badge badge-danger';
 						case 'parentheses': return 'badge badge-success';
-						//case 'Africa': return 'badge badge-default';
+						case 'section': return 'badge badge-default';
 						//case 'Asia': return 'badge badge-warning';
 					}
 				},
@@ -174,16 +195,50 @@ var FormulaVue = new Vue({
 				itemText: 'text',
 			});
 
-			$el.tagsinput('add', { value: 1, text: 'Amsterdam', continent: 'number' });
-			$el.tagsinput('add', { value: 4, text: 'Washington', continent: 'mark' });
-			$el.tagsinput('add', { value: 7, text: 'Sydney', continent: 'parentheses' });
-			$el.tagsinput('add', { value: 10, text: 'Beijing', continent: 'number' });
-			$el.tagsinput('add', { value: 13, text: 'Cairo', continent: 'mark' });
-			$el.tagsinput('add', { value: 11, text: 'Amsterdam', continent: 'number' });
-			$el.tagsinput('add', { value: 41, text: 'Washington', continent: 'mark' });
-			$el.tagsinput('add', { value: 71, text: 'Sydney', continent: 'parentheses' });
-			$el.tagsinput('add', { value: 110, text: 'Beijing', continent: 'number' });
-			$el.tagsinput('add', { value: 131, text: 'Cairo', continent: 'mark' });
+			for (var i = 0; i < this.formula.length; i++) {
+				this.items.push(this.understandValue(this.formula[i]));
+				$el.tagsinput('add', this.items[i]);
+			}
+		},
+		understandValue: function (value) {
+			let el = { value: -1, text: "", css: "" };
+
+			if (value.indexOf("sectionID=") >= 0) {
+				let sectionID = value.replace("sectionID=", '');
+				let text = this.fields.find(x => x.sectionID == sectionID).name;
+
+				el.value = value;
+				el.text = text;
+				el.css = "section";
+
+				return el;
+			}
+
+			if (this.mark.indexOf(value) >= 0) {
+				el.value = value;
+				el.text = value;
+				el.css = "mark";
+
+				return el;
+			}
+
+			if (this.number.indexOf(value) >= 0) {
+				el.value = value;
+				el.text = value;
+				el.css = "number";
+
+				return el;
+			}
+
+			if (this.parentheses.indexOf(value) >= 0) {
+				el.value = value;
+				el.text = value;
+				el.css = "parentheses";
+
+				return el;
+			}
+
+
 		}
 	}
 });

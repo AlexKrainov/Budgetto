@@ -1,7 +1,9 @@
 ﻿using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MyProfile.Template.Service
@@ -39,7 +41,7 @@ namespace MyProfile.Template.Service
 									ID = y.ID,
 									Name = y.Name,
 									IsShow = y.IsShow,
-									Formula = y.Formula,
+									Formula = JsonConvert.DeserializeObject<List<string>>(y.Formula) ?? new List<string>(),
 									Order = y.Order,
 									TemplateColumnType = (TemplateColumnType)y.ColumnTypeID,
 									TotalAction = (FooterActionType)y.FooterActionTypeID,
@@ -56,6 +58,14 @@ namespace MyProfile.Template.Service
 								.ToList()
 						})
 						.FirstOrDefault();
+
+				//foreach (var column in templateViewModel.Columns)
+				//{
+				//	foreach (var templateArea in column.TemplateBudgetSections)
+				//	{
+				//		column.Formula.Add("sectionID=" + templateArea.SectionID);
+				//	}
+				//}
 			}
 
 			return templateViewModel;
@@ -86,7 +96,7 @@ namespace MyProfile.Template.Service
 							Name = column.Name,
 							Order = column.Order,
 							TemplateID = templateDB.ID,
-							Formula = "hello",
+							Formula = JsonConvert.SerializeObject(column.Formula),
 							ColumnTypeID = (int)column.TemplateColumnType,
 							FooterActionTypeID = (int)column.TotalAction,
 						};
@@ -130,7 +140,7 @@ namespace MyProfile.Template.Service
 							Name = column.Name,
 							Order = column.Order,
 							TemplateID = templateDB.ID,
-							Formula = "hello",
+							Formula = JsonConvert.SerializeObject(column.Formula),
 							ColumnTypeID = (int)column.TemplateColumnType,
 							FooterActionTypeID = (int)column.TotalAction,
 						};

@@ -195,34 +195,34 @@
 					</div>
 					<div class="form-group col-4">
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2"><</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">(</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">)</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="removeLast"><</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">(</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">)</button>
 							<button type="button" class="btn btn-sm btn-primary mr-2" disabled>%</button>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2">7</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">8</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">9</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">/</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">7</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">8</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">9</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">/</button>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2">4</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">5</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">6</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">*</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">4</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">5</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">6</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">*</button>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2">1</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">2</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">3</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">-</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">1</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">2</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">3</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">-</button>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2"></button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">0</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">.</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2">+</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)"></button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">0</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">.</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">+</button>
 						</div>
 					</div>
 				</div>
