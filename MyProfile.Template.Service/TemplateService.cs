@@ -41,7 +41,7 @@ namespace MyProfile.Template.Service
 									ID = y.ID,
 									Name = y.Name,
 									IsShow = y.IsShow,
-									Formula = JsonConvert.DeserializeObject<List<string>>(y.Formula) ?? new List<string>(),
+									Formula = JsonConvert.DeserializeObject<List<FormulaItem>>(y.Formula) ?? new List<FormulaItem>(),
 									Order = y.Order,
 									TemplateColumnType = (TemplateColumnType)y.ColumnTypeID,
 									TotalAction = (FooterActionType)y.FooterActionTypeID,

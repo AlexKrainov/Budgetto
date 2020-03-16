@@ -1,4 +1,7 @@
-﻿using MyProfile.Entity.Model;
+﻿using DynamicExpresso;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
@@ -23,6 +26,7 @@ namespace MyProfile.Budget.Service
 			var budgetRecords = GetDataByMonth(from, to);
 
 			List<List<Cell>> rows = new List<List<Cell>>();
+			List<string> columnsFormula = GetColumnsFormula(template);
 
 			int allColumnsCount = template.Columns.Count;
 			int indexBudgetRecords = 0;
@@ -40,6 +44,7 @@ namespace MyProfile.Budget.Service
 					for (int i = 0; i < allColumnsCount; i++)
 					{
 						var column = template.Columns[i];
+						string expression = columnsFormula[i];
 
 						if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
 						{
@@ -49,12 +54,22 @@ namespace MyProfile.Budget.Service
 						{
 							decimal total = 0;
 
-							foreach (var templateBudgetSection in column.TemplateBudgetSections)
+							foreach (var formulaItem in column.Formula)
 							{
-								total += budgetRecordsDay
-									.Where(x => x.SectionID == templateBudgetSection.SectionID)
+								if (formulaItem.Type == FormulaFieldType.Section)
+								{
+									total = budgetRecordsDay
+									.Where(x => x.SectionID == formulaItem.ID)
 									.Sum(x => x.Total);
+
+									expression = expression.Replace($"[{formulaItem.ID}]", total.ToString());
+								}
 							}
+							total = Math.Round(total, 2);
+
+							var interpreter = new Interpreter();
+							total = interpreter.Eval<decimal>(expression.Replace(",", "."));
+							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
 							cells.Add(new Cell { Value = total.ToString() });
 						}
 					}
@@ -79,6 +94,40 @@ namespace MyProfile.Budget.Service
 			}
 
 			return rows;
+		}
+
+		private List<string> GetColumnsFormula(TemplateViewModel template)
+		{
+			List<string> columnsFormula = new List<string>();
+
+			foreach (var column in template.Columns)
+			{
+
+				if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
+				{
+					string expression = "";
+					foreach (var formulaItem in column.Formula)
+					{
+						if (formulaItem.Type == FormulaFieldType.Section)
+						{
+							expression += $"[{formulaItem.ID}]";
+						}
+						else
+						{
+							expression += formulaItem.Value;
+						}
+
+
+					}
+					columnsFormula.Add(expression);
+				}
+				else
+				{
+					columnsFormula.Add(null);
+				}
+			}
+
+			return columnsFormula;
 		}
 
 		public IList<IGrouping<int, TmpBudgetRecord>> GetDataByMonth(DateTime from, DateTime to)

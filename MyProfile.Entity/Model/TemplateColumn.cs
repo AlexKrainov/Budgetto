@@ -9,12 +9,13 @@ namespace MyProfile.Entity.Model
 	public enum TemplateColumnType
 	{
 		Undefined = 0,
-		BudgetSection,//Money
-		DaysForMonth,
-		MonthsForYear,
-		YearForYear,
-		Percent,
-		Comment
+		BudgetSection = 1,//Money
+		DaysForMonth = 2,
+		MonthsForYear = 3,
+		YearForYear = 4,
+		Percent = 5,
+		Comment = 6,
+		WeekForMonth = 7
 	}
 
 	public enum FooterActionType
@@ -24,6 +25,16 @@ namespace MyProfile.Entity.Model
 		Avr,
 		Min,
 		Max
+	}
+
+	public enum FormulaFieldType
+	{
+		Undefined = 0,
+		Section = 1,
+		Number = 2,
+		Mark = 3,
+		Parentheses = 4,
+		Days = 5
 	}
 
 	public class TemplateColumn

@@ -27,147 +27,202 @@
 <h4 class="font-weight-bold py-3 mb-4">
 	<input id="templateName" type="text" class="form-control " oninput="console.log(this.value); TemplateVue.template.name = this.value;">
 </h4>
+<article id="template-columns">
 
-<div class="ui" id="template-columns">
-	<div class="lists">
-		<div class="list" v-for="column in template.columns">
-			<div class="card mb-3" v-if="column.templateColumnType == 1">
-				<div class="card-body pb-0 pt-2 pr-2 pl-2">
-					<div class="d-flex justify-content-between align-items-start">
-						@*<div>*@
-						<input type="text" class="form-control " placeholder="Name column" v-model="column.name">@*style="border:none;"*@
-						@*<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">Backend</a>
-							<span class="badge badge-danger align-text-bottom ml-1">Busy</span>*@
-						@*</div>*@
-						<div class="btn-group team-actions">
-							<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
-								<i class="ion ion-ios-more"></i>
-							</button>
-							<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 26px; left: -134px; will-change: top, left;">
-								<a class="dropdown-item" href="javascript:void(0)">View</a>
-								<a class="dropdown-item" href="javascript:void(0)">Edit</a>
-								<a class="dropdown-item" href="javascript:void(0)" v-on:click="removeColumn(column.id)">Remove</a>
+	<div class="ui">
+		<div class="lists">
+			<div class="list" v-for="(column, index) in template.columns" v-bind:order="column.order">
+				<div class="card mb-3" v-if="column.templateColumnType == 1">
+					<div>
+						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" v-bind:href="'#general'+column.id">
+									General
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" v-bind:href="'#settings'+column.id">
+									Settings
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content">
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+							<div class="d-flex justify-content-between align-items-start">
+								@*<div>*@
+								<input type="text" class="form-control " placeholder="Name column" v-model="column.name">@*style="border:none;"*@
+								@*<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">Backend</a>
+									<span class="badge badge-danger align-text-bottom ml-1">Busy</span>*@
+								@*</div>*@
+								<div class="btn-group team-actions">
+									<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
+										<i class="ion ion-ios-more"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 26px; left: -134px; will-change: top, left;">
+										<a class="dropdown-item" href="javascript:void(0)">View</a>
+										<a class="dropdown-item" href="javascript:void(0)">Edit</a>
+										<a class="dropdown-item" href="javascript:void(0)" v-on:click="removeColumn(column.id)">Remove</a>
+									</div>
+								</div>
+							</div>
+							<div class="mt-3">
+								@*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+							</div>
+
+							<hr class="m-0" />
+							<div class="kanban-box px-2 pt-2">
+								<div class="ui-bordered p-2 mb-2 badge-default" v-for="templateBudgetSection in column.templateBudgetSections">
+									<div class="kanban-board-actions btn-group float-right ml-2">
+										<button type="button" class="btn btn-default btn-xs rounded-pill icon-btn borderless md-btn-flat hide-arrow dropdown-toggle" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button>
+										<div class="dropdown-menu dropdown-menu-right">
+											<a class="dropdown-item" href="javascript:void(0)">Edit</a>
+											<a class="dropdown-item" href="javascript:void(0)">Remove</a>
+										</div>
+									</div>
+									{{ templateBudgetSection.sectionName }}
+								</div>
+
+							</div>
+							<div class="card-footer text-center py-2">
+								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+							</div>
+						</div>
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
+							<div class="ml-1" v-on:click="openFormula(column.id)">
+								<span class="badge badge-outline-secondary mr-1" v-for="formula in column.formula">{{ formula.value }}</span>
+							</div>
+							@*https://www.pigno.se/barn/PIGNOSE-Formula/*@
+
+							<div class="card-footer text-center py-2">
+								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
 							</div>
 						</div>
 					</div>
-					<div class="mt-3">
-						@*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
-					</div>
 				</div>
+				<div class="card mb-3" v-if="column.templateColumnType == 2">
+					<div>
+						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" v-bind:href="'#general'+column.id">
+									Active
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" v-bind:href="'#settings'+column.id">
+									Link
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content">
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+							<div class="d-flex justify-content-between align-items-start">
+								<div>
+									<input type="text" class="form-control " placeholder="Name column" v-model="column.name">@*style="border:none;"*@
+									@*<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">Backend</a>
+										<span class="badge badge-danger align-text-bottom ml-1">Busy</span>*@
+								</div>
+								<div class="btn-group team-actions">
+									<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
+										<i class="ion ion-ios-more"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 26px; left: -134px; will-change: top, left;">
+										<a class="dropdown-item" href="javascript:void(0)">View</a>
+										<a class="dropdown-item" href="javascript:void(0)">Edit</a>
+										<a class="dropdown-item" href="javascript:void(0)" v-on:click="removeColumn(column.id)">Remove</a>
+									</div>
+								</div>
+							</div>
+							<div class="mt-3">
+								@*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+							</div>
 
-				@*<h6 class="card-header text-center">{{ }}</h6>*@
-				<div v-html="column.formula" v-on:click="openFormula(column.id)"></div>
-				@*https://www.pigno.se/barn/PIGNOSE-Formula/*@
-				<hr class="m-0" />
-				<div class="kanban-box px-2 pt-2">
-					<div class="ui-bordered p-2 mb-2 badge-default" v-for="templateBudgetSection in column.templateBudgetSections">
-						<div class="kanban-board-actions btn-group float-right ml-2">
-							<button type="button" class="btn btn-default btn-xs rounded-pill icon-btn borderless md-btn-flat hide-arrow dropdown-toggle" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button>
-							<div class="dropdown-menu dropdown-menu-right">
-								<a class="dropdown-item" href="javascript:void(0)">Edit</a>
-								<a class="dropdown-item" href="javascript:void(0)">Remove</a>
+							<hr class="m-0" />
+							<div class="kanban-box px-2 pt-2">
+								<div class="ui-bordered p-2 mb-2 badge-secondary">
+									DAYS
+								</div>
 							</div>
 						</div>
-						{{ templateBudgetSection.sectionName }}
-					</div>
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
+							<div class="ml-1" v-on:click="openFormula(column.id)">
+								<span class="badge badge-outline-secondary mr-1" v-for="formula in column.formula">{{ formula.value }}</span>
+							</div>
+							@*https://www.pigno.se/barn/PIGNOSE-Formula/*@
 
-				</div>
-				<div class="card-footer text-center py-2">
-					<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+							<div class="card-footer text-center py-2">
+								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="card mb-3" v-if="column.templateColumnType == 2">
-				<div class="card-body pb-0 pt-2 pr-2 pl-2">
-					<div class="d-flex justify-content-between align-items-start">
-						<div>
-							<input type="text" class="form-control " placeholder="Name column" v-model="column.name">@*style="border:none;"*@
-							@*<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">Backend</a>
-								<span class="badge badge-danger align-text-bottom ml-1">Busy</span>*@
-						</div>
-						<div class="btn-group team-actions">
-							<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
-								<i class="ion ion-ios-more"></i>
-							</button>
-							<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 26px; left: -134px; will-change: top, left;">
-								<a class="dropdown-item" href="javascript:void(0)">View</a>
-								<a class="dropdown-item" href="javascript:void(0)">Edit</a>
-								<a class="dropdown-item" href="javascript:void(0)" v-on:click="removeColumn(column.id)">Remove</a>
-							</div>
-						</div>
-					</div>
-					<div class="mt-3">
-						@*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
-					</div>
-				</div>
-				@*<h6 class="card-header text-center">{{ }}</h6>*@
-				<div v-html="column.formula"></div>
-				<hr class="m-0" />
-				<div class="kanban-box px-2 pt-2">
-					<div class="ui-bordered p-2 mb-2 badge-secondary">
-						DAYS
-					</div>
+			<div class="list1">
+				<div class="card mb-3">
+					<button type="button" class="btn btn-outline-primary" v-on:click="addColumn">Add column</button>
 				</div>
 			</div>
 		</div>
-		<div class="list">
-			<div class="card mb-3">
-				<button type="button" class="btn btn-outline-primary" v-on:click="addColumn">Add column</button>
+
+		<!-- Choose data type column modal -->
+		<div class="modal modal-slide fade" id="modalDataTypeColumn">
+			<div class="modal-dialog">
+				<form class="modal-content">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+					<div class="modal-body">
+						<label class="custom-control custom-radio">
+							<input name="data-column-type" v-model="column.templateColumnType" value="2" type="radio" class="custom-control-input">
+							<span class="custom-control-label">Days</span>
+						</label>
+						<label class="custom-control custom-radio">
+							<input name="data-column-type" v-model="column.templateColumnType" value="1" type="radio" class="custom-control-input">
+							<span class="custom-control-label">Money</span>
+						</label>
+						<label class="custom-control custom-radio">
+							<input name="data-column-type" type="radio" class="custom-control-input" disabled>
+							<span class="custom-control-label">Percet</span>
+						</label>
+						<label class="custom-control custom-radio">
+							<input name="data-column-type" type="radio" class="custom-control-input" disabled>
+							<span class="custom-control-label">Comments</span>
+						</label>
+						<button id="buttonSelectTemplateColumnType" type="button" v-on:click="addColumn_Complete">ok</button>
+						@*<button type="button" class="btn btn-primary btn-block" v-on:click="addColumnOption_step2">Save</button>
+							<button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cancel</button>*@
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- templateBudgetSection modal -->
+		<div class="modal modal-slide fade" id="modals-slide">
+			<div class="modal-dialog modal-xl">
+				<form class="modal-content">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+					<div class="modal-body">
+						<select id="budgetArea" class="selectpicker" data-style="btn-default">
+							<optgroup v-for="section in sections" v-bind:label="section.name" v-bind:value="section.id">
+								<option v-for="budgetSection in section.budgetSections" v-bind:value="budgetSection.id">{{ budgetSection.name }}</option>
+							</optgroup>
+						</select>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btn-block" v-on:click="addColumnOption_step2">Save</button>
+						<button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
 
-	<!-- Choose data type column modal -->
-	<div class="modal modal-slide fade" id="modalDataTypeColumn">
-		<div class="modal-dialog">
-			<form class="modal-content">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-				<div class="modal-body">
-					<label class="custom-control custom-radio">
-						<input name="data-column-type" v-model="column.templateColumnType" value="2" type="radio" class="custom-control-input">
-						<span class="custom-control-label">Days</span>
-					</label>
-					<label class="custom-control custom-radio">
-						<input name="data-column-type" v-model="column.templateColumnType" value="1" type="radio" class="custom-control-input">
-						<span class="custom-control-label">Money</span>
-					</label>
-					<label class="custom-control custom-radio">
-						<input name="data-column-type" type="radio" class="custom-control-input" disabled>
-						<span class="custom-control-label">Percet</span>
-					</label>
-					<label class="custom-control custom-radio">
-						<input name="data-column-type" type="radio" class="custom-control-input" disabled>
-						<span class="custom-control-label">Comments</span>
-					</label>
-					<button id="buttonSelectTemplateColumnType" type="button" v-on:click="addColumn_Complete">ok</button>
-					@*<button type="button" class="btn btn-primary btn-block" v-on:click="addColumnOption_step2">Save</button>
-						<button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cancel</button>*@
-				</div>
-			</form>
-		</div>
-	</div>
+	<button class="btn btn-primary" type="button" disabled v-show="isSaveTemplate">
+		<span class="spinner-border" role="status" aria-hidden="true"></span>
+		Save
+	</button>
 
-	<!-- templateBudgetSection modal -->
-	<div class="modal modal-slide fade" id="modals-slide">
-		<div class="modal-dialog modal-xl">
-			<form class="modal-content">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-				<div class="modal-body">
-					<select id="budgetArea" class="selectpicker" data-style="btn-default">
-						<optgroup v-for="section in sections" v-bind:label="section.name" v-bind:value="section.id">
-							<option v-for="budgetSection in section.budgetSections" v-bind:value="budgetSection.id">{{ budgetSection.name }}</option>
-						</optgroup>
-					</select>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary btn-block" v-on:click="addColumnOption_step2">Save</button>
-					<button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cancel</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-<button type="button" class="btn btn-primary" onclick="TemplateVue.saveTemplate()">Save</button>
+	<button type="button" class="btn btn-primary" v-on:click="saveTemplate" v-show="!isSaveTemplate">Save</button>
+</article>
 
 
 <!-- Modal template -->
@@ -176,10 +231,10 @@
 		<form class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">
-					Payment
-					<span class="font-weight-light">Information</span>
-					<br>
-					<small class="text-muted">We need payment information to process your order.</small>
+					Formula
+					@*<span class="font-weight-light">Information</span>
+						<br>
+						<small class="text-muted">We need payment information to process your order.</small>*@
 				</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
 			</div>
@@ -189,47 +244,49 @@
 				</div>
 				<div class="form-row">
 					<div class="form-group col-8">
-						<ul>
-							<li v-for="field in fields" v-on:click="addField(field)">{{ field.name }}</li>
+						<ul class="list-group">
+							<li v-for="field in fields" v-on:click="addField(field)"> <span class="badge badge-outline-secondary">{{ field.name }}</span></li>
 						</ul>
+						<hr />
+						<span class="badge badge-outline-secondary" v-on:click="addPeriod(FormulaFieldTypeEnum.Days)">Days</span>
 					</div>
 					<div class="form-group col-4">
 						<div class="row">
 							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="removeLast"><</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">(</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">)</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Parentheses)">(</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Parentheses)">)</button>
 							<button type="button" class="btn btn-sm btn-primary mr-2" disabled>%</button>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">7</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">8</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">9</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">/</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">7</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">8</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">9</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Mark)">/</button>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">4</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">5</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">6</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">*</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">4</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">5</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">6</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Mark)">*</button>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">1</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">2</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">3</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">-</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">1</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">2</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">3</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Mark)">-</button>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)"></button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">0</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">.</button>
-							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event)">+</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)"></button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">0</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">.</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Mark)">+</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save</button>
+				<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
 			</div>
 		</form>
 	</div>

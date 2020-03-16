@@ -1,15 +1,45 @@
-﻿var TemplateVue = new Vue({
+﻿var TemplateColumnTypeEnum = Object.freeze({
+	Undefined: 0,
+	BudgetSection: 1,
+	DaysForMonth: 2,
+	MonthsForYear: 3,
+	YearForYear: 4,
+	Percent: 5,
+	Comment: 6,
+	WeekForMonth: 7
+});
+
+var FooterActionTypeEnum = Object.freeze({
+	Undefined: 0,
+	Sum: 1,
+	Avr: 2,
+	Min: 3,
+	Max: 4
+});
+
+var FormulaFieldTypeEnum = Object.freeze({
+	Undefined: 0,
+	Section: 1,
+	Number: 2,
+	Mark: 3,
+	Parentheses: 4,
+	Days: 5
+});
+
+var TemplateVue = new Vue({
 	el: "#template-columns",
 	data: {
 		template: [],
 		sections: [],
 
-		counterColumn: -100,
+		counterNewColumn: -100,
 		counterTemplateBudgetSections: -100,
 
 		column: {},
 
-
+		periodType: -1,
+		isSaveTemplate: false,
+		drake: {},
 	},
 	watch: {
 		"template.name": function (newValue, oldValue) {
@@ -23,12 +53,14 @@
 			});
 	},
 	methods: {
+
 		init: function () {
 			return sendAjax("/Template/GetData/3", null, "GET")
 				.then(function (result) {
 					if (result.isOk = true) {
 						TemplateVue.template = result.template;
 						$("#templateName").val(result.template.name);
+						TemplateVue.refreshDragNDrop();
 					}
 				});
 		},
@@ -41,6 +73,14 @@
 					}
 				});
 		},
+		refreshDragNDrop: function () {
+			this.drake = dragula(
+				Array.prototype.slice.call(document.querySelectorAll('.lists'))
+			).end(function (el) {
+				console.log("end move");
+			});
+
+		},
 		removeColumn: function (columnID) {
 			let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
 			if (columnIndex) {
@@ -52,7 +92,7 @@
 			$("#modalDataTypeColumn").modal("show");
 
 			this.column = {
-				"id": this.counterColumn++,
+				"id": this.counterNewColumn++,
 				"name": "New column",
 				"order": this.template.columns.length,
 				"isShow": true,
@@ -97,10 +137,10 @@
 			}
 
 			if (this.column.formula.length > 0) {
-				this.column.formula.push("+");
-				this.column.formula.push("sectionID=" + sectionID);
+				this.column.formula.push({ id: null, value: "+", type: FormulaFieldTypeEnum.Mark });
+				this.column.formula.push({ id: sectionID, value: sectionName, type: FormulaFieldTypeEnum.Section });
 			} else {
-				this.column.formula.push("sectionID=" + sectionID);
+				this.column.formula.push({ id: sectionID, value: sectionName, type: FormulaFieldTypeEnum.Section });
 			}
 
 			this.column.templateBudgetSections.push({
@@ -111,14 +151,18 @@
 			$("#modals-slide").modal("hide");
 		},
 		saveTemplate: function () {
+			this.isSaveTemplate = true;
 			return sendAjax("/Template/Save", this.template, "POST")
 				.then(function (result) {
 					if (result.isOk = true) {
 						TemplateVue.template = result.template;
 					}
+					TemplateVue.isSaveTemplate = false;
 				});
 		},
 		openFormula: function (columnID) {
+			//FormulaVue.el.tagsinput("destroy");
+			FormulaVue.columnID = columnID;
 			let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
 			if (columnIndex >= 0) {
 				for (var i = 0; i < this.template.columns[columnIndex].templateBudgetSections.length; i++) {
@@ -129,9 +173,15 @@
 					});
 				}
 				if (this.template.columns[columnIndex].formula) {
-					FormulaVue.formula = this.template.columns[columnIndex].formula;
+					FormulaVue.formula = [... this.template.columns[columnIndex].formula];
 				}
 				FormulaVue.init();
+			}
+		},
+		setNewFormula: function (newFormula, columnID) {
+			let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
+			if (columnIndex >= 0) {
+				this.template.columns[columnIndex].formula = [...newFormula];
 			}
 		}
 	}
@@ -143,102 +193,100 @@ var FormulaVue = new Vue({
 	data: {
 		fields: [],
 		formula: [],
-		items: [],
 
 		number: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
 		mark: ["*", "/", "-", "+"],
 		parentheses: ["(", ")"],
 
 		isValid: null,
+		el: Object,
+		columnID: null,
+	},
+	watch: {
+		formula: function (newValue, oldValue) {
+			console.log("refresh");
+
+		},
 	},
 	computed: {
 	},
 	mounted: function () {
+		this.el = $('#formula');
+
+		this.el.tagsinput({
+			//cancelConfirmKeysOnEmpty: true,
+			allowDuplicates: true,
+			tagClass: function (item) {
+				switch (item.type) {
+					case FormulaFieldTypeEnum.Number: return 'badge badge-primary';
+					case FormulaFieldTypeEnum.Mark: return 'badge badge-danger';
+					case FormulaFieldTypeEnum.Parentheses: return 'badge badge-success';
+					case FormulaFieldTypeEnum.Section: return 'badge badge-default';
+					//case 'Asia': return 'badge badge-warning';
+				}
+			},
+
+			itemValue: 'value',
+			itemText: 'value',
+		});
 	},
 	methods: {
 		init: function () {
-			//for (var i = 0; i < this.fields.length; i++) {
-			//	this.formula.push(this.fields[i].sectionID + "_" + this.fields[i].codeName);
-			//}
 			this.refreshFormula();
-
 			$("#modal-formula").modal("show");
+			//$("#modal-formula").modal("hidden.bs.modal", function () {
+			//	FormulaVue.fields = [];
+			//	FormulaVue.formula = [];
+			//});
 		},
+
 		removeLast: function () {
-			this.formula.pop();
-			this.refreshFormula();
+			this.el.tagsinput("remove", this.formula.pop());
 		},
-		add: function (value) {
-			this.formula.push(value.target.innerHTML);
-			this.refreshFormula();
+		add: function (event, type) {
+			if (type == FormulaFieldTypeEnum.Number) {
+
+				var lastFormulaItem = this.formula[this.formula.length - 1];
+
+				if (lastFormulaItem.type == FormulaFieldTypeEnum.Number) {
+
+					this.el.tagsinput("remove", lastFormulaItem);
+					lastFormulaItem.value += event.target.innerHTML;
+					this.el.tagsinput('add', lastFormulaItem);
+					return;
+
+				}
+			}
+			let formulaElement = { id: null, value: event.target.innerHTML, type: type };
+			this.formula.push(formulaElement);
+			this.el.tagsinput('add', formulaElement);
 		},
 		addField: function (field) {
-			this.formula.push("sectinoID=" + field.sectinoID);
-			this.refreshFormula();
+			let formulaElement = { id: field.sectinoID, value: field.name, type: FormulaFieldTypeEnum.Section };
+			this.formula.push(formulaElement);
+			this.el.tagsinput('add', formulaElement);
+		},
+		addPeriod: function (formulaFieldTypeEnumID) {
+
+			if (formulaFieldTypeEnumID == FormulaFieldTypeEnum.Days) {
+				let formulaElement = { id: null, value: "Days", type: formulaFieldTypeEnumID };
+				this.formula.push(formulaElement);
+				this.el.tagsinput('add', formulaElement);
+			}
 		},
 		refreshFormula: function () {
-			var $el = $('#formula');
-
-			$el.tagsinput({
-				cancelConfirmKeysOnEmpty: true,
-				tagClass: function (item) {
-					switch (item.css) {
-						case 'number': return 'badge badge-primary';
-						case 'mark': return 'badge badge-danger';
-						case 'parentheses': return 'badge badge-success';
-						case 'section': return 'badge badge-default';
-						//case 'Asia': return 'badge badge-warning';
-					}
-				},
-
-				itemValue: 'value',
-				itemText: 'text',
-			});
+			//this.el.tagsinput('destroy');
 
 			for (var i = 0; i < this.formula.length; i++) {
-				this.items.push(this.understandValue(this.formula[i]));
-				$el.tagsinput('add', this.items[i]);
+				this.el.tagsinput('add', this.formula[i]);
 			}
 		},
-		understandValue: function (value) {
-			let el = { value: -1, text: "", css: "" };
-
-			if (value.indexOf("sectionID=") >= 0) {
-				let sectionID = value.replace("sectionID=", '');
-				let text = this.fields.find(x => x.sectionID == sectionID).name;
-
-				el.value = value;
-				el.text = text;
-				el.css = "section";
-
-				return el;
-			}
-
-			if (this.mark.indexOf(value) >= 0) {
-				el.value = value;
-				el.text = value;
-				el.css = "mark";
-
-				return el;
-			}
-
-			if (this.number.indexOf(value) >= 0) {
-				el.value = value;
-				el.text = value;
-				el.css = "number";
-
-				return el;
-			}
-
-			if (this.parentheses.indexOf(value) >= 0) {
-				el.value = value;
-				el.text = value;
-				el.css = "parentheses";
-
-				return el;
-			}
-
-
+		save: function () {
+			TemplateVue.setNewFormula(this.formula, this.columnID);
+			$("#modal-formula").modal('hide');
+			this.fields = [];
+			this.formula = [];
+			this.el.tagsinput('removeAll');
 		}
 	}
 });

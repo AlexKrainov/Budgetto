@@ -25,11 +25,21 @@ namespace MyProfile.Entity.ModelView
 		public string Name { get; set; }
 		public int Order { get; set; }
 		public bool IsShow { get; set; }
-		public List<string> Formula { get; set; } = new List<string>();
+		public List<FormulaItem> Formula { get; set; } = new List<FormulaItem>();
 		public FooterActionType TotalAction { get; set; } = FooterActionType.Undefined;
 		public TemplateColumnType TemplateColumnType { get; set; } = TemplateColumnType.Undefined;
 		public List<TemplateAreaType> TemplateBudgetSections { get; set; } = new List<TemplateAreaType>();
 
+	}
+
+	public class FormulaItem
+	{
+		/// <summary>
+		/// sectionID
+		/// </summary>
+		public int? ID { get; set; }
+		public string Value { get; set; }
+		public FormulaFieldType Type { get; set; }
 	}
 
 	public class TemplateAreaType

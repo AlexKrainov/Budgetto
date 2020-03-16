@@ -31,15 +31,15 @@
 	}
 
 		.list ul li {
-			background-color: #fff;
+			/*background-color: #fff;*/
 			padding: 10px;
-			border-radius: 3px;
-			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+			/*border-radius: 3px;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);*/
 		}
 
-			.list ul li:not(:last-child) {
+			/*.list ul li:not(:last-child) {
 				margin-bottom: 10px;
-			}
+			}*/
 
 			.list ul li img {
 				display: block;
