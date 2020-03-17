@@ -165,7 +165,7 @@ namespace MyProfile.Controllers.My
 			var budgetDataForTable = budgetService.GetBudgetDataByMonth(start, finish, template);
 
 
-			return Json(new { isOk = true, data = budgetDataForTable, template });
+			return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
 		}
 	}
 }

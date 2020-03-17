@@ -39,7 +39,8 @@ var TemplateVue = new Vue({
 
 		periodType: -1,
 		isSaveTemplate: false,
-		drake: {},
+
+		footerActions: []
 	},
 	watch: {
 		"template.name": function (newValue, oldValue) {
@@ -50,6 +51,13 @@ var TemplateVue = new Vue({
 		this.init()
 			.then(function () {
 				TemplateVue.loadBAranAndRType();
+
+				sendAjax("/Common/GetFoolterAction", null, "GET")
+					.then(function (result) {
+						if (result.isOk = true) {
+							TemplateVue.footerActions = result.data;
+						}
+					});
 			});
 	},
 	methods: {
@@ -74,12 +82,26 @@ var TemplateVue = new Vue({
 				});
 		},
 		refreshDragNDrop: function () {
-			this.drake = dragula(
-				Array.prototype.slice.call(document.querySelectorAll('.lists'))
-			).end(function (el) {
-				console.log("end move");
-			});
+			dragula(
+				Array.prototype.slice.call(document.querySelectorAll('.lists')),
+				{
+					moves: function (el) {
+						return !el.classList.contains("ignore-dnd");
+					},
+					accepts: function (el) {//?
+						return !el.classList.contains("ignore-dnd");
+					},
+				}
+			).on('dragend', function (el) {
+				let el_s = document.querySelectorAll(".list[columnid]");
 
+				for (var i = 0; i < el_s.length; i++) {
+					let columnID = el_s[i].attributes["columnid"].value * 1;
+					if (columnID) {
+						TemplateVue.template.columns.find(x => x.id == columnID).order = i;
+					}
+				}
+			});
 		},
 		removeColumn: function (columnID) {
 			let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
@@ -96,7 +118,7 @@ var TemplateVue = new Vue({
 				"name": "New column",
 				"order": this.template.columns.length,
 				"isShow": true,
-				"totalAction": 1,
+				"totalAction": 0,
 				"formula": [],
 				templateBudgetSections: []
 			};
@@ -159,6 +181,9 @@ var TemplateVue = new Vue({
 					}
 					TemplateVue.isSaveTemplate = false;
 				});
+		},
+		change: function (event) {
+			console.log(event);
 		},
 		openFormula: function (columnID) {
 			//FormulaVue.el.tagsinput("destroy");

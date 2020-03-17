@@ -112,24 +112,24 @@ namespace MyProfile.Controllers
 
 		public IActionResult Index()
 		{
-			var z1 = CSharpScript.EvaluateAsync("1 + 2").Result;
-			var z2 = CSharpScript.EvaluateAsync("1 - 2").Result;
-			var z3 = CSharpScript.EvaluateAsync("2 * 2").Result;
-			var z4 = CSharpScript.EvaluateAsync("2 / 2").Result;
-			var z5 = CSharpScript.EvaluateAsync("2 + (1 + 2)").Result;
-			var z6 = CSharpScript.EvaluateAsync("2 + 2 * 4").Result;
-			//var z7 = CSharpScript.EvaluateAsync("20 * 5%");//.Result;
-			//var z8 = CSharpScript.Create("20 * 5%");
-			//var z9 = CSharpScript.RunAsync("20 * 5%");
-			var interpreter = new Interpreter();
-			var result = interpreter.Eval("1 + 2");
-			var z10 = interpreter.Eval("1 - 2");
-			var z11 = interpreter.Eval("2 * 2.2");
-			var z13 = interpreter.Eval("2 / 2");
-			var z14 = interpreter.Eval("2 * 2");
-			//var z15 = interpreter.Eval("20 + 5%");
-			var z16 = interpreter.Eval("2 + (1 + 2)");
-			var z17 = interpreter.Eval("2 + 2 * 4");
+			//var z1 = CSharpScript.EvaluateAsync("1 + 2").Result;
+			//var z2 = CSharpScript.EvaluateAsync("1 - 2").Result;
+			//var z3 = CSharpScript.EvaluateAsync("2 * 2").Result;
+			//var z4 = CSharpScript.EvaluateAsync("2 / 2").Result;
+			//var z5 = CSharpScript.EvaluateAsync("2 + (1 + 2)").Result;
+			//var z6 = CSharpScript.EvaluateAsync("2 + 2 * 4").Result;
+			////var z7 = CSharpScript.EvaluateAsync("20 * 5%");//.Result;
+			////var z8 = CSharpScript.Create("20 * 5%");
+			////var z9 = CSharpScript.RunAsync("20 * 5%");
+			//var interpreter = new Interpreter();
+			//var result = interpreter.Eval("1 + 2");
+			//var z10 = interpreter.Eval("1 - 2");
+			//var z11 = interpreter.Eval("2 * 2.2");
+			//var z13 = interpreter.Eval("2 / 2");
+			//var z14 = interpreter.Eval("2 * 2");
+			////var z15 = interpreter.Eval("20 + 5%");
+			//var z16 = interpreter.Eval("2 + (1 + 2)");
+			//var z17 = interpreter.Eval("2 + 2 * 4");
 
 
 

@@ -4,6 +4,7 @@
 		template: {},
 		sections: [],
 		rows: [],
+		footerRow: [],
 
 		counterColumn: -100,
 		counterTemplateBudgetSections: -100,
@@ -30,7 +31,8 @@
 			return sendAjax("/Budget/GetBudget", null, "GET")
 				.then(function (result) {
 					if (result.isOk = true) {
-						BudgetVue.rows = result.data;
+						BudgetVue.rows = result.rows;
+						BudgetVue.footerRow = result.footerRow;
 						BudgetVue.template = result.template;
 					}
 				});

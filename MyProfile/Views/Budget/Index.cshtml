@@ -84,15 +84,20 @@
 		<table class="datatables-demo table table-striped table-bordered" id="table">
 			<thead>
 				<tr>
-					<th v-for="column in template.columns" v-html="column.name"></th>
+					<th v-for="column in template.columns" v-html="column.name" v-show="column.isShow"></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="row in rows">
-					<td v-for="cell in row" v-html="cell.value">
+					<td v-for="cell in row" v-show="cell.isShow" v-html="cell.value" >
 					</td>
 				</tr>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td v-for="cell in footerRow" v-html="cell.value" v-show="cell.isShow"></td>
+				</tr>
+			</tfoot>
 		</table>
 	</div>
 </div>

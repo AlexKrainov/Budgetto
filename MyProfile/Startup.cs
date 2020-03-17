@@ -9,6 +9,7 @@ using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.Template.Service;
+using MyProfile.LittleDictionaries.Service;
 
 namespace MyProfile
 {
@@ -35,6 +36,7 @@ namespace MyProfile
 			services.AddScoped<TemplateService>();
 			services.AddScoped<BudgetService>();
 			services.AddScoped<BudgetRecordService>();
+			services.AddScoped<DictionariesService>();
 			#endregion
 
 #if true

@@ -88,7 +88,7 @@ namespace MyProfile.Template.Service
 
 					repository.Create(templateDB, true);
 
-					foreach (var column in template.Columns)
+					foreach (var column in template.Columns.OrderBy(x => x.Order))
 					{
 						var templateColumnDB = new TemplateColumn
 						{
@@ -132,7 +132,7 @@ namespace MyProfile.Template.Service
 
 					repository.Update(templateDB, true);
 
-					foreach (var column in template.Columns)
+					foreach (var column in template.Columns.OrderBy(x => x.Order))
 					{
 						var templateColumnDB = new TemplateColumn
 						{

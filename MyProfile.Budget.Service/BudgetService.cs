@@ -21,11 +21,21 @@ namespace MyProfile.Budget.Service
 			this.repository = repository;
 		}
 
-		public List<List<Cell>> GetBudgetDataByMonth(DateTime from, DateTime to, TemplateViewModel template)
+		/// <summary>
+		/// Dynamic calculation
+		/// https://stackoverflow.com/questions/12431286/calculate-result-from-a-string-expression-dynamically
+		/// </summary>
+		/// <param name="from"></param>
+		/// <param name="to"></param>
+		/// <param name="template"></param>
+		/// <returns></returns>
+		public Tuple<List<List<Cell>>, List<Cell>> GetBudgetDataByMonth(DateTime from, DateTime to, TemplateViewModel template)
 		{
 			var budgetRecords = GetDataByMonth(from, to);
 
 			List<List<Cell>> rows = new List<List<Cell>>();
+			List<List<FooterCell>> footers = new List<List<FooterCell>>();
+
 			List<string> columnsFormula = GetColumnsFormula(template);
 
 			int allColumnsCount = template.Columns.Count;
@@ -35,6 +45,7 @@ namespace MyProfile.Budget.Service
 			for (int numberOfDay = 1; numberOfDay <= totalDays; numberOfDay++)
 			{
 				List<Cell> cells = new List<Cell>();
+				List<FooterCell> footerCells = new List<FooterCell>();
 
 				if (budgetRecords.Count != indexBudgetRecords && numberOfDay == budgetRecords[indexBudgetRecords].Key)
 				{
@@ -48,7 +59,8 @@ namespace MyProfile.Budget.Service
 
 						if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
 						{
-							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, numberOfDay)).ToShortDateString() });
+							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, numberOfDay)).ToShortDateString(), IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = numberOfDay });
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
 						{
@@ -68,9 +80,10 @@ namespace MyProfile.Budget.Service
 							total = Math.Round(total, 2);
 
 							var interpreter = new Interpreter();
-							total = interpreter.Eval<decimal>(expression.Replace(",", "."));
-							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
-							cells.Add(new Cell { Value = total.ToString() });
+							total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand ,
+																							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
+							cells.Add(new Cell { Value = total.ToString(), IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = total });
 						}
 					}
 				}
@@ -82,18 +95,61 @@ namespace MyProfile.Budget.Service
 
 						if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
 						{
-							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, numberOfDay)).ToShortDateString() });
+							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, numberOfDay)).ToShortDateString(), IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = numberOfDay });
 						}
 						else
 						{
-							cells.Add(new Cell { Value = "0" });
+							cells.Add(new Cell { Value = "0", IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = 0 });
 						}
 					}
 				}
 				rows.Add(cells);
+				footers.Add(footerCells);
 			}
 
-			return rows;
+			return new Tuple<List<List<Cell>>, List<Cell>>(
+				rows,
+				CalculateFooter(footers, template));
+		}
+
+		private List<Cell> CalculateFooter(List<List<FooterCell>> footersData, TemplateViewModel template)
+		{
+			List<Cell> footer = new List<Cell>();
+
+			for (int i = 0; i < template.Columns.Count; i++)
+			{
+				List<decimal> total = new List<decimal>();
+				Cell cell = new Cell() { IsShow = template.Columns[i].IsShow };
+
+				foreach (var footerRow in footersData)
+				{
+					total.Add(footerRow[i].Value);
+				}
+
+				switch (template.Columns[i].TotalAction)
+				{
+					case FooterActionType.Sum:
+						cell.Value = total.Sum().ToString();
+						break;
+					case FooterActionType.Avr:
+						cell.Value = total.Average().ToString();
+						break;
+					case FooterActionType.Min:
+						cell.Value = total.Min().ToString();
+						break;
+					case FooterActionType.Max:
+						cell.Value = total.Max().ToString();
+						break;
+					case FooterActionType.Undefined:
+					default:
+						cell.Value = "";
+						break;
+				}
+				footer.Add(cell);
+			}
+			return footer;
 		}
 
 		private List<string> GetColumnsFormula(TemplateViewModel template)
@@ -159,5 +215,11 @@ namespace MyProfile.Budget.Service
 	public class Cell
 	{
 		public string Value { get; set; }
+		public bool IsShow { get; set; } = true;
 	}
+	public class FooterCell
+	{
+		public decimal Value { get; set; }
+	}
+
 }
