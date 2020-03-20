@@ -24,10 +24,19 @@
 
 }
 
-<h4 class="font-weight-bold py-3 mb-4">
-	<input id="templateName" type="text" class="form-control " oninput="console.log(this.value); TemplateVue.template.name = this.value;">
-</h4>
 <article id="template-columns">
+	<h4 class="font-weight-bold py-3 mb-4">
+		<input type="hidden" name="templateID" id="templateID" value="@ViewBag.TemplateID" />
+		<input id="templateName" type="text" class="form-control " oninput="console.log(this.value); TemplateVue.template.name = this.value;">
+		<select class="selectpicker" data-style="btn-default" v-model="template.periodTypeID">
+			@foreach (MyProfile.Entity.Model.PeriodType periodType in ViewBag.PeriodTypes)
+			{
+				<option value="@periodType.ID" v-bind:selected="template.periodTypeID">
+					@periodType.Name
+				</option>
+			}
+		</select>
+	</h4>
 
 	<div class="ui">
 		<div class="lists">
@@ -196,6 +205,67 @@
 						</div>
 					</div>
 				</div>
+				<div class="card mb-3" v-if="column.templateColumnType == 3">
+					<div>
+						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" v-bind:href="'#general'+column.id">
+									Active
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" v-bind:href="'#settings'+column.id">
+									Link
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content">
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+							<div class="d-flex justify-content-between align-items-start">
+								<div>
+									<input type="text" class="form-control " placeholder="Name column" v-model="column.name">@*style="border:none;"*@
+									@*<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">Backend</a>
+										<span class="badge badge-danger align-text-bottom ml-1">Busy</span>*@
+								</div>
+								<div class="btn-group team-actions">
+									<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
+										<i class="ion ion-ios-more"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 26px; left: -134px; will-change: top, left;">
+										<a class="dropdown-item" href="javascript:void(0)">View</a>
+										<a class="dropdown-item" href="javascript:void(0)">Edit</a>
+										<a class="dropdown-item" href="javascript:void(0)" v-on:click="removeColumn(column.id)">Remove</a>
+									</div>
+								</div>
+							</div>
+							<div class="mt-3">
+								@*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+							</div>
+
+							<hr class="m-0" />
+							<div class="kanban-box px-2 pt-2">
+								<div class="ui-bordered p-2 mb-2 badge-secondary">
+									Months
+								</div>
+							</div>
+						</div>
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
+
+							<div>
+								<!-- Custom checkbox -->
+								<label class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" v-model="column.isShow">
+									<span class="custom-control-label">Is show column</span>
+								</label>
+							</div>
+
+							<div class="card-footer text-center py-2">
+								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="list ignore-dnd">
 				<div class="card mb-3">
@@ -211,7 +281,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
 					<div class="modal-body">
 						<label class="custom-control custom-radio">
-							<input name="data-column-type" v-model="column.templateColumnType" value="2" type="radio" class="custom-control-input">
+							<input name="data-column-type" v-model="column.templateColumnType" value="2" type="radio" class="custom-control-input" v-bind:disabled="template.periodTypeID != 1">
 							<span class="custom-control-label">Days</span>
 						</label>
 						<label class="custom-control custom-radio">
@@ -219,12 +289,16 @@
 							<span class="custom-control-label">Money</span>
 						</label>
 						<label class="custom-control custom-radio">
-							<input name="data-column-type" type="radio" class="custom-control-input" disabled>
-							<span class="custom-control-label">Percet</span>
+							<input name="data-column-type" v-model="column.templateColumnType" value="3" type="radio" class="custom-control-input" v-bind:disabled="template.periodTypeID != 3">
+							<span class="custom-control-label">Months for Year</span>
 						</label>
 						<label class="custom-control custom-radio">
-							<input name="data-column-type" type="radio" class="custom-control-input" disabled>
-							<span class="custom-control-label">Comments</span>
+							<input name="data-column-type" v-model="column.templateColumnType" value="7" type="radio" class="custom-control-input" v-bind:disabled="template.periodTypeID != 2">
+							<span class="custom-control-label">Weeks for Month</span>
+						</label>
+						<label class="custom-control custom-radio">
+							<input name="data-column-type" v-model="column.templateColumnType" value="4" type="radio" class="custom-control-input" v-bind:disabled="template.periodTypeID != 4">
+							<span class="custom-control-label">Years for 10 Year</span>
 						</label>
 						<button id="buttonSelectTemplateColumnType" type="button" v-on:click="addColumn_Complete">ok</button>
 						@*<button type="button" class="btn btn-primary btn-block" v-on:click="addColumnOption_step2">Save</button>

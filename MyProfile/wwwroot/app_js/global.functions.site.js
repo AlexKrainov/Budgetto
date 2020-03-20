@@ -1,13 +1,4 @@
-﻿function highlightDataTable(dataTable) {
-	//var body = $(dataTable.table().body());
-
-	//body.unhighlight();
-	//if (dataTable.rows({ filter: 'applied' }).data().length) {
-	//    body.highlight(dataTable.search());
-	//}
-}
-
-String.prototype.replaceAll = function (search, replace) {
+﻿String.prototype.replaceAll = function (search, replace) {
 	return this.split(search).join(replace);
 }
 
@@ -47,57 +38,30 @@ function numberOfThreeDigits(str) {
 	return str ? str.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ') : "";
 }
 
+var TemplateColumnTypeEnum = Object.freeze({
+	Undefined: 0,
+	BudgetSection: 1,
+	DaysForMonth: 2,
+	MonthsForYear: 3,
+	YearForYear: 4,
+	Percent: 5,
+	Comment: 6,
+	WeekForMonth: 7
+});
 
-document.LocalizationLanguageFlags = [
-	{
-		id: 2,
-		internationalCode: 'en-US',
-		src16: '/Images/flags/16/United-States.png'
-	},
-	{
-		id: 3,
-		internationalCode: 'it-IT',
-		src16: '/Images/flags/16/Italy.png'
-	},
-	{
-		id: 9,
-		internationalCode: 'es-ES',
-		src16: '/Images/flags/16/Spain.png'
-	},
-	{
-		id: 10,
-		internationalCode: 'pt-PT',
-		src16: '/Images/flags/16/Portugal.png'
-	},
-	{
-		id: 15,
-		internationalCode: 'fr-FR',
-		src16: '/Images/flags/16/France.png'
-	},
-	{
-		id: 20,
-		internationalCode: 'de-DE',
-		src16: '/Images/flags/16/Germany.png'
-	},
-];
+var FooterActionTypeEnum = Object.freeze({
+	Undefined: 0,
+	Sum: 1,
+	Avr: 2,
+	Min: 3,
+	Max: 4
+});
 
-function GetFlat16(languageID) {
-	let language = document.LocalizationLanguageFlags.find(x => x.id == languageID);
-	if (language) {
-		return language.src16;
-	} else {
-		return "";
-	}
-}
-
-//Change color to the opposite
-function InvertColor(hexTripletColor) {
-	var color = hexTripletColor;
-	color = color.substring(1); // remove #
-	color = parseInt(color, 16); // convert to integer
-	color = 0xFFFFFF ^ color; // invert three bytes
-	color = color.toString(16); // convert to hex
-	color = ("000000" + color).slice(-6); // pad with leading zeros
-	color = "#" + color; // prepend #
-	return color;
-}
+var FormulaFieldTypeEnum = Object.freeze({
+	Undefined: 0,
+	Section: 1,
+	Number: 2,
+	Mark: 3,
+	Parentheses: 4,
+	Days: 5
+});

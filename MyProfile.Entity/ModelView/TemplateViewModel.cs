@@ -17,6 +17,7 @@ namespace MyProfile.Entity.ModelView
 		public DateTime? LastSeenDateTime { get; set; }
 		public int MaxRowInAPage { get; set; }
 		public List<Column> Columns { get; set; } = new List<Column>();
+		public string PeriodName { get; set; }
 	}
 
 	public class Column

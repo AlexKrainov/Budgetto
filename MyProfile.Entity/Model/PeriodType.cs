@@ -3,6 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
+	public enum PeriodTypesEnum
+	{
+		Undefined,
+		Days = 1,
+		Weeks = 2,
+		Months = 3,
+		Years10 = 4
+	}
 	public class PeriodType
 	{
 		[Key]

@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using DynamicExpresso;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
+using MyProfile.Identity;
 using MyProfile.Template.Service;
 using TemplateBudgetSection = MyProfile.Entity.Model.TemplateBudgetSection;
 
@@ -110,35 +112,35 @@ namespace MyProfile.Controllers
 
 		}
 
-		public IActionResult Index()
+		public IActionResult List()
 		{
-			//var z1 = CSharpScript.EvaluateAsync("1 + 2").Result;
-			//var z2 = CSharpScript.EvaluateAsync("1 - 2").Result;
-			//var z3 = CSharpScript.EvaluateAsync("2 * 2").Result;
-			//var z4 = CSharpScript.EvaluateAsync("2 / 2").Result;
-			//var z5 = CSharpScript.EvaluateAsync("2 + (1 + 2)").Result;
-			//var z6 = CSharpScript.EvaluateAsync("2 + 2 * 4").Result;
-			////var z7 = CSharpScript.EvaluateAsync("20 * 5%");//.Result;
-			////var z8 = CSharpScript.Create("20 * 5%");
-			////var z9 = CSharpScript.RunAsync("20 * 5%");
-			//var interpreter = new Interpreter();
-			//var result = interpreter.Eval("1 + 2");
-			//var z10 = interpreter.Eval("1 - 2");
-			//var z11 = interpreter.Eval("2 * 2.2");
-			//var z13 = interpreter.Eval("2 / 2");
-			//var z14 = interpreter.Eval("2 * 2");
-			////var z15 = interpreter.Eval("20 + 5%");
-			//var z16 = interpreter.Eval("2 + (1 + 2)");
-			//var z17 = interpreter.Eval("2 + 2 * 4");
+			return View();
+		}
 
+		public async Task<JsonResult> GetTemplates()
+		{
+			var templates = await templateService.GetTemplates(x => x.PersonID == UserInfo.PersonID);
+			return Json(new { isOk = true, templates });
+		}
 
+		public IActionResult Index(int? id)
+		{
+			ViewBag.TemplateID = id;
+
+			ViewBag.PeriodTypes = repository.GetAll<PeriodType>().ToList();
 
 			return View();
 		}
+
 		[HttpGet]
-		public async Task<IActionResult> GetData(int? id)
+		public async Task<IActionResult> GetTemplate(int? id)
 		{
-			TemplateViewModel templateViewModel = templateService.GetTemplateByID(id);
+			TemplateViewModel templateViewModel = new TemplateViewModel();
+
+			if (id != null)
+			{
+				templateViewModel = await templateService.GetTemplateByID(x => x.PersonID == UserInfo.PersonID && x.ID == id);
+			}
 
 			return Json(new
 			{

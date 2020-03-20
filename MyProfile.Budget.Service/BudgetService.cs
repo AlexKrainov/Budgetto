@@ -29,9 +29,9 @@ namespace MyProfile.Budget.Service
 		/// <param name="to"></param>
 		/// <param name="template"></param>
 		/// <returns></returns>
-		public Tuple<List<List<Cell>>, List<Cell>> GetBudgetDataByMonth(DateTime from, DateTime to, TemplateViewModel template)
+		public Tuple<List<List<Cell>>, List<Cell>> GetBudgetDataByDays(DateTime from, DateTime to, TemplateViewModel template)
 		{
-			var budgetRecords = GetDataByMonth(from, to);
+			var budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Day);
 
 			List<List<Cell>> rows = new List<List<Cell>>();
 			List<List<FooterCell>> footers = new List<List<FooterCell>>();
@@ -102,6 +102,124 @@ namespace MyProfile.Budget.Service
 						{
 							cells.Add(new Cell { Value = "0", IsShow = column.IsShow });
 							footerCells.Add(new FooterCell { Value = 0 });
+						}
+					}
+				}
+				rows.Add(cells);
+				footers.Add(footerCells);
+			}
+
+			return new Tuple<List<List<Cell>>, List<Cell>>(
+				rows,
+				CalculateFooter(footers, template));
+		}
+
+		/// <summary>
+		/// Dynamic calculation
+		/// https://stackoverflow.com/questions/12431286/calculate-result-from-a-string-expression-dynamically
+		/// </summary>
+		/// <param name="from"></param>
+		/// <param name="to"></param>
+		/// <param name="template"></param>
+		/// <returns></returns>
+		public Tuple<List<List<Cell>>, List<Cell>> GetBudgetData(DateTime from, DateTime to, TemplateViewModel template)
+		{
+			List<List<Cell>> rows = new List<List<Cell>>();
+			List<List<FooterCell>> footers = new List<List<FooterCell>>();
+			List<string> columnsFormula = GetColumnsFormula(template);
+
+			int allColumnsCount = template.Columns.Count;
+			int indexBudgetRecords = 0;
+			int totalCounter = 0;
+			IList<IGrouping<int, TmpBudgetRecord>> budgetRecords;
+
+			switch (template.PeriodTypeID)
+			{
+				case (int)PeriodTypesEnum.Months:
+					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Month);
+					totalCounter = 12;
+					break;
+				case (int)PeriodTypesEnum.Years10:
+					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Year);
+					totalCounter = 10;
+					break;
+				case (int)PeriodTypesEnum.Days:
+				default:
+					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Day);
+					totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
+					break;
+			}
+
+			for (int dateTimeCounter = 1; dateTimeCounter <= totalCounter; dateTimeCounter++)
+			{
+				List<Cell> cells = new List<Cell>();
+				List<FooterCell> footerCells = new List<FooterCell>();
+
+				if (budgetRecords.Count != indexBudgetRecords && dateTimeCounter == budgetRecords[indexBudgetRecords].Key)
+				{
+					var budgetRecordsDay = budgetRecords[indexBudgetRecords];
+					indexBudgetRecords++;
+
+					for (int i = 0; i < allColumnsCount; i++)
+					{
+						var column = template.Columns[i];
+						string expression = columnsFormula[i];
+
+						if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
+						{
+							decimal total = 0;
+
+							foreach (var formulaItem in column.Formula)
+							{
+								if (formulaItem.Type == FormulaFieldType.Section)
+								{
+									total = budgetRecordsDay
+									.Where(x => x.SectionID == formulaItem.ID)
+									.Sum(x => x.Total);
+
+									expression = expression.Replace($"[{formulaItem.ID}]", total.ToString());
+								}
+							}
+							total = Math.Round(total, 2);
+
+							var interpreter = new Interpreter();
+							total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand ,
+																							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
+							cells.Add(new Cell { Value = total.ToString(), IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = total });
+						}
+						else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
+						{
+							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, dateTimeCounter)).ToShortDateString(), IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = -1 });
+						}
+						else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
+						{
+							cells.Add(new Cell { Value = (new DateTime(from.Year, dateTimeCounter, 1)).ToString("MM.yyyy"), IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = -1 });
+						}
+					}
+				}
+				else
+				{
+					for (int i = 0; i < allColumnsCount; i++)
+					{
+						var column = template.Columns[i];
+
+						if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
+						{
+							cells.Add(new Cell { Value = "0", IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = -1 });
+						}
+						else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
+						{
+							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, dateTimeCounter)).ToShortDateString(), IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = -1 });
+						}
+						else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
+						{
+							cells.Add(new Cell { Value = (new DateTime(from.Year, dateTimeCounter, 1)).ToString("MM.yyyy"), IsShow = column.IsShow });
+							footerCells.Add(new FooterCell { Value = -1 });
 						}
 					}
 				}
@@ -186,7 +304,7 @@ namespace MyProfile.Budget.Service
 			return columnsFormula;
 		}
 
-		public IList<IGrouping<int, TmpBudgetRecord>> GetDataByMonth(DateTime from, DateTime to)
+		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecords(DateTime from, DateTime to, Func<TmpBudgetRecord, int> expresion)
 		{
 			return repository
 			  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment)
@@ -199,8 +317,13 @@ namespace MyProfile.Budget.Service
 				  AreaID = x.BudgetSection.BudgetArea.ID,
 				  AreaName = x.BudgetSection.BudgetArea.Name
 			  })
-			  .GroupBy(x => x.DateTimeOfPayment.Day)
+			  .GroupBy(expresion)
 			  .ToList();
+		}
+
+		private Func<TmpBudgetRecord, object> get(Func<object, object> p)
+		{
+			throw new NotImplementedException();
 		}
 	}
 	public class TmpBudgetRecord

@@ -12,10 +12,10 @@ namespace MyProfile.Entity.Model
 		BudgetSection = 1,//Money
 		DaysForMonth = 2,
 		MonthsForYear = 3,
-		YearForYear = 4,
+		YearsFor10Year = 4,
 		Percent = 5,
 		Comment = 6,
-		WeekForMonth = 7
+		WeeksForMonth = 7
 	}
 
 	public enum FooterActionType

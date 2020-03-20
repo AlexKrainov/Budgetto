@@ -8,6 +8,7 @@ using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
+using MyProfile.Identity;
 using MyProfile.Template.Service;
 
 namespace MyProfile.Controllers.My
@@ -156,14 +157,19 @@ namespace MyProfile.Controllers.My
 			return View();
 		}
 
-		public JsonResult GetBudget()
+		public async Task<JsonResult> GetBudget()
 		{
-			DateTime start = new DateTime(2020, 03, 01);
-			DateTime finish = new DateTime(2020, 03, 31);
+			//DateTime start = new DateTime(2020, 03, 01);
+			//DateTime finish = new DateTime(2020, 03, 31);
 
-			var template = templateService.GetTemplateByID(templateID: 3);
-			var budgetDataForTable = budgetService.GetBudgetDataByMonth(start, finish, template);
+			//var template = await templateService.GetTemplateByID(x => x.ID == 3 && x.PersonID == UserInfo.PersonID);
+			//var budgetDataForTable = budgetService.GetBudgetDataByDays(start, finish, template);
 
+			DateTime start = new DateTime(2020, 01, 01);
+			DateTime finish = new DateTime(2020, 12, 31);
+
+			var template = await templateService.GetTemplateByID(x => x.ID == 4 && x.PersonID == UserInfo.PersonID);
+			var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
 
 			return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
 		}

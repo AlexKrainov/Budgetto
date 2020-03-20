@@ -1,31 +1,4 @@
-﻿var TemplateColumnTypeEnum = Object.freeze({
-	Undefined: 0,
-	BudgetSection: 1,
-	DaysForMonth: 2,
-	MonthsForYear: 3,
-	YearForYear: 4,
-	Percent: 5,
-	Comment: 6,
-	WeekForMonth: 7
-});
-
-var FooterActionTypeEnum = Object.freeze({
-	Undefined: 0,
-	Sum: 1,
-	Avr: 2,
-	Min: 3,
-	Max: 4
-});
-
-var FormulaFieldTypeEnum = Object.freeze({
-	Undefined: 0,
-	Section: 1,
-	Number: 2,
-	Mark: 3,
-	Parentheses: 4,
-	Days: 5
-});
-
+﻿
 var TemplateVue = new Vue({
 	el: "#template-columns",
 	data: {
@@ -63,7 +36,8 @@ var TemplateVue = new Vue({
 	methods: {
 
 		init: function () {
-			return sendAjax("/Template/GetData/3", null, "GET")
+			let templateID = document.getElementById("templateID").value;
+			return sendAjax("/Template/GetTemplate/" + templateID, null, "GET")
 				.then(function (result) {
 					if (result.isOk = true) {
 						TemplateVue.template = result.template;
