@@ -8,8 +8,6 @@ namespace MyProfile.Entity.ModelView
 	public class TemplateViewModel
 	{
 		public int ID { get; set; }
-		public int PeriodTypeID { get; set; }
-		public string Period { get; set; }
 		public string Name { get; set; }
 		public bool? IsCountCollectiveBudget { get; set; }
 		public DateTime DateCreate { get; set; }
@@ -18,6 +16,7 @@ namespace MyProfile.Entity.ModelView
 		public int MaxRowInAPage { get; set; }
 		public List<Column> Columns { get; set; } = new List<Column>();
 		public string PeriodName { get; set; }
+		public int PeriodTypeID { get; set; }
 	}
 
 	public class Column
@@ -26,6 +25,8 @@ namespace MyProfile.Entity.ModelView
 		public string Name { get; set; }
 		public int Order { get; set; }
 		public bool IsShow { get; set; }
+		public string Format { get; set; }
+		public ushort PlaceAfterCommon { get; set; } = 2;
 		public List<FormulaItem> Formula { get; set; } = new List<FormulaItem>();
 		public FooterActionType TotalAction { get; set; } = FooterActionType.Undefined;
 		public TemplateColumnType TemplateColumnType { get; set; } = TemplateColumnType.Undefined;

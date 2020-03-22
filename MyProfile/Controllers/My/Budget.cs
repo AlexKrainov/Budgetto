@@ -26,118 +26,7 @@ namespace MyProfile.Controllers.My
 			this.repository = repository;
 			this.templateService = templateService;
 			this.budgetService = budgetService;
-			//repository.CreateRange(new List<BudgetRecord>
-			//{
-			//	new BudgetRecord
-			//	{
-			//		Total = 240,
-			//		BudgetSectionID = 3,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,03),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//	new BudgetRecord
-			//	{
-			//		Total = 260,
-			//		BudgetSectionID = 3,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,03),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//		new BudgetRecord
-			//	{
-			//		Total = 260,
-			//		BudgetSectionID = 3,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,04),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//	new BudgetRecord
-			//	{
-			//		Total = 340,
-			//		BudgetSectionID = 3,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		Description = "descritioin",
-			//		DateTimeOfPayment = new DateTime(2020,03,04),
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//		new BudgetRecord
-			//	{
-			//		Total = 340,
-			//		BudgetSectionID = 3,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,04),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//	new BudgetRecord
-			//	{
-			//		Total = 1240,
-			//		BudgetSectionID = 4,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,04),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//	new BudgetRecord
-			//	{
-			//		Total = 240,
-			//		BudgetSectionID = 5,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,04),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//	new BudgetRecord
-			//	{
-			//		Total = 240,
-			//		BudgetSectionID = 5,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,03),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//	new BudgetRecord
-			//	{
-			//		Total = 240,
-			//		BudgetSectionID = 5,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,04),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//	new BudgetRecord
-			//	{
-			//		Total = 245,
-			//		BudgetSectionID = 6,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,03),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
-			//	new BudgetRecord
-			//	{
-			//		Total = 300,
-			//		BudgetSectionID = 7,
-			//		DateTimeCreate = DateTime.Now,
-			//		DateTimeEdit = DateTime.Now,
-			//		DateTimeOfPayment = new DateTime(2020,03,04),
-			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//	},
+
 			//	new BudgetRecord
 			//	{
 			//		Total = 140,
@@ -152,12 +41,13 @@ namespace MyProfile.Controllers.My
 
 		}
 
-		public IActionResult Index()
+		public IActionResult Index(int id)
 		{
+			ViewBag.TemplateID = id;
 			return View();
 		}
 
-		public async Task<JsonResult> GetBudget()
+		public async Task<JsonResult> GetBudget(int templateID)
 		{
 			//DateTime start = new DateTime(2020, 03, 01);
 			//DateTime finish = new DateTime(2020, 03, 31);
@@ -168,7 +58,7 @@ namespace MyProfile.Controllers.My
 			DateTime start = new DateTime(2020, 01, 01);
 			DateTime finish = new DateTime(2020, 12, 31);
 
-			var template = await templateService.GetTemplateByID(x => x.ID == 4 && x.PersonID == UserInfo.PersonID);
+			var template = await templateService.GetTemplateByID(x => x.ID == templateID  && x.PersonID == UserInfo.PersonID);
 			var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
 
 			return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });

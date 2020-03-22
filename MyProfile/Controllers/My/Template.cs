@@ -157,5 +157,13 @@ namespace MyProfile.Controllers
 
 			return Json(new { isOk = true, template });
 		}
+
+		[HttpGet]
+		public IActionResult Delete(int id)
+		{
+			repository.Delete<MyProfile.Entity.Model.Template>(id);
+
+			return RedirectToAction("List");
+		}
 	}
 }

@@ -28,7 +28,8 @@
 		//},
 
 		loadRows: function () {
-			return sendAjax("/Budget/GetBudget", null, "GET")
+			let templateID = document.getElementById("templateID").value;
+			return sendAjax("/Budget/GetBudget?templateID=" + templateID, null, "GET")
 				.then(function (result) {
 					if (result.isOk = true) {
 						BudgetVue.rows = result.rows;

@@ -37,6 +37,7 @@ namespace MyProfile.Template.Service
 							//LastSeenDateTime = x.CodeName,
 							MaxRowInAPage = x.MaxRowInAPage,
 							Name = x.Name,
+							PeriodName = x.PeriodType.Name,
 							PeriodTypeID = x.PeriodTypeID,
 							Columns = x.TemplateColumns
 								.Select(y => new Column
@@ -48,6 +49,8 @@ namespace MyProfile.Template.Service
 									Order = y.Order,
 									TemplateColumnType = (TemplateColumnType)y.ColumnTypeID,
 									TotalAction = (FooterActionType)y.FooterActionTypeID,
+									PlaceAfterCommon = y.PlaceAfterCommon ?? 0,
+									Format = y.Format,
 									TemplateBudgetSections = y.TemplateBudgetSections
 										.Select(z => new TemplateAreaType
 										{
@@ -65,7 +68,7 @@ namespace MyProfile.Template.Service
 
 			return templateViewModel;
 		}
-		public async Task<List< TemplateViewModel>> GetTemplates(Expression<Func<Template, bool>> predicate)
+		public async Task<List<TemplateViewModel>> GetTemplates(Expression<Func<Template, bool>> predicate)
 		{
 			return await repository.GetAll<Template>(predicate)
 						.Select(x => new TemplateViewModel
@@ -89,6 +92,8 @@ namespace MyProfile.Template.Service
 									Order = y.Order,
 									TemplateColumnType = (TemplateColumnType)y.ColumnTypeID,
 									TotalAction = (FooterActionType)y.FooterActionTypeID,
+									PlaceAfterCommon = y.PlaceAfterCommon ?? 0,
+									Format = y.Format,
 									TemplateBudgetSections = y.TemplateBudgetSections
 										.Select(z => new TemplateAreaType
 										{
@@ -131,6 +136,8 @@ namespace MyProfile.Template.Service
 							Formula = JsonConvert.SerializeObject(column.Formula),
 							ColumnTypeID = (int)column.TemplateColumnType,
 							FooterActionTypeID = (int)column.TotalAction,
+							PlaceAfterCommon = column.PlaceAfterCommon,
+							Format = column.Format
 						};
 						repository.Create(templateColumnDB, true);
 
@@ -175,6 +182,8 @@ namespace MyProfile.Template.Service
 							Formula = JsonConvert.SerializeObject(column.Formula),
 							ColumnTypeID = (int)column.TemplateColumnType,
 							FooterActionTypeID = (int)column.TotalAction,
+							PlaceAfterCommon = column.PlaceAfterCommon,
+							Format = column.Format
 						};
 						repository.Create(templateColumnDB, true);
 

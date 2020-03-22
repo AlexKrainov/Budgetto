@@ -24,24 +24,44 @@
 
 }
 
-<article id="template-columns">
-	<h4 class="font-weight-bold py-3 mb-4">
-		<input type="hidden" name="templateID" id="templateID" value="@ViewBag.TemplateID" />
-		<input id="templateName" type="text" class="form-control " oninput="console.log(this.value); TemplateVue.template.name = this.value;">
-		<select class="selectpicker" data-style="btn-default" v-model="template.periodTypeID">
-			@foreach (MyProfile.Entity.Model.PeriodType periodType in ViewBag.PeriodTypes)
-			{
-				<option value="@periodType.ID" v-bind:selected="template.periodTypeID">
-					@periodType.Name
-				</option>
-			}
-		</select>
-	</h4>
+<section id="template-columns" class="">
+	<!-- Header -->
+	<article class="container-m-nx container-m-ny bg-white mb-2 pl-4 py-5">
+		<div class="row">
+			<div class="col-3">
+				<input type="hidden" name="templateID" id="templateID" value="@ViewBag.TemplateID" />
+				<input id="templateName" type="text" class="form-control " oninput="console.log(this.value); TemplateVue.template.name = this.value;">
+				<div class="dropdown">
+					<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" v-text="template.periodName"></button>
+					<div class="dropdown-menu">
+						@foreach (MyProfile.Entity.Model.PeriodType periodType in ViewBag.PeriodTypes)
+						{
+							<a class="dropdown-item"
+							   v-on:click="template.periodTypeID = @periodType.ID; template.periodName = '@periodType.Name'">@periodType.Name</a>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<small class="text-muted font-weight-normal">Date create: <strong>{{ GetDateByFormat(template.dateCreate, 'DD.MM.YYYY hh:mm:ss') }}</strong></small>
+				<br /><small class="text-muted font-weight-normal">Last edit: <strong>{{ GetDateByFormat(template.dateEdit, 'DD.MM.YYYY hh:mm:ss') }}</strong></small>
+			</div>
+			<div class="col-3">
 
-	<div class="ui">
+			</div>
+			<div class="col-3">
+				<a class="text-danger" href="/Template/Delete/@ViewBag.TemplateID">Remove template</a>
+			</div>
+			<hr class="m-0">
+		</div>
+	</article>
+	<!--Columns-->
+	<article class="ui">
 		<div class="lists">
 			<div class="list" v-for="(column, index) in template.columns" v-bind:columnid="column.id">
-				<div class="card mb-3" v-if="column.templateColumnType == 1">
+				<div class="card mb-3" v-if="column.templateColumnType == TemplateColumnTypeEnum.BudgetSection">
 					<div>
 						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
 							<li class="nav-item">
@@ -110,41 +130,54 @@
 							</div>
 							@*https://www.pigno.se/barn/PIGNOSE-Formula/*@
 
-							<div>
-								<select class="selectpicker" data-style="btn-default" v-model="column.totalAction">
-									<option v-bind:value="FooterActionTypeEnum.Undefined" v-bind:selected="column.totalAction">
+							<div class="m-1">
+								<select class="" data-style="btn-default" v-model="column.totalAction">
+									<option v-bind:value="FooterActionTypeEnum.Undefined">
 										Not selected
 									</option>
-									<option v-bind:value="FooterActionTypeEnum.Sum" v-bind:selected="column.totalAction">
+									<option v-bind:value="FooterActionTypeEnum.Sum" >
 										Sum
 									</option>
-									<option v-bind:value="FooterActionTypeEnum.Avr" v-bind:selected="column.totalAction">
+									<option v-bind:value="FooterActionTypeEnum.Avr" >
 										Avr
 									</option>
-									<option v-bind:value="FooterActionTypeEnum.Max" v-bind:selected="column.totalAction">
+									<option v-bind:value="FooterActionTypeEnum.Max" >
 										Max
 									</option>
-									<option v-bind:value="FooterActionTypeEnum.Min" v-bind:selected="column.totalAction">
+									<option v-bind:value="FooterActionTypeEnum.Min" >
 										Min
 									</option>
 								</select>
-								@*<select class="selectpicker" data-style="btn-default" v-model="column.totalAction"
-											v-for="footerAction in footerActions.some(x => x.templateColumnType == TemplateColumnTypeEnum.BudgetSection)">
-										<option v-for="option in footerAction.variants"
-												v-bind:value="option.footerActionTypeID"
-												v-bind:selected="column.totalAction">
-											{{ option.name }}
-										</option>
-									</select>*@
 							</div>
-
+							<div class="m-1">
+								<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 3" v-show="column.placeAfterCommon == 4">
+									<i class="fa fa-terminal"></i>
+									0,0000
+								</p>
+								<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 2" v-show="column.placeAfterCommon == 3">
+									<i class="fa fa-terminal"></i>
+									0,000
+								</p>
+								<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 1" v-show="column.placeAfterCommon == 2">
+									<i class="fa fa-terminal"></i>
+									0,00
+								</p>
+								<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 0" v-show="column.placeAfterCommon == 1">
+									<i class="fa fa-terminal"></i>
+									0,0
+								</p>
+								<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 4" v-show="column.placeAfterCommon == 0">
+									<i class="fa fa-terminal"></i>
+									0
+								</p>
+							</div>
 							<div class="card-footer text-center py-2">
 								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="card mb-3" v-if="column.templateColumnType == 2">
+				<div class="card mb-3" v-if="column.templateColumnType == TemplateColumnTypeEnum.DaysForMonth">
 					<div>
 						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
 							<li class="nav-item">
@@ -198,6 +231,14 @@
 									<span class="custom-control-label">Is show column</span>
 								</label>
 							</div>
+							<div>
+								<select v-model="column.format">
+									<option v-bind:value="''">Not selected</option>
+									<option v-bind:value="'dd'">1,2,3</option>
+									<option v-bind:value="'dd.MM'">1.03</option>
+									<option v-bind:value="'dd.MM.yyyy'">1.03.2020</option>
+								</select>
+							</div>
 
 							<div class="card-footer text-center py-2">
 								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
@@ -205,7 +246,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="card mb-3" v-if="column.templateColumnType == 3">
+				<div class="card mb-3" v-if="column.templateColumnType == TemplateColumnTypeEnum.MonthsForYear">
 					<div>
 						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
 							<li class="nav-item">
@@ -327,7 +368,7 @@
 				</form>
 			</div>
 		</div>
-	</div>
+	</article>
 
 	<button class="btn btn-primary" type="button" disabled v-show="isSaveTemplate">
 		<span class="spinner-border" role="status" aria-hidden="true"></span>
@@ -335,7 +376,7 @@
 	</button>
 
 	<button type="button" class="btn btn-primary" v-on:click="saveTemplate" v-show="!isSaveTemplate">Save</button>
-</article>
+</section>
 
 
 <!-- Modal template -->

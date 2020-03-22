@@ -58,6 +58,10 @@ namespace MyProfile.Entity.Model
 		/// </summary>
 		[Required]
 		public int ColumnTypeID { get; set; }
+		/// <summary>
+		/// Output formtat, for example for [Days] it can be like 1,2,3,4 or 1.03.2020,2.03.2020
+		/// </summary>
+		public string Format { get; set; }
 		public int? FooterActionTypeID { get; set; }
 		/// <summary>
 		/// how many decimal places

@@ -38,6 +38,13 @@ function numberOfThreeDigits(str) {
 	return str ? str.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ') : "";
 }
 
+function GetDateByFormat(date, format) {
+	if (date && moment(date).isValid()) {
+		return moment(date).format(format);
+	}
+	return "";
+}
+
 var TemplateColumnTypeEnum = Object.freeze({
 	Undefined: 0,
 	BudgetSection: 1,

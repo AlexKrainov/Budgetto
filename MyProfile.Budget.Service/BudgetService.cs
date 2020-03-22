@@ -29,109 +29,16 @@ namespace MyProfile.Budget.Service
 		/// <param name="to"></param>
 		/// <param name="template"></param>
 		/// <returns></returns>
-		public Tuple<List<List<Cell>>, List<Cell>> GetBudgetDataByDays(DateTime from, DateTime to, TemplateViewModel template)
-		{
-			var budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Day);
-
-			List<List<Cell>> rows = new List<List<Cell>>();
-			List<List<FooterCell>> footers = new List<List<FooterCell>>();
-
-			List<string> columnsFormula = GetColumnsFormula(template);
-
-			int allColumnsCount = template.Columns.Count;
-			int indexBudgetRecords = 0;
-			int totalDays = DateTime.DaysInMonth(from.Year, from.Month);
-
-			for (int numberOfDay = 1; numberOfDay <= totalDays; numberOfDay++)
-			{
-				List<Cell> cells = new List<Cell>();
-				List<FooterCell> footerCells = new List<FooterCell>();
-
-				if (budgetRecords.Count != indexBudgetRecords && numberOfDay == budgetRecords[indexBudgetRecords].Key)
-				{
-					var budgetRecordsDay = budgetRecords[indexBudgetRecords];
-					indexBudgetRecords++;
-
-					for (int i = 0; i < allColumnsCount; i++)
-					{
-						var column = template.Columns[i];
-						string expression = columnsFormula[i];
-
-						if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
-						{
-							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, numberOfDay)).ToShortDateString(), IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = numberOfDay });
-						}
-						else if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
-						{
-							decimal total = 0;
-
-							foreach (var formulaItem in column.Formula)
-							{
-								if (formulaItem.Type == FormulaFieldType.Section)
-								{
-									total = budgetRecordsDay
-									.Where(x => x.SectionID == formulaItem.ID)
-									.Sum(x => x.Total);
-
-									expression = expression.Replace($"[{formulaItem.ID}]", total.ToString());
-								}
-							}
-							total = Math.Round(total, 2);
-
-							var interpreter = new Interpreter();
-							total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand ,
-																							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
-							cells.Add(new Cell { Value = total.ToString(), IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = total });
-						}
-					}
-				}
-				else
-				{
-					for (int i = 0; i < allColumnsCount; i++)
-					{
-						var column = template.Columns[i];
-
-						if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
-						{
-							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, numberOfDay)).ToShortDateString(), IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = numberOfDay });
-						}
-						else
-						{
-							cells.Add(new Cell { Value = "0", IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = 0 });
-						}
-					}
-				}
-				rows.Add(cells);
-				footers.Add(footerCells);
-			}
-
-			return new Tuple<List<List<Cell>>, List<Cell>>(
-				rows,
-				CalculateFooter(footers, template));
-		}
-
-		/// <summary>
-		/// Dynamic calculation
-		/// https://stackoverflow.com/questions/12431286/calculate-result-from-a-string-expression-dynamically
-		/// </summary>
-		/// <param name="from"></param>
-		/// <param name="to"></param>
-		/// <param name="template"></param>
-		/// <returns></returns>
 		public Tuple<List<List<Cell>>, List<Cell>> GetBudgetData(DateTime from, DateTime to, TemplateViewModel template)
 		{
 			List<List<Cell>> rows = new List<List<Cell>>();
 			List<List<FooterCell>> footers = new List<List<FooterCell>>();
-			List<string> columnsFormula = GetColumnsFormula(template);
 
 			int allColumnsCount = template.Columns.Count;
 			int indexBudgetRecords = 0;
 			int totalCounter = 0;
 			IList<IGrouping<int, TmpBudgetRecord>> budgetRecords;
+			List<string> columnsFormula = GetColumnsFormula(template);
 
 			switch (template.PeriodTypeID)
 			{
@@ -149,6 +56,7 @@ namespace MyProfile.Budget.Service
 					totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
 					break;
 			}
+
 
 			for (int dateTimeCounter = 1; dateTimeCounter <= totalCounter; dateTimeCounter++)
 			{
@@ -180,21 +88,24 @@ namespace MyProfile.Budget.Service
 									expression = expression.Replace($"[{formulaItem.ID}]", total.ToString());
 								}
 							}
-							total = Math.Round(total, 2);
 
 							var interpreter = new Interpreter();
-							total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand ,
-																							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
+							total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand , (comma)
+							total = Math.Round(total, column.PlaceAfterCommon);
+							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
 							cells.Add(new Cell { Value = total.ToString(), IsShow = column.IsShow });
 							footerCells.Add(new FooterCell { Value = total });
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
 						{
-							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, dateTimeCounter)).ToShortDateString(), IsShow = column.IsShow });
+							string v = SetFormatForDate(new DateTime(from.Year, from.Month, dateTimeCounter), column.Format, column.TemplateColumnType);
+
+							cells.Add(new Cell { Value = v, IsShow = column.IsShow });
 							footerCells.Add(new FooterCell { Value = -1 });
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
 						{
+							string v = SetFormatForDate(new DateTime(from.Year, dateTimeCounter, 1), column.Format, column.TemplateColumnType);
 							cells.Add(new Cell { Value = (new DateTime(from.Year, dateTimeCounter, 1)).ToString("MM.yyyy"), IsShow = column.IsShow });
 							footerCells.Add(new FooterCell { Value = -1 });
 						}
@@ -205,22 +116,20 @@ namespace MyProfile.Budget.Service
 					for (int i = 0; i < allColumnsCount; i++)
 					{
 						var column = template.Columns[i];
+						string v = "0";
 
-						if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
+						//if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
+						if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
 						{
-							cells.Add(new Cell { Value = "0", IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = -1 });
-						}
-						else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
-						{
-							cells.Add(new Cell { Value = (new DateTime(from.Year, from.Month, dateTimeCounter)).ToShortDateString(), IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = -1 });
+							v = SetFormatForDate(new DateTime(from.Year, from.Month, dateTimeCounter), column.Format, column.TemplateColumnType);
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
 						{
-							cells.Add(new Cell { Value = (new DateTime(from.Year, dateTimeCounter, 1)).ToString("MM.yyyy"), IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = -1 });
+							v = SetFormatForDate(new DateTime(from.Year, dateTimeCounter, 1), column.Format, column.TemplateColumnType);
 						}
+
+						cells.Add(new Cell { Value = v, IsShow = column.IsShow });
+						footerCells.Add(new FooterCell { Value = -1 });
 					}
 				}
 				rows.Add(cells);
@@ -232,9 +141,34 @@ namespace MyProfile.Budget.Service
 				CalculateFooter(footers, template));
 		}
 
+		private string SetFormatForDate(DateTime dateTime, string format, TemplateColumnType templateColumnType)
+		{
+			string v = "";
+
+			if (!string.IsNullOrEmpty(format))
+			{
+				v = dateTime.ToString(format);
+			}
+			else if (templateColumnType == TemplateColumnType.DaysForMonth)
+			{
+				v = dateTime.ToShortDateString();
+			}
+			else if (templateColumnType == TemplateColumnType.MonthsForYear)
+			{
+				v = dateTime.ToString("MM.yyyy");
+			}
+			else
+			{
+				v = dateTime.ToShortDateString();
+			}
+
+			return v;
+		}
+
 		private List<Cell> CalculateFooter(List<List<FooterCell>> footersData, TemplateViewModel template)
 		{
 			List<Cell> footer = new List<Cell>();
+			decimal v;
 
 			for (int i = 0; i < template.Columns.Count; i++)
 			{
@@ -249,16 +183,24 @@ namespace MyProfile.Budget.Service
 				switch (template.Columns[i].TotalAction)
 				{
 					case FooterActionType.Sum:
-						cell.Value = total.Sum().ToString();
+						v = total.Sum();
+						v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
+						cell.Value = v.ToString();
 						break;
 					case FooterActionType.Avr:
-						cell.Value = total.Average().ToString();
+						v = total.Average();
+						v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
+						cell.Value = v.ToString();
 						break;
 					case FooterActionType.Min:
-						cell.Value = total.Min().ToString();
+						v = total.Min();
+						v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
+						cell.Value = v.ToString();
 						break;
 					case FooterActionType.Max:
-						cell.Value = total.Max().ToString();
+						v = total.Max();
+						v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
+						cell.Value = v.ToString();
 						break;
 					case FooterActionType.Undefined:
 					default:
@@ -343,6 +285,7 @@ namespace MyProfile.Budget.Service
 	public class FooterCell
 	{
 		public decimal Value { get; set; }
+		public bool IsShow { get; internal set; } = true;
 	}
 
 }
