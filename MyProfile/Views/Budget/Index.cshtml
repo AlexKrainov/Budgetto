@@ -16,14 +16,17 @@
 	@*<script src="~/js/tables_datatables.js"></script>*@
 
 	<script src="~/app_js/budget.js"></script>
+	<script src="~/app_js/record.js"></script>
 	<script src="~/app_js/vue-components/vue-section-component.js"></script>
 }
 
 
-<div class="demo-navbar-notifications nav-item dropdown mr-lg-3" id="record-container2">
-	<button class="btn btn-success text-right " v-on:click="$('#modal-record2').modal('show')">
+
+<div class="" id="record-container2">
+	<button class="btn btn-success text-right " onclick="$('#modal-record2').modal('show')">
 		<i class="ion ion-md-add navbar-icon align-middle"></i> Add record
 	</button>
+	
 	<!-- Choose data type column modal -->
 	<div class="modal fade" id="modal-record2">
 		<div class="modal-dialog">
@@ -82,8 +85,17 @@
 								<textarea v-model="description"></textarea>
 							</div>
 						</div>
+					</div>	<div class="form-row">
+								<div class="form-group col">
+									<label class="form-label">Choose section</label>
+									<vue-section-component id="test2"
+														   name="test"
+														   data-search-id="searchSection"
+														   data-search-style="max-width: 300px;"
+														   v-on:onchoose="onChooseSection"></vue-section-component>
+								</div>
 					</div>
-					
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -169,13 +181,11 @@
 </div>
 
 <div class="card" id="budget-vue">
-	<vue-section-component data-search-id="searchSection"
-						   
-						   ></vue-section-component>
 
 	<div class="card-datatable table-responsive">
 
-		<input type="hidden" id="templateID" value="@ViewBag.TemplateID" />
+		<input type="hidden" id="templateID" value="3" />
+		@*<input type="hidden" id="templateID" value="@ViewBag.TemplateID" />*@
 		<table class="datatables-demo table table-striped table-bordered"
 			   id="table"
 			   data-search="hello"

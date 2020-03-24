@@ -23,4 +23,15 @@ namespace MyProfile.Entity.ModelView
 		public int AreaID { get; set; }
 		public string AreaName { get; set; }
 	}
+
+	/// <summary>
+	/// For save from client
+	/// </summary>
+	public class RecordModelView
+	{
+		public string Tag { get; set; }
+		public string Money { get; set; }
+		public int SectionID { get; set; }
+		public string SectionName { get; set; }
+	}
 }

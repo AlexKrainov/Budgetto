@@ -1,0 +1,180 @@
+﻿@{
+	ViewData["Title"] = "DataTables - Tables";
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/vendor/libs/select2/select2.css">
+
+	<link rel="stylesheet" href="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css">
+}
+
+@section Scripts {
+	<!-- Dependencies -->
+	<script src="~/vendor/libs/select2/select2.js"></script>
+
+	<script src="~/app_js/vue-components/vue-section-component.js"></script>
+
+	<script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+
+	<script>
+		var RecoredVue = new Vue({
+			el: "#record",
+			data: {
+				sections: [],
+				dateTimeOfPayment: null,
+				money: null,
+				description: null,
+				searchSection: null,
+
+				money: [], //{type: 'number', value: 300}
+				records:[],
+				el: null,
+				total:0,
+			},
+			mounted: function () {
+
+				$('#record-date2').flatpickr({
+					altInput: true
+				});
+
+				this.el = $('#money');
+
+				this.el.tagsinput({
+					//cancelConfirmKeysOnEmpty: true,
+					allowDuplicates: true,
+					tagClass: function (item) {
+						switch (item.type) {
+							case FormulaFieldTypeEnum.Number: return 'badge badge-primary';
+							case FormulaFieldTypeEnum.Mark: return 'badge badge-danger';
+							case FormulaFieldTypeEnum.Parentheses: return 'badge badge-success';
+							case FormulaFieldTypeEnum.Section: return 'badge badge-default';
+							//case 'Asia': return 'badge badge-warning';
+						}
+					},
+
+					itemValue: 'value',
+					itemText: 'value',
+				});
+				$('#money').on('beforeItemAdd', function (event) {
+					var tag = event.item;
+
+					RecoredVue.records.push({ money: tag, tag: tag, sectionID: -1, sectionName: ""});
+				});
+				$('#money').on('beforeItemRemove', function (event) {
+					var tag = event.item;
+
+					let removeIndex = RecoredVue.records.findIndex(x => x.tag == tag);
+					if (removeIndex >= 0) {
+						RecoredVue.records.splice(removeIndex, 1);
+					}
+				});
+			},
+			methods: {
+				save: function () {
+					let obj = {
+						money: this.money,
+						dateTimeOfPayment: this.dateTimeOfPayment,
+						sectionID: $("#budgetArea2").val()
+					}
+					return sendAjax("/Record/Save", obj, "POST")
+						.then(function (result) {
+							if (result.isOk = true) {
+								RecoredVue.loadRows();
+								//$('#modal-record2').modal('hide');
+							}
+						});
+				},
+				onChooseSection: function (section) {
+					console.log(section);
+					for (var i = 0; i < this.records.length; i++) {
+						if (this.records[i].sectionID == -1) {
+							this.records[i].sectionID = section.id;
+							this.records[i].sectionName = section.name
+							return;
+						}
+					}
+				}
+			}
+		});
+
+	</script>
+}
+<div class="row">
+	<div class="col-6">
+		<div class="card mb-4" id="record">
+			<h6 class="card-header with-elements">
+				<div class="card-header-title">Tasks</div>
+				<div class="card-header-elements ml-auto">
+					<button type="button" class="btn btn-default btn-xs md-btn-flat">Show more</button>
+				</div>
+			</h6>
+			<div id="tasks-inner" class="ps ps--active-y">
+				<div class="card-body">
+					<div class="form-row">
+						<div class="form-group col">
+							<label class="form-label">Date</label>
+							<input type="text" class="form-control" id="record-date2" v-model="dateTimeOfPayment">
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col">
+							<label class="form-label">Money</label>
+							<div class="input-group">
+								<input type="text" class="form-control" v-model="money" id="money" data-role="tagsinput">
+								<div class="input-group-prepend">
+									<span v-on:click="" class="input-group-text cursor-pointer"><i class="fa fa-ruble-sign"></i></span>
+								</div>
+								<div class="input-group-prepend">
+									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-dollar-sign"></i></span>
+								</div>
+								<div class="input-group-prepend">
+									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-euro-sign"></i></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-6">
+							<div class="row" v-for="record in records">
+								<div class="col-6 mb-3">{{ record.tag }}</div>
+								<div class="col-6 mb-3">
+									<span class="text-muted">{{ record.sectionName }}</span>
+									@*<sup class="text-success">+12%</sup>*@
+								</div>
+							</div>
+							<hr />
+							<div class="row">
+								<div class="col-6 mb-3">{{ total }}</div>
+								<div class="col-6 mb-3">
+									<span class="text-muted">Total</span>
+									@*<sup class="text-success">+12%</sup>*@
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-6">
+							@*<label class="form-label">Choose section</label>*@
+							<vue-section-component id="test2"
+												   name="test"
+												   data-search-id="searchSection"
+												   data-search-style="max-width: 300px;"
+												   v-on:onchoose="onChooseSection"></vue-section-component>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col">
+							<label class="form-label">Description</label>
+							<div class="input-group">
+
+								<textarea v-model="description"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer">
+				<button type="button" class="btn btn-primary" v-on:click="save">Add</button>
+			</div>
+		</div>
+	</div>
+</div>

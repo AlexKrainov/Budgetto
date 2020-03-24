@@ -5,6 +5,7 @@
 		dateTimeOfPayment: null,
 		money: null,
 		description: null,
+		searchSection: null,
 	},
 	mounted: function () {
 		this.loadBAranAndRType();
@@ -36,6 +37,9 @@
 						$('#modal-record2').modal('hide');
 					}
 				});
+		},
+		onChooseSection: function (section) {
+			console.log(section);
 		}
 	}
 });

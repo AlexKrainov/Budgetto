@@ -38,6 +38,10 @@
 					}
 				});
 		},
+		onChooseSection: function (value, event) {
+			console.log(value);
+			console.log(event);
+		}
 	}
 });
 

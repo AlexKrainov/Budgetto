@@ -82,7 +82,7 @@ namespace MyProfile
 			{
 				routes.MapRoute(
 					name: "default",
-					template: "{controller=Template}/{action=List}/{id?}");
+					template: "{controller=Record}/{action=Index}/{id?}");
 			});
 		}
 	}

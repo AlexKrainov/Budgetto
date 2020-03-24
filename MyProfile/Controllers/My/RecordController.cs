@@ -20,6 +20,12 @@ namespace MyProfile.Controllers.My
 			this.budgetRecordService = budgetRecordService;
 		}
 
+		public async Task<IActionResult> Index()
+		{
+
+			return View();
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> Save([FromBody]BudgetRecordModelView budgetRecord)
 		{
