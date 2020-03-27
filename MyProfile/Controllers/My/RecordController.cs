@@ -27,6 +27,12 @@ namespace MyProfile.Controllers.My
 		}
 
 		[HttpPost]
+		public async Task<IActionResult> SaveRecords([FromBody]RecordsModelView budgetRecord)
+		{
+			budgetRecordService.Create(budgetRecord);
+			return Json(new { isOk = true, budgetRecord });
+		}
+		[HttpPost]
 		public async Task<IActionResult> Save([FromBody]BudgetRecordModelView budgetRecord)
 		{
 			return Json(new { isOk = budgetRecordService.Create(budgetRecord) });

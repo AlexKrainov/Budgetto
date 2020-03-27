@@ -1,3 +1,20 @@
-﻿.default-style .select2-dropdown {
+﻿:root {
+	--danger-color: #d9534f;
+}
+
+.default-style .select2-dropdown {
 	z-index: 1100 !important;
+}
+
+.bootstrap-tagsinput {
+	width: 77% !important;
+}
+
+.remove-section-icon{
+	opacity: 0.15;
+}
+
+.remove-section-icon:hover {
+	color: var(--danger);
+	opacity: 1;
 }

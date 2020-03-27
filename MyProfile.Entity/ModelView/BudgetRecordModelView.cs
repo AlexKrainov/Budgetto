@@ -30,8 +30,16 @@ namespace MyProfile.Entity.ModelView
 	public class RecordModelView
 	{
 		public string Tag { get; set; }
-		public string Money { get; set; }
+		public decimal Money { get; set; }
 		public int SectionID { get; set; }
 		public string SectionName { get; set; }
+		public bool IsSaved { get; set; }
+		public bool IsShow { get; set; }
+	}
+
+	public class RecordsModelView
+	{
+		public DateTime DateTimeOfPayment { get; set; }
+		public List<RecordModelView> Records { get; set; }
 	}
 }

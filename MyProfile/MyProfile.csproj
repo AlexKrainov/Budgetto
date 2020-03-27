@@ -42,6 +42,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\vendor\libs\filtrex\.travis.yml" />
+    <None Include="wwwroot\vendor\libs\filtrex\example\colorize.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\example\highlight.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\example\plot.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\LICENSE" />
+    <None Include="wwwroot\vendor\libs\filtrex\Makefile" />
+    <None Include="wwwroot\vendor\libs\filtrex\README.md" />
+    <None Include="wwwroot\vendor\libs\filtrex\src\filtrex.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\test\arithmetics.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\test\misc.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\test\objects.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\test\security.js" />
+    <None Include="wwwroot\vendor\libs\tagify\.gitattributes" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\jQuery.tagify.min.js" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\react.tagify.js" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\tagify.min.js" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\tagify.polyfills.min.js" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\tagify.vue" />
+    <None Include="wwwroot\vendor\libs\tagify\LICENSE" />
+    <None Include="wwwroot\vendor\libs\tagify\README.md" />
+    <None Include="wwwroot\vendor\libs\tagify\src\tagify.js" />
+    <None Include="wwwroot\vendor\libs\tagify\src\tagify.polyfills.js" />
+    <None Include="wwwroot\vendor\libs\tagify\src\tagify.scss" />
     <None Include="wwwroot\vendor\libs\vue\README.md" />
   </ItemGroup>
 

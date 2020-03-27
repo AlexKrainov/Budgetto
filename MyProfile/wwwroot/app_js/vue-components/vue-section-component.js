@@ -2,9 +2,8 @@
 	template: `<div v-bind:id="id" v-bind:name="name">
 				<input
 					type='search'
-					
-					class="form-control"
-					v-on:click='onchange'/>
+					class="form-control form-control-sm"
+					v-on:change='onchange'/>
 					<div class="demo-inline-spacing" >
                         <a 
 							href="javascript:void(0)" 

@@ -30,6 +30,7 @@
 		"toastr": "~2.1.4",
 		"vegas": "~2.4.0",
 		"vue": "2.6.11",
-		"formulize": "0.0.13"
+		"formulize": "0.0.13",
+		"@yaireo/tagify": "3.6.3"
 	}
 }

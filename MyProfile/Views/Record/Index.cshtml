@@ -4,8 +4,8 @@
 
 @section Styles {
 	<link rel="stylesheet" href="~/vendor/libs/select2/select2.css">
-
-	<link rel="stylesheet" href="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css">
+	<link href="~/vendor/libs/tagify/dist/tagify.css" rel="stylesheet" />
+	@*<link rel="stylesheet" href="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css">*@
 }
 
 @section Scripts {
@@ -14,7 +14,10 @@
 
 	<script src="~/app_js/vue-components/vue-section-component.js"></script>
 
-	<script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+	@*<script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>*@
+	<script src="~/vendor/libs/tagify/dist/tagify.min.js"></script>
+	<script src="~/vendor/libs/filtrex/src/filtrex.js"></script>
+
 
 	<script>
 		var RecoredVue = new Vue({
@@ -27,72 +30,102 @@
 				searchSection: null,
 
 				money: [], //{type: 'number', value: 300}
-				records:[],
-				el: null,
-				total:0,
+				records: [],
+				tagify: null,
+				total: 0,
+				flatpickr: null,
 			},
 			mounted: function () {
 
-				$('#record-date2').flatpickr({
-					altInput: true
+				this.flatpickr = flatpickr('#record-date', {
+					altInput: true,
+					//dateFormat: 'd.m.Y',
+					defaultDate: Date.now()
+				});
+				//https://github.com/yairEO/tagify#events
+				//https://yaireo.github.io/tagify/
+				//https://rawgit.com/joewalnes/filtrex/master/example/colorize.html
+				//https://github.com/joewalnes/filtrex/blob/master/example/colorize.js
+				var elementMoney = document.getElementById("money");
+				this.tagify = new Tagify(elementMoney, {
+					transformTag: this.transformTag,
+					duplicates: true,
 				});
 
-				this.el = $('#money');
-
-				this.el.tagsinput({
-					//cancelConfirmKeysOnEmpty: true,
-					allowDuplicates: true,
-					tagClass: function (item) {
-						switch (item.type) {
-							case FormulaFieldTypeEnum.Number: return 'badge badge-primary';
-							case FormulaFieldTypeEnum.Mark: return 'badge badge-danger';
-							case FormulaFieldTypeEnum.Parentheses: return 'badge badge-success';
-							case FormulaFieldTypeEnum.Section: return 'badge badge-default';
-							//case 'Asia': return 'badge badge-warning';
-						}
-					},
-
-					itemValue: 'value',
-					itemText: 'value',
-				});
-				$('#money').on('beforeItemAdd', function (event) {
-					var tag = event.item;
-
-					RecoredVue.records.push({ money: tag, tag: tag, sectionID: -1, sectionName: ""});
-				});
-				$('#money').on('beforeItemRemove', function (event) {
-					var tag = event.item;
-
-					let removeIndex = RecoredVue.records.findIndex(x => x.tag == tag);
-					if (removeIndex >= 0) {
-						RecoredVue.records.splice(removeIndex, 1);
-					}
-				});
+				this.tagify.on('remove', this.removeTag);
 			},
 			methods: {
+				transformTag: function (item) {
+					console.log(item);
+
+					let total;
+					let isShow = false;
+
+					try {
+						let func = compileExpression(item.value);
+						total = func("1");
+						if (total) {
+							item.style = "--tag-bg: #02BC77";
+							isShow = true;
+						} else {
+							item.style = "--tag-bg: #d9534f";
+						}
+					} catch (e) {
+						item.style = "--tag-bg: #d9534f";
+					}
+
+					if (total) {
+						total = Math.round(total * 100) / 100;
+					}
+
+					RecoredVue.records.push(
+						{
+							isShow: isShow,
+							money: total,
+							tag: item.value,
+							sectionID: -1,
+							sectionName: ""
+						});
+				},
+				removeTag: function (event) {
+					if (event.detail.data&& event.detail.data.value) {
+						let removeIndex = RecoredVue.records.findIndex(x => x.tag == event.detail.data.value);
+						if (removeIndex >= 0) {
+							RecoredVue.records.splice(removeIndex, 1);
+						}
+					}
+				},
 				save: function () {
 					let obj = {
-						money: this.money,
-						dateTimeOfPayment: this.dateTimeOfPayment,
-						sectionID: $("#budgetArea2").val()
+						dateTimeOfPayment: RecoredVue.flatpickr.latestSelectedDateObj.toJSON(),
+						records: this.records
 					}
-					return sendAjax("/Record/Save", obj, "POST")
+					return sendAjax("/Record/SaveRecords", obj, "POST")
 						.then(function (result) {
 							if (result.isOk = true) {
-								RecoredVue.loadRows();
-								//$('#modal-record2').modal('hide');
+								for (var i = 0; i < result.budgetRecord.records.length; i++) {
+									let record = result.budgetRecord.records[i];
+									if (record.isSaved) {
+										let index = RecoredVue.tagify.getTagIndexByValue(record.tag);
+										if (index >= 0) {
+											RecoredVue.tagify.removeTag(record.tag);
+										}
+									}
+								}
+
 							}
 						});
 				},
 				onChooseSection: function (section) {
-					console.log(section);
-					for (var i = 0; i < this.records.length; i++) {
-						if (this.records[i].sectionID == -1) {
-							this.records[i].sectionID = section.id;
-							this.records[i].sectionName = section.name
-							return;
-						}
+					let record = this.records.find(x => x.isShow && x.sectionID == -1);
+
+					if (record) {
+						record.sectionID = section.id;
+						record.sectionName = section.name
 					}
+				},
+				getMoney: function (money) {
+					return '= ' + numberOfThreeDigits(money)
 				}
 			}
 		});
@@ -113,7 +146,7 @@
 					<div class="form-row">
 						<div class="form-group col">
 							<label class="form-label">Date</label>
-							<input type="text" class="form-control" id="record-date2" v-model="dateTimeOfPayment">
+							<input type="text" class="form-control" id="record-date" v-model="dateTimeOfPayment">
 						</div>
 					</div>
 
@@ -136,21 +169,27 @@
 					</div>
 					<div class="form-row">
 						<div class="form-group col-6">
-							<div class="row" v-for="record in records">
-								<div class="col-6 mb-3">{{ record.tag }}</div>
+							<div class="row" v-for="record in records" v-show="record.isShow">
 								<div class="col-6 mb-3">
-									<span class="text-muted">{{ record.sectionName }}</span>
-									@*<sup class="text-success">+12%</sup>*@
+									{{ record.tag }}
+									{{ record.tag != record.money ? getMoney(record.money) : '' }}
+									<span class="text-muted"></span>
+								</div>
+								<div class="col-6 mb-3 ">
+									<span class="text-muted">{{ record.sectionName }} </span>
+									<span class="fa fa-trash remove-section-icon cursor-pointer ml-1"
+										  v-on:click="record.sectionID = -1; record.sectionName = '';"
+										  v-show="record.sectionName"></span>
 								</div>
 							</div>
-							<hr />
-							<div class="row">
-								<div class="col-6 mb-3">{{ total }}</div>
-								<div class="col-6 mb-3">
-									<span class="text-muted">Total</span>
-									@*<sup class="text-success">+12%</sup>*@
-								</div>
-							</div>
+							@*
+								<hr />
+									<div class="row">
+									<div class="col-6 mb-3">{{ total }}</div>
+									<div class="col-6 mb-3">
+										<span class="text-muted">Total</span>
+									</div>
+								</div>*@
 						</div>
 						<div class="form-group col-6">
 							@*<label class="form-label">Choose section</label>*@
@@ -166,7 +205,7 @@
 							<label class="form-label">Description</label>
 							<div class="input-group">
 
-								<textarea v-model="description"></textarea>
+								<textarea v-model="description" class="form-control"></textarea>
 							</div>
 						</div>
 					</div>
