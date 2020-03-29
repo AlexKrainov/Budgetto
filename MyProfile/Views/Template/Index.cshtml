@@ -61,7 +61,7 @@
 	<article class="ui">
 		<div class="lists">
 			<div class="list" v-for="(column, index) in template.columns" v-bind:columnid="column.id">
-				<div class="card mb-3" v-if="column.templateColumnType == TemplateColumnTypeEnum.BudgetSection">
+				<div class="card mb-3" v-if="isBudgetSection(column.templateColumnType)">
 					<div>
 						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
 							<li class="nav-item">
@@ -132,19 +132,24 @@
 
 							<div class="m-1">
 								<select class="" data-style="btn-default" v-model="column.totalAction">
-									<option v-bind:value="FooterActionTypeEnum.Undefined">
+									<!--FooterActionTypeEnum.Undefined-->
+									<option v-bind:value="0">
 										Not selected
 									</option>
-									<option v-bind:value="FooterActionTypeEnum.Sum" >
+									<!--FooterActionTypeEnum.Sum-->
+									<option v-bind:value="1">
 										Sum
 									</option>
-									<option v-bind:value="FooterActionTypeEnum.Avr" >
+									<!--FooterActionTypeEnum.Avr-->
+									<option v-bind:value="2">
 										Avr
 									</option>
-									<option v-bind:value="FooterActionTypeEnum.Max" >
+									<!--FooterActionTypeEnum.Max-->
+									<option v-bind:value="4">
 										Max
 									</option>
-									<option v-bind:value="FooterActionTypeEnum.Min" >
+									<!--FooterActionTypeEnum.Min-->
+									<option v-bind:value="3">
 										Min
 									</option>
 								</select>
@@ -177,7 +182,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="card mb-3" v-if="column.templateColumnType == TemplateColumnTypeEnum.DaysForMonth">
+				<div class="card mb-3" v-if="isDaysForMonth(column.templateColumnType)">
 					<div>
 						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
 							<li class="nav-item">
@@ -246,7 +251,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="card mb-3" v-if="column.templateColumnType == TemplateColumnTypeEnum.MonthsForYear">
+				<div class="card mb-3" v-if="isMonthsForYear(column.templateColumnType)">
 					<div>
 						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
 							<li class="nav-item">

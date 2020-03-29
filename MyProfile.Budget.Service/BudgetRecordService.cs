@@ -32,6 +32,7 @@ namespace MyProfile.Budget.Service
 					IsConsider = budgetRecord.IsConsider,
 					PersonID = UserInfo.PersonID,
 					Total = budgetRecord.Money,
+					RawData = budgetRecord.RawData,
 				}, true);
 			}
 			catch (Exception ex)
@@ -44,12 +45,15 @@ namespace MyProfile.Budget.Service
 
 		public bool Create(RecordsModelView budgetRecord)
 		{
-			foreach (var record in budgetRecord.Records.Where(x => x.IsShow))
+			budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
+			foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
 			{
 				record.IsSaved = Create(new BudgetRecordModelView
 				{
 					SectionID = record.SectionID,
 					Money = record.Money,
+					RawData = record.Tag,
+					DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
 					//Description = record.SectionID
 				});
 			}

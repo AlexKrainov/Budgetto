@@ -4,187 +4,21 @@
 
 @section Styles {
 	<link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
-	<link rel="stylesheet" href="~/vendor/libs/select2/select2.css">
-	<link rel="stylesheet" href="~/vendor/libs/bootstrap-select/bootstrap-select.css">
+
 }
 
 @section Scripts {
 	<!-- Dependencies -->
 	<script src="~/vendor/libs/datatables/datatables.js"></script>
 
-	<script src="~/vendor/libs/select2/select2.js"></script>
-	@*<script src="~/js/tables_datatables.js"></script>*@
-
 	<script src="~/app_js/budget.js"></script>
-	<script src="~/app_js/record.js"></script>
-	<script src="~/app_js/vue-components/vue-section-component.js"></script>
 }
 
 
-
-<div class="" id="record-container2">
-	<button class="btn btn-success text-right " onclick="$('#modal-record2').modal('show')">
-		<i class="ion ion-md-add navbar-icon align-middle"></i> Add record
-	</button>
-	
-	<!-- Choose data type column modal -->
-	<div class="modal fade" id="modal-record2">
-		<div class="modal-dialog">
-			<form class="modal-content">
-				<div class="modal-header">
-
-					<h5 class="modal-title">
-						Payment
-						@*<span class="font-weight-light">Information</span>
-							<br>
-							<small class="text-muted">We need payment information to process your order.</small>*@
-					</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-				</div>
-				<div class="modal-body">
-					<div class="form-row">
-						<div class="form-group col">
-							<label class="form-label">Date</label>
-							<input type="text" class="form-control" id="record-date2" v-model="dateTimeOfPayment">
-						</div>
-					</div>
-
-					@*<div class="form-row">
-							<div class="form-group col">
-								<label class="form-label">Budget section</label>
-								<select id="budgetArea2" class="select2 form-control">
-									<optgroup v-for="section in sections" v-bind:label="section.name" v-bind:value="section.id">
-										<option v-for="budgetSection in section.budgetSections" v-bind:value="budgetSection.id">{{ budgetSection.name }}</option>
-									</optgroup>
-								</select>
-							</div>
-						</div>*@
-					<div class="form-row">
-						<div class="form-group col">
-							<label class="form-label">Money</label>
-							<div class="input-group">
-
-								<input type="text" class="form-control" v-model="money">
-								<div class="input-group-prepend">
-									<span v-on:click="" class="input-group-text cursor-pointer"><i class="fa fa-ruble-sign"></i></span>
-								</div>
-								<div class="input-group-prepend">
-									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-dollar-sign"></i></span>
-								</div>
-								<div class="input-group-prepend">
-									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-euro-sign"></i></span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col">
-							<label class="form-label">Description</label>
-							<div class="input-group">
-
-								<textarea v-model="description"></textarea>
-							</div>
-						</div>
-					</div>	<div class="form-row">
-								<div class="form-group col">
-									<label class="form-label">Choose section</label>
-									<vue-section-component id="test2"
-														   name="test"
-														   data-search-id="searchSection"
-														   data-search-style="max-width: 300px;"
-														   v-on:onchoose="onChooseSection"></vue-section-component>
-								</div>
-					</div>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-
-<div class="demo-navbar-notifications nav-item dropdown mr-lg-3" id="record-container">
-	<button class="btn btn-primary text-right " v-on:click="$('#modal-record').modal('show')">
-		<i class="ion ion-md-add navbar-icon align-middle"></i> Add record
-	</button>
-	<!-- Choose data type column modal -->
-	<div class="modal fade" id="modal-record">
-		<div class="modal-dialog">
-			<form class="modal-content">
-				<div class="modal-header">
-
-					<h5 class="modal-title">
-						Payment
-						<span class="font-weight-light">Information</span>
-						<br>
-						<small class="text-muted">We need payment information to process your order.</small>
-					</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-				</div>
-				<div class="modal-body">
-					<div class="form-row">
-						<div class="form-group col">
-							<label class="form-label">Date</label>
-							<input type="text" class="form-control" id="record-date" v-model="dateTimeOfPayment">
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col">
-							<label class="form-label">Budget section</label>
-							<select id="budgetArea" class="select2 form-control">
-								<optgroup v-for="section in sections" v-bind:label="section.name" v-bind:value="section.id">
-									<option v-for="budgetSection in section.budgetSections" v-bind:value="budgetSection.id">{{ budgetSection.name }}</option>
-								</optgroup>
-							</select>
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col">
-							<label class="form-label">Money</label>
-							<div class="input-group">
-
-								<input type="text" class="form-control" v-model="money">
-								<div class="input-group-prepend">
-									<span v-on:click="" class="input-group-text cursor-pointer"><i class="fa fa-ruble-sign"></i></span>
-								</div>
-								<div class="input-group-prepend">
-									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-dollar-sign"></i></span>
-								</div>
-								<div class="input-group-prepend">
-									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-euro-sign"></i></span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col">
-							<label class="form-label">Description</label>
-							<div class="input-group">
-
-								<textarea v-model="description"></textarea>
-							</div>
-						</div>
-					</div>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
 <div class="card" id="budget-vue">
-
 	<div class="card-datatable table-responsive">
 
-		<input type="hidden" id="templateID" value="3" />
+		<input type="hidden" id="templateID" value="5" />
 		@*<input type="hidden" id="templateID" value="@ViewBag.TemplateID" />*@
 		<table class="datatables-demo table table-striped table-bordered"
 			   id="table"

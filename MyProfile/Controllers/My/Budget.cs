@@ -49,14 +49,14 @@ namespace MyProfile.Controllers.My
 
 		public async Task<JsonResult> GetBudget(int templateID)
 		{
-			//DateTime start = new DateTime(2020, 03, 01);
-			//DateTime finish = new DateTime(2020, 03, 31);
+			DateTime start = new DateTime(2020, 01, 01);
+			DateTime finish = new DateTime(2020, 01, 31);
 
 			//var template = await templateService.GetTemplateByID(x => x.ID == 3 && x.PersonID == UserInfo.PersonID);
 			//var budgetDataForTable = budgetService.GetBudgetDataByDays(start, finish, template);
 
-			DateTime start = new DateTime(2020, 01, 01);
-			DateTime finish = new DateTime(2020, 12, 31);
+			//DateTime start = new DateTime(2020, 01, 01);
+			//DateTime finish = new DateTime(2020, 12, 31);
 
 			var template = await templateService.GetTemplateByID(x => x.ID == templateID  && x.PersonID == UserInfo.PersonID);
 			var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);

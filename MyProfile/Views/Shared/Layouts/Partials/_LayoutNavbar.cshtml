@@ -40,40 +40,13 @@
 		</div>
 
 		<div class="navbar-nav align-items-lg-center ml-auto">
-			@*<div class="demo-navbar-notifications nav-item dropdown mr-lg-3" id="record-container">
-					<a class="nav-link hide-arrow" v-on:click="$('#modal-record').modal('show')">
-						<i class="ion ion-md-add navbar-icon align-middle"></i>
-						<span class="d-lg-none align-middle">&nbsp; Add record</span>
-					</a>
 
-					<!-- Choose data type column modal -->
-					<div class="modal modal-slide fade" id="modal-record">
-						<div class="modal-dialog">
-							<form class="modal-content">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-								<div class="modal-body">
-									<input type="text" class="form-control" id="record-date" v-model="date">
+			<a id="record-show-btn" class="nav-link cursor-pointer" data-toggle="modal" data-target="#modals-default">
+				<i class="ion ion-md-add navbar-icon align-middle" style="color:var(--success);"></i>
+				<span class="d-lg-none align-middle">&nbsp; Add record</span>
+			</a>
 
-									<select id="budgetArea" class="selectpicker" data-style="btn-default">
-										<optgroup v-for="section in sections" v-bind:label="section.name" v-bind:value="section.id">
-											<option v-for="budgetSection in section.budgetSections" v-bind:value="budgetSection.id">{{ budgetSection.name }}</option>
-										</optgroup>
-									</select>
-
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text">$</span>
-										</div>
-										<input type="number" class="form-control" v-model="money">
-									</div>
-
-									<button id="buttonSelectTemplateColumnType" type="button" v-on:click="save">ok</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>*@
-			<div class="demo-navbar-notifications nav-item dropdown mr-lg-3">
+			<div class="navbar-notifications nav-item dropdown mr-lg-3">
 				<a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">
 					<i class="ion ion-md-notifications-outline navbar-icon align-middle"></i>
 					<span class="badge badge-primary badge-dot indicator"></span>
@@ -133,7 +106,7 @@
 				</div>
 			</div>
 
-			<div class="demo-navbar-messages nav-item dropdown mr-lg-3">
+			<div class="navbar-messages nav-item dropdown mr-lg-3">
 				<a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">
 					<i class="ion ion-ios-mail navbar-icon align-middle"></i>
 					<span class="badge badge-primary badge-dot indicator"></span>
@@ -192,7 +165,7 @@
 			<!-- Divider -->
 			<div class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">|</div>
 
-			<div class="demo-navbar-user nav-item dropdown">
+			<div class="navbar-user nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
 					<span class="d-inline-flex flex-lg-row-reverse align-items-center align-middle">
 						<img src="~/img/avatars/1.png" alt class="d-block ui-w-30 rounded-circle">

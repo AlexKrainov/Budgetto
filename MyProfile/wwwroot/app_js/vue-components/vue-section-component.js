@@ -1,31 +1,26 @@
-﻿var z = Vue.component("vue-section-component", {
+﻿Vue.component("vue-section-component", {
 	template: `<div v-bind:id="id" v-bind:name="name">
-				<input
-					type='search'
+				<input type='search'
 					class="form-control form-control-sm"
-					v-on:change='onchange'/>
-					<div class="demo-inline-spacing" >
-                        <a 
-							href="javascript:void(0)" 
-							class="badge badge-pill badge-default"
-							v-for="section in dataSectionItems"
-							v-on:click="$emit('onchoose', section)"
+					v-on:input="onsearch"/>
+					<div class="inline-spacing" >
+                      <a 
+						href="javascript:void(0)" 
+						class="badge badge-pill badge-default"
+						v-for="section in dataSectionItems"
+						v-show="section.isShow"
+						v-on:click="$emit('onchoose', section)"
 						>{{ section.name }}</a>
                         
                     </div>
 				</div>`,
-	//: name='dataSearchName'
 	props: {
 		dataSearchId: String,
 		id:String,
 		name:String,
-		//dataSearchName: String,
-	
 		onchoose: Event,
-
 	},
 	//computed: {
-
 	//},
 	data: function () {
 		return {
@@ -53,12 +48,10 @@
 		}, this);
 	},
 	methods: {
-		onchange: function () {
-
+		onsearch: function (event) {
+			for (var i = 0; i < this.dataSectionItems.length; i++) {
+				this.dataSectionItems[i].isShow = this.dataSectionItems[i].name.toLocaleLowerCase().indexOf(event.target.value.toLocaleLowerCase()) >= 0;
+			}
 		},
-		//selectSection: function (val) {
-		//	this.$emit('onchooseSection', val)
-		//	this.onchooseSection(val);
-		//}
 	}
 });

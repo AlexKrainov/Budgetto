@@ -57,29 +57,29 @@
  * Navbar
  */
 
-.demo-navbar-messages .dropdown-toggle,
-.demo-navbar-notifications .dropdown-toggle,
-.demo-navbar-user .dropdown-toggle,
-.demo-navbar-messages.b-nav-dropdown .nav-link,
-.demo-navbar-notifications.b-nav-dropdown .nav-link,
-.demo-navbar-user.b-nav-dropdown .nav-link {
+.navbar-messages .dropdown-toggle,
+.navbar-notifications .dropdown-toggle,
+.navbar-user .dropdown-toggle,
+.navbar-messages.b-nav-dropdown .nav-link,
+.navbar-notifications.b-nav-dropdown .nav-link,
+.navbar-user.b-nav-dropdown .nav-link {
   white-space: nowrap;
 }
 
-.demo-navbar-messages .dropdown-menu,
-.demo-navbar-notifications .dropdown-menu {
+.navbar-messages .dropdown-menu,
+.navbar-notifications .dropdown-menu {
   overflow: hidden;
   padding: 0;
 }
 
 @media (min-width: 992px) {
-  .demo-navbar-messages .dropdown-menu,
-  .demo-navbar-notifications .dropdown-menu {
+  .navbar-messages .dropdown-menu,
+  .navbar-notifications .dropdown-menu {
     margin-top: .5rem;
     width: 22rem;
   }
 
-  .demo-navbar-user .dropdown-menu {
+  .navbar-user .dropdown-menu {
     margin-top: .25rem;
   }
 }
@@ -89,31 +89,31 @@
  * Content
  */
 
-.demo-vertical-spacing > * + * {
+.vertical-spacing > * + * {
   margin-top: 1.875rem !important;
   margin-bottom: 0 !important;
 }
 
-.demo-vertical-spacing-sm > * + * {
+.vertical-spacing-sm > * + * {
   margin-top: .9375rem !important;
   margin-bottom: 0 !important;
 }
 
-.demo-vertical-spacing-lg > * + * {
+.vertical-spacing-lg > * + * {
   margin-top: 5rem !important;
   margin-bottom: 0 !important;
 }
 
-.demo-inline-spacing > *,
-.demo-paragraph-spacing > p > * {
+.inline-spacing > *,
+.paragraph-spacing > p > * {
   margin: 0 .375rem .9375rem 0 !important;
 }
 
-.demo-paragraph-spacing > p {
+.paragraph-spacing > p {
   margin: 0;
 }
 
-.demo-blocks > * {
+.blocks > * {
   display: block !important;
 }
 

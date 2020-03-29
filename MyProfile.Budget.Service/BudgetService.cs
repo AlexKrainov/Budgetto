@@ -57,15 +57,14 @@ namespace MyProfile.Budget.Service
 					break;
 			}
 
-
 			for (int dateTimeCounter = 1; dateTimeCounter <= totalCounter; dateTimeCounter++)
 			{
 				List<Cell> cells = new List<Cell>();
 				List<FooterCell> footerCells = new List<FooterCell>();
 
-				if (budgetRecords.Count != indexBudgetRecords && dateTimeCounter == budgetRecords[indexBudgetRecords].Key)
+				if (budgetRecords.Count != indexBudgetRecords && budgetRecords.FirstOrDefault(x => x.Key == dateTimeCounter) != null)
 				{
-					var budgetRecordsDay = budgetRecords[indexBudgetRecords];
+					var budgetRecordsDay = budgetRecords.FirstOrDefault(x => x.Key == dateTimeCounter);
 					indexBudgetRecords++;
 
 					for (int i = 0; i < allColumnsCount; i++)
@@ -101,13 +100,13 @@ namespace MyProfile.Budget.Service
 							string v = SetFormatForDate(new DateTime(from.Year, from.Month, dateTimeCounter), column.Format, column.TemplateColumnType);
 
 							cells.Add(new Cell { Value = v, IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = -1 });
+							footerCells.Add(new FooterCell { Value = 0 });
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
 						{
 							string v = SetFormatForDate(new DateTime(from.Year, dateTimeCounter, 1), column.Format, column.TemplateColumnType);
 							cells.Add(new Cell { Value = (new DateTime(from.Year, dateTimeCounter, 1)).ToString("MM.yyyy"), IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = -1 });
+							footerCells.Add(new FooterCell { Value = 0 });
 						}
 					}
 				}
@@ -129,7 +128,7 @@ namespace MyProfile.Budget.Service
 						}
 
 						cells.Add(new Cell { Value = v, IsShow = column.IsShow });
-						footerCells.Add(new FooterCell { Value = -1 });
+						footerCells.Add(new FooterCell { Value = 0 });
 					}
 				}
 				rows.Add(cells);

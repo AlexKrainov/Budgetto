@@ -8,6 +8,7 @@ namespace MyProfile.Entity.ModelView
 	{
 		public int ID { get; set; }
 		public decimal Money { get; set; }
+		public string RawData { get; set; }
 		public string Description { get; set; }
 		public DateTime DateTimeOfPayment { get; set; }
 		public DateTime? DateTimeCreate { get; set; }
@@ -34,7 +35,7 @@ namespace MyProfile.Entity.ModelView
 		public int SectionID { get; set; }
 		public string SectionName { get; set; }
 		public bool IsSaved { get; set; }
-		public bool IsShow { get; set; }
+		public bool IsCorrect { get; set; }
 	}
 
 	public class RecordsModelView

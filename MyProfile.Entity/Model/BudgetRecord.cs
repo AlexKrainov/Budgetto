@@ -12,6 +12,10 @@ namespace MyProfile.Entity.Model
 		[Required]
 		[Column(TypeName = "Money")]
 		public decimal Total { get; set; }
+		/// <summary>
+		/// It needs to understand what data an user wrote
+		/// </summary>
+		public string RawData { get; set; } 
 		public string Description { get; set; }
 		public DateTime DateTimeOfPayment { get; set; }
 		public DateTime DateTimeCreate { get; set; }

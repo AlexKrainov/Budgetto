@@ -106,3 +106,6 @@
 //    }
 //    $('[data-toggle="tooltip"]').tooltip();
 //});
+var RecordVue = new Vue({
+	el: "#record-container",
+});

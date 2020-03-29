@@ -18,3 +18,11 @@
 	color: var(--danger);
 	opacity: 1;
 }
+
+#record-show-btn {
+	opacity: 0.7;
+	font-size: large;
+}
+#record-show-btn:hover {
+	opacity: 1;
+}

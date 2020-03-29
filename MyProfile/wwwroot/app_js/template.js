@@ -1,5 +1,4 @@
-﻿
-var TemplateVue = new Vue({
+﻿var TemplateVue = new Vue({
 	el: "#template-columns",
 	data: {
 		template: [],
@@ -182,7 +181,23 @@ var TemplateVue = new Vue({
 			if (columnIndex >= 0) {
 				this.template.columns[columnIndex].formula = [...newFormula];
 			}
+		},
+		GetDateByFormat: function (date, format) {
+			return GetDateByFormat(date, format);
+		},
+		isBudgetSection: function (templateColumnType) {
+			return templateColumnType == TemplateColumnTypeEnum.BudgetSection;
+		},
+		isDaysForMonth: function (templateColumnType) {
+			return templateColumnType == TemplateColumnTypeEnum.DaysForMonth;
+		},
+		isMonthsForYear: function (templateColumnType) {
+			return templateColumnType == TemplateColumnTypeEnum.MonthsForYear;
+		},
+		getFooterActionTypeValue: function (footerActionTypeEnum) {
+
 		}
+
 	}
 });
 

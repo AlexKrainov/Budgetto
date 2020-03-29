@@ -26,8 +26,6 @@ namespace MyProfile.Controllers
 			this.repository = repository;
 			this.templateService = templateService;
 
-			//CSharpScript.EvaluateAsync("1 + 3").Result
-
 			//Person person = new Person
 			//{
 			//	DateCreate = DateTime.Now,
@@ -39,66 +37,133 @@ namespace MyProfile.Controllers
 			//};
 			//repository.Create(person, true);
 
-
-			//BudgetArea budgetArea = new BudgetArea()
+			//BudgetArea budgetArea1 = new BudgetArea()
 			//{
-			//	Name = "Investing",
-			//	PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
+			//	Name = "Основные раходы",
+			//	PersonID = UserInfo.PersonID
 			//};
-			//repository.Create(budgetArea, true);
+			//repository.Create(budgetArea1, true);
 
-			//BudgetArea budgetArea = new BudgetArea()
-			//{
-			//	Name = "Ремонт",
-			//	PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-			//};
-			//repository.Create(budgetArea, true);
 			//var BudgetSections = new List<BudgetSection>()
 			//{
 			//	new BudgetSection
 			//	{
-			//		BudgetAreaID = 4,
-			//		Name = "Доставка",
+			//		BudgetAreaID = budgetArea1.ID,
+			//		Name = "Расходы (продукты)",
 			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//	new BudgetSection
 			//	{
-			//		BudgetAreaID = 4,
-			//		Name = "Основные закупки",
+			//		BudgetAreaID = budgetArea1.ID,
+			//		Name = "Прочие расходы",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//	new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea1.ID,
+			//		Name = "Траты на ребенка",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//		new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea1.ID,
+			//		Name = "Коммунальные",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//			new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea1.ID,
+			//		Name = "Проездной",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//				new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea1.ID,
+			//		Name = "Регулярные платежы",
 			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//};
 			//repository.CreateRange(BudgetSections, true);
 
-			// BudgetSections = new List<BudgetSection>()
+			//BudgetArea budgetArea2 = new BudgetArea()
+			//{
+			//	Name = "Прочие раходы",
+			//	PersonID = UserInfo.PersonID
+			//};
+			//repository.Create(budgetArea2, true);
+
+			//BudgetSections = new List<BudgetSection>()
 			//{
 			//	new BudgetSection
 			//	{
-			//		BudgetAreaID = 3,
-			//		Name = "Tax",
+			//		BudgetAreaID = budgetArea2.ID,
+			//		Name = "Внебюджетные расходы",
 			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
-			//	new BudgetSection
-			//	{
-			//		BudgetAreaID = 3,
-			//		Name = "Gold",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-			//	},
-			//	new BudgetSection
-			//	{
-			//		BudgetAreaID = 3,
-			//		Name = "Shears",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-			//	},
-			//	new BudgetSection
-			//	{
-			//		BudgetAreaID = 3,
-			//		Name = "OFZ",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-			//	}
 			//};
 			//repository.CreateRange(BudgetSections, true);
 
+			//budgetArea2 = new BudgetArea()
+			//{
+			//	Name = "Зарплата",
+			//	PersonID = UserInfo.PersonID
+			//};
+			//repository.Create(budgetArea2, true);
+
+			//BudgetSections = new List<BudgetSection>()
+			//{
+			//	new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea2.ID,
+			//		Name = "Зарплата",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//	new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea2.ID,
+			//		Name = "Другие доходы",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//	new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea2.ID,
+			//		Name = "Выплаты",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//	new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea2.ID,
+			//		Name = "CashBack",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//};
+			//repository.CreateRange(BudgetSections, true);
+
+			//BudgetArea budgetArea = new BudgetArea()
+			//{
+			//	Name = "Инвестирование",
+			//	PersonID = UserInfo.PersonID
+			//};
+			//repository.Create(budgetArea, true);
+
+			//BudgetSections = new List<BudgetSection>()
+			//{
+			//	new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea.ID,
+			//		Name = "Российский счет",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//	new BudgetSection
+			//	{
+			//		BudgetAreaID = budgetArea.ID,
+			//		Name = "Американский счет",
+			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//	},
+			//};
+			//repository.CreateRange(BudgetSections, true);
+
+			
 			//repository.Create<PeriodType>(new PeriodType
 			//{
 			//	Name = "Month",

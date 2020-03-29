@@ -27,6 +27,8 @@
 	<link rel="stylesheet" href="~/vendor/css/rtl/uikit.css">
 	<link rel="stylesheet" href="~/css/demo.css">
 	<link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css">
+
+	<!--Record-->
 	<link href="~/app_css/main.css" rel="stylesheet" />
 
 	<!-- Load polyfills -->
@@ -55,20 +57,27 @@
 	<link rel="stylesheet" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">
 
 	@RenderSection("Styles", required: false)
+
+	<link rel="stylesheet" href="~/vendor/libs/tagify/dist/tagify.css" />
+
 </head>
 <body>
 	<div class="page-loader"><div class="bg-primary"></div></div>
 
+
 	@RenderBody()
+	<div id="record-container" style="float:inherit">
+		<vue-record-component id="test3" name="test3"></vue-record-component>
+	</div>
 
 	<!-- Core scripts -->
 	<script src="~/vendor/libs/popper/popper.js"></script>
 	<script src="~/vendor/js/bootstrap.js"></script>
 	<script src="~/vendor/js/sidenav.js"></script>
-	
+
 	<script src="~/vendor/libs/vue/dist/vue.js"></script>
 	@*<script src="~/vendor/libs/vue/dist/vue.global.js"></script>
-	<script src="~/vendor/libs/vue/dist/vue.global.prod.js"></script>*@
+		<script src="~/vendor/libs/vue/dist/vue.global.prod.js"></script>*@
 	<script src="~/vendor/libs/moment/moment.js"></script>
 
 
@@ -77,10 +86,15 @@
 	<script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
 	<script src="~/js/demo.js"></script>
 
+
+	<!-- Record -->
+	<script src="~/app_js/vue-components/vue-section-component.js"></script>
+	<script src="~/app_js/vue-components/vue-record-component.js"></script>
+	<script src="~/vendor/libs/tagify/dist/tagify.min.js"></script>
+	<script src="~/vendor/libs/filtrex/src/filtrex.js"></script>
+
 	<script src="~/app_js/global.functions.site.js"></script>
 	<script src="~/app_js/startup.site.js"></script>
-
-	
 
 	@RenderSection("Scripts", required: false)
 </body>
