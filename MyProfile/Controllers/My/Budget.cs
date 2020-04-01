@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Template.Service;
@@ -63,5 +65,30 @@ namespace MyProfile.Controllers.My
 
 			return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> MonthBudget(DateTime month, int? templateID, int periodTypeID)
+		{
+			BudgetControllerModelView model = new BudgetControllerModelView();
+			model.SelectedDateTime = month;
+			model.SelectedTemplateID = templateID ?? -1;
+			model.Templates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == periodTypeID);
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> GetMonthBudget(DateTime month, int templateID)
+		{
+			DateTime start = new DateTime(month.Year, month.Month, 01);
+			DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month));
+
+			var template =  await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
+			var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
+
+			return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
+		}
+
+		
 	}
 }

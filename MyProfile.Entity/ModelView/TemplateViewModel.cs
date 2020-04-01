@@ -19,6 +19,14 @@ namespace MyProfile.Entity.ModelView
 		public int PeriodTypeID { get; set; }
 	}
 
+	public class TemplateViewModel_Short
+	{
+		public int ID { get; set; }
+		public string Name { get; set; }
+		public string PeriodName { get; set; }
+		public int PeriodTypeID { get; set; }
+	}
+
 	public class Column
 	{
 		public int ID { get; set; }

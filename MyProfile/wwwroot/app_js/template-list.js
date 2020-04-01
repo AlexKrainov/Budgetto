@@ -21,6 +21,17 @@ var TemplateListVue = new Vue({
 						TemplateListVue.templates = result.templates;
 					}
 				});
+		},
+		getLinkForView: function (template) {
+			if (template.periodTypeID == 1) { //PeriodTypesEnum.Days
+				return `/Budget/MonthBudget?month=01.03.2020&templateID=${template.id}&periodTypeID=${template.periodTypeID}`;
+
+			} else {
+				return '/Budget/Index/' + template.id;
+			}
+		},
+		getDateByFormat: function (date, format) {
+			return GetDateByFormat(date, format);
 		}
 	}
 });

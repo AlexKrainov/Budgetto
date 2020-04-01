@@ -1,6 +1,9 @@
 ﻿var BudgetVue = new Vue({
 	el: "#budget-vue",
 	data: {
+		budgetDate: null,
+		templateID: null,
+
 		template: {},
 		sections: [],
 		rows: [],
@@ -10,12 +13,32 @@
 		counterTemplateBudgetSections: -100,
 
 		column: {},
+		flatpickr: {},
 	},
 	mounted: function () {
-		//this.init()
-		//	.then(function () {
-		this.loadRows();
-		//});
+
+		this.templateID = document.getElementById("templateID_hidden").value;
+		this.budgetDate = Date.parse(document.getElementById("budgetDate_hidden").value);
+
+
+		this.loadRows().then(function () {
+			BudgetVue.initTable();
+		});
+
+		this.flatpickr = flatpickr('#budget-date', {
+			altInput: true,
+			//dateFormat: 'd.m.Y',
+			defaultDate: this.budgetDate,
+			plugins: [
+				new monthSelectPlugin({
+					shorthand: true, //defaults to false
+					dateFormat: "m.yy", //defaults to "F Y"
+					altFormat: "F Y", //defaults to "F Y"
+					theme: "dark" // defaults to "light"
+				})
+			]
+		});
+
 	},
 	methods: {
 		//init: function () {
@@ -35,8 +58,15 @@
 						BudgetVue.rows = result.rows;
 						BudgetVue.footerRow = result.footerRow;
 						BudgetVue.template = result.template;
+
 					}
 				});
+
+			$.fn.dataTable.SearchPanes.defaults = false;
+		},
+
+		initTable: function () {
+			$("#table").DataTable();
 		},
 		onChooseSection: function (value, event) {
 			console.log(value);
@@ -44,6 +74,19 @@
 		},
 		refresh: function () {
 			console.log("Refresh");
+		},
+		getCellValue: function (cell) {
+			if (cell.value.indexOf(",")) {
+				let values = cell.value.split(",");
+
+				if (values.length == 2) {
+					return `<span>${values[0]}<span class="money-muted">,${values[1]}</span></span>`;
+				} else {
+					return `<span>${cell.value}</span>`
+				}
+			} else {
+				return `<span>${cell.value}</span>`
+			}
 		}
 	}
 });

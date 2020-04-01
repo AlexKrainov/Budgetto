@@ -1,0 +1,128 @@
+﻿@model MyProfile.Entity.ModelView.BudgetView.BudgetControllerModelView
+@{
+	ViewData["Title"] = "DataTables - Tables";
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
+	<link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" />
+
+}
+
+@section Scripts {
+	<!-- Dependencies -->
+	<script src="~/vendor/libs/datatables/datatables.js"></script>
+	<script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
+
+	<script src="~/app_js/budget.js"></script>
+}
+
+<div id="budget-vue">
+	<input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
+	<input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("dd.MM.yyyy")" />
+
+	<!-- Head block -->
+	<div class="container-m-nx container-m-ny bg-white container-p-x py-5 mb-0">
+
+		<div class="d-flex justify-content-between align-items-center mb-5">
+			<div class="form-row">
+				<div class="form-group col">
+					<label class="form-label">Date</label>
+					<input type="text" class="form-control" id="budget-date" v-model="budgetDate">
+				</div>
+				<div class="form-group col">
+					<label class="form-label">Date</label>
+					<select class="form-control" data-style="btn-default" v-model="templateID">
+						@foreach (var template in Model.Templates)
+						{
+							<option value="@template.ID">@template.Name</option>
+
+						}
+					</select>
+				</div>
+			</div>
+			<div>
+				<h2 class="font-weight-light mb-2">Server Statistics</h2>
+				<div class="badge badge-success font-weight-bold">RUNNING</div>
+			</div>
+			<button class="btn btn-lg btn-default">
+				<i class="ion ion-md-power text-danger"></i>&nbsp;
+				Shut Down
+			</button>
+		</div>
+
+		<!-- Stats -->
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4">
+
+				<div class="border-light ui-bordered p-3 mt-2">
+					<div class="media align-items-center">
+						<div class="media-body small mr-3">
+							<div class="font-weight-semibold mb-3">NETWORK</div>
+							<div class="mb-1">Transfer/mo: 1000GB</div>
+							<div class="mb-1">Incoming: 5.3GB</div>
+							<div>Outgoing: 243.2GB</div>
+						</div>
+						<div class="d-flex align-items-center position-relative" style="height:60px;width: 60px;">
+							<div class="w-100 position-absolute" style="height:60px;top:0;">
+								<canvas id="statistics-chart-1"></canvas>
+							</div>
+							<div class="w-100 text-center font-weight-bold">24%</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4">
+
+				<div class="border-light ui-bordered p-3 mt-2">
+					<div class="media align-items-center">
+						<div class="media-body small mr-3">
+							<div class="font-weight-semibold mb-3">STORAGE</div>
+							<div class="mb-1">Total: 500GB</div>
+							<div class="mb-1">Used: 429GB</div>
+							<div>Free: 71GB</div>
+						</div>
+						<div class="d-flex align-items-center position-relative" style="height:60px;width: 60px;">
+							<div class="w-100 position-absolute" style="height:60px;top:0;">
+								<canvas id="statistics-chart-2"></canvas>
+							</div>
+							<div class="w-100 text-center font-weight-bold">86%</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4">
+
+				<div class="border-light ui-bordered p-3 mt-2">
+					<div class="media align-items-center">
+						<div class="media-body small mr-3">
+							<div class="font-weight-semibold mb-3">MEMORY</div>
+							<div class="mb-1">Total: 32GB</div>
+							<div class="mb-1">Used: 20.4GB</div>
+							<div>Free: 11.6GB</div>
+						</div>
+						<div class="d-flex align-items-center position-relative" style="height:60px;width: 60px;">
+							<div class="w-100 position-absolute" style="height:60px;top:0;">
+								<canvas id="statistics-chart-3"></canvas>
+							</div>
+							<div class="w-100 text-center font-weight-bold">63%</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!-- / Stats -->
+	</div>
+	<!-- / Head block -->
+	<hr class="container-m-nx border-light mt-0 mb-4">
+
+	<div class="card">
+
+		@await Html.PartialAsync("_TableView")
+	</div>
+
+</div>
+

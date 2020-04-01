@@ -68,6 +68,7 @@ namespace MyProfile.Template.Service
 
 			return templateViewModel;
 		}
+
 		public async Task<List<TemplateViewModel>> GetTemplates(Expression<Func<Template, bool>> predicate)
 		{
 			return await repository.GetAll<Template>(predicate)
@@ -108,6 +109,21 @@ namespace MyProfile.Template.Service
 						})
 						.ToListAsync();
 		}
+		public async Task<List<TemplateViewModel_Short>> GetNameTemplates(Expression<Func<Template, bool>> predicate)
+		{
+			return await repository.GetAll<Template>(predicate)
+						.Select(x => new TemplateViewModel_Short
+						{
+							ID = x.ID,
+							Name = x.Name,
+							PeriodName = x.PeriodType.Name,
+							PeriodTypeID = x.PeriodTypeID,
+						})
+						.ToListAsync();
+		}
+
+
+
 		public TemplateViewModel SaveTemplate(TemplateViewModel template)
 		{
 			try

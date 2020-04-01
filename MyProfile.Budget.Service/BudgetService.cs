@@ -7,13 +7,13 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace MyProfile.Budget.Service
 {
 	public class BudgetService
 	{
-
 		private IBaseRepository repository;
 
 		public BudgetService(IBaseRepository repository)
@@ -92,7 +92,8 @@ namespace MyProfile.Budget.Service
 							total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand , (comma)
 							total = Math.Round(total, column.PlaceAfterCommon);
 							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
-							cells.Add(new Cell { Value = total.ToString(), IsShow = column.IsShow });
+							
+							cells.Add(new Cell { Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru_RU")), NaturalValue = total, IsShow = column.IsShow });
 							footerCells.Add(new FooterCell { Value = total });
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
@@ -279,6 +280,7 @@ namespace MyProfile.Budget.Service
 	public class Cell
 	{
 		public string Value { get; set; }
+		public decimal NaturalValue { get; set; }
 		public bool IsShow { get; set; } = true;
 	}
 	public class FooterCell

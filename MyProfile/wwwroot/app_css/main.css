@@ -26,3 +26,7 @@
 #record-show-btn:hover {
 	opacity: 1;
 }
+
+.money-muted {
+	opacity: 0.3;
+}

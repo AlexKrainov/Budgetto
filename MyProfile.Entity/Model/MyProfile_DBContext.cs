@@ -50,6 +50,7 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<TemplateBudgetSection> TemplateBudgetSections { get; set; }
 		public virtual DbSet<CollectiveBudget> CollectiveBudgets { get; set; }
 		public virtual DbSet<Person> People { get; set; }
+		public virtual DbSet<PersonSetting> PersonSettings { get; set; }
 		public virtual DbSet<TemplateColumn> TemplateColumns { get; set; }
 		public virtual DbSet<PeriodType> PeriodTypes { get; set; }
 	}
