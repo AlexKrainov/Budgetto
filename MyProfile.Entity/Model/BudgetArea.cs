@@ -12,12 +12,8 @@ namespace MyProfile.Entity.Model
 		public int ID { get; set; }
 		[Required]
 		public string Name { get; set; }
-		public string CodeName { get; set; }
-		public string Currency { get; set; }
-		[Required]
-		[Column(TypeName = "Money")]
-		public decimal CurrencyPrice { get; set; }
-		public string Color { get; set; }
+		public string Description { get; set; }
+		[MaxLength(64)]
 		public string CssIcon { get; set; }
 
 		public Guid? PersonID { get; set; }

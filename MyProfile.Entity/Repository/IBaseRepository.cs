@@ -9,13 +9,13 @@ namespace MyProfile.Entity.Repository
 	public interface IBaseRepository
 	{
 		void Create<T>(T entity, bool isSave = false) where T : class;
-		void CreateAsync<T>(T entity, bool isSave = false) where T : class;
+		Task<int> CreateAsync<T>(T entity, bool isSave = false) where T : class;
 		void CreateRange<T>(IEnumerable<T> entity, bool isSave = false) where T : class;
-		void CreateRangeAsync<T>(IEnumerable<T> entity, bool isSave = false) where T : class;
+		Task<int> CreateRangeAsync<T>(IEnumerable<T> entity, bool isSave = false) where T : class;
 
 
 		void Update<T>(T entity, bool isSave = false) where T : class;
-		void UpdateAsync<T>(T entity, bool isSave = false) where T : class;
+		Task<int> UpdateAsync<T>(T entity, bool isSave = false) where T : class;
 
 
 		void CreateOrUpdate<T>(T entity, bool isSave = false) where T : class;

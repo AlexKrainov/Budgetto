@@ -8,11 +8,13 @@ namespace MyProfile.Entity.ModelView
 	{
 		public int ID { get; set; }
 		public string Name { get; set; }
-		public string CodeName { get; set; }
-		public string Type_RecordType { get; set; }
+		public string Description { get; set; }
 		public string CssIcon { get; set; }
-		public bool IsGlobal { get; set; }
+		public string CssColor { get; set; }
+		public bool IsGlobal { get; set; }//?
 
-		public List<BudgetAreaModelView> BudgetAreas { get; set; }
+		public int AreaID { get; set; }
+		public string AreaName { get; set; }
+		public bool IsUpdated { get; set; }
 	}
 }

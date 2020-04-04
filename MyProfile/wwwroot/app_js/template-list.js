@@ -3,8 +3,19 @@ var TemplateListVue = new Vue({
 	el: "#template-list-vue",
 	data: {
 		templates: [],
+		activeTemplatePeriodTypeID: -1,
+		search: null,
 	},
 	watch: {
+		search: function (newValue, oldValue) {
+			if (!newValue) {
+				this.templates.forEach(function (el, index) { el.isShow = true; });
+			}
+
+			for (var i = 0; i < this.templates.length; i++) {
+				this.templates[i].isShow = this.templates[i].name.indexOf(newValue) >= 0;
+			}
+		}
 	},
 	mounted: function () {
 		this.init()

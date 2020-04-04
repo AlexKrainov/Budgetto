@@ -35,7 +35,7 @@
 	methods: {
 
 		init: function () {
-			let templateID = document.getElementById("templateID").value;
+			let templateID = parseQueryString()["templateID"];
 			return sendAjax("/Template/GetTemplate/" + templateID, null, "GET")
 				.then(function (result) {
 					if (result.isOk = true) {
@@ -53,6 +53,9 @@
 
 					}
 				});
+		},
+		onChooseSection: function (section) {
+
 		},
 		refreshDragNDrop: function () {
 			dragula(
@@ -76,24 +79,20 @@
 				}
 			});
 		},
-		removeColumn: function (columnID) {
-			let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
-			if (columnIndex) {
-				this.template.columns.splice(columnIndex, 1);
-			}
-		},
 		addColumn: function () {
 
 			$("#modalDataTypeColumn").modal("show");
 
 			this.column = {
 				"id": this.counterNewColumn++,
-				"name": "New column",
+				"name": "Новая колонка",
 				"order": this.template.columns.length,
 				"isShow": true,
 				"totalAction": 0,
 				"formula": [],
-				templateBudgetSections: []
+				templateBudgetSections: [],
+				placeAfterCommon: 2,
+				format: ''
 			};
 		},
 		addColumn_Complete: function () {
@@ -107,41 +106,19 @@
 			$('.selectpicker').selectpicker("destroy").selectpicker('refresh');
 			$("#modals-slide").modal("show");
 		},
-		addColumnOption_step2: function () {
-
-			let sectionName = $("#budgetArea option:selected").text();
-			let sectionID = $("#budgetArea").val();
-
-			if (this.column.templateBudgetSections
-				.find(x => x.sectionName == sectionName || x.sectionID == sectionID) != undefined) {
-				$("#budgetArea")
-					.next()
-					.addClass("form-control is-invalid")
-					.after('<div class="invalid-tooltip">Please provide a valid state.</div>');
-
-				return;
-			} else {
-				let $divInvalidTooltip = $("#budgetArea")
-					.next()
-					.removeClass("form-control is-invalid")
-					.next();
-
-				if ($divInvalidTooltip.prop("class").indexOf("is-invalid") > 0) {
-					$divInvalidTooltip.remove();
-				}
-			}
+		addColumnOption_step2: function (section) {
 
 			if (this.column.formula.length > 0) {
 				this.column.formula.push({ id: null, value: "+", type: FormulaFieldTypeEnum.Mark });
-				this.column.formula.push({ id: sectionID, value: sectionName, type: FormulaFieldTypeEnum.Section });
+				this.column.formula.push({ id: section.id, value: section.name, type: FormulaFieldTypeEnum.Section });
 			} else {
-				this.column.formula.push({ id: sectionID, value: sectionName, type: FormulaFieldTypeEnum.Section });
+				this.column.formula.push({ id: section.id, value: section.name, type: FormulaFieldTypeEnum.Section });
 			}
 
 			this.column.templateBudgetSections.push({
 				id: this.counterTemplateBudgetSections++,
-				sectionID: sectionID,
-				sectionName: sectionName
+				sectionID: section.id,
+				sectionName: section.name
 			});
 			$("#modals-slide").modal("hide");
 		},

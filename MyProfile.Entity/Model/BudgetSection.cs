@@ -11,17 +11,17 @@ namespace MyProfile.Entity.Model
 		{
 			this.BudgetRecords = new HashSet<BudgetRecord>();
 		}
+
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
 		[Required]
 		public string Name { get; set; }
-		public string CodeName { get; set; }
-		/// <summary>
-		/// What kind of record plus or minus 
-		/// </summary>
-		public string Type_RecordType { get; set; }
+		public string Description { get; set; }
+		[MaxLength(64)]
 		public string CssIcon { get; set; }
+		[MaxLength(24)]
+		public string CssColor { get; set; }
 		/// <summary>
 		/// Default sectino then the person write records
 		/// </summary>

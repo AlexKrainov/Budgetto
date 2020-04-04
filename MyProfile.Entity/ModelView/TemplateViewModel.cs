@@ -10,13 +10,14 @@ namespace MyProfile.Entity.ModelView
 		public int ID { get; set; }
 		public string Name { get; set; }
 		public bool? IsCountCollectiveBudget { get; set; }
-		public DateTime DateCreate { get; set; }
-		public DateTime? DateEdit { get; set; }
+		public DateTime DateCreate { get; set; } = DateTime.Now;
+		public DateTime? DateEdit { get; set; } = DateTime.Now;
 		public DateTime? LastSeenDateTime { get; set; }
 		public int MaxRowInAPage { get; set; }
 		public List<Column> Columns { get; set; } = new List<Column>();
 		public string PeriodName { get; set; }
 		public int PeriodTypeID { get; set; }
+		public bool IsShow { get; set; }
 	}
 
 	public class TemplateViewModel_Short
@@ -59,6 +60,5 @@ namespace MyProfile.Entity.ModelView
 		public string BudgetAreaName { get; set; }
 		public int SectionID { get; set; }
 		public string SectionName { get; set; }
-		public string SectionCodeName { get; set; }
 	}
 }

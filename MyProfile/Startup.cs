@@ -37,6 +37,7 @@ namespace MyProfile
 			services.AddScoped<BudgetService>();
 			services.AddScoped<BudgetRecordService>();
 			services.AddScoped<DictionariesService>();
+			services.AddScoped<SectionService>();
 			#endregion
 
 #if true

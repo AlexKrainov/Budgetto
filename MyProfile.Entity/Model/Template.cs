@@ -17,6 +17,7 @@ namespace MyProfile.Entity.Model
 		public int ID { get; set; }
 		[Required]
 		public string Name { get; set; }
+		public string Description { get; set; }
 		[Required]
 		public string CodeName { get; set; }
 		/// <summary>

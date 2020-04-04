@@ -22,621 +22,624 @@
 	}
 
 	<!-- Links -->
-	<ul class="sidenav-inner@(!isHorizontal ? " py-1" : "")">
+<ul class="sidenav-inner@(!isHorizontal ? " py-1" : "")">
 
-		<li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")">
-			<a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Template</div></a>
-		</li>
-		<li class="sidenav-item@(currentPage == "Budget/Index" ? " active" : "")">
-			<a asp-area="" asp-controller="Budget" asp-action="Index" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>Budget</div></a>
-		</li>
+	<li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")">
+		<a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Template</div></a>
+	</li>
+	<li class="sidenav-item@(currentPage == "Budget/Index" ? " active" : "")">
+		<a asp-area="" asp-controller="Budget" asp-action="Index" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>Budget</div></a>
+	</li>
+	<li class="sidenav-item@(currentPage == "Section/Edit" ? " active" : "")">
+		<a asp-area="" asp-controller="Section" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>Section</div></a>
+	</li>
 
-		<!-- Dashboards -->
-		<li class="sidenav-item@(currentPage.StartsWith("Dashboards/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-speedometer"></i><div>Dashboards</div></a>
+	<!-- Dashboards -->
+	<li class="sidenav-item@(currentPage.StartsWith("Dashboards/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-speedometer"></i><div>Dashboards</div></a>
 
-			<ul class="sidenav-menu">
+		<ul class="sidenav-menu">
 
-				<li class="sidenav-item@(currentPage == "Dashboards/Dashboard1" ? " active" : "")">
-					<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard1" class="sidenav-link"><div>Dashboard 1</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Dashboards/Dashboard2" ? " active" : "")">
-					<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard2" class="sidenav-link"><div>Dashboard 2</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Dashboards/Dashboard3" ? " active" : "")">
-					<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard3" class="sidenav-link"><div>Dashboard 3</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Dashboards/Dashboard4" ? " active" : "")">
-					<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard4" class="sidenav-link"><div>Dashboard 4</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Dashboards/Dashboard5" ? " active" : "")">
-					<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard5" class="sidenav-link"><div>Dashboard 5</div></a>
-				</li>
-			</ul>
-		</li>
+			<li class="sidenav-item@(currentPage == "Dashboards/Dashboard1" ? " active" : "")">
+				<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard1" class="sidenav-link"><div>Dashboard 1</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Dashboards/Dashboard2" ? " active" : "")">
+				<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard2" class="sidenav-link"><div>Dashboard 2</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Dashboards/Dashboard3" ? " active" : "")">
+				<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard3" class="sidenav-link"><div>Dashboard 3</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Dashboards/Dashboard4" ? " active" : "")">
+				<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard4" class="sidenav-link"><div>Dashboard 4</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Dashboards/Dashboard5" ? " active" : "")">
+				<a asp-area="" asp-controller="Dashboards" asp-action="Dashboard5" class="sidenav-link"><div>Dashboard 5</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<!-- Layouts -->
-		<li class="sidenav-item@(currentPage.StartsWith("LayoutExamples/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-ios-albums"></i><div>Layouts</div></a>
+	<!-- Layouts -->
+	<li class="sidenav-item@(currentPage.StartsWith("LayoutExamples/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-ios-albums"></i><div>Layouts</div></a>
 
-			<ul class="sidenav-menu">
-				<li class="sidenav-item@(currentPage == "LayoutExamples/Options" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="Options" class="sidenav-link"><div>Layout options</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/Helpers" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="Helpers" class="sidenav-link"><div>Layout helpers</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/Layout1" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="Layout1" class="sidenav-link"><div>Layout 1</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/Layout1Flex" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="Layout1Flex" class="sidenav-link"><div>Layout 1 (Flex)</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/Layout2" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="Layout2" class="sidenav-link"><div>Layout 2</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/Layout2Flex" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="Layout2Flex" class="sidenav-link"><div>Layout 2 (Flex)</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/WithoutNavbar" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="WithoutNavbar" class="sidenav-link"><div>Without navbar</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/WithoutNavbarFlex" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="WithoutNavbarFlex" class="sidenav-link"><div>Without navbar (Flex)</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/WithoutSidenav" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="WithoutSidenav" class="sidenav-link"><div>Without sidenav</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/HorizontalSidenav" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="HorizontalSidenav" class="sidenav-link"><div>Horizontal sidenav</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "LayoutExamples/Blank" ? " active" : "")">
-					<a asp-area="" asp-controller="LayoutExamples" asp-action="Blank" class="sidenav-link"><div>Blank</div></a>
-				</li>
-			</ul>
-		</li>
+		<ul class="sidenav-menu">
+			<li class="sidenav-item@(currentPage == "LayoutExamples/Options" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="Options" class="sidenav-link"><div>Layout options</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/Helpers" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="Helpers" class="sidenav-link"><div>Layout helpers</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/Layout1" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="Layout1" class="sidenav-link"><div>Layout 1</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/Layout1Flex" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="Layout1Flex" class="sidenav-link"><div>Layout 1 (Flex)</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/Layout2" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="Layout2" class="sidenav-link"><div>Layout 2</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/Layout2Flex" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="Layout2Flex" class="sidenav-link"><div>Layout 2 (Flex)</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/WithoutNavbar" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="WithoutNavbar" class="sidenav-link"><div>Without navbar</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/WithoutNavbarFlex" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="WithoutNavbarFlex" class="sidenav-link"><div>Without navbar (Flex)</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/WithoutSidenav" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="WithoutSidenav" class="sidenav-link"><div>Without sidenav</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/HorizontalSidenav" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="HorizontalSidenav" class="sidenav-link"><div>Horizontal sidenav</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "LayoutExamples/Blank" ? " active" : "")">
+				<a asp-area="" asp-controller="LayoutExamples" asp-action="Blank" class="sidenav-link"><div>Blank</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<li class="sidenav-divider mb-1"></li>
-		<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>
+	<li class="sidenav-divider mb-1"></li>
+	<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>
 
-		<li class="sidenav-item@(currentPage == "Typography/Typography" ? " active" : "")">
-			<a asp-area="" asp-controller="Typography" asp-action="Typography" class="sidenav-link"><i class="sidenav-icon ion ion-md-quote"></i><div>Typography</div></a>
-		</li>
+	<li class="sidenav-item@(currentPage == "Typography/Typography" ? " active" : "")">
+		<a asp-area="" asp-controller="Typography" asp-action="Typography" class="sidenav-link"><i class="sidenav-icon ion ion-md-quote"></i><div>Typography</div></a>
+	</li>
 
-		<!-- UI elements -->
-		<li class="sidenav-item@(currentPage.StartsWith("Ui/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-cube"></i><div>User inteface</div></a>
+	<!-- UI elements -->
+	<li class="sidenav-item@(currentPage.StartsWith("Ui/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-cube"></i><div>User inteface</div></a>
 
-			<ul class="sidenav-menu">
-				<li class="sidenav-item@(currentPage == "Ui/Buttons" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Buttons" class="sidenav-link"><div>Buttons</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Badges" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Badges" class="sidenav-link"><div>Badges</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/ButtonGroups" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="ButtonGroups" class="sidenav-link"><div>Button groups</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Dropdowns" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Dropdowns" class="sidenav-link"><div>Dropdowns</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Navs" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Navs" class="sidenav-link"><div>Navs</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Pagination" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Pagination" class="sidenav-link"><div>Pagination and breadcrumbs</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Progress" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Progress" class="sidenav-link"><div>Progress bars</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/ListGroups" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="ListGroups" class="sidenav-link"><div>List groups</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Notifications" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Notifications" class="sidenav-link"><div>Notifications</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Modals" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Modals" class="sidenav-link"><div>Modals</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Tooltips" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Tooltips" class="sidenav-link"><div>Tooltips and popovers</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Thumbnails" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Thumbnails" class="sidenav-link"><div>Thumbnails</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Cards" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Cards" class="sidenav-link"><div>Cards</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Accordion" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Accordion" class="sidenav-link"><div>Accordion</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/AppBrand" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="AppBrand" class="sidenav-link"><div>App brand</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Navbar" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Navbar" class="sidenav-link"><div>Navbar</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Sidenav" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Sidenav" class="sidenav-link"><div>Sidenav</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Footer" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Footer" class="sidenav-link"><div>Footer</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Carousel" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Carousel" class="sidenav-link"><div>Carousel</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Lightbox" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Lightbox" class="sidenav-link"><div>Lightbox</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/DragAndDrop" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="DragAndDrop" class="sidenav-link"><div>Drag&amp;Drop</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Treeview" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Treeview" class="sidenav-link"><div>Treeview</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/MediaPlayer" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="MediaPlayer" class="sidenav-link"><div>Plyr</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Cropper" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Cropper" class="sidenav-link"><div>Cropper.js</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Tour" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Tour" class="sidenav-link"><div>Shepherd tour</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Fullcalendar" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Fullcalendar" class="sidenav-link"><div>Fullcalendar</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Ui/Spinners" ? " active" : "")">
-					<a asp-area="" asp-controller="Ui" asp-action="Spinners" class="sidenav-link"><div>Spinners</div></a>
-				</li>
-			</ul>
-		</li>
+		<ul class="sidenav-menu">
+			<li class="sidenav-item@(currentPage == "Ui/Buttons" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Buttons" class="sidenav-link"><div>Buttons</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Badges" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Badges" class="sidenav-link"><div>Badges</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/ButtonGroups" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="ButtonGroups" class="sidenav-link"><div>Button groups</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Dropdowns" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Dropdowns" class="sidenav-link"><div>Dropdowns</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Navs" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Navs" class="sidenav-link"><div>Navs</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Pagination" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Pagination" class="sidenav-link"><div>Pagination and breadcrumbs</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Progress" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Progress" class="sidenav-link"><div>Progress bars</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/ListGroups" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="ListGroups" class="sidenav-link"><div>List groups</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Notifications" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Notifications" class="sidenav-link"><div>Notifications</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Modals" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Modals" class="sidenav-link"><div>Modals</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Tooltips" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Tooltips" class="sidenav-link"><div>Tooltips and popovers</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Thumbnails" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Thumbnails" class="sidenav-link"><div>Thumbnails</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Cards" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Cards" class="sidenav-link"><div>Cards</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Accordion" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Accordion" class="sidenav-link"><div>Accordion</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/AppBrand" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="AppBrand" class="sidenav-link"><div>App brand</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Navbar" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Navbar" class="sidenav-link"><div>Navbar</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Sidenav" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Sidenav" class="sidenav-link"><div>Sidenav</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Footer" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Footer" class="sidenav-link"><div>Footer</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Carousel" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Carousel" class="sidenav-link"><div>Carousel</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Lightbox" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Lightbox" class="sidenav-link"><div>Lightbox</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/DragAndDrop" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="DragAndDrop" class="sidenav-link"><div>Drag&amp;Drop</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Treeview" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Treeview" class="sidenav-link"><div>Treeview</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/MediaPlayer" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="MediaPlayer" class="sidenav-link"><div>Plyr</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Cropper" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Cropper" class="sidenav-link"><div>Cropper.js</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Tour" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Tour" class="sidenav-link"><div>Shepherd tour</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Fullcalendar" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Fullcalendar" class="sidenav-link"><div>Fullcalendar</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Ui/Spinners" ? " active" : "")">
+				<a asp-area="" asp-controller="Ui" asp-action="Spinners" class="sidenav-link"><div>Spinners</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<!-- Forms -->
-		<li class="sidenav-item@(currentPage.StartsWith("Forms/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-switch"></i><div>Forms</div></a>
+	<!-- Forms -->
+	<li class="sidenav-item@(currentPage.StartsWith("Forms/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-switch"></i><div>Forms</div></a>
 
-			<ul class="sidenav-menu">
-				<li class="sidenav-item@(currentPage == "Forms/Layouts" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Layouts" class="sidenav-link"><div>Layouts and elements</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Controls" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Controls" class="sidenav-link"><div>Controls</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/CustomControls" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="CustomControls" class="sidenav-link"><div>Custom controls</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/InputGroups" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="InputGroups" class="sidenav-link"><div>Input groups</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Switchers" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Switchers" class="sidenav-link"><div>Switchers</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Sliders" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Sliders" class="sidenav-link"><div>Sliders</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Selects" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Selects" class="sidenav-link"><div>Selects and tags</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Pickers" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Pickers" class="sidenav-link"><div>Pickers</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Editors" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Editors" class="sidenav-link"><div>Editors</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/FileUpload" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="FileUpload" class="sidenav-link"><div>File upload</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Validation" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Validation" class="sidenav-link"><div>jQuery Validation</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Wizard" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Wizard" class="sidenav-link"><div>SmartWizard</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Typeahead" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Typeahead" class="sidenav-link"><div>Typeahead</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/DualListbox" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="DualListbox" class="sidenav-link"><div>Bootstrap Dual Listbox</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Forms/Extras" ? " active" : "")">
-					<a asp-area="" asp-controller="Forms" asp-action="Extras" class="sidenav-link"><div>Extras</div></a>
-				</li>
-			</ul>
-		</li>
+		<ul class="sidenav-menu">
+			<li class="sidenav-item@(currentPage == "Forms/Layouts" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Layouts" class="sidenav-link"><div>Layouts and elements</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Controls" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Controls" class="sidenav-link"><div>Controls</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/CustomControls" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="CustomControls" class="sidenav-link"><div>Custom controls</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/InputGroups" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="InputGroups" class="sidenav-link"><div>Input groups</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Switchers" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Switchers" class="sidenav-link"><div>Switchers</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Sliders" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Sliders" class="sidenav-link"><div>Sliders</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Selects" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Selects" class="sidenav-link"><div>Selects and tags</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Pickers" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Pickers" class="sidenav-link"><div>Pickers</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Editors" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Editors" class="sidenav-link"><div>Editors</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/FileUpload" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="FileUpload" class="sidenav-link"><div>File upload</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Validation" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Validation" class="sidenav-link"><div>jQuery Validation</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Wizard" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Wizard" class="sidenav-link"><div>SmartWizard</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Typeahead" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Typeahead" class="sidenav-link"><div>Typeahead</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/DualListbox" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="DualListbox" class="sidenav-link"><div>Bootstrap Dual Listbox</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Forms/Extras" ? " active" : "")">
+				<a asp-area="" asp-controller="Forms" asp-action="Extras" class="sidenav-link"><div>Extras</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<!--  Tables -->
-		<li class="sidenav-item@(currentPage.StartsWith("Tables/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-grid"></i><div>Tables</div></a>
+	<!--  Tables -->
+	<li class="sidenav-item@(currentPage.StartsWith("Tables/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-grid"></i><div>Tables</div></a>
 
-			<ul class="sidenav-menu">
-				<li class="sidenav-item@(currentPage == "Tables/Bootstrap" ? " active" : "")">
-					<a asp-area="" asp-controller="Tables" asp-action="Bootstrap" class="sidenav-link"><div>Bootstrap</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Tables/Datatables" ? " active" : "")">
-					<a asp-area="" asp-controller="Tables" asp-action="Datatables" class="sidenav-link"><div>DataTables</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Tables/BootstrapTable" ? " active" : "")">
-					<a asp-area="" asp-controller="Tables" asp-action="BootstrapTable" class="sidenav-link"><div>Bootstrap table</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Tables/BootstrapSortable" ? " active" : "")">
-					<a asp-area="" asp-controller="Tables" asp-action="BootstrapSortable" class="sidenav-link"><div>Bootstrap Sortable</div></a>
-				</li>
-			</ul>
-		</li>
+		<ul class="sidenav-menu">
+			<li class="sidenav-item@(currentPage == "Tables/Bootstrap" ? " active" : "")">
+				<a asp-area="" asp-controller="Tables" asp-action="Bootstrap" class="sidenav-link"><div>Bootstrap</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Tables/Datatables" ? " active" : "")">
+				<a asp-area="" asp-controller="Tables" asp-action="Datatables" class="sidenav-link"><div>DataTables</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Tables/BootstrapTable" ? " active" : "")">
+				<a asp-area="" asp-controller="Tables" asp-action="BootstrapTable" class="sidenav-link"><div>Bootstrap table</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Tables/BootstrapSortable" ? " active" : "")">
+				<a asp-area="" asp-controller="Tables" asp-action="BootstrapSortable" class="sidenav-link"><div>Bootstrap Sortable</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<!-- Charts -->
-		<li class="sidenav-item@(currentPage.StartsWith("Charts/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-pie"></i><div>Charts</div></a>
+	<!-- Charts -->
+	<li class="sidenav-item@(currentPage.StartsWith("Charts/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-pie"></i><div>Charts</div></a>
 
-			<ul class="sidenav-menu">
-				<li class="sidenav-item@(currentPage == "Charts/Gmaps" ? " active" : "")">
-					<a asp-area="" asp-controller="Charts" asp-action="Gmaps" class="sidenav-link"><div>GMaps</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Charts/Mapael" ? " active" : "")">
-					<a asp-area="" asp-controller="Charts" asp-action="Mapael" class="sidenav-link"><div>Mapael</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Charts/Flot" ? " active" : "")">
-					<a asp-area="" asp-controller="Charts" asp-action="Flot" class="sidenav-link"><div>Flot.js</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Charts/C3" ? " active" : "")">
-					<a asp-area="" asp-controller="Charts" asp-action="C3" class="sidenav-link"><div>C3.js</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Charts/Chartist" ? " active" : "")">
-					<a asp-area="" asp-controller="Charts" asp-action="Chartist" class="sidenav-link"><div>Chartist</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Charts/Chartjs" ? " active" : "")">
-					<a asp-area="" asp-controller="Charts" asp-action="Chartjs" class="sidenav-link"><div>Chart.js</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Charts/Morrisjs" ? " active" : "")">
-					<a asp-area="" asp-controller="Charts" asp-action="Morrisjs" class="sidenav-link"><div>Morris.js</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Charts/Sparkline" ? " active" : "")">
-					<a asp-area="" asp-controller="Charts" asp-action="Sparkline" class="sidenav-link"><div>Sparkline</div></a>
-				</li>
-			</ul>
-		</li>
+		<ul class="sidenav-menu">
+			<li class="sidenav-item@(currentPage == "Charts/Gmaps" ? " active" : "")">
+				<a asp-area="" asp-controller="Charts" asp-action="Gmaps" class="sidenav-link"><div>GMaps</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Charts/Mapael" ? " active" : "")">
+				<a asp-area="" asp-controller="Charts" asp-action="Mapael" class="sidenav-link"><div>Mapael</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Charts/Flot" ? " active" : "")">
+				<a asp-area="" asp-controller="Charts" asp-action="Flot" class="sidenav-link"><div>Flot.js</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Charts/C3" ? " active" : "")">
+				<a asp-area="" asp-controller="Charts" asp-action="C3" class="sidenav-link"><div>C3.js</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Charts/Chartist" ? " active" : "")">
+				<a asp-area="" asp-controller="Charts" asp-action="Chartist" class="sidenav-link"><div>Chartist</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Charts/Chartjs" ? " active" : "")">
+				<a asp-area="" asp-controller="Charts" asp-action="Chartjs" class="sidenav-link"><div>Chart.js</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Charts/Morrisjs" ? " active" : "")">
+				<a asp-area="" asp-controller="Charts" asp-action="Morrisjs" class="sidenav-link"><div>Morris.js</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Charts/Sparkline" ? " active" : "")">
+				<a asp-area="" asp-controller="Charts" asp-action="Sparkline" class="sidenav-link"><div>Sparkline</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<!--  Icons -->
-		<li class="sidenav-item@(currentPage.StartsWith("Icons/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-ios-heart"></i><div>Icons</div></a>
+	<!--  Icons -->
+	<li class="sidenav-item@(currentPage.StartsWith("Icons/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-ios-heart"></i><div>Icons</div></a>
 
-			<ul class="sidenav-menu">
-				<li class="sidenav-item@(currentPage == "Icons/FontAwesome" ? " active" : "")">
-					<a asp-area="" asp-controller="Icons" asp-action="FontAwesome" class="sidenav-link"><div>Font Awesome 5</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Icons/Ionicons" ? " active" : "")">
-					<a asp-area="" asp-controller="Icons" asp-action="Ionicons" class="sidenav-link"><div>Ionicons</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Icons/Linearicons" ? " active" : "")">
-					<a asp-area="" asp-controller="Icons" asp-action="Linearicons" class="sidenav-link"><div>Linearicons</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Icons/Openiconic" ? " active" : "")">
-					<a asp-area="" asp-controller="Icons" asp-action="Openiconic" class="sidenav-link"><div>Open Iconic</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Icons/Stroke7" ? " active" : "")">
-					<a asp-area="" asp-controller="Icons" asp-action="Stroke7" class="sidenav-link"><div>Stroke Icons 7</div></a>
-				</li>
-			</ul>
-		</li>
+		<ul class="sidenav-menu">
+			<li class="sidenav-item@(currentPage == "Icons/FontAwesome" ? " active" : "")">
+				<a asp-area="" asp-controller="Icons" asp-action="FontAwesome" class="sidenav-link"><div>Font Awesome 5</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Icons/Ionicons" ? " active" : "")">
+				<a asp-area="" asp-controller="Icons" asp-action="Ionicons" class="sidenav-link"><div>Ionicons</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Icons/Linearicons" ? " active" : "")">
+				<a asp-area="" asp-controller="Icons" asp-action="Linearicons" class="sidenav-link"><div>Linearicons</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Icons/Openiconic" ? " active" : "")">
+				<a asp-area="" asp-controller="Icons" asp-action="Openiconic" class="sidenav-link"><div>Open Iconic</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Icons/Stroke7" ? " active" : "")">
+				<a asp-area="" asp-controller="Icons" asp-action="Stroke7" class="sidenav-link"><div>Stroke Icons 7</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<!--  Miscellaneous -->
-		<li class="sidenav-item@(currentPage.StartsWith("Misc/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-ios-flask"></i><div>Miscellaneous</div></a>
+	<!--  Miscellaneous -->
+	<li class="sidenav-item@(currentPage.StartsWith("Misc/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-ios-flask"></i><div>Miscellaneous</div></a>
 
-			<ul class="sidenav-menu">
-				<li class="sidenav-item@(currentPage == "Misc/BrandColors" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="BrandColors" class="sidenav-link"><div>Brand colors</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/Masonry" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="Masonry" class="sidenav-link"><div>Masonry</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/Spinkit" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="Spinkit" class="sidenav-link"><div>SpinKit</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/Ladda" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="Ladda" class="sidenav-link"><div>Ladda</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/Vegasjs" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="Vegasjs" class="sidenav-link"><div>Vegas.js</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/Numeraljs" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="Numeraljs" class="sidenav-link"><div>Numeral.js</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/Blockui" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="Blockui" class="sidenav-link"><div>BlockUI</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/IdleTimer" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="IdleTimer" class="sidenav-link"><div>Idle Timer</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/PerfectScrollbar" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="PerfectScrollbar" class="sidenav-link"><div>Perfect Scrollbar</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Misc/Clipboardjs" ? " active" : "")">
-					<a asp-area="" asp-controller="Misc" asp-action="Clipboardjs" class="sidenav-link"><div>Clipboard.js</div></a>
-				</li>
-			</ul>
-		</li>
+		<ul class="sidenav-menu">
+			<li class="sidenav-item@(currentPage == "Misc/BrandColors" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="BrandColors" class="sidenav-link"><div>Brand colors</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/Masonry" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="Masonry" class="sidenav-link"><div>Masonry</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/Spinkit" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="Spinkit" class="sidenav-link"><div>SpinKit</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/Ladda" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="Ladda" class="sidenav-link"><div>Ladda</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/Vegasjs" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="Vegasjs" class="sidenav-link"><div>Vegas.js</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/Numeraljs" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="Numeraljs" class="sidenav-link"><div>Numeral.js</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/Blockui" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="Blockui" class="sidenav-link"><div>BlockUI</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/IdleTimer" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="IdleTimer" class="sidenav-link"><div>Idle Timer</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/PerfectScrollbar" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="PerfectScrollbar" class="sidenav-link"><div>Perfect Scrollbar</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Misc/Clipboardjs" ? " active" : "")">
+				<a asp-area="" asp-controller="Misc" asp-action="Clipboardjs" class="sidenav-link"><div>Clipboard.js</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<li class="sidenav-divider mb-1"></li>
-		<li class="sidenav-header small font-weight-semibold">EXTRAS</li>
+	<li class="sidenav-divider mb-1"></li>
+	<li class="sidenav-header small font-weight-semibold">EXTRAS</li>
 
-		<!-- Pages -->
-		<li class="sidenav-item@(currentPage.StartsWith("Pages/") ? " active open" : "")">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle">
-				<i class="sidenav-icon ion ion-md-document"></i>
-				<div>Pages</div>
-				<div class="pl-1 ml-auto"><div class="badge badge-primary">59</div></div>
-			</a>
-			<ul class="sidenav-menu">
+	<!-- Pages -->
+	<li class="sidenav-item@(currentPage.StartsWith("Pages/") ? " active open" : "")">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle">
+			<i class="sidenav-icon ion ion-md-document"></i>
+			<div>Pages</div>
+			<div class="pl-1 ml-auto"><div class="badge badge-primary">59</div></div>
+		</a>
+		<ul class="sidenav-menu">
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/Articles") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Articles</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/Articles") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Articles</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/ArticlesList" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ArticlesList" class="sidenav-link"><div>List</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/ArticlesEdit" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ArticlesEdit" class="sidenav-link"><div>Edit</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/ArticlesList" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ArticlesList" class="sidenav-link"><div>List</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/ArticlesEdit" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ArticlesEdit" class="sidenav-link"><div>Edit</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/Authentication") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Authentication</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/Authentication") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Authentication</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationLoginV1" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLoginV1" class="sidenav-link"><div>Login v1</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationRegisterV1" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationRegisterV1" class="sidenav-link"><div>Register v1</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationLoginV2" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLoginV2" class="sidenav-link"><div>Login v2</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationRegisterV2" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationRegisterV2" class="sidenav-link"><div>Register v2</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationLoginV3" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLoginV3" class="sidenav-link"><div>Login v3</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationRegisterV3" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationRegisterV3" class="sidenav-link"><div>Register v3</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationLoginAndRegister" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLoginAndRegister" class="sidenav-link"><div>Login + Register</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationLockScreenV1" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLockScreenV1" class="sidenav-link"><div>Lock screen v1</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationLockScreenV2" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLockScreenV2" class="sidenav-link"><div>Lock screen v2</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationPasswordReset" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationPasswordReset" class="sidenav-link"><div>Password reset</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/AuthenticationEmailConfirm" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="AuthenticationEmailConfirm" class="sidenav-link"><div>Email confirm</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationLoginV1" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLoginV1" class="sidenav-link"><div>Login v1</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationRegisterV1" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationRegisterV1" class="sidenav-link"><div>Register v1</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationLoginV2" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLoginV2" class="sidenav-link"><div>Login v2</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationRegisterV2" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationRegisterV2" class="sidenav-link"><div>Register v2</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationLoginV3" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLoginV3" class="sidenav-link"><div>Login v3</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationRegisterV3" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationRegisterV3" class="sidenav-link"><div>Register v3</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationLoginAndRegister" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLoginAndRegister" class="sidenav-link"><div>Login + Register</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationLockScreenV1" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLockScreenV1" class="sidenav-link"><div>Lock screen v1</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationLockScreenV2" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationLockScreenV2" class="sidenav-link"><div>Lock screen v2</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationPasswordReset" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationPasswordReset" class="sidenav-link"><div>Password reset</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/AuthenticationEmailConfirm" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="AuthenticationEmailConfirm" class="sidenav-link"><div>Email confirm</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/Education") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Education</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/Education") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Education</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/EducationCoursesV1" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="EducationCoursesV1" class="sidenav-link"><div>Courses v1</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/EducationCoursesV2" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="EducationCoursesV2" class="sidenav-link"><div>Courses v2</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/EducationCoursesV1" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="EducationCoursesV1" class="sidenav-link"><div>Courses v1</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/EducationCoursesV2" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="EducationCoursesV2" class="sidenav-link"><div>Courses v2</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/ECommerce") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>E-commerce</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/ECommerce") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>E-commerce</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/ECommerceProductList" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ECommerceProductList" class="sidenav-link"><div>Product list</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/ECommerceProductItem" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ECommerceProductItem" class="sidenav-link"><div>Product item</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/ECommerceProductEdit" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ECommerceProductEdit" class="sidenav-link"><div>Product edit</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/ECommerceOrderList" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ECommerceOrderList" class="sidenav-link"><div>Order list</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/ECommerceOrderDetail" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ECommerceOrderDetail" class="sidenav-link"><div>Order detail</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/ECommerceProductList" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ECommerceProductList" class="sidenav-link"><div>Product list</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/ECommerceProductItem" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ECommerceProductItem" class="sidenav-link"><div>Product item</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/ECommerceProductEdit" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ECommerceProductEdit" class="sidenav-link"><div>Product edit</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/ECommerceOrderList" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ECommerceOrderList" class="sidenav-link"><div>Order list</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/ECommerceOrderDetail" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ECommerceOrderDetail" class="sidenav-link"><div>Order detail</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/Forums") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Forums</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/Forums") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Forums</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/ForumsList" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ForumsList" class="sidenav-link"><div>List</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/ForumsThreads" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ForumsThreads" class="sidenav-link"><div>Threads</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/ForumsDiscussion" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ForumsDiscussion" class="sidenav-link"><div>Discussion</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/ForumsList" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ForumsList" class="sidenav-link"><div>List</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/ForumsThreads" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ForumsThreads" class="sidenav-link"><div>Threads</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/ForumsDiscussion" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ForumsDiscussion" class="sidenav-link"><div>Discussion</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/MessagesV1") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Messages v1</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/MessagesV1") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Messages v1</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV1List" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV1List" class="sidenav-link"><div>List</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV1Item" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV1Item" class="sidenav-link"><div>Item</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV1Compose" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV1Compose" class="sidenav-link"><div>Compose</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV1List" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV1List" class="sidenav-link"><div>List</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV1Item" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV1Item" class="sidenav-link"><div>Item</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV1Compose" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV1Compose" class="sidenav-link"><div>Compose</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/MessagesV2") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Messages v2</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/MessagesV2") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Messages v2</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV2List" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV2List" class="sidenav-link"><div>List</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV2Item" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV2Item" class="sidenav-link"><div>Item</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV2Compose" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV2Compose" class="sidenav-link"><div>Compose</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV2List" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV2List" class="sidenav-link"><div>List</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV2Item" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV2Item" class="sidenav-link"><div>Item</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV2Compose" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV2Compose" class="sidenav-link"><div>Compose</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/MessagesV3") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Messages v3</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/MessagesV3") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Messages v3</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV3List" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV3List" class="sidenav-link"><div>List</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV3Item" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV3Item" class="sidenav-link"><div>Item</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/MessagesV3Compose" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="MessagesV3Compose" class="sidenav-link"><div>Compose</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV3List" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV3List" class="sidenav-link"><div>List</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV3Item" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV3Item" class="sidenav-link"><div>Item</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/MessagesV3Compose" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="MessagesV3Compose" class="sidenav-link"><div>Compose</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/Projects") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Projects</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/Projects") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Projects</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/ProjectsList" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ProjectsList" class="sidenav-link"><div>List</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/ProjectsItem" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="ProjectsItem" class="sidenav-link"><div>Item</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/ProjectsList" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ProjectsList" class="sidenav-link"><div>List</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/ProjectsItem" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="ProjectsItem" class="sidenav-link"><div>Item</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/Tickets") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Tickets</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/Tickets") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Tickets</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/TicketsList" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="TicketsList" class="sidenav-link"><div>List</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/TicketsEdit" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="TicketsEdit" class="sidenav-link"><div>Edit</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/TicketsList" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="TicketsList" class="sidenav-link"><div>List</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/TicketsEdit" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="TicketsEdit" class="sidenav-link"><div>Edit</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage.StartsWith("Pages/Users") ? " active open" : "")">
-					<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Users</div></a>
+			<li class="sidenav-item@(currentPage.StartsWith("Pages/Users") ? " active open" : "")">
+				<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><div>Users</div></a>
 
-					<ul class="sidenav-menu">
-						<li class="sidenav-item@(currentPage == "Pages/UsersList" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="UsersList" class="sidenav-link"><div>List</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/UsersView" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="UsersView" class="sidenav-link"><div>View</div></a>
-						</li>
-						<li class="sidenav-item@(currentPage == "Pages/UsersEdit" ? " active" : "")">
-							<a asp-area="" asp-controller="Pages" asp-action="UsersEdit" class="sidenav-link"><div>Edit</div></a>
-						</li>
-					</ul>
-				</li>
+				<ul class="sidenav-menu">
+					<li class="sidenav-item@(currentPage == "Pages/UsersList" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="UsersList" class="sidenav-link"><div>List</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/UsersView" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="UsersView" class="sidenav-link"><div>View</div></a>
+					</li>
+					<li class="sidenav-item@(currentPage == "Pages/UsersEdit" ? " active" : "")">
+						<a asp-area="" asp-controller="Pages" asp-action="UsersEdit" class="sidenav-link"><div>Edit</div></a>
+					</li>
+				</ul>
+			</li>
 
-				<li class="sidenav-item@(currentPage == "Pages/AccountSettings" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="AccountSettings" class="sidenav-link"><div>Account settings</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Chat" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Chat" class="sidenav-link"><div>Chat</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Clients" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Clients" class="sidenav-link"><div>Clients</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Contacts" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Contacts" class="sidenav-link"><div>Contacts</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Faq" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Faq" class="sidenav-link"><div>FAQ</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/FileManager" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="FileManager" class="sidenav-link"><div>File manager</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Gallery" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Gallery" class="sidenav-link"><div>Gallery</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/HelpCenter" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="HelpCenter" class="sidenav-link"><div>Help center</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Invoice" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Invoice" class="sidenav-link"><div>Invoice</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/KanbanBoard" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="KanbanBoard" class="sidenav-link"><div>Kanban board</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Pricing" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Pricing" class="sidenav-link"><div>Pricing</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/ProfileV1" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="ProfileV1" class="sidenav-link"><div>Profile v1</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/ProfileV2" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="ProfileV2" class="sidenav-link"><div>Profile v2</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/SearchResults" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="SearchResults" class="sidenav-link"><div>Search results</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/TaskList" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="TaskList" class="sidenav-link"><div>Task list</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Teams" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Teams" class="sidenav-link"><div>Teams</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Vacancies" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Vacancies" class="sidenav-link"><div>Vacancies</div></a>
-				</li>
-				<li class="sidenav-item@(currentPage == "Pages/Voting" ? " active" : "")">
-					<a asp-area="" asp-controller="Pages" asp-action="Voting" class="sidenav-link"><div>Voting</div></a>
-				</li>
-			</ul>
-		</li>
+			<li class="sidenav-item@(currentPage == "Pages/AccountSettings" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="AccountSettings" class="sidenav-link"><div>Account settings</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Chat" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Chat" class="sidenav-link"><div>Chat</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Clients" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Clients" class="sidenav-link"><div>Clients</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Contacts" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Contacts" class="sidenav-link"><div>Contacts</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Faq" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Faq" class="sidenav-link"><div>FAQ</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/FileManager" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="FileManager" class="sidenav-link"><div>File manager</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Gallery" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Gallery" class="sidenav-link"><div>Gallery</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/HelpCenter" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="HelpCenter" class="sidenav-link"><div>Help center</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Invoice" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Invoice" class="sidenav-link"><div>Invoice</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/KanbanBoard" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="KanbanBoard" class="sidenav-link"><div>Kanban board</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Pricing" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Pricing" class="sidenav-link"><div>Pricing</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/ProfileV1" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="ProfileV1" class="sidenav-link"><div>Profile v1</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/ProfileV2" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="ProfileV2" class="sidenav-link"><div>Profile v2</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/SearchResults" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="SearchResults" class="sidenav-link"><div>Search results</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/TaskList" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="TaskList" class="sidenav-link"><div>Task list</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Teams" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Teams" class="sidenav-link"><div>Teams</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Vacancies" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Vacancies" class="sidenav-link"><div>Vacancies</div></a>
+			</li>
+			<li class="sidenav-item@(currentPage == "Pages/Voting" ? " active" : "")">
+				<a asp-area="" asp-controller="Pages" asp-action="Voting" class="sidenav-link"><div>Voting</div></a>
+			</li>
+		</ul>
+	</li>
 
-		<li class="sidenav-item">
-			<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-logo-buffer"></i><div>Complete UI</div></a>
+	<li class="sidenav-item">
+		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-logo-buffer"></i><div>Complete UI</div></a>
 
-			<ul class="sidenav-menu">
-				<li class="sidenav-item">
-					<a target="_blank" asp-area="" asp-controller="CompleteUi" asp-action="Base" class="sidenav-link"><div>Base</div></a>
-				</li>
-				<li class="sidenav-item">
-					<a target="_blank" asp-area="" asp-controller="CompleteUi" asp-action="Plugins" class="sidenav-link"><div>Plugins</div></a>
-				</li>
-				<li class="sidenav-item">
-					<a target="_blank" asp-area="" asp-controller="CompleteUi" asp-action="Charts" class="sidenav-link"><div>Charts</div></a>
-				</li>
-			</ul>
-		</li>
+		<ul class="sidenav-menu">
+			<li class="sidenav-item">
+				<a target="_blank" asp-area="" asp-controller="CompleteUi" asp-action="Base" class="sidenav-link"><div>Base</div></a>
+			</li>
+			<li class="sidenav-item">
+				<a target="_blank" asp-area="" asp-controller="CompleteUi" asp-action="Plugins" class="sidenav-link"><div>Plugins</div></a>
+			</li>
+			<li class="sidenav-item">
+				<a target="_blank" asp-area="" asp-controller="CompleteUi" asp-action="Charts" class="sidenav-link"><div>Charts</div></a>
+			</li>
+		</ul>
+	</li>
 
-	</ul>
+</ul>
 </div>
 <!-- / Layout sidenav -->

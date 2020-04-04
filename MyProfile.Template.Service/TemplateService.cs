@@ -56,8 +56,7 @@ namespace MyProfile.Template.Service
 										{
 											ID = z.ID,
 											SectionID = z.BudgetSection.ID,
-											SectionName = z.BudgetSection.Name,
-											SectionCodeName = z.BudgetSection.CodeName
+											SectionName = z.BudgetSection.Name
 										})
 										.ToList()
 								})
@@ -83,6 +82,9 @@ namespace MyProfile.Template.Service
 							Name = x.Name,
 							PeriodName = x.PeriodType.Name,
 							PeriodTypeID = x.PeriodTypeID,
+
+							IsShow = true,
+
 							Columns = x.TemplateColumns
 								.Select(y => new Column
 								{
@@ -100,8 +102,7 @@ namespace MyProfile.Template.Service
 										{
 											ID = z.ID,
 											SectionID = z.BudgetSection.ID,
-											SectionName = z.BudgetSection.Name,
-											SectionCodeName = z.BudgetSection.CodeName
+											SectionName = z.BudgetSection.Name
 										})
 										.ToList()
 								})

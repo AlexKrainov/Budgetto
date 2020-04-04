@@ -163,7 +163,7 @@ namespace MyProfile.Controllers
 			//};
 			//repository.CreateRange(BudgetSections, true);
 
-			
+
 			//repository.Create<PeriodType>(new PeriodType
 			//{
 			//	Name = "Month",
@@ -188,11 +188,11 @@ namespace MyProfile.Controllers
 			return Json(new { isOk = true, templates });
 		}
 
-		public IActionResult Index(int? id)
+		public IActionResult Edit(int? id)
 		{
-			ViewBag.TemplateID = id;
-
-			ViewBag.PeriodTypes = repository.GetAll<PeriodType>().ToList();
+			ViewBag.PeriodTypes = repository.GetAll<PeriodType>()
+				.Where(x => x.ID == (int)PeriodTypesEnum.Days || x.ID == (int)PeriodTypesEnum.Months)
+				.ToList();
 
 			return View();
 		}

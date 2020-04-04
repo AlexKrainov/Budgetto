@@ -1,0 +1,225 @@
+﻿@{
+	ViewData["Title"] = "Edit";
+}
+
+@section Styles {
+	<link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />
+
+	<style>
+		.active-section {
+			border-left: 3px solid var(--blue) !important;
+			background: #D6EAF8;
+		}
+
+		.updated-item {
+			float: right;
+			margin-top: -20px;
+			margin-right: -32px;
+			color: var(--green);
+		}
+
+		.picker {
+			border-radius: 5px;
+			/*width: 40px;*/
+			width: 100%;
+			height: 20px;
+			cursor: pointer;
+			transition: all linear .2s;
+			border: thin solid #ccc;
+		}
+
+
+		#cssIcon > div.form-group {
+			height: 200px;
+			overflow-x: auto;
+			width: 103%;
+		}
+
+		.icon-box {
+			opacity: .8;
+			cursor: pointer;
+			margin: 5px 5px 5px;
+			display: inline-block;
+		}
+
+			.icon-box:hover {
+				opacity: 1;
+			}
+
+			.icon-box i {
+				font-size: large;
+			}
+	</style>
+}
+
+@section Scripts {
+	<script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
+	<script src="~/app_js/section-list.js"></script>
+}
+
+
+<div class="row">
+	<div class="col-6" id="area-vue">
+		<!-- Latest events -->
+		<div class="card mb-4">
+			<h6 class="card-header with-elements">
+				<div class="card-header-title">Budget area</div>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search" v-model="searchText">
+					<div class="input-group-append">
+						<button type="button" class="btn btn-primary" v-on:click="create">Add</button>
+					</div>
+				</div>
+			</h6>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item py-3 cursor-pointer " v-for="area in areas" v-on:click="selectArea(area, $event)">
+					<i class="fa fa-circle updated-item" aria-hidden="true" v-show="area.isUpdated"></i>
+					<span class="float-right">
+						<i class="fa fa-project-diagram " style="color: var(--gray-dark);"></i>
+						{{ area.sections.length }}
+					</span>
+					<div class="font-weight-semibold">{{ area.name }}</div>
+					<small class="text-muted">{{ area.description }}</small>
+					<br />
+					<i class="fa fa-users" v-show="area.isGlobal" title="Созданная системой" style="color: var(--blue);"></i>
+					<i class="fa fa-user" v-show="!area.isGlobal" title="Созданная пользователем" style="color: var(--green);"></i>
+					<div class="float-right">
+						<button type="button" class="btn btn-sm btn-outline-success" v-if="!area.isGlobal" v-on:click="edit(area)">Edit</button>
+						<button type="button" class="btn btn-sm btn-outline-danger" v-if="!area.isGlobal" v-on:click="remove(area)">Remove</button>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<!-- Modal template -->
+		<div class="modal fade" id="modal-area">
+			<div class="modal-dialog">
+				<form class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">
+							Payment <span class="font-weight-light">Budget Area</span><br>
+						</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-row">
+							<div class="form-group col">
+								<label class="form-label">Name</label>
+								<input type="text" class="form-control" placeholder="Name" v-model="area.name">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col mb-0">
+								<label class="form-label">Description</label>
+								<textarea class="form-control" v-model="area.description" placeholder="Description"></textarea>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col mb-0">
+								<label class="form-label">Icon</label>
+								<input type="text" class="form-control" placeholder="DD / MM">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-6" id="section-vue">
+		<!-- Latest events -->
+		<div class="card mb-4">
+			<h6 class="card-header with-elements">
+				<div class="card-header-title">Budget sections</div>
+
+				<div class="card-header-elements ml-auto">
+					<button type="button" class="btn btn-primary btn-xs md-btn-flat" v-on:click="create">Add</button>
+				</div>
+			</h6>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item py-3" v-for="section in sections" v-bind:style="'border-left: 3px solid '+ section.cssColor +';'">
+					<div class="font-weight-semibold">{{ section.name }}</div>
+					<small class="text-muted">{{ section.description }}</small>
+					<br />
+					<div class="badge badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+						<i v-bind:class="section.cssIcon"></i>
+						<span class="ml-1">{{section.name}}</span>
+					</div>
+					<div class="float-right">
+						<button type="button" class="btn btn-sm btn-outline-success" v-if="!section.isGlobal" v-on:click="edit(section)">Edit</button>
+						<button type="button" class="btn btn-sm btn-outline-danger" v-if="!section.isGlobal" v-on:click="remove(section)">Remove</button>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<!-- Modal template -->
+		<div class="modal fade" id="modal-section">
+			<div class="modal-dialog">
+				<form class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">
+							Payment <span class="font-weight-light">Budget Area</span><br>
+						</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-row">
+							<div class="form-group col">
+								<label class="form-label">Name</label>
+								<input type="text" class="form-control" placeholder="Name" v-model="section.name">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col mb-0">
+								<label class="form-label">Description</label>
+								<textarea class="form-control" v-model="section.description" placeholder="Description"></textarea>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col mb-0">
+								<label class="form-label">Color</label>
+								<div class="picker" id="cssColor"></div>
+								@*<input type="text" class="form-control" placeholder="DD / MM">*@
+							</div>
+						</div>
+						<br />
+
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i v-bind:class="section.cssIcon" aria-hidden="true" style="font-size:large"></i></span>
+							</div>
+							<input type="text" class="form-control" placeholder="Icon" v-model="section.cssIcon">
+						</div>
+						<br />
+						<div class="form-row" id="cssIcon">
+							<div class="input-group input-group-sm">
+								<input type="text" placeholder="Search" class="form-control" style="margin-left: 50%;" v-model="searchIcon">
+								<span class="form-group-btn">
+									<button type="button" class="btn btn-sm btn-white" v-on:click="searchIcon = '' " v-show="searchIcon != null && searchIcon != ''"> <i class="fa fa-times"></i></button>
+								</span>
+							</div>
+							<div class="form-group col mb-0">
+								<br />
+								<div class="infont col-md-5 col-sm-6 icon-box" v-for="icon in icons" v-show="icon.isShow" v-on:click="selectIcon(icon)">
+									<span>
+										<i v-bind:class="icon.nameClass" aria-hidden="true"></i> {{ icon.name }}
+									</span>
+								</div>
+								@*<input type="text" class="form-control" placeholder="DD / MM">*@
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

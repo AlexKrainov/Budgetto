@@ -7,13 +7,31 @@
 }
 
 <section id="template-list-vue">
-	<h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
-		<div>Templates</div>
-		<a href="/Template/Index" class="btn btn-primary rounded-pill d-block"><span class="ion ion-md-add"></span>&nbsp; Create template</a>
+
+	<h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
+		<div class="col-12 col-md px-0 pb-2">
+			Шаблоны
+			<a class="btn btn-outline-primary rounded-pill" href="/Template/Index">Добавить новый шаблон</a>
+		</div>
+		<div class="col-12 col-md-3 px-0 pb-2">
+			<input type="text" class="form-control" placeholder="Search..." v-model="search">
+		</div>
 	</h4>
 
+	<ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
+		<li class="nav-item">
+			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = -1">Все шаблоны</a>
+		</li>
+		<li class="nav-item">
+			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 1">По дням</a>
+		</li>
+		<li class="nav-item">
+			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 2 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 2">По месяцам</a>
+		</li>
+	</ul>
+
 	<div class="row">
-		<div class="col-sm-6 col-xl-4" v-for="template in templates">
+		<div class="col-sm-6 col-xl-4" v-for="template in templates" v-show="template.isShow && (activeTemplatePeriodTypeID == -1 || template.periodTypeID == activeTemplatePeriodTypeID)">
 			<div class="card mb-4">
 				<div class="card-body d-flex justify-content-between align-items-start pb-3">
 					<div>
@@ -29,7 +47,7 @@
 							<i class="ion ion-ios-more"></i>
 						</button>
 						<div class="dropdown-menu dropdown-menu-right">
-							<a class="dropdown-item" v-bind:href="'/Template/Index/'+ template.id">Edit</a>
+							<a class="dropdown-item" v-bind:href="'/Template/Edit?templateID='+ template.id">Edit</a>
 							<a class="dropdown-item" v-bind:href="'/Template/Delete/'+ template.id">Remove</a>
 						</div>
 					</div>
@@ -38,8 +56,8 @@
 					<div class="progress-bar" style="width: 100%"></div>
 				</div>
 				@*<div class="card-body small pt-2 pb-0">
-					<strong>{{ template.columns.length * 10 }}%</strong> columns
-				</div>*@
+						<strong>{{ template.columns.length * 10 }}%</strong> columns
+					</div>*@
 				<div class="card-body pb-3">
 					Description
 				</div>
@@ -57,10 +75,41 @@
 				</div>
 				<hr class="m-0">
 				<div class="card-body py-3">
-					<a class="btn btn-outline-success" v-bind:href="'/Template/Index/'+ template.id">Edit</a>
+					<a class="btn btn-outline-success" v-bind:href="'/Template/Edit?templateID='+ template.id">Edit</a>
 					<a class="btn btn-outline-primary float-right" v-bind:href="getLinkForView(template)">View</a>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<hr class="border-light mt-2 mb-4">
+
+	@*
+			pages
+			<nav>
+			<ul class="pagination justify-content-center">
+				<li class="page-item disabled">
+					<a class="page-link" href="javascript:void(0)">«</a>
+				</li>
+				<li class="page-item active">
+					<a class="page-link" href="javascript:void(0)">1</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="javascript:void(0)">2</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="javascript:void(0)">3</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="javascript:void(0)">4</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="javascript:void(0)">5</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="javascript:void(0)">»</a>
+				</li>
+			</ul>
+		</nav>*@
+
 </section>

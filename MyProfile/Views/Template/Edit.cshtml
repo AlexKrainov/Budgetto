@@ -1,0 +1,513 @@
+﻿@{
+	ViewData["Title"] = "Kanban board - Pages";
+	//Pages/TicketsEdit
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/vendor/libs/dragula/dragula.css">
+	<link rel="stylesheet" href="~/vendor/libs/bootstrap-select/bootstrap-select.css">
+	<link rel="stylesheet" href="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css">
+	<link rel="stylesheet" href="~/vendor/libs/dragula/dragula.css">
+
+	<link href="~/app_css/template.css" rel="stylesheet" />
+}
+
+@section Scripts {
+	<!-- Dependencies -->
+	<script src="~/vendor/libs/dragula/dragula.js"></script>
+	<script src="~/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
+	<script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+	<link rel="stylesheet" href="~/vendor/libs/dragula/dragula.js">
+
+	<script src="~/js/pages_kanban-board.js"></script>
+	<script src="~/app_js/vue-components/vue-section-component.js"></script>
+	<script src="~/app_js/template.js"></script>
+
+}
+
+
+<section id="template-columns">
+	<input type="hidden" name="templateID" id="templateID" value="@ViewBag.TemplateID" />
+
+	<h4 class="font-weight-bold py-3 mb-4" v-show="template.id == 0">
+		Создание шаблона
+	</h4>
+	<h4 class="font-weight-bold py-3 mb-4" v-show="template.id != 0">
+		Редактирование шаблона
+	</h4>
+
+	<div class="card mb-4">
+		<div class="card-body">
+			<div class="row no-gutters">
+				<div class="col-sm-3 col-md-4 col-lg-4 col-xl-4">
+					<div class="form-group">
+						<input type="text" class="form-control" v-model="template.name" placeholder="Название шаблона">
+					</div>
+				</div>
+				<div class="col-sm-3 col-md-4 col-lg-3 col-xl-3 pl-3">
+					<div class="dropdown">
+						<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" v-text="template.periodName"></button>
+						<div class="dropdown-menu">
+							@foreach (MyProfile.Entity.Model.PeriodType periodType in ViewBag.PeriodTypes)
+							{
+								<a class="dropdown-item"
+								   v-on:click="template.periodTypeID = @periodType.ID; template.periodName = '@periodType.Name'">@periodType.Name</a>
+							}
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4 col-lg-5 col-xl-5">
+
+					<!-- Dates -->
+					<div class="row no-gutters row-bordered row-border-light ui-bordered mb-4">
+						<div class="col py-1 px-3">
+							<div class="text-muted small">Created at</div>
+							<div class="font-weight-semibold">{{ GetDateByFormat(template.dateCreate, 'DD.MM.YYYY HH:mm') }}</div>
+						</div>
+						<div class="col py-1 px-3">
+							<div class="text-muted small">Last update</div>
+							<div class="font-weight-semibold">{{ GetDateByFormat(template.dateEdit, 'DD.MM.YYYY HH:mm') }} </div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="form-label">Description</label>
+				<textarea class="form-control" rows="2"></textarea>
+			</div>
+
+		</div>
+
+		<div class="card-footer">
+			<button class="btn btn-primary" type="button" disabled v-show="isSaveTemplate">
+				<span class="spinner-border" role="status" aria-hidden="true"></span>
+				Save
+			</button>
+
+			<button type="button" class="btn btn-primary" v-on:click="saveTemplate" v-show="!isSaveTemplate">Save</button>
+
+			<a href="/Template/Delete/@ViewBag.TemplateID" class="btn btn-outline-danger icon-btn borderless float-right" v-show="template.id > 0">
+				<span class="ion ion-md-trash"></span>
+			</a>
+		</div>
+	</div>
+
+	<!--Columns-->
+	<article class="card ui p-3">
+		<div class="lists">
+			<div class="list" v-for="(column, indexColumn) in template.columns" v-bind:columnid="column.id">
+				<div class="card border-primary mb-3" v-if="isBudgetSection(column.templateColumnType)">
+					<div>
+						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" v-bind:href="'#general'+column.id">
+									Основное
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" v-bind:href="'#settings'+column.id">
+									Настройки колонки
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content">
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+							<div class="d-flex justify-content-between align-items-start">
+								@*<div>*@
+								<input type="text" class="form-control " placeholder="Name column" v-model="column.name">@*style="border:none;"*@
+								@*<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">Backend</a>
+									<span class="badge badge-danger align-text-bottom ml-1">Busy</span>*@
+								@*</div>*@
+								<div class="btn-group team-actions">
+									<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
+										<i class="ion ion-ios-more"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 26px; left: -134px; will-change: top, left;">
+										<a class="dropdown-item" href="javascript:void(0)" v-on:click="template.columns.splice(indexColumn, 1)">Удалить колонку</a>
+									</div>
+								</div>
+							</div>
+							<div class="mt-3">
+								@*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+							</div>
+
+							<hr class="m-0" />
+							<div class="kanban-box px-2 pt-2">
+								<div class="ui-bordered p-2 mb-2 badge-default" v-for="(templateBudgetSection, indexSection) in column.templateBudgetSections">
+									<div class="kanban-board-actions btn-group float-right ml-2">
+										<button type="button" class="btn btn-default btn-xs rounded-pill icon-btn borderless md-btn-flat hide-arrow dropdown-toggle" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button>
+										<div class="dropdown-menu dropdown-menu-right">
+											<a class="dropdown-item" href="javascript:void(0)" v-on:click="column.templateBudgetSections.splice(indexSection, 1)">Удалить секцию</a>
+										</div>
+									</div>
+									{{ templateBudgetSection.sectionName }}
+								</div>
+
+							</div>
+							<div class="card-footer text-center py-2">
+								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+							</div>
+						</div>
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
+							<ul class="list-group list-group-flush" style="overflow-y: unset;">
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									<div class="text-muted">Итоговая сумма</div>
+									<div>
+										<select class="form-control" data-style="btn-default" v-model="column.totalAction">
+											<!--FooterActionTypeEnum.Undefined-->
+											<option v-bind:value="0">
+												Не выбрано
+											</option>
+											<!--FooterActionTypeEnum.Sum-->
+											<option v-bind:value="1">
+												Сумма
+											</option>
+											<!--FooterActionTypeEnum.Avr-->
+											<option v-bind:value="2">
+												Среднее
+											</option>
+											<!--FooterActionTypeEnum.Max-->
+											<option v-bind:value="4">
+												Максимальное
+											</option>
+											<!--FooterActionTypeEnum.Min-->
+											<option v-bind:value="3">
+												Минимальное
+											</option>
+										</select>
+									</div>
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									<div class="text-muted">Где ставить запятую</div>
+									<div>
+										<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 3" v-show="column.placeAfterCommon == 4">
+											<i class="fa fa-terminal"></i>
+											0,0000
+										</p>
+										<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 2" v-show="column.placeAfterCommon == 3">
+											<i class="fa fa-terminal"></i>
+											0,000
+										</p>
+										<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 1" v-show="column.placeAfterCommon == 2">
+											<i class="fa fa-terminal"></i>
+											0,00
+										</p>
+										<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 0" v-show="column.placeAfterCommon == 1">
+											<i class="fa fa-terminal"></i>
+											0,0
+										</p>
+										<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 4" v-show="column.placeAfterCommon == 0">
+											<i class="fa fa-terminal"></i>
+											0
+										</p>
+									</div>
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									<div class="text-muted">Показывать колонку ?</div>
+									<div>
+										<label class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input" v-model="column.isShow">
+											<span class="custom-control-label"></span>
+										</label>
+									</div>
+								</li>
+								<li class="list-group-item" v-on:click="openFormula(column.id)">
+									<div class="text-muted small">Формула</div>
+									<div class="d-flex flex-wrap">
+										<span class="badge badge-outline-secondary mr-1" v-for="formula in column.formula">{{ formula.value }}</span>
+									</div>
+								</li>
+							</ul>
+							<div class="card-footer text-center py-2">
+								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card border-primary mb-3" v-if="isDaysForMonth(column.templateColumnType)">
+					<div>
+						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" v-bind:href="'#general'+column.id">
+									Основное
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" v-bind:href="'#settings'+column.id">
+									Настройки колонки
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content">
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+							<div class="d-flex justify-content-between align-items-start">
+								<input type="text" class="form-control " placeholder="Name column" v-model="column.name">@*style="border:none;"*@
+								@*<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">Backend</a>
+									<span class="badge badge-danger align-text-bottom ml-1">Busy</span>*@
+								<div class="btn-group team-actions">
+									<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
+										<i class="ion ion-ios-more"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 26px; left: -134px; will-change: top, left;">
+										<a class="dropdown-item" href="javascript:void(0)" v-on:click="removeColumn(column.id)">Удалить колонку</a>
+									</div>
+								</div>
+							</div>
+							<div class="mt-3">
+								@*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+							</div>
+
+							<hr class="m-0" />
+							<div class="kanban-box px-2 pt-2">
+								<div class="ui-bordered p-2 mb-2 badge-secondary">
+									DAYS
+								</div>
+							</div>
+						</div>
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
+							<ul class="list-group list-group-flush" style="overflow-y: unset;">
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									<div class="text-muted">Формат отображение даты</div>
+									<select class="form-control" v-model="column.format">
+										<option v-bind:value="''">Не выбрано</option>
+										<option v-bind:value="'dd'">1,2,3</option>
+										<option v-bind:value="'dd.MM'">1.03</option>
+										<option v-bind:value="'dd.MM.yyyy'">1.03.2020</option>
+									</select>
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									<div class="text-muted">Показывать колонку ?</div>
+									<div>
+										<label class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input" v-model="column.isShow">
+											<span class="custom-control-label"></span>
+										</label>
+									</div>
+								</li>
+							</ul>
+
+							<div class="card-footer text-center py-2">
+								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card border-primary mb-3" v-if="isMonthsForYear(column.templateColumnType)">
+					<div>
+						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" v-bind:href="'#general'+column.id">
+									Основное
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" v-bind:href="'#settings'+column.id">
+									Настройки колонки
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content">
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+							<div class="d-flex justify-content-between align-items-start">
+								<input type="text" class="form-control " placeholder="Name column" v-model="column.name">@*style="border:none;"*@
+								@*<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">Backend</a>
+									<span class="badge badge-danger align-text-bottom ml-1">Busy</span>*@
+								<div class="btn-group team-actions">
+									<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
+										<i class="ion ion-ios-more"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 26px; left: -134px; will-change: top, left;">
+										<a class="dropdown-item" href="javascript:void(0)" v-on:click="removeColumn(column.id)">Удалить колонку</a>
+									</div>
+								</div>
+							</div>
+							<div class="mt-3">
+								@*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+							</div>
+
+							<hr class="m-0" />
+							<div class="kanban-box px-2 pt-2">
+								<div class="ui-bordered p-2 mb-2 badge-secondary">
+									Months
+								</div>
+							</div>
+						</div>
+						<div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
+
+							<ul class="list-group list-group-flush" style="overflow-y: unset;">
+								@*<li class="list-group-item d-flex justify-content-between align-items-center">
+									<div class="text-muted">Формат отображение даты</div>
+									<select class="form-control" v-model="column.format">
+										<option v-bind:value="''">Не выбрано</option>
+										<option v-bind:value="'dd'">1,2,3</option>
+										<option v-bind:value="'dd.MM'">1.03</option>
+										<option v-bind:value="'dd.MM.yyyy'">1.03.2020</option>
+									</select>
+								</li>*@
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									<div class="text-muted">Показывать колонку ?</div>
+									<div>
+										<label class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input" v-model="column.isShow">
+											<span class="custom-control-label"></span>
+										</label>
+									</div>
+								</li>
+							</ul>
+							<div class="card-footer text-center py-2">
+								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list ignore-dnd">
+				<div class="card mb-3">
+					<button type="button" class="btn btn-outline-primary" v-on:click="addColumn" v-show="template.periodTypeID > 0">Add column</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Choose data type column modal -->
+		<div class="modal modal-slide fade" id="modalDataTypeColumn">
+			<div class="modal-dialog">
+				<form class="modal-content">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md cursor-pointer" v-on:click="column.templateColumnType = 1; addColumn_Complete();">
+								<div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
+									<div class="card-body">
+										<h4 class="card-title">Деньги</h4>
+										<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md cursor-pointer" v-on:click="column.templateColumnType = 2; addColumn_Complete();" v-show="!(template.periodTypeID != 1)">
+								<div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
+									<div class="card-body">
+										<h4 class="card-title">По дням</h4>
+										<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md cursor-pointer" v-on:click="column.templateColumnType = 3; addColumn_Complete();" v-show="!(template.periodTypeID != 3)">
+								<div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
+									<div class="card-body">
+										<h4 class="card-title">По месяцам</h4>
+										<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md cursor-pointer" v-on:click="column.templateColumnType = 7; addColumn_Complete();" v-show="!(template.periodTypeID != 2)">
+								<div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
+									<div class="card-body">
+										<h4 class="card-title">По неделям</h4>
+										<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md cursor-pointer" v-on:click="column.templateColumnType = 4; addColumn_Complete();" v-show="!(template.periodTypeID != 4)">
+								<div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
+									<div class="card-body">
+										<h4 class="card-title">По 10 лет</h4>
+										<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- templateBudgetSection modal -->
+		<div class="modal modal-slide fade" id="modals-slide">
+			<div class="modal-dialog modal-xl">
+				<form class="modal-content">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+					<div class="modal-body">
+						<vue-section-component id="test2"
+											   name="test"
+											   data-search-id="searchSection"
+											   v-on:onchoose="addColumnOption_step2"></vue-section-component>
+
+					</div>
+				</form>
+			</div>
+		</div>
+	</article>
+
+</section>
+
+
+<!-- Modal template -->
+<div class="modal modal-top fade" id="modal-formula">
+	<div class="modal-dialog">
+		<form class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					Formula
+					@*<span class="font-weight-light">Information</span>
+						<br>
+						<small class="text-muted">We need payment information to process your order.</small>*@
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<input type="text" class="form-control" id="formula">
+				</div>
+				<div class="form-row">
+					<div class="form-group col-8">
+						<ul class="list-group">
+							<li v-for="field in fields" v-on:click="addField(field)"> <span class="badge badge-outline-secondary">{{ field.name }}</span></li>
+						</ul>
+						<hr />
+						<span class="badge badge-outline-secondary" v-on:click="addPeriod(FormulaFieldTypeEnum.Days)">Days</span>
+					</div>
+					<div class="form-group col-4">
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="removeLast"><</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Parentheses)">(</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Parentheses)">)</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" disabled>%</button>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">7</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">8</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">9</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Mark)">/</button>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">4</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">5</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">6</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Mark)">*</button>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">1</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">2</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">3</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Mark)">-</button>
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)"></button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">0</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Number)">.</button>
+							<button type="button" class="btn btn-sm btn-primary mr-2" v-on:click="add($event, FormulaFieldTypeEnum.Mark)">+</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
+			</div>
+		</form>
+	</div>
+</div>

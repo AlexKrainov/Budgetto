@@ -56,10 +56,12 @@ namespace MyProfile.Entity.Repository
 			if (isSave) { this.Save(); }
 		}
 
-		public async void CreateAsync<T>(T entity, bool isSave = false) where T : class
+		public async Task<int> CreateAsync<T>(T entity, bool isSave = false) where T : class
 		{
 			await context.AddAsync<T>(entity);
-			if (isSave) { await this.SaveAsync(); }
+
+			if (isSave) { return await this.SaveAsync(); }
+			return 1;
 		}
 
 		public void CreateRange<T>(IEnumerable<T> entity, bool isSave = false) where T : class
@@ -71,13 +73,15 @@ namespace MyProfile.Entity.Repository
 			if (isSave) { this.Save(); }
 		}
 
-		public async void CreateRangeAsync<T>(IEnumerable<T> entity, bool isSave = false) where T : class
+		public async Task<int> CreateRangeAsync<T>(IEnumerable<T> entity, bool isSave = false) where T : class
 		{
 			for (int i = 0; i < entity.Count(); i++)
 			{
-				this.CreateAsync(entity.ElementAt(i));
+				await this.CreateAsync(entity.ElementAt(i));
 			}
-			if (isSave) { await this.SaveAsync(); }
+			if (isSave) { return await this.SaveAsync(); }
+
+			return 1;
 		}
 
 		public void Update<T>(T entity, bool isSave = false) where T : class
@@ -87,11 +91,12 @@ namespace MyProfile.Entity.Repository
 			if (isSave) { this.Save(); }
 		}
 
-		public async void UpdateAsync<T>(T entity, bool isSave = false) where T : class
+		public async Task<int> UpdateAsync<T>(T entity, bool isSave = false) where T : class
 		{
 			context.Update<T>(entity);
 
-			if (isSave) { await this.SaveAsync(); }
+			if (isSave) { return await this.SaveAsync(); }
+			return 1;
 		}
 
 
