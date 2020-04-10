@@ -60,35 +60,65 @@ namespace MyProfile.Controllers.My
 			//DateTime start = new DateTime(2020, 01, 01);
 			//DateTime finish = new DateTime(2020, 12, 31);
 
-			var template = await templateService.GetTemplateByID(x => x.ID == templateID  && x.PersonID == UserInfo.PersonID);
+			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
 			var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
 
 			return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> MonthBudget(DateTime month, int? templateID, int periodTypeID)
+		public async Task<IActionResult> DaysBudget(int? month, int? templateID)
 		{
 			BudgetControllerModelView model = new BudgetControllerModelView();
-			model.SelectedDateTime = month;
+			model.SelectedDateTime = month != null ? new DateTime(DateTime.Now.Year, month ?? 1, 1) : DateTime.Now;
 			model.SelectedTemplateID = templateID ?? -1;
-			model.Templates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == periodTypeID);
+			model.NameTemplates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == (int)PeriodTypesEnum.Days);
 
 			return View(model);
 		}
 
 		[HttpPost]
-		public async Task<JsonResult> GetMonthBudget(DateTime month, int templateID)
+		public async Task<JsonResult> GetDaysBudget([FromQuery] DateTime month, [FromQuery] int templateID)
 		{
 			DateTime start = new DateTime(month.Year, month.Month, 01);
 			DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month));
 
-			var template =  await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
-			var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
+			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
 
-			return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
+			if (template != null)
+			{
+				var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
+				return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
+			}
+			return Json(new { isOk = false });
 		}
 
-		
+		[HttpGet]
+		public async Task<IActionResult> MonthsBudget(int? year, int? templateID)
+		{
+			BudgetControllerModelView model = new BudgetControllerModelView();
+			model.SelectedYear = year ?? DateTime.Now.Year;
+			model.SelectedTemplateID = templateID ?? -1;
+			model.NameTemplates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == (int)PeriodTypesEnum.Months);
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> GetMonthsBudget(int year, int templateID)
+		{
+			DateTime start = new DateTime(year, 1, 01);
+			DateTime finish = new DateTime(year, 12, 31);
+
+			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
+			if (template != null)
+			{
+				var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
+				return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
+			}
+			return Json(new { isOk = false });
+		}
+
+
 	}
 }

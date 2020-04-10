@@ -25,10 +25,21 @@
 <ul class="sidenav-inner@(!isHorizontal ? " py-1" : "")">
 
 	<li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")">
-		<a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Template</div></a>
+		<a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Templates</div></a>
 	</li>
-	<li class="sidenav-item@(currentPage == "Budget/Index" ? " active" : "")">
-		<a asp-area="" asp-controller="Budget" asp-action="Index" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>Budget</div></a>
+	<li class="sidenav-item@(currentPage == "Budget/DaysBudget" ? " active" : "")">
+		<a asp-area="" asp-controller="Budget" asp-action="DaysBudget" class="sidenav-link">
+			<i class="sidenav-icon ion ion-md-cash"></i>
+			<div>Budget by days</div>
+			<div class="pl-1 ml-auto"><div class="badge badge-primary">1</div></div>
+		</a>
+	</li>
+	<li class="sidenav-item@(currentPage == "Budget/MonthsBudget" ? " active" : "")">
+		<a asp-area="" asp-controller="Budget" asp-action="MonthsBudget" class="sidenav-link">
+			<i class="sidenav-icon ion ion-md-cash"></i>
+			<div>Budget by months</div>
+			<div class="pl-1 ml-auto"><div class="badge badge-primary">1</div></div>
+		</a>
 	</li>
 	<li class="sidenav-item@(currentPage == "Section/Edit" ? " active" : "")">
 		<a asp-area="" asp-controller="Section" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>Section</div></a>

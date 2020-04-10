@@ -34,6 +34,11 @@ namespace MyProfile.Budget.Service
 			List<List<Cell>> rows = new List<List<Cell>>();
 			List<List<FooterCell>> footers = new List<List<FooterCell>>();
 
+			if (template == null || template.Columns.Count == 0)
+			{
+				return new Tuple<List<List<Cell>>, List<Cell>>(rows, new List<Cell>());
+			}
+
 			int allColumnsCount = template.Columns.Count;
 			int indexBudgetRecords = 0;
 			int totalCounter = 0;
@@ -78,6 +83,7 @@ namespace MyProfile.Budget.Service
 
 							foreach (var formulaItem in column.Formula)
 							{
+								total = 0;
 								if (formulaItem.Type == FormulaFieldType.Section)
 								{
 									total = budgetRecordsDay
@@ -92,7 +98,7 @@ namespace MyProfile.Budget.Service
 							total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand , (comma)
 							total = Math.Round(total, column.PlaceAfterCommon);
 							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
-							
+
 							cells.Add(new Cell { Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru_RU")), NaturalValue = total, IsShow = column.IsShow });
 							footerCells.Add(new FooterCell { Value = total });
 						}

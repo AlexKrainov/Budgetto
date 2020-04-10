@@ -10,7 +10,7 @@
 		column: {},
 
 		periodType: -1,
-		isSaveTemplate: false,
+		isSavingTemplate: false,
 
 		footerActions: []
 	},
@@ -84,15 +84,15 @@
 			$("#modalDataTypeColumn").modal("show");
 
 			this.column = {
-				"id": this.counterNewColumn++,
-				"name": "Новая колонка",
-				"order": this.template.columns.length,
-				"isShow": true,
-				"totalAction": 0,
-				"formula": [],
+				id: this.counterNewColumn++,
+				name: "Новая колонка",
+				order: this.template.columns.length,
+				isShow: true,
+				totalAction: 0,
+				formula: [],
 				templateBudgetSections: [],
 				placeAfterCommon: 2,
-				format: ''
+				format: '',
 			};
 		},
 		addColumn_Complete: function () {
@@ -123,13 +123,13 @@
 			$("#modals-slide").modal("hide");
 		},
 		saveTemplate: function () {
-			this.isSaveTemplate = true;
+			this.isSavingTemplate = true;
 			return sendAjax("/Template/Save", this.template, "POST")
 				.then(function (result) {
 					if (result.isOk = true) {
 						TemplateVue.template = result.template;
 					}
-					TemplateVue.isSaveTemplate = false;
+					TemplateVue.isSavingTemplate = false;
 				});
 		},
 		change: function (event) {
@@ -137,7 +137,10 @@
 		},
 		openFormula: function (columnID) {
 			//FormulaVue.el.tagsinput("destroy");
+			FormulaVue.fields = [];
+			FormData.formula = [];
 			FormulaVue.columnID = columnID;
+
 			let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
 			if (columnIndex >= 0) {
 				for (var i = 0; i < this.template.columns[columnIndex].templateBudgetSections.length; i++) {

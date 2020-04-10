@@ -34,11 +34,12 @@ namespace MyProfile.Template.Service
 							DateCreate = x.DateCreate,
 							DateEdit = x.DateEdit,
 							IsCountCollectiveBudget = x.IsCountCollectiveBudget,
-							//LastSeenDateTime = x.CodeName,
 							MaxRowInAPage = x.MaxRowInAPage,
 							Name = x.Name,
+							Description = x.Description,
 							PeriodName = x.PeriodType.Name,
 							PeriodTypeID = x.PeriodTypeID,
+
 							Columns = x.TemplateColumns
 								.Select(y => new Column
 								{
@@ -63,6 +64,13 @@ namespace MyProfile.Template.Service
 								.ToList()
 						})
 						.FirstOrDefaultAsync();
+
+				if (templateViewModel != null)
+				{
+					var template = repository.GetByID<Template>(templateViewModel.ID);
+					template.LastSeenDate = DateTime.Now.ToUniversalTime();
+					await repository.SaveAsync();
+				}
 			}
 
 			return templateViewModel;
@@ -80,9 +88,9 @@ namespace MyProfile.Template.Service
 							//LastSeenDateTime = x.CodeName,
 							MaxRowInAPage = x.MaxRowInAPage,
 							Name = x.Name,
+							Description = x.Description,
 							PeriodName = x.PeriodType.Name,
 							PeriodTypeID = x.PeriodTypeID,
-
 							IsShow = true,
 
 							Columns = x.TemplateColumns
@@ -113,6 +121,7 @@ namespace MyProfile.Template.Service
 		public async Task<List<TemplateViewModel_Short>> GetNameTemplates(Expression<Func<Template, bool>> predicate)
 		{
 			return await repository.GetAll<Template>(predicate)
+						.OrderBy(x => x.LastSeenDate)
 						.Select(x => new TemplateViewModel_Short
 						{
 							ID = x.ID,
@@ -134,11 +143,11 @@ namespace MyProfile.Template.Service
 					Template templateDB = new Template();
 					templateDB.PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D");
 					templateDB.PeriodTypeID = template.PeriodTypeID;
-					templateDB.CodeName = "test";
 					templateDB.DateCreate = templateDB.DateEdit = DateTime.MinValue == template.DateCreate ? DateTime.Now : template.DateCreate;
 					templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;
 					templateDB.MaxRowInAPage = 30;
 					templateDB.Name = template.Name ?? "Template";
+					templateDB.Description = template.Description;
 
 					repository.Create(templateDB, true);
 
@@ -180,11 +189,11 @@ namespace MyProfile.Template.Service
 
 					templateDB.PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D");
 					templateDB.PeriodTypeID = template.PeriodTypeID;
-					templateDB.CodeName = "test";
 					templateDB.DateEdit = DateTime.Now;
 					templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;
 					templateDB.MaxRowInAPage = 30;
 					templateDB.Name = template.Name ?? "NameTemplate";
+					templateDB.Description = template.Description;
 
 					repository.Update(templateDB, true);
 

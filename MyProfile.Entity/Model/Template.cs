@@ -18,8 +18,6 @@ namespace MyProfile.Entity.Model
 		[Required]
 		public string Name { get; set; }
 		public string Description { get; set; }
-		[Required]
-		public string CodeName { get; set; }
 		/// <summary>
 		///  if it is a month we will write 01.01.2020 00:00-31.01.2020 23:59
 		/// if it is a Year we will write 01.01.2020 00:00 - 31.12.2020 23:59
@@ -27,6 +25,7 @@ namespace MyProfile.Entity.Model
 		public string CurrentPeriod { get; set; }
 		public DateTime DateCreate { get; set; }
 		public DateTime DateEdit { get; set; }
+		public DateTime? LastSeenDate { get; set; }
 		public DateTime? DateDelete { get; set; }
 		public bool IsCountCollectiveBudget { get; set; }
 		/// <summary>

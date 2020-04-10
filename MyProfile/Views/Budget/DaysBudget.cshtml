@@ -14,12 +14,12 @@
 	<script src="~/vendor/libs/datatables/datatables.js"></script>
 	<script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
 
-	<script src="~/app_js/budget.js"></script>
+	<script src="~/app_js/budget/days-budget.js"></script>
 }
 
 <div id="budget-vue">
 	<input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
-	<input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("dd.MM.yyyy")" />
+	<input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />
 
 	<!-- Head block -->
 	<div class="container-m-nx container-m-ny bg-white container-p-x py-5 mb-0">
@@ -28,12 +28,12 @@
 			<div class="form-row">
 				<div class="form-group col">
 					<label class="form-label">Date</label>
-					<input type="text" class="form-control" id="budget-date" v-model="budgetDate">
+					<input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh">
 				</div>
 				<div class="form-group col">
-					<label class="form-label">Date</label>
-					<select class="form-control" data-style="btn-default" v-model="templateID">
-						@foreach (var template in Model.Templates)
+					<label class="form-label">Template</label>
+					<select id="templates" v-model="templateID" v-on:change="refresh" class="form-control" >
+						@foreach (var template in Model.NameTemplates)
 						{
 							<option value="@template.ID">@template.Name</option>
 

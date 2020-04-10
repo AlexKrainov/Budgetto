@@ -74,18 +74,18 @@
 			</div>
 			<div class="form-group">
 				<label class="form-label">Description</label>
-				<textarea class="form-control" rows="2"></textarea>
+				<textarea class="form-control" v-model="template.description" rows="2"></textarea>
 			</div>
 
 		</div>
 
 		<div class="card-footer">
-			<button class="btn btn-primary" type="button" disabled v-show="isSaveTemplate">
+			<button class="btn btn-primary" type="button" disabled v-show="isSavingTemplate">
 				<span class="spinner-border" role="status" aria-hidden="true"></span>
 				Save
 			</button>
 
-			<button type="button" class="btn btn-primary" v-on:click="saveTemplate" v-show="!isSaveTemplate">Save</button>
+			<button type="button" class="btn btn-primary" v-on:click="saveTemplate" v-show="!isSavingTemplate">Save</button>
 
 			<a href="/Template/Delete/@ViewBag.TemplateID" class="btn btn-outline-danger icon-btn borderless float-right" v-show="template.id > 0">
 				<span class="ion ion-md-trash"></span>
@@ -226,7 +226,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="card border-primary mb-3" v-if="isDaysForMonth(column.templateColumnType)">
+				<div class="card border-secondary mb-3" v-if="isDaysForMonth(column.templateColumnType)">
 					<div>
 						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
 							<li class="nav-item">
@@ -288,14 +288,10 @@
 									</div>
 								</li>
 							</ul>
-
-							<div class="card-footer text-center py-2">
-								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
-							</div>
 						</div>
 					</div>
 				</div>
-				<div class="card border-primary mb-3" v-if="isMonthsForYear(column.templateColumnType)">
+				<div class="card border-secondary mb-3" v-if="isMonthsForYear(column.templateColumnType)">
 					<div>
 						<ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
 							<li class="nav-item">
@@ -358,9 +354,6 @@
 									</div>
 								</li>
 							</ul>
-							<div class="card-footer text-center py-2">
-								<a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -445,7 +438,7 @@
 </section>
 
 
-<!-- Modal template -->
+<!-- Formula -->
 <div class="modal modal-top fade" id="modal-formula">
 	<div class="modal-dialog">
 		<form class="modal-content">

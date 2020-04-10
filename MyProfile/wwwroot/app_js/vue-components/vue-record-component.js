@@ -1,6 +1,5 @@
 ﻿Vue.component("vue-record-component", {
 	template: `<div class="row" v-bind:id="id" v-bind:name="name">
-<button type="button" data-toggle="modal" data-target="#modals-default">open</button>
 	<div class="modal fade" id="modals-default">
 		<div class="modal-dialog">
 			<form class="modal-content">

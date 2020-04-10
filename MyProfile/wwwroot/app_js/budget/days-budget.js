@@ -5,25 +5,24 @@
 		templateID: null,
 
 		template: {},
-		sections: [],
 		rows: [],
 		footerRow: [],
-
-		counterColumn: -100,
-		counterTemplateBudgetSections: -100,
 
 		column: {},
 		flatpickr: {},
 	},
+	watch: {
+	},
 	mounted: function () {
-
 		this.templateID = document.getElementById("templateID_hidden").value;
-		this.budgetDate = Date.parse(document.getElementById("budgetDate_hidden").value);
+		this.budgetDate = GetDateByFormat(Date.parse(document.getElementById("budgetDate_hidden").value), "YYYY/MM/DD");
 
-
-		this.loadRows().then(function () {
-			BudgetVue.initTable();
-		});
+		//if (this.templateID == -1) {
+		//	let options = document.getElementById("templates").children;
+		//	if (options && options.length > 0) {
+		//		options[0]["selected"] = "selected";
+		//	}
+		//}
 
 		this.flatpickr = flatpickr('#budget-date', {
 			altInput: true,
@@ -32,29 +31,20 @@
 			plugins: [
 				new monthSelectPlugin({
 					shorthand: true, //defaults to false
-					dateFormat: "m.yy", //defaults to "F Y"
+					dateFormat: "yy/m/d", //defaults to "F Y"
 					altFormat: "F Y", //defaults to "F Y"
 					theme: "dark" // defaults to "light"
 				})
 			]
 		});
 
+		this.refresh();
 	},
 	methods: {
-		//init: function () {
-		//	return sendAjax("/Template/GetData/3", null, "GET")
-		//		.then(function (result) {
-		//			if (result.isOk = true) {
-		//				BudgetVue.template = result.template;
-		//			}
-		//		});
-		//},
-
-		loadRows: function () {
-			let templateID = document.getElementById("templateID").value;
-			return sendAjax("/Budget/GetBudget?templateID=" + templateID, null, "GET")
+		load: function () {
+			return sendAjax("/Budget/GetDaysBudget?month=" + this.budgetDate + "&templateID=" + this.templateID, null, "POST")
 				.then(function (result) {
-					if (result.isOk = true) {
+					if (result.isOk == true) {
 						BudgetVue.rows = result.rows;
 						BudgetVue.footerRow = result.footerRow;
 						BudgetVue.template = result.template;
@@ -64,17 +54,16 @@
 
 			$.fn.dataTable.SearchPanes.defaults = false;
 		},
-
+		refresh: function () {
+			this.load().then(function () {
+				BudgetVue.initTable();
+			});
+		},
 		initTable: function () {
 			$("#table").DataTable();
 		},
-		onChooseSection: function (value, event) {
-			console.log(value);
-			console.log(event);
-		},
-		refresh: function () {
-			console.log("Refresh");
-		},
+
+		//View cell
 		getCellValue: function (cell) {
 			if (cell.value.indexOf(",")) {
 				let values = cell.value.split(",");

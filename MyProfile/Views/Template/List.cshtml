@@ -11,7 +11,7 @@
 	<h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
 		<div class="col-12 col-md px-0 pb-2">
 			Шаблоны
-			<a class="btn btn-outline-primary rounded-pill" href="/Template/Index">Добавить новый шаблон</a>
+			<a class="btn btn-outline-primary rounded-pill" href="/Template/Edit">Добавить новый шаблон</a>
 		</div>
 		<div class="col-12 col-md-3 px-0 pb-2">
 			<input type="text" class="form-control" placeholder="Search..." v-model="search">
@@ -26,7 +26,7 @@
 			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 1">По дням</a>
 		</li>
 		<li class="nav-item">
-			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 2 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 2">По месяцам</a>
+			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 3">По месяцам</a>
 		</li>
 	</ul>
 
