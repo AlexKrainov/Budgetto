@@ -89,12 +89,13 @@
 		name: String,
 
 		//Events
-		aftersave: Event,
+		aftersave: Event
 	},
 	data: function () {
 		return {
 			dateTimeOfPayment: null,
 			records: [],
+			counter: -99,
 
 			//components
 			flatpickr: {},
@@ -145,14 +146,24 @@
 				total = Math.round(total * 100) / 100;
 			}
 
-			this.records.push(
-				{
-					isCorrect: isCorrect,
-					money: total,
-					tag: item.value,
-					sectionID: -1,
-					sectionName: ""
-				});
+
+			if (!item.id) {
+				item.id = this.counter++;
+
+				this.records.push(
+					{
+						id: item.id,
+						isCorrect: isCorrect,
+						money: total,
+						tag: item.value,
+						sectionID: -1,
+						sectionName: ""
+					});
+			} else {
+				let el = this.records.find(x => x.id == item.id);
+				el.money = total;
+				el.tag = item.value;
+			}
 		},
 		removeTag: function (event) {
 			if (event.detail.data && event.detail.data.value) {
@@ -199,8 +210,40 @@
 						console.log(error);
 					}
 				}, this);
-
 			}
+		},
+		editByID: function (id) {
+			this.isSaving = true;
+
+			return $.ajax({
+				type: "GET",
+				url: "/Record/GetByID/" + id,
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'json',
+				context: this,
+				success: function (result) {
+
+					if (result.isOk = true) {
+						this.records.push(result.record);
+						this.flatpickr.setDate(result.record.dateTimeOfPayment);
+						this.tagify.addTags([{ value: result.record.tag, id: result.record.id }]);
+						$("#modals-default").modal("show");
+					}
+
+					this.isSaving = false;
+					return result;
+				},
+				error: function (xhr, status, error) {
+					console.log(error);
+					this.isSaving = false;
+				}
+			}, this);
+		},
+		editByElement: function (record) {
+			this.records.push(record);
+			this.flatpickr.setDate(record.dateTimeOfPayment);
+			this.tagify.addTags([{ value: record.tag, id: record.id }]);
+			$("#modals-default").modal("show");
 		},
 		onChooseSection: function (section) {
 			let record = this.records.find(x => x.isCorrect && x.sectionID == -1);

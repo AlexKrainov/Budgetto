@@ -108,4 +108,11 @@
 //});
 var RecordVue = new Vue({
 	el: "#record-container",
+	computed: {
+		recordComponent: function () {
+			return this.$children[0];
+		}
+	},
+	methods: {
+	}
 });

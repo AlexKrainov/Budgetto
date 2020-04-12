@@ -26,10 +26,22 @@ namespace MyProfile.Controllers.My
 			return View();
 		}
 
+		[HttpGet]
+		public async Task<JsonResult> GetByID(int id)
+		{
+			var record = await budgetRecordService.GetByID(id);
+
+			if (record == null)
+			{
+				return Json(new { isOk = false, id });
+			}
+			return Json(new { isOk = true, record });
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> SaveRecords([FromBody]RecordsModelView budgetRecord)
 		{
-			budgetRecordService.Create(budgetRecord);
+			budgetRecordService.CreateOrUpdate(budgetRecord);
 			return Json(new { isOk = true, budgetRecord });
 		}
 		[HttpPost]

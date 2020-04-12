@@ -1,0 +1,88 @@
+﻿{
+	"calendar_size": [
+		{
+			"size": {
+				"from": 1285,
+				"to": 9999,
+				"range": 12
+			}
+		},
+		{
+			"size": {
+				"from": 1174,
+				"to": 1285,
+				"range": 11
+			}
+		},
+		{
+			"size": {
+				"from": 1080,
+				"to": 1174,
+				"range": 10
+			}
+		},
+		{
+			"size": {
+				"from": 980,
+				"to": 1080,
+				"range": 9
+			}
+		},
+		{
+			"size": {
+				"from": 880,
+				"to": 980,
+				"range": 8
+			}
+		},
+		{
+			"size": {
+				"from": 780,
+				"to": 880,
+				"range": 7
+			}
+		},
+		{
+			"size": {
+				"from": 680,
+				"to": 780,
+				"range": 6
+			}
+		},
+		{
+			"size": {
+				"from": 580,
+				"to": 680,
+				"range": 5
+			}
+		},
+		{
+			"size": {
+				"from": 480,
+				"to": 580,
+				"range": 4
+			}
+		},
+		{
+			"size": {
+				"from": 380,
+				"to": 480,
+				"range": 3
+			}
+		},
+		{
+			"size": {
+				"from": 280,
+				"to": 380,
+				"range": 2
+			}
+		},
+		{
+			"size": {
+				"from": 180,
+				"to": 280,
+				"range": 1
+			}
+		}
+	]
+} 

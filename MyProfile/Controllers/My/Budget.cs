@@ -15,20 +15,22 @@ using MyProfile.Template.Service;
 
 namespace MyProfile.Controllers.My
 {
-	public class BudgetController : Controller
+	public partial class BudgetController : Controller
 	{
 		private IBaseRepository repository;
 		private TemplateService templateService;
 		private BudgetService budgetService;
+		private SectionService sectionService;
 
 		public BudgetController(IBaseRepository repository,
 			BudgetService budgetService,
-			TemplateService templateService)
+			TemplateService templateService,
+			SectionService sectionService)
 		{
 			this.repository = repository;
 			this.templateService = templateService;
 			this.budgetService = budgetService;
-
+			this.sectionService = sectionService;
 			//	new BudgetRecord
 			//	{
 			//		Total = 140,
@@ -41,12 +43,6 @@ namespace MyProfile.Controllers.My
 			//	},
 			//}, true);
 
-		}
-
-		public IActionResult Index(int id)
-		{
-			ViewBag.TemplateID = id;
-			return View();
 		}
 
 		public async Task<JsonResult> GetBudget(int templateID)

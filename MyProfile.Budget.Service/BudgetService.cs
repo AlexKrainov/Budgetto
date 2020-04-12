@@ -1,6 +1,7 @@
 ﻿using DynamicExpresso;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyProfile.Budget.Service
 {
@@ -147,6 +149,7 @@ namespace MyProfile.Budget.Service
 				CalculateFooter(footers, template));
 		}
 
+
 		private string SetFormatForDate(DateTime dateTime, string format, TemplateColumnType templateColumnType)
 		{
 			string v = "";
@@ -255,7 +258,9 @@ namespace MyProfile.Budget.Service
 		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecords(DateTime from, DateTime to, Func<TmpBudgetRecord, int> expresion)
 		{
 			return repository
-			  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment)
+			  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID
+			  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
+			  && x.IsDeleted == false)
 			  .Select(x => new TmpBudgetRecord
 			  {
 				  Total = x.Total,
@@ -269,10 +274,31 @@ namespace MyProfile.Budget.Service
 			  .ToList();
 		}
 
-		private Func<TmpBudgetRecord, object> get(Func<object, object> p)
+		public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsForTimeLine(DateTime from, DateTime to, List<int> sections)
 		{
-			throw new NotImplementedException();
+			return await repository
+			  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID
+				  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
+				  && sections.Contains(x.BudgetSectionID)
+				  && x.IsDeleted == false)
+			  .Select(x => new BudgetRecordModelView
+			  {
+				  ID = x.ID,
+				  DateTimeCreate = x.DateTimeCreate,
+				  DateTimeEdit = x.DateTimeEdit,
+				  Description = x.Description,
+				  IsConsider = x.IsConsider,
+				  RawData = x.RawData,
+				  Money = x.Total,
+				  DateTimeOfPayment = x.DateTimeOfPayment,
+				  SectionID = x.BudgetSectionID,
+				  SectionName = x.BudgetSection.Name,
+				  AreaID = x.BudgetSection.BudgetArea.ID,
+				  AreaName = x.BudgetSection.BudgetArea.Name
+			  })
+			  .ToListAsync();
 		}
+
 	}
 	public class TmpBudgetRecord
 	{

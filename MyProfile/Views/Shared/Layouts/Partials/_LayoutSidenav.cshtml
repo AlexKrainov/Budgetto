@@ -44,6 +44,9 @@
 	<li class="sidenav-item@(currentPage == "Section/Edit" ? " active" : "")">
 		<a asp-area="" asp-controller="Section" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>Section</div></a>
 	</li>
+	<li class="sidenav-item@(currentPage == "Budget/Records" ? " active" : "")">
+		<a asp-area="" asp-controller="Budget" asp-action="Records" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>TimeLine</div></a>
+	</li>
 
 	<!-- Dashboards -->
 	<li class="sidenav-item@(currentPage.StartsWith("Dashboards/") ? " active open" : "")">

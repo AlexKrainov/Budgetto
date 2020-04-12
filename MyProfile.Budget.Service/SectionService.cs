@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.CommonViewModels;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using System;
@@ -48,5 +49,18 @@ namespace MyProfile.Budget.Service
 
 			return sections;
 		}
+
+		public async Task<List<Select2Item>> GetSectionsForSelect2()
+		{
+			return await repository.GetAll<BudgetArea>(x => x.PersonID == UserInfo.PersonID || x.PersonID == null)
+				.SelectMany(x => x.BudgetSectinos)
+				.Select(x => new Select2Item
+				{
+					id = x.ID,
+					text = x.Name,
+				})
+				.ToListAsync();
+		}
+
 	}
 }

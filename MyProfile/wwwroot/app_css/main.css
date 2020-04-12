@@ -10,23 +10,37 @@
 	width: 77% !important;
 }
 
-.remove-section-icon{
+.remove-section-icon {
 	opacity: 0.15;
 }
 
-.remove-section-icon:hover {
-	color: var(--danger);
-	opacity: 1;
-}
+	.remove-section-icon:hover {
+		color: var(--danger);
+		opacity: 1;
+	}
 
 #record-show-btn {
 	opacity: 0.7;
 	font-size: large;
 }
-#record-show-btn:hover {
-	opacity: 1;
-}
+
+	#record-show-btn:hover {
+		opacity: 1;
+	}
 
 .money-muted {
 	opacity: 0.3;
+}
+
+.text-right {
+	margin-right: 0px;
+	margin-left: auto;
+}
+
+.link-red-hover:hover {
+	color: var(--danger) !important;
+}
+
+.link-green-hover:hover {
+	color: var(--success) !important;
 }

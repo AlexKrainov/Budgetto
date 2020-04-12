@@ -95,7 +95,25 @@ var SectionVue = new Vue({
 		create: function () {
 			this.section = {
 				name: "",
-			}
+			};
+
+			$("#cssColor").colorPick({
+				'initialColor': "#E5E9EB",
+				//'palette': ['#5BADFF', "#F06568", "#3C9E71","#C6C6C6"],
+				//'localizationColor': [],
+				'onColorSelected': function () {
+					//let title = '';
+					//let localColor = this.localizationColor.find(x => x.ColorCode.toUpperCase() == this.color.toUpperCase());
+					//if (localColor && localColor.ColorName) {
+					//title = localColor.ColorName;
+					SectionVue.section.cssColor = this.color;
+					//$("#carColorLocal").text(title);
+					//this.element.attr("title", title);
+					this.element.css({ 'backgroundColor': this.color, 'color': this.color });
+					//}
+				}
+			});
+
 			$("#modal-section").modal("show");
 		},
 		edit: function (section) {
