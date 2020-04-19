@@ -45,6 +45,7 @@ function GetDateByFormat(date, format) {
 	return "";
 }
 
+
 var TemplateColumnTypeEnum = Object.freeze({
 	Undefined: 0,
 	BudgetSection: 1,

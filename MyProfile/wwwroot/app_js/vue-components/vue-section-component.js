@@ -3,15 +3,18 @@
 				<input type='search'
 					class="form-control form-control-sm"
 					v-on:input="onsearch"/>
-					<div class="inline-spacing" >
+					<div class="inline-spacing" style="height: 200px; overflow-x: overlay;"  >
                       <a 
 						href="javascript:void(0)" 
-						class="badge badge-pill badge-default"
 						v-for="section in dataSectionItems"
-						v-show="section.isShow"
 						v-on:click="$emit('onchoose', section)"
-						>{{ section.name }}</a>
-                        
+						v-bind:title="section.description"
+						v-show="section.isShow"
+						v-bind:class="['badge', 'badge-pill', section.cssColor == undefined ? 'badge-default' : '' ]"
+						v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+							<i v-bind:class="section.cssIcon"></i>
+							{{ section.name }}</a>
+	                        
                     </div>
 				</div>`,
 	props: {

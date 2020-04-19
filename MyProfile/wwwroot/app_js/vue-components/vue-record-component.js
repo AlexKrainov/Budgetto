@@ -15,8 +15,22 @@
 				<div class="modal-body">
 					<div class="form-row">
 						<div class="form-group col">
-							<label class="form-label">Date</label>
+						<label class="form-label">Date</label>
+							<div class="input-group">
+							<span class="input-group-prepend">
+								<button v-on:click="addDays(-1)" class="btn btn-default" type="button" title="Минус 1 день"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+							</span>
+							<span class="input-group-prepend">
+								<button v-on:click="addDays(-7)" class="btn btn-default" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left" aria-hidden="true"></i></button>
+							</span>
 							<input type="text" class="form-control" id="record-date" v-model="dateTimeOfPayment">
+							<span class="input-group-append">
+								<button v-on:click="addDays(7)" class="btn btn-default" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
+							</span>
+							<span class="input-group-append">
+								<button v-on:click="addDays(1)" class="btn btn-default" type="button" title="Плюс 1 день"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+							</span>
+						</div>
 						</div>
 					</div>
 					<div class="form-row">
@@ -27,10 +41,10 @@
 								<div class="input-group-prepend">
 									<span v-on:click="" class="input-group-text cursor-pointer"><i class="fa fa-ruble-sign"></i></span>
 								</div>
-								<div class="input-group-prepend">
+								<div class="input-group-prepend" v-show="false">
 									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-dollar-sign"></i></span>
 								</div>
-								<div class="input-group-prepend">
+								<div class="input-group-prepend" v-show="false">
 									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-euro-sign"></i></span>
 								</div>
 							</div>
@@ -40,9 +54,11 @@
 						<div class="form-group col-6">
 							<div class="row" v-for="record in records" v-show="record.isCorrect">
 								<div class="col-6 mb-3">
-									{{ record.tag }}
-									{{ record.tag != record.money ? getMoney(record.money) : '' }}
-									<span class="text-muted"></span>
+									<a href="javascript:void(0)" v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'" title="Добавить описание" v-on:click="descriptionRecord = record">
+									{{ record.tag == record.money ? getMoney(record.money) : record.tag }}
+									{{ record.tag != record.money ? '= ' + getMoney(record.money) : '' }}
+									<span class="badge badge-dot badge-success indicator" v-show="record.description != undefined"></span>
+									</a>
 								</div>
 								<div class="col-6 mb-3 ">
 									<span class="text-muted">{{ record.sectionName }} </span>
@@ -62,10 +78,9 @@
 					</div>
 					<div class="form-row">
 						<div class="form-group col">
-							<label class="form-label">Description</label>
+							<label class="form-label">Комментарий к {{ descriptionRecord.tag }}</label>
 							<div class="input-group">
-
-								<textarea class="form-control"></textarea>
+								<textarea class="form-control" v-model="descriptionRecord.description"></textarea>
 							</div>
 						</div>
 					</div>
@@ -97,6 +112,8 @@
 			records: [],
 			counter: -99,
 
+			descriptionRecord: {},
+
 			//components
 			flatpickr: {},
 			tagify: {},
@@ -110,7 +127,7 @@
 		this.flatpickr = flatpickr('#record-date', {
 			altInput: true,
 			//dateFormat: 'd.m.Y',
-			defaultDate: Date.now()
+			defaultDate: "today"// Date.now()
 		});
 		//https://github.com/yairEO/tagify#events
 		//https://yaireo.github.io/tagify/
@@ -120,6 +137,7 @@
 		this.tagify = new Tagify(elementMoney, {
 			transformTag: this.transformTag,
 			duplicates: true,
+			placeholder: "550 или 100+500 или 199.99"
 		});
 
 		this.tagify.on('remove', this.removeTag);
@@ -157,7 +175,8 @@
 						money: total,
 						tag: item.value,
 						sectionID: -1,
-						sectionName: ""
+						sectionName: "",
+						description: undefined,
 					});
 			} else {
 				let el = this.records.find(x => x.id == item.id);
@@ -208,6 +227,8 @@
 					},
 					error: function (xhr, status, error) {
 						console.log(error);
+						this.$emit("aftersave", 123);
+						this.isSaving = false;
 					}
 				}, this);
 			}
@@ -254,7 +275,14 @@
 			}
 		},
 		getMoney: function (money) {
-			return '= ' + numberOfThreeDigits(money)
+			return numberOfThreeDigits(money)
+		},
+		addDays: function (days) {
+			var result = new Date(this.flatpickr.latestSelectedDateObj);
+			result.setDate(result.getDate() + days);
+			console.log(result);
+
+			this.flatpickr.setDate(result, true);
 		}
 	}
 });

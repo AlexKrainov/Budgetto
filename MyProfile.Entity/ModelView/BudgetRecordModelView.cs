@@ -38,6 +38,7 @@ namespace MyProfile.Entity.ModelView
 		public bool IsSaved { get; set; }
 		public bool IsCorrect { get; set; }
 		public DateTime? DateTimeOfPayment { get; set; }
+		public string Description { get; set; }
 	}
 
 	public class RecordsModelView

@@ -44,3 +44,7 @@
 .link-green-hover:hover {
 	color: var(--success) !important;
 }
+
+.badge.indicator {
+	margin: -4px 0px 0px 7px !important;
+}

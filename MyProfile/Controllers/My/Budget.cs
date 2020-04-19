@@ -76,8 +76,8 @@ namespace MyProfile.Controllers.My
 		[HttpPost]
 		public async Task<JsonResult> GetDaysBudget([FromQuery] DateTime month, [FromQuery] int templateID)
 		{
-			DateTime start = new DateTime(month.Year, month.Month, 01);
-			DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month));
+			DateTime start = new DateTime(month.Year, month.Month, 01, 00, 00, 01);
+			DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 23, 59, 59);
 
 			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
 

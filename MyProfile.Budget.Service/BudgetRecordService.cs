@@ -42,7 +42,7 @@ namespace MyProfile.Budget.Service
 			budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
 			foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
 			{
-				if (record.ID == 0)
+				if (record.ID <= 0)// create
 				{
 					record.IsSaved = Create(new BudgetRecordModelView
 					{
@@ -50,18 +50,19 @@ namespace MyProfile.Budget.Service
 						Money = record.Money,
 						RawData = record.Tag,
 						DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
+						Description = record.Description,
 						//Description = record.SectionID
 					});
 				}
 				else
-				{
+				{//edit
 					var dbRecord = repository.GetByID<BudgetRecord>(record.ID);
 
 					dbRecord.BudgetSectionID = record.SectionID;
 					dbRecord.Total = record.Money;
 					dbRecord.RawData = record.Tag;
 					dbRecord.DateTimeOfPayment = budgetRecord.DateTimeOfPayment;
-					//dbRecord.Description = record.de
+					dbRecord.Description = record.Description;
 
 					repository.Update(dbRecord, true);
 				}

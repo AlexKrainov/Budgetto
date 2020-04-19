@@ -147,7 +147,9 @@ namespace MyProfile.Controllers
 				{
 					x.ID,
 					x.Name,
+					x.Description,
 					x.CssIcon,
+					x.CssColor,
 					x.IsByDefault,
 					AreaName = x.BudgetArea.Name,
 					AreaID = x.BudgetAreaID,
