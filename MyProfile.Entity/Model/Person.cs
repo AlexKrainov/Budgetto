@@ -32,6 +32,15 @@ namespace MyProfile.Entity.Model
 		public DateTime? DateDelete { get; set; }
 		public bool IsDeleted { get; set; }
 
+		public bool IsAllowCollectiveBudget { get; set; }
+		/// <summary>
+		/// we have checkbox (IsAgreeToCollectiveBudget) and CollectiveBudgetID (can be null)
+		/// 1) User click the ckeckbox
+		/// 2) Show input with search email
+		/// 3) If we found the email and user has checkbox and CollectiveBudgetID, we write this CollectiveBudgetID to user from (1)
+		/// 4) If we don't find create CollectiveBudget
+		/// 
+		/// </summary>
 		[ForeignKey("CollectiveBudget")]
 		public Guid? CollectiveBudgetID { get; set; }
 

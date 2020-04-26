@@ -16,5 +16,8 @@ namespace MyProfile.Entity.ModelView
 		public int AreaID { get; set; }
 		public string AreaName { get; set; }
 		public bool IsUpdated { get; set; }
+		public decimal Money { get; set; }
+		public decimal MoneyThisYear { get; set; }
+		public decimal MoneyThisMonth { get; set; }
 	}
 }

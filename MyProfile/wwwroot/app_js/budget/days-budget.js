@@ -71,10 +71,10 @@
 				if (values.length == 2) {
 					return `<span>${values[0]}<span class="money-muted">,${values[1]}</span></span>`;
 				} else {
-					return `<span>${cell.value}</span>`
+					return `<span>${cell.value}</span>`;
 				}
 			} else {
-				return `<span>${cell.value}</span>`
+				return `<span>${cell.value}</span>`;
 			}
 		}
 	}

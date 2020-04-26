@@ -69,7 +69,10 @@ $(function () {
 					sectionName: record.sectionName,
 					tag: record.rawData,
 					dateTimeOfPayment: record.dateTimeOfPayment,
-				});
+				},
+					timeline.calendar_day_click_after_change_record
+				);
+
 				//RecordVue.recordComponent.edit(record.id);
 			}
 		}
@@ -134,6 +137,10 @@ var timeline = {
 		filter.serialize();
 		timeline.init();
 		//calendar.calHeatMap.destroy();
+	},
+	calendar_day_click_after_change_record(dateTimeOfPayment) {
+		dateTimeOfPayment = moment(dateTimeOfPayment);
+		timeline.calendar_day_click(dateTimeOfPayment.date(), dateTimeOfPayment.get("months"), dateTimeOfPayment.get("year"));
 	},
 	calendar_day_click: function (day, month, year) {
 		filter.serialize();
@@ -235,6 +242,7 @@ var calendar = {
 		calendar.toggleSpinner(true);
 		if (calendar.calHeatMap != undefined) {
 			calendar.calHeatMap.destroy();
+			$("#cal-heatmap").empty();
 		}
 
 		let _filter = $("#filter").serializeObject()
@@ -254,7 +262,7 @@ var calendar = {
 		});
 	},
 	after_loading: function (response) {
-		
+
 		var parser = function (data) { //формируем объект ввида { 12341234: 4, 412314212: 10 }, где 12341234 дата в формате (unix, Timestamp (seconds)), и 4 - count
 			let stats = {};
 			let d, c;

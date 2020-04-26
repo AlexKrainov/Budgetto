@@ -23,6 +23,8 @@ namespace MyProfile.Budget.Service
 
 		public async Task<List<BudgetAreaModelView>> GetSectionForEdit()
 		{
+			var thisMonth = DateTime.Now.AddDays(-DateTime.Now.Day);
+
 			var sections = await repository.GetAll<BudgetArea>(x => x.PersonID == UserInfo.PersonID || x.PersonID == null)
 				.Select(x => new BudgetAreaModelView
 				{
@@ -43,6 +45,9 @@ namespace MyProfile.Budget.Service
 							IsGlobal = y.IsByDefault,
 							AreaID = y.BudgetAreaID,
 							AreaName = y.BudgetArea.Name,
+							MoneyThisMonth = y.BudgetRecords.Where(z => z.DateTimeOfPayment >= thisMonth).Sum(q => q.Total),
+							MoneyThisYear = y.BudgetRecords.Where(z => z.DateTimeOfPayment.Year == thisMonth.Year).Sum(q => q.Total),
+							Money = y.BudgetRecords.Sum(q => q.Total),
 						})
 				})
 				.ToListAsync();

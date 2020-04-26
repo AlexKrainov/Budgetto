@@ -33,7 +33,12 @@ namespace MyProfile.Controllers.My
 		{
 			List<DateForCalendar> dates = new List<DateForCalendar>();
 
-			var result = budgetService.GetBudgetRecords(new DateTime(filter.Year, 1, 1), new DateTime(filter.Year, 12, 31), x => x.DateTimeOfPayment.Day);
+			var result = budgetService.GetBudgetRecords(
+				new DateTime(filter.Year, 1, 1),
+				new DateTime(filter.Year, 12, 31),
+				x => x.DateTimeOfPayment.Day,
+				y => filter.Sections.Contains(y.BudgetSectionID));
+
 			if (filter.IsAmount)
 			{
 				dates = result.Select(x => new DateForCalendar

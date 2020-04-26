@@ -16,6 +16,7 @@ namespace MyProfile.Entity.Model
 		[MaxLength(64)]
 		public string CssIcon { get; set; }
 
+		[ForeignKey("Person")]
 		public Guid? PersonID { get; set; }
 
 		public virtual Person Person { get; set; }

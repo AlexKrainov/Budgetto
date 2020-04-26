@@ -7,7 +7,15 @@
 		searchText: null,
 	},
 	watch: {
+		searchText: function (newValue, oldValue) {
+			if (newValue) {
+				newValue = newValue.toLocaleLowerCase();
+			}
 
+			for (var i = 0; i < this.areas.length; i++) {
+				this.areas[i].isShow = this.areas[i].name.toLocaleLowerCase().indexOf(newValue) >= 0;
+			}
+		}
 	},
 	mounted: function () {
 		this.init();
@@ -17,7 +25,7 @@
 			sendAjax("/Section/GetAllSectionForEdit", null, "GET")
 				.then(function (result) {
 					if (result.isOk) {
-						AreaVue.areas = result.sections;
+						AreaVue.areas = result.areas;
 					}
 				});
 		},
@@ -29,6 +37,7 @@
 
 			SectionVue.sections = area.sections;
 			SectionVue.areaID = area.id;
+			SectionVue.areas = this.areas.map(function (x) { return { name: x.name, id: x.id } });
 		},
 		create: function () {
 			this.area = {
@@ -56,8 +65,21 @@
 			}
 		},
 		remove: function (area) {
-			if (!this.area.isGlobal) {
-				sendAjax("/Section/RemoveArea?id=" + this.area.id, null, "POST")
+			if (!area.isGlobal) {
+				sendAjax("/Section/RemoveArea?id=" + area.id, null, "DELETE")
+					.then(function (result) {
+						if (result.isOk && result.wasDeleted) {
+							toastr.success(result.text);
+							let index = AreaVue.areas.findIndex(x => x.id == result.id);
+							if (index && index > 0) {
+								AreaVue.areas.splice(index, 1);
+							}
+						} else if (result.isOk && result.wasDeleted == false) {
+							toastr.warning(result.text);
+						} else {
+							toastr.error(result.text);
+						}
+					});
 			}
 		}
 	}
@@ -70,6 +92,7 @@ var SectionVue = new Vue({
 		section: {},
 
 		areaID: null,
+		areas: [], //for select
 
 		icons: [],
 		searchIcon: '',
@@ -95,6 +118,7 @@ var SectionVue = new Vue({
 		create: function () {
 			this.section = {
 				name: "",
+				areaID: this.areaID
 			};
 
 			$("#cssColor").colorPick({
@@ -139,7 +163,20 @@ var SectionVue = new Vue({
 			$("#modal-section").modal("show");
 		},
 		remove: function (section) {
-
+			sendAjax("/Section/RemoveSection?id=" + section.id, null, "DELETE")
+				.then(function (result) {
+					if (result.isOk && result.wasDeleted) {
+						toastr.success(result.text);
+						let index = SectionVue.sections.findIndex(x => x.id == result.id);
+						if (index && index > 0) {
+							SectionVue.sections.splice(index, 1);
+						}
+					} else if (result.isOk && result.wasDeleted == false) {
+						toastr.warning(result.text);
+					} else {
+						toastr.error(result.text);
+					}
+				});
 		},
 		selectIcon: function (item) {
 			this.section.cssIcon = item.nameClass;
@@ -147,20 +184,40 @@ var SectionVue = new Vue({
 		},
 		save: function () {
 			if (this.section.name.length > 0) {
-				this.section.areaID = this.areaID;
 
 				sendAjax("/Section/SaveSection", this.section, "POST")
 					.then(function (result) {
 						if (result.isOk) {
-							SectionVue.section = result.section;
-							if (SectionVue.sections.findIndex(x => x.id == result.section.id) == -1) {
-								SectionVue.sections.push(result.section);
+							if (result.section.areaID == SectionVue.areaID) {
+								SectionVue.section = result.section;
+								if (SectionVue.sections.findIndex(x => x.id == result.section.id) == -1) {
+									SectionVue.sections.push(result.section);
+								}
+							} else {
+								let index = SectionVue.sections.findIndex(x => x.id == result.section.id)
+								if (index >= 0) {
+									SectionVue.sections.splice(index, 1);
+									index = AreaVue.areas.findIndex(x => x.id == result.section.areaID);
+									AreaVue.areas[index].sections.push(result.section);
+								}
 							}
+
 							$("#modal-section").modal("hide");
 
 						}
 					});
 			}
+		},
+		getMoney: function (money) {
+			let result = numberOfThreeDigits(money);
+			if (result == "") {
+				return "0";
+			}
+			return result;
+		},
+		changeArea: function (event) {
+			this.section.areaID = event.target.selectedOptions[0].value;
+			this.section.areaName = event.target.selectedOptions[0].text;
 		}
 
 	}

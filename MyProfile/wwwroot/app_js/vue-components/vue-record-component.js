@@ -120,6 +120,7 @@
 
 			//state
 			isSaving: false,
+			after_save_callback: Event,
 		}
 	},
 	mounted: function () {
@@ -222,6 +223,10 @@
 							}
 							this.$emit("aftersave", 123);
 							this.isSaving = false;
+
+							if (typeof (this.after_save_callback) === "function") {
+								this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
+							}
 						}
 						return result;
 					},
@@ -260,10 +265,11 @@
 				}
 			}, this);
 		},
-		editByElement: function (record) {
+		editByElement: function (record, callback) {
 			this.records.push(record);
 			this.flatpickr.setDate(record.dateTimeOfPayment);
 			this.tagify.addTags([{ value: record.tag, id: record.id }]);
+			this.after_save_callback = callback;
 			$("#modals-default").modal("show");
 		},
 		onChooseSection: function (section) {

@@ -72,7 +72,7 @@
 				</div>
 			</h6>
 			<ul class="list-group list-group-flush">
-				<li class="list-group-item py-3 cursor-pointer " v-for="area in areas" v-on:click="selectArea(area, $event)">
+				<li class="list-group-item py-3 cursor-pointer " v-for="area in areas" v-on:click="selectArea(area, $event)" v-show="area.isShow">
 					<i class="fa fa-circle updated-item" aria-hidden="true" v-show="area.isUpdated"></i>
 					<span class="float-right">
 						<i class="fa fa-project-diagram " style="color: var(--gray-dark);"></i>
@@ -81,11 +81,17 @@
 					<div class="font-weight-semibold">{{ area.name }}</div>
 					<small class="text-muted">{{ area.description }}</small>
 					<br />
+					<div class="inline-spacing">
+						<div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="section in area.sections" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+							<i v-bind:class="section.cssIcon"></i>
+							<span class="ml-1">{{section.name}}</span>
+						</div>
+					</div>
 					<i class="fa fa-users" v-show="area.isGlobal" title="Созданная системой" style="color: var(--blue);"></i>
 					<i class="fa fa-user" v-show="!area.isGlobal" title="Созданная пользователем" style="color: var(--green);"></i>
 					<div class="float-right">
 						<button type="button" class="btn btn-sm btn-outline-success" v-if="!area.isGlobal" v-on:click="edit(area)">Edit</button>
-						<button type="button" class="btn btn-sm btn-outline-danger" v-if="!area.isGlobal" v-on:click="remove(area)">Remove</button>
+						<button type="button" class="btn btn-sm btn-outline-danger" v-if="!area.isGlobal && (area.sections == undefined || area.sections.length == 0)" v-on:click="remove(area)">Remove</button>
 					</div>
 				</li>
 			</ul>
@@ -142,10 +148,15 @@
 			</h6>
 			<ul class="list-group list-group-flush">
 				<li class="list-group-item py-3" v-for="section in sections" v-bind:style="'border-left: 3px solid '+ section.cssColor +';'">
+					<ul class="float-right list-unstyled">
+						<li>{{ getMoney(section.moneyThisMonth) }} ₽, в этом месяце</li>
+						<li>{{ getMoney(section.moneyThisYear) }} ₽, в этом году</li>
+						<li>{{ getMoney(section.money) }} ₽, всего</li>
+					</ul>
 					<div class="font-weight-semibold">{{ section.name }}</div>
 					<small class="text-muted">{{ section.description }}</small>
-					<br />
-					<div class="badge badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+					<br /><br /><br />
+					<div class="badge badge-pill badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
 						<i v-bind:class="section.cssIcon"></i>
 						<span class="ml-1">{{section.name}}</span>
 					</div>
@@ -178,6 +189,14 @@
 							<div class="form-group col mb-0">
 								<label class="form-label">Description</label>
 								<textarea class="form-control" v-model="section.description" placeholder="Description"></textarea>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col mb-0">
+								<label class="form-label">Area</label>
+								<select class="form-control" v-on:change="changeArea($event)">
+									<option v-for="area in areas" v-bind:value="area.id" v-bind:selected="area.id == section.areaID">{{ area.name }}</option>
+								</select>
 							</div>
 						</div>
 						<div class="form-row">

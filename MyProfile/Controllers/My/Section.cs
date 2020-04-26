@@ -34,8 +34,8 @@ namespace MyProfile.Controllers
 		{
 			try
 			{
-				var sections = await sectionService.GetSectionForEdit();
-				return Json(new { isOk = true, sections });
+				var areas = await sectionService.GetSectionForEdit();
+				return Json(new { isOk = true, areas });
 			}
 			catch (Exception ex)
 			{
@@ -61,7 +61,8 @@ namespace MyProfile.Controllers
 				if (budgetArea.ID > 0)
 				{
 					await repository.UpdateAsync(budgetArea, true);
-				}else
+				}
+				else
 				{
 					await repository.CreateAsync(budgetArea, true);
 				}
@@ -103,6 +104,8 @@ namespace MyProfile.Controllers
 				}
 
 				section.ID = budgetSection.ID;
+				section.AreaID = budgetSection.BudgetAreaID;
+
 				section.IsUpdated = true;
 
 				return Json(new { isOk = true, section });
@@ -115,7 +118,6 @@ namespace MyProfile.Controllers
 			return Json(new { isOk = false });
 		}
 
-		
 
 		[HttpGet]
 		public async Task<IActionResult> GetAllSectionByPerson()
@@ -160,5 +162,49 @@ namespace MyProfile.Controllers
 
 			return Json(new { isOk = true, sections });
 		}
+
+		#region Delete
+
+		[HttpDelete]
+		public async Task<IActionResult> RemoveArea(int id)
+		{
+			var budgetArea = repository.GetByID<BudgetArea>(id);
+
+			if (budgetArea.PersonID != null && budgetArea.PersonID == UserInfo.PersonID && (budgetArea.BudgetSectinos == null || budgetArea.BudgetSectinos.Count() == 0))
+			{
+				try
+				{
+					repository.Delete(budgetArea, true);
+				}
+				catch (Exception ex)
+				{
+					return Json(new { isOk = false,id, wasDeleted = false, text = "Не удалось удалить !" });
+				}
+				return Json(new { isOk = true, id, wasDeleted = true, text = "Удаление прошло успешно" });
+			}
+			return Json(new { isOk = true, id, wasDeleted = false, text = "Не удалось удалить !" });
+		}
+
+		[HttpDelete]
+		public async Task<IActionResult> RemoveSection(int id)
+		{
+			var budgetSection = repository.GetByID<BudgetSection>(id);
+
+			if (budgetSection.BudgetRecords == null || budgetSection.BudgetRecords.Count() == 0)
+			{
+				try
+				{
+					repository.Delete(budgetSection, true);
+				}
+				catch (Exception ex)
+				{
+					return Json(new { isOk = false, id, wasDeleted = false, text = "Не удалось удалить !" });
+				}
+				return Json(new { isOk = true, id, wasDeleted = true, text = "Удаление прошло успешно" });
+			}
+			return Json(new { isOk = true, id, wasDeleted = false, text = "Не удалось удалить !" });
+		}
+
+		#endregion
 	}
 }

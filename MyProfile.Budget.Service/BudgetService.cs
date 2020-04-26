@@ -255,12 +255,36 @@ namespace MyProfile.Budget.Service
 			return columnsFormula;
 		}
 
-		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecords(DateTime from, DateTime to, Func<TmpBudgetRecord, int> expresion)
+		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecords(
+			DateTime from,
+			DateTime to,
+			Func<TmpBudgetRecord, int> groupBy,
+			Func<BudgetRecord, bool> expresion = null)
 		{
+			if (expresion == null)
+			{
+				return repository
+				  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID
+				  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
+				  && x.IsDeleted == false)
+				  .Select(x => new TmpBudgetRecord
+				  {
+					  Total = x.Total,
+					  DateTimeOfPayment = x.DateTimeOfPayment,
+					  SectionID = x.BudgetSectionID,
+					  SectionName = x.BudgetSection.Name,
+					  AreaID = x.BudgetSection.BudgetArea.ID,
+					  AreaName = x.BudgetSection.BudgetArea.Name
+				  })
+				  .GroupBy(groupBy)
+				  .ToList();
+			}
+
 			return repository
 			  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID
 			  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
 			  && x.IsDeleted == false)
+			  .Where(expresion)
 			  .Select(x => new TmpBudgetRecord
 			  {
 				  Total = x.Total,
@@ -270,7 +294,7 @@ namespace MyProfile.Budget.Service
 				  AreaID = x.BudgetSection.BudgetArea.ID,
 				  AreaName = x.BudgetSection.BudgetArea.Name
 			  })
-			  .GroupBy(expresion)
+			  .GroupBy(groupBy)
 			  .ToList();
 		}
 

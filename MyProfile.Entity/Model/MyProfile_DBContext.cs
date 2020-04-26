@@ -46,6 +46,7 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<BudgetArea> BudgetAreas { get; set; }
 		public virtual DbSet<BudgetSection> BudgetSections { get; set; }
 		public virtual DbSet<BudgetRecord> BudgetRecords { get; set; }
+		public virtual DbSet<Limit> Limits { get; set; }
 		public virtual DbSet<Template> Templates { get; set; }
 		public virtual DbSet<TemplateBudgetSection> TemplateBudgetSections { get; set; }
 		public virtual DbSet<CollectiveBudget> CollectiveBudgets { get; set; }
