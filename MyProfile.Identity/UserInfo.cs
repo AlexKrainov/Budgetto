@@ -3,6 +3,7 @@ using MyProfile.Entity.ModelView;
 using Newtonsoft.Json;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace MyProfile.Identity
@@ -13,6 +14,8 @@ namespace MyProfile.Identity
 		/// tmp
 		/// </summary>
 		public static Guid PersonID { get { return Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"); } }
+
+		
 		public static readonly string CONNECT_USER = "ConnectUserInfo";
 		public static Microsoft.AspNetCore.Http.HttpContext HttpContext => _accessor.HttpContext;
 
@@ -23,6 +26,7 @@ namespace MyProfile.Identity
 		{
 			get
 			{
+				return new UserInfoModel();
 				if (_accessor.HttpContext == null)
 				{
 					return null;

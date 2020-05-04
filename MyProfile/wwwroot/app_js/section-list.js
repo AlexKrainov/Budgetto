@@ -5,6 +5,7 @@
 		area: {},
 
 		searchText: null,
+		includedAreas: [],
 	},
 	watch: {
 		searchText: function (newValue, oldValue) {
@@ -37,6 +38,8 @@
 
 			SectionVue.sections = area.sections;
 			SectionVue.areaID = area.id;
+			SectionVue.areaCanEdit = area.canEdit;
+
 			SectionVue.areas = this.areas.map(function (x) { return { name: x.name, id: x.id } });
 		},
 		create: function () {
@@ -81,6 +84,23 @@
 						}
 					});
 			}
+		},
+		include: function (area) {
+			this.area = area;
+			$("#modal-area-include").modal("show");
+		},
+		saveInclude: function () {
+			var obj = {
+				areaID: this.area.id,
+				includedAreas: this.includedAreas
+			};
+
+			sendAjax("/Section/SaveIncludedArea", obj, "POST")
+				.then(function (result) {
+					if (result.isOk) {
+						AreaVue.areas = result.areas;
+					}
+				});
 		}
 	}
 });
@@ -92,6 +112,7 @@ var SectionVue = new Vue({
 		section: {},
 
 		areaID: null,
+		areaCanEdit: true,
 		areas: [], //for select
 
 		icons: [],

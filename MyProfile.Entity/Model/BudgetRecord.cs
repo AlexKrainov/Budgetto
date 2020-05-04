@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -34,5 +35,6 @@ namespace MyProfile.Entity.Model
 
 		public virtual Person Person { get; set; }
 		public virtual BudgetSection BudgetSection { get; set; }
+
 	}
 }

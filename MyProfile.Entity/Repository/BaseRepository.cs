@@ -162,7 +162,6 @@ namespace MyProfile.Entity.Repository
 
 		public async Task<T> GetByIDAsync<T>(int id) where T : class
 		{
-
 			return await GetDbSet<T>().FindAsync(id);
 		}
 

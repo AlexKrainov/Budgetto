@@ -55,6 +55,8 @@
 @section Scripts {
 	<script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
 	<script src="~/app_js/section-list.js"></script>
+
+	<script src="~/app_js/vue-components/vue-select2-component.js"></script>
 }
 
 
@@ -87,11 +89,16 @@
 							<span class="ml-1">{{section.name}}</span>
 						</div>
 					</div>
-					<i class="fa fa-users" v-show="area.isGlobal" title="Созданная системой" style="color: var(--blue);"></i>
-					<i class="fa fa-user" v-show="!area.isGlobal" title="Созданная пользователем" style="color: var(--green);"></i>
+					<span>
+						<i class="fa fa-user" v-show="area.canEdit" title="Создали вы" style="color: var(--blue);"></i>
+						<i class="fa fa-user" v-show="!area.canEdit" v-bind:title="'Созданная пользователем : ' + area.owner" style="color: var(--red);"></i>
+						{{ area.owner }}
+					</span>
+
 					<div class="float-right">
-						<button type="button" class="btn btn-sm btn-outline-success" v-if="!area.isGlobal" v-on:click="edit(area)">Edit</button>
-						<button type="button" class="btn btn-sm btn-outline-danger" v-if="!area.isGlobal && (area.sections == undefined || area.sections.length == 0)" v-on:click="remove(area)">Remove</button>
+						<button type="button" class="btn btn-sm btn-outline-warning" v-if="area.canEdit" v-on:click="include(area)">Include</button>
+						<button type="button" class="btn btn-sm btn-outline-success" v-if="area.canEdit" v-on:click="edit(area)">Edit</button>
+						<button type="button" class="btn btn-sm btn-outline-danger" v-if="area.canEdit && (area.sections == undefined || area.sections.length == 0)" v-on:click="remove(area)">Remove</button>
 					</div>
 				</li>
 			</ul>
@@ -120,16 +127,51 @@
 								<textarea class="form-control" v-model="area.description" placeholder="Description"></textarea>
 							</div>
 						</div>
-						<div class="form-row">
-							<div class="form-group col mb-0">
-								<label class="form-label">Icon</label>
-								<input type="text" class="form-control" placeholder="DD / MM">
-							</div>
-						</div>
+						@*<div class="form-row">
+								<div class="form-group col mb-0">
+									<label class="form-label">Icon</label>
+									<input type="text" class="form-control" placeholder="DD / MM">
+								</div>
+							</div>*@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Modal include area -->
+		<div class="modal fade" id="modal-area-include">
+			<div class="modal-dialog">
+				<form class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">
+							Payment <span class="font-weight-light">Budget Area</span><br>
+						</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-row">
+							<div class="form-group col">
+								<label class="form-label">Name</label>
+								<input type="text" class="form-control" placeholder="Name" v-model="area.name">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col mb-0">
+								<label class="form-label">Included area</label>
+								<select multiple class="form-control" v-model="includedAreas">
+									<option v-for="_area in areas" v-if="!_area.canEdit" v-bind:value="_area.id">{{ _area.name }}</option>
+								</select>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" v-on:click="saveInclude">Save</button>
 					</div>
 				</form>
 			</div>
@@ -143,7 +185,7 @@
 				<div class="card-header-title">Budget sections</div>
 
 				<div class="card-header-elements ml-auto">
-					<button type="button" class="btn btn-primary btn-xs md-btn-flat" v-on:click="create" v-show="areaID != null">Add</button>
+					<button type="button" class="btn btn-primary btn-xs md-btn-flat" v-on:click="create" v-show="areaID != null && areaCanEdit">Add</button>
 				</div>
 			</h6>
 			<ul class="list-group list-group-flush">
@@ -153,16 +195,22 @@
 						<li>{{ getMoney(section.moneyThisYear) }} ₽, в этом году</li>
 						<li>{{ getMoney(section.money) }} ₽, всего</li>
 					</ul>
-					<div class="font-weight-semibold">{{ section.name }}</div>
-					<small class="text-muted">{{ section.description }}</small>
-					<br /><br /><br />
-					<div class="badge badge-pill badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+					<span class="font-weight-semibold">{{ section.name }}</span>
+					<span class="badge badge-pill badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
 						<i v-bind:class="section.cssIcon"></i>
 						<span class="ml-1">{{section.name}}</span>
-					</div>
+					</span>
+					<br />
+					<small class="text-muted">{{ section.description }}</small>
+					<br /><br /><br />
+					<span>
+						<i class="fa fa-user" v-show="section.canEdit" title="Создали вы" style="color: var(--blue);"></i>
+						<i class="fa fa-user" v-show="!section.canEdit" v-bind:title="'Созданная пользователем : ' + section.owner" style="color: var(--red);"></i>
+						{{ section.owner }}
+					</span>
 					<div class="float-right">
-						<button type="button" class="btn btn-sm btn-outline-success" v-if="!section.isGlobal" v-on:click="edit(section)">Edit</button>
-						<button type="button" class="btn btn-sm btn-outline-danger" v-if="!section.isGlobal" v-on:click="remove(section)">Remove</button>
+						<button type="button" class="btn btn-sm btn-outline-success" v-if="section.canEdit" v-on:click="edit(section)">Edit</button>
+						<button type="button" class="btn btn-sm btn-outline-danger" v-if="section.canEdit" v-on:click="remove(section)">Remove</button>
 					</div>
 				</li>
 			</ul>
@@ -185,6 +233,7 @@
 								<input type="text" class="form-control" placeholder="Name" v-model="section.name">
 							</div>
 						</div>
+
 						<div class="form-row">
 							<div class="form-group col mb-0">
 								<label class="form-label">Description</label>
@@ -207,6 +256,38 @@
 							</div>
 						</div>
 						<br />
+						<div class="btn-group btn-group-toggle" data-toggle="buttons">
+							<label class="btn btn-primary active">
+								<input type="radio" name="btn-radio" checked> Расходы
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="btn-radio"> Доходы
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="btn-radio"> Сбережения
+							</label>
+						</div>
+
+						<div class="form-row">
+							<div class="alert alert-info alert-dismissible fade show">
+								<button type="button" class="close" data-dismiss="alert">×</button>
+								text
+							</div>
+							<div class="form-group col-md-6">
+								<label class="form-label">Лимиты</label>
+								<input type="text" class="form-control" value="0">
+							</div>
+							<div class="form-group col-md-4">
+								<select class="custom-select">
+									<option>Выбрать</option>
+									<option>Месяц</option>
+									<option>Год</option>
+								</select>
+							</div>
+							<div class="form-group col-md-2">
+								<button type="button">Добавить</button>
+							</div>
+						</div>
 
 						<div class="input-group">
 							<div class="input-group-prepend">

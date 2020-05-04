@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200427184326_MyProfile_15")]
+    partial class MyProfile_15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,16 +27,10 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CodeName");
-
                     b.Property<string>("CssIcon")
                         .HasMaxLength(64);
 
                     b.Property<string>("Description");
-
-                    b.Property<string>("IncludedCollectiveAreas");
-
-                    b.Property<bool>("IsShow");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -94,8 +90,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("BudgetAreaID");
 
-                    b.Property<string>("CodeName");
-
                     b.Property<string>("CssColor")
                         .HasMaxLength(24);
 
@@ -104,9 +98,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("IncludedCollectiveSections");
-
-                    b.Property<bool>("IsShow");
+                    b.Property<bool>("IsByDefault");
 
                     b.Property<string>("Name")
                         .IsRequired();

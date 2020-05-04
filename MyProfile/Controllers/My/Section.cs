@@ -21,6 +21,40 @@ namespace MyProfile.Controllers
 		{
 			this.repository = repository;
 			this.sectionService = sectionService;
+
+			//CollectiveBudget collectiveBudget = new CollectiveBudget
+			//{
+			//	Name = "CollectiveBudget",
+			//	DateCreate = DateTime.Now
+			//};
+			//repository.Create(collectiveBudget, true);
+
+			//var person = new Person
+			//{
+			//	CollectiveBudgetID = collectiveBudget.ID,
+			//	Email = "test@gmail.com",
+			//	Password = "test",
+			//	IsAllowCollectiveBudget = true,
+			//	Name = "Test account",
+			//	LastName = "Test account",
+
+			//};
+			//repository.Create(person, true);
+
+			//var area = new BudgetArea
+			//{
+			//	Name = "Area for test account",
+			//	PersonID = person.ID
+			//};
+			//repository.Create(area, true);
+
+			//var section = new BudgetSection
+			//{
+			//	BudgetAreaID = 12,
+			//	Name = "Test for test account",
+			//	SectionTypeCodeName = "Income",
+			//};
+			//repository.Create(section, true);
 		}
 
 		[HttpGet]
@@ -34,7 +68,7 @@ namespace MyProfile.Controllers
 		{
 			try
 			{
-				var areas = await sectionService.GetSectionForEdit();
+				var areas = await sectionService.GetFullModel();
 				return Json(new { isOk = true, areas });
 			}
 			catch (Exception ex)
@@ -80,7 +114,7 @@ namespace MyProfile.Controllers
 			return Json(new { isOk = false });
 		}
 		[HttpPost]
-		public async Task<IActionResult> SaveSection([FromBody] BudgetSecionModelView section)
+		public async Task<IActionResult> SaveSection([FromBody] BudgetSectionModelView section)
 		{
 			try
 			{
@@ -92,7 +126,7 @@ namespace MyProfile.Controllers
 					Description = section.Description,
 					Name = section.Name,
 					BudgetAreaID = section.AreaID,
-					PersonID = UserInfo.PersonID
+					//PersonID = UserInfo.PersonID
 				};
 				if (budgetSection.ID > 0)
 				{
@@ -118,6 +152,23 @@ namespace MyProfile.Controllers
 			return Json(new { isOk = false });
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> SaveIncludedArea([FromBody] int areaID, [FromBody] List<int> includedAreas)
+		{
+			try
+			{
+				await sectionService.SaveIncludedArea(areaID, includedAreas);
+
+				return RedirectToAction("GetAllSectionForEdit");//  Json(new { isOk = true, section });
+			}
+			catch (Exception ex)
+			{
+
+			}
+
+			return Json(new { isOk = false });
+		}
+
 
 		[HttpGet]
 		public async Task<IActionResult> GetAllSectionByPerson()
@@ -128,7 +179,7 @@ namespace MyProfile.Controllers
 					x.ID,
 					x.Name,
 					BudgetSections = x.BudgetSectinos
-						.Where(y => y.PersonID == UserInfo.PersonID)
+						.Where(y => y.BudgetArea.PersonID == UserInfo.PersonID)
 						.Select(y => new
 						{
 							y.ID,
@@ -143,7 +194,7 @@ namespace MyProfile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetSectins()
 		{
-			var sections = await repository.GetAll<BudgetSection>(x => x.PersonID == UserInfo.PersonID)
+			var sections = await repository.GetAll<BudgetSection>(x => x.BudgetArea.PersonID == UserInfo.PersonID)
 				.OrderByDescending(x => x.BudgetRecords.Count())
 				.Select(x => new
 				{
@@ -152,7 +203,7 @@ namespace MyProfile.Controllers
 					x.Description,
 					x.CssIcon,
 					x.CssColor,
-					x.IsByDefault,
+					x.IsShow,
 					AreaName = x.BudgetArea.Name,
 					AreaID = x.BudgetAreaID,
 					RecordCount = x.BudgetRecords.Count(),
@@ -178,7 +229,7 @@ namespace MyProfile.Controllers
 				}
 				catch (Exception ex)
 				{
-					return Json(new { isOk = false,id, wasDeleted = false, text = "Не удалось удалить !" });
+					return Json(new { isOk = false, id, wasDeleted = false, text = "Не удалось удалить !" });
 				}
 				return Json(new { isOk = true, id, wasDeleted = true, text = "Удаление прошло успешно" });
 			}
