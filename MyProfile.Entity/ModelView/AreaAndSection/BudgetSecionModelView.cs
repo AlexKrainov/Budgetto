@@ -18,9 +18,6 @@ namespace MyProfile.Entity.ModelView
 		public int AreaID { get; set; }
 		public string AreaName { get; set; }
 		public bool IsUpdated { get; set; }
-		public decimal Money { get; set; }
-		public decimal MoneyThisYear { get; set; }
-		public decimal MoneyThisMonth { get; set; }
 
 		public string Owner { get; set; }
 		public bool CanEdit { get; set; }
@@ -28,7 +25,8 @@ namespace MyProfile.Entity.ModelView
 		/// <summary>
 		/// For CollectiveBudget
 		/// </summary>
-		public List<BudgetSectionModelView> IncludedCollectiveSections { get; set; } = new List<BudgetSectionModelView>();
-		public string IncludedCollectiveSection_Raw { get; set; }
+		public List<BudgetSectionModelView> CollectiveSections { get; set; } = new List<BudgetSectionModelView>();
+		public int? SectionTypeID { get; set; }
+		public string SectionTypeName { get; set; }
 	}
 }

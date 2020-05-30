@@ -23,17 +23,22 @@ namespace MyProfile.Entity.Model
 		public string Description { get; set; }
 		[MaxLength(64)]
 		public string CssIcon { get; set; }
-		public string IncludedCollectiveAreas { get; set; }
+		/// <summary>
+		/// Can see only owner
+		/// </summary>
+		public bool IsPrivate { get; set; }
 
 		[ForeignKey("Person")]
 		public Guid? PersonID { get; set; }
 
 		public virtual Person Person { get; set; }
-		public virtual IEnumerable<BudgetSection> BudgetSectinos { get; set; }
+		public virtual ICollection<BudgetSection> BudgetSectinos { get; set; }
+		public virtual ICollection<CollectiveArea> CollectiveAreas { get; set; }
 
 		public BudgetArea()
 		{
 			this.BudgetSectinos = new HashSet<BudgetSection>();
+			this.CollectiveAreas = new HashSet<CollectiveArea>();
 		}
 	}
 }

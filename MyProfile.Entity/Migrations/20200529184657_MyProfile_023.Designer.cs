@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200529184657_MyProfile_023")]
+    partial class MyProfile_023
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,15 +172,11 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ChildSectionID");
-
-                    b.Property<int?>("SectionID");
+                    b.Property<int>("ChildSectionID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ChildSectionID");
-
-                    b.HasIndex("SectionID");
 
                     b.ToTable("CollectiveSections");
                 });
@@ -474,8 +472,8 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("BudgetSections")
                         .HasForeignKey("PersonID");
 
-                    b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
-                        .WithMany()
+                    b.HasOne("MyProfile.Entity.Model.SectionType")
+                        .WithMany("BudgetSections")
                         .HasForeignKey("SectionTypeID");
                 });
 
@@ -493,12 +491,9 @@ namespace MyProfile.Entity.Migrations
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveSection", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.BudgetSection", "ChildSection")
-                        .WithMany()
-                        .HasForeignKey("ChildSectionID");
-
-                    b.HasOne("MyProfile.Entity.Model.BudgetSection", "Section")
                         .WithMany("CollectiveSections")
-                        .HasForeignKey("SectionID");
+                        .HasForeignKey("ChildSectionID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
@@ -558,7 +553,7 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
-                        .WithMany()
+                        .WithMany("SectionTypeViews")
                         .HasForeignKey("SectionTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

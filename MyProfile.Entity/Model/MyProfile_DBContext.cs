@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MyProfile.Entity.Model
 {
@@ -24,6 +25,16 @@ namespace MyProfile.Entity.Model
 		////https://metanit.com/sharp/entityframeworkcore/2.14.php
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.Entity<BudgetRecord>()
+				.HasIndex(x => x.DateTimeOfPayment);
+
+			modelBuilder.Entity<CollectiveArea>()
+				.HasOne(x => x.Area)
+				.WithMany(y => y.CollectiveAreas);
+			modelBuilder.Entity<CollectiveSection>()
+				.HasOne(x => x.Section)
+				.WithMany(y => y.CollectiveSections);
+
 			//	base.OnModelCreating(modelBuilder);
 
 			//modelBuilder.Entity<BudgetArea>();
@@ -50,9 +61,15 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<Template> Templates { get; set; }
 		public virtual DbSet<TemplateBudgetSection> TemplateBudgetSections { get; set; }
 		public virtual DbSet<CollectiveBudget> CollectiveBudgets { get; set; }
+		public virtual DbSet<CollectiveArea> CollectiveAreas { get; set; }
+		public virtual DbSet<CollectiveSection> CollectiveSections { get; set; }
 		public virtual DbSet<Person> People { get; set; }
 		public virtual DbSet<PersonSetting> PersonSettings { get; set; }
 		public virtual DbSet<TemplateColumn> TemplateColumns { get; set; }
 		public virtual DbSet<PeriodType> PeriodTypes { get; set; }
+		public virtual DbSet<SectionGroupLimit> SectionGroupLimits { get; set; }
+		public virtual DbSet<SectionType> SectionTypes { get; set; }
+		public virtual DbSet<SectionTypeView> SectionTypeViews { get; set; }
+
 	}
 }

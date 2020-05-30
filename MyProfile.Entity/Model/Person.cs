@@ -28,6 +28,7 @@ namespace MyProfile.Entity.Model
 		[DataType(DataType.Password)]
 		public string Password { get; set; }
 		public string ImageLink { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime DateCreate { get; set; }
 		public DateTime? DateDelete { get; set; }
 		public bool IsDeleted { get; set; }

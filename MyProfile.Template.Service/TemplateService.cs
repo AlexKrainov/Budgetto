@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelEntitySave;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
+using MyProfile.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,7 +24,7 @@ namespace MyProfile.Template.Service
 			this.repository = repository;
 		}
 
-		public async Task<TemplateViewModel> GetTemplateByID(Expression<Func<Template, bool>> predicate)
+		public async Task<TemplateViewModel> GetTemplateByID(Expression<Func<Template, bool>> predicate, bool addCollectiveBudget = true)
 		{
 			TemplateViewModel templateViewModel = new TemplateViewModel();
 
@@ -53,11 +56,12 @@ namespace MyProfile.Template.Service
 									PlaceAfterCommon = y.PlaceAfterCommon ?? 0,
 									Format = y.Format,
 									TemplateBudgetSections = y.TemplateBudgetSections
-										.Select(z => new TemplateAreaType
+										.Select(z => new Entity.ModelView.TemplateBudgetSection
 										{
 											ID = z.ID,
 											SectionID = z.BudgetSection.ID,
-											SectionName = z.BudgetSection.Name
+											SectionName = z.BudgetSection.Name,
+											CollectionSections = z.BudgetSection.CollectiveSections.Select(q => new BudgetSectionModelView { ID = q.ChildSection.ID }).ToList()
 										})
 										.ToList()
 								})
@@ -70,6 +74,48 @@ namespace MyProfile.Template.Service
 					var template = repository.GetByID<Template>(templateViewModel.ID);
 					template.LastSeenDate = DateTime.Now.ToUniversalTime();
 					await repository.SaveAsync();
+				}
+
+				if (addCollectiveBudget)
+				{
+					//Check if all peaple has IsAllowCollectiveBudget
+					var allTemplateSections = templateViewModel.Columns
+						.SelectMany(x => x.TemplateBudgetSections)
+						.Select(x => x.ID)
+						.ToList();
+
+					//var includedSections = repository.GetAll<BudgetSection>(x => !string.IsNullOrEmpty(x.IncludedCollectiveSections) && allTemplateSections.Contains(x.ID))
+					//	.Select(x => new
+					//	{
+					//		sectionID = x.ID,
+					//		x.IncludedCollectiveSections
+					//	})
+					//	.ToList();
+
+					//foreach (var incudedSection in includedSections)
+					//{
+					//	var includedCollectiveSection_Raws = JsonConvert.DeserializeObject<List<IncludedCollectiveItem>>(incudedSection.IncludedCollectiveSections);
+					//	//section.IncludedCollectiveSections = includedCollectiveSection_Raws.Select(x => new BudgetSectionModelView { ID = x.id, PersonID = x.personID }).ToList();
+
+
+					//}
+					foreach (var column in templateViewModel.Columns)
+					{
+						foreach (var columnSection in column.TemplateBudgetSections)
+						{
+							//if (includedSections.Any(x => x.sectionID == columnSection.SectionID))
+							//{
+							//	var includedCollectiveSection_Raws = JsonConvert.DeserializeObject<List<IncludedCollectiveItem>>(includedSections.FirstOrDefault(x => x.sectionID == columnSection.SectionID).IncludedCollectiveSections);
+							//	foreach (var includedCollectiveSection_Raw in includedCollectiveSection_Raws)
+							//	{
+							//		if (UserInfo.Current.AllCollectivePersonIDs.Contains(includedCollectiveSection_Raw.personID))
+							//		{
+
+							//		}
+							//	}
+							//}
+						}
+					}
 				}
 			}
 
@@ -106,7 +152,7 @@ namespace MyProfile.Template.Service
 									PlaceAfterCommon = y.PlaceAfterCommon ?? 0,
 									Format = y.Format,
 									TemplateBudgetSections = y.TemplateBudgetSections
-										.Select(z => new TemplateAreaType
+										.Select(z => new Entity.ModelView.TemplateBudgetSection
 										{
 											ID = z.ID,
 											SectionID = z.BudgetSection.ID,
@@ -169,7 +215,7 @@ namespace MyProfile.Template.Service
 
 						foreach (var templateAreaType in column.TemplateBudgetSections)
 						{
-							repository.Create(new TemplateBudgetSection
+							repository.Create(new Entity.Model.TemplateBudgetSection
 							{
 								BudgetSectionID = templateAreaType.SectionID,
 								TemplateColumnID = templateColumnDB.ID
@@ -179,7 +225,7 @@ namespace MyProfile.Template.Service
 				}
 				else
 				{
-					var templateBudgetSections = repository.GetAll<TemplateBudgetSection>(x => x.TemplateColumn.TemplateID == template.ID);
+					var templateBudgetSections = repository.GetAll<Entity.Model.TemplateBudgetSection>(x => x.TemplateColumn.TemplateID == template.ID);
 					repository.DeleteRange(templateBudgetSections, true);
 
 					var columns = repository.GetAll<TemplateColumn>(x => x.TemplateID == template.ID);
@@ -215,7 +261,7 @@ namespace MyProfile.Template.Service
 
 						foreach (var templateAreaType in column.TemplateBudgetSections)
 						{
-							repository.Create(new TemplateBudgetSection
+							repository.Create(new Entity.Model.TemplateBudgetSection
 							{
 								BudgetSectionID = templateAreaType.SectionID,
 								TemplateColumnID = templateColumnDB.ID

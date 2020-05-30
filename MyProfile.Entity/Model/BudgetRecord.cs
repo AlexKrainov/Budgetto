@@ -26,7 +26,7 @@ namespace MyProfile.Entity.Model
 		/// <summary>
 		/// Consider when count or not
 		/// </summary>
-		public bool IsConsider { get; set; }
+		public bool IsHide { get; set; }
 
 		[ForeignKey("Person")]
 		public Guid PersonID { get; set; }
@@ -35,6 +35,9 @@ namespace MyProfile.Entity.Model
 
 		public virtual Person Person { get; set; }
 		public virtual BudgetSection BudgetSection { get; set; }
+
+
+		
 
 	}
 }

@@ -7,7 +7,7 @@ namespace MyProfile.Entity.ModelEntitySave
 	/// </summary>
 	public class IncludedCollectiveItem
 	{
-		public int id { get; set; }
+		public int sectionID { get; set; }
 		public Guid personID { get; set; }
 	}
 }

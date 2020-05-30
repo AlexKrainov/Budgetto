@@ -19,12 +19,11 @@ namespace MyProfile.Entity.ModelView
 
 		public bool IsShow { get; set; } = true;
 		public bool IsUpdated { get; set; } = false;
-		public string IncludedCollectiveAreas_Raw { get; set; }
 
 		public List<BudgetSectionModelView> Sections { get; set; } = new List<BudgetSectionModelView>();
 		/// <summary>
 		/// For CollectiveBudget
 		/// </summary>
-		public List<BudgetAreaModelView> IncludedCollectiveAreas { get; set; } = new List<BudgetAreaModelView>();
+		public List<BudgetAreaModelView> CollectiveAreas { get; set; } = new List<BudgetAreaModelView>();
 	}
 }

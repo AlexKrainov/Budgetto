@@ -1,0 +1,97 @@
+﻿<div class="modal fade" id="modal-section">
+	<div class="modal-dialog">
+		<form class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					Payment <span class="font-weight-light">Budget Area</span><br>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+			</div>
+			<div class="btn-group btn-group-toggle m-2" data-toggle="buttons">
+				<label class="btn btn-primary">
+					<input type="checkbox" v-bind:checked="section.sectionTypeID == 1" v-bind:value="section.sectionTypeID = 1"> Доходы
+				</label>
+				<label class="btn btn-primary">
+					<input type="checkbox" v-bind:checked="section.sectionTypeID == 2" v-bind:value="section.sectionTypeID = 2"> Расходы
+				</label>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col">
+						<label class="form-label">Name</label>
+						<input type="text" class="form-control" placeholder="Name" v-model="section.name">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col mb-0">
+						<label class="form-label">Description</label>
+						<textarea class="form-control" v-model="section.description" placeholder="Description"></textarea>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col mb-0">
+						<label class="form-label">Color</label>
+						<div class="picker" id="cssColor"></div>
+						@*<input type="text" class="form-control" placeholder="DD / MM">*@
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col mb-0">
+						<label class="form-label">Area</label>
+						<select class="form-control" v-on:change="changeArea($event)">
+							<option v-for="area in areas" v-bind:value="area.id" v-bind:selected="area.id == section.areaID">{{ area.name }}</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col mb-0">
+						<label class="form-label">Included section</label>
+						<select multiple class="form-control" id="collectiveSections">
+							<option v-for="_section in sections"
+									v-if="!_section.canEdit"
+									v-bind:value="_section.id">
+								{{ _section.name }}
+							</option>
+							<option v-for="_section in section.collectiveSections"
+									v-if="!_section.canEdit"
+									v-bind:value="_section.id"
+									selected>
+								{{ _section.name }}
+							</option>
+						</select>
+					</div>
+				</div>
+				<br />
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i v-bind:class="section.cssIcon" aria-hidden="true" style="font-size:large"></i></span>
+					</div>
+					<input type="text" class="form-control" placeholder="Icon" v-model="section.cssIcon">
+				</div>
+				<br />
+				<div class="form-row" id="cssIcon">
+					<div class="input-group input-group-sm">
+						<input type="text" placeholder="Search" class="form-control" style="margin-left: 50%;" v-model="searchIcon">
+						<span class="form-group-btn">
+							<button type="button" class="btn btn-sm btn-white" v-on:click="searchIcon = '' " v-show="searchIcon != null && searchIcon != ''"> <i class="fa fa-times"></i></button>
+						</span>
+					</div>
+					<div class="form-group col mb-0">
+						<br />
+						<div class="infont col-md-5 col-sm-6 icon-box" v-for="icon in icons" v-show="icon.isShow" v-on:click="selectIcon(icon)">
+							<span>
+								<i v-bind:class="icon.nameClass" aria-hidden="true"></i> {{ icon.name }}
+							</span>
+						</div>
+						@*<input type="text" class="form-control" placeholder="DD / MM">*@
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
+			</div>
+		</form>
+	</div>
+</div>

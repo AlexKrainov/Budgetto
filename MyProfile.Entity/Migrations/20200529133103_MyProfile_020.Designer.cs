@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200529133103_MyProfile_020")]
+    partial class MyProfile_020
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +33,8 @@ namespace MyProfile.Entity.Migrations
                         .HasMaxLength(64);
 
                     b.Property<string>("Description");
+
+                    b.Property<string>("IncludedCollectiveAreas");
 
                     b.Property<bool>("IsPrivate");
 
@@ -106,6 +110,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<string>("IncludedCollectiveSections");
+
                     b.Property<bool>("IsPrivate");
 
                     b.Property<bool>("IsShow");
@@ -115,15 +121,15 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<Guid?>("PersonID");
 
-                    b.Property<int?>("SectionTypeID");
+                    b.Property<string>("SectionTypeCodeName")
+                        .IsRequired()
+                        .HasMaxLength(16);
 
                     b.HasKey("ID");
 
                     b.HasIndex("BudgetAreaID");
 
                     b.HasIndex("PersonID");
-
-                    b.HasIndex("SectionTypeID");
 
                     b.ToTable("BudgetSections");
                 });
@@ -134,13 +140,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AreaID");
-
-                    b.Property<int?>("ChildAreaID");
+                    b.Property<int>("ChildAreaID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("AreaID");
 
                     b.HasIndex("ChildAreaID");
 
@@ -170,15 +172,11 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ChildSectionID");
-
-                    b.Property<int?>("SectionID");
+                    b.Property<int>("ChildSectionID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ChildSectionID");
-
-                    b.HasIndex("SectionID");
 
                     b.ToTable("CollectiveSections");
                 });
@@ -286,69 +284,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("PersonID");
 
                     b.ToTable("PersonSettings");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupLimit", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("BudgetSectionID");
-
-                    b.Property<int>("LimitID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BudgetSectionID");
-
-                    b.HasIndex("LimitID");
-
-                    b.ToTable("SectionGroupLimits");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.SectionType", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CodeName")
-                        .IsRequired()
-                        .HasMaxLength(16);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(16);
-
-                    b.HasKey("ID");
-
-                    b.ToTable("SectionTypes");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.SectionTypeView", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsShow");
-
-                    b.Property<int>("PeriodTypeID");
-
-                    b.Property<Guid>("PersonID");
-
-                    b.Property<int>("SectionTypeID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PeriodTypeID");
-
-                    b.HasIndex("PersonID");
-
-                    b.HasIndex("SectionTypeID");
-
-                    b.ToTable("SectionTypeViews");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Template", b =>
@@ -473,32 +408,22 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.Person", "Person")
                         .WithMany("BudgetSections")
                         .HasForeignKey("PersonID");
-
-                    b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
-                        .WithMany()
-                        .HasForeignKey("SectionTypeID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.BudgetArea", "Area")
-                        .WithMany("CollectiveAreas")
-                        .HasForeignKey("AreaID");
-
                     b.HasOne("MyProfile.Entity.Model.BudgetArea", "ChildArea")
-                        .WithMany()
-                        .HasForeignKey("ChildAreaID");
+                        .WithMany("CollectiveAreas")
+                        .HasForeignKey("ChildAreaID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveSection", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.BudgetSection", "ChildSection")
-                        .WithMany()
-                        .HasForeignKey("ChildSectionID");
-
-                    b.HasOne("MyProfile.Entity.Model.BudgetSection", "Section")
                         .WithMany("CollectiveSections")
-                        .HasForeignKey("SectionID");
+                        .HasForeignKey("ChildSectionID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
@@ -530,36 +455,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupLimit", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.BudgetSection", "BudgetSection")
-                        .WithMany()
-                        .HasForeignKey("BudgetSectionID");
-
-                    b.HasOne("MyProfile.Entity.Model.Limit", "Limit")
-                        .WithMany()
-                        .HasForeignKey("LimitID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.SectionTypeView", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.PeriodType", "PeriodType")
-                        .WithMany()
-                        .HasForeignKey("PeriodTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
-                        .WithMany()
-                        .HasForeignKey("SectionTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

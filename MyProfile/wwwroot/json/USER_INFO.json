@@ -1,0 +1,12 @@
+{
+	"uid": "GUID",
+	//1 - Show or not Name in the page SectionEdit and a included area/section
+	"isHasCollective": true,
+	"settings": {
+	},
+	"pases": {
+		"section_edit": {
+
+		}
+	}
+}

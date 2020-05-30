@@ -4,8 +4,7 @@
 		areas: [],
 		area: {},
 
-		searchText: null,
-		includedAreas: [],
+		searchText: null
 	},
 	watch: {
 		searchText: function (newValue, oldValue) {
@@ -50,10 +49,13 @@
 		},
 		edit: function (area) {
 			this.area = area;
+			$("#collectiveArea").select2();
+			
 			$("#modal-area").modal("show");
 		},
 		save: function () {
 			if (this.area.name.length > 0) {
+				this.area.collectiveAreas = $("#collectiveArea").select2("val").map(function (x) { return { id: x } });
 				sendAjax("/Section/SaveArea", this.area, "POST")
 					.then(function (result) {
 						if (result.isOk) {
@@ -85,23 +87,6 @@
 					});
 			}
 		},
-		include: function (area) {
-			this.area = area;
-			$("#modal-area-include").modal("show");
-		},
-		saveInclude: function () {
-			var obj = {
-				areaID: this.area.id,
-				includedAreas: this.includedAreas
-			};
-
-			sendAjax("/Section/SaveIncludedArea", obj, "POST")
-				.then(function (result) {
-					if (result.isOk) {
-						AreaVue.areas = result.areas;
-					}
-				});
-		}
 	}
 });
 
@@ -163,6 +148,7 @@ var SectionVue = new Vue({
 		},
 		edit: function (section) {
 			this.section = section;
+			$("#collectiveSections").select2();
 
 			$("#cssColor").colorPick({
 				'initialColor': this.section.cssColor ? this.section.cssColor : "#E5E9EB",
@@ -205,7 +191,7 @@ var SectionVue = new Vue({
 		},
 		save: function () {
 			if (this.section.name.length > 0) {
-
+				this.section.collectiveSections = $("#collectiveSections").select2("val").map(function (x) { return { id: x } });
 				sendAjax("/Section/SaveSection", this.section, "POST")
 					.then(function (result) {
 						if (result.isOk) {
@@ -239,7 +225,6 @@ var SectionVue = new Vue({
 		changeArea: function (event) {
 			this.section.areaID = event.target.selectedOptions[0].value;
 			this.section.areaName = event.target.selectedOptions[0].text;
-		}
-
+		},
 	}
 });

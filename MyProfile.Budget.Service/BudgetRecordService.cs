@@ -82,7 +82,7 @@ namespace MyProfile.Budget.Service
 					DateTimeEdit = DateTime.Now.ToUniversalTime(),
 					DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
 					Description = budgetRecord.Description,
-					IsConsider = budgetRecord.IsConsider,
+					IsHide = budgetRecord.IsConsider,
 					PersonID = UserInfo.PersonID,
 					Total = budgetRecord.Money,
 					RawData = budgetRecord.RawData,

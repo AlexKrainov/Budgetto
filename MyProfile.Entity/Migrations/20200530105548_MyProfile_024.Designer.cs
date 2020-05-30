@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200530105548_MyProfile_024")]
+    partial class MyProfile_024
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -474,8 +476,8 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("BudgetSections")
                         .HasForeignKey("PersonID");
 
-                    b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
-                        .WithMany()
+                    b.HasOne("MyProfile.Entity.Model.SectionType")
+                        .WithMany("BudgetSections")
                         .HasForeignKey("SectionTypeID");
                 });
 
@@ -558,7 +560,7 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
-                        .WithMany()
+                        .WithMany("SectionTypeViews")
                         .HasForeignKey("SectionTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

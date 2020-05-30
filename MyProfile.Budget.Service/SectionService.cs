@@ -42,44 +42,36 @@ namespace MyProfile.Budget.Service
 					collectiveAreas.AddRange(await GetFullModelByPersonID(personID));
 				}
 
-
-				foreach (var area in areas)
-				{
-					if (!string.IsNullOrEmpty(area.IncludedCollectiveAreas_Raw))
-					{
-						var includedCollectiveAreas_Raws = JsonConvert.DeserializeObject<List<IncludedCollectiveItem>>(area.IncludedCollectiveAreas_Raw);
-						area.IncludedCollectiveAreas = includedCollectiveAreas_Raws.Select(x => new BudgetAreaModelView { ID = x.id, PersonID = x.personID }).ToList();
-
-						foreach (var section in area.Sections)
-						{
-							var includedCollectiveSection_Raws = JsonConvert.DeserializeObject<List<IncludedCollectiveItem>>(section.IncludedCollectiveSection_Raw);
-							section.IncludedCollectiveSections = includedCollectiveSection_Raws.Select(x => new BudgetSectionModelView { ID = x.id, PersonID = x.personID }).ToList();
-						}
-					}
-				}
-
-				var allIncludedArea = areas.SelectMany(x => x.IncludedCollectiveAreas).Select(y => y.ID).ToList();
-				//var allIncludedSection = areas.SelectMany(x => x.IncludedCollectiveAreas).SelectMany(y => y.Sections).Select(h => h.ID);
+				var allIncludedArea = areas.SelectMany(x => x.CollectiveAreas).Select(y => y.ID).ToList();
 
 				for (int i = 0; i < collectiveAreas.Count; i++)
 				{
 					if (allIncludedArea.Any(x => x == collectiveAreas[i].ID))
 					{
-						var includeArea = areas.FirstOrDefault(x => x.IncludedCollectiveAreas.Any(y => y.ID == collectiveAreas[i].ID));
-						includeArea = collectiveAreas[i];
+						var mainArea = areas.FirstOrDefault(x => x.CollectiveAreas.Any(y => y.ID == collectiveAreas[i].ID));
+						var includedArea = mainArea.CollectiveAreas.FirstOrDefault(y => y.ID == collectiveAreas[i].ID);
+						includedArea.Name = collectiveAreas[i].Name;
+						includedArea.Description = collectiveAreas[i].Description;
+						includedArea.Owner = collectiveAreas[i].Owner;
+						includedArea.CanEdit = false;
 
 						//var removeSectionID = new List<int>();
 
 						foreach (var collectiveAreaSection in collectiveAreas[i].Sections)
 						{
-							if (includeArea.Sections.SelectMany(y => y.IncludedCollectiveSections).Any(x => x.ID == collectiveAreaSection.ID))
+							if (mainArea.Sections.SelectMany(y => y.CollectiveSections).Any(x => x.ID == collectiveAreaSection.ID))
 							{
-								var includedCollectiveSection = includeArea.Sections.SelectMany(y => y.IncludedCollectiveSections).FirstOrDefault(x => x.ID == collectiveAreaSection.ID);
-								includedCollectiveSection = collectiveAreaSection;
+								var includedAreaWithSection = mainArea.Sections.FirstOrDefault(y => y.CollectiveSections.Any(x => x.ID == collectiveAreaSection.ID));
+								var includedCollectiveSection = includedAreaWithSection.CollectiveSections.FirstOrDefault(y => y.ID == collectiveAreaSection.ID);
+
+								includedCollectiveSection.Name = collectiveAreaSection.Name;
+								includedCollectiveSection.Description = collectiveAreaSection.Description;
+								includedCollectiveSection.Owner = collectiveAreaSection.Owner;
+								includedCollectiveSection.CanEdit = false;
 							}
 							else
 							{
-								includeArea.Sections.Add(collectiveAreaSection);
+								mainArea.Sections.Add(collectiveAreaSection);
 							}
 						}
 					}
@@ -95,9 +87,6 @@ namespace MyProfile.Budget.Service
 
 		private async Task<List<BudgetAreaModelView>> GetFullModelByPersonID(Guid personID)
 		{
-			var thisMonth = DateTime.Now.AddDays(-DateTime.Now.Day);
-			//var predicate = PredicateBuilder.True<BudgetArea>().CommonFilter();
-
 			var areas = await repository.GetAll<BudgetArea>(x => x.PersonID == personID)
 				.Select(x => new BudgetAreaModelView
 				{
@@ -108,13 +97,14 @@ namespace MyProfile.Budget.Service
 					Owner = x.Person.Name,
 					CanEdit = x.PersonID == UserInfo.PersonID,
 					Description = x.Description,
-					IncludedCollectiveAreas_Raw = x.IncludedCollectiveAreas,
+					CollectiveAreas = x.CollectiveAreas.Select(y => new BudgetAreaModelView { ID = y.ChildAreaID ?? 0, Name = y.ChildArea.Name }).ToList(),
 					Sections = x.BudgetSectinos
-						.Where(y => y.PersonID == personID)
 						.Select(y => new BudgetSectionModelView
 						{
 							PersonID = y.PersonID ?? Guid.Empty,
 							ID = y.ID,
+							SectionTypeID = y.SectionTypeID,
+							SectionTypeName = y.SectionTypeID != null ? y.SectionType.Name : null,
 							Name = y.Name,
 							Description = y.Description,
 							CssColor = y.CssColor,
@@ -122,13 +112,9 @@ namespace MyProfile.Budget.Service
 							IsShow = y.IsShow,
 							AreaID = y.BudgetAreaID,
 							AreaName = y.BudgetArea.Name,
-							MoneyThisMonth = y.BudgetRecords.Where(z => z.DateTimeOfPayment >= thisMonth).Sum(q => q.Total),
-							MoneyThisYear = y.BudgetRecords.Where(z => z.DateTimeOfPayment.Year == thisMonth.Year).Sum(q => q.Total),
-							Money = y.BudgetRecords.Sum(q => q.Total),
-
-							IncludedCollectiveSection_Raw = y.IncludedCollectiveSections,
 							Owner = x.Person.Name,
 							CanEdit = x.PersonID == UserInfo.PersonID,
+							CollectiveSections = y.CollectiveSections.Select(z => new BudgetSectionModelView { ID = z.ChildSectionID ?? 0, Name = z.ChildSection.Name }).ToList(),
 						}).ToList()
 				})
 				.ToListAsync();
@@ -138,21 +124,58 @@ namespace MyProfile.Budget.Service
 
 		public async Task<int> SaveIncludedArea(int areaID, List<int> includedAreas)
 		{
-			var area = await repository.GetByIDAsync<BudgetArea>(areaID);
+			var area = await repository.GetAll<BudgetArea>(x => x.ID == areaID)
+				.Include(x => x.CollectiveAreas)
+				.FirstOrDefaultAsync();
 
 			if (includedAreas != null && includedAreas.Count > 0)
 			{
-				area.IncludedCollectiveAreas = JsonConvert.SerializeObject(
-					repository
-					.GetAll<BudgetArea>(x => includedAreas.Contains(x.ID))
-					.Select(y => new IncludedCollectiveItem { id = y.ID, personID = y.PersonID ?? Guid.Empty })
-					.ToList());
+				if (area.CollectiveAreas.Count() > 0)
+				{
+					repository.DeleteRange(area.CollectiveAreas);
+				}
+
+				List<CollectiveArea> collectiveAreas = new List<CollectiveArea>();
+
+				foreach (var includedArea in includedAreas)
+				{
+					collectiveAreas.Add(new CollectiveArea { AreaID = areaID, ChildAreaID = includedArea });
+				}
+				area.CollectiveAreas = collectiveAreas;
 			}
 			else
 			{
-				area.IncludedCollectiveAreas = null;
+				repository.DeleteRange(area.CollectiveAreas);
 			}
 
+			return await repository.SaveAsync();
+		}
+
+		public async Task<int> SaveIncludedSection(int sectionID, List<int> includedSections)
+		{
+			var section = await repository.GetAll<BudgetSection>(x => x.ID == sectionID)
+				.Include(x => x.CollectiveSections)
+				.FirstOrDefaultAsync();
+
+			if (includedSections != null && includedSections.Count > 0)
+			{
+				if (section.CollectiveSections.Count() > 0)
+				{
+					repository.DeleteRange(section.CollectiveSections);
+				}
+
+				List<CollectiveSection> collectiveSections = new List<CollectiveSection>();
+
+				foreach (var includedArea in includedSections)
+				{
+					collectiveSections.Add(new CollectiveSection { SectionID = sectionID, ChildSectionID = includedArea });
+				}
+				section.CollectiveSections = collectiveSections;
+			}
+			else
+			{
+				repository.DeleteRange(section.CollectiveSections);
+			}
 
 			return await repository.SaveAsync();
 		}

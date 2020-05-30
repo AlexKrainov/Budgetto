@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
+    <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
   </ItemGroup>
 
 </Project>

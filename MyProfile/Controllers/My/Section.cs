@@ -9,6 +9,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using Newtonsoft.Json;
 
 namespace MyProfile.Controllers
 {
@@ -60,7 +61,6 @@ namespace MyProfile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit()
 		{
-
 			return View();
 		}
 
@@ -101,6 +101,8 @@ namespace MyProfile.Controllers
 					await repository.CreateAsync(budgetArea, true);
 				}
 
+				await sectionService.SaveIncludedArea(budgetArea.ID, area.CollectiveAreas.Select(x => x.ID).ToList());
+
 				area.ID = budgetArea.ID;
 				area.IsUpdated = true;
 
@@ -113,6 +115,7 @@ namespace MyProfile.Controllers
 
 			return Json(new { isOk = false });
 		}
+
 		[HttpPost]
 		public async Task<IActionResult> SaveSection([FromBody] BudgetSectionModelView section)
 		{
@@ -126,6 +129,7 @@ namespace MyProfile.Controllers
 					Description = section.Description,
 					Name = section.Name,
 					BudgetAreaID = section.AreaID,
+					SectionTypeID = section.SectionTypeID
 					//PersonID = UserInfo.PersonID
 				};
 				if (budgetSection.ID > 0)
@@ -136,6 +140,8 @@ namespace MyProfile.Controllers
 				{
 					await repository.CreateAsync(budgetSection, true);
 				}
+
+				await sectionService.SaveIncludedSection(section.ID, section.CollectiveSections.Select(x => x.ID).ToList());
 
 				section.ID = budgetSection.ID;
 				section.AreaID = budgetSection.BudgetAreaID;
@@ -151,24 +157,6 @@ namespace MyProfile.Controllers
 
 			return Json(new { isOk = false });
 		}
-
-		[HttpPost]
-		public async Task<IActionResult> SaveIncludedArea([FromBody] int areaID, [FromBody] List<int> includedAreas)
-		{
-			try
-			{
-				await sectionService.SaveIncludedArea(areaID, includedAreas);
-
-				return RedirectToAction("GetAllSectionForEdit");//  Json(new { isOk = true, section });
-			}
-			catch (Exception ex)
-			{
-
-			}
-
-			return Json(new { isOk = false });
-		}
-
 
 		[HttpGet]
 		public async Task<IActionResult> GetAllSectionByPerson()
@@ -198,16 +186,25 @@ namespace MyProfile.Controllers
 				.OrderByDescending(x => x.BudgetRecords.Count())
 				.Select(x => new
 				{
-					x.ID,
-					x.Name,
-					x.Description,
-					x.CssIcon,
-					x.CssColor,
-					x.IsShow,
+					ID = x.ID,
+					Name = x.Name,
+					Description = x.Description,
+					CssIcon = x.CssIcon,
+					CssColor = x.CssColor,
 					AreaName = x.BudgetArea.Name,
 					AreaID = x.BudgetAreaID,
 					RecordCount = x.BudgetRecords.Count(),
-					isShow = true,
+					IsShow = true,
+					CollectionSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
+					{
+						ID = y.ChildSection.ID,
+						CanEdit = false,
+						Description = y.ChildSection.Description,
+						Name = y.ChildSection.Name,
+						Owner = y.ChildSection.Person.Name,
+						IsShow = true,
+
+					}).ToList()
 				})
 				.ToListAsync();
 
@@ -258,4 +255,5 @@ namespace MyProfile.Controllers
 
 		#endregion
 	}
+
 }

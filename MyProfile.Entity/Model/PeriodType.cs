@@ -20,6 +20,9 @@ namespace MyProfile.Entity.Model
 		public string Name { get; set; }
 		[Required]
 		public string CodeName { get; set; }
-
+		/// <summary>
+		/// 
+		/// </summary>
+		public bool IsUsing { get; set; }
 	}
 }

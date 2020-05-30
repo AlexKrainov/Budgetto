@@ -63,6 +63,10 @@ namespace MyProfile.Budget.Service
 					totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
 					break;
 			}
+			if (UserInfo.Current.IsAllowCollectiveBudget)
+			{
+				AddCollectionRecords(budgetRecords);
+			}
 
 			for (int dateTimeCounter = 1; dateTimeCounter <= totalCounter; dateTimeCounter++)
 			{
@@ -148,6 +152,7 @@ namespace MyProfile.Budget.Service
 				rows,
 				CalculateFooter(footers, template));
 		}
+
 
 
 		private string SetFormatForDate(DateTime dateTime, string format, TemplateColumnType templateColumnType)
@@ -264,7 +269,7 @@ namespace MyProfile.Budget.Service
 			if (expresion == null)
 			{
 				return repository
-				  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID
+				  .GetAll<BudgetRecord>(x => UserInfo.Current.AllCollectivePersonIDs.Contains(x.PersonID)
 				  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
 				  && x.IsDeleted == false)
 				  .Select(x => new TmpBudgetRecord
@@ -274,14 +279,15 @@ namespace MyProfile.Budget.Service
 					  SectionID = x.BudgetSectionID,
 					  SectionName = x.BudgetSection.Name,
 					  AreaID = x.BudgetSection.BudgetArea.ID,
-					  AreaName = x.BudgetSection.BudgetArea.Name
+					  AreaName = x.BudgetSection.BudgetArea.Name,
+					  CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
 				  })
 				  .GroupBy(groupBy)
 				  .ToList();
 			}
 
 			return repository
-			  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID
+			  .GetAll<BudgetRecord>(x => UserInfo.Current.AllCollectivePersonIDs.Contains(x.PersonID)
 			  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
 			  && x.IsDeleted == false)
 			  .Where(expresion)
@@ -292,10 +298,25 @@ namespace MyProfile.Budget.Service
 				  SectionID = x.BudgetSectionID,
 				  SectionName = x.BudgetSection.Name,
 				  AreaID = x.BudgetSection.BudgetArea.ID,
-				  AreaName = x.BudgetSection.BudgetArea.Name
+				  AreaName = x.BudgetSection.BudgetArea.Name,
+				  CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
 			  })
 			  .GroupBy(groupBy)
 			  .ToList();
+		}
+
+		private void AddCollectionRecords(IList<IGrouping<int, TmpBudgetRecord>> budgetRecords)
+		{
+			foreach (var record in budgetRecords)
+			{
+				foreach (var item in record)
+				{
+					if (item.CollectionSectionIDs.Count > 0 )
+					{
+						item.Total += record.Where(x => item.CollectionSectionIDs.Contains(x.SectionID)).Sum(x => x.Total);
+					}
+				}
+			}
 		}
 
 		public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsForTimeLine(DateTime from, DateTime to, List<int> sections)
@@ -311,7 +332,7 @@ namespace MyProfile.Budget.Service
 				  DateTimeCreate = x.DateTimeCreate,
 				  DateTimeEdit = x.DateTimeEdit,
 				  Description = x.Description,
-				  IsConsider = x.IsConsider,
+				  IsConsider = x.IsHide,
 				  RawData = x.RawData,
 				  Money = x.Total,
 				  DateTimeOfPayment = x.DateTimeOfPayment,
@@ -332,6 +353,7 @@ namespace MyProfile.Budget.Service
 		public string SectionName { get; set; }
 		public int AreaID { get; set; }
 		public string AreaName { get; set; }
+		public List<int> CollectionSectionIDs { get; set; }
 	}
 	public class Cell
 	{

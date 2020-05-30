@@ -40,7 +40,7 @@ namespace MyProfile.Entity.ModelView
 		public List<FormulaItem> Formula { get; set; } = new List<FormulaItem>();
 		public FooterActionType TotalAction { get; set; } = FooterActionType.Undefined;
 		public TemplateColumnType TemplateColumnType { get; set; } = TemplateColumnType.Undefined;
-		public List<TemplateAreaType> TemplateBudgetSections { get; set; } = new List<TemplateAreaType>();
+		public List<TemplateBudgetSection> TemplateBudgetSections { get; set; } = new List<TemplateBudgetSection>();
 
 	}
 
@@ -54,12 +54,19 @@ namespace MyProfile.Entity.ModelView
 		public FormulaFieldType Type { get; set; }
 	}
 
-	public class TemplateAreaType
+	public class TemplateBudgetSection
 	{
 		public int ID { get; set; }
 		public int BudgetAreaID { get; set; }
 		public string BudgetAreaName { get; set; }
 		public int SectionID { get; set; }
 		public string SectionName { get; set; }
+
+
+		#region Collection budget
+		public int MainSectionID { get; set; } = -1;
+		public bool IsCollectSection { get; set; } = false;
+		public List<BudgetSectionModelView> CollectionSections { get; set; }
+		#endregion
 	}
 }

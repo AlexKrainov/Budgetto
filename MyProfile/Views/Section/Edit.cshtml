@@ -4,7 +4,7 @@
 
 @section Styles {
 	<link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />
-
+	<link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
 	<style>
 		.active-section {
 			border-left: 3px solid var(--blue) !important;
@@ -56,7 +56,8 @@
 	<script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
 	<script src="~/app_js/section-list.js"></script>
 
-	<script src="~/app_js/vue-components/vue-select2-component.js"></script>
+	@*<script src="~/app_js/vue-components/vue-select2-component.js"></script>*@
+	<script src="~/vendor/libs/select2/select2.js"></script>
 }
 
 
@@ -96,86 +97,32 @@
 					</span>
 
 					<div class="float-right">
-						<button type="button" class="btn btn-sm btn-outline-warning" v-if="area.canEdit" v-on:click="include(area)">Include</button>
 						<button type="button" class="btn btn-sm btn-outline-success" v-if="area.canEdit" v-on:click="edit(area)">Edit</button>
 						<button type="button" class="btn btn-sm btn-outline-danger" v-if="area.canEdit && (area.sections == undefined || area.sections.length == 0)" v-on:click="remove(area)">Remove</button>
+					</div>
+					<br />
+					<br />
+					<div v-show="area.canEdit">
+						<a class="float-right " data-toggle="collapse" v-bind:href="'#collapseIncludedArea_'+area.id" role="button" aria-expanded="false" aria-controls="collapseExample">
+							{{ area.collectiveAreas.length  }}
+							<i class="fa fa-chevron-down"></i>
+							@*<i class="fa-chevron-up"></i> v-bind:show="$('this').parant()."*@
+						</a>
+						<div class="collapse" v-bind:id="'collapseIncludedArea_'+ area.id">
+							<div class="inline-spacing">
+								<div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="collectiveArea in area.collectiveAreas">
+									<span class="ml-1">{{collectiveArea.name}} ({{collectiveArea.owner }})</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</li>
 			</ul>
 		</div>
 
-		<!-- Modal template -->
-		<div class="modal fade" id="modal-area">
-			<div class="modal-dialog">
-				<form class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">
-							Payment <span class="font-weight-light">Budget Area</span><br>
-						</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-row">
-							<div class="form-group col">
-								<label class="form-label">Name</label>
-								<input type="text" class="form-control" placeholder="Name" v-model="area.name">
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col mb-0">
-								<label class="form-label">Description</label>
-								<textarea class="form-control" v-model="area.description" placeholder="Description"></textarea>
-							</div>
-						</div>
-						@*<div class="form-row">
-								<div class="form-group col mb-0">
-									<label class="form-label">Icon</label>
-									<input type="text" class="form-control" placeholder="DD / MM">
-								</div>
-							</div>*@
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
-					</div>
-				</form>
-			</div>
-		</div>
+		@*Model*@
+		@Html.Partial("_ModelArea")
 
-		<!-- Modal include area -->
-		<div class="modal fade" id="modal-area-include">
-			<div class="modal-dialog">
-				<form class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">
-							Payment <span class="font-weight-light">Budget Area</span><br>
-						</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-row">
-							<div class="form-group col">
-								<label class="form-label">Name</label>
-								<input type="text" class="form-control" placeholder="Name" v-model="area.name">
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col mb-0">
-								<label class="form-label">Included area</label>
-								<select multiple class="form-control" v-model="includedAreas">
-									<option v-for="_area in areas" v-if="!_area.canEdit" v-bind:value="_area.id">{{ _area.name }}</option>
-								</select>
-							</div>
-						</div>
-
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-on:click="saveInclude">Save</button>
-					</div>
-				</form>
-			</div>
-		</div>
 
 	</div>
 	<div class="col-6" id="section-vue">
@@ -190,19 +137,16 @@
 			</h6>
 			<ul class="list-group list-group-flush">
 				<li class="list-group-item py-3" v-for="section in sections" v-bind:style="'border-left: 3px solid '+ section.cssColor +';'">
-					<ul class="float-right list-unstyled">
-						<li>{{ getMoney(section.moneyThisMonth) }} ₽, в этом месяце</li>
-						<li>{{ getMoney(section.moneyThisYear) }} ₽, в этом году</li>
-						<li>{{ getMoney(section.money) }} ₽, всего</li>
-					</ul>
 					<span class="font-weight-semibold">{{ section.name }}</span>
-					<span class="badge badge-pill badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
-						<i v-bind:class="section.cssIcon"></i>
-						<span class="ml-1">{{section.name}}</span>
-					</span>
+					@*<span class="badge badge-pill badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+							<i v-bind:class="section.cssIcon"></i>
+							<span class="ml-1">{{section.name}}</span>
+						</span>*@
+					<a href="javascript:void(0)" class="badge badge-success float-right" v-show="section.sectionTypeID == 1">Доходы</a>
+					<a href="javascript:void(0)" class="badge badge-danger float-right" v-show="section.sectionTypeID == 2">Расходы</a>
 					<br />
 					<small class="text-muted">{{ section.description }}</small>
-					<br /><br /><br />
+					<br /><br />
 					<span>
 						<i class="fa fa-user" v-show="section.canEdit" title="Создали вы" style="color: var(--blue);"></i>
 						<i class="fa fa-user" v-show="!section.canEdit" v-bind:title="'Созданная пользователем : ' + section.owner" style="color: var(--red);"></i>
@@ -212,114 +156,29 @@
 						<button type="button" class="btn btn-sm btn-outline-success" v-if="section.canEdit" v-on:click="edit(section)">Edit</button>
 						<button type="button" class="btn btn-sm btn-outline-danger" v-if="section.canEdit" v-on:click="remove(section)">Remove</button>
 					</div>
+					<br />
+					<br />
+					<div v-show="section.canEdit">
+
+						<a class="float-right " data-toggle="collapse" v-bind:href="'#collapseSection_'+section.id" role="button" aria-expanded="false" aria-controls="collapseExample">
+							{{ section.collectiveSections.length  }}
+							<i class="fa fa-chevron-down"></i>
+							@*<i class="fa-chevron-up"></i> v-bind:show="$('this').parant()."*@
+						</a>
+						<div class="collapse" v-bind:id="'collapseSection_'+ section.id">
+							<div class="inline-spacing">
+								<div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="collectiveSection in section.collectiveSections">
+									<span class="ml-1">{{collectiveSection.name}} ({{collectiveSection.owner }})</span>
+								</div>
+							</div>
+						</div>
+					</div>
 				</li>
 			</ul>
 		</div>
 
-		<!-- Modal template -->
-		<div class="modal fade" id="modal-section">
-			<div class="modal-dialog">
-				<form class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">
-							Payment <span class="font-weight-light">Budget Area</span><br>
-						</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-row">
-							<div class="form-group col">
-								<label class="form-label">Name</label>
-								<input type="text" class="form-control" placeholder="Name" v-model="section.name">
-							</div>
-						</div>
+		@*Model*@
+		@Html.Partial("_ModelSection")
 
-						<div class="form-row">
-							<div class="form-group col mb-0">
-								<label class="form-label">Description</label>
-								<textarea class="form-control" v-model="section.description" placeholder="Description"></textarea>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col mb-0">
-								<label class="form-label">Area</label>
-								<select class="form-control" v-on:change="changeArea($event)">
-									<option v-for="area in areas" v-bind:value="area.id" v-bind:selected="area.id == section.areaID">{{ area.name }}</option>
-								</select>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col mb-0">
-								<label class="form-label">Color</label>
-								<div class="picker" id="cssColor"></div>
-								@*<input type="text" class="form-control" placeholder="DD / MM">*@
-							</div>
-						</div>
-						<br />
-						<div class="btn-group btn-group-toggle" data-toggle="buttons">
-							<label class="btn btn-primary active">
-								<input type="radio" name="btn-radio" checked> Расходы
-							</label>
-							<label class="btn btn-primary">
-								<input type="radio" name="btn-radio"> Доходы
-							</label>
-							<label class="btn btn-primary">
-								<input type="radio" name="btn-radio"> Сбережения
-							</label>
-						</div>
-
-						<div class="form-row">
-							<div class="alert alert-info alert-dismissible fade show">
-								<button type="button" class="close" data-dismiss="alert">×</button>
-								text
-							</div>
-							<div class="form-group col-md-6">
-								<label class="form-label">Лимиты</label>
-								<input type="text" class="form-control" value="0">
-							</div>
-							<div class="form-group col-md-4">
-								<select class="custom-select">
-									<option>Выбрать</option>
-									<option>Месяц</option>
-									<option>Год</option>
-								</select>
-							</div>
-							<div class="form-group col-md-2">
-								<button type="button">Добавить</button>
-							</div>
-						</div>
-
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text"><i v-bind:class="section.cssIcon" aria-hidden="true" style="font-size:large"></i></span>
-							</div>
-							<input type="text" class="form-control" placeholder="Icon" v-model="section.cssIcon">
-						</div>
-						<br />
-						<div class="form-row" id="cssIcon">
-							<div class="input-group input-group-sm">
-								<input type="text" placeholder="Search" class="form-control" style="margin-left: 50%;" v-model="searchIcon">
-								<span class="form-group-btn">
-									<button type="button" class="btn btn-sm btn-white" v-on:click="searchIcon = '' " v-show="searchIcon != null && searchIcon != ''"> <i class="fa fa-times"></i></button>
-								</span>
-							</div>
-							<div class="form-group col mb-0">
-								<br />
-								<div class="infont col-md-5 col-sm-6 icon-box" v-for="icon in icons" v-show="icon.isShow" v-on:click="selectIcon(icon)">
-									<span>
-										<i v-bind:class="icon.nameClass" aria-hidden="true"></i> {{ icon.name }}
-									</span>
-								</div>
-								@*<input type="text" class="form-control" placeholder="DD / MM">*@
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
-					</div>
-				</form>
-			</div>
-		</div>
 	</div>
 </div>

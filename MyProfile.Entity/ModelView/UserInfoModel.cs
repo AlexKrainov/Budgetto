@@ -15,6 +15,10 @@ namespace MyProfile.Entity.ModelView
 		{
 			get { return new List<Guid> { Guid.Parse("086D7C26-1D8D-4CC7-E776-08D7EAB4D0ED") }; }
 		} //= new List<Guid>();
+		public List<Guid> AllCollectivePersonIDs
+		{
+			get { return new List<Guid> { Guid.Parse("086D7C26-1D8D-4CC7-E776-08D7EAB4D0ED"), Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D") }; }
+		} //= new List<Guid>();
 
 		public UserInfoModel()
 		{
