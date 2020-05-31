@@ -192,5 +192,11 @@ namespace MyProfile.Budget.Service
 				.ToListAsync();
 		}
 
+		public async Task<List<int>> GetCollectionSectionBySectionID(List<int> sectionIDs)
+		{
+			return await repository.GetAll<CollectiveSection>(x => sectionIDs.Contains(x.SectionID ?? 0))
+			 .Select(x => x.ChildSectionID ?? 0)
+			 .ToListAsync();
+		}
 	}
 }

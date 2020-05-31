@@ -120,56 +120,7 @@
 
 <div class="card mb-4 col-7" id="timeline_records">
 	<ul class="list-group list-group-flush">
-
-		<li class="list-group-item py-4" v-for="record in records">
-			<div class="media flex-wrap">
-				@*<div class="font-weight-semibold ml-3">
-						<a href="javascript:void(0)" class="d-block">{{ record.money }}</a>
-					</div>*@
-				<div class="media-body ml-sm-4">
-					<h5 class="mb-2">
-						<div class="float-right font-weight-semibold ml-3">{{ record.money }}</div>
-						<a href="javascript:void(0)" v-on:click="edit(record)" class="text-body">{{ record.areaName }} > {{ record.sectionName }}</a>&nbsp;
-					</h5>
-					<div class="d-flex flex-wrap align-items-center mb-2">
-						<div class="text-muted small">
-							<i class="ion ion-md-time text-primary"></i>
-							<span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
-						</div>
-						<div class="ui-stars ml-3">
-							<div class="ui-star filled">
-								<i class="ion ion-md-star"></i>
-								<i class="ion ion-md-star"></i>
-							</div>
-							<div class="ui-star filled">
-								<i class="ion ion-md-star"></i>
-								<i class="ion ion-md-star"></i>
-							</div>
-							<div class="ui-star filled">
-								<i class="ion ion-md-star"></i>
-								<i class="ion ion-md-star"></i>
-							</div>
-							<div class="ui-star filled">
-								<i class="ion ion-md-star"></i>
-								<i class="ion ion-md-star"></i>
-							</div>
-							<div class="ui-star filled">
-								<i class="ion ion-md-star"></i>
-								<i class="ion ion-md-star"></i>
-							</div>
-						</div>
-						<a href="javascript:void(0)" class="text-muted small">55</a>
-					</div>
-					<div>{{ record.description }}</div>
-					<div class="mt-2">
-						<span class="badge badge-outline-default text-muted font-weight-normal" v-show="record.isConsider" title="Семеный"><i class="fas fa-users"></i></span>
-						<span class="badge badge-outline-default text-muted font-weight-normal">Создание: {{ GetDateByFormat(record.dateTimeCreate, 'DD.MM.YYYY') }}</span>
-						<span class="badge badge-outline-default text-muted font-weight-normal">Отредактирован: {{ GetDateByFormat(record.dateTimeEdit, 'DD.MM.YYYY') }}</span>
-					</div>
-				</div>
-			</div>
-		</li>
-
+		@Html.Partial("_TimeLineRecords")
 	</ul>
 </div>
 

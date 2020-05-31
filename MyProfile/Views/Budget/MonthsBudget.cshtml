@@ -37,7 +37,7 @@
 				<div class="form-group col">
 					<label class="form-label">Date</label>
 					<select class="form-control" data-style="btn-default" v-model="templateID" v-on:change="refresh">
-						@foreach (var template in Model.NameTemplates)
+						@foreach (var template in Model.Templates)
 						{
 							<option value="@template.ID">@template.Name</option>
 

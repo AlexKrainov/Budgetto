@@ -68,7 +68,12 @@ namespace MyProfile.Controllers.My
 			BudgetControllerModelView model = new BudgetControllerModelView();
 			model.SelectedDateTime = month != null ? new DateTime(DateTime.Now.Year, month ?? 1, 1) : DateTime.Now;
 			model.SelectedTemplateID = templateID ?? -1;
-			model.NameTemplates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == (int)PeriodTypesEnum.Days);
+			model.Templates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == (int)PeriodTypesEnum.Days);
+
+			if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
+			{
+				model.SelectedTemplateID = model.Templates[0].ID;
+			}
 
 			return View(model);
 		}
@@ -76,15 +81,18 @@ namespace MyProfile.Controllers.My
 		[HttpPost]
 		public async Task<JsonResult> GetDaysBudget([FromQuery] DateTime month, [FromQuery] int templateID)
 		{
-			DateTime start = new DateTime(month.Year, month.Month, 01, 00, 00, 01);
-			DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 23, 59, 59);
-
-			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
-
-			if (template != null)
+			if (templateID > 0)
 			{
-				var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
-				return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
+				DateTime start = new DateTime(month.Year, month.Month, 01, 00, 00, 01);
+				DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 23, 59, 59);
+
+				var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
+
+				if (template != null)
+				{
+					var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
+					return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
+				}
 			}
 			return Json(new { isOk = false });
 		}
@@ -95,8 +103,11 @@ namespace MyProfile.Controllers.My
 			BudgetControllerModelView model = new BudgetControllerModelView();
 			model.SelectedYear = year ?? DateTime.Now.Year;
 			model.SelectedTemplateID = templateID ?? -1;
-			model.NameTemplates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == (int)PeriodTypesEnum.Months);
-
+			model.Templates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == (int)PeriodTypesEnum.Months);
+			if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
+			{
+				model.SelectedTemplateID = model.Templates[0].ID;
+			}
 			return View(model);
 		}
 

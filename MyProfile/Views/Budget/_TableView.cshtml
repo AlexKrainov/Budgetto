@@ -1,23 +1,28 @@
-﻿<div class="card-datatable table-responsive">
+﻿<div id="table-vue" class="card-datatable table-responsive">
 	<table class="datatables-demo table table-striped table-bordered"
 		   id="table"
 		   data-searching="true"
-		   data-paging="false"
-		   >
+		   data-paging="false">
 		<thead>
 			<tr class="text-center">
-				<th v-for="column in template.columns" v-html="column.name" v-show="column.isShow" ></th>
+				<th v-for="column in template.columns" v-html="column.name" v-show="column.isShow"></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="row in rows" class="text-right">
-				<td v-for="cell in row" v-show="cell.isShow" v-html="getCellValue(cell)">
+			<tr v-for="(row, rowIndex) in rows" class="text-right">
+				<td v-for="(cell, cellIndex) in row"
+					v-show="cell.isShow"
+					v-html="getCellValue(cell)"
+					v-on:click="clickCell(rowIndex, cellIndex)"
+					class="cell-hover">
 				</td>
 			</tr>
 		</tbody>
 		<tfoot>
 			<tr>
-				<td v-for="cell in footerRow" v-show="cell.isShow" v-html="getCellValue(cell)">
+				<td v-for="cell in footerRow"
+					v-show="cell.isShow"
+					v-html="getCellValue(cell)">
 				</td>
 			</tr>
 		</tfoot>

@@ -168,7 +168,7 @@ var timeline = {
 		timeline.before_loading();
 		return $.ajax({
 			type: "POST",
-			url: "/Budget/LoadingRecords",
+			url: "/Budget/LoadingRecordsForCalendar",
 			data: JSON.stringify(filter.data),
 			contentType: "application/json",
 			dataType: 'json',

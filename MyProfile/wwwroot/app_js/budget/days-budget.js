@@ -10,6 +10,8 @@
 
 		column: {},
 		flatpickr: {},
+
+		records: [],
 	},
 	watch: {
 	},
@@ -76,7 +78,33 @@
 			} else {
 				return `<span>${cell.value}</span>`;
 			}
-		}
+		},
+		clickCell: function (rowIndex, cellIndex) {
+
+			let sections = this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID);
+			let filter = {
+				sections: sections,
+				rowIndex: rowIndex,
+				startDate: moment(this.budgetDate).add(rowIndex, "days").format(),
+				endDate: moment(this.budgetDate).add((rowIndex + 1), "days").add(-1, "minutes").format()
+			};
+
+			return $.ajax({
+				type: "POST",
+				url: "/Budget/LoadingRecordsForTableView",
+				data: JSON.stringify(filter),
+				contentType: "application/json",
+				dataType: 'json',
+				context: this,
+				success: function (response) {
+					this.records = response.data;
+					$("#modalTimeLine").modal("show");
+				}
+			});
+		},
+		GetDateByFormat: function (date, format) {
+			return GetDateByFormat(date, format);
+		},
 	}
 });
 

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MyProfile.Budget.Service
@@ -22,6 +23,7 @@ namespace MyProfile.Budget.Service
 		{
 			this.repository = repository;
 		}
+		#region Budget table view
 
 		/// <summary>
 		/// Dynamic calculation
@@ -68,14 +70,14 @@ namespace MyProfile.Budget.Service
 				AddCollectionRecords(budgetRecords);
 			}
 
-			for (int dateTimeCounter = 1; dateTimeCounter <= totalCounter; dateTimeCounter++)
+			for (int dateCounter = 1; dateCounter <= totalCounter; dateCounter++)
 			{
 				List<Cell> cells = new List<Cell>();
 				List<FooterCell> footerCells = new List<FooterCell>();
 
-				if (budgetRecords.Count != indexBudgetRecords && budgetRecords.FirstOrDefault(x => x.Key == dateTimeCounter) != null)
+				if (budgetRecords.Count != indexBudgetRecords && budgetRecords.FirstOrDefault(x => x.Key == dateCounter) != null)
 				{
-					var budgetRecordsDay = budgetRecords.FirstOrDefault(x => x.Key == dateTimeCounter);
+					var budgetRecordsDay = budgetRecords.FirstOrDefault(x => x.Key == dateCounter);
 					indexBudgetRecords++;
 
 					for (int i = 0; i < allColumnsCount; i++)
@@ -105,21 +107,21 @@ namespace MyProfile.Budget.Service
 							total = Math.Round(total, column.PlaceAfterCommon);
 							//total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
 
-							cells.Add(new Cell { Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru_RU")), NaturalValue = total, IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = total });
+							cells.Add(new Cell { Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru_RU")), NaturalValue = total, IsShow = column.IsShow, TemplateColumnType = column.TemplateColumnType, dateCounter = dateCounter });
+							footerCells.Add(new FooterCell { Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru_RU")), NaturalValue = total });
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
 						{
-							string v = SetFormatForDate(new DateTime(from.Year, from.Month, dateTimeCounter), column.Format, column.TemplateColumnType);
+							string v = SetFormatForDate(new DateTime(from.Year, from.Month, dateCounter), column.Format, column.TemplateColumnType);
 
-							cells.Add(new Cell { Value = v, IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = 0 });
+							cells.Add(new Cell { Value = v, IsShow = column.IsShow, TemplateColumnType = column.TemplateColumnType, dateCounter = dateCounter });
+							footerCells.Add(new FooterCell { Value = "0", NaturalValue = 0 });
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
 						{
-							string v = SetFormatForDate(new DateTime(from.Year, dateTimeCounter, 1), column.Format, column.TemplateColumnType);
-							cells.Add(new Cell { Value = (new DateTime(from.Year, dateTimeCounter, 1)).ToString("MM.yyyy"), IsShow = column.IsShow });
-							footerCells.Add(new FooterCell { Value = 0 });
+							string v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
+							cells.Add(new Cell { Value = (new DateTime(from.Year, dateCounter, 1)).ToString("MM.yyyy"), IsShow = column.IsShow, TemplateColumnType = column.TemplateColumnType, dateCounter = dateCounter });
+							footerCells.Add(new FooterCell { Value = "0", NaturalValue = 0 });
 						}
 					}
 				}
@@ -133,15 +135,15 @@ namespace MyProfile.Budget.Service
 						//if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
 						if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
 						{
-							v = SetFormatForDate(new DateTime(from.Year, from.Month, dateTimeCounter), column.Format, column.TemplateColumnType);
+							v = SetFormatForDate(new DateTime(from.Year, from.Month, dateCounter), column.Format, column.TemplateColumnType);
 						}
 						else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
 						{
-							v = SetFormatForDate(new DateTime(from.Year, dateTimeCounter, 1), column.Format, column.TemplateColumnType);
+							v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
 						}
 
-						cells.Add(new Cell { Value = v, IsShow = column.IsShow });
-						footerCells.Add(new FooterCell { Value = 0 });
+						cells.Add(new Cell { Value = v, IsShow = column.IsShow, TemplateColumnType = column.TemplateColumnType, dateCounter = dateCounter });
+						footerCells.Add(new FooterCell { Value = "0", NaturalValue = 0 });
 					}
 				}
 				rows.Add(cells);
@@ -152,8 +154,6 @@ namespace MyProfile.Budget.Service
 				rows,
 				CalculateFooter(footers, template));
 		}
-
-
 
 		private string SetFormatForDate(DateTime dateTime, string format, TemplateColumnType templateColumnType)
 		{
@@ -191,7 +191,7 @@ namespace MyProfile.Budget.Service
 
 				foreach (var footerRow in footersData)
 				{
-					total.Add(footerRow[i].Value);
+					total.Add(footerRow[i].NaturalValue);
 				}
 
 				switch (template.Columns[i].TotalAction)
@@ -260,6 +260,22 @@ namespace MyProfile.Budget.Service
 			return columnsFormula;
 		}
 
+		private void AddCollectionRecords(IList<IGrouping<int, TmpBudgetRecord>> budgetRecords)
+		{
+			foreach (var record in budgetRecords)
+			{
+				foreach (var item in record)
+				{
+					if (item.CollectionSectionIDs.Count > 0)
+					{
+						item.Total += record.Where(x => item.CollectionSectionIDs.Contains(x.SectionID)).Sum(x => x.Total);
+					}
+				}
+			}
+		}
+
+		#endregion
+
 		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecords(
 			DateTime from,
 			DateTime to,
@@ -305,27 +321,11 @@ namespace MyProfile.Budget.Service
 			  .ToList();
 		}
 
-		private void AddCollectionRecords(IList<IGrouping<int, TmpBudgetRecord>> budgetRecords)
-		{
-			foreach (var record in budgetRecords)
-			{
-				foreach (var item in record)
-				{
-					if (item.CollectionSectionIDs.Count > 0 )
-					{
-						item.Total += record.Where(x => item.CollectionSectionIDs.Contains(x.SectionID)).Sum(x => x.Total);
-					}
-				}
-			}
-		}
 
-		public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsForTimeLine(DateTime from, DateTime to, List<int> sections)
+		public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsByPeriod(Expression<Func<BudgetRecord, bool>> expresion)
 		{
 			return await repository
-			  .GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID
-				  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
-				  && sections.Contains(x.BudgetSectionID)
-				  && x.IsDeleted == false)
+			  .GetAll(expresion)
 			  .Select(x => new BudgetRecordModelView
 			  {
 				  ID = x.ID,
@@ -341,6 +341,7 @@ namespace MyProfile.Budget.Service
 				  AreaID = x.BudgetSection.BudgetArea.ID,
 				  AreaName = x.BudgetSection.BudgetArea.Name
 			  })
+			  .OrderByDescending(x => x.DateTimeOfPayment)
 			  .ToListAsync();
 		}
 
@@ -360,11 +361,11 @@ namespace MyProfile.Budget.Service
 		public string Value { get; set; }
 		public decimal NaturalValue { get; set; }
 		public bool IsShow { get; set; } = true;
+		public TemplateColumnType TemplateColumnType { get; set; }
+		public int dateCounter { get; set; }
 	}
-	public class FooterCell
+	public class FooterCell : Cell
 	{
-		public decimal Value { get; set; }
-		public bool IsShow { get; internal set; } = true;
 	}
 
 }

@@ -50,7 +50,7 @@
 		edit: function (area) {
 			this.area = area;
 			$("#collectiveArea").select2();
-			
+
 			$("#modal-area").modal("show");
 		},
 		save: function () {
@@ -225,6 +225,9 @@ var SectionVue = new Vue({
 		changeArea: function (event) {
 			this.section.areaID = event.target.selectedOptions[0].value;
 			this.section.areaName = event.target.selectedOptions[0].text;
+		},
+		checkSectionType: function (val) {
+			this.section.sectionTypeID = val == this.section.sectionTypeID ? null : val;
 		},
 	}
 });
