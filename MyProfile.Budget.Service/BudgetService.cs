@@ -285,7 +285,7 @@ namespace MyProfile.Budget.Service
 			if (expresion == null)
 			{
 				return repository
-				  .GetAll<BudgetRecord>(x => UserInfo.Current.AllCollectivePersonIDs.Contains(x.PersonID)
+				  .GetAll<BudgetRecord>(x => UserInfo.Current.AllCollectiveUserIDs.Contains(x.UserID)
 				  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
 				  && x.IsDeleted == false)
 				  .Select(x => new TmpBudgetRecord
@@ -303,7 +303,7 @@ namespace MyProfile.Budget.Service
 			}
 
 			return repository
-			  .GetAll<BudgetRecord>(x => UserInfo.Current.AllCollectivePersonIDs.Contains(x.PersonID)
+			  .GetAll<BudgetRecord>(x => UserInfo.Current.AllCollectiveUserIDs.Contains(x.UserID)
 			  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
 			  && x.IsDeleted == false)
 			  .Where(expresion)

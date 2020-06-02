@@ -1,0 +1,67 @@
+﻿@model MyProfile.Entity.ModelView.BudgetView.BudgetControllerModelView
+@{
+	ViewData["Title"] = "DataTables - Tables";
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
+	<link href="~/app_css/budget-page.css" rel="stylesheet" />
+}
+
+@section Scripts {
+	<!-- Dependencies -->
+	<script src="~/vendor/libs/datatables/datatables.js"></script>
+
+	<script src="~/app_js/budget/year-budget.js"></script>
+}
+
+<div id="budget-vue">
+	<input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
+	<input type="hidden" id="budgetYear_hidden" value="@Model.SelectedYear" />
+
+	<!-- Head block -->
+	<div class="container-m-nx container-m-ny bg-white container-p-x py-4 mb-0">
+
+		<div class="d-flex justify-content-between align-items-center ">
+			<div class="form-row">
+				<div class="form-group col">
+					<label class="form-label">Date</label>
+					<select id="budget-year" v-model="budgetYear" v-on:change="refresh" class="form-control">
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+					</select>
+				</div>
+				<div class="form-group col">
+					<label class="form-label">Date</label>
+					<select class="form-control" data-style="btn-default" v-model="templateID" v-on:change="refresh">
+						@foreach (var template in Model.Templates)
+						{
+							<option value="@template.ID">@template.Name</option>
+
+						}
+					</select>
+				</div>
+			</div>
+			<div>
+				<h2 class="font-weight-light mb-2">Server Statistics</h2>
+				<div class="badge badge-success font-weight-bold">RUNNING</div>
+			</div>
+			<button class="btn btn-lg btn-default">
+				<i class="ion ion-md-power text-danger"></i>&nbsp;
+				Shut Down
+			</button>
+		</div>
+	</div>
+	<!-- / Head block -->
+	<hr class="container-m-nx border-light mt-0 mb-4">
+
+	<div class="card">
+		<div class="card-datatable table-responsive">
+			@await Html.PartialAsync("_TableView")
+		</div>
+	</div>
+</div>
+

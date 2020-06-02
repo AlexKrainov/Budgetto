@@ -39,7 +39,7 @@ namespace MyProfile.Controllers.My
 			//		DateTimeEdit = DateTime.Now,
 			//		DateTimeOfPayment = new DateTime(2020,03,04),
 			//		Description = "descritioin",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
 			//	},
 			//}, true);
 
@@ -50,25 +50,25 @@ namespace MyProfile.Controllers.My
 			DateTime start = new DateTime(2020, 01, 01);
 			DateTime finish = new DateTime(2020, 01, 31);
 
-			//var template = await templateService.GetTemplateByID(x => x.ID == 3 && x.PersonID == UserInfo.PersonID);
+			//var template = await templateService.GetTemplateByID(x => x.ID == 3 && x.UserID == UserInfo.UserID);
 			//var budgetDataForTable = budgetService.GetBudgetDataByDays(start, finish, template);
 
 			//DateTime start = new DateTime(2020, 01, 01);
 			//DateTime finish = new DateTime(2020, 12, 31);
 
-			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
+			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.UserID);
 			var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
 
 			return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> DaysBudget(int? month, int? templateID)
+		public async Task<IActionResult> Month(int? month, int? templateID)
 		{
 			BudgetControllerModelView model = new BudgetControllerModelView();
 			model.SelectedDateTime = month != null ? new DateTime(DateTime.Now.Year, month ?? 1, 1) : DateTime.Now;
 			model.SelectedTemplateID = templateID ?? -1;
-			model.Templates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == (int)PeriodTypesEnum.Days);
+			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Days);
 
 			if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
 			{
@@ -79,14 +79,14 @@ namespace MyProfile.Controllers.My
 		}
 
 		[HttpPost]
-		public async Task<JsonResult> GetDaysBudget([FromQuery] DateTime month, [FromQuery] int templateID)
+		public async Task<JsonResult> GetMonthBudget([FromQuery] DateTime month, [FromQuery] int templateID)
 		{
 			if (templateID > 0)
 			{
 				DateTime start = new DateTime(month.Year, month.Month, 01, 00, 00, 01);
 				DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 23, 59, 59);
 
-				var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
+				var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.UserID);
 
 				if (template != null)
 				{
@@ -98,12 +98,12 @@ namespace MyProfile.Controllers.My
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> MonthsBudget(int? year, int? templateID)
+		public async Task<IActionResult> Year(int? year, int? templateID)
 		{
 			BudgetControllerModelView model = new BudgetControllerModelView();
 			model.SelectedYear = year ?? DateTime.Now.Year;
 			model.SelectedTemplateID = templateID ?? -1;
-			model.Templates = await templateService.GetNameTemplates(x => x.PersonID == UserInfo.PersonID && x.PeriodTypeID == (int)PeriodTypesEnum.Months);
+			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Months);
 			if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
 			{
 				model.SelectedTemplateID = model.Templates[0].ID;
@@ -112,12 +112,41 @@ namespace MyProfile.Controllers.My
 		}
 
 		[HttpPost]
-		public async Task<JsonResult> GetMonthsBudget(int year, int templateID)
+		public async Task<JsonResult> GetYearBudget(int year, int templateID)
 		{
 			DateTime start = new DateTime(year, 1, 01);
 			DateTime finish = new DateTime(year, 12, 31);
 
-			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.PersonID == UserInfo.PersonID);
+			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.UserID);
+			if (template != null)
+			{
+				var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
+				return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
+			}
+			return Json(new { isOk = false });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Years(int? lastYear, int? templateID)
+		{
+			BudgetControllerModelView model = new BudgetControllerModelView();
+			model.SelectedYear = lastYear ?? DateTime.Now.Year;
+			model.SelectedTemplateID = templateID ?? -1;
+			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Months);
+			if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
+			{
+				model.SelectedTemplateID = model.Templates[0].ID;
+			}
+			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> GetYearsBudget(int lastYear, int templateID)
+		{
+			DateTime start = new DateTime(lastYear, 1, 01);
+			DateTime finish = new DateTime(lastYear, 12, 31);
+
+			var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.UserID);
 			if (template != null)
 			{
 				var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);

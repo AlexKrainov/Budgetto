@@ -45,7 +45,7 @@ namespace MyProfile.Controllers
 			//var area = new BudgetArea
 			//{
 			//	Name = "Area for test account",
-			//	PersonID = person.ID
+			//	UserID = person.ID
 			//};
 			//repository.Create(area, true);
 
@@ -90,7 +90,7 @@ namespace MyProfile.Controllers
 					CssIcon = area.CssIcon,
 					Description = area.Description,
 					Name = area.Name,
-					PersonID = UserInfo.PersonID
+					UserID = UserInfo.UserID
 				};
 				if (budgetArea.ID > 0)
 				{
@@ -130,7 +130,7 @@ namespace MyProfile.Controllers
 					Name = section.Name,
 					BudgetAreaID = section.AreaID,
 					SectionTypeID = section.SectionTypeID
-					//PersonID = UserInfo.PersonID
+					//UserID = UserInfo.UserID
 				};
 				if (budgetSection.ID > 0)
 				{
@@ -161,13 +161,13 @@ namespace MyProfile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllSectionByPerson()
 		{
-			var sections = await repository.GetAll<BudgetArea>(x => x.PersonID == UserInfo.PersonID)
+			var sections = await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.UserID)
 				.Select(x => new
 				{
 					x.ID,
 					x.Name,
 					BudgetSections = x.BudgetSectinos
-						.Where(y => y.BudgetArea.PersonID == UserInfo.PersonID)
+						.Where(y => y.BudgetArea.UserID == UserInfo.UserID)
 						.Select(y => new
 						{
 							y.ID,
@@ -182,7 +182,7 @@ namespace MyProfile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetSectins()
 		{
-			var sections = await repository.GetAll<BudgetSection>(x => x.BudgetArea.PersonID == UserInfo.PersonID)
+			var sections = await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.UserID)
 				.OrderByDescending(x => x.BudgetRecords.Count())
 				.Select(x => new
 				{
@@ -201,7 +201,7 @@ namespace MyProfile.Controllers
 						CanEdit = false,
 						Description = y.ChildSection.Description,
 						Name = y.ChildSection.Name,
-						Owner = y.ChildSection.Person.Name,
+						Owner = y.ChildSection.User.Name,
 						IsShow = true,
 
 					}).ToList()
@@ -218,7 +218,7 @@ namespace MyProfile.Controllers
 		{
 			var budgetArea = repository.GetByID<BudgetArea>(id);
 
-			if (budgetArea.PersonID != null && budgetArea.PersonID == UserInfo.PersonID && (budgetArea.BudgetSectinos == null || budgetArea.BudgetSectinos.Count() == 0))
+			if (budgetArea.UserID != null && budgetArea.UserID == UserInfo.UserID && (budgetArea.BudgetSectinos == null || budgetArea.BudgetSectinos.Count() == 0))
 			{
 				try
 				{

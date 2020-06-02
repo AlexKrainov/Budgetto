@@ -5,17 +5,17 @@ using System.Text;
 
 namespace MyProfile.Entity.ModelView
 {
-	public class UserInfoModel : Person
+	public class UserInfoModel : User
 	{
 		public string SpecificCulture { get; set; } = "ru-RU";
 		/// <summary>
 		/// Collective person without this.ID
 		/// </summary>
-		public List<Guid> CollectivePersonIDs
+		public List<Guid> CollectiveUserIDs
 		{
 			get { return new List<Guid> { Guid.Parse("086D7C26-1D8D-4CC7-E776-08D7EAB4D0ED") }; }
 		} //= new List<Guid>();
-		public List<Guid> AllCollectivePersonIDs
+		public List<Guid> AllCollectiveUserIDs
 		{
 			get { return new List<Guid> { Guid.Parse("086D7C26-1D8D-4CC7-E776-08D7EAB4D0ED"), Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D") }; }
 		} //= new List<Guid>();

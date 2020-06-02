@@ -5,16 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-	public class Person
+	public class User
 	{
-		public Person()
-		{
-			this.BudgetSections = new HashSet<BudgetSection>();
-			this.BudgetAreas = new HashSet<BudgetArea>();
-			this.BudgetRecords = new HashSet<BudgetRecord>();
-			this.Templates = new HashSet<Template>();
-		}
-
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid ID { get; set; }
@@ -46,6 +38,7 @@ namespace MyProfile.Entity.Model
 		public Guid? CollectiveBudgetID { get; set; }
 
 		public virtual CollectiveBudget CollectiveBudget { get; set; }
+		public virtual UserSettings UserSettings { get; set; }
 
 		public virtual IEnumerable<BudgetArea> BudgetAreas { get; set; }
 		public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }

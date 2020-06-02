@@ -17,12 +17,12 @@ namespace MyProfile.Entity.Model
 		public DateTime? DateEnd { get; set; }
 		public bool IsShow { get; set; }
 
-		[ForeignKey("Person")]
-		public Guid PersonID { get; set; }
+		[ForeignKey("User")]
+		public Guid UserID { get; set; }
 		[ForeignKey("PeriodType")]
 		public int PeriodTypeID { get; set; }
 
-		public virtual Person Person { get; set; }
+		public virtual User User { get; set; }
 		public virtual PeriodType PeriodType { get; set; }
 
 	}

@@ -5,63 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200220144703_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220144703_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220145112_MyProfile_002.cs" />
-    <Compile Remove="Migrations\20200220145112_MyProfile_002.Designer.cs" />
-    <Compile Remove="Migrations\20200220145204_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220145204_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220145235_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220145235_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220145508_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220145508_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220150134_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220150134_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220150618_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220150618_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220150810_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220150810_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220150932_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220150932_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220151305_MyProfile_002.cs" />
-    <Compile Remove="Migrations\20200220151305_MyProfile_002.Designer.cs" />
-    <Compile Remove="Migrations\20200220153409_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220153409_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220153751_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220153751_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220153931_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220153931_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220154116_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220154116_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220154307_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200220154307_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200220155324_MyProfile_002.cs" />
-    <Compile Remove="Migrations\20200220155324_MyProfile_002.Designer.cs" />
-    <Compile Remove="Migrations\20200224122325_MyProfile_002.cs" />
-    <Compile Remove="Migrations\20200224122325_MyProfile_002.Designer.cs" />
-    <Compile Remove="Migrations\20200224123319_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200224123319_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200224171213_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200224171213_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200224171611_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200224171611_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200301112406_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200301112406_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200301114222_MyProfile_001.cs" />
-    <Compile Remove="Migrations\20200301114222_MyProfile_001.Designer.cs" />
-    <Compile Remove="Migrations\20200426123915_MyProfile_13.cs" />
-    <Compile Remove="Migrations\20200426123915_MyProfile_13.Designer.cs" />
-    <Compile Remove="Migrations\20200426155254_MyProfile_13.cs" />
-    <Compile Remove="Migrations\20200426155254_MyProfile_13.Designer.cs" />
-    <Compile Remove="Migrations\20200426161317_MyProfile_14.cs" />
-    <Compile Remove="Migrations\20200426161317_MyProfile_14.Designer.cs" />
-    <Compile Remove="Migrations\20200427122329_MyProfile_14.cs" />
-    <Compile Remove="Migrations\20200427122329_MyProfile_14.Designer.cs" />
-    <Compile Remove="Migrations\20200427150117_MyProfile_14.cs" />
-    <Compile Remove="Migrations\20200427150117_MyProfile_14.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="LinqKit" Version="1.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.6" />

@@ -8,7 +8,7 @@ namespace MyProfile.Entity.ModelView
 	public class BudgetAreaModelView
 	{
 		[NonSerialized, JsonIgnore]
-		public Guid PersonID;
+		public Guid UserID;
 		public int ID { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }

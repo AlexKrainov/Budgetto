@@ -28,10 +28,10 @@ namespace MyProfile.Entity.Model
 		/// </summary>
 		public bool IsPrivate { get; set; }
 
-		[ForeignKey("Person")]
-		public Guid? PersonID { get; set; }
+		[ForeignKey("User")]
+		public Guid? UserID { get; set; }
 
-		public virtual Person Person { get; set; }
+		public virtual User User { get; set; }
 		public virtual ICollection<BudgetSection> BudgetSectinos { get; set; }
 		public virtual ICollection<CollectiveArea> CollectiveAreas { get; set; }
 

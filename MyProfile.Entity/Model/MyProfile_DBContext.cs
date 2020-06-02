@@ -63,13 +63,14 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<CollectiveBudget> CollectiveBudgets { get; set; }
 		public virtual DbSet<CollectiveArea> CollectiveAreas { get; set; }
 		public virtual DbSet<CollectiveSection> CollectiveSections { get; set; }
-		public virtual DbSet<Person> People { get; set; }
+		public virtual DbSet<User> Users { get; set; }
 		public virtual DbSet<PersonSetting> PersonSettings { get; set; }
 		public virtual DbSet<TemplateColumn> TemplateColumns { get; set; }
 		public virtual DbSet<PeriodType> PeriodTypes { get; set; }
 		public virtual DbSet<SectionGroupLimit> SectionGroupLimits { get; set; }
 		public virtual DbSet<SectionType> SectionTypes { get; set; }
 		public virtual DbSet<SectionTypeView> SectionTypeViews { get; set; }
+		public virtual DbSet<UserSettings> UserSettings { get; set; }
 
 	}
 }

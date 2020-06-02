@@ -35,9 +35,9 @@ var TemplateListVue = new Vue({
 		},
 		getLinkForView: function (template) {
 			if (template.periodTypeID == 1) { //PeriodTypesEnum.Days
-				return `/Budget/DaysBudget?templateID=${template.id}`;
+				return `/Budget/Month?templateID=${template.id}`;
 			} else if (template.periodTypeID == 3) { //PeriodTypesEnum.Months
-				return `/Budget/MonthsBudget?templateID=${template.id}`;
+				return `/Budget/Year?templateID=${template.id}`;
 			} else {
 				return '/Budget/Index/' + template.id;
 			}

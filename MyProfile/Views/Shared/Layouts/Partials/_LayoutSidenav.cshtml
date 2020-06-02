@@ -27,17 +27,17 @@
 	<li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")">
 		<a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Templates</div></a>
 	</li>
-	<li class="sidenav-item@(currentPage == "Budget/DaysBudget" ? " active" : "")">
-		<a asp-area="" asp-controller="Budget" asp-action="DaysBudget" class="sidenav-link">
+	<li class="sidenav-item@(currentPage == "Budget/Month" ? " active" : "")">
+		<a asp-area="" asp-controller="Budget" asp-action="Month" class="sidenav-link">
 			<i class="sidenav-icon ion ion-md-cash"></i>
-			<div>Budget by days</div>
+			<div>Month budget</div>
 			<div class="pl-1 ml-auto"><div class="badge badge-primary">1</div></div>
 		</a>
 	</li>
-	<li class="sidenav-item@(currentPage == "Budget/MonthsBudget" ? " active" : "")">
-		<a asp-area="" asp-controller="Budget" asp-action="MonthsBudget" class="sidenav-link">
+	<li class="sidenav-item@(currentPage == "Budget/Year" ? " active" : "")">
+		<a asp-area="" asp-controller="Budget" asp-action="Year" class="sidenav-link">
 			<i class="sidenav-icon ion ion-md-cash"></i>
-			<div>Budget by months</div>
+			<div>Year budget</div>
 			<div class="pl-1 ml-auto"><div class="badge badge-primary">1</div></div>
 		</a>
 	</li>

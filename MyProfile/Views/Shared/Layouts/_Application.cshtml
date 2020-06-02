@@ -72,6 +72,8 @@
 		<vue-record-component id="test3" name="test3"></vue-record-component>
 	</div>
 
+	
+
 	<!-- Core scripts -->
 	<script src="~/vendor/libs/popper/popper.js"></script>
 	<script src="~/vendor/js/bootstrap.js"></script>
@@ -96,9 +98,11 @@
 	<script src="~/vendor/libs/tagify/dist/tagify.min.js"></script>
 	<script src="~/vendor/libs/filtrex/src/filtrex.js"></script>
 
-	<script src="~/app_js/global.functions.site.js"></script>
-	<script src="~/app_js/startup.site.js"></script>
+	<script src="~/app_js/base/global.functions.site.js"></script>
+	<script src="~/app_js/base/startup.site.js"></script>
 
 	@RenderSection("Scripts", required: false)
+
+	<script src="~/app_js/base/user.js"></script>
 </body>
 </html>

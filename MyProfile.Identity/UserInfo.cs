@@ -13,7 +13,7 @@ namespace MyProfile.Identity
 		/// <summary>
 		/// tmp
 		/// </summary>
-		public static Guid PersonID { get { return Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"); } }
+		public static Guid UserID { get { return Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"); } }
 
 		
 		public static readonly string CONNECT_USER = "ConnectUserInfo";

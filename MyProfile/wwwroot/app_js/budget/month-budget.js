@@ -44,7 +44,7 @@
 	},
 	methods: {
 		load: function () {
-			return sendAjax("/Budget/GetDaysBudget?month=" + this.budgetDate + "&templateID=" + this.templateID, null, "POST")
+			return sendAjax("/Budget/GetMonthBudget?month=" + this.budgetDate + "&templateID=" + this.templateID, null, "POST")
 				.then(function (result) {
 					if (result.isOk == true) {
 						BudgetVue.rows = result.rows;
@@ -54,16 +54,17 @@
 					}
 				});
 
-			$.fn.dataTable.SearchPanes.defaults = false;
+			//$.fn.dataTable.SearchPanes.defaults = false;
 		},
 		refresh: function () {
-			this.load().then(function () {
-				BudgetVue.initTable();
-			});
+			this.load()
+			//	.then(function () {
+			//	BudgetVue.initTable();
+			//});
 		},
-		initTable: function () {
-			$("#table").DataTable();
-		},
+		//initTable: function () {
+		//	$("#table").DataTable();
+		//},
 
 		//View cell
 		getCellValue: function (cell) {
@@ -80,15 +81,38 @@
 			}
 		},
 		clickCell: function (rowIndex, cellIndex) {
+			let templateColumnTypes = [2, 3, 4, 7]; // DaysForMonth = 2,MonthsForYear = 3,YearsFor10Year = 4,WeeksForMonth = 7
 
-			let sections = this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID);
+			let sections = [];
+
+			if (this.template.columns[cellIndex].templateColumnType == 1) {//BudgetSection/Money
+				sections = this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID);
+			} else if (templateColumnTypes.indexOf(this.template.columns[cellIndex].templateColumnType) >= 0) {
+				for (var i = 0; i < this.template.columns.length; i++) {
+					sections = sections.concat(this.template.columns[i].templateBudgetSections.map(x => x.sectionID));
+				}
+			} else {
+				return;
+			}
+
 			let filter = {
 				sections: sections,
-				rowIndex: rowIndex,
 				startDate: moment(this.budgetDate).add(rowIndex, "days").format(),
 				endDate: moment(this.budgetDate).add((rowIndex + 1), "days").add(-1, "minutes").format()
 			};
 
+			return this.loadTimeLine(filter)
+		},
+		clickFooterCell: function (cellIndex) {
+			let filter = {
+				sections: this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID),
+				startDate: moment(this.budgetDate).format(),
+				endDate: moment(this.budgetDate).endOf("month").format()
+			};
+
+			return this.loadTimeLine(filter)
+		},
+		loadTimeLine: function (filter) {
 			return $.ajax({
 				type: "POST",
 				url: "/Budget/LoadingRecordsForTableView",
@@ -105,6 +129,22 @@
 		GetDateByFormat: function (date, format) {
 			return GetDateByFormat(date, format);
 		},
+		edit: function (record) {
+
+			RecordVue.recordComponent.editByElement({
+				id: record.id,
+				isCorrect: true,
+				isSaved: true,
+				money: record.money,
+				sectionID: record.sectionID,
+				sectionName: record.sectionName,
+				tag: record.rawData,
+				dateTimeOfPayment: record.dateTimeOfPayment,
+			},
+				BudgetVue.load
+			);
+			$("#modalTimeLine").modal("hide");
+		}
 	}
 });
 

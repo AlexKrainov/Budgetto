@@ -187,7 +187,7 @@ namespace MyProfile.Template.Service
 				if (template.ID == 0)//create
 				{
 					Template templateDB = new Template();
-					templateDB.PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D");
+					templateDB.UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D");
 					templateDB.PeriodTypeID = template.PeriodTypeID;
 					templateDB.DateCreate = templateDB.DateEdit = DateTime.MinValue == template.DateCreate ? DateTime.Now : template.DateCreate;
 					templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;
@@ -233,7 +233,7 @@ namespace MyProfile.Template.Service
 
 					Template templateDB = repository.GetByID<Template>(template.ID);
 
-					templateDB.PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D");
+					templateDB.UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D");
 					templateDB.PeriodTypeID = template.PeriodTypeID;
 					templateDB.DateEdit = DateTime.Now;
 					templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;

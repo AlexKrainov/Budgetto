@@ -18,7 +18,7 @@ namespace MyProfile.Controllers.My
 		{
 			TimeLineViewModel model = new TimeLineViewModel();
 
-			model.Years = await repository.GetAll<BudgetRecord>(x => x.PersonID == UserInfo.PersonID)
+			model.Years = await repository.GetAll<BudgetRecord>(x => x.UserID == UserInfo.UserID)
 				.Select(x => x.DateTimeOfPayment.Year)
 				.GroupBy(x => x)
 				.Select(x => new YearsAndCount { year = x.Key })
@@ -63,7 +63,7 @@ namespace MyProfile.Controllers.My
 		[HttpPost]
 		public async Task<JsonResult> LoadingRecordsForCalendar([FromBody] CalendarFilterModels filter)
 		{
-			var result = await budgetService.GetBudgetRecordsByPeriod(x => x.PersonID == UserInfo.PersonID
+			var result = await budgetService.GetBudgetRecordsByPeriod(x => x.UserID == UserInfo.UserID
 				  && filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
 				  && filter.Sections.Contains(x.BudgetSectionID)
 				  && x.IsDeleted == false);
@@ -79,7 +79,7 @@ namespace MyProfile.Controllers.My
 				filter.Sections.AddRange(await sectionService.GetCollectionSectionBySectionID(filter.Sections));
 
 			}
-			//x.PersonID == UserInfo.PersonID
+			//x.UserID == UserInfo.UserID
 			var result = await budgetService.GetBudgetRecordsByPeriod(x => 
 				   filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
 				  && filter.Sections.Contains(x.BudgetSectionID)

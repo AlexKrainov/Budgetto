@@ -48,3 +48,81 @@
 .badge.indicator {
 	margin: -4px 0px 0px 7px !important;
 }
+
+
+/*Settings*/
+.theme-settings-open-btn2 {
+	position: absolute;
+	top: 135px;
+	left: 0;
+	z-index: -1;
+	display: block;
+	width: 40px;
+	height: 40px;
+	border-top-left-radius: 50%;
+	border-bottom-left-radius: 50%;
+	background: #444;
+	color: #fff !important;
+	text-align: center;
+	font-size: 20px !important;
+	line-height: 40px;
+	opacity: 1;
+	-webkit-transition: all .1s linear .2s;
+	-o-transition: all .1s linear .2s;
+	transition: all .1s linear .2s;
+	-webkit-transform: translateX(-60px);
+	-ms-transform: translateX(-60px);
+	transform: translateX(-60px)
+}
+
+	/* .theme-settings-open-btn2::before {
+		content: "";
+		width: 18px;
+		height: 18px;
+		display: block;
+		background-size: 100% 100%;
+		position: absolute;
+		background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3BJREFUeNrUml1IFFEUx8fNh6jMkkjY2pDAaokksVrItGLXhQiUPiDIjOg58CmISPt4EyIK3yKQEKIPhKJeCnM/lMyHonop6CUKE01Eow+Mxe1/6AytSzvec+fOpH/4gei952NmnHvuuVOUzWYtF1oHDoGDIAHaFeddAntBD/NJOwJKQIM4GMjO1k8QVpgb5rG2ZkAaxHRikU6oY2eFNApqHObT38Yc5idArZcJOAVvKwO6QQNYyzTw7zIK8/skMRULn7gnoG6OMYvAMUZHvZLBAaHxKct7ffUygVIfEij1MoH9PiSwTzK4SLAORMBzHxKggLaDFyYTWMEG11v+6D0nMWXiEaJb+sbH4EmV4DWIS+7AHnAW9IExsBrEQNT6v+plvoByjuci6M9PgH6xy1oYSoPduY9QfAEFT6oHDbkJnDNkeAY8BCfABrAMLAYVoAl0gW+GfLXb1WiIK0K36gVbFOqXcnA9a0YhMthqwFAHCAgLw+a8slpHraoVppOuaO4piCMufafpf2AATGs+h8/AaRfP8R1wTXMuxZyyr8TmOTYahRRxcfVtVoIJod9RjtnK3y1lBEb6DQRvc1ngl2Lcas/NLSWo1rktuIUPDL7XJbZugVeFaqGbAkMvDSYgsdXtVMy9Exj6bDCB74Ld3lunBGYkewnD5UHAxKSwYG7QYPBLQYni2E1OCbQInG4zmIDE1vFCCVSBowJDTQYTkNiiGKvzW4sbwYjGQrbTwBpQBiY1FrKwvZC1gR+atcggKHaZQKemb4q5jQwkXRZUnS6Cb3HpOxHg9rYbnQJXuaUo0Ulww6XvHroKawxtaOhOVitc9SDoMuCPYg7am/qkvUk20JR6DO5zqT0CfvGaQW+5RnAALDHgK0WdFDuBqLQrPA9EMffltlVM3QU/lOQjqll9Ier7n+dbM86NrajCeYDXon7VU262reKLfIF3kkonNI1gOOu/htm3Y3yqzd0y3vBU+HTVP4AaMGGqhJ0Q1klu1awSvLQGHwRDPgQ/xK9gTzYRj3xIQORjPh7yTXqZQIkPCSz3MoGYYof6LpcNlQz9fE9xzy07UBGWv/Ug5fDuHgc7HOZHeEwhpdiHZ58a2ES5+sytYqdBlcLcKh47q0mr+7GH5Jj1XwpZfz63OcxL+xnFeR2g1vr7uc1H3QB+CzAA7A9pvcD5g+8AAAAASUVORK5CYII=");
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		margin-left: 2px
+	}*/
+
+[dir=rtl] .theme-settings-open-btn2 {
+	border-radius: 0;
+	border-top-right-radius: 50%;
+	border-bottom-right-radius: 50%
+}
+
+	[dir=rtl].theme-settings-open-btn2::before {
+		margin-left: -2px
+	}
+
+.theme-settings-open .theme-settings-open-btn2 {
+	opacity: 0;
+	-webkit-transition-delay: 0s;
+	-o-transition-delay: 0s;
+	transition-delay: 0s;
+	-webkit-transform: none !important;
+	-ms-transform: none !important;
+	transform: none !important
+}
+
+[dir=rtl] .theme-settings-open-btn2 {
+	right: 0;
+	left: auto;
+	-webkit-transform: translateX(60px);
+	-ms-transform: translateX(60px);
+	transform: translateX(60px)
+}
+.theme-settings-close-btn2 {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	display: block;
+	font-size: 20px;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%)
+}

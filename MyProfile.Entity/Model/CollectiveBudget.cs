@@ -9,7 +9,7 @@ namespace MyProfile.Entity.Model
 	{
 		public CollectiveBudget()
 		{
-			this.People = new HashSet<Person>();
+			this.Users = new HashSet<User>();
 		}
 
 		[Key]
@@ -21,6 +21,6 @@ namespace MyProfile.Entity.Model
 		public DateTime? DateDelete { get; set; }
 
 
-		public virtual IEnumerable<Person> People { get; set; }
+		public virtual IEnumerable<User> Users { get; set; }
 	}
 }

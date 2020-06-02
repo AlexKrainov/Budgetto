@@ -1,0 +1,67 @@
+﻿@model MyProfile.Entity.ModelView.BudgetView.BudgetControllerModelView
+@{
+	ViewData["Title"] = "DataTables - Tables";
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
+	<link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" />
+	<link href="~/app_css/budget-page.css" rel="stylesheet" />
+}
+
+@section Scripts {
+	<!-- Dependencies -->
+	<script src="~/vendor/libs/datatables/datatables.js"></script>
+	<script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
+
+	<script src="~/app_js/budget/month-budget.js"></script>
+	@*<script src="~/app_js/budget/table-view.js"></script>*@
+}
+
+<div id="budget-vue">
+
+	<input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
+	<input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />
+
+	<!-- Head block -->
+	<div class="container-m-nx container-m-ny bg-white container-p-x py-4 mb-0">
+
+		<div class="d-flex justify-content-between align-items-center">
+			<div class="form-row">
+				<div class="form-group col">
+					<label class="form-label">Date</label>
+					<input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh">
+				</div>
+				<div class="form-group col">
+					<label class="form-label">Template</label>
+					<select id="templates" v-model="templateID" v-on:change="refresh" class="form-control">
+						@foreach (var template in Model.Templates)
+						{
+							<option value="@template.ID">@template.Name</option>
+
+						}
+					</select>
+				</div>
+			</div>
+			<div>
+				<h2 class="font-weight-light mb-2">Server Statistics</h2>
+				<div class="badge badge-success font-weight-bold">RUNNING</div>
+			</div>
+			<button class="btn btn-lg btn-default">
+				<i class="ion ion-md-power text-danger"></i>&nbsp;
+				Shut Down
+			</button>
+		</div>
+	</div>
+	<!-- / Head block -->
+	<hr class="container-m-nx border-light mt-0 mb-4">
+
+	<div class="card">
+		<div class="card-datatable table-responsive">
+			@await Html.PartialAsync("_TableView")
+		</div>
+	</div>
+	
+</div>
+
+@await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Month")

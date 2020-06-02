@@ -40,7 +40,7 @@ namespace MyProfile.Controllers
 			//BudgetArea budgetArea1 = new BudgetArea()
 			//{
 			//	Name = "Основные раходы",
-			//	PersonID = UserInfo.PersonID
+			//	UserID = UserInfo.UserID
 			//};
 			//repository.Create(budgetArea1, true);
 
@@ -50,37 +50,37 @@ namespace MyProfile.Controllers
 			//	{
 			//		BudgetAreaID = budgetArea1.ID,
 			//		Name = "Расходы (продукты)",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//	new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea1.ID,
 			//		Name = "Прочие расходы",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//	new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea1.ID,
 			//		Name = "Траты на ребенка",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//		new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea1.ID,
 			//		Name = "Коммунальные",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//			new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea1.ID,
 			//		Name = "Проездной",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//				new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea1.ID,
 			//		Name = "Регулярные платежы",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//};
 			//repository.CreateRange(BudgetSections, true);
@@ -88,7 +88,7 @@ namespace MyProfile.Controllers
 			//BudgetArea budgetArea2 = new BudgetArea()
 			//{
 			//	Name = "Прочие раходы",
-			//	PersonID = UserInfo.PersonID
+			//	UserID = UserInfo.UserID
 			//};
 			//repository.Create(budgetArea2, true);
 
@@ -98,7 +98,7 @@ namespace MyProfile.Controllers
 			//	{
 			//		BudgetAreaID = budgetArea2.ID,
 			//		Name = "Внебюджетные расходы",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//};
 			//repository.CreateRange(BudgetSections, true);
@@ -106,7 +106,7 @@ namespace MyProfile.Controllers
 			//budgetArea2 = new BudgetArea()
 			//{
 			//	Name = "Зарплата",
-			//	PersonID = UserInfo.PersonID
+			//	UserID = UserInfo.UserID
 			//};
 			//repository.Create(budgetArea2, true);
 
@@ -116,25 +116,25 @@ namespace MyProfile.Controllers
 			//	{
 			//		BudgetAreaID = budgetArea2.ID,
 			//		Name = "Зарплата",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//	new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea2.ID,
 			//		Name = "Другие доходы",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//	new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea2.ID,
 			//		Name = "Выплаты",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//	new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea2.ID,
 			//		Name = "CashBack",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//};
 			//repository.CreateRange(BudgetSections, true);
@@ -142,7 +142,7 @@ namespace MyProfile.Controllers
 			//BudgetArea budgetArea = new BudgetArea()
 			//{
 			//	Name = "Инвестирование",
-			//	PersonID = UserInfo.PersonID
+			//	UserID = UserInfo.UserID
 			//};
 			//repository.Create(budgetArea, true);
 
@@ -152,13 +152,13 @@ namespace MyProfile.Controllers
 			//	{
 			//		BudgetAreaID = budgetArea.ID,
 			//		Name = "Российский счет",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//	new BudgetSection
 			//	{
 			//		BudgetAreaID = budgetArea.ID,
 			//		Name = "Американский счет",
-			//		PersonID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
+			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
 			//	},
 			//};
 			//repository.CreateRange(BudgetSections, true);
@@ -184,7 +184,7 @@ namespace MyProfile.Controllers
 
 		public async Task<JsonResult> GetTemplates()
 		{
-			var templates = await templateService.GetTemplates(x => x.PersonID == UserInfo.PersonID);
+			var templates = await templateService.GetTemplates(x => x.UserID == UserInfo.UserID);
 			return Json(new { isOk = true, templates });
 		}
 
@@ -204,7 +204,7 @@ namespace MyProfile.Controllers
 
 			if (id != null)
 			{
-				templateViewModel = await templateService.GetTemplateByID(x => x.PersonID == UserInfo.PersonID && x.ID == id);
+				templateViewModel = await templateService.GetTemplateByID(x => x.UserID == UserInfo.UserID && x.ID == id);
 			}
 
 			return Json(new

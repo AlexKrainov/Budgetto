@@ -22,7 +22,7 @@ namespace MyProfile.Budget.Service
 
 		public async Task<RecordModelView> GetByID(int id)
 		{
-			return await repository.GetAll<BudgetRecord>(x => x.ID == id && x.PersonID == UserInfo.PersonID)
+			return await repository.GetAll<BudgetRecord>(x => x.ID == id && x.UserID == UserInfo.UserID)
 				.Select(x => new RecordModelView
 				{
 					ID = id,
@@ -83,7 +83,7 @@ namespace MyProfile.Budget.Service
 					DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
 					Description = budgetRecord.Description,
 					IsHide = budgetRecord.IsConsider,
-					PersonID = UserInfo.PersonID,
+					UserID = UserInfo.UserID,
 					Total = budgetRecord.Money,
 					RawData = budgetRecord.RawData,
 				}, true);
