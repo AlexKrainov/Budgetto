@@ -39,6 +39,7 @@
     <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
     <ProjectReference Include="..\MyProfile.LittleDictionaries.Service\MyProfile.LittleDictionaries.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Template.Service\MyProfile.Template.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.User.Service\MyProfile.User.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +67,11 @@
     <None Include="wwwroot\vendor\libs\tagify\src\tagify.polyfills.js" />
     <None Include="wwwroot\vendor\libs\tagify\src\tagify.scss" />
     <None Include="wwwroot\vendor\libs\vue\README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Areas\Identity\Models\" />
   </ItemGroup>
 
 </Project>

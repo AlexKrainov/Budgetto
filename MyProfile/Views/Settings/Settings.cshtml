@@ -1,4 +1,4 @@
-﻿<div id="theme-settings" class="page-settings">
+﻿<div id="theme-settings" class="page-settings" data-page="@Model">
 	<a href="javascript:void(0)" class="theme-settings-open-btn2" tabindex="-1" v-on:click="openSettings">
 		<i class="fas fa-cogs"></i>
 	</a>
@@ -8,8 +8,11 @@
 	<div class="theme-settings-inner pt-4">
 		@if (Model == "Budget/Month")
 		{
-			await Html.PartialAsync(@"../Settings/_Budget_Month_Settings.cshtml");
-
+			await Html.RenderPartialAsync(@"../Settings/_Budget_Month_Settings.cshtml");
+		}
+		@if (Model == "Budget/Year")
+		{
+			await Html.RenderPartialAsync(@"../Settings/_Budget_Year_Settings.cshtml");
 		}
 	</div>
 </div>

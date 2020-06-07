@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,8 +8,9 @@ using Microsoft.Extensions.Hosting;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
-using MyProfile.Template.Service;
 using MyProfile.LittleDictionaries.Service;
+using MyProfile.Template.Service;
+using MyProfile.User.Service;
 
 namespace MyProfile
 {
@@ -38,7 +39,10 @@ namespace MyProfile
 			services.AddScoped<BudgetRecordService>();
 			services.AddScoped<DictionariesService>();
 			services.AddScoped<SectionService>();
+			services.AddScoped<UserLogService>();
 			#endregion
+
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 #if true
 			string connection = Configuration.GetConnectionString("TestConnection");//TestConnection
@@ -57,6 +61,20 @@ namespace MyProfile
 				options.CheckConsentNeeded = context => true;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
+
+			#region Cookies settings
+			services.Configure<CookiePolicyOptions>(options =>
+				{
+					options.CheckConsentNeeded = context => true;
+					options.MinimumSameSitePolicy = SameSiteMode.None;
+				});
+
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options =>
+				{
+					options.LoginPath = new PathString("/Identity/Account/Login");
+				});
+			#endregion
 
 			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 		}
@@ -79,11 +97,16 @@ namespace MyProfile
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 
+			app.UseAuthentication();
+			Identity.UserInfo.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
+
 			app.UseMvc(routes =>
 			{
+				routes.MapRoute("areaRoute", "{area:exists}/{controller=Account}/{action=Login}/{id?}");
+
 				routes.MapRoute(
 					name: "default",
-					template: "{controller=Section}/{action=Edit}/{id?}");
+					template: "{controller=Budget}/{action=Month}/{id?}");
 			});
 		}
 	}

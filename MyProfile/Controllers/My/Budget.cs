@@ -68,7 +68,7 @@ namespace MyProfile.Controllers.My
 			BudgetControllerModelView model = new BudgetControllerModelView();
 			model.SelectedDateTime = month != null ? new DateTime(DateTime.Now.Year, month ?? 1, 1) : DateTime.Now;
 			model.SelectedTemplateID = templateID ?? -1;
-			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Days);
+			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Month);
 
 			if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
 			{
@@ -103,7 +103,7 @@ namespace MyProfile.Controllers.My
 			BudgetControllerModelView model = new BudgetControllerModelView();
 			model.SelectedYear = year ?? DateTime.Now.Year;
 			model.SelectedTemplateID = templateID ?? -1;
-			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Months);
+			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Year);
 			if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
 			{
 				model.SelectedTemplateID = model.Templates[0].ID;
@@ -132,7 +132,7 @@ namespace MyProfile.Controllers.My
 			BudgetControllerModelView model = new BudgetControllerModelView();
 			model.SelectedYear = lastYear ?? DateTime.Now.Year;
 			model.SelectedTemplateID = templateID ?? -1;
-			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Months);
+			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Year);
 			if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
 			{
 				model.SelectedTemplateID = model.Templates[0].ID;

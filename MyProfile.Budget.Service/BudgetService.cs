@@ -51,7 +51,7 @@ namespace MyProfile.Budget.Service
 
 			switch (template.PeriodTypeID)
 			{
-				case (int)PeriodTypesEnum.Months:
+				case (int)PeriodTypesEnum.Year:
 					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Month);
 					totalCounter = 12;
 					break;
@@ -59,13 +59,13 @@ namespace MyProfile.Budget.Service
 					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Year);
 					totalCounter = 10;
 					break;
-				case (int)PeriodTypesEnum.Days:
+				case (int)PeriodTypesEnum.Month:
 				default:
 					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Day);
 					totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
 					break;
 			}
-			if (UserInfo.Current.IsAllowCollectiveBudget)
+			if (UserInfo.Current.IsAllowCollectiveBudget && UserInfo.Current.UserSettings.BudgetPages_WithCollective)
 			{
 				AddCollectionRecords(budgetRecords);
 			}

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200603141554_MyProfile_002")]
+    partial class MyProfile_002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -443,66 +445,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.UserLog", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ActionCodeName")
-                        .HasMaxLength(16);
-
-                    b.Property<string>("BrowerName")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("BrowserVersion")
-                        .HasMaxLength(16);
-
-                    b.Property<string>("City")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("Comment");
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(32);
-
-                    b.Property<DateTime>("CurrentDateTime")
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<string>("IP")
-                        .HasMaxLength(64);
-
-                    b.Property<string>("Location")
-                        .HasMaxLength(64);
-
-                    b.Property<string>("OS_Name")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("Os_Version")
-                        .HasMaxLength(16);
-
-                    b.Property<int?>("ParentUserLogID");
-
-                    b.Property<string>("PostCode")
-                        .HasMaxLength(16);
-
-                    b.Property<string>("ScreenSize")
-                        .HasMaxLength(16);
-
-                    b.Property<string>("SessionID")
-                        .HasMaxLength(32);
-
-                    b.Property<Guid?>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ParentUserLogID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("UserLogs");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.UserSettings", b =>
                 {
                     b.Property<Guid>("ID");
@@ -668,17 +610,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.CollectiveBudget", "CollectiveBudget")
                         .WithMany("Users")
                         .HasForeignKey("CollectiveBudgetID");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.UserLog", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.UserLog", "ParentUserLog")
-                        .WithMany()
-                        .HasForeignKey("ParentUserLogID");
-
-                    b.HasOne("MyProfile.Entity.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.UserSettings", b =>

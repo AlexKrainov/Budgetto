@@ -199,7 +199,6 @@ var FormulaVue = new Vue({
 	watch: {
 		formula: function (newValue, oldValue) {
 			console.log("refresh");
-
 		},
 	},
 	computed: {

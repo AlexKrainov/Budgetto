@@ -35,6 +35,14 @@ namespace MyProfile.Entity.Model
 				.HasOne(x => x.Section)
 				.WithMany(y => y.CollectiveSections);
 
+			#region Default value
+
+			modelBuilder.Entity<UserSettings>()
+				.Property(b => b.BudgetPages_WithCollective)
+				.HasDefaultValue(true);
+
+			#endregion
+
 			//	base.OnModelCreating(modelBuilder);
 
 			//modelBuilder.Entity<BudgetArea>();
@@ -64,6 +72,7 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<CollectiveArea> CollectiveAreas { get; set; }
 		public virtual DbSet<CollectiveSection> CollectiveSections { get; set; }
 		public virtual DbSet<User> Users { get; set; }
+		public virtual DbSet<UserLog> UserLogs { get; set; }
 		public virtual DbSet<PersonSetting> PersonSettings { get; set; }
 		public virtual DbSet<TemplateColumn> TemplateColumns { get; set; }
 		public virtual DbSet<PeriodType> PeriodTypes { get; set; }

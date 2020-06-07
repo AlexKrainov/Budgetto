@@ -6,9 +6,9 @@ namespace MyProfile.Entity.Model
 	public enum PeriodTypesEnum
 	{
 		Undefined,
-		Days = 1,
+		Month = 1,
 		Weeks = 2,
-		Months = 3,
+		Year = 3,
 		Years10 = 4
 	}
 	public class PeriodType

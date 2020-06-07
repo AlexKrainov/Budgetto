@@ -191,7 +191,7 @@ namespace MyProfile.Controllers
 		public IActionResult Edit(int? id)
 		{
 			ViewBag.PeriodTypes = repository.GetAll<PeriodType>()
-				.Where(x => x.ID == (int)PeriodTypesEnum.Days || x.ID == (int)PeriodTypesEnum.Months)
+				.Where(x => x.ID == (int)PeriodTypesEnum.Month || x.ID == (int)PeriodTypesEnum.Year)
 				.ToList();
 
 			return View();

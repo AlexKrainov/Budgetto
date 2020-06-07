@@ -72,7 +72,7 @@
 		<vue-record-component id="test3" name="test3"></vue-record-component>
 	</div>
 
-	
+
 
 	<!-- Core scripts -->
 	<script src="~/vendor/libs/popper/popper.js"></script>
@@ -102,7 +102,14 @@
 	<script src="~/app_js/base/startup.site.js"></script>
 
 	@RenderSection("Scripts", required: false)
+	<script>
+		if (document.getElementsByClassName("page-settings").length == 1) {
+			var script = document.createElement('script');
+			script.src = "../app_js/user/user.js";
+			document.head.appendChild(script); 
+		}
 
-	<script src="~/app_js/base/user.js"></script>
+	</script>
+	@*<script src="~/app_js/base/user.js"></script>*@
 </body>
 </html>

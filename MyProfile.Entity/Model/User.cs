@@ -44,5 +44,13 @@ namespace MyProfile.Entity.Model
 		public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }
 		public virtual IEnumerable<BudgetSection> BudgetSections { get; set; }
 		public virtual IEnumerable<Template> Templates { get; set; }
+
+		public User()
+		{
+			this.BudgetAreas = new HashSet<BudgetArea>();
+			this.BudgetRecords = new HashSet<BudgetRecord>();
+			this.BudgetSections = new HashSet<BudgetSection>();
+			this.Templates = new HashSet<Template>();
+		}
 	}
 }
