@@ -35,6 +35,10 @@ namespace MyProfile.Areas.Identity.Controllers
 			if (userSettings.PageName == "Budget/Month" || userSettings.PageName == "Budget/Year")
 			{
 				user.UserSettings.BudgetPages_WithCollective = dbUserSettings.BudgetPages_WithCollective = userSettings.BudgetPages_WithCollective;
+
+				user.UserSettings.BudgetPages_EarningChart = dbUserSettings.BudgetPages_EarningChart = userSettings.BudgetPages_EarningChart;
+				user.UserSettings.BudgetPages_SpendingChart = dbUserSettings.BudgetPages_SpendingChart = userSettings.BudgetPages_SpendingChart;
+				user.UserSettings.BudgetPages_InvestingChart = dbUserSettings.BudgetPages_InvestingChart = userSettings.BudgetPages_InvestingChart;
 			}
 
 			await UserInfo.AddOrUpdate_Authenticate(user);

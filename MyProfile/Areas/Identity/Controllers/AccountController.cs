@@ -57,6 +57,14 @@ namespace MyProfile.Areas.Identity.Controllers
 					IsAllowCollectiveBudget = x.IsAllowCollectiveBudget,
 					LastName = x.LastName,
 					Name = x.Name,
+					CollectiveBudget = new CollectiveBudget
+					{
+						ID = x.CollectiveBudget.ID,
+						DateCreate = x.CollectiveBudget.DateCreate,
+						DateDelete = x.CollectiveBudget.DateDelete,
+						Name = x.CollectiveBudget.Name,
+						Users = x.CollectiveBudget.Users.Select(y => new Entity.Model.User { ID = y.ID }).ToList()
+					},
 					UserSettings = new UserSettings
 					{
 						BudgetPages_WithCollective = x.UserSettings.BudgetPages_WithCollective

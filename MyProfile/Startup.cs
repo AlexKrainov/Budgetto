@@ -37,9 +37,11 @@ namespace MyProfile
 			services.AddScoped<TemplateService>();
 			services.AddScoped<BudgetService>();
 			services.AddScoped<BudgetRecordService>();
+			services.AddScoped<BudgetTotalService>();
 			services.AddScoped<DictionariesService>();
 			services.AddScoped<SectionService>();
 			services.AddScoped<UserLogService>();
+			services.AddScoped<CollectionUserService>();
 			#endregion
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

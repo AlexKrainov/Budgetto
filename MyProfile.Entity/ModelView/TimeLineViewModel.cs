@@ -31,6 +31,7 @@ namespace MyProfile.Entity.ModelView
 		public bool IsAmount { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }
+		public bool IsConsiderCollection { get; set; } = true;
 
 		public CalendarFilterModels()
 		{

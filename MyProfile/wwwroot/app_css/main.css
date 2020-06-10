@@ -126,3 +126,8 @@
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%)
 }
+
+
+.w-45{
+	width: 45% !important;
+}

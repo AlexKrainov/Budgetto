@@ -12,8 +12,19 @@
 		flatpickr: {},
 
 		records: [],
+
+		//charts
+		earningData: { isShow: true },
+		earningChart: undefined,
+
+		spendingData: { isShow: true },
+		spendingChart: undefined,
+
+		investingData: { isShow: true },
+		investingChart: undefined,
 	},
 	watch: {
+
 	},
 	mounted: function () {
 		this.templateID = document.getElementById("templateID_hidden").value;
@@ -41,6 +52,8 @@
 		});
 
 		this.refresh();
+
+		window.layoutHelpers.on('resize', this.resizeTotalCharts);
 	},
 	methods: {
 		load: function () {
@@ -53,11 +66,154 @@
 
 					}
 				});
-
 			//$.fn.dataTable.SearchPanes.defaults = false;
 		},
+		loadTotalCharts: function () {
+			return $.ajax({
+				type: "GET",
+				url: "/BudgetTotal/Load?to=" + this.budgetDate,
+				contentType: "application/json",
+				dataType: 'json',
+				context: this,
+				success: function (response) {
+					this.earningData = response.earningData;
+					this.spendingData = response.spendingData;
+					this.investingData = response.investingData;
+
+					this.initTotalCharts();
+				}
+			});
+		},
+		initTotalCharts: function () {
+			if (this.earningChart) {
+				this.earningChart.destroy();
+			}
+			this.earningChart = new Chart(document.getElementById('earningChart').getContext("2d"), {
+				type: 'line',
+				data: {
+					datasets: [{
+						data: this.earningData.data,
+						borderWidth: 1,
+						backgroundColor: 'rgba(136, 151, 170, .2)',
+						borderColor: 'rgba(136, 151, 170, 1)',
+						pointBorderColor: 'rgba(0,0,0,0)',
+						pointRadius: 1,
+						lineTension: 0
+					}],
+					labels: this.earningData.labels
+				},
+				options: {
+					scales: {
+						xAxes: [{
+							display: false,
+						}],
+						yAxes: [{
+							display: false
+						}]
+					},
+					legend: {
+						display: false
+					},
+					tooltips: {
+						enabled: true
+					},
+					responsive: false,
+					maintainAspectRatio: false
+				}
+			});
+
+			if (this.spendingChart) {
+				this.spendingChart.destroy()
+			}
+			this.spendingChart = new Chart(document.getElementById('spendingChart').getContext("2d"), {
+				type: 'line',
+				data: {
+					datasets: [{
+						data: this.spendingData.data,
+						borderWidth: 1,
+						backgroundColor: 'rgba(206, 221, 54, .2)',
+						borderColor: 'rgba(206, 221, 54, 1)',
+						pointBorderColor: 'rgba(0,0,0,0)',
+						pointRadius: 1,
+						lineTension: 0
+					}],
+					labels: this.spendingData.labels
+				},
+				options: {
+					scales: {
+						xAxes: [{
+							display: false,
+						}],
+						yAxes: [{
+							display: false
+						}]
+					},
+					legend: {
+						display: false
+					},
+					tooltips: {
+						enabled: false
+					},
+					responsive: false,
+					maintainAspectRatio: false
+				}
+			});
+
+			this.investingChart = new Chart(document.getElementById('statistics-chart-5').getContext("2d"), {
+				type: 'line',
+				data: {
+					datasets: [{
+						data: [24, 92, 77, 90, 91, 78, 28, 49, 23, 81, 15, 97, 94, 16, 99, 61,
+							38, 34, 48, 3, 5, 21, 27, 4, 33, 40, 46, 47, 48, 60
+						],
+						borderWidth: 1,
+						backgroundColor: 'rgba(136, 151, 170, .2)',
+						borderColor: 'rgba(136, 151, 170, 1)',
+						pointBorderColor: 'rgba(0,0,0,0)',
+						pointRadius: 1,
+						lineTension: 0
+					}],
+					labels: ['12', '465', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+				},
+
+				options: {
+					scales: {
+						xAxes: [{
+							display: false,
+						}],
+						yAxes: [{
+							display: false
+						}]
+					},
+					legend: {
+						display: false
+					},
+					tooltips: {
+						enabled: false
+					},
+					responsive: false,
+					maintainAspectRatio: false
+				}
+			});
+			this.resizeTotalCharts();
+		},
+		resizeTotalCharts: function () {
+			if (this.earningChart) {
+				this.earningChart.resize();
+			}
+
+			if (this.spendingChart) {
+				this.spendingChart.resize();
+			}
+
+			if (this.investingChart) {
+				this.investingChart.resize();
+			}
+		},
+
 		refresh: function () {
-			this.load()
+			this.load();
+			this.loadTotalCharts();
 			//	.then(function () {
 			//	BudgetVue.initTable();
 			//});

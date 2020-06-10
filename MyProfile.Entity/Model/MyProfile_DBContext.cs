@@ -40,6 +40,15 @@ namespace MyProfile.Entity.Model
 			modelBuilder.Entity<UserSettings>()
 				.Property(b => b.BudgetPages_WithCollective)
 				.HasDefaultValue(true);
+			modelBuilder.Entity<UserSettings>()
+				.Property(b => b.BudgetPages_EarningChart)
+				.HasDefaultValue(true);
+			modelBuilder.Entity<UserSettings>()
+				.Property(b => b.BudgetPages_SpendingChart)
+				.HasDefaultValue(true);
+			modelBuilder.Entity<UserSettings>()
+				.Property(b => b.BudgetPages_InvestingChart)
+				.HasDefaultValue(true);
 
 			#endregion
 

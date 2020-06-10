@@ -13,31 +13,35 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using MyProfile.Entity.ModelEntitySave;
+using MyProfile.User.Service;
 
 namespace MyProfile.Budget.Service
 {
 	public class SectionService
 	{
 		private IBaseRepository repository;
+		private CollectionUserService collectionUserService;
 
 		public SectionService(IBaseRepository repository)
 		{
 			this.repository = repository;
+			this.collectionUserService = new CollectionUserService(repository);
 		}
 
 
 		public async Task<List<BudgetAreaModelView>> GetFullModel()
 		{
 			var thisMonth = DateTime.Now.AddDays(-DateTime.Now.Day);
-			//var predicate = PredicateBuilder.True<BudgetArea>().CommonFilter();
+			var currentUser = UserInfo.Current;
 
-			var areas = await GetFullModelByUserID(UserInfo.Current.ID);
+			var areas = await GetFullModelByUserID(currentUser.ID);
+			List<Guid> allCollectiveUserIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
 
-			if (UserInfo.Current.IsAllowCollectiveBudget && UserInfo.Current.CollectiveUserIDs.Count > 0)
+			if (currentUser.IsAllowCollectiveBudget && allCollectiveUserIDs.Count > 1)
 			{
 				List<BudgetAreaModelView> collectiveAreas = new List<BudgetAreaModelView>();
 
-				foreach (var UserID in UserInfo.Current.CollectiveUserIDs)
+				foreach (var UserID in allCollectiveUserIDs.Where(x => x != currentUser.ID))
 				{
 					collectiveAreas.AddRange(await GetFullModelByUserID(UserID));
 				}
@@ -87,6 +91,8 @@ namespace MyProfile.Budget.Service
 
 		private async Task<List<BudgetAreaModelView>> GetFullModelByUserID(Guid UserID)
 		{
+			Guid userID = UserInfo.Current.ID;
+
 			var areas = await repository.GetAll<BudgetArea>(x => x.UserID == UserID)
 				.Select(x => new BudgetAreaModelView
 				{
@@ -95,7 +101,7 @@ namespace MyProfile.Budget.Service
 					Name = x.Name,
 					CssIcon = x.CssIcon,
 					Owner = x.User.Name,
-					CanEdit = x.UserID == UserInfo.UserID,
+					CanEdit = x.UserID == userID,
 					Description = x.Description,
 					CollectiveAreas = x.CollectiveAreas.Select(y => new BudgetAreaModelView { ID = y.ChildAreaID ?? 0, Name = y.ChildArea.Name }).ToList(),
 					Sections = x.BudgetSectinos
@@ -113,7 +119,7 @@ namespace MyProfile.Budget.Service
 							AreaID = y.BudgetAreaID,
 							AreaName = y.BudgetArea.Name,
 							Owner = x.User.Name,
-							CanEdit = x.UserID == UserInfo.UserID,
+							CanEdit = x.UserID == userID,
 							CollectiveSections = y.CollectiveSections.Select(z => new BudgetSectionModelView { ID = z.ChildSectionID ?? 0, Name = z.ChildSection.Name }).ToList(),
 						}).ToList()
 				})
@@ -182,7 +188,7 @@ namespace MyProfile.Budget.Service
 
 		public async Task<List<Select2Item>> GetSectionsForSelect2()
 		{
-			return await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.UserID || x.UserID == null)
+			return await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.Current.ID || x.UserID == null)
 				.SelectMany(x => x.BudgetSectinos)
 				.Select(x => new Select2Item
 				{

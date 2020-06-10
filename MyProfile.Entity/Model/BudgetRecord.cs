@@ -27,6 +27,10 @@ namespace MyProfile.Entity.Model
 		/// Consider when count or not
 		/// </summary>
 		public bool IsHide { get; set; }
+		/// <summary>
+		/// Hide this record for all collection but not this user 
+		/// </summary>
+		public bool IsHideForCollection { get; set; }
 
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }

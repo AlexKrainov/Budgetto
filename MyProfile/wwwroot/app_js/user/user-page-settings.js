@@ -2,8 +2,10 @@
 	el: ".page-settings",
 	data: {
 		page: null,
+		isCallActions: true,
 		actions: [
-			"BudgetVue.load"
+			"BudgetVue.load",
+			"BudgetVue.loadTotalCharts",
 		],
 	},
 	watch: {
@@ -39,18 +41,31 @@
 				dataType: 'json',
 				context: this,
 				success: function (response) {
-					for (var i = 0; i < this.actions.length; i++) {
-						var fn = window.getFunctionFromString(this.actions[i]);
-						if (typeof fn === 'function') {
-							fn();
+					if (this.isCallActions) {
+						for (var i = 0; i < this.actions.length; i++) {
+							var fn = window.getFunctionFromString(this.actions[i]);
+							if (typeof fn === 'function') {
+								fn();
+							}
 						}
 					}
-
 				}
 			});
 		},
-		change: function () {
+		change: function (isCallActions) {
+			this.isCallActions = isCallActions;
 			this.saveBudgetSettings();
+		},
+		toggleBudgetTotal: function (sectionType) {
+			if (sectionType == 1) {//EarningChart
+				BudgetVue.earningData.isShow = document.querySelector("[data-prop=BudgetPages_EarningChart]").checked;
+			} else if (sectionType == 2) { //SpendingChart
+				BudgetVue.spendingData.isShow = document.querySelector("[data-prop=BudgetPages_SpendingChart]").checked;
+			} else if (sectionType == 3) { //Invest chart
+				BudgetVue.investingData.isShow = document.querySelector("[data-prop=BudgetPages_InvestingChart]").checked;
+			}
+			//setTimeout(BudgetVue.resizeCharts(), 1000);
+
 		}
 	}
 });

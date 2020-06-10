@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
+	public enum SectionTypeEnum
+	{
+		Earnings = 1,
+		Spendings = 2
+	}
 	public class SectionType
 	{
 		[Key]
@@ -28,7 +33,7 @@ namespace MyProfile.Entity.Model
 		//{
 		//	this.BudgetSections = new HashSet<BudgetSection>();
 		//	this.SectionTypeViews = new HashSet<SectionTypeView>();
-			
+
 		//}
 	}
 }

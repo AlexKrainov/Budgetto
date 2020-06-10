@@ -33,17 +33,16 @@ namespace MyProfile.Controllers.My
 		{
 			List<DateForCalendar> dates = new List<DateForCalendar>();
 
-			var result = budgetService.GetBudgetRecords(
+			var result = budgetService.GetBudgetRecordsByDate(
 				new DateTime(filter.Year, 1, 1),
 				new DateTime(filter.Year, 12, 31),
-				x => x.DateTimeOfPayment.Day,
 				y => filter.Sections.Contains(y.BudgetSectionID));
 
 			if (filter.IsAmount)
 			{
 				dates = result.Select(x => new DateForCalendar
 				{
-					date = x.FirstOrDefault().DateTimeOfPayment,
+					date = x.Key,
 					count = x.Sum(y => y.Total)
 				}).ToList();
 			}
@@ -51,7 +50,7 @@ namespace MyProfile.Controllers.My
 			{
 				dates = result.Select(x => new DateForCalendar
 				{
-					date = x.FirstOrDefault().DateTimeOfPayment,
+					date = x.Key,
 					count = x.Count()
 				}).ToList();
 			}
@@ -63,10 +62,7 @@ namespace MyProfile.Controllers.My
 		[HttpPost]
 		public async Task<JsonResult> LoadingRecordsForCalendar([FromBody] CalendarFilterModels filter)
 		{
-			var result = await budgetService.GetBudgetRecordsByPeriod(x => x.UserID == UserInfo.UserID
-				  && filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
-				  && filter.Sections.Contains(x.BudgetSectionID)
-				  && x.IsDeleted == false);
+			var result = await budgetService.GetBudgetRecordsByCalendarFilter(filter);
 
 			return Json(new { isOk = true, data = result, take = result.Count, isEnd = result.Count < 10 });
 		}
@@ -74,16 +70,15 @@ namespace MyProfile.Controllers.My
 		[HttpPost]
 		public async Task<JsonResult> LoadingRecordsForTableView([FromBody] CalendarFilterModels filter)
 		{
-			if (UserInfo.Current.IsAllowCollectiveBudget)
+			var currentUser = UserInfo.Current;
+			if (currentUser.IsAllowCollectiveBudget)
 			{
 				filter.Sections.AddRange(await sectionService.GetCollectionSectionBySectionID(filter.Sections));
 
 			}
-			//x.UserID == UserInfo.UserID
-			var result = await budgetService.GetBudgetRecordsByPeriod(x => 
-				   filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
-				  && filter.Sections.Contains(x.BudgetSectionID)
-				  && x.IsDeleted == false);
+			filter.IsConsiderCollection = currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective;
+
+			var result = await budgetService.GetBudgetRecordsByCalendarFilter(filter);
 
 			return Json(new { isOk = true, data = result, take = result.Count, isEnd = result.Count < 10 });
 		}

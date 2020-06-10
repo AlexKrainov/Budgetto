@@ -66,7 +66,7 @@ namespace MyProfile.Controllers.My
 		public async Task<IActionResult> Month(int? month, int? templateID)
 		{
 			BudgetControllerModelView model = new BudgetControllerModelView();
-			model.SelectedDateTime = month != null ? new DateTime(DateTime.Now.Year, month ?? 1, 1) : DateTime.Now;
+			model.SelectedDateTime = month != null ? new DateTime(DateTime.Now.Year, month ?? 1, 1) : new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 			model.SelectedTemplateID = templateID ?? -1;
 			model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Month);
 

@@ -11,6 +11,7 @@
 
 @section Scripts {
 	<!-- Dependencies -->
+	<script src="~/vendor/libs/chartjs/chartjs.js"></script>
 	<script src="~/vendor/libs/datatables/datatables.js"></script>
 	<script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
 
@@ -56,12 +57,17 @@
 	<!-- / Head block -->
 	<hr class="container-m-nx border-light mt-0 mb-4">
 
+	<div class="row">
+		<!-- Charts -->
+		@await Html.PartialAsync("_TotalView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+	</div>
+
 	<div class="card">
 		<div class="card-datatable table-responsive">
 			@await Html.PartialAsync("_TableView")
 		</div>
 	</div>
-	
+
 </div>
 
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Month")

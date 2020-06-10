@@ -225,7 +225,11 @@
 							this.isSaving = false;
 
 							if (typeof (this.after_save_callback) === "function") {
+								try {
 								this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
+								} catch (e) {
+									console.log(e);
+								}
 							}
 						}
 						return result;
