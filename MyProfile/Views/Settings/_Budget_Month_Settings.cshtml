@@ -24,7 +24,7 @@
 		<span class="theme-settings-t-rtl_switcher">Показывать график доходов</span>
 	</div>
 	<div class="switcher switcher-sm d-block m-0">
-		<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_EarningChart" name="user_settings" data-prop="BudgetPages_EarningChart" 
+		<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_EarningChart" name="user_settings" data-prop="BudgetPages_EarningChart"
 			   v-on:change="toggleBudgetTotal(@((int)MyProfile.Entity.Model.SectionTypeEnum.Earnings)); change();">
 		<span class="switcher-indicator">
 			<span class="switcher-yes"></span>
@@ -50,7 +50,7 @@
 		<span class="theme-settings-t-rtl_switcher">Показывать график инвестиций</span>
 	</div>
 	<div class="switcher switcher-sm d-block m-0">
-		<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_InvestingChart" name="user_settings" data-prop="BudgetPages_InvestingChart" 
+		<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_InvestingChart" name="user_settings" data-prop="BudgetPages_InvestingChart"
 			   v-on:change="toggleBudgetTotal(3); change();">
 		<span class="switcher-indicator">
 			<span class="switcher-yes"></span>
@@ -59,3 +59,32 @@
 	</div>
 </label>
 <hr class="m-0 border-light">
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Лимиты</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+	<div class="media-body">
+		<span class="theme-settings-t-rtl_switcher">Показывать лимиты</span>
+	</div>
+	<div class="switcher switcher-sm d-block m-0">
+		<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_IsShow_Limits" name="user_settings" data-prop="BudgetPages_IsShow_Limits"
+			   v-on:change="toggleLimits(); change();">
+		<span class="switcher-indicator">
+			<span class="switcher-yes"></span>
+			<span class="switcher-no"></span>
+		</span>
+	</div>
+</label>
+<hr class="m-0 border-light">
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Цели</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+	<div class="media-body">
+		<span class="theme-settings-t-rtl_switcher">Показывать цели</span>
+	</div>
+	<div class="switcher switcher-sm d-block m-0">
+		<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_IsShow_Goals" name="user_settings" data-prop="BudgetPages_IsShow_Goals"
+			   v-on:change="toggleGoals(); change();">
+		<span class="switcher-indicator">
+			<span class="switcher-yes"></span>
+			<span class="switcher-no"></span>
+		</span>
+	</div>
+</label>

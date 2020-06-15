@@ -14,10 +14,11 @@ namespace MyProfile.Entity.Model
 		[ForeignKey("Limit")]
 		public int LimitID { get; set; }
 		[ForeignKey("BudgetSection")]
-		public int? BudgetSectionID { get; set; }
+		public int BudgetSectionID { get; set; }
 
 		public virtual Limit Limit { get; set; }
 		public virtual BudgetSection BudgetSection { get; set; }
 
+		
 	}
 }

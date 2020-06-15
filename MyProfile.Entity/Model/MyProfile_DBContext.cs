@@ -49,6 +49,20 @@ namespace MyProfile.Entity.Model
 			modelBuilder.Entity<UserSettings>()
 				.Property(b => b.BudgetPages_InvestingChart)
 				.HasDefaultValue(true);
+			modelBuilder.Entity<UserSettings>()
+				.Property(b => b.BudgetPages_IsShow_Limits)
+				.HasDefaultValue(true);
+			modelBuilder.Entity<UserSettings>()
+				.Property(b => b.BudgetPages_IsShow_Goals)
+				.HasDefaultValue(true);
+
+			modelBuilder.Entity<Limit>()
+				.Property(b => b.IsShow)
+				.HasDefaultValue(true);
+
+			modelBuilder.Entity<Goal>()
+				.Property(b => b.IsShowOnDashBoard)
+				.HasDefaultValue(true);
 
 			#endregion
 
@@ -89,6 +103,12 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<SectionType> SectionTypes { get; set; }
 		public virtual DbSet<SectionTypeView> SectionTypeViews { get; set; }
 		public virtual DbSet<UserSettings> UserSettings { get; set; }
+		public virtual DbSet<Goal> Goals { get; set; }
+		public virtual DbSet<GoalRecord> GoalRecords { get; set; }
+		public virtual DbSet<Chart> Charts { get; set; }
+		public virtual DbSet<ChartType> ChartTypes { get; set; }
+		public virtual DbSet<PartChart> PartCharts { get; set; }
+		public virtual DbSet<SectionGroupChart> SectionGroupCharts { get; set; }
 
 	}
 }

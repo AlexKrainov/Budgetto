@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
@@ -21,11 +22,13 @@ namespace MyProfile.Budget.Service
 	{
 		private IBaseRepository repository;
 		private CollectionUserService collectionUserService;
+		private BudgetRecordService budgetRecordService;
 
 		public BudgetService(IBaseRepository repository)
 		{
 			this.repository = repository;
 			this.collectionUserService = new CollectionUserService(repository);
+			this.budgetRecordService = new BudgetRecordService(repository);
 		}
 		#region Budget table view
 
@@ -56,16 +59,16 @@ namespace MyProfile.Budget.Service
 			switch (template.PeriodTypeID)
 			{
 				case (int)PeriodTypesEnum.Year:
-					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Month);
+					budgetRecords = budgetRecordService.GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Month);
 					totalCounter = 12;
 					break;
 				case (int)PeriodTypesEnum.Years10:
-					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Year);
+					budgetRecords = budgetRecordService.GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Year);
 					totalCounter = 10;
 					break;
 				case (int)PeriodTypesEnum.Month:
 				default:
-					budgetRecords = GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Day);
+					budgetRecords = budgetRecordService.GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Day);
 					totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
 					break;
 			}
@@ -280,131 +283,7 @@ namespace MyProfile.Budget.Service
 
 		#endregion
 
-		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecords(
-			DateTime from,
-			DateTime to,
-			Func<TmpBudgetRecord, int> groupBy,
-			Expression<Func<BudgetRecord, bool>> expression = null)
-		{
-			return _getBudgetRecords(from, to, expression)
-				.Select(x => new TmpBudgetRecord
-				{
-					Total = x.Total,
-					DateTimeOfPayment = x.DateTimeOfPayment,
-					SectionID = x.BudgetSectionID,
-					SectionName = x.BudgetSection.Name,
-					AreaID = x.BudgetSection.BudgetArea.ID,
-					AreaName = x.BudgetSection.BudgetArea.Name,
-					CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
-				})
-			  .GroupBy(groupBy)
-			  .ToList();
-		}
-
-		public IList<IGrouping<DateTime, TmpBudgetRecord>> GetBudgetRecordsByDate(
-			DateTime from,
-			DateTime to,
-			Expression<Func<BudgetRecord, bool>> expression = null)
-		{
-			return _getBudgetRecords(from, to, expression)
-				.Select(x => new TmpBudgetRecord
-				{
-					Total = x.Total,
-					DateTimeOfPayment = x.DateTimeOfPayment,
-					SectionID = x.BudgetSectionID,
-					SectionName = x.BudgetSection.Name,
-					AreaID = x.BudgetSection.BudgetArea.ID,
-					AreaName = x.BudgetSection.BudgetArea.Name,
-					CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
-				})
-			  .GroupBy(x => x.DateTimeOfPayment.Date)
-			  .ToList();
-		}
-
-		private IQueryable<BudgetRecord> _getBudgetRecords(
-			DateTime from,
-			DateTime to,
-			Expression<Func<BudgetRecord, bool>> expression = null)
-		{
-			Guid currentUserID = UserInfo.Current.ID;
-			List<Guid> allCollectiveUserIDs = collectionUserService.GetAllCollectiveUserIDs();
-			var predicate = PredicateBuilder.True<BudgetRecord>();
-
-			predicate = predicate.And(x => allCollectiveUserIDs.Contains(x.UserID)
-				  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
-				  && x.IsDeleted == false
-				  && (x.UserID != currentUserID ? x.IsHideForCollection == false : true));
-
-			if (expression != null)
-			{
-				predicate = predicate.And(expression);
-			}
-			return repository.GetAll(predicate);
-		}
-
-
-		public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsByCalendarFilter(CalendarFilterModels filter)
-		{
-			Guid currentUserID = UserInfo.Current.ID;
-			var expression = PredicateBuilder.True<BudgetRecord>();
-
-			if (filter.IsConsiderCollection)
-			{
-				List<Guid> allCollectiveUserIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
-				expression = expression.And(x => allCollectiveUserIDs.Contains(x.UserID));
-			}
-			else
-			{
-				expression = expression.And(x => x.UserID == currentUserID);
-			}
-
-			expression = expression.And(x => filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
-				  && filter.Sections.Contains(x.BudgetSectionID)
-				  && (x.UserID != currentUserID ? x.IsHideForCollection == false : true)
-				  && x.IsDeleted == false);
-
-			return await repository
-			  .GetAll(expression)
-			  .Select(x => new BudgetRecordModelView
-			  {
-				  ID = x.ID,
-				  DateTimeCreate = x.DateTimeCreate,
-				  DateTimeEdit = x.DateTimeEdit,
-				  Description = x.Description,
-				  IsConsider = x.IsHide,
-				  RawData = x.RawData,
-				  Money = x.Total,
-				  DateTimeOfPayment = x.DateTimeOfPayment,
-				  SectionID = x.BudgetSectionID,
-				  SectionName = x.BudgetSection.Name,
-				  AreaID = x.BudgetSection.BudgetArea.ID,
-				  AreaName = x.BudgetSection.BudgetArea.Name
-			  })
-			  .OrderByDescending(x => x.DateTimeOfPayment.Date)
-			  .ToListAsync();
-		}
-
 	}
-	public class TmpBudgetRecord
-	{
-		public decimal Total { get; set; }
-		public DateTime DateTimeOfPayment { get; set; }
-		public int SectionID { get; set; }
-		public string SectionName { get; set; }
-		public int AreaID { get; set; }
-		public string AreaName { get; set; }
-		public List<int> CollectionSectionIDs { get; set; }
-	}
-	public class Cell
-	{
-		public string Value { get; set; }
-		public decimal NaturalValue { get; set; }
-		public bool IsShow { get; set; } = true;
-		public TemplateColumnType TemplateColumnType { get; set; }
-		public int dateCounter { get; set; }
-	}
-	public class FooterCell : Cell
-	{
-	}
+
 
 }

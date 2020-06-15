@@ -75,7 +75,7 @@
 	transform: translateX(-60px)
 }
 
-	/* .theme-settings-open-btn2::before {
+/* .theme-settings-open-btn2::before {
 		content: "";
 		width: 18px;
 		height: 18px;
@@ -116,6 +116,7 @@
 	-ms-transform: translateX(60px);
 	transform: translateX(60px)
 }
+
 .theme-settings-close-btn2 {
 	position: absolute;
 	top: 50%;
@@ -128,6 +129,14 @@
 }
 
 
-.w-45{
+.w-45 {
 	width: 45% !important;
+}
+
+.switcher:hover {
+	cursor: pointer;
+}
+
+.display-inline {
+	display: inline;
 }

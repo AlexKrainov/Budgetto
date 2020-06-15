@@ -2,6 +2,7 @@
 using MyProfile.Entity.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyProfile.LittleDictionaries.Service
 {
@@ -14,6 +15,12 @@ namespace MyProfile.LittleDictionaries.Service
 			this.repository = repository;
 		}
 
+		public List<PeriodType> GetPeriodTypes()
+		{
+			return repository.GetAll<PeriodType>()
+				.Where(x => x.ID == (int)PeriodTypesEnum.Month || x.ID == (int)PeriodTypesEnum.Year)
+				.ToList();
+		}
 
 		public List<DictionariesModelView> GetTotalActions()
 		{

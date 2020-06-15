@@ -130,6 +130,60 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("BudgetSections");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Chart", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ChartTypeID");
+
+                    b.Property<DateTime>("DateCreate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastDateEdit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<int>("PeriodTypeID");
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ChartTypeID");
+
+                    b.HasIndex("PeriodTypeID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Charts");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.ChartType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(16);
+
+                    b.Property<bool>("IsUsing");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(16);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ChartTypes");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
                 {
                     b.Property<int>("ID")
@@ -185,24 +239,92 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("CollectiveSections");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Goal", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("DateEnd");
+
+                    b.Property<DateTime?>("DateStart");
+
+                    b.Property<string>("Description");
+
+                    b.Property<decimal?>("ExpectationMoney")
+                        .HasColumnType("Money");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsFinished");
+
+                    b.Property<bool>("IsShowInCollective");
+
+                    b.Property<bool>("IsShowOnDashBoard")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Goals");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.GoalRecord", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDateTime");
+
+                    b.Property<DateTime?>("DateTimeOfPayment");
+
+                    b.Property<int>("GoalID");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("Money");
+
+                    b.Property<Guid?>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("GoalID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("GoalRecords");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BudgetSectionID");
-
                     b.Property<DateTime?>("DateEnd");
 
                     b.Property<DateTime?>("DateStart");
 
-                    b.Property<bool>("IsShow");
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsShow")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<decimal>("LimitMoney")
                         .HasColumnType("Money");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int>("PeriodTypeID");
 
@@ -210,13 +332,33 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BudgetSectionID");
-
                     b.HasIndex("PeriodTypeID");
 
                     b.HasIndex("UserID");
 
                     b.ToTable("Limits");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.PartChart", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ChartID");
+
+                    b.Property<string>("CssColor")
+                        .HasMaxLength(24);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ChartID");
+
+                    b.ToTable("PartCharts");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PeriodType", b =>
@@ -254,13 +396,32 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("PersonSettings");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupChart", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BudgetSectionID");
+
+                    b.Property<int>("PartChartID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BudgetSectionID");
+
+                    b.HasIndex("PartChartID");
+
+                    b.ToTable("SectionGroupCharts");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupLimit", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BudgetSectionID");
+                    b.Property<int>("BudgetSectionID");
 
                     b.Property<int>("LimitID");
 
@@ -516,6 +677,14 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("BudgetPages_IsShow_Goals")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("BudgetPages_IsShow_Limits")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
                     b.Property<bool>("BudgetPages_SpendingChart")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
@@ -523,6 +692,10 @@ namespace MyProfile.Entity.Migrations
                     b.Property<bool>("BudgetPages_WithCollective")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
+
+                    b.Property<bool>("GoalPage_IsShow_Collective");
+
+                    b.Property<bool>("GoalPage_IsShow_Finished");
 
                     b.HasKey("ID");
 
@@ -565,6 +738,24 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("UserID");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Chart", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.ChartType", "ChartType")
+                        .WithMany()
+                        .HasForeignKey("ChartTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.PeriodType", "PeriodType")
+                        .WithMany()
+                        .HasForeignKey("PeriodTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("Charts")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.BudgetArea", "Area")
@@ -587,12 +778,28 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("SectionID");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Goal", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.GoalRecord", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Goal", "Goal")
+                        .WithMany("GoalRecords")
+                        .HasForeignKey("GoalID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.BudgetSection")
-                        .WithMany("Limits")
-                        .HasForeignKey("BudgetSectionID");
-
                     b.HasOne("MyProfile.Entity.Model.PeriodType", "PeriodType")
                         .WithMany()
                         .HasForeignKey("PeriodTypeID")
@@ -604,6 +811,14 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.PartChart", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Chart", "Chart")
+                        .WithMany("PartCharts")
+                        .HasForeignKey("ChartID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.PersonSetting", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.User", "User")
@@ -612,14 +827,28 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupLimit", b =>
+            modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupChart", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.BudgetSection", "BudgetSection")
                         .WithMany()
-                        .HasForeignKey("BudgetSectionID");
+                        .HasForeignKey("BudgetSectionID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.PartChart", "PartChart")
+                        .WithMany("SectionGroupCharts")
+                        .HasForeignKey("PartChartID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupLimit", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.BudgetSection", "BudgetSection")
+                        .WithMany("SectionGroupLimits")
+                        .HasForeignKey("BudgetSectionID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MyProfile.Entity.Model.Limit", "Limit")
-                        .WithMany()
+                        .WithMany("SectionGroupLimits")
                         .HasForeignKey("LimitID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

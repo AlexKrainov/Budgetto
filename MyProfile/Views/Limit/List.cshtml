@@ -1,0 +1,101 @@
+﻿@{
+	ViewData["Title"] = "Project list - Pages";
+}
+
+@section Styles {
+	<link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" />
+	<link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
+}
+
+@section Scripts {
+	<script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
+	<script src="~/vendor/libs/select2/select2.js"></script>
+
+	<script src="~/app_js/limit-list.js"></script>
+}
+
+<section id="limit-list-vue">
+
+	<h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
+		<div class="col-12 col-md px-0 pb-2">
+			Лимиты
+			<a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)" v-on:click="edit()">Добавить новый лимит</a>
+		</div>
+	</h4>
+
+	<ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
+		<li class="nav-item">
+			<a v-bind:class="['nav-link', activeLimitPeriodTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeLimitPeriodTypeID = -1">Все лимиты</a>
+		</li>
+		<li class="nav-item">
+			<a v-bind:class="['nav-link', activeLimitPeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeLimitPeriodTypeID = 1">По дням</a>
+		</li>
+		<li class="nav-item">
+			<a v-bind:class="['nav-link', activeLimitPeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeLimitPeriodTypeID = 3">По месяцам</a>
+		</li>
+	</ul>
+
+	<div class="row">
+		<div class="col-sm-6 col-xl-4"
+			 v-for="limit in limits"
+			 v-show="limit.isShow && (activeLimitPeriodTypeID == -1 || limit.periodTypeID == activeLimitPeriodTypeID)">
+			@*v-bind:class=" limit.isFinishLimit ? 'opacity-75' : '' "*@
+			<div class="card mb-4 ">
+				@*border-secondary*@
+				<div class="card-body d-flex justify-content-between align-items-start pb-3">
+					<div>
+						<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ limit.name }}</a>
+						<span class="badge badge-success align-text-bottom ml-1" v-show="limit.periodTypeID == 1">{{ limit.periodName }}</span>
+						<span class="badge badge-primary align-text-bottom ml-1" v-show="limit.periodTypeID == 2">{{ limit.periodName }}</span>
+						<span class="badge badge-info align-text-bottom ml-1" v-show="limit.periodTypeID == 3">{{ limit.periodName }}</span>
+						<span class="badge badge-warning align-text-bottom ml-1" v-show="limit.periodTypeID == 4">{{ limit.periodName }}</span>
+						<div class="text-muted small mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</div>
+					</div>
+					<div class="btn-group project-actions">
+						<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown">
+							<i class="ion ion-ios-more"></i>
+						</button>
+						<div class="dropdown-menu dropdown-menu-right">
+							<a class="dropdown-item" href="javascript:void(0)" v-on:click="edit(limit)">Редактировать</a>
+							<a class="dropdown-item" v-bind:href="'/limit/Delete/'+ limit.id">Remove</a>
+						</div>
+					</div>
+				</div>
+				<div class="progress rounded-0" style="height: 3px;">
+					<div class="progress-bar" style="width: 100%"></div>
+				</div>
+				@*<div class="card-body small pt-2 pb-0">
+			<strong>{{ limit.columns.length * 10 }}%</strong> columns
+		</div>*@
+				<div class="card-body pb-3">
+					{{ limit.description }}
+				</div>
+				<div class="card-body pt-0">
+					<div class="row">
+						<div class="col">
+							<div class="text-muted small">Начало периода</div>
+							<div class="font-weight-bold">{{  getDateByFormat(limit.dateStart, 'MM.YYYY') }}</div>
+						</div>
+						<div class="col" v-show="limit.dateEnd">
+							<div class="text-muted small display-inline">Конец периода</div>
+							<span class="badge badge-danger" v-show="limit.isFinishLimit">Завершен</span>
+							<div class="font-weight-bold">{{  getDateByFormat(limit.dateEnd, 'MM.YYYY') }}</div>
+						</div>
+					</div>
+				</div>
+				<hr class="m-0">
+				<div class="card-body py-3">
+					<div class="inline-spacing">
+						<div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="section in limit.sections" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+							<i v-bind:class="section.cssIcon"></i>
+							<span class="ml-1">{{section.name}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr class="border-light mt-2 mb-4">
+	@await Html.PartialAsync("_EditLimit")
+</section>

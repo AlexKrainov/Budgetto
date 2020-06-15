@@ -36,7 +36,9 @@
   <ItemGroup>
     <ProjectReference Include="..\MyProfile.Budget.Service\MyProfile.Budget.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
+    <ProjectReference Include="..\MyProfile.Goal.Service\MyProfile.Goal.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
+    <ProjectReference Include="..\MyProfile.Limit.Service\MyProfile.Limit.Service.csproj" />
     <ProjectReference Include="..\MyProfile.LittleDictionaries.Service\MyProfile.LittleDictionaries.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Template.Service\MyProfile.Template.Service.csproj" />
     <ProjectReference Include="..\MyProfile.User.Service\MyProfile.User.Service.csproj" />

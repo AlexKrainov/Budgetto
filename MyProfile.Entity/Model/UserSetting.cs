@@ -28,7 +28,24 @@ namespace MyProfile.Entity.Model
 		/// The pages Budget/Month, Budget/Year ... show/hide Invest Chart
 		/// </summary>
 		public bool BudgetPages_InvestingChart { get; set; }
+		/// <summary>
+		/// The pages Budget/Month, Budget/Year ... show/hide Limits 
+		/// </summary>
+		public bool BudgetPages_IsShow_Limits { get; set; }
+		/// <summary>
+		/// The pages Budget/Month, Budget/Year ... show/hide goals 
+		/// </summary>
+		public bool BudgetPages_IsShow_Goals { get; set; }
 
+
+		/// <summary>
+		/// The pages Goal/List ... show/hide isFinished goals 
+		/// </summary>
+		public bool GoalPage_IsShow_Finished { get; set; }
+		/// <summary>
+		/// The pages Goal/List ... show/hide collective goals 
+		/// </summary>
+		public bool GoalPage_IsShow_Collective { get; set; }
 
 		public virtual User User { get; set; }
 

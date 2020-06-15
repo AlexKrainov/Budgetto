@@ -14,5 +14,9 @@
 		{
 			await Html.RenderPartialAsync(@"../Settings/_Budget_Year_Settings.cshtml");
 		}
+		@if (Model == "Goal/List")
+		{
+			await Html.RenderPartialAsync(@"../Settings/_Goal_List_Settings.cshtml");
+		}
 	</div>
 </div>

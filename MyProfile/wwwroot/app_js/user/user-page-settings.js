@@ -6,6 +6,9 @@
 		actions: [
 			"BudgetVue.load",
 			"BudgetVue.loadTotalCharts",
+			"BudgetVue.loadLimitCharts",
+			"BudgetVue.loadGoalCharts",
+			"GoalListVue.load"
 		],
 	},
 	watch: {
@@ -65,7 +68,18 @@
 				BudgetVue.investingData.isShow = document.querySelector("[data-prop=BudgetPages_InvestingChart]").checked;
 			}
 			//setTimeout(BudgetVue.resizeCharts(), 1000);
-
+		},
+		toggleLimits: function () {
+			let checked = document.querySelector("[data-prop=BudgetPages_IsShow_Limits]").checked;
+			for (var i = 0; i < BudgetVue.limitsChartsData.length; i++) {
+				BudgetVue.limitsChartsData[i].isShow = checked;
+			}
+		},
+		toggleGoals: function () {
+			let checked = document.querySelector("[data-prop=BudgetPages_IsShow_Goals]").checked;
+			for (var i = 0; i < BudgetVue.goalChartsData.length; i++) {
+				BudgetVue.goalChartsData[i].isShow = checked;
+			}
 		}
 	}
 });

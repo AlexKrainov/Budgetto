@@ -40,8 +40,5 @@ namespace MyProfile.Entity.Model
 		public virtual User User { get; set; }
 		public virtual BudgetSection BudgetSection { get; set; }
 
-
-		
-
 	}
 }

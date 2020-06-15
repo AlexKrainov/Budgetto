@@ -44,6 +44,7 @@ namespace MyProfile.Entity.Model
 		public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }
 		public virtual IEnumerable<BudgetSection> BudgetSections { get; set; }
 		public virtual IEnumerable<Template> Templates { get; set; }
+		public virtual IEnumerable<Chart> Charts { get; set; }
 
 		public User()
 		{
@@ -51,6 +52,7 @@ namespace MyProfile.Entity.Model
 			this.BudgetRecords = new HashSet<BudgetRecord>();
 			this.BudgetSections = new HashSet<BudgetSection>();
 			this.Templates = new HashSet<Template>();
+			this.Charts = new HashSet<Chart>();
 		}
 	}
 }

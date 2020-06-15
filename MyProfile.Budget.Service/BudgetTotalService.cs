@@ -15,16 +15,17 @@ namespace MyProfile.Budget.Service
 	public class BudgetTotalService
 	{
 		private IBaseRepository repository;
+		private BudgetRecordService budgetRecordService;
 
 		public BudgetTotalService(IBaseRepository repository)
 		{
 			this.repository = repository;
+			this.budgetRecordService = new BudgetRecordService(repository);
 		}
 
 		public Tuple<List<decimal>, List<string>> GetChartTotalByMonth(DateTime from, DateTime to, SectionTypeEnum sectionTypeEnum)
 		{
-			BudgetService budgetService = new BudgetService(repository);
-			var budgetRecordsGroup = budgetService
+			var budgetRecordsGroup = budgetRecordService
 				.GetBudgetRecords(
 					from,
 					to,

@@ -46,10 +46,10 @@
 				});
 		},
 		loadBAranAndRType: function () {
-			return sendAjax("/Section/GetAllSectionByPerson", null, "GET")
+			return sendAjax("/Section/GetAllAreaAndSectionByPerson", null, "GET")
 				.then(function (result) {
 					if (result.isOk = true) {
-						TemplateVue.sections = result.sections;
+						TemplateVue.sections = result.areas;
 
 					}
 				});

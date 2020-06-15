@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
@@ -15,22 +16,26 @@ using MyProfile.Template.Service;
 
 namespace MyProfile.Controllers.My
 {
+	[Authorize]
 	public partial class BudgetController : Controller
 	{
 		private IBaseRepository repository;
 		private TemplateService templateService;
 		private BudgetService budgetService;
 		private SectionService sectionService;
+		private BudgetRecordService budgetRecordService;
 
 		public BudgetController(IBaseRepository repository,
 			BudgetService budgetService,
 			TemplateService templateService,
-			SectionService sectionService)
+			SectionService sectionService,
+			BudgetRecordService budgetRecordService)
 		{
 			this.repository = repository;
 			this.templateService = templateService;
 			this.budgetService = budgetService;
 			this.sectionService = sectionService;
+			this.budgetRecordService = budgetRecordService;
 			//	new BudgetRecord
 			//	{
 			//		Total = 140,

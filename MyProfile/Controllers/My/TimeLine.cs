@@ -33,7 +33,7 @@ namespace MyProfile.Controllers.My
 		{
 			List<DateForCalendar> dates = new List<DateForCalendar>();
 
-			var result = budgetService.GetBudgetRecordsByDate(
+			var result = budgetRecordService.GetBudgetRecordsByDate(
 				new DateTime(filter.Year, 1, 1),
 				new DateTime(filter.Year, 12, 31),
 				y => filter.Sections.Contains(y.BudgetSectionID));
@@ -62,7 +62,7 @@ namespace MyProfile.Controllers.My
 		[HttpPost]
 		public async Task<JsonResult> LoadingRecordsForCalendar([FromBody] CalendarFilterModels filter)
 		{
-			var result = await budgetService.GetBudgetRecordsByCalendarFilter(filter);
+			var result = await budgetRecordService.GetBudgetRecordsByFilter(filter);
 
 			return Json(new { isOk = true, data = result, take = result.Count, isEnd = result.Count < 10 });
 		}
@@ -78,7 +78,7 @@ namespace MyProfile.Controllers.My
 			}
 			filter.IsConsiderCollection = currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective;
 
-			var result = await budgetService.GetBudgetRecordsByCalendarFilter(filter);
+			var result = await budgetRecordService.GetBudgetRecordsByFilter(filter);
 
 			return Json(new { isOk = true, data = result, take = result.Count, isEnd = result.Count < 10 });
 		}

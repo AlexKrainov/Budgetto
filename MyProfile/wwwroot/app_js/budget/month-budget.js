@@ -13,7 +13,7 @@
 
 		records: [],
 
-		//charts
+		//total charts
 		earningData: { isShow: true },
 		earningChart: undefined,
 
@@ -22,10 +22,16 @@
 
 		investingData: { isShow: true },
 		investingChart: undefined,
-	},
-	watch: {
 
+		//limit charts
+		limitsChartsData: [],
+		limitsCharts: [],
+
+		//Goal charts
+		goalChartsData: [],
+		goalCharts: [],
 	},
+	watch: {},
 	mounted: function () {
 		this.templateID = document.getElementById("templateID_hidden").value;
 		this.budgetDate = GetDateByFormat(Date.parse(document.getElementById("budgetDate_hidden").value), "YYYY/MM/DD");
@@ -68,6 +74,7 @@
 				});
 			//$.fn.dataTable.SearchPanes.defaults = false;
 		},
+		//Total charts
 		loadTotalCharts: function () {
 			return $.ajax({
 				type: "GET",
@@ -210,10 +217,165 @@
 				this.investingChart.resize();
 			}
 		},
+		//Limit charts
+		loadLimitCharts: function () {
+			return $.ajax({
+				type: "GET",
+				url: "/Limit/LoadCharts?date=" + this.budgetDate + "&periodTypesEnum=" + 1,
+				contentType: "application/json",
+				dataType: 'json',
+				context: this,
+				success: function (response) {
 
+					this.limitsChartsData = response.limitsChartsData;
+
+					setTimeout(this.initLimitCharts, 10);
+				}
+			});
+		},
+		initLimitCharts: function () {
+			for (var i = 0; i < this.limitsChartsData.length; i++) {
+				let limitChartData = this.limitsChartsData[i];
+
+				if (this.limitsCharts[i]) {
+					this.limitsCharts[i].destroy();
+				}
+
+				let backgroundColor = ['#4CAF50', '#f9f9f9']; //green
+				let hoverBackgroundColor = ['#4CAF50', '#f9f9f9'];//green
+
+				if (limitChartData.percent1 > 85) {
+					backgroundColor = ['#d9534f', '#f9f9f9'];//red
+					hoverBackgroundColor = ['#d9534f', '#f9f9f9'];//red
+				} else if (limitChartData.percent1 > 65) {
+					backgroundColor = ['#FFD950', '#f9f9f9'];//yellow
+					hoverBackgroundColor = ['#FFD950', '#f9f9f9'];//yellow
+				}
+
+				this.limitsCharts[i] = new Chart(document.getElementById(limitChartData.chartID).getContext("2d"), {
+					type: 'doughnut',
+					data: {
+						datasets: [{
+							data: [limitChartData.percent1, limitChartData.percent2],
+							backgroundColor: backgroundColor,
+							hoverBackgroundColor: hoverBackgroundColor,
+							borderWidth: 0
+						}]
+					},
+					options: {
+						scales: {
+							xAxes: [{
+								display: false,
+							}],
+							yAxes: [{
+								display: false
+							}]
+						},
+						legend: {
+							display: false
+						},
+						tooltips: {
+							enabled: false
+						},
+						cutoutPercentage: 94,
+						responsive: false,
+						maintainAspectRatio: false
+					}
+				});
+
+			}
+			this.resizeLimitCharts();
+		},
+		resizeLimitCharts: function () {
+			for (var i = 0; i < this.limitsCharts.length; i++) {
+				if (this.limitsCharts[i]) {
+					this.limitsCharts[i].resize();
+				}
+			}
+		},
+		//Goal charts
+		loadGoalCharts: function () {
+			return $.ajax({
+				type: "GET",
+				url: "/Goal/LoadCharts?date=" + this.budgetDate,
+				contentType: "application/json",
+				dataType: 'json',
+				context: this,
+				success: function (response) {
+
+					this.goalChartsData = response.goalChartsData;
+
+					setTimeout(this.initGoalCharts, 10);
+				}
+			});
+		},
+		initGoalCharts: function () {
+			for (var i = 0; i < this.goalChartsData.length; i++) {
+				let goalChartData = this.goalChartsData[i];
+
+				if (this.goalCharts[i]) {
+					this.goalCharts[i].destroy();
+				}
+
+				let backgroundColor = ['#4CAF50', '#f9f9f9']; //green
+				let hoverBackgroundColor = ['#4CAF50', '#f9f9f9'];//green
+
+				if (goalChartData.percent < 0) {
+					backgroundColor = ['#d9534f', '#f9f9f9'];//red
+					hoverBackgroundColor = ['#d9534f', '#f9f9f9'];//red
+				}
+				//else if (goalChartData.percent > 65) {
+				//	backgroundColor = ['#FFD950', '#f9f9f9'];//yellow
+				//	hoverBackgroundColor = ['#FFD950', '#f9f9f9'];//yellow
+				//}
+
+				this.goalCharts[i] = new Chart(document.getElementById(goalChartData.chartID).getContext("2d"), {
+					type: 'doughnut',
+					data: {
+						datasets: [{
+							data: [goalChartData.percent, goalChartData.percent2],
+							backgroundColor: backgroundColor,
+							hoverBackgroundColor: hoverBackgroundColor,
+							borderWidth: 0
+						}]
+					},
+					options: {
+						scales: {
+							xAxes: [{
+								display: false,
+							}],
+							yAxes: [{
+								display: false
+							}]
+						},
+						legend: {
+							display: false
+						},
+						tooltips: {
+							enabled: false
+						},
+						cutoutPercentage: 94,
+						responsive: false,
+						maintainAspectRatio: false
+					}
+				});
+
+			}
+			//setTimeout(this.resizeGoalCharts, 10);
+			this.resizeGoalCharts();
+		},
+		resizeGoalCharts: function () {
+			for (var i = 0; i < this.goalCharts.length; i++) {
+				if (this.goalCharts[i]) {
+					this.goalCharts[i].resize();
+				}
+			}
+		},
 		refresh: function () {
 			this.load();
 			this.loadTotalCharts();
+			this.loadLimitCharts();
+			this.loadGoalCharts();
 			//	.then(function () {
 			//	BudgetVue.initTable();
 			//});

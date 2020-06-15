@@ -159,9 +159,9 @@ namespace MyProfile.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllSectionByPerson()
+		public async Task<IActionResult> GetAllAreaAndSectionByPerson()
 		{
-			var sections = await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.UserID)
+			var areas = await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.Current.ID)
 				.Select(x => new
 				{
 					x.ID,
@@ -176,13 +176,29 @@ namespace MyProfile.Controllers
 				})
 				.ToListAsync();
 
+			return Json(new { isOk = true, areas });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetAllSectionByPerson()
+		{
+			var sections = await repository.GetAll<BudgetSection>(x => x.UserID == UserInfo.Current.ID)
+				.Select(x => new
+				{
+					x.ID,
+					x.Name,
+					BudgetAreaID = x.BudgetArea.ID,
+					BudgetAreaname = x.BudgetArea.Name
+				})
+				.ToListAsync();
+
 			return Json(new { isOk = true, sections });
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetSectins()
 		{
-			var sections = await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.UserID)
+			var sections = await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID)
 				.OrderByDescending(x => x.BudgetRecords.Count())
 				.Select(x => new
 				{

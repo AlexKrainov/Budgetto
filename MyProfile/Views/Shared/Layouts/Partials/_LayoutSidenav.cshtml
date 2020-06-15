@@ -24,9 +24,6 @@
 	<!-- Links -->
 <ul class="sidenav-inner@(!isHorizontal ? " py-1" : "")">
 
-	<li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")">
-		<a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Templates</div></a>
-	</li>
 	<li class="sidenav-item@(currentPage == "Budget/Month" ? " active" : "")">
 		<a asp-area="" asp-controller="Budget" asp-action="Month" class="sidenav-link">
 			<i class="sidenav-icon ion ion-md-cash"></i>
@@ -41,6 +38,9 @@
 			<div class="pl-1 ml-auto"><div class="badge badge-primary">1</div></div>
 		</a>
 	</li>
+	<li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")">
+		<a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Templates</div></a>
+	</li>
 	<li class="sidenav-item@(currentPage == "Section/Edit" ? " active" : "")">
 		<a asp-area="" asp-controller="Section" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>Section</div></a>
 	</li>
@@ -48,6 +48,13 @@
 		<a asp-area="" asp-controller="Budget" asp-action="Records" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>TimeLine</div></a>
 	</li>
 
+	<li class="sidenav-item@(currentPage == "Limit/List" ? " active" : "")">
+		<a asp-area="" asp-controller="Limit" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-cash"></i><div>Limit</div></a>
+	</li>
+
+	<li class="sidenav-item@(currentPage == "Goal/List" ? " active" : "")">
+		<a asp-area="" asp-controller="Goal" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Goals</div></a>
+	</li>
 	<!-- Dashboards -->
 	<li class="sidenav-item@(currentPage.StartsWith("Dashboards/") ? " active open" : "")">
 		<a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-speedometer"></i><div>Dashboards</div></a>

@@ -59,20 +59,20 @@
 						<strong>{{ template.columns.length * 10 }}%</strong> columns
 					</div>*@
 				<div class="card-body pb-3">
-					Description
+					{{ template.description }}
 				</div>
 				<div class="card-body pt-0">
-					<div class="row">
-						<div class="col">
-							<div class="text-muted small">Created</div>
-							<div class="font-weight-bold">{{  getDateByFormat(template.dateCreate, 'DD.MM.YYYY hh:mm:ss') }}</div>
-						</div>
-						<div class="col">
-							<div class="text-muted small">Edit</div>
-							<div class="font-weight-bold">{{  getDateByFormat(template.dateEdit, 'DD.MM.YYYY hh:mm:ss') }}</div>
+						<div class="row">
+							<div class="col">
+								<div class="text-muted small">Created</div>
+								<div class="font-weight-bold">{{  getDateByFormat(template.dateCreate, 'DD.MM.YYYY hh:mm:ss') }}</div>
+							</div>
+							<div class="col">
+								<div class="text-muted small">Edit</div>
+								<div class="font-weight-bold">{{  getDateByFormat(template.dateEdit, 'DD.MM.YYYY hh:mm:ss') }}</div>
+							</div>
 						</div>
 					</div>
-				</div>
 				<hr class="m-0">
 				<div class="card-body py-3">
 					<a class="btn btn-outline-success" v-bind:href="'/Template/Edit?templateID='+ template.id">Edit</a>

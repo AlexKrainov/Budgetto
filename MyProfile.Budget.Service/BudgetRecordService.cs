@@ -1,11 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LinqKit;
+using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.User.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,10 +18,12 @@ namespace MyProfile.Budget.Service
 	public class BudgetRecordService
 	{
 		private IBaseRepository repository;
+		private CollectionUserService collectionUserService;
 
 		public BudgetRecordService(IBaseRepository repository)
 		{
 			this.repository = repository;
+			this.collectionUserService = new CollectionUserService(repository);
 		}
 
 		public async Task<RecordModelView> GetByID(int id)
@@ -94,6 +100,127 @@ namespace MyProfile.Budget.Service
 			}
 
 			return true;
+		}
+
+
+		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecords(
+			DateTime from,
+			DateTime to,
+			Func<TmpBudgetRecord, int> groupBy,
+			Expression<Func<BudgetRecord, bool>> expression = null)
+		{
+			return _getBudgetRecords(from, to, expression)
+				.Select(x => new TmpBudgetRecord
+				{
+					Total = x.Total,
+					DateTimeOfPayment = x.DateTimeOfPayment,
+					SectionID = x.BudgetSectionID,
+					SectionName = x.BudgetSection.Name,
+					AreaID = x.BudgetSection.BudgetArea.ID,
+					AreaName = x.BudgetSection.BudgetArea.Name,
+					CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
+				})
+			  .GroupBy(groupBy)
+			  .ToList();
+		}
+
+		public IList<IGrouping<DateTime, TmpBudgetRecord>> GetBudgetRecordsByDate(
+			DateTime from,
+			DateTime to,
+			Expression<Func<BudgetRecord, bool>> expression = null)
+		{
+			return _getBudgetRecords(from, to, expression)
+				.Select(x => new TmpBudgetRecord
+				{
+					Total = x.Total,
+					DateTimeOfPayment = x.DateTimeOfPayment,
+					SectionID = x.BudgetSectionID,
+					SectionName = x.BudgetSection.Name,
+					AreaID = x.BudgetSection.BudgetArea.ID,
+					AreaName = x.BudgetSection.BudgetArea.Name,
+					CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
+				})
+			  .GroupBy(x => x.DateTimeOfPayment.Date)
+			  .ToList();
+		}
+
+		private IQueryable<BudgetRecord> _getBudgetRecords(
+			DateTime from,
+			DateTime to,
+			Expression<Func<BudgetRecord, bool>> expression = null)
+		{
+			Guid currentUserID = UserInfo.Current.ID;
+			List<Guid> allCollectiveUserIDs = collectionUserService.GetAllCollectiveUserIDs();
+			var predicate = PredicateBuilder.True<BudgetRecord>();
+
+			predicate = predicate.And(x => allCollectiveUserIDs.Contains(x.UserID)
+				  && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
+				  && x.IsDeleted == false
+				  && (x.UserID != currentUserID ? x.IsHideForCollection == false : true));
+
+			if (expression != null)
+			{
+				predicate = predicate.And(expression);
+			}
+			return repository.GetAll(predicate);
+		}
+
+
+		public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsByFilter(CalendarFilterModels filter)
+		{
+			var expression = await getExpressionByCalendarFilter(filter);
+
+			return await repository
+			  .GetAll(expression)
+			  .Select(x => new BudgetRecordModelView
+			  {
+				  ID = x.ID,
+				  DateTimeCreate = x.DateTimeCreate,
+				  DateTimeEdit = x.DateTimeEdit,
+				  Description = x.Description,
+				  IsConsider = x.IsHide,
+				  RawData = x.RawData,
+				  Money = x.Total,
+				  DateTimeOfPayment = x.DateTimeOfPayment,
+				  SectionID = x.BudgetSectionID,
+				  SectionName = x.BudgetSection.Name,
+				  AreaID = x.BudgetSection.BudgetArea.ID,
+				  AreaName = x.BudgetSection.BudgetArea.Name
+			  })
+			  .OrderByDescending(x => x.DateTimeOfPayment.Date)
+			  .ToListAsync();
+		}
+
+
+		public async Task<decimal> GetTotalSpendsForLimitByFilter(CalendarFilterModels filter)
+		{
+			var expression = await getExpressionByCalendarFilter(filter);
+
+			return await repository
+			  .GetAll(expression)
+			  .SumAsync(x => x.Total);
+		}
+
+		private async Task<Expression<Func<BudgetRecord, bool>>> getExpressionByCalendarFilter(CalendarFilterModels filter)
+		{
+			Guid currentUserID = UserInfo.Current.ID;
+			var expression = PredicateBuilder.True<BudgetRecord>();
+
+			if (filter.IsConsiderCollection)
+			{
+				List<Guid> allCollectiveUserIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
+				expression = expression.And(x => allCollectiveUserIDs.Contains(x.UserID));
+			}
+			else
+			{
+				expression = expression.And(x => x.UserID == currentUserID);
+			}
+
+			expression = expression.And(x => filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
+				  && filter.Sections.Contains(x.BudgetSectionID)
+				  && (x.UserID != currentUserID ? x.IsHideForCollection == false : true)
+				  && x.IsDeleted == false);
+			return expression;
 		}
 
 	}

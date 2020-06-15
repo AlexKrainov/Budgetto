@@ -39,7 +39,17 @@ namespace MyProfile.Areas.Identity.Controllers
 				user.UserSettings.BudgetPages_EarningChart = dbUserSettings.BudgetPages_EarningChart = userSettings.BudgetPages_EarningChart;
 				user.UserSettings.BudgetPages_SpendingChart = dbUserSettings.BudgetPages_SpendingChart = userSettings.BudgetPages_SpendingChart;
 				user.UserSettings.BudgetPages_InvestingChart = dbUserSettings.BudgetPages_InvestingChart = userSettings.BudgetPages_InvestingChart;
+
+				user.UserSettings.BudgetPages_IsShow_Limits = dbUserSettings.BudgetPages_IsShow_Limits = userSettings.BudgetPages_IsShow_Limits;
+
+				user.UserSettings.BudgetPages_IsShow_Goals = dbUserSettings.BudgetPages_IsShow_Goals = userSettings.BudgetPages_IsShow_Goals;
 			}
+			else if (userSettings.PageName == "Goal/List")
+			{
+				user.UserSettings.GoalPage_IsShow_Collective = dbUserSettings.GoalPage_IsShow_Collective = userSettings.GoalPage_IsShow_Collective;
+				user.UserSettings.GoalPage_IsShow_Finished = dbUserSettings.GoalPage_IsShow_Finished = userSettings.GoalPage_IsShow_Finished;
+			}
+
 
 			await UserInfo.AddOrUpdate_Authenticate(user);
 

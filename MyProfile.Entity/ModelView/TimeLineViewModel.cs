@@ -27,7 +27,7 @@ namespace MyProfile.Entity.ModelView
 	public class CalendarFilterModels
 	{
 		public int Year { get; set; }
-		public List<int> Sections { get; set; }
+		public List<int> Sections { get; set; } = new List<int>();
 		public bool IsAmount { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }

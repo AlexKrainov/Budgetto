@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
+using MyProfile.Goal.Service;
+using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 using MyProfile.Template.Service;
 using MyProfile.User.Service;
@@ -42,6 +44,8 @@ namespace MyProfile
 			services.AddScoped<SectionService>();
 			services.AddScoped<UserLogService>();
 			services.AddScoped<CollectionUserService>();
+			services.AddScoped<LimitService>();
+			services.AddScoped<GoalService>();
 			#endregion
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

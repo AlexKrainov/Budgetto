@@ -47,11 +47,11 @@ namespace MyProfile.Entity.Model
 		public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }
 		public virtual IEnumerable<CollectiveSection> CollectiveSections { get; set; }
 
-		public virtual IEnumerable<Limit> Limits { get; set; }
+		public virtual IEnumerable<SectionGroupLimit> SectionGroupLimits { get; set; }
 
 		public BudgetSection()
 		{
-			this.Limits = new HashSet<Limit>();
+			this.SectionGroupLimits = new HashSet<SectionGroupLimit>();
 			this.BudgetRecords = new HashSet<BudgetRecord>();
 			this.CollectiveSections = new HashSet<CollectiveSection>();
 		}

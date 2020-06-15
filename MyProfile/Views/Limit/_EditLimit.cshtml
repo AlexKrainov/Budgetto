@@ -1,0 +1,84 @@
+﻿<div class="modal modal-top fade" id="modal-limit">
+	<div class="modal-dialog">
+		<form class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					Limit
+					<div class="dropdown" style="display:inline;">
+						<button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">{{ limit.periodName }}</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" v-for="periodType in periodTypes"
+							   v-on:click="limit.periodTypeID = periodType.id; limit.periodName = periodType.name">{{ periodType.name }}</a>
+						</div>
+					</div>
+					@*<span class="font-weight-light">Information</span>
+						<br>
+						<small class="text-muted">We need payment information to process your order.</small>*@
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col">
+						<label class="form-label">from</label>
+						<input type="text" class="form-control" id="date-from" v-model="limit.dateStart">
+					</div>
+					<div class="form-group col">
+						<label class="form-label">to</label>
+						<input type="text" class="form-control" id="date-to" v-model="limit.dateEnd">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col mb-0">
+						<label class="form-label">Included section</label>
+						<select multiple class="form-control" id="limitSections">
+							<option v-for="_section in sections"
+									v-bind:value="_section.id">
+								{{ _section.name }}
+							</option>
+							@*<option v-for="_section in limit.sections"
+										v-bind:value="_section.id"
+									{{ _section.name }}
+								</option>*@
+						</select>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col">
+						<label class="form-label">Name</label>
+						<input type="text" class="form-control" placeholder="Name" v-model="limit.name">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col">
+						<label class="form-label">Total money</label>
+						<input type="number" class="form-control" placeholder="Money" v-model="limit.limitMoney">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col mb-0">
+						<label class="form-label">Description</label>
+						<textarea class="form-control" v-model="limit.description" placeholder="Description"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+					<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" v-on:change="finishLimit" id="isFinishLimit" v-model="limit.isFinishLimit">
+						<span class="custom-control-label">Завершить лимит</span>
+					</label>
+				</div>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+				<button class="btn btn-primary" type="button" disabled v-show="isSaving">
+					<span class="spinner-border" role="status" aria-hidden="true"></span>
+					Сохранить
+				</button>
+
+				<button type="button" class="btn btn-primary" v-on:click="save" v-show="!isSaving">Сохранить</button>
+			</div>
+		</form>
+	</div>
+</div>
