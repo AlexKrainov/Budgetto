@@ -3,13 +3,14 @@
 }
 
 //send ajax by jquery , by default method send = "POST"
-function sendAjax(url, value = null, type = "POST") {
+function sendAjax(url, value = null, type = "POST", $this) {
 	return $.ajax({
 		type: type,
 		url: url,
 		data: value ? JSON.stringify(value) : null,
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
+		context: $this,
 		success: function (response) {
 			return response;
 		},
@@ -73,3 +74,13 @@ var FormulaFieldTypeEnum = Object.freeze({
 	Parentheses: 4,
 	Days: 5
 });
+
+var PaletteColorPicker = ["#1abc99", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b", "#ecf0f1", "#bdc3c7", "#95a5a6", "#7f8c8d"];
+
+function GetRandomColor() {
+	return PaletteColorPicker[GetRandomInt(PaletteColorPicker.length)];
+}
+
+function GetRandomInt(max) {
+	return Math.floor(Math.random() * Math.floor(max));
+}

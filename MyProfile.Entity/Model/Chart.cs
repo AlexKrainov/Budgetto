@@ -13,6 +13,7 @@ namespace MyProfile.Entity.Model
 		[Required]
 		[MaxLength(32)]
 		public string Name { get; set; }
+		public string Description { get; set; }
 		public DateTime DateCreate { get; set; }
 		public DateTime LastDateEdit { get; set; }
 		public bool IsDeleted { get; set; }
@@ -23,16 +24,19 @@ namespace MyProfile.Entity.Model
 		public int PeriodTypeID { get; set; }
 		[ForeignKey("ChartType")]
 		public int ChartTypeID { get; set; }
+		[ForeignKey("VisibleElement")]
+		public int VisibleElementID { get; set; }
 
 		public virtual User User { get; set; }
 		public virtual PeriodType PeriodType { get; set; }
 		public virtual ChartType ChartType { get; set; }
+		public virtual VisibleElement VisibleElement { get; set; }
 
-		public virtual ICollection<PartChart> PartCharts { get; set; }
+		public virtual ICollection<ChartField> ChartFields { get; set; }
 
 		public Chart()
 		{
-			this.PartCharts = new HashSet<PartChart>();
+			this.ChartFields = new HashSet<ChartField>();
 		}
 
 	}

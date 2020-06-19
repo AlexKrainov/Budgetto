@@ -10,7 +10,8 @@ namespace MyProfile.Entity.Model
 		Bar,
 		Pie,
 		Doughnut,
-		Bubble
+		Bubble,
+		GroupedBar
 	}
 	public class ChartType
 	{

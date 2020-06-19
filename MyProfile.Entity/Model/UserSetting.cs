@@ -36,6 +36,10 @@ namespace MyProfile.Entity.Model
 		/// The pages Budget/Month, Budget/Year ... show/hide goals 
 		/// </summary>
 		public bool BudgetPages_IsShow_Goals { get; set; }
+		/// <summary>
+		/// The pages Budget/Month, Budget/Year ... show/hide big charts 
+		/// </summary>
+		public bool BudgetPages_IsShow_BigCharts { get; set; }
 
 
 		/// <summary>

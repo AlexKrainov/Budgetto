@@ -43,6 +43,8 @@ namespace MyProfile.Areas.Identity.Controllers
 				user.UserSettings.BudgetPages_IsShow_Limits = dbUserSettings.BudgetPages_IsShow_Limits = userSettings.BudgetPages_IsShow_Limits;
 
 				user.UserSettings.BudgetPages_IsShow_Goals = dbUserSettings.BudgetPages_IsShow_Goals = userSettings.BudgetPages_IsShow_Goals;
+
+				user.UserSettings.BudgetPages_IsShow_BigCharts = dbUserSettings.BudgetPages_IsShow_BigCharts = userSettings.BudgetPages_IsShow_BigCharts;
 			}
 			else if (userSettings.PageName == "Goal/List")
 			{

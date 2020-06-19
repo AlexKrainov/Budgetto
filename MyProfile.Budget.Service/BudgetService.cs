@@ -59,16 +59,16 @@ namespace MyProfile.Budget.Service
 			switch (template.PeriodTypeID)
 			{
 				case (int)PeriodTypesEnum.Year:
-					budgetRecords = budgetRecordService.GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Month);
+					budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Month);
 					totalCounter = 12;
 					break;
 				case (int)PeriodTypesEnum.Years10:
-					budgetRecords = budgetRecordService.GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Year);
+					budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Year);
 					totalCounter = 10;
 					break;
 				case (int)PeriodTypesEnum.Month:
 				default:
-					budgetRecords = budgetRecordService.GetBudgetRecords(from, to, x => x.DateTimeOfPayment.Day);
+					budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Day);
 					totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
 					break;
 			}

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200617155039_MyProfile_015")]
+    partial class MyProfile_015
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,8 +142,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime>("DateCreate");
 
-                    b.Property<string>("Description");
-
                     b.Property<bool>("IsDeleted");
 
                     b.Property<DateTime>("LastDateEdit");
@@ -154,8 +154,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<Guid>("UserID");
 
-                    b.Property<int>("VisibleElementID");
-
                     b.HasKey("ID");
 
                     b.HasIndex("ChartTypeID");
@@ -163,8 +161,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("PeriodTypeID");
 
                     b.HasIndex("UserID");
-
-                    b.HasIndex("VisibleElementID");
 
                     b.ToTable("Charts");
                 });
@@ -683,8 +679,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("BudgetPages_IsShow_BigCharts");
-
                     b.Property<bool>("BudgetPages_IsShow_Goals")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
@@ -780,11 +774,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("Charts")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.VisibleElement", "VisibleElement")
-                        .WithMany()
-                        .HasForeignKey("VisibleElementID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

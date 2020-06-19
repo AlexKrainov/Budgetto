@@ -4,10 +4,10 @@ using System.Text;
 
 namespace MyProfile.Entity.ModelView.Chart
 {
-	public class ChartPieViewModel : IChartDataSet
+	public class ChartGroupedBarViewModel : IChartDataSet
 	{
 		public string Label { get; set; }
-		public List<string> BackgroundColor { get; set; }
+		public string BackgroundColor { get; set; }
 		public List<decimal> Data { get; set; }
 	}
 }

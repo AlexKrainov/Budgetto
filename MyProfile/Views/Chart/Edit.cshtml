@@ -1,0 +1,190 @@
+﻿
+@{
+	ViewData["Title"] = "Edit";
+}
+
+@section Styles {
+	<link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />
+	<link rel="stylesheet" href="~/vendor/libs/smartwizard/smartwizard.css">
+	<link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
+	<link href="~/app_css/big-chart.css" rel="stylesheet" />
+	<style>
+		.picker {
+			border-radius: 5px;
+			width: 40px;
+			/*width: 100%;*/
+			height: calc(1.54em + .876rem + 2px);
+			cursor: pointer;
+			transition: all linear .2s;
+			border: thin solid #ccc;
+		}
+
+		.cssIcon > div.form-group {
+			height: 200px;
+			overflow-x: auto;
+			width: 103%;
+		}
+
+		.background-color-lightgray {
+			background-color: #f8f8f9;
+		}
+	</style>
+}
+
+@section Scripts {
+	<!-- Dependencies -->
+	<script src="~/vendor/libs/smartwizard/smartwizard.js"></script>
+	@*<script src="~/vendor/libs/validate/validate.js"></script>*@
+	<script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
+	<script src="~/vendor/libs/select2/select2.js"></script>
+
+	<script src="~/app_js/big-chart-edit.js"></script>
+}
+
+<h4 class="font-weight-bold py-3 mb-4">
+	<span class="text-muted font-weight-light">Forms /</span> SmartWizard
+</h4>
+
+<hr class="container-m-nx border-light mt-0 mb-5">
+
+<div id="big-chart-edit-vue" class="smartwizard">
+	<ul>
+		<li>
+			<a href="#smartwizard-1-step-1" class="mb-3">
+				<span class="sw-number">1</span>
+				<div class="text-muted small">Выбрать тип графика</div>
+				{{ chart.chartTypeName }}
+			</a>
+		</li>
+		<li>
+			<a href="#smartwizard-1-step-2" class="mb-3">
+				<span class="sw-number">2</span>
+				<div class="text-muted small">Добавить поля</div>
+				{{ chart.fields.length == 0 ? '' : 'Полей: ' + chart.fields.length }}
+			</a>
+		</li>
+		<li>
+			<a href="#smartwizard-1-step-3" class="mb-3">
+				<span class="sw-number">3</span>
+				<div class="text-muted small">Дополнительные настройки</div>
+				Pager
+			</a>
+		</li>
+	</ul>
+
+	<div class="mb-3">
+		@*https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/#10-bubble-chart*@
+		<div id="smartwizard-1-step-1" class="card animated fadeIn">
+			<div class="card-body">
+				<div class="chart-list chart-list-5">
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(2, 'Bar chart', $event)">
+						<img src="/img/chart/bars.png" alt="Bar chart" width="95" height="60">
+						<span class="chart-list-item-title">Bar chart</span>
+					</a>
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(1, 'Line chart', $event)">
+						<img src="/img/chart/line.png" alt="Line chart" width="95" height="60">
+						<span class="chart-list-item-title">Line chart</span>
+					</a>
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(3, 'Pie chart', $event)">
+						<img src="/img/chart/pie.png" alt="Pie chart" width="95" height="60">
+						<span class="chart-list-item-title">Pie chart</span>
+					</a>
+					@*<a href="javascript:void(0);" class="chart-list-item">
+							<img src="/img/chart/radar.png" alt="Radar chart" width="95" height="60">
+							<span class="chart-list-item-title">Radar chart</span>
+						</a>*@
+					@*<a href="javascript:void(0);" class="chart-list-item" >
+							<img src="/img/chart/polar.png" alt="Polar area chart" width="95" height="60">
+							<span class="chart-list-item-title">Polar area</span>
+						</a>*@
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(4, 'Doughnut chart', $event)">
+						<img src="/img/chart/doughnut.png" alt="Doughnut chart" width="95" height="60">
+						<span class="chart-list-item-title">Doughnut chart</span>
+					</a>
+					@*<a href="javascript:void(0);" class="chart-list-item">
+							<img src="/img/chart/horizontal.png" alt="Horizontal bar chart" width="95" height="60">
+							<span class="chart-list-item-title">Horizontal bars</span>
+						</a>*@
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(6, 'Grouped bar chart', $event)">
+						<img src="/img/chart/grouped.png" alt="Grouped bar chart" width="95" height="60">
+						<span class="chart-list-item-title">Grouped bars</span>
+					</a>
+					@*<a href="javascript:void(0);" class="chart-list-item">
+							<img src="/img/chart/mixed.png" alt="Mixed chart" width="95" height="60">
+							<span class="chart-list-item-title">Mixed charts</span>
+						</a>*@
+					@*<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(5, $event)">
+							<img src="/img/chart/bubbles.png" alt="Bubble chart" width="95" height="60">
+							<span class="chart-list-item-title">Bubble chart</span>
+						</a>*@
+				</div>
+			</div>
+		</div>
+		<div id="smartwizard-1-step-2" class="card animated fadeIn">
+			<div class="card-body">
+				<div class="row1">
+					<div class="col-md" v-for="field in chart.fields">
+						<div class="card mb-3 background-color-lightgray">
+							<div class="card-body">
+								<div class="card-title with-elements">
+									<h5 class="m-0 mr-2">
+										<input type="text" class="form-control" v-model="field.name" placeholder="Название поля">
+									</h5>
+									<div class="picker" v-bind:id="'chart_color_' + field.id"></div>
+									<div class="card-title-elements ml-md-auto">
+										<a href="javascript:void(0)" class="btn btn-outline-danger icon-btn borderless float-right"
+										   v-on:click="removeField(field)">
+											<span class="ion ion-md-trash"></span>
+										</a>
+									</div>
+								</div>
+								<select multiple class="form-control" v-bind:id="'chart_section_'+field.id">
+									<option v-for="_section in sections" v-bind:value="_section.id">
+										{{ _section.name }}
+									</option>
+								</select>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary" v-on:click="addField">Add field</button>
+			</div>
+		</div>
+		<div id="smartwizard-1-step-3" class="card animated fadeIn">
+			<div class="card-body">
+				<div class="form-row">
+					<div class="form-group col">
+						<label class="form-label">Name</label>
+						<input type="text" class="form-control" placeholder="Name" v-model="chart.name">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col mb-0">
+						<label class="form-label">Description</label>
+						<textarea class="form-control" v-model="chart.description" placeholder="Description"></textarea>
+					</div>
+				</div>
+				Visibl:
+				<div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+					<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" v-model="chart.isShowBudgetMonth" checked>
+						<span class="custom-control-label">Can see on the bundget month</span>
+					</label>
+				</div>
+				<div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+					<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" v-model="chart.isShowBudgetYear" checked>
+						<span class="custom-control-label">Can see on the bundget year</span>
+					</label>
+				</div>
+				<button class="btn btn-primary" type="button" disabled v-show="isSaving">
+					<span class="spinner-border" role="status" aria-hidden="true"></span>
+					Сохранить
+				</button>
+
+				<button type="button" class="btn btn-primary" v-on:click="save" v-show="!isSaving">Сохранить</button>
+			</div>
+		</div>
+	</div>
+</div>

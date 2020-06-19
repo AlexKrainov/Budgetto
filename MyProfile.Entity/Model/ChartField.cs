@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-	public class PartChart
+	public class ChartField
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,7 +23,7 @@ namespace MyProfile.Entity.Model
 
 		public virtual ICollection<SectionGroupChart> SectionGroupCharts { get; set; }
 
-		public PartChart()
+		public ChartField()
 		{
 			this.SectionGroupCharts = new HashSet<SectionGroupChart>();
 		}

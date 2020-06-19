@@ -16,7 +16,7 @@ namespace MyProfile.Entity.Model
 		[ForeignKey("BudgetSection")]
 		public int BudgetSectionID { get; set; }
 
-		public virtual PartChart PartChart { get; set; }
+		public virtual ChartField PartChart { get; set; }
 		public virtual BudgetSection BudgetSection { get; set; }
 
 		

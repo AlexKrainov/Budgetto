@@ -33,7 +33,7 @@ namespace MyProfile.Controllers.My
 		{
 			List<DateForCalendar> dates = new List<DateForCalendar>();
 
-			var result = budgetRecordService.GetBudgetRecordsByDate(
+			var result = budgetRecordService.GetBudgetRecordsGroupByDate(
 				new DateTime(filter.Year, 1, 1),
 				new DateTime(filter.Year, 12, 31),
 				y => filter.Sections.Contains(y.BudgetSectionID));

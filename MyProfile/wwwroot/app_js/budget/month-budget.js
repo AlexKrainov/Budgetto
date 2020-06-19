@@ -30,6 +30,10 @@
 		//Goal charts
 		goalChartsData: [],
 		goalCharts: [],
+
+		//Big charts
+		bigChartsData: [],
+		bigCharts: []
 	},
 	watch: {},
 	mounted: function () {
@@ -371,11 +375,60 @@
 				}
 			}
 		},
+		//big charts
+		loadBigCharts: function () {
+			return $.ajax({
+				type: "GET",
+				url: "/Chart/LoadCharts?date=" + this.budgetDate + "&periodType=" + 1,
+				contentType: "application/json",
+				dataType: 'json',
+				context: this,
+				success: function (response) {
+
+					this.bigChartsData = response.bigChartsData;
+
+					setTimeout(this.initBigChartCharts, 10);
+				}
+			});
+		},
+		initBigChartCharts: function () {
+			for (var i = 0; i < this.bigChartsData.length; i++) {
+				let bigChartData = this.bigChartsData[i];
+				if (this.bigCharts[i]) {
+					this.bigCharts[i].destroy();
+				}
+
+				this.bigCharts[i] = new Chart(document.getElementById(bigChartData.chartID), {
+					type: bigChartData.chartTypeCodeName,
+					data: {
+						datasets: bigChartData.dataSets,
+						labels: bigChartData.labels
+					},
+					options: {
+						title: {
+							display: true,
+							text: bigChartData.name
+						}
+					}
+				});
+
+			}
+			//setTimeout(this.resizeBigCharts, 10);
+			this.resizeBigCharts();
+		},
+		resizeBigCharts: function () {
+			for (var i = 0; i < this.bigCharts.length; i++) {
+				if (this.bigCharts[i]) {
+					this.bigCharts[i].resize();
+				}
+			}
+		},
 		refresh: function () {
 			this.load();
 			this.loadTotalCharts();
 			this.loadLimitCharts();
 			this.loadGoalCharts();
+			this.loadBigCharts();
 			//	.then(function () {
 			//	BudgetVue.initTable();
 			//});

@@ -103,7 +103,7 @@ namespace MyProfile.Budget.Service
 		}
 
 
-		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecords(
+		public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecordsGroup(
 			DateTime from,
 			DateTime to,
 			Func<TmpBudgetRecord, int> groupBy,
@@ -124,7 +124,7 @@ namespace MyProfile.Budget.Service
 			  .ToList();
 		}
 
-		public IList<IGrouping<DateTime, TmpBudgetRecord>> GetBudgetRecordsByDate(
+		public IList<IGrouping<DateTime, TmpBudgetRecord>> GetBudgetRecordsGroupByDate(
 			DateTime from,
 			DateTime to,
 			Expression<Func<BudgetRecord, bool>> expression = null)

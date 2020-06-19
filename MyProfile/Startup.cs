@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyProfile.Budget.Service;
+using MyProfile.Chart.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.Goal.Service;
@@ -46,6 +47,7 @@ namespace MyProfile
 			services.AddScoped<CollectionUserService>();
 			services.AddScoped<LimitService>();
 			services.AddScoped<GoalService>();
+			services.AddScoped<ChartService>();
 			#endregion
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

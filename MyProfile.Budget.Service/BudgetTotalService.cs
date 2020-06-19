@@ -26,7 +26,7 @@ namespace MyProfile.Budget.Service
 		public Tuple<List<decimal>, List<string>> GetChartTotalByMonth(DateTime from, DateTime to, SectionTypeEnum sectionTypeEnum)
 		{
 			var budgetRecordsGroup = budgetRecordService
-				.GetBudgetRecords(
+				.GetBudgetRecordsGroup(
 					from,
 					to,
 					x => x.DateTimeOfPayment.Month,

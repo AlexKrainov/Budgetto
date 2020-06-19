@@ -13,5 +13,7 @@ namespace MyProfile.Entity.ModelView.Chart
 		public string ChartTypeCodeName { get; set; }
 		public List<string> Labels { get; set; } = new List<string>();
 		public List<IChartDataSet> DataSets { get; set; }
+		public string Decription { get; set; }
+		public bool IsShow { get; set; }
 	}
 }

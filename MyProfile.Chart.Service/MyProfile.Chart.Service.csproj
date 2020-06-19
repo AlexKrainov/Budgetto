@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyProfile.Budget.Service\MyProfile.Budget.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
+    <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
+  </ItemGroup>
+
+</Project>

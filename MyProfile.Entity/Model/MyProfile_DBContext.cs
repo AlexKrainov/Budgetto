@@ -55,6 +55,16 @@ namespace MyProfile.Entity.Model
 			modelBuilder.Entity<UserSettings>()
 				.Property(b => b.BudgetPages_IsShow_Goals)
 				.HasDefaultValue(true);
+			modelBuilder.Entity<UserSettings>()
+				.Property(b => b.BudgetPages_IsShow_BigCharts)
+				.HasDefaultValue(true);
+
+			modelBuilder.Entity<VisibleElement>()
+				.Property(b => b.IsShow_BudgetMonth)
+				.HasDefaultValue(true);
+			modelBuilder.Entity<VisibleElement>()
+				.Property(b => b.IsShow_BudgetYear)
+				.HasDefaultValue(true);
 
 			modelBuilder.Entity<Limit>()
 				.Property(b => b.IsShow)
@@ -107,8 +117,9 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<GoalRecord> GoalRecords { get; set; }
 		public virtual DbSet<Chart> Charts { get; set; }
 		public virtual DbSet<ChartType> ChartTypes { get; set; }
-		public virtual DbSet<PartChart> PartCharts { get; set; }
+		public virtual DbSet<ChartField> ChartFields { get; set; }
 		public virtual DbSet<SectionGroupChart> SectionGroupCharts { get; set; }
+		public virtual DbSet<VisibleElement> VisibleElements { get; set; }
 
 	}
 }

@@ -8,6 +8,7 @@
 			"BudgetVue.loadTotalCharts",
 			"BudgetVue.loadLimitCharts",
 			"BudgetVue.loadGoalCharts",
+			"BudgetVue.loadBigCharts",
 			"GoalListVue.load"
 		],
 	},
@@ -79,6 +80,12 @@
 			let checked = document.querySelector("[data-prop=BudgetPages_IsShow_Goals]").checked;
 			for (var i = 0; i < BudgetVue.goalChartsData.length; i++) {
 				BudgetVue.goalChartsData[i].isShow = checked;
+			}
+		},
+		toggleBigCharts: function () {
+			let checked = document.querySelector("[data-prop=BudgetPages_IsShow_BigCharts]").checked;
+			for (var i = 0; i < BudgetVue.bigChartsData.length; i++) {
+				BudgetVue.bigChartsData[i].isShow = checked;
 			}
 		}
 	}
