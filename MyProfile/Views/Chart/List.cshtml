@@ -1,245 +1,170 @@
 ﻿
 @{
-	ViewData["Title"] = "List";
+    ViewData["Title"] = "List";
 }
 
 @section Styles {
-	<style>
-		.card-chart1 {
-			background-image: url(/img/chart/bars.png);
-			background-size: 215px;
-			background-repeat: no-repeat;
-		}
+    <style>
+        .chart {
+            background-size: 215px;
+            background-repeat: no-repeat;
+        }
 
-		.card-chart2 {
-			background-image: url(/img/chart/pie.png);
-			background-size: 215px;
-			background-repeat: no-repeat;
-		}
+        .card-chart_1 {
+            background-image: url(/img/chart/line.png);
+        }
 
-		.card-chart3 {
-			background-image: url(/img/chart/line.png);
-			background-size: 215px;
-			background-repeat: no-repeat;
-		}
-	</style>
+        .card-chart_2 {
+            background-image: url(/img/chart/bars.png);
+        }
+
+        .card-chart_3 {
+            background-image: url(/img/chart/pie.png);
+        }
+
+        .card-chart_4 {
+            background-image: url(/img/chart/doughnut.png);
+        }
+
+        .card-chart_5 {
+            background-image: url(/img/chart/bubbles.png);
+        }
+
+        .card-chart_6 {
+            background-image: url(/img/chart/grouped.png);
+        }
+    </style>
 }
 
 @section Scripts {
-	<script src="~/app_js/chart-list.js"></script>
+    <script src="~/app_js/chart-list.js"></script>
 }
 @*https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/*@
 
 
 <h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
-	<div class="col-12 col-md px-0 pb-2">Графики </div>
-	<a class="btn btn-primary rounded-pill d-block" href="/Chart/Edit">
-		<span class="ion ion-md-add"></span>&nbsp; Добавить график
-	</a>
-	<div class="col-12 col-md-3 px-0 pb-2">
-		<input type="text" class="form-control" placeholder="Search...">
-	</div>
+    <div class="col-12 col-md px-0 pb-2">Графики </div>
+    <a class="btn btn-primary rounded-pill d-block" href="/Chart/Edit">
+        <span class="ion ion-md-add"></span>&nbsp; Добавить график
+    </a>
+    <div class="col-12 col-md-3 px-0 pb-2">
+        <input type="text" class="form-control" placeholder="Search...">
+    </div>
 </h4>
 <div id="chart-list-vue">
 
 
-	<ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
-		<li class="nav-item">
-			<a class="nav-link text-body font-weight-bold pl-0" href="javascript:void(0)">Development</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-muted" href="javascript:void(0)">Web Development</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-muted" href="javascript:void(0)">Mobile Apps</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-muted" href="javascript:void(0)">Programming Languages</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-muted" href="javascript:void(0)">Databases</a>
-		</li>
-	</ul>
-	<div class="row">
+    <ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
+        <li class="nav-item">
+            <a class="nav-link text-body font-weight-bold pl-0" href="javascript:void(0)">Development</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-muted" href="javascript:void(0)">Web Development</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-muted" href="javascript:void(0)">Mobile Apps</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-muted" href="javascript:void(0)">Programming Languages</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-muted" href="javascript:void(0)">Databases</a>
+        </li>
+    </ul>
+    <div class="row">
+        <div class="col-sm-6 col-xl-4" v-for="chart in charts">
+            <div class="card mb-4">
+                <h6 class="card-header with-elements border-0 pr-0 pb-0">
+                    <div class="card-header-elements ml-auto" style="margin-bottom: -41px;">
+                        <div class="btn-group mr-3">
+                            <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" style="z-index:5;">
+                                <i class="ion ion-ios-more"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" id="age-users-dropdown-menu">
+                                <a class="dropdown-item" v-bind:href="'/Chart/Edit/' + chart.id">Редактировать</a>
+                                <a class="dropdown-item text-danger" href="javascript:void(0)">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                </h6>
+                <div class="w-100">
+                    <a href="javascript:void(0)" class="card-img-top d-block ui-rect-60 ui-bg-cover chart" v-bind:class="'card-chart_'+chart.chartTypeID">
+                        <div class="d-flex justify-content-between align-items-end ui-rect-content p-3">
+                            <div class="flex-shrink-1">
+                                <span class="badge badge-primary">{{ chart.chartTypeName }}</span>
+                            </div>
+                            <div class="text-big"><div class="badge badge-dark font-weight-bold">$15.99</div></div>
+                        </div>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h5 class="mb-3 display-inline"><a href="javascript:void(0)" class="text-body ">{{ chart.name }}</a></h5>
+                    <a href="javascript:void(0)" v-show="!chart.isShowBudgetMonth" class="badge badge-secondary" title="Показывать на ....">Месяц</a>
+                    <a href="javascript:void(0)" v-show="!chart.isShowBudgetYear" class="badge badge-secondary">Год</a>
+                    <a href="javascript:void(0)" v-show="chart.isShowBudgetMonth" class="badge badge-success">Месяц</a>
+                    <a href="javascript:void(0)" v-show="chart.isShowBudgetYear" class="badge badge-success">Год</a>
+                    <p class="text-muted mb-3">{{ chart.discription }}</p>
+                    @*<div class="media">
+                            <div class="media-body">
+                                <div class="ui-stars">
+                                    <div class="ui-star filled">
+                                        <i class="ion ion-md-star"></i>
+                                        <i class="ion ion-md-star"></i>
+                                    </div>
+                                    <div class="ui-star filled">
+                                        <i class="ion ion-md-star"></i>
+                                        <i class="ion ion-md-star"></i>
+                                    </div>
+                                    <div class="ui-star filled">
+                                        <i class="ion ion-md-star"></i>
+                                        <i class="ion ion-md-star"></i>
+                                    </div>
+                                    <div class="ui-star filled">
+                                        <i class="ion ion-md-star"></i>
+                                        <i class="ion ion-md-star"></i>
+                                    </div>
+                                    <div class="ui-star half-filled">
+                                        <i class="ion ion-md-star"></i>
+                                        <i class="ion ion-md-star"></i>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0)" class="text-muted small">55</a>
+                            </div>
+                            <div class="text-muted small">
+                                <i class="ion ion-md-time text-primary"></i>
+                                <span>12h</span>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
 
-		<div class="col-sm-6 col-xl-4">
-			<div class="card mb-4">
-				<div class="w-100">
-					<a href="javascript:void(0)" class="card-img-top d-block ui-rect-60 ui-bg-cover card-chart1">
-						<div class="d-flex justify-content-between align-items-end ui-rect-content p-3">
-							<div class="flex-shrink-1">
-								<span class="badge badge-primary">Java</span>
-							</div>
-							<div class="text-big"><div class="badge badge-dark font-weight-bold">$15.99</div></div>
-						</div>
-					</a>
-				</div>
-				<div class="card-body">
-					<h5 class="mb-3"><a href="javascript:void(0)" class="text-body">Complete Java Masterclass</a></h5>
-					<p class="text-muted mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec odio ligula, rhoncus scelerisque ullamcorper iaculis.</p>
-					<div class="media">
-						<div class="media-body">
-							<div class="ui-stars">
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star half-filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-							</div>
-							<a href="javascript:void(0)" class="text-muted small">55</a>
-						</div>
-						<div class="text-muted small">
-							<i class="ion ion-md-time text-primary"></i>
-							<span>12h</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <hr class="border-light mt-2 mb-4">
 
-		<div class="col-sm-6 col-xl-4">
-			<div class="card mb-4">
-				<div class="w-100">
-					<a href="javascript:void(0)" class="card-img-top d-block ui-rect-60 ui-bg-cover card-chart2">
-						<div class="d-flex justify-content-between align-items-end ui-rect-content p-3">
-							<div class="flex-shrink-1">
-								<span class="badge badge-primary">Backend</span>
-							</div>
-							<div class="text-big"><div class="badge badge-dark font-weight-bold">$44.00</div></div>
-						</div>
-					</a>
-				</div>
-				<div class="card-body">
-					<h5 class="mb-3"><a href="javascript:void(0)" class="text-body">The Complete Web Developer Course 2.0</a></h5>
-					<p class="text-muted mb-3">Pellentesque at sodales tortor, eu volutpat metus.</p>
-					<div class="media">
-						<div class="media-body">
-							<div class="ui-stars">
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star half-filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-							</div>
-							<a href="javascript:void(0)" class="text-muted small">55</a>
-						</div>
-						<div class="text-muted small">
-							<i class="ion ion-md-time text-primary"></i>
-							<span>34h</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-sm-6 col-xl-4">
-			<div class="card mb-4">
-				<div class="w-100">
-					<a href="javascript:void(0)" class="card-img-top d-block ui-rect-60 ui-bg-cover card-chart3">
-						<div class="d-flex justify-content-between align-items-end ui-rect-content p-3">
-							<div class="flex-shrink-1">
-								<span class="badge badge-primary">Backend</span>
-								<span class="badge badge-primary">Python</span>
-							</div>
-							<div class="text-big"><div class="badge badge-dark font-weight-bold">$56.99</div></div>
-						</div>
-					</a>
-				</div>
-				<div class="card-body">
-					<h5 class="mb-3"><a href="javascript:void(0)" class="text-body">Python for Beginners: Learn Python Programming</a></h5>
-					<p class="text-muted mb-3">Nulla lorem, placerat in ultricies sed, aliquet eu eros. In lacinia porttitor enim vel commodo.</p>
-					<div class="media">
-						<div class="media-body">
-							<div class="ui-stars">
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-								<div class="ui-star half-filled">
-									<i class="ion ion-md-star"></i>
-									<i class="ion ion-md-star"></i>
-								</div>
-							</div>
-							<a href="javascript:void(0)" class="text-muted small">55</a>
-						</div>
-						<div class="text-muted small">
-							<i class="ion ion-md-time text-primary"></i>
-							<span>44h</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</div>
-
-	<hr class="border-light mt-2 mb-4">
-
-	<nav>
-		<ul class="pagination justify-content-center">
-			<li class="page-item disabled">
-				<a class="page-link" href="javascript:void(0)">«</a>
-			</li>
-			<li class="page-item active">
-				<a class="page-link" href="javascript:void(0)">1</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">2</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">3</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">4</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">5</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">»</a>
-			</li>
-		</ul>
-	</nav>
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="javascript:void(0)">«</a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">4</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">5</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">»</a>
+            </li>
+        </ul>
+    </nav>
 </div>

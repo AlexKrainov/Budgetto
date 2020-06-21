@@ -9,61 +9,68 @@ using MyProfile.Entity.ModelView.Chart;
 
 namespace MyProfile.Controllers.My
 {
-	public class Chart : Controller
-	{
-		private ChartService chartService;
+    public class Chart : Controller
+    {
+        private ChartService chartService;
 
-		public Chart(ChartService chartService)
-		{
-			this.chartService = chartService;
+        public Chart(ChartService chartService)
+        {
+            this.chartService = chartService;
 
-		}
+        }
 
-		[HttpGet]
-		public IActionResult List()
-		{
-			return View();
-		}
+        [HttpGet]
+        public IActionResult List()
+        {
+            return View();
+        }
 
-		[HttpGet]
-		public async Task<JsonResult> GetCharts([FromBody] ChartEditModel chart)
-		{
-			return Json(new { isOk = true, charts = await chartService.GetChartListView() });
-		}
-
-
-		[HttpGet]
-		public IActionResult Edit()
-		{
-			return View();
-		}
+        [HttpGet]
+        public async Task<JsonResult> GetCharts([FromBody] ChartEditModel chart)
+        {
+            return Json(new { isOk = true, charts = await chartService.GetChartListView() });
+        }
 
 
-		[HttpPost]
-		public async Task<JsonResult> Save([FromBody] ChartEditModel chart)
-		{
-			try
-			{
-				await chartService.CreateOrUpdate(chart);
-			}
-			catch (Exception ex)
-			{
-				return Json(new { isOk = false, ex.Message });
-			}
-			return Json(new { isOk = true, chart });
-		}
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            return View(id);
+        }
 
 
-		[HttpGet]
-		public async Task<IActionResult> LoadCharts(DateTime date, PeriodTypesEnum periodType)
-		{
-			DateTime start = new DateTime(date.Year, date.Month, 01, 00, 00, 01);
-			DateTime finish = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 23, 59, 59);
+        [HttpPost]
+        public async Task<JsonResult> Save([FromBody] ChartEditModel chart)
+        {
+            try
+            {
+                await chartService.CreateOrUpdate(chart);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, ex.Message });
+            }
+            return Json(new { isOk = true, chart });
+        }
 
-			List<ChartViewModel> chartsData = await chartService.GetChartData(start, finish, periodType);
+        [HttpGet]
+        public async Task<IActionResult> LoadChart(int id)
+        {
+            var chart = await chartService.GetChartListView(x => x.ID == id);
 
-			return Json(new { bigChartsData = chartsData });
-		}
+            return Json(new { chart = chart.FirstOrDefault() });
+        }
 
-	}
+        [HttpGet]
+        public async Task<IActionResult> LoadCharts(DateTime date, PeriodTypesEnum periodType)
+        {
+            DateTime start = new DateTime(date.Year, date.Month, 01, 00, 00, 01);
+            DateTime finish = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 23, 59, 59);
+
+            List<ChartViewModel> chartsData = await chartService.GetChartData(start, finish, periodType);
+
+            return Json(new { bigChartsData = chartsData });
+        }
+
+    }
 }

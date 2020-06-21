@@ -47,7 +47,7 @@
 
 <hr class="container-m-nx border-light mt-0 mb-5">
 
-<div id="big-chart-edit-vue" class="smartwizard">
+<div id="big-chart-edit-vue" class="smartwizard" data-chart-id="@Model">
 	<ul>
 		<li>
 			<a href="#smartwizard-1-step-1" class="mb-3">
@@ -77,15 +77,15 @@
 		<div id="smartwizard-1-step-1" class="card animated fadeIn">
 			<div class="card-body">
 				<div class="chart-list chart-list-5">
-					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(2, 'Bar chart', $event)">
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(2)" data-chart-type="2" data-chart-type-name="Bar chart">
 						<img src="/img/chart/bars.png" alt="Bar chart" width="95" height="60">
 						<span class="chart-list-item-title">Bar chart</span>
 					</a>
-					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(1, 'Line chart', $event)">
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(1)" data-chart-type="1" data-chart-type-name="Line chart">
 						<img src="/img/chart/line.png" alt="Line chart" width="95" height="60">
 						<span class="chart-list-item-title">Line chart</span>
 					</a>
-					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(3, 'Pie chart', $event)">
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(3)" data-chart-type="3" data-chart-type-name="Pie chart">
 						<img src="/img/chart/pie.png" alt="Pie chart" width="95" height="60">
 						<span class="chart-list-item-title">Pie chart</span>
 					</a>
@@ -97,7 +97,7 @@
 							<img src="/img/chart/polar.png" alt="Polar area chart" width="95" height="60">
 							<span class="chart-list-item-title">Polar area</span>
 						</a>*@
-					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(4, 'Doughnut chart', $event)">
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(4)" data-chart-type="4" data-chart-type-name="Doughnut chart">
 						<img src="/img/chart/doughnut.png" alt="Doughnut chart" width="95" height="60">
 						<span class="chart-list-item-title">Doughnut chart</span>
 					</a>
@@ -105,7 +105,7 @@
 							<img src="/img/chart/horizontal.png" alt="Horizontal bar chart" width="95" height="60">
 							<span class="chart-list-item-title">Horizontal bars</span>
 						</a>*@
-					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(6, 'Grouped bar chart', $event)">
+					<a href="javascript:void(0);" class="chart-list-item" v-on:click="selectChart(6)" data-chart-type="6" data-chart-type-name="Grouped bar chart">>
 						<img src="/img/chart/grouped.png" alt="Grouped bar chart" width="95" height="60">
 						<span class="chart-list-item-title">Grouped bars</span>
 					</a>
