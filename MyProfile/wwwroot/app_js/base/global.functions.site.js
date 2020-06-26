@@ -3,14 +3,13 @@
 }
 
 //send ajax by jquery , by default method send = "POST"
-function sendAjax(url, value = null, type = "POST", $this) {
+function sendAjax(url, value = null, type = "POST") {
 	return $.ajax({
 		type: type,
 		url: url,
 		data: value ? JSON.stringify(value) : null,
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
-		context: $this,
 		success: function (response) {
 			return response;
 		},

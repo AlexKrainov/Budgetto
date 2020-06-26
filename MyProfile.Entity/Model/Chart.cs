@@ -20,15 +20,12 @@ namespace MyProfile.Entity.Model
 
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }
-		[ForeignKey("PeriodType")]
-		public int PeriodTypeID { get; set; }
 		[ForeignKey("ChartType")]
 		public int ChartTypeID { get; set; }
 		[ForeignKey("VisibleElement")]
 		public int VisibleElementID { get; set; }
 
 		public virtual User User { get; set; }
-		public virtual PeriodType PeriodType { get; set; }
 		public virtual ChartType ChartType { get; set; }
 		public virtual VisibleElement VisibleElement { get; set; }
 

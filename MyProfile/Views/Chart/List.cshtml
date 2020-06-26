@@ -40,6 +40,7 @@
     <script src="~/app_js/chart-list.js"></script>
 }
 @*https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/*@
+@*https://localhost:44394/Pages/EducationCoursesV1*@
 
 
 <h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
@@ -47,32 +48,28 @@
     <a class="btn btn-primary rounded-pill d-block" href="/Chart/Edit">
         <span class="ion ion-md-add"></span>&nbsp; Добавить график
     </a>
-    <div class="col-12 col-md-3 px-0 pb-2">
-        <input type="text" class="form-control" placeholder="Search...">
-    </div>
+    @*<div class="col-12 col-md-3 px-0 pb-2">
+            <input type="text" class="form-control" placeholder="Search...">
+        </div>*@
 </h4>
 <div id="chart-list-vue">
 
 
     <ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
         <li class="nav-item">
-            <a class="nav-link text-body font-weight-bold pl-0" href="javascript:void(0)">Development</a>
+            <a v-bind:class="['nav-link', activeChartPeriodTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeChartPeriodTypeID = -1">Все графики</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-muted" href="javascript:void(0)">Web Development</a>
+            <a v-bind:class="['nav-link', activeChartPeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeChartPeriodTypeID = 1">По дням</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-muted" href="javascript:void(0)">Mobile Apps</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-muted" href="javascript:void(0)">Programming Languages</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-muted" href="javascript:void(0)">Databases</a>
+            <a v-bind:class="['nav-link', activeChartPeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeChartPeriodTypeID = 3">По месяцам</a>
         </li>
     </ul>
     <div class="row">
-        <div class="col-sm-6 col-xl-4" v-for="chart in charts">
+        <div class="col-sm-6 col-xl-4"
+             v-for="chart in charts"
+             v-show="activeChartPeriodTypeID == -1 ? true : chart.isShowBudgetMonth && activeChartPeriodTypeID == 1 || chart.isShowBudgetYear && activeChartPeriodTypeID == 3">
             <div class="card mb-4">
                 <h6 class="card-header with-elements border-0 pr-0 pb-0">
                     <div class="card-header-elements ml-auto" style="margin-bottom: -41px;">
@@ -93,17 +90,18 @@
                             <div class="flex-shrink-1">
                                 <span class="badge badge-primary">{{ chart.chartTypeName }}</span>
                             </div>
-                            <div class="text-big"><div class="badge badge-dark font-weight-bold">$15.99</div></div>
+                            <div class="text-big">
+                                <span v-show="!chart.isShowBudgetMonth" class="badge badge-secondary" title="Показывать на ....">Месяц</span>
+                                <span v-show="!chart.isShowBudgetYear" class="badge badge-secondary">Год</span>
+                                <span v-show="chart.isShowBudgetMonth" class="badge badge-success">Месяц</span>
+                                <span v-show="chart.isShowBudgetYear" class="badge badge-success">Год</span>
+                            </div>
                         </div>
                     </a>
                 </div>
                 <div class="card-body">
                     <h5 class="mb-3 display-inline"><a href="javascript:void(0)" class="text-body ">{{ chart.name }}</a></h5>
-                    <a href="javascript:void(0)" v-show="!chart.isShowBudgetMonth" class="badge badge-secondary" title="Показывать на ....">Месяц</a>
-                    <a href="javascript:void(0)" v-show="!chart.isShowBudgetYear" class="badge badge-secondary">Год</a>
-                    <a href="javascript:void(0)" v-show="chart.isShowBudgetMonth" class="badge badge-success">Месяц</a>
-                    <a href="javascript:void(0)" v-show="chart.isShowBudgetYear" class="badge badge-success">Год</a>
-                    <p class="text-muted mb-3">{{ chart.discription }}</p>
+                    <p class="text-muted mb-3">{{ chart.description }}</p>
                     @*<div class="media">
                             <div class="media-body">
                                 <div class="ui-stars">

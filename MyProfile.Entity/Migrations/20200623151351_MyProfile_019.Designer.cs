@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200623151351_MyProfile_019")]
+    partial class MyProfile_019
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -363,45 +365,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("Limits");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.MailLog", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("CameDateTime");
-
-                    b.Property<string>("Comment");
-
-                    b.Property<bool>("IsSuccessful");
-
-                    b.Property<int>("MailTypeID");
-
-                    b.Property<DateTime>("SentDateTime");
-
-                    b.Property<Guid?>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("MailTypeID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("MailLogs");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.MailType", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CodeName");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("MailTypes");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.PeriodType", b =>
                 {
                     b.Property<int>("ID")
@@ -629,8 +592,6 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("ImageLink");
 
                     b.Property<bool>("IsAllowCollectiveBudget");
-
-                    b.Property<bool>("IsConfirmEmail");
 
                     b.Property<bool>("IsDeleted");
 
@@ -883,18 +844,6 @@ namespace MyProfile.Entity.Migrations
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.MailLog", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.MailType", "MailType")
-                        .WithMany()
-                        .HasForeignKey("MailTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.User", "User")
-                        .WithMany("MailLogs")
-                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PersonSetting", b =>

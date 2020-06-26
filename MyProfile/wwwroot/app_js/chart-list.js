@@ -1,7 +1,8 @@
 ﻿var ChartListVue = new Vue({
 	el: "#chart-list-vue",
 	data: {
-		charts: [] ,
+		charts: [],
+		activeChartPeriodTypeID: -1,
 	},
 	watch: {},
 	mounted: function () {

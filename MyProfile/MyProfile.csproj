@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Email.Service\Email.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Budget.Service\MyProfile.Budget.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Chart.Service\MyProfile.Chart.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />

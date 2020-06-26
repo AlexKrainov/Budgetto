@@ -17,15 +17,33 @@ using Newtonsoft.Json;
 
 namespace MyProfile.Areas.Identity.Controllers
 {
-	public partial class AccountController : Controller
-	{
-		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult AccountSettings()
-		{
-			return View();
-		}
+    public partial class AccountController : Controller
+    {
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccountSettings()
+        {
+            return View();
+        }
 
-	}
+        [HttpGet]
+        public async Task<IActionResult> LoadUserSettings()
+        {
+            return Json(new { isOk = true, user = userService.GetUserSettingsAsync() });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ResendConfirmEmail()
+        {
+            return Json(new { isOk = true, userConfirmEmailService = await userConfirmEmailService.ConfirmEmail(true) });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveUserInfo([FromBody]UserInfoModel user)
+        {
+            return Json(new { isOk = true, user = await userService.SaveUserInfo(user) });
+        }
+
+    }
 
 }

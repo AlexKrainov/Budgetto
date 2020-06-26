@@ -82,7 +82,7 @@
 
                         el_name = "#chart_color_" + ChartEditVue.chart.fields[i].id;
                         $(el_name).colorPick({
-                            'initialColor': GetRandomColor(),
+                            'initialColor': ChartEditVue.chart.fields[i].cssColor,
                             'palette': PaletteColorPicker,
                             //'localizationColor': [],
                             'onColorSelected': function () {

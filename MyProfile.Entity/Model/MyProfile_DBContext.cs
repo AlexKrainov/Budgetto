@@ -120,6 +120,8 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<ChartField> ChartFields { get; set; }
 		public virtual DbSet<SectionGroupChart> SectionGroupCharts { get; set; }
 		public virtual DbSet<VisibleElement> VisibleElements { get; set; }
+		public virtual DbSet<MailLog> MailLogs { get; set; }
+		public virtual DbSet<MailType> MailTypes { get; set; }
 
 	}
 }

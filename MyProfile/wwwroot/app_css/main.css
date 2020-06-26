@@ -140,3 +140,7 @@
 .display-inline {
 	display: inline;
 }
+
+a.disabled {
+	color: var(--red);
+}

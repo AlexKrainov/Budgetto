@@ -13,7 +13,7 @@ namespace MyProfile.Entity.Repository
 {
 	public class BaseRepository : IBaseRepository
 	{
-		private MyProfile_DBContext context;
+		private  MyProfile_DBContext context;
 		public BaseRepository(MyProfile_DBContext context)
 		{
 			this.context = context;

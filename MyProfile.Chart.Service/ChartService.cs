@@ -30,46 +30,82 @@ namespace MyProfile.Chart.Service
         {
             var now = DateTime.Now.ToUniversalTime();
 
-            Chart newChart = new Chart
-            {
-                ChartTypeID = (int)chart.ChartTypeID,
-                //DateCreate = now,
-                ID = chart.ID,
-                LastDateEdit = now,
-                Name = chart.Name ?? "testChart",
-                Description = chart.Description,
-                PeriodTypeID = 1,
-                UserID = UserInfo.Current.ID,
-                ChartFields = chart.Fields.Select(x => new Entity.Model.ChartField
-                {
-                    ChartID = chart.ID,
-                    Name = x.Name,
-                    CssColor = x.CssColor,
-                    SectionGroupCharts = x.Sections.Select(y => new Entity.Model.SectionGroupChart
-                    {
-                        BudgetSectionID = y,
-                    }).ToList()
-                }).ToList(),
-                VisibleElement = new VisibleElement
-                {
-                    IsShow_BudgetMonth = chart.IsShowBudgetMonth,
-                    IsShow_BudgetYear = chart.IsShowBudgetYear
-                }
-            };
-
             if (chart.ID > 0)//update
             {
-                repository.DeleteRange(await repository.GetAll<Chart>(x => x.ID == chart.ID).SelectMany(y => y.ChartFields).Select(z => z.SectionGroupCharts).ToListAsync());
-                repository.DeleteRange(await repository.GetAll<Chart>(x => x.ID == chart.ID).Select(y => y.ChartFields).ToListAsync());
+                var oldChart = await repository
+                    .GetAll<Chart>(x => x.ID == chart.ID)
+                    .Select(x => new
+                    {
+                        x.DateCreate,
+                        x.VisibleElementID,
+                        ChartFields = x.ChartFields.ToList(),
+                    })
+                    .FirstOrDefaultAsync();
+
+                Chart newChart = new Chart
+                {
+                    ID = chart.ID,
+                    DateCreate = oldChart.DateCreate,
+                    LastDateEdit = now,
+                    Name = chart.Name ?? "График",
+                    Description = chart.Description,
+                    UserID = UserInfo.Current.ID,
+                    ChartTypeID = (int)chart.ChartTypeID,
+                    ChartFields = chart.Fields.Select(x => new ChartField
+                    {
+                        ChartID = chart.ID,
+                        Name = x.Name,
+                        CssColor = x.CssColor,
+                        SectionGroupCharts = x.Sections
+                            .Select(y => new SectionGroupChart
+                            {
+                                BudgetSectionID = y,
+                            })
+                            .ToList()
+                    }).ToList(),
+                    VisibleElementID = oldChart.VisibleElementID,
+                    VisibleElement = new VisibleElement
+                    {
+                        ID = oldChart.VisibleElementID,
+                        IsShow_BudgetMonth = chart.IsShowBudgetMonth,
+                        IsShow_BudgetYear = chart.IsShowBudgetYear
+                    }
+                };
+
+                repository.DeleteRange(oldChart.ChartFields);
                 await repository.SaveAsync();
-                repository.Update(newChart);
+                await repository.UpdateAsync(newChart, true);
             }
             else
             {
-                newChart.DateCreate = now;
-                await repository.CreateAsync(newChart);
+                Chart newChart = new Chart
+                {
+                    ChartTypeID = (int)chart.ChartTypeID,
+                    ID = chart.ID,
+                    DateCreate = now,
+                    LastDateEdit = now,
+                    Name = chart.Name ?? "График",
+                    Description = chart.Description,
+                    UserID = UserInfo.Current.ID,
+                    ChartFields = chart.Fields.Select(x => new ChartField
+                    {
+                        Name = x.Name,
+                        CssColor = x.CssColor,
+                        SectionGroupCharts = x.Sections.Select(y => new SectionGroupChart
+                        {
+                            BudgetSectionID = y,
+                        }).ToList()
+                    }).ToList(),
+                    VisibleElement = new VisibleElement
+                    {
+                        IsShow_BudgetMonth = chart.IsShowBudgetMonth,
+                        IsShow_BudgetYear = chart.IsShowBudgetYear
+                    }
+                };
+
+                await repository.CreateAsync(newChart, true);
+                await repository.SaveAsync();
             }
-            await repository.SaveAsync();
             return 1;
         }
 
