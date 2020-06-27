@@ -1,35 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyProfile.Entity.Model;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.ModelView;
-using MyProfile.Entity.Repository;
-using MyProfile.Identity;
-using MyProfile.User.Service;
-using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace MyProfile.Areas.Identity.Controllers
 {
     public partial class AccountController : Controller
     {
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult AccountSettings()
         {
             return View();
         }
 
+        #region General settings
         [HttpGet]
-        public async Task<IActionResult> LoadUserSettings()
+        public IActionResult LoadUserSettings()
         {
-            return Json(new { isOk = true, user = userService.GetUserSettingsAsync() });
+            return Json(new { isOk = true, user = userService.GetUserSettings() });
         }
 
         [HttpGet]
@@ -39,11 +27,29 @@ namespace MyProfile.Areas.Identity.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveUserInfo([FromBody]UserInfoModel user)
+        public async Task<IActionResult> SaveUserInfo([FromBody] UserInfoModel user)
         {
             return Json(new { isOk = true, user = await userService.SaveUserInfo(user) });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(Guid id)
+        {
+            await userConfirmEmailService.ConfirmEmail_Complete(id);
+
+            return RedirectToAction("AccountSettings");
+        }
+
+        #endregion
+
+        #region Change password
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword([FromBody] string newPassword)
+        {
+            return Json(new { isOk = await userService.UpdatePassword(newPassword) });
+        } 
+        #endregion
     }
 
 }

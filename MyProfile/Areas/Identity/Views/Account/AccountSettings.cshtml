@@ -35,6 +35,7 @@
         <div class="col-md-3 pt-0">
             <div class="list-group list-group-flush account-settings-links">
                 <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">Общие настройки</a>
+                <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Смена пароля</a>
                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Коллективные настройки</a>
                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">Настройки уведомлений</a>
                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Change password</a>
@@ -47,95 +48,10 @@
         <div class="col-md-9">
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="account-general">
-
-                    <div class="card-body media align-items-center">
-                        <img src="~/img/avatars/5-small.png" alt="" class="d-block ui-w-80">
-                        <div class="media-body ml-4">
-                            <label class="btn btn-outline-primary">
-                                Upload new photo
-                                <input type="file" class="account-settings-fileinput">
-                            </label> &nbsp;
-                            <button type="button" class="btn btn-default md-btn-flat">Reset</button>
-
-                            <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-                        </div>
-                    </div>
-                    <hr class="border-light m-0">
-
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label class="form-label">Имя</label>
-                            <input type="text"
-                                   class="form-control mb-1"
-                                   v-model="user.name"
-                                   v-bind:class="validName ? '' : 'is-invalid'">
-                            <small class="invalid-feedback">Обязательное поле</small>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Фамилия</label>
-                            <input type="text"
-                                   class="form-control" v-model="user.lastName">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">E-mail</label>
-                            <input type="text"
-                                   class="form-control mb-1"
-                                   v-model="user.email"
-                                   v-bind:class="validEmail ? '' : 'is-invalid'">
-                            <small class="invalid-feedback">Обязательное поле</small>
-                            <div class="alert alert-danger mt-3" v-show="!user.isConfirmEmail">
-                                Вы еще не подтвердили адрес электронной почты. Пожалуйста проверьте свою почту.<br>
-                                <a href="javascript:void(0)" v-on:click="resendConfirmEmail"
-                                   v-bind:class="validEmail ? '' : 'disabled'">Отправить сообщение на почту.</a>
-                            </div>
-                            @*<div class="alert alert-danger mt-3" v-show="!user.isConfirmEmail && user.email != oldEmail">
-                                    Нужно сохранить форму перед отправкой почты<br>
-                                </div>*@
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="text-right mt-3">
-                            <button type="button" class="btn btn-primary"
-                                    v-on:click="saveUserInfo"
-                                    v-show="user.email == oldEmail && !isSaving">
-                                Сохранить
-                            </button>&nbsp;
-                            <button class="btn btn-primary" type="button" disabled v-show="user.email == oldEmail && isSaving">
-                                <span class="spinner-border" role="status" aria-hidden="true"></span>
-                                Сохранить
-                            </button>
-                            <button type="button" class="btn btn-primary"
-                                    v-on:click="saveUserInfo"
-                                    v-show="user.email != oldEmail && !isSaving">
-                                Сохранить и отправить подтверждение почты повторно
-                            </button>&nbsp;
-                            <button class="btn btn-primary" type="button" disabled v-show="user.email != oldEmail && isSaving">
-                                <span class="spinner-border" role="status" aria-hidden="true"></span>
-                                Сохранить и отправить подтверждение почты повторно
-                            </button>
-                        </div>
-                    </div>
-
+                    @await Html.PartialAsync("_AccountSettings_GeneralSettings")
                 </div>
                 <div class="tab-pane fade" id="account-change-password">
-                    <div class="card-body pb-2">
-
-                        <div class="form-group">
-                            <label class="form-label">Current password</label>
-                            <input type="password" class="form-control">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">New password</label>
-                            <input type="password" class="form-control">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Repeat new password</label>
-                            <input type="password" class="form-control">
-                        </div>
-
-                    </div>
+                    @await Html.PartialAsync("_AccountSettings_ChangePassword")
                 </div>
                 <div class="tab-pane fade" id="account-info">
                     <div class="card-body pb-2">

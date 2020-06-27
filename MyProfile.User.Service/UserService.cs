@@ -29,7 +29,7 @@ namespace MyProfile.User.Service
             this.userConfirmEmailService = userConfirmEmailService;
         }
 
-        public UserInfoModel GetUserSettingsAsync()
+        public UserInfoModel GetUserSettings()
         {
             var currentUser = UserInfo.Current;
 
@@ -46,23 +46,37 @@ namespace MyProfile.User.Service
             };
         }
 
+        public async Task<bool> UpdatePassword(string newPassword)
+        {
+            var dbUser = await repository.GetAll<Entity.Model.User>(x => x.ID == UserInfo.Current.ID)
+               .FirstOrDefaultAsync();
+            dbUser.Password = newPassword;
+            await repository.UpdateAsync(dbUser, true);
+
+            return true;
+        }
+
         public async Task<UserInfoModel> SaveUserInfo(UserInfoModel userInfoModel)
         {
             var user = UserInfo.Current;
-            var oldUser = await repository.GetAll<Entity.Model.User>(x => x.ID == user.ID)
+            var dbUser = await repository.GetAll<Entity.Model.User>(x => x.ID == user.ID)
                 .FirstOrDefaultAsync();
-            string oldEmail = new string(oldUser.Email);
+            string oldEmail = new string(dbUser.Email);
 
-            oldUser.Name = user.Name = userInfoModel.Name;
-            oldUser.LastName = user.LastName = userInfoModel.LastName;
-            oldUser.Email = user.Email = userInfoModel.Email;
+            dbUser.Name = user.Name = userInfoModel.Name;
+            dbUser.LastName = user.LastName = userInfoModel.LastName;
+            dbUser.Email = user.Email = userInfoModel.Email;
 
-            await repository.UpdateAsync(oldUser, true);
+            await repository.UpdateAsync(dbUser, true);
 
             if (oldEmail != userInfoModel.Email)
             {
                 await UserInfo.ReSignInAsync(user);
                 await userConfirmEmailService.ConfirmEmail(false);
+
+                user.IsConfirmEmail = dbUser.IsConfirmEmail = false;
+
+                await repository.UpdateAsync(dbUser, true);
             }
             else
             {
@@ -88,8 +102,6 @@ namespace MyProfile.User.Service
                     CollectiveBudget = new CollectiveBudget
                     {
                         ID = x.CollectiveBudget.ID,
-                        DateCreate = x.CollectiveBudget.DateCreate,
-                        DateDelete = x.CollectiveBudget.DateDelete,
                         Name = x.CollectiveBudget.Name,
                         Users = x.CollectiveBudget.Users.Select(y => new Entity.Model.User { ID = y.ID }).ToList()
                     },
