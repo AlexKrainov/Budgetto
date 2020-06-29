@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Email.Service;
+﻿using Email.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyProfile.Entity.Model;
-using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace MyProfile.Areas.Identity.Controllers
 {
@@ -26,16 +18,19 @@ namespace MyProfile.Areas.Identity.Controllers
         private UserLogService userLogService;
         private UserService userService;
         private UserConfirmEmailService userConfirmEmailService;
+        private CollectionUserService collectionUserService;
 
         public AccountController(IBaseRepository repository,
             UserLogService userLogService,
             UserService userService,
-            UserConfirmEmailService userConfirmEmailService)
+            UserConfirmEmailService userConfirmEmailService,
+            CollectionUserService collectionUserService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
             this.userService = userService;
             this.userConfirmEmailService = userConfirmEmailService;
+            this.collectionUserService = collectionUserService;
         }
 
         [HttpGet]
@@ -49,11 +44,11 @@ namespace MyProfile.Areas.Identity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string Email, string Password, string ReturnUrl)
         {
-            if (string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Password))
-            {
-                Email = "ialexkrainov2@gmail.com";
-                Password = "BlXlR1234";
-            }
+            //if (string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Password))
+            //{
+            //    Email = "ialexkrainov2@gmail.com";
+            //    Password = "BlXlR1234";
+            //}
             var user = await userService.AuthenticateOrUpdateUserInfo(Email, Password, UserActionType.Login);
 
             if (user != null)

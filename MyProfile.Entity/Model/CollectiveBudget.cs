@@ -9,7 +9,8 @@ namespace MyProfile.Entity.Model
 	{
 		public CollectiveBudget()
 		{
-			this.Users = new HashSet<User>();
+			this.CollectiveBudgetRequests = new HashSet<CollectiveBudgetRequest>();
+			this.CollectiveBudgetUsers = new HashSet<CollectiveBudgetUser>();
 		}
 
 		[Key]
@@ -17,10 +18,9 @@ namespace MyProfile.Entity.Model
 		public Guid ID { get; set; }
 		[Required]
 		public string Name { get; set; }
-		public DateTime DateCreate { get; set; }
-		public DateTime? DateDelete { get; set; }
 
 
-		public virtual IEnumerable<User> Users { get; set; }
+		public virtual IEnumerable<CollectiveBudgetRequest> CollectiveBudgetRequests { get; set; }
+		public virtual IEnumerable<CollectiveBudgetUser> CollectiveBudgetUsers { get; set; }
 	}
 }

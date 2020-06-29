@@ -144,3 +144,7 @@
 a.disabled {
 	color: var(--red);
 }
+
+.filter-blue-2 {
+	filter: blur(2px);
+}

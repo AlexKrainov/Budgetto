@@ -56,6 +56,7 @@ namespace MyProfile.User.Service
             return true;
         }
 
+
         public async Task<UserInfoModel> SaveUserInfo(UserInfoModel userInfoModel)
         {
             var user = UserInfo.Current;
@@ -68,6 +69,8 @@ namespace MyProfile.User.Service
             dbUser.Email = user.Email = userInfoModel.Email;
 
             await repository.UpdateAsync(dbUser, true);
+
+            //Check if we have alredy the new email ???
 
             if (oldEmail != userInfoModel.Email)
             {
@@ -93,18 +96,18 @@ namespace MyProfile.User.Service
                 {
                     ID = x.ID,
                     Email = x.Email,
-                    CollectiveBudgetID = x.CollectiveBudgetID,
+                    CollectiveBudgetID = x.CollectiveBudgetUser != null ? x.CollectiveBudgetUser.CollectiveBudgetID : Guid.Empty,
                     DateCreate = x.DateCreate,
                     ImageLink = x.ImageLink,
                     IsAllowCollectiveBudget = x.IsAllowCollectiveBudget,
                     LastName = x.LastName,
                     Name = x.Name,
-                    CollectiveBudget = new CollectiveBudget
-                    {
-                        ID = x.CollectiveBudget.ID,
-                        Name = x.CollectiveBudget.Name,
-                        Users = x.CollectiveBudget.Users.Select(y => new Entity.Model.User { ID = y.ID }).ToList()
-                    },
+                    //CollectiveBudget = new CollectiveBudget
+                    //{
+                    //    ID = x.CollectiveBudget.ID,
+                    //    Name = x.CollectiveBudget.Name,
+                    //    Users = x.CollectiveBudget.Users.Select(y => new Entity.Model.User { ID = y.ID }).ToList()
+                    //},
                     UserSettings = new UserSettings
                     {
                         BudgetPages_WithCollective = x.UserSettings.BudgetPages_WithCollective

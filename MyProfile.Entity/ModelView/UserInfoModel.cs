@@ -11,6 +11,7 @@ namespace MyProfile.Entity.ModelView
 		public string SpecificCulture { get; set; } = "ru-RU";
 		
 		public int? LastUserLogID { get; set; }
+		public Guid CollectiveBudgetID { get; set; }
 
 		public UserInfoModel()
 		{

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200627155556_MyProfile_022")]
+    partial class MyProfile_022
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,8 +248,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("CollectiveBudgetID");
-
                     b.Property<int>("CollectiveBudgetRequestOwnerID");
 
                     b.Property<DateTime>("DateAdded");
@@ -263,8 +263,6 @@ namespace MyProfile.Entity.Migrations
                     b.Property<Guid?>("UserID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("CollectiveBudgetID");
 
                     b.HasIndex("CollectiveBudgetRequestOwnerID");
 
@@ -911,11 +909,6 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetRequest", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.CollectiveBudget", "CollectiveBudget")
-                        .WithMany("CollectiveBudgetRequests")
-                        .HasForeignKey("CollectiveBudgetID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("MyProfile.Entity.Model.CollectiveBudgetRequestOwner", "CollectiveBudgetRequestOwner")
                         .WithMany()
                         .HasForeignKey("CollectiveBudgetRequestOwnerID")

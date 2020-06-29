@@ -1,0 +1,165 @@
+﻿<div class="card-body">
+
+
+    <div class="d-flex flex-wrap justify-content-between ui-bordered p-3 mb-3">
+        <div class="col-4">
+            <label class="switcher mt-2">
+                <input type="checkbox" class="switcher-input"
+                       v-bind:checked="user.isAllowCollectiveBudget"
+                       v-on:change="changeStatusCollectiveBudget">
+                <span class="switcher-indicator">
+                    <span class="switcher-yes">
+                        <span class="ion ion-md-checkmark"></span>
+                    </span>
+                    <span class="switcher-no">
+                        <span class="ion ion-md-close"></span>
+                    </span>
+                </span>
+                <span class="switcher-label">Collective</span>
+            </label>
+        </div>
+        <div class="col-8">
+
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search"
+                       v-bind:disabled="!user.isAllowCollectiveBudget"
+                       v-model="collectiveUserSearch" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary"
+                            v-bind:class="!validCollectiveUserSearch || isSaving || !user.isAllowCollectiveBudget ? 'disabled': ''"
+                            v-bind:disabled="!validCollectiveUserSearch || isSaving || !user.isAllowCollectiveBudget"
+                            v-on:click="searchUser">
+                        <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                        Добавить пользователя
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="alert alert-warning alert-dismissible fade show" v-show="isFoundCollectiveUser == true">
+        <img v-bind:src="collectiveSearchedUser.imageLink" class="ui-w-40 rounded-circle" alt="">
+        {{ collectiveSearchedUser.name }} {{ collectiveSearchedUser.lastName }}
+        <div class="display-inline">
+            <button type="button" class="btn btn-sm btn-success"
+                    v-bind:class="isSaving ? 'disabled': ''"
+                    v-bind:disabled="isSaving"
+                    v-on:click="sendOffer(collectiveSearchedUser.email)">
+                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                Пригласить
+            </button>
+            <div class="clearfix">
+                <span class="float-left text-muted small">{{ collectiveSearchedUser.email }}</span>
+            </div>
+            <button type="button" class="close" data-dismiss="alert"
+                    v-on:click="collectiveSearchedUser = {}; isFoundCollectiveUser = null;">
+                ×
+            </button>
+        </div>
+    </div>
+    <div class="alert alert-warning alert-dismissible fade show" v-show="isFoundCollectiveUser == false">
+        Пользователь не найден.
+        <button type="button" class="close" data-dismiss="alert"
+                v-on:click="collectiveSearchedUser = {}; isFoundCollectiveUser = null;">
+            ×
+        </button>
+    </div>
+    <div class="alert alert-warning alert-dismissible fade show" v-show="offerSent">
+        Предложение отправлено пользователю.
+        <button type="button" class="close" data-dismiss="alert"
+                v-on:click="offerSent = false;">
+            ×
+        </button>
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" v-for="offer in offers">
+        <img v-bind:src="offer.ownerImageLink" class="ui-w-40 rounded-circle" alt="">
+        Пользователь <b> {{ offer.ownerName }} {{ offer.ownerLastName }} </b> хочет вести свами общий бюджет
+        <button type="button" class="btn btn-sm btn-success" v-on:click="offerAction(offer.offerID, true)">Да</button>
+        <button type="button" class="btn btn-sm btn-warning" v-on:click="offerAction(offer.offerID, false)">Нет</button>
+        <div class="clearfix">
+            <span class="float-left text-muted small">{{ offer.ownerEmail }}</span>
+            <div class="text-muted small text-right">{{  getDateByFormat(offer.dateAdded, 'DD.MM.YYYY') }}</div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs tabs-alt nav-responsive-xl ui-bordered">
+        <li class="nav-item">
+            <a class="nav-link"
+               v-bind:class="isActiveUsersTab == true ? 'active' :''"
+               href="javascript:void(0)"
+               v-on:click="isActiveUsersTab = true">
+                Пользователи в вашем коллективном бюджете
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)"
+               v-bind:class="isActiveUsersTab == false ? 'active' :''"
+               v-on:click="isActiveUsersTab = false">
+                История запросов
+            </a>
+        </li>
+    </ul>
+
+    <div class="card-body ui-bordered"
+         v-bind:class="!user.isAllowCollectiveBudget ? 'filter-blue-2' : ''"
+         v-show="isActiveUsersTab == true">
+        @*style="background-color: #F5F5F5;"*@
+
+        <div class="media pb-1 mb-3" v-for="collectiveUser in collectiveUsers">
+            <img v-bind:src="collectiveUser.imageLink" class="d-block ui-w-40 rounded-circle" alt="">
+            <div class="media-body flex-truncate ml-3">
+                <a href="javascript:void(0)">{{ collectiveUser.name }} {{ collectiveUser.lastName }} </a>
+                <div class="badge badge-warning float-right"
+                     v-show="collectiveUser.status == 'Poused'">Приостановил(ла)</div>
+                <div class="badge badge-success float-right"
+                     v-show="collectiveUser.status == 'Accepted'">Подтвердил(ла)</div>
+                <div class="badge badge-danger float-right"
+                     v-show="collectiveUser.status == 'Gone'">Покинул(ла)</div>
+                <div class="clearfix">
+                    <span class="float-left text-muted small">{{ collectiveUser.email }}</span>
+                </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="card-body ui-bordered"
+         v-bind:class="!user.isAllowCollectiveBudget ? 'filter-blue-2' : ''"
+         v-show="isActiveUsersTab == false">
+
+        <div class="media pb-1 mb-3" v-for="collectiveRequest in collectiveRequests">
+            <img v-bind:src="collectiveRequest.imageLink" class="d-block ui-w-40 rounded-circle" alt="">
+            <div class="media-body flex-truncate ml-3">
+                <b>{{ collectiveRequest.name }} {{ collectiveRequest.lastName }} </b>
+                <div class="badge badge-warning float-right"
+                     v-show="collectiveRequest.status == 'Awaiting'">В ожидании</div>
+                <div class="badge badge-success float-right"
+                     v-show="collectiveRequest.status == 'Accepted'">Подтвердил(ла)</div>
+                <div class="badge badge-danger float-right"
+                     v-show="collectiveRequest.status == 'Rejected'">Отклонил(ла)</div>
+                <button type="button" class="btn icon-btn btn-sm btn-outline-primary" 
+                        title="Отправить повторно"
+                        v-on:click="sendOffer(collectiveRequest.email)">
+                    <i class="fas fa-redo"></i>
+                </button>
+                <div class="clearfix">
+                    <span class="float-left text-muted small">{{ collectiveRequest.email }}</span>
+                    <div class="text-muted small text-right">{{  getDateByFormat(collectiveRequest.dateUpdate, 'DD.MM.YYYY') }}</div>
+                </div>
+            </div>
+        </div>
+        <hr />
+
+    </div>
+</div>
+<div class="card-footer">
+    <div class="text-right mt-3">
+        @*&& user.IsAllowCollectiveBudget*@
+        <button type="button" class="btn btn-danger"
+                v-show="user.collectiveBudgetID != '00000000-0000-0000-0000-000000000000' "
+                v-on:click="leftCollectiveBudgetGroup">
+            Покинуть группу
+        </button>
+    </div>
+</div>

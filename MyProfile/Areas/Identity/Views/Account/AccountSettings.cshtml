@@ -36,7 +36,7 @@
             <div class="list-group list-group-flush account-settings-links">
                 <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">Общие настройки</a>
                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Смена пароля</a>
-                <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Коллективные настройки</a>
+                <a class="list-group-item list-group-item-action" data-toggle="list" href="#collective-budget">Коллективные настройки</a>
                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">Настройки уведомлений</a>
                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Change password</a>
                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">Info</a>
@@ -53,65 +53,8 @@
                 <div class="tab-pane fade" id="account-change-password">
                     @await Html.PartialAsync("_AccountSettings_ChangePassword")
                 </div>
-                <div class="tab-pane fade" id="account-info">
-                    <div class="card-body pb-2">
-
-                        <div class="form-group">
-                            <label class="form-label">Bio</label>
-                            <textarea class="form-control" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nunc arcu, dignissim sit amet sollicitudin iaculis, vehicula id urna. Sed luctus urna nunc. Donec fermentum, magna sit amet rutrum pretium, turpis dolor molestie diam, ut lacinia diam risus eleifend sapien. Curabitur ac nibh nulla. Maecenas nec augue placerat, viverra tellus non, pulvinar risus.</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Birthday</label>
-                            <input type="text" class="form-control" value="May 3, 1995">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Country</label>
-                            <select class="custom-select">
-                                <option>USA</option>
-                                <option selected>Canada</option>
-                                <option>UK</option>
-                                <option>Germany</option>
-                                <option>France</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Languages</label>
-                            <select multiple class="account-settings-multiselect form-control w-100">
-                                <option selected>English</option>
-                                <option>German</option>
-                                <option>French</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <hr class="border-light m-0">
-                    <div class="card-body pb-2">
-
-                        <h6 class="mb-4">Contacts</h6>
-                        <div class="form-group">
-                            <label class="form-label">Phone</label>
-                            <input type="text" class="form-control" value="+0 (123) 456 7891">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Website</label>
-                            <input type="text" class="form-control" value="">
-                        </div>
-
-                    </div>
-                    <hr class="border-light m-0">
-                    <div class="card-body pb-2">
-
-                        <h6 class="mb-4">Interests</h6>
-                        <div class="form-group">
-                            <label class="form-label">Favorite music</label>
-                            <input type="text" class="form-control account-settings-tagsinput" value="Rock,Alternative,Electro,Drum & Bass,Dance">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Favorite movies</label>
-                            <input type="text" class="form-control account-settings-tagsinput" value="The Green Mile,Pulp Fiction,Back to the Future,WALL·E,Django Unchained,The Truman Show,Home Alone,Seven Pounds">
-                        </div>
-
-                    </div>
+                <div class="tab-pane fade" id="collective-budget">
+                    @await Html.PartialAsync("_AccountSettings_CollectiveBudget")
                 </div>
                 <div class="tab-pane fade" id="account-social-links">
                     <div class="card-body pb-2">

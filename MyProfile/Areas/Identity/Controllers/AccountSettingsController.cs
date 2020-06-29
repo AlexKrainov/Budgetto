@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using System;
 using System.Threading.Tasks;
@@ -48,7 +49,79 @@ namespace MyProfile.Areas.Identity.Controllers
         public async Task<IActionResult> ChangePassword([FromBody] string newPassword)
         {
             return Json(new { isOk = await userService.UpdatePassword(newPassword) });
-        } 
+        }
+        #endregion
+
+        #region Collective budget 
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatusCollectiveBudget([FromBody] bool isAllowCollectiveBudget)
+        {
+            if (isAllowCollectiveBudget)
+            {
+                return Json(new
+                {
+                    isOk = await collectionUserService.ChangeStatusInCollectiveBudget(CollectiveUserStatusType.Accepted.ToString())
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    isOk = await collectionUserService.ChangeStatusInCollectiveBudget(CollectiveUserStatusType.Poused.ToString())
+                });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchUser(string email)
+        {
+            return Json(new { isOk = true, user = await collectionUserService.SearchUserByEmail(email) });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SendOffer(string email)
+        {
+            return Json(new { isOk = await collectionUserService.SendOffer(email) });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RefreshCollectiveList()
+        {
+            var collectiveRequests = await collectionUserService.GetCollectiveRequests();
+            var collectiveUsers = await collectionUserService.GetCollectiveUsersByCurrentUser();
+
+            return Json(new { isOk = true, collectiveRequests, collectiveUsers });
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> LeftCollectiveBudgetGroup()
+        {
+            return Json(new
+            {
+                isOk = await collectionUserService.ChangeStatusInCollectiveBudget(CollectiveUserStatusType.Gone.ToString())
+            });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CheckOffers()
+        {
+            return Json(new
+            {
+                isOk = true,
+                offers = await collectionUserService.CheckOffers()
+            });
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> OfferAction(int offerID,[FromQuery] bool action)
+        {
+            return Json(new
+            {
+                isOk = await collectionUserService.OfferAction(offerID, action)
+            });
+        }
         #endregion
     }
 

@@ -122,6 +122,9 @@ namespace MyProfile.Entity.Model
 		public virtual DbSet<VisibleElement> VisibleElements { get; set; }
 		public virtual DbSet<MailLog> MailLogs { get; set; }
 		public virtual DbSet<MailType> MailTypes { get; set; }
+		public virtual DbSet<CollectiveBudgetRequest> CollectiveBudgetRequests{ get; set; }
+		public virtual DbSet<CollectiveBudgetRequestOwner> CollectiveBudgetRequestOwners{ get; set; }
+        public virtual DbSet<CollectiveBudgetUser> CollectiveBudgetUsers { get; set; }
 
-	}
+    }
 }

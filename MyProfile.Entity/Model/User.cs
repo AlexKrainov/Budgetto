@@ -26,7 +26,6 @@ namespace MyProfile.Entity.Model
         public DateTime? DateDelete { get; set; }
         public bool IsDeleted { get; set; }
 
-        public bool IsAllowCollectiveBudget { get; set; }
         /// <summary>
         /// we have checkbox (IsAgreeToCollectiveBudget) and CollectiveBudgetID (can be null)
         /// 1) User click the ckeckbox
@@ -35,10 +34,9 @@ namespace MyProfile.Entity.Model
         /// 4) If we don't find create CollectiveBudget
         /// 
         /// </summary>
-        [ForeignKey("CollectiveBudget")]
-        public Guid? CollectiveBudgetID { get; set; }
+        public bool IsAllowCollectiveBudget { get; set; }
 
-        public virtual CollectiveBudget CollectiveBudget { get; set; }
+        public virtual CollectiveBudgetUser CollectiveBudgetUser { get; set; }
         public virtual UserSettings UserSettings { get; set; }
 
         public virtual IEnumerable<BudgetArea> BudgetAreas { get; set; }
@@ -47,6 +45,8 @@ namespace MyProfile.Entity.Model
         public virtual IEnumerable<Template> Templates { get; set; }
         public virtual IEnumerable<Chart> Charts { get; set; }
         public virtual IEnumerable<MailLog> MailLogs { get; set; }
+        public virtual IEnumerable<CollectiveBudgetRequest> CollectiveBudgetRequests { get; set; }
+        public virtual IEnumerable<CollectiveBudgetRequestOwner> CollectiveBudgetRequestOwners { get; set; }
 
         public User()
         {
@@ -56,6 +56,8 @@ namespace MyProfile.Entity.Model
             this.Templates = new HashSet<Template>();
             this.Charts = new HashSet<Chart>();
             this.MailLogs = new HashSet<MailLog>();
+            this.CollectiveBudgetRequests = new HashSet<CollectiveBudgetRequest>();
+            this.CollectiveBudgetRequestOwners = new HashSet<CollectiveBudgetRequestOwner>();
         }
     }
 }
