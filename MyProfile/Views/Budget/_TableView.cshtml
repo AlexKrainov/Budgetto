@@ -1,19 +1,25 @@
-﻿<table class="datatables-demo table table-striped table-bordered"
+﻿<table class="table table-bordered compact"
 	   id="table"
-	   data-searching="true"
-	   data-paging="false">
+	   data-searching="false"
+	   data-paging="false"
+	   data-fixed-header="true">
 	<thead>
 		<tr class="text-center">
-			<th v-for="column in template.columns" v-html="column.name" v-show="column.isShow"></th>
+			<th v-for="(column, columnIndex) in template.columns" 
+				v-html="column.name" 
+				v-show="column.isShow"
+				v-bind:class="column.styleForTableView"></th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr v-for="(row, rowIndex) in rows" class="text-right">
+		<tr v-for="(row, rowIndex) in rows" 
+			class="text-right">
 			<td v-for="(cell, cellIndex) in row"
 				v-show="cell.isShow"
 				v-html="getCellValue(cell)"
-				v-on:click="clickCell(rowIndex, cellIndex)"
-				class="cell-hover">
+				v-on:click="clickCell(rowIndex, cellIndex, $event)"
+				class="cell-hover"
+				v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]">
 			</td>
 		</tr>
 	</tbody>

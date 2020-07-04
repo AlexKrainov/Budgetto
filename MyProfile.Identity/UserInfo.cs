@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.User;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -133,6 +134,32 @@ namespace MyProfile.Identity
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await AddOrUpdate_Authenticate(user);
+        }
+
+        /// <summary>
+        /// Return UserModel for user in js in client side
+        /// </summary>
+        /// <returns></returns>
+        public static UserInfoClientSide GetUserInfoModelForClient()
+        {
+            var currentUser = UserInfo.Current;
+            return new UserInfoClientSide
+            {
+                CurrencyID = currentUser.Currency.ID,
+                Email = currentUser.Email,
+                Name = currentUser.Name,
+                ImageLink = currentUser.ImageLink,
+                IsAllowCollectiveBudget = currentUser.IsAllowCollectiveBudget,
+                IsConfirmEmail = currentUser.IsConfirmEmail,
+                LastName = currentUser.LastName,
+                Currency = new CurrencyClientSide
+                {
+                    CodeName = currentUser.Currency.CodeName,
+                    Icon = currentUser.Currency.Icon,
+                    Name = currentUser.Currency.Name,
+                    SpecificCulture = currentUser.Currency.SpecificCulture
+                }
+            };
         }
     }
 }

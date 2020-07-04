@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-	public class UserSettings
+    public class UserSettings
 	{
+		[JsonIgnore]
 		[Key]
 		[ForeignKey("User")]
 		public Guid ID { get; set; }

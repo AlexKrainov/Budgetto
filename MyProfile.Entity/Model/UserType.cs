@@ -5,16 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-	public class PersonSetting
+	public enum UserTypeEnum
+	{
+		User = 1,
+		Admin = 2
+	}
+	public class UserType
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public Guid ID { get; set; }
-		[Required]
-		[ForeignKey("User")]
-		public Guid UserID { get; set; }
-		public string SpecificCulture { get; set; }
-
-		public virtual User User { get; set; }
+		public int ID { get; set; }
+		[Required, MaxLength(8)]
+		public string CodeName { get; set; }
 	}
 }

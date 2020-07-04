@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyProfile.Identity
+﻿namespace MyProfile.Identity
 {
-	public class UserActionType
+    public class UserActionType
 	{
 		public const string Login = "Login";
 		public const string Logout = "Logout";
+		public const string Registration = "Registration";
+		public const string ResetPassword = "ResetPassword";
 
 	}
 }

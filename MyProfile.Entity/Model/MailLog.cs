@@ -9,8 +9,10 @@ namespace MyProfile.Entity.Model
     public class MailLog
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
+        [Required]
+        [MaxLength(64)]
+        public string Email { get; set; }
         public DateTime SentDateTime { get; set; }
         public DateTime? CameDateTime { get; set; }
         public string Comment { get; set; }

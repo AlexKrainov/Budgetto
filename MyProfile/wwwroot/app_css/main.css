@@ -148,3 +148,8 @@ a.disabled {
 .filter-blue-2 {
 	filter: blur(2px);
 }
+
+.fixedHeader-floating {
+	box-shadow: 0px 12px 8px 0px rgba(0, 0, 0, .2);
+}
+

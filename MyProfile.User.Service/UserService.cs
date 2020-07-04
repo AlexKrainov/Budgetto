@@ -18,11 +18,11 @@ namespace MyProfile.User.Service
     {
         private IBaseRepository repository;
         private UserLogService userLogService;
-        private UserConfirmEmailService userConfirmEmailService;
+        private UserEmailService userConfirmEmailService;
 
         public UserService(IBaseRepository repository,
             UserLogService userLogService,
-            UserConfirmEmailService userConfirmEmailService)
+            UserEmailService userConfirmEmailService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
@@ -46,9 +46,9 @@ namespace MyProfile.User.Service
             };
         }
 
-        public async Task<bool> UpdatePassword(string newPassword)
+        public async Task<bool> UpdatePassword(string newPassword, Guid userID)
         {
-            var dbUser = await repository.GetAll<Entity.Model.User>(x => x.ID == UserInfo.Current.ID)
+            var dbUser = await repository.GetAll<Entity.Model.User>(x => x.ID == userID)
                .FirstOrDefaultAsync();
             dbUser.Password = newPassword;
             await repository.UpdateAsync(dbUser, true);
@@ -75,7 +75,7 @@ namespace MyProfile.User.Service
             if (oldEmail != userInfoModel.Email)
             {
                 await UserInfo.ReSignInAsync(user);
-                await userConfirmEmailService.ConfirmEmail(false);
+                await userConfirmEmailService.ConfirmEmail(user);
 
                 user.IsConfirmEmail = dbUser.IsConfirmEmail = false;
 
@@ -102,15 +102,25 @@ namespace MyProfile.User.Service
                     IsAllowCollectiveBudget = x.IsAllowCollectiveBudget,
                     LastName = x.LastName,
                     Name = x.Name,
+                    UserTypeID = x.UserTypeID,
                     //CollectiveBudget = new CollectiveBudget
                     //{
                     //    ID = x.CollectiveBudget.ID,
                     //    Name = x.CollectiveBudget.Name,
                     //    Users = x.CollectiveBudget.Users.Select(y => new Entity.Model.User { ID = y.ID }).ToList()
                     //},
+                    Currency = x.Currency,
                     UserSettings = new UserSettings
                     {
-                        BudgetPages_WithCollective = x.UserSettings.BudgetPages_WithCollective
+                        BudgetPages_WithCollective = x.UserSettings.BudgetPages_WithCollective,
+                        BudgetPages_EarningChart = x.UserSettings.BudgetPages_EarningChart,
+                        BudgetPages_InvestingChart = x.UserSettings.BudgetPages_InvestingChart,
+                        BudgetPages_SpendingChart = x.UserSettings.BudgetPages_SpendingChart,
+                        BudgetPages_IsShow_BigCharts = x.UserSettings.BudgetPages_IsShow_BigCharts,
+                        BudgetPages_IsShow_Goals = x.UserSettings.BudgetPages_IsShow_Goals,
+                        BudgetPages_IsShow_Limits = x.UserSettings.BudgetPages_IsShow_Limits,
+                        GoalPage_IsShow_Collective = x.UserSettings.GoalPage_IsShow_Collective,
+                        GoalPage_IsShow_Finished = x.UserSettings.GoalPage_IsShow_Finished
                     }
                 })
                 .FirstOrDefaultAsync();

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentUser = MyProfile.Identity.UserInfo.GetUserInfoModelForClient();
+}
+<!DOCTYPE html>
 
 <html lang="ru" class="default-style layout-navbar-fixed mdl-js" dir="ltr">
 <head>
@@ -42,13 +45,14 @@
 	<!-- Theme settings -->
 	<!-- This file MUST be included after core stylesheets and layout-helpers.js in the <head> section -->
 	<script src="~/vendor/js/theme-settings.js"></script>
-	<script>
+    <script>
 		window.themeSettings = new ThemeSettings({
 			cssFilenamePattern: '%name%.css',
 			cssPath: '/vendor/css/rtl/',
 			themesPath: '/vendor/css/rtl/'
 		});
-	</script>
+		 var UserInfo = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(currentUser, Newtonsoft.Json.Formatting.None))');
+    </script>
 
 	<!-- Core scripts -->
 	<script src="~/vendor/js/pace.js"></script>
@@ -101,13 +105,13 @@
 	<script src="~/app_js/base/startup.site.js"></script>
 
 	@RenderSection("Scripts", required: false)
-	<script>
+<script>
 		if (document.getElementsByClassName("page-settings").length == 1) {
 			var script = document.createElement('script');
 			script.src = "../app_js/user/user-page-settings.js";
-			document.head.appendChild(script); 
+			document.head.appendChild(script);
 		}
-
+       
 	</script>
 	@*<script src="~/app_js/base/user.js"></script>*@
 </body>

@@ -51,7 +51,7 @@ namespace MyProfile
             services.AddScoped<GoalService>();
             services.AddScoped<ChartService>();
             services.AddScoped<UserService>();
-            services.AddScoped<UserConfirmEmailService>();
+            services.AddScoped<UserEmailService>();
             #endregion
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

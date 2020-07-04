@@ -1,5 +1,5 @@
 ﻿Vue.component("vue-record-component", {
-	template: `<div class="row" v-bind:id="id" v-bind:name="name">
+    template: `<div class="row" v-bind:id="id" v-bind:name="name">
 	<div class="modal fade" id="modals-default">
 		<div class="modal-dialog">
 			<form class="modal-content">
@@ -39,13 +39,12 @@
 							<div class="input-group">
 								<input type="text" class="form-control" id="money" data-role="tagsinput">
 								<div class="input-group-prepend">
-									<span v-on:click="" class="input-group-text cursor-pointer"><i class="fa fa-ruble-sign"></i></span>
-								</div>
-								<div class="input-group-prepend" v-show="false">
-									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-dollar-sign"></i></span>
-								</div>
-								<div class="input-group-prepend" v-show="false">
-									<span class="input-group-text cursor-pointer text-muted"><i class="fa fa-euro-sign"></i></span>
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ currentCurrencyIcon }}</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" v-bind:class="currentCurrencyID == 1 ? 'active' : ''" href="javascript:void(0)" v-on:click="changeCurrency(1,'₽')">₽</a>
+										<a class="dropdown-item" v-bind:class="currentCurrencyID == 2 ? 'active' : ''" href="javascript:void(0)" v-on:click="changeCurrency(2,'€')">€</a>
+										<a class="dropdown-item" v-bind:class="currentCurrencyID == 3 ? 'active' : ''" href="javascript:void(0)" v-on:click="changeCurrency(3,'$')">$</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -57,7 +56,7 @@
 									<a href="javascript:void(0)" v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'" title="Добавить описание" v-on:click="descriptionRecord = record">
 									{{ record.tag == record.money ? getMoney(record.money) : record.tag }}
 									{{ record.tag != record.money ? '= ' + getMoney(record.money) : '' }}
-									<span class="badge badge-dot badge-success indicator" v-show="record.description != undefined"></span>
+									<i class="fas fa-comment badge badge-dot indicator" v-show="record.description != undefined || record.description != ''"></i>
 									</a>
 								</div>
 								<div class="col-6 mb-3 ">
@@ -99,200 +98,210 @@
 	</div>
 </div>
 `,
-	props: {
-		id: String,
-		name: String,
-
-		//Events
-		aftersave: Event
-	},
-	data: function () {
-		return {
-			dateTimeOfPayment: null,
-			records: [],
-			counter: -99,
-
-			descriptionRecord: {},
-
-			//components
-			flatpickr: {},
-			tagify: {},
-
-			//state
-			isSaving: false,
-			after_save_callback: Event,
-		}
-	},
-	mounted: function () {
-
-		this.flatpickr = flatpickr('#record-date', {
-			altInput: true,
-			//dateFormat: 'd.m.Y',
-			defaultDate: "today"// Date.now()
-		});
-		//https://github.com/yairEO/tagify#events
-		//https://yaireo.github.io/tagify/
-		//https://rawgit.com/joewalnes/filtrex/master/example/colorize.html
-		//https://github.com/joewalnes/filtrex/blob/master/example/colorize.js
-		var elementMoney = document.getElementById("money");
-		this.tagify = new Tagify(elementMoney, {
-			transformTag: this.transformTag,
-			duplicates: true,
-			placeholder: "550 или 100+500 или 199.99"
-		});
-
-		this.tagify.on('remove', this.removeTag);
-	},
-	methods: {
-		transformTag: function (item) {
-			let total;
-			let isCorrect = false;
-
-			try {
-				let func = compileExpression(item.value);
-				total = func("1");
-				if (total) {
-					item.style = "--tag-bg: #02BC77";
-					isCorrect = true;
-				} else {
-					item.style = "--tag-bg: #d9534f";
-				}
-			} catch (e) {
-				item.style = "--tag-bg: #d9534f";
-			}
-
-			if (total) {
-				total = Math.round(total * 100) / 100;
-			}
+    props: {
+        id: String,
+        name: String,
 
 
-			if (!item.id) {
-				item.id = this.counter++;
+        //Events
+        aftersave: Event
+    },
+    data: function () {
+        return {
+            dateTimeOfPayment: null,
+            records: [],
+            counter: -99,
+            currentCurrencyIcon: "₽",
+            currentCurrencyID: 1,
 
-				this.records.push(
-					{
-						id: item.id,
-						isCorrect: isCorrect,
-						money: total,
-						tag: item.value,
-						sectionID: -1,
-						sectionName: "",
-						description: undefined,
-					});
-			} else {
-				let el = this.records.find(x => x.id == item.id);
-				el.money = total;
-				el.tag = item.value;
-			}
-		},
-		removeTag: function (event) {
-			if (event.detail.data && event.detail.data.value) {
-				let removeIndex = this.records.findIndex(x => x.tag == event.detail.data.value);
-				if (removeIndex >= 0) {
-					this.records.splice(removeIndex, 1);
-				}
-			}
-		},
-		save: function (emit) {
-			if (this.records && this.records.length > 0 && this.records.some(x => x.isCorrect)) {
+            descriptionRecord: {},
 
-				let obj = {
-					dateTimeOfPayment: this.flatpickr.latestSelectedDateObj.toLocaleDateString(),
-					records: this.records.filter(x => x.isCorrect)
-				};
+            //components
+            flatpickr: {},
+            tagify: {},
 
-				this.isSaving = true;
+            //state
+            isSaving: false,
+            after_save_callback: Event,
+        }
+    },
+    mounted: function () {
 
-				return $.ajax({
-					type: "POST",
-					url: "/Record/SaveRecords",
-					data: JSON.stringify(obj),
-					contentType: 'application/json; charset=utf-8',
-					dataType: 'json',
-					context: this,
-					success: function (result) {
-						if (result.isOk = true) {
-							for (var i = 0; i < result.budgetRecord.records.length; i++) {
-								let record = result.budgetRecord.records[i];
-								if (record.isSaved) {
-									let index = this.tagify.getTagIndexByValue(record.tag);
-									if (index >= 0) {
-										this.tagify.removeTag(record.tag);
-									}
-								}
-							}
-							this.$emit("aftersave", 123);
-							this.isSaving = false;
+        this.flatpickr = flatpickr('#record-date', {
+            altInput: true,
+            //dateFormat: 'd.m.Y',
+            defaultDate: "today"// Date.now()
+        });
+        //https://github.com/yairEO/tagify#events
+        //https://yaireo.github.io/tagify/
+        //https://rawgit.com/joewalnes/filtrex/master/example/colorize.html
+        //https://github.com/joewalnes/filtrex/blob/master/example/colorize.js
+        var elementMoney = document.getElementById("money");
+        this.tagify = new Tagify(elementMoney, {
+            transformTag: this.transformTag,
+            duplicates: true,
+            placeholder: "550 или 100+500 или 199.99"
+        });
 
-							if (typeof (this.after_save_callback) === "function") {
-								try {
-								this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
-								} catch (e) {
-									console.log(e);
-								}
-							}
-						}
-						return result;
-					},
-					error: function (xhr, status, error) {
-						console.log(error);
-						this.$emit("aftersave", 123);
-						this.isSaving = false;
-					}
-				}, this);
-			}
-		},
-		editByID: function (id) {
-			this.isSaving = true;
+        this.tagify.on('remove', this.removeTag);
 
-			return $.ajax({
-				type: "GET",
-				url: "/Record/GetByID/" + id,
-				contentType: 'application/json; charset=utf-8',
-				dataType: 'json',
-				context: this,
-				success: function (result) {
+        this.currentCurrency = UserInfo.Currency.Icon;
+        this.currentCurrencyID = UserInfo.CurrencyID;
+    },
+    methods: {
+        transformTag: function (item) {
+            let total;
+            let isCorrect = false;
 
-					if (result.isOk = true) {
-						this.records.push(result.record);
-						this.flatpickr.setDate(result.record.dateTimeOfPayment);
-						this.tagify.addTags([{ value: result.record.tag, id: result.record.id }]);
-						$("#modals-default").modal("show");
-					}
+            try {
+                let func = compileExpression(item.value);
+                total = func("1");
+                if (total) {
+                    item.style = "--tag-bg: #02BC77";
+                    isCorrect = true;
+                } else {
+                    item.style = "--tag-bg: #d9534f";
+                }
+            } catch (e) {
+                item.style = "--tag-bg: #d9534f";
+            }
 
-					this.isSaving = false;
-					return result;
-				},
-				error: function (xhr, status, error) {
-					console.log(error);
-					this.isSaving = false;
-				}
-			}, this);
-		},
-		editByElement: function (record, callback) {
-			this.records.push(record);
-			this.flatpickr.setDate(record.dateTimeOfPayment);
-			this.tagify.addTags([{ value: record.tag, id: record.id }]);
-			this.after_save_callback = callback;
-			$("#modals-default").modal("show");
-		},
-		onChooseSection: function (section) {
-			let record = this.records.find(x => x.isCorrect && x.sectionID == -1);
+            if (total) {
+                total = Math.round(total * 100) / 100;
+            }
 
-			if (record) {
-				record.sectionID = section.id;
-				record.sectionName = section.name
-			}
-		},
-		getMoney: function (money) {
-			return numberOfThreeDigits(money)
-		},
-		addDays: function (days) {
-			var result = new Date(this.flatpickr.latestSelectedDateObj);
-			result.setDate(result.getDate() + days);
-			console.log(result);
 
-			this.flatpickr.setDate(result, true);
-		}
-	}
+            if (!item.id) {
+                item.id = this.counter++;
+
+                this.records.push(
+                    {
+                        id: item.id,
+                        isCorrect: isCorrect,
+                        money: total,
+                        tag: item.value,
+                        sectionID: -1,
+                        sectionName: "",
+                        description: undefined,
+                    });
+            } else {
+                let el = this.records.find(x => x.id == item.id);
+                el.money = total;
+                el.tag = item.value;
+            }
+        },
+        removeTag: function (event) {
+            if (event.detail.data && event.detail.data.value) {
+                let removeIndex = this.records.findIndex(x => x.tag == event.detail.data.value);
+                if (removeIndex >= 0) {
+                    this.records.splice(removeIndex, 1);
+                }
+            }
+        },
+        save: function (emit) {
+            if (this.records && this.records.length > 0 && this.records.some(x => x.isCorrect)) {
+
+                let obj = {
+                    dateTimeOfPayment: this.flatpickr.latestSelectedDateObj.toLocaleDateString(),
+                    records: this.records.filter(x => x.isCorrect)
+                };
+
+                this.isSaving = true;
+
+                return $.ajax({
+                    type: "POST",
+                    url: "/Record/SaveRecords",
+                    data: JSON.stringify(obj),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    context: this,
+                    success: function (result) {
+                        if (result.isOk = true) {
+                            for (var i = 0; i < result.budgetRecord.records.length; i++) {
+                                let record = result.budgetRecord.records[i];
+                                if (record.isSaved) {
+                                    let index = this.tagify.getTagIndexByValue(record.tag);
+                                    if (index >= 0) {
+                                        this.tagify.removeTag(record.tag);
+                                    }
+                                }
+                            }
+                            this.$emit("aftersave", 123);
+                            this.isSaving = false;
+
+                            if (typeof (this.after_save_callback) === "function") {
+                                try {
+                                    this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
+                                } catch (e) {
+                                    console.log(e);
+                                }
+                            }
+                        }
+                        return result;
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                        this.$emit("aftersave", 123);
+                        this.isSaving = false;
+                    }
+                }, this);
+            }
+        },
+        editByID: function (id) {
+            this.isSaving = true;
+
+            return $.ajax({
+                type: "GET",
+                url: "/Record/GetByID/" + id,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (result) {
+
+                    if (result.isOk = true) {
+                        this.records.push(result.record);
+                        this.flatpickr.setDate(result.record.dateTimeOfPayment);
+                        this.tagify.addTags([{ value: result.record.tag, id: result.record.id }]);
+                        $("#modals-default").modal("show");
+                    }
+
+                    this.isSaving = false;
+                    return result;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                    this.isSaving = false;
+                }
+            }, this);
+        },
+        editByElement: function (record, callback) {
+            this.records.push(record);
+            this.flatpickr.setDate(record.dateTimeOfPayment);
+            this.tagify.addTags([{ value: record.tag, id: record.id }]);
+            this.after_save_callback = callback;
+            $("#modals-default").modal("show");
+        },
+        onChooseSection: function (section) {
+            let record = this.records.find(x => x.isCorrect && x.sectionID == -1);
+
+            if (record) {
+                record.sectionID = section.id;
+                record.sectionName = section.name
+            }
+        },
+        getMoney: function (money) {
+            return numberOfThreeDigits(money)
+        },
+        addDays: function (days) {
+            var result = new Date(this.flatpickr.latestSelectedDateObj);
+            result.setDate(result.getDate() + days);
+            console.log(result);
+
+            this.flatpickr.setDate(result, true);
+        },
+        changeCurrency: function (currencyID, icon) {
+            this.currentCurrencyIcon = icon;
+            this.currentCurrencyID = currencyID;
+        }
+    }
 });

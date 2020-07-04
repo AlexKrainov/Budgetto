@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200704143602_MyProfile_027")]
+    partial class MyProfile_027
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,35 +337,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("CollectiveSections");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.Currency", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("CanBeUser");
-
-                    b.Property<string>("CodeName")
-                        .IsRequired()
-                        .HasMaxLength(3);
-
-                    b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasMaxLength(1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(24);
-
-                    b.Property<string>("SpecificCulture")
-                        .IsRequired()
-                        .HasMaxLength(16);
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Currencies");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.Goal", b =>
                 {
                     b.Property<int>("ID")
@@ -524,6 +497,22 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("PeriodTypes");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.PersonSetting", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("SpecificCulture");
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("PersonSettings");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupChart", b =>
@@ -705,10 +694,6 @@ namespace MyProfile.Entity.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CurrencyID")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(1);
-
                     b.Property<DateTime>("DateCreate");
 
                     b.Property<DateTime?>("DateDelete");
@@ -737,8 +722,6 @@ namespace MyProfile.Entity.Migrations
                         .HasDefaultValue(1);
 
                     b.HasKey("ID");
-
-                    b.HasIndex("CurrencyID");
 
                     b.HasIndex("UserTypeID");
 
@@ -1046,6 +1029,14 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("UserID");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.PersonSetting", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupChart", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.BudgetSection", "BudgetSection")
@@ -1126,11 +1117,6 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.User", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("MyProfile.Entity.Model.UserType", "UserType")
                         .WithMany()
                         .HasForeignKey("UserTypeID")

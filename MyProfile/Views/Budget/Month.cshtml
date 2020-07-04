@@ -1,77 +1,100 @@
 ﻿@model MyProfile.Entity.ModelView.BudgetView.BudgetControllerModelView
 @{
-	ViewData["Title"] = "DataTables - Tables";
+    ViewData["Title"] = "DataTables - Tables";
 }
 
 @section Styles {
-	<link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
-	<link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" />
-	<link href="~/app_css/budget-page.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
+    <link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" />
+    <link href="~/app_css/budget-page.css" rel="stylesheet" />
 }
 
 @section Scripts {
-	<!-- Dependencies -->
-	<script src="~/vendor/libs/chartjs/chartjs.js"></script>
-	<script src="~/vendor/libs/datatables/datatables.js"></script>
-	<script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
+    <!-- Dependencies -->
+    <script src="~/vendor/libs/chartjs/chartjs.js"></script>
+    <script src="~/vendor/libs/datatables/datatables.js"></script>
+    <script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
 
-	<script src="~/app_js/budget/month-budget.js"></script>
-	@*<script src="~/app_js/budget/table-view.js"></script>*@
+    <script src="~/app_js/budget/month-budget.js"></script>
+    @*<script src="~/app_js/budget/table-view.js"></script>*@
 }
 
 <div id="budget-vue">
 
-	<input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
-	<input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />
+    <input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
+    <input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />
 
-	<!-- Head block -->
-	<div class="container-m-nx container-m-ny bg-white container-p-x py-4 mb-0">
+    <!-- Head block -->
+    <div class="container-m-nx container-m-ny bg-white container-p-x py-4 mb-0">
 
-		<div class="d-flex justify-content-between align-items-center">
-			<div class="form-row">
-				<div class="form-group col">
-					<label class="form-label">Date</label>
-					<input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh">
-				</div>
-				<div class="form-group col">
-					<label class="form-label">Template</label>
-					<select id="templates" v-model="templateID" v-on:change="refresh" class="form-control">
-						@foreach (var template in Model.Templates)
-						{
-							<option value="@template.ID">@template.Name</option>
-						}
-					</select>
-				</div>
-			</div>
-			<div>
-				<h2 class="font-weight-light mb-2">Server Statistics</h2>
-				<div class="badge badge-success font-weight-bold">RUNNING</div>
-			</div>
-			<button class="btn btn-lg btn-default">
-				<i class="ion ion-md-power text-danger"></i>&nbsp;
-				Shut Down
-			</button>
-		</div>
-	</div>
-	<!-- / Head block -->
-	<hr class="container-m-nx border-light mt-0 mb-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="form-row">
+                <div class="form-group col">
+                    <label class="form-label">Date</label>
+                    <input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh">
+                </div>
+                <div class="form-group col">
+                    <label class="form-label">Template</label>
+                    <select id="templates" v-model="templateID" v-on:change="refresh" class="form-control">
+                        @foreach (var template in Model.Templates)
+                        {
+                            <option value="@template.ID">@template.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div>
+                <h2 class="font-weight-light mb-2">Server Statistics</h2>
+                <div class="badge badge-success font-weight-bold">RUNNING</div>
+            </div>
+            <button class="btn btn-lg btn-default">
+                <i class="ion ion-md-power text-danger"></i>&nbsp;
+                Shut Down
+            </button>
+        </div>
+    </div>
+    <!-- / Head block -->
+    <hr class="container-m-nx border-light mt-0 mb-2">
 
-	<div class="row">
-		@await Html.PartialAsync("_TotalView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
-		@await Html.PartialAsync("_LimitsView")
-		@await Html.PartialAsync("_GoalsView")
-		@await Html.PartialAsync("_BigChartView")
-	</div>
-	<div class="row">
-	</div>
-	<div class="row">
-	</div>
+    <div class="row">
+        @await Html.PartialAsync("_TotalView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+        @await Html.PartialAsync("_LimitsView")
+        @await Html.PartialAsync("_GoalsView")
+        @await Html.PartialAsync("_BigChartView")
+    </div>
+    <div class="row">
+    </div>
+    <div class="row">
+    </div>
 
-	<div class="card">
-		<div class="card-datatable table-responsive">
-			@await Html.PartialAsync("_TableView")
-		</div>
-	</div>
+    <div class="card">
+        <div class="card-body" style="padding-bottom:5px;">
+            <div class="card-title with-elements">
+                <h5 class="m-0 mr-2">Table</h5>
+                <div class="card-title-elements">
+                </div>
+                <div class="card-title-elements ml-md-auto">
+                    <label class="switcher switcher-sm mr-0">
+                        <input type="checkbox" class="switcher-input">
+                        <span class="switcher-indicator">
+                            <span class="switcher-yes"></span>
+                            <span class="switcher-no"></span>
+                        </span>
+                    </label>
+                    <i class="fas fa-chevron-down cursor-pointer" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" v-show="!showFilter" v-on:click="showFilter = true;"></i>
+                    <i class="fas fa-chevron-up cursor-pointer" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter" v-show="showFilter" v-on:click="showFilter = false"></i>
+                </div>
+            </div>
+            <div class="collapse" id="collapseFilter">
+                <div class="card card-body">
+                    Filter :)
+                </div>
+            </div>
+        </div>
+        <div class="card-datatable table-responsive" style="padding-top:0px;">
+            @await Html.PartialAsync("_TableView")
+        </div>
+    </div>
 
 </div>
 

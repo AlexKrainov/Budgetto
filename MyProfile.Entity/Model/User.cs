@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,9 +22,10 @@ namespace MyProfile.Entity.Model
         [DataType(DataType.Password)]
         public string Password { get; set; }
         public string ImageLink { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Required]
         public DateTime DateCreate { get; set; }
         public DateTime? DateDelete { get; set; }
+        [JsonIgnore]
         public bool IsDeleted { get; set; }
 
         /// <summary>
@@ -35,9 +37,15 @@ namespace MyProfile.Entity.Model
         /// 
         /// </summary>
         public bool IsAllowCollectiveBudget { get; set; }
+        [ForeignKey("UserType")]
+        public int UserTypeID { get; set; }
+        [ForeignKey("Currency")]
+        public int CurrencyID { get; set; }
 
         public virtual CollectiveBudgetUser CollectiveBudgetUser { get; set; }
         public virtual UserSettings UserSettings { get; set; }
+        public virtual UserType UserType { get; set; }
+        public virtual Currency Currency { get; set; }
 
         public virtual IEnumerable<BudgetArea> BudgetAreas { get; set; }
         public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }

@@ -116,6 +116,7 @@ namespace MyProfile.Budget.Service
 					DateTimeOfPayment = x.DateTimeOfPayment,
 					SectionID = x.BudgetSectionID,
 					SectionName = x.BudgetSection.Name,
+					SectionTypeID = x.BudgetSection.SectionTypeID,
 					AreaID = x.BudgetSection.BudgetArea.ID,
 					AreaName = x.BudgetSection.BudgetArea.Name,
 					CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
