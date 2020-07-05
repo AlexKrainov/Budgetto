@@ -154,10 +154,13 @@ namespace MyProfile.Identity
                 LastName = currentUser.LastName,
                 Currency = new CurrencyClientSide
                 {
+                    ID = currentUser.Currency.ID,
                     CodeName = currentUser.Currency.CodeName,
                     Icon = currentUser.Currency.Icon,
                     Name = currentUser.Currency.Name,
-                    SpecificCulture = currentUser.Currency.SpecificCulture
+                    SpecificCulture = currentUser.Currency.SpecificCulture,
+                    CodeName_CBR = currentUser.Currency.CodeName_CBR,
+                    CodeNumber_CBR = currentUser.Currency.CodeNumber_CBR,
                 }
             };
         }

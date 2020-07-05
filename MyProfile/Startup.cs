@@ -51,6 +51,7 @@ namespace MyProfile
             services.AddScoped<GoalService>();
             services.AddScoped<ChartService>();
             services.AddScoped<UserService>();
+
             services.AddScoped<UserEmailService>();
             #endregion
 

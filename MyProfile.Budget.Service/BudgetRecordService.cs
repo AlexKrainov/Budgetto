@@ -57,7 +57,9 @@ namespace MyProfile.Budget.Service
 						RawData = record.Tag,
 						DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
 						Description = record.Description,
-						//Description = record.SectionID
+						CurrencyID = record.CurrencyID,
+						CurrencyNominal = record.CurrencyNominal,
+						CurrencyRate = record.CurrencyRate
 					});
 				}
 				else
@@ -92,6 +94,9 @@ namespace MyProfile.Budget.Service
 					UserID = UserInfo.UserID,
 					Total = budgetRecord.Money,
 					RawData = budgetRecord.RawData,
+					CurrencyID = budgetRecord.CurrencyID,
+					CurrencyRate = budgetRecord.CurrencyRate,
+					CurrencyNominal = budgetRecord.CurrencyNominal ?? 1,
 				}, true);
 			}
 			catch (Exception ex)

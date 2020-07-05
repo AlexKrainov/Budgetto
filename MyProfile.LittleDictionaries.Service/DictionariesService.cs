@@ -1,8 +1,11 @@
-﻿using MyProfile.Entity.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.Currency;
 using MyProfile.Entity.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyProfile.LittleDictionaries.Service
 {
@@ -53,6 +56,26 @@ namespace MyProfile.LittleDictionaries.Service
 				}
 			});
 			return z;
+		}
+
+		[Obsolete("ToDo will take this list from cache")]
+		public async Task<object> GetCurrencyInfoForClient()
+		{
+			var currencies = await repository.GetAll<Currency>()
+				 .Select(x => new CurrencyClientModelView
+				 {
+					 CodeName = x.CodeName,
+					 CodeName_CBR = x.CodeName_CBR,
+					 CodeNumber_CBR = x.CodeNumber_CBR,
+					 Icon = x.Icon,
+					 ID = x.ID,
+					 Name = x.Name,
+					 SpecificCulture = x.SpecificCulture,
+					 CBR_Link = "http://www.cbr.ru/scripts/XML_daily.asp?date_req="
+				 })
+				 .ToListAsync();
+
+			return currencies;
 		}
 	}
 	public class DictionariesModelView

@@ -30,6 +30,7 @@ namespace MyProfile.Entity.Model
              .HasIndex(x => x.DateTimeOfPayment);
 
             #endregion
+
             modelBuilder.Entity<CollectiveArea>()
                 .HasOne(x => x.Area)
                 .WithMany(y => y.CollectiveAreas);
@@ -82,6 +83,14 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<User>()
                .Property(b => b.CurrencyID)
                .HasDefaultValue(1);
+
+            modelBuilder.Entity<BudgetRecord>()
+                .Property(b => b.CurrencyID)
+                .HasDefaultValue(1);
+            modelBuilder.Entity<BudgetRecord>()
+                .Property(b => b.CurrencyNominal)
+                .HasDefaultValue(1);
+
             #endregion
         }
 

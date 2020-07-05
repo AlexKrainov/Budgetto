@@ -32,5 +32,11 @@ namespace MyProfile.Entity.Model
         /// Show or hide, as in the choice for the user, as the main currency
         /// </summary>
         public bool CanBeUser { get; set; }
+        [MaxLength(8)]
+        /// <summary>
+        /// Name carrency for http://www.cbr.ru/development/sxml/
+        /// </summary>
+        public string CodeName_CBR { get; set; }
+        public int? CodeNumber_CBR { get; set; }
     }
 }

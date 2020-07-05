@@ -23,6 +23,9 @@ namespace MyProfile.Entity.ModelView
 		public string SectionName { get; set; }
 		public int AreaID { get; set; }
 		public string AreaName { get; set; }
+		public int? CurrencyID { get; set; }
+		public decimal? CurrencyRate { get; set; }
+		public int? CurrencyNominal { get; set; }
 	}
 
 	/// <summary>
@@ -39,6 +42,9 @@ namespace MyProfile.Entity.ModelView
 		public bool IsCorrect { get; set; }
 		public DateTime? DateTimeOfPayment { get; set; }
 		public string Description { get; set; }
+		public int? CurrencyID { get; set; }
+		public decimal? CurrencyRate { get; set; }
+		public int? CurrencyNominal { get; set; }
 	}
 
 	public class RecordsModelView

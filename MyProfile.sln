@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProfile.Goal.Service", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProfile.Chart.Service", "MyProfile.Chart.Service\MyProfile.Chart.Service.csproj", "{2BFD9E8A-9586-49E5-ACE9-DA69847E5E12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email.Service", "Email.Service\Email.Service.csproj", "{86B08F0C-E3A8-4DE5-9A9A-02293D865317}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Email.Service", "Email.Service\Email.Service.csproj", "{86B08F0C-E3A8-4DE5-9A9A-02293D865317}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

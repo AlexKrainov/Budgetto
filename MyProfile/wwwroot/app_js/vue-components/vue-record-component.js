@@ -1,8 +1,8 @@
 ﻿Vue.component("vue-record-component", {
     template: `<div class="row" v-bind:id="id" v-bind:name="name">
-	<div class="modal fade" id="modals-default">
-		<div class="modal-dialog">
-			<form class="modal-content">
+	<div class="modal  fade" id="modals-default">
+		<div class="modal-dialog modal-lg">
+			<article class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">
 						Payment
@@ -33,30 +33,54 @@
 						</div>
 						</div>
 					</div>
-					<div class="form-row">
+					<section class="form-row">
 						<div class="form-group col">
 							<label class="form-label">Money</label>
 							<div class="input-group">
 								<input type="text" class="form-control" id="money" data-role="tagsinput">
 								<div class="input-group-prepend">
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ currentCurrencyIcon }}</button>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" v-bind:class="currentCurrencyID == 1 ? 'active' : ''" href="javascript:void(0)" v-on:click="changeCurrency(1,'₽')">₽</a>
-										<a class="dropdown-item" v-bind:class="currentCurrencyID == 2 ? 'active' : ''" href="javascript:void(0)" v-on:click="changeCurrency(2,'€')">€</a>
-										<a class="dropdown-item" v-bind:class="currentCurrencyID == 3 ? 'active' : ''" href="javascript:void(0)" v-on:click="changeCurrency(3,'$')">$</a>
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ currentCurrency.icon }}</button>
+									<div class="dropdown-menu" >
+										<a class="dropdown-item" 
+                                            href="javascript:void(0)"
+                                            v-for="currencyInfo in currencyInfos"
+                                            v-bind:class="currentCurrencyID == currencyInfo.id ? 'active' : ''" 
+                                            v-on:click="changeCurrency(currencyInfo)">{{ currencyInfo.icon }}</a>
+
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</section>
+                    <section class="form-inline mb-4" v-show="currentCurrencyID != 1">
+                        <label class="form-check mr-sm-2 mb-2 mb-sm-0">
+                            <input class="form-check-input" type="checkbox"
+                                        v-model="isUseBankRate" 
+                                        v-on:change="getRate">
+                            <div class="form-check-label">
+                               Брать курс из цб на эту дату
+                            </div>
+                        </label>
+                        <div class="input-group text-right">
+                            <input type="number" class="form-control" 
+                                    v-model="exchangeRate"
+                                    v-bind:disabled="isUseBankRate">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">₽</div>
+                            </div>
+                        </div>
+                    </section>
 					<div class="form-row">
-						<div class="form-group col-6">
+						<div class="form-group col-7">
 							<div class="row" v-for="record in records" v-show="record.isCorrect">
 								<div class="col-6 mb-3">
-									<a href="javascript:void(0)" v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'" title="Добавить описание" v-on:click="descriptionRecord = record">
-									{{ record.tag == record.money ? getMoney(record.money) : record.tag }}
-									{{ record.tag != record.money ? '= ' + getMoney(record.money) : '' }}
-									<i class="fas fa-comment badge badge-dot indicator" v-show="record.description != undefined || record.description != ''"></i>
+									<a href="javascript:void(0)" 
+                                        v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'" 
+                                        title="Добавить описание" 
+                                        v-on:click="descriptionRecord = record">
+                                        {{ showRecord(record) }}
+									<i class="fas badge badge-dot indicator" 
+                                            v-bind:class=" record.description != undefined && record.description != '' ? 'fa-comment-dots has-comment' : 'fa-comment'"></i>
 									</a>
 								</div>
 								<div class="col-6 mb-3 ">
@@ -67,7 +91,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group col-6">
+						<div class="form-group col-5">
 							<vue-section-component id="test2"
 												   name="test"
 												   data-search-id="searchSection"
@@ -93,7 +117,7 @@
 
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
-			</form>
+			</article>
 		</div>
 	</div>
 </div>
@@ -111,8 +135,13 @@
             dateTimeOfPayment: null,
             records: [],
             counter: -99,
-            currentCurrencyIcon: "₽",
+
             currentCurrencyID: 1,
+            currentCurrency: {},
+            exchangeRate: null,
+            exchangeNominal: 1,
+            isUseBankRate: false,
+            currencyInfos: null,
 
             descriptionRecord: {},
 
@@ -145,8 +174,26 @@
 
         this.tagify.on('remove', this.removeTag);
 
-        this.currentCurrency = UserInfo.Currency.Icon;
         this.currentCurrencyID = UserInfo.CurrencyID;
+
+        $.ajax({
+            type: "GET",
+            url: "/Common/GetCurrenciesInfo",
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+                if (response.isOk) {
+                    this.currencyInfos = response.data;
+                    this.currentCurrency = response.data.find(x => x.id == this.currentCurrencyID);
+                }
+
+                return response;
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
     },
     methods: {
         transformTag: function (item) {
@@ -170,20 +217,21 @@
                 total = Math.round(total * 100) / 100;
             }
 
-
             if (!item.id) {
                 item.id = this.counter++;
 
-                this.records.push(
-                    {
-                        id: item.id,
-                        isCorrect: isCorrect,
-                        money: total,
-                        tag: item.value,
-                        sectionID: -1,
-                        sectionName: "",
-                        description: undefined,
-                    });
+                let newRecords = {
+                    id: item.id,
+                    isCorrect: isCorrect,
+                    money: total,
+                    tag: item.value,
+                    sectionID: -1,
+                    sectionName: "",
+                    description: undefined,
+                    currencyID: this.currentCurrencyID
+                };
+
+                this.records.push(newRecords);
             } else {
                 let el = this.records.find(x => x.id == item.id);
                 el.money = total;
@@ -197,6 +245,50 @@
                     this.records.splice(removeIndex, 1);
                 }
             }
+        },
+        showRecord: function (record) {
+            if (this.currentCurrencyID != UserInfo.CurrencyID && this.exchangeRate && this.exchangeRate > 0) {
+                if (this.currentCurrencyID != 1) {
+                    record.currencyRate = this.exchangeRate;
+                    record.currencyNominal = this.exchangeNominal;
+                    record.currencyID = this.currentCurrencyID;
+                }
+                let tagValue;
+                try {
+                    let newValue = `(${record.tag}) * ${this.exchangeRate}`;
+                    let func = compileExpression(newValue);
+                    record.money = func("1");
+
+                    func = compileExpression(record.tag);
+                    tagValue = func("1");
+
+                } catch (e) {
+
+                }
+
+                return `(${new Intl.NumberFormat(this.currentCurrency.specificCulture, { style: 'currency', currency: this.currentCurrency.codeName }).format(tagValue)}) 
+            * ${new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(this.exchangeRate)} 
+            = ${new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.money)}`;
+            }
+
+            try {
+                let func = compileExpression(record.tag);
+                record.money = func("1");
+                record.currencyRate = null;
+                record.currencyNominal = 1;
+                record.currencyID = this.currentCurrencyID;
+            } catch (e) {
+
+            }
+
+            if (record.tag == record.money) {
+                return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.money);
+            } else {
+                return record.tag + ' = ' + new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.money);
+            }
+
+            //{ { record.tag == record.money ? getMoney(record.money) : record.tag + " " + currentCurrencyIcon } }
+            //{ { record.tag != record.money ? '= ' + getMoney(record.money) " " + currentCurrencyIcon : '' } }
         },
         save: function (emit) {
             if (this.records && this.records.length > 0 && this.records.some(x => x.isCorrect)) {
@@ -289,9 +381,7 @@
                 record.sectionName = section.name
             }
         },
-        getMoney: function (money) {
-            return numberOfThreeDigits(money)
-        },
+
         addDays: function (days) {
             var result = new Date(this.flatpickr.latestSelectedDateObj);
             result.setDate(result.getDate() + days);
@@ -299,9 +389,52 @@
 
             this.flatpickr.setDate(result, true);
         },
-        changeCurrency: function (currencyID, icon) {
-            this.currentCurrencyIcon = icon;
-            this.currentCurrencyID = currencyID;
-        }
+        changeCurrency: function (currencyInfo) {
+            this.currentCurrency = currencyInfo;
+            this.currentCurrencyID = currencyInfo.id;
+
+            if (this.currentCurrencyID != UserInfo.currencyID) {
+                this.isUseBankRate = true;
+                this.getRate();
+            } else {
+                this.isUseBankRate = false;
+                this.exchangeRate = null;
+
+            }
+        },
+        getRate: function () {
+            if (this.isUseBankRate) {
+                this.getRateFromBank();
+            }
+            return;
+        },
+        getRateFromBank: function () {
+            //ToDo: Go to cbr.ru
+            let dateInFormat = moment(this.flatpickr.latestSelectedDateObj).format("DD/MM/YYYY");
+
+            let response = '<?xml version="1.0" encoding="windows-1251"?><ValCurs Date="02.03.2002" name="Foreign Currency Market"><Valute ID="R01010"><NumCode>036</NumCode><CharCode>AUD</CharCode><Nominal>1</Nominal><Name>Австралийский доллар</Name><Value>16,0102</Value></Valute><Valute ID="R01035"><NumCode>826</NumCode><CharCode>GBP</CharCode><Nominal>1</Nominal><Name>Фунт стерлингов Соединенного королевства</Name><Value>43,8254</Value></Valute><Valute ID="R01090"><NumCode>974</NumCode><CharCode>BYR</CharCode><Nominal>1000</Nominal><Name>Белорусских рублей</Name><Value>18,4290</Value></Valute><Valute ID="R01215"><NumCode>208</NumCode><CharCode>DKK</CharCode><Nominal>10</Nominal><Name>Датских крон</Name><Value>36,1010</Value></Valute><Valute ID="R01235"><NumCode>840</NumCode><CharCode>USD</CharCode><Nominal>1</Nominal><Name>Доллар США</Name><Value>30,9436</Value></Valute><Valute ID="R01239"><NumCode>978</NumCode><CharCode>EUR</CharCode><Nominal>1</Nominal><Name>Евро</Name><Value>26,8343</Value></Valute><Valute ID="R01310"><NumCode>352</NumCode><CharCode>ISK</CharCode><Nominal>100</Nominal><Name>Исландских крон</Name><Value>30,7958</Value></Valute><Valute ID="R01335"><NumCode>398</NumCode><CharCode>KZT</CharCode><Nominal>100</Nominal><Name>Казахстанских тенге</Name><Value>20,3393</Value></Valute><Valute ID="R01350"><NumCode>124</NumCode><CharCode>CAD</CharCode><Nominal>1</Nominal><Name>Канадский доллар</Name><Value>19,3240</Value></Valute><Valute ID="R01535"><NumCode>578</NumCode><CharCode>NOK</CharCode><Nominal>10</Nominal><Name>Норвежских крон</Name><Value>34,7853</Value></Valute><Valute ID="R01589"><NumCode>960</NumCode><CharCode>XDR</CharCode><Nominal>1</Nominal><Name>СДР (специальные права заимствования)</Name><Value>38,4205</Value></Valute><Valute ID="R01625"><NumCode>702</NumCode><CharCode>SGD</CharCode><Nominal>1</Nominal><Name>Сингапурский доллар</Name><Value>16,8878</Value></Valute><Valute ID="R01700"><NumCode>792</NumCode><CharCode>TRL</CharCode><Nominal>1000000</Nominal><Name>Турецких лир</Name><Value>22,2616</Value></Valute><Valute ID="R01720"><NumCode>980</NumCode><CharCode>UAH</CharCode><Nominal>10</Nominal><Name>Украинских гривен</Name><Value>58,1090</Value></Valute><Valute ID="R01770"><NumCode>752</NumCode><CharCode>SEK</CharCode><Nominal>10</Nominal><Name>Шведских крон</Name><Value>29,5924</Value></Valute><Valute ID="R01775"><NumCode>756</NumCode><CharCode>CHF</CharCode><Nominal>1</Nominal><Name>Швейцарский франк</Name><Value>18,1861</Value></Valute><Valute ID="R01820"><NumCode>392</NumCode><CharCode>JPY</CharCode><Nominal>100</Nominal><Name>Японских иен</Name><Value>23,1527</Value></Valute></ValCurs>';
+            let obj = ParseXml(response);
+            let cur = obj.ValCurs.Valute.find(x => x.ID == this.currentCurrency.codeName_CBR);
+            this.exchangeRate = cur.Value["#text"].replaceAll(",", ".");
+            this.exchangeNominal = cur.Nominal["#text"];
+            return;
+            //This request has been blocked; the content must be served over HTTPS.
+            return $.ajax({
+                type: "GET",
+                url: this.currentCurrency.CBR_Link + dateInFormat, // "http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002&VAL_NM_RQ=R01235",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    let obj = ParseXml(response);
+                    let cur = obj.ValCurs.Valute.find(x => x.ID == this.currentCurrency.codeName_CBR);
+                    this.exchangeRate = cur.Value["#text"].replaceAll(",", ".");
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        },
     }
 });

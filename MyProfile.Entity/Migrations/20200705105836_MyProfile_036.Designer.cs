@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200705105836_MyProfile_036")]
+    partial class MyProfile_036
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,17 +58,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("BudgetSectionID");
 
-                    b.Property<int?>("CurrencyID")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(1);
-
-                    b.Property<int>("CurrencyNominal")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(1);
-
-                    b.Property<decimal?>("CurrencyRate")
-                        .HasColumnType("Money");
-
                     b.Property<DateTime>("DateTimeCreate");
 
                     b.Property<DateTime?>("DateTimeDelete");
@@ -93,8 +84,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("BudgetSectionID");
-
-                    b.HasIndex("CurrencyID");
 
                     b.HasIndex("DateTimeOfPayment");
 
@@ -362,8 +351,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("CodeName_CBR")
                         .HasMaxLength(8);
-
-                    b.Property<int?>("CodeNumber_CBR");
 
                     b.Property<string>("Icon")
                         .IsRequired()
@@ -910,10 +897,6 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("BudgetRecords")
                         .HasForeignKey("BudgetSectionID")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyID");
 
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("BudgetRecords")
