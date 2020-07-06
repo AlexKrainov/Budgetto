@@ -153,7 +153,7 @@ namespace MyProfile.User.Service
                 {
                     //Very strange
                     await repository.DeleteRangeAsync(collectiveUsers, true);
-               
+
                     await repository.CreateAsync(collectiveUser, true);
                 }
 
@@ -190,7 +190,7 @@ namespace MyProfile.User.Service
 
                 if (newStatus == CollectiveUserStatusType.Gone.ToString())
                 {
-                   await repository.DeleteAsync(collectiveBudgetUser, true);
+                    await repository.DeleteAsync(collectiveBudgetUser, true);
                     currentUser.CollectiveBudgetID = Guid.Empty;
                     await UserInfo.AddOrUpdate_Authenticate(currentUser);
                 }

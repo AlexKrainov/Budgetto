@@ -33,7 +33,7 @@ namespace MyProfile.Entity.Model
         /// <summary>
         /// Hide this record for all collection but not this user 
         /// </summary>
-        public bool IsHideForCollection { get; set; }
+        public bool IsShowForCollection { get; set; }
         [Column(TypeName = "Money")]
         public decimal? CurrencyRate { get; set; }
         public int CurrencyNominal { get; set; }

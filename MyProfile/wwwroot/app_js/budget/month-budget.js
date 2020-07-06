@@ -66,7 +66,7 @@
 
         //table
         $('#modalTimeLine').on('hide.bs.modal', function () {
-          //  BudgetVue.closeTimeline();
+            //  BudgetVue.closeTimeline();
         })
 
         this.refresh();
@@ -538,18 +538,8 @@
         },
         edit: function (record) {
 
-            RecordVue.recordComponent.editByElement({
-                id: record.id,
-                isCorrect: true,
-                isSaved: true,
-                money: record.money,
-                sectionID: record.sectionID,
-                sectionName: record.sectionName,
-                tag: record.rawData,
-                dateTimeOfPayment: record.dateTimeOfPayment,
-            },
-                BudgetVue.load
-            );
+            RecordVue.recordComponent.editByElement(record, BudgetVue.load);
+
             $("#modalTimeLine").modal("hide");
         }
     }

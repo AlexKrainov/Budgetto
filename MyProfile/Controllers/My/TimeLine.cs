@@ -83,5 +83,12 @@ namespace MyProfile.Controllers.My
 			return Json(new { isOk = true, data = result, take = result.Count, isEnd = result.Count < 10 });
 		}
 		//LoadingRecords
+
+		public async Task<JsonResult> GetLastRecords(int last)
+        {
+			var result = await budgetRecordService.GetLast(last);
+
+			return Json(new { isOk = true, data = result });
+		}
 	}
 }

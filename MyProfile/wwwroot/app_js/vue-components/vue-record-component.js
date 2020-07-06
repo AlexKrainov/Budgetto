@@ -1,6 +1,6 @@
 ﻿Vue.component("vue-record-component", {
     template: `<div class="row" v-bind:id="id" v-bind:name="name">
-	<div class="modal  fade" id="modals-default">
+	<div class="modal  fade" id="modal-record">
 		<div class="modal-dialog modal-lg">
 			<article class="modal-content">
 				<div class="modal-header">
@@ -107,14 +107,39 @@
 							</div>
 						</div>
 					</div>
+                    <div class="card-body" style="padding-bottom:5px;">
+                        <div class="card-title with-elements">
+                            <h5 class="m-0 mr-2">История</h5>
+                            <div class="card-title-elements ml-md-auto">
+                                <i class="fas fa-chevron-down cursor-pointer" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" v-show="!showHistory" v-on:click="showHistory = true;"></i>
+                                <i class="fas fa-chevron-up cursor-pointer" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter" v-show="showHistory" v-on:click="showHistory = false"></i>
+                            </div>
+                        </div>
+                        <div class="collapse" id="collapseFilter">
+                            <div class="card card-body">
+                               <div class="media pb-1 mb-3 bg-lighter" v-for="historyRecord in historyRecords">
+                                    <div class="media-body align-self-center">
+                                        <span>{{ historyRecord.areaName }} > {{ historyRecord.sectionName }}</span>
+                                        <a href="javascript:void(0)" v-on:click="editByElement(historyRecord, null)">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(historyRecord.money) }}</a> 
+                                        <div class="text-muted small">{{ getDateByFormat(historyRecord.dateTimeOfPayment, 'DD.MM.YYYY') }}</div>
+                                        <div class="text-muted small">{{ historyRecord.description }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary" type="button" disabled v-show="isSaving">
-						<span class="spinner-border" role="status" aria-hidden="true"></span>
+                <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+					<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" v-model="isShowInCollection">
+						<span class="custom-control-label">Show in collective budget</span>
+					</label>
+				</div>
+					<button class="btn btn-primary" type="button" v-bind:disabled="isSaving" v-on:click="save($emit)" >
+						<span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
 						Add
 					</button>
-					<button type="button" class="btn btn-primary" v-on:click="save($emit)" v-show="!isSaving">Add</button>
-
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</article>
@@ -133,6 +158,7 @@
     data: function () {
         return {
             dateTimeOfPayment: null,
+            isShowInCollection: true,
             records: [],
             counter: -99,
 
@@ -144,6 +170,9 @@
             currencyInfos: null,
 
             descriptionRecord: {},
+
+            showHistory: false,
+            historyRecords: [],
 
             //components
             flatpickr: {},
@@ -174,25 +203,16 @@
 
         this.tagify.on('remove', this.removeTag);
 
-        this.currentCurrencyID = UserInfo.CurrencyID;
+        this.loadCurrenciesInfo()
+            .then(function () {
+                this.loadHistory();
+            });
 
-        $.ajax({
-            type: "GET",
-            url: "/Common/GetCurrenciesInfo",
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            context: this,
-            success: function (response) {
-                if (response.isOk) {
-                    this.currencyInfos = response.data;
-                    this.currentCurrency = response.data.find(x => x.id == this.currentCurrencyID);
-                }
+        $('#modal-record').on('show.bs.modal', function () {
 
-                return response;
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
-            }
+        });
+        $('#modal-record').on('hide.bs.modal', function () {
+
         });
     },
     methods: {
@@ -295,6 +315,7 @@
 
                 let obj = {
                     dateTimeOfPayment: this.flatpickr.latestSelectedDateObj.toLocaleDateString(),
+                    isShowInCollection: this.isShowInCollection,
                     records: this.records.filter(x => x.isCorrect)
                 };
 
@@ -354,7 +375,7 @@
                         this.records.push(result.record);
                         this.flatpickr.setDate(result.record.dateTimeOfPayment);
                         this.tagify.addTags([{ value: result.record.tag, id: result.record.id }]);
-                        $("#modals-default").modal("show");
+                        $("#modal-record").modal("show");
                     }
 
                     this.isSaving = false;
@@ -368,10 +389,16 @@
         },
         editByElement: function (record, callback) {
             this.records.push(record);
+
+            this.setCurrentCurrency(record.currencyID);
+            this.exchangeRate = record.currencyRate;
+            this.isShowInCollection = record.isShowForCollection;
             this.flatpickr.setDate(record.dateTimeOfPayment);
             this.tagify.addTags([{ value: record.tag, id: record.id }]);
+
             this.after_save_callback = callback;
-            $("#modals-default").modal("show");
+
+            $("#modal-record").modal("show");
         },
         onChooseSection: function (section) {
             let record = this.records.find(x => x.isCorrect && x.sectionID == -1);
@@ -436,5 +463,52 @@
                 }
             });
         },
+        setCurrentCurrency: function (currencyID) {
+            this.currentCurrencyID = currencyID;
+            this.currentCurrency = this.currencyInfos.find(x => x.id == this.currentCurrencyID);
+        },
+        loadCurrenciesInfo: function () {
+            return $.ajax({
+                type: "GET",
+                url: "/Common/GetCurrenciesInfo",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    if (response.isOk) {
+                        this.currencyInfos = response.data;
+
+                        this.setCurrentCurrency(UserInfo.CurrencyID);
+                    }
+
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        },
+        loadHistory: function () {
+            return $.ajax({
+                type: "GET",
+                url: "/Budget/GetLastRecords?last=5",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    if (response.isOk) {
+                        this.historyRecords = response.data;
+                    }
+
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        },
+        getDateByFormat: function (date, format) {
+            return GetDateByFormat(date, format);
+        }
     }
 });

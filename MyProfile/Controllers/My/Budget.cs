@@ -47,6 +47,8 @@ namespace MyProfile.Controllers.My
 			//		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
 			//	},
 			//}, true);
+
+			var t = repository.GetAll<BudgetRecord>().ToList();
 		}
 
 		public async Task<JsonResult> GetBudget(int templateID)
