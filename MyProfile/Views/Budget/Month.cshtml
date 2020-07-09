@@ -38,7 +38,14 @@
                     <select id="templates" v-model="templateID" v-on:change="refresh" class="form-control">
                         @foreach (var template in Model.Templates)
                         {
-                            <option value="@template.ID">@template.Name</option>
+                            if (!template.IsDefault)
+                            {
+                                <option value="@template.ID">@template.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@template.ID" selected>@template.Name</option>
+                            }
                         }
                     </select>
                 </div>

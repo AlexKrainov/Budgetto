@@ -19,6 +19,7 @@ namespace MyProfile.Entity.ModelView
         public int PeriodTypeID { get; set; }
         public bool IsShow { get; set; }
         public string Description { get; set; }
+        public bool IsDefault { get; set; }
     }
 
     public class TemplateViewModel_Short
@@ -27,6 +28,7 @@ namespace MyProfile.Entity.ModelView
         public string Name { get; set; }
         public string PeriodName { get; set; }
         public int PeriodTypeID { get; set; }
+        public bool IsDefault { get; set; }
     }
 
     public class Column

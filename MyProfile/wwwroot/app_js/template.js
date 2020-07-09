@@ -1,287 +1,359 @@
 ﻿var TemplateVue = new Vue({
-	el: "#template-columns",
-	data: {
-		template: [],
-		sections: [],
+    el: "#template-columns",
+    data: {
+        template: [],
+        sections: [],
 
-		counterNewColumn: -100,
-		counterTemplateBudgetSections: -100,
+        counterNewColumn: -100,
+        counterTemplateBudgetSections: -100,
 
-		column: {},
+        column: {},
 
-		periodType: -1,
-		isSavingTemplate: false,
+        periodType: -1,
+        isSavingTemplate: false,
+        errorMessage: null,
+        startColumnsName: "Новая колонка",
 
-		footerActions: []
-	},
-	watch: {
-		"template.name": function (newValue, oldValue) {
+        footerActions: []
+    },
+    watch: {
+        "template.name": function (newValue, oldValue) {
 
-		},
-	},
-	mounted: function () {
-		this.init()
-			.then(function () {
-				TemplateVue.loadBAranAndRType();
+        },
+    },
+    mounted: function () {
+        this.init()
+            .then(function () {
+                TemplateVue.loadBAranAndRType();
 
-				sendAjax("/Common/GetFoolterAction", null, "GET")
-					.then(function (result) {
-						if (result.isOk = true) {
-							TemplateVue.footerActions = result.data;
-						}
-					});
-			});
-	},
-	methods: {
+                sendAjax("/Common/GetFoolterAction", null, "GET")
+                    .then(function (result) {
+                        if (result.isOk == true) {
+                            TemplateVue.footerActions = result.data;
+                        }
+                    });
+            });
+    },
+    methods: {
 
-		init: function () {
-			let templateID = parseQueryString()["templateID"];
-			return sendAjax("/Template/GetTemplate/" + templateID, null, "GET")
-				.then(function (result) {
-					if (result.isOk = true) {
-						TemplateVue.template = result.template;
-						$("#templateName").val(result.template.name);
-						TemplateVue.refreshDragNDrop();
-					}
-				});
-		},
-		loadBAranAndRType: function () {
-			return sendAjax("/Section/GetAllAreaAndSectionByPerson", null, "GET")
-				.then(function (result) {
-					if (result.isOk = true) {
-						TemplateVue.sections = result.areas;
+        init: function () {
+            let templateID = $("#templateID").val();
+            return sendAjax("/Template/GetTemplate/" + templateID, null, "GET")
+                .then(function (result) {
+                    if (result.isOk == true) {
+                        TemplateVue.template = result.template;
+                        $("#templateName").val(result.template.name);
+                        TemplateVue.refreshDragNDrop();
+                    }
+                });
+        },
+        loadBAranAndRType: function () {
+            return sendAjax("/Section/GetAllAreaAndSectionByPerson", null, "GET")
+                .then(function (result) {
+                    if (result.isOk == true) {
+                        TemplateVue.sections = result.areas;
 
-					}
-				});
-		},
-		onChooseSection: function (section) {
+                    }
+                });
+        },
+        onChooseSection: function (section) {
 
-		},
-		refreshDragNDrop: function () {
-			dragula(
-				Array.prototype.slice.call(document.querySelectorAll('.lists')),
-				{
-					moves: function (el) {
-						return !el.classList.contains("ignore-dnd");
-					},
-					accepts: function (el) {//?
-						return !el.classList.contains("ignore-dnd");
-					},
-				}
-			).on('dragend', function (el) {
-				let el_s = document.querySelectorAll(".list[columnid]");
+        },
+        refreshDragNDrop: function () {
+            dragula(
+                Array.prototype.slice.call(document.querySelectorAll('.lists')),
+                {
+                    moves: function (el) {
+                        return !el.classList.contains("ignore-dnd");
+                    },
+                    accepts: function (el) {//?
+                        return !el.classList.contains("ignore-dnd");
+                    },
+                }
+            ).on('dragend', function (el) {
+                let el_s = document.querySelectorAll(".list[columnid]");
 
-				for (var i = 0; i < el_s.length; i++) {
-					let columnID = el_s[i].attributes["columnid"].value * 1;
-					if (columnID) {
-						TemplateVue.template.columns.find(x => x.id == columnID).order = i;
-					}
-				}
-			});
-		},
-		addColumn: function () {
+                for (var i = 0; i < el_s.length; i++) {
+                    let columnID = el_s[i].attributes["columnid"].value * 1;
+                    if (columnID) {
+                        TemplateVue.template.columns.find(x => x.id == columnID).order = i;
+                    }
+                }
+            });
+        },
+        addColumn: function () {
 
-			$("#modalDataTypeColumn").modal("show");
+            $("#modalDataTypeColumn").modal("show");
 
-			this.column = {
-				id: this.counterNewColumn++,
-				name: "Новая колонка",
-				order: this.template.columns.length,
-				isShow: true,
-				totalAction: 0,
-				formula: [],
-				templateBudgetSections: [],
-				placeAfterCommon: 2,
-				format: '',
-			};
-		},
-		addColumn_Complete: function () {
-			$("#modalDataTypeColumn").modal("hide");
-			this.template.columns.push(this.column);
-			//$("input[name=data-column-type]:selected").removeProp("selected");
-			this.column = {};
-		},
-		addColumnOption_step1: function (column) {
-			this.column = column;
-			$('.selectpicker').selectpicker("destroy").selectpicker('refresh');
-			$("#modals-slide").modal("show");
-		},
-		addColumnOption_step2: function (section) {
+            this.column = {
+                id: this.counterNewColumn++,
+                name: this.startColumnsName,
+                order: this.template.columns.length,
+                isShow: true,
+                totalAction: 0,
+                formula: [],
+                templateBudgetSections: [],
+                placeAfterCommon: 2,
+                format: '',
+            };
+        },
+        addColumn_Complete: function () {
+            $("#modalDataTypeColumn").modal("hide");
+            this.template.columns.push(this.column);
+            //$("input[name=data-column-type]:selected").removeProp("selected");
+            this.column = {};
+        },
+        addColumnOption_step1: function (column) {
+            this.column = column;
+            $('.selectpicker').selectpicker("destroy").selectpicker('refresh');
+            $("#modals-slide").modal("show");
+        },
+        addColumnOption_step2: function (section) {
 
-			if (this.column.formula.length > 0) {
-				this.column.formula.push({ id: null, value: "+", type: FormulaFieldTypeEnum.Mark });
-				this.column.formula.push({ id: section.id, value: section.name, type: FormulaFieldTypeEnum.Section });
-			} else {
-				this.column.formula.push({ id: section.id, value: section.name, type: FormulaFieldTypeEnum.Section });
-			}
+            if (this.column.formula.length > 0) {
+                this.column.formula.push({ id: null, value: "+", type: FormulaFieldTypeEnum.Mark });
+                this.column.formula.push({ id: section.id, value: `[ ${section.name} ]`, type: FormulaFieldTypeEnum.Section });
+            } else {
+                this.column.formula.push({ id: section.id, value: `[ ${section.name} ]`, type: FormulaFieldTypeEnum.Section });
+            }
 
-			this.column.templateBudgetSections.push({
-				id: this.counterTemplateBudgetSections++,
-				sectionID: section.id,
-				sectionName: section.name
-			});
-			$("#modals-slide").modal("hide");
-		},
-		saveTemplate: function () {
-			this.isSavingTemplate = true;
-			return sendAjax("/Template/Save", this.template, "POST")
-				.then(function (result) {
-					if (result.isOk = true) {
-						TemplateVue.template = result.template;
-					}
-					TemplateVue.isSavingTemplate = false;
-				});
-		},
-		change: function (event) {
-			console.log(event);
-		},
-		openFormula: function (columnID) {
-			//FormulaVue.el.tagsinput("destroy");
-			FormulaVue.fields = [];
-			FormData.formula = [];
-			FormulaVue.columnID = columnID;
+            if (this.column.name == this.startColumnsName) {
+                this.column.name = section.name;
+            }
 
-			let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
-			if (columnIndex >= 0) {
-				for (var i = 0; i < this.template.columns[columnIndex].templateBudgetSections.length; i++) {
-					FormulaVue.fields.push({
-						sectionID: this.template.columns[columnIndex].templateBudgetSections[i].sectionID,
-						codeName: this.template.columns[columnIndex].templateBudgetSections[i].sectionCodeName,
-						name: this.template.columns[columnIndex].templateBudgetSections[i].sectionName
-					});
-				}
-				if (this.template.columns[columnIndex].formula) {
-					FormulaVue.formula = [... this.template.columns[columnIndex].formula];
-				}
-				FormulaVue.init();
-			}
-		},
-		setNewFormula: function (newFormula, columnID) {
-			let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
-			if (columnIndex >= 0) {
-				this.template.columns[columnIndex].formula = [...newFormula];
-			}
-		},
-		GetDateByFormat: function (date, format) {
-			return GetDateByFormat(date, format);
-		},
-		isBudgetSection: function (templateColumnType) {
-			return templateColumnType == TemplateColumnTypeEnum.BudgetSection;
-		},
-		isDaysForMonth: function (templateColumnType) {
-			return templateColumnType == TemplateColumnTypeEnum.DaysForMonth;
-		},
-		isMonthsForYear: function (templateColumnType) {
-			return templateColumnType == TemplateColumnTypeEnum.MonthsForYear;
-		},
-		getFooterActionTypeValue: function (footerActionTypeEnum) {
+            this.column.templateBudgetSections.push({
+                id: this.counterTemplateBudgetSections++,
+                sectionID: section.id,
+                sectionName: section.name
+            });
+            $("#modals-slide").modal("hide");
+        },
+        saveTemplate: function (saveAs) {
+            let method = 'Save';
+            if (saveAs == true) {
+                method = 'SaveAs';
+            }
+            this.isSavingTemplate = true;
+            return sendAjax("/Template/" + method, this.template, "POST")
+                .then(function (result) {
+                    if (result.isOk == true) {
+                        TemplateVue.template = result.template;
+                        TemplateVue.errorMessage = null;
+                    } else {
+                        if (result.nameAlreadyExist) {
+                            //Show message
+                            TemplateVue.errorMessage = result.errorMessage;
+                        }
+                    }
+                    TemplateVue.isSavingTemplate = false;
+                });
+        },
+        change: function (event) {
+            console.log(event);
+        },
+        openFormula: function (columnID) {
+            //FormulaVue.el.tagsinput("destroy");
+            FormulaVue.fields = [];
+            FormData.formula = [];
+            FormulaVue.columnID = columnID;
 
-		}
+            let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
+            if (columnIndex >= 0) {
+                for (var i = 0; i < this.template.columns[columnIndex].templateBudgetSections.length; i++) {
+                    FormulaVue.fields.push({
+                        sectionID: this.template.columns[columnIndex].templateBudgetSections[i].sectionID,
+                        codeName: this.template.columns[columnIndex].templateBudgetSections[i].sectionCodeName,
+                        name: this.template.columns[columnIndex].templateBudgetSections[i].sectionName
+                    });
+                }
+                if (this.template.columns[columnIndex].formula) {
+                    FormulaVue.formula = [... this.template.columns[columnIndex].formula];
+                }
+                FormulaVue.init();
+            }
+        },
+        setNewFormula: function (newFormula, columnID) {
+            let columnIndex = this.template.columns.findIndex(x => x.id == columnID);
+            if (columnIndex >= 0) {
+                this.template.columns[columnIndex].formula = [...newFormula];
+            }
+        },
+        GetDateByFormat: function (date, format) {
+            return GetDateByFormat(date, format);
+        },
+        isBudgetSection: function (templateColumnType) {
+            return templateColumnType == TemplateColumnTypeEnum.BudgetSection;
+        },
+        isDaysForMonth: function (templateColumnType) {
+            return templateColumnType == TemplateColumnTypeEnum.DaysForMonth;
+        },
+        isMonthsForYear: function (templateColumnType) {
+            return templateColumnType == TemplateColumnTypeEnum.MonthsForYear;
+        },
+        getFooterActionTypeValue: function (footerActionTypeEnum) {
 
-	}
+        },
+        removeSectionInColumn: function (templateBudgetSection, indexSection, indexColumn) {
+
+            let column = this.template.columns[indexColumn];
+            //let section = column.templateBudgetSections[indexSection];
+
+            column.templateBudgetSections.splice(indexSection, 1);
+            column.formula = [];
+
+            for (var i = 0; i < column.templateBudgetSections.length; i++) {
+                let section = column.templateBudgetSections[i];
+                if (column.formula.length > 0) {
+                    column.formula.push({ id: null, value: "+", type: FormulaFieldTypeEnum.Mark });
+                    column.formula.push({ id: section.sectionID, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
+                } else {
+                    column.formula.push({ id: section.sectionID, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
+                }
+            }
+            //let foundIndex = true;
+            //while (foundIndex) {
+
+            //    let formulaIndex = column.formula.findIndex(x => x.id == section.sectionID);
+            //    if (formulaIndex >= 0) {
+            //        if (formulaIndex == 0) {
+            //            //ToDo
+            //        }
+            //        column.formula.slice(formulaIndex, 1);
+            //    } else {
+            //        foundIndex = false;
+            //    }
+            //}
+        },
+        getLinkForView: function (template) {
+            return GetLinkForView(template);
+        },
+
+    }
 });
 
 
 var FormulaVue = new Vue({
-	el: "#modal-formula",
-	data: {
-		fields: [],
-		formula: [],
+    el: "#modal-formula",
+    data: {
+        fields: [],
+        formula: [],
 
-		number: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-		mark: ["*", "/", "-", "+"],
-		parentheses: ["(", ")"],
+        isValid: null,
+        el: Object,
+        columnID: null,
+    },
+    watch: {},
+    computed: {},
+    mounted: function () {
+        this.el = $('#formula');
 
-		isValid: null,
-		el: Object,
-		columnID: null,
-	},
-	watch: {
-		formula: function (newValue, oldValue) {
-			console.log("refresh");
-		},
-	},
-	computed: {
-	},
-	mounted: function () {
-		this.el = $('#formula');
+        this.el.tagsinput({
+            //cancelConfirmKeysOnEmpty: true,
+            allowDuplicates: true,
+            tagClass: function (item) {
+                switch (item.type) {
+                    case FormulaFieldTypeEnum.Number: return 'badge badge-primary';
+                    case FormulaFieldTypeEnum.Mark: return 'badge badge-success';
+                    case FormulaFieldTypeEnum.Parentheses: return 'badge badge-success';
+                    case FormulaFieldTypeEnum.Section: return 'badge badge-default';
+                    //case 'Asia': return 'badge badge-warning';
+                }
+            },
+            itemValue: 'value',
+            itemText: 'value',
+            trimValue: true
+        });
+        this.el.on('beforeItemRemove', function (event) {
+            var tag = event.item;
 
-		this.el.tagsinput({
-			//cancelConfirmKeysOnEmpty: true,
-			allowDuplicates: true,
-			tagClass: function (item) {
-				switch (item.type) {
-					case FormulaFieldTypeEnum.Number: return 'badge badge-primary';
-					case FormulaFieldTypeEnum.Mark: return 'badge badge-danger';
-					case FormulaFieldTypeEnum.Parentheses: return 'badge badge-success';
-					case FormulaFieldTypeEnum.Section: return 'badge badge-default';
-					//case 'Asia': return 'badge badge-warning';
-				}
-			},
+            let index = FormulaVue.formula.findIndex(x => x == tag);
+            console.log(index);
+            if (index >= 0) {
+                FormulaVue.formula.splice(index, 1);
 
-			itemValue: 'value',
-			itemText: 'value',
-		});
-	},
-	methods: {
-		init: function () {
-			this.refreshFormula();
-			$("#modal-formula").modal("show");
-			//$("#modal-formula").modal("hidden.bs.modal", function () {
-			//	FormulaVue.fields = [];
-			//	FormulaVue.formula = [];
-			//});
-		},
+            }
+        });
+    },
+    methods: {
+        init: function () {
+            this.refreshFormula();
+            $("#modal-formula").modal("show");
+            //$("#modal-formula").modal("hidden.bs.modal", function () {
+            //	FormulaVue.fields = [];
+            //	FormulaVue.formula = [];
+            //});
+        },
 
-		removeLast: function () {
-			this.el.tagsinput("remove", this.formula.pop());
-		},
-		add: function (event, type) {
-			if (type == FormulaFieldTypeEnum.Number) {
+        removeLast: function () {
+            //let lastItem = this.formula.pop();
+            //console.log(lastItem);
 
-				var lastFormulaItem = this.formula[this.formula.length - 1];
+            this.el.tagsinput("remove", this.formula.pop());
+        },
+        removeAll: function () {
+            this.el.tagsinput('removeAll');
+            this.formula = [];
+        },
+        add: function (event, type) {
+            //if (type == FormulaFieldTypeEnum.Number) {
 
-				if (lastFormulaItem.type == FormulaFieldTypeEnum.Number) {
+            //    var lastFormulaItem = this.formula[this.formula.length - 1];
 
-					this.el.tagsinput("remove", lastFormulaItem);
-					lastFormulaItem.value += event.target.innerHTML;
-					this.el.tagsinput('add', lastFormulaItem);
-					return;
+            //    if (lastFormulaItem.type == FormulaFieldTypeEnum.Number) {
 
-				}
-			}
-			let formulaElement = { id: null, value: event.target.innerHTML, type: type };
-			this.formula.push(formulaElement);
-			this.el.tagsinput('add', formulaElement);
-		},
-		addField: function (field) {
-			let formulaElement = { id: field.sectinoID, value: field.name, type: FormulaFieldTypeEnum.Section };
-			this.formula.push(formulaElement);
-			this.el.tagsinput('add', formulaElement);
-		},
-		addPeriod: function (formulaFieldTypeEnumID) {
+            //        this.el.tagsinput("remove", lastFormulaItem);
+            //        lastFormulaItem.value += event.target.innerHTML;
+            //        this.el.tagsinput('add', lastFormulaItem);
+            //        return;
 
-			if (formulaFieldTypeEnumID == FormulaFieldTypeEnum.Days) {
-				let formulaElement = { id: null, value: "Days", type: formulaFieldTypeEnumID };
-				this.formula.push(formulaElement);
-				this.el.tagsinput('add', formulaElement);
-			}
-		},
-		refreshFormula: function () {
-			//this.el.tagsinput('destroy');
+            //    }
+            //}
+            let formulaElement = { id: null, value: event.target.value, type: type };
+            this.formula.push(formulaElement);
+            this.el.tagsinput('add', formulaElement);
+        },
+        addField: function (field) {
+            let formulaElement = { id: field.sectionID, value: `[ ${field.name} ]`, type: FormulaFieldTypeEnum.Section };
 
-			for (var i = 0; i < this.formula.length; i++) {
-				this.el.tagsinput('add', this.formula[i]);
-			}
-		},
-		save: function () {
-			TemplateVue.setNewFormula(this.formula, this.columnID);
-			$("#modal-formula").modal('hide');
-			this.fields = [];
-			this.formula = [];
-			this.el.tagsinput('removeAll');
-		}
-	}
+            //add mark "+" if last item in the formula is section or days
+            if (this.formula && this.formula.length > 0) {
+                let lastFormulaElement = this.formula[this.formula.length - 1];
+                if (lastFormulaElement.type == FormulaFieldTypeEnum.Section || lastFormulaElement.type == FormulaFieldTypeEnum.Days) {
+
+                    let formulaElement = { id: null, value: "+", type: FormulaFieldTypeEnum.Mark };
+                    this.formula.push(formulaElement);
+                    this.el.tagsinput('add', formulaElement);
+                }
+            }
+
+            this.formula.push(formulaElement);
+            this.el.tagsinput('add', formulaElement);
+        },
+        addPeriod: function (formulaFieldTypeEnumID) {
+            if (formulaFieldTypeEnumID == FormulaFieldTypeEnum.Days) {
+                let formulaElement = { id: null, value: "[ День ]", type: formulaFieldTypeEnumID };
+                this.formula.push(formulaElement);
+                this.el.tagsinput('add', formulaElement);
+            }
+        },
+        refreshFormula: function () {
+            this.el.tagsinput('removeAll');
+
+            for (var i = 0; i < this.formula.length; i++) {
+                this.el.tagsinput('add', this.formula[i]);
+            }
+        },
+        save: function () {
+            TemplateVue.setNewFormula(this.formula, this.columnID);
+            $("#modal-formula").modal('hide');
+            this.fields = [];
+            this.formula = [];
+            this.el.tagsinput('removeAll');
+        },
+        isUsing: function (field) {
+            return this.formula.findIndex(x => x.id == field.sectionID) >= 0;
+        },
+    }
 });
 
 Vue.config.devtools = true;

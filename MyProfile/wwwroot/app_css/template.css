@@ -1,50 +1,108 @@
 ﻿
 .ui {
-	grid-template-rows: 40px 50px 1fr;
+    grid-template-rows: 40px 50px 1fr;
 }
 
 .lists {
-	display: flex;
-	overflow-x: auto;
+    display: flex;
+    overflow-x: auto;
 }
 
-	.lists > * {
-		flex: 0 0 auto;
-		margin-left: 10px;
-	}
+    .lists > * {
+        flex: 0 0 auto;
+        margin-left: 10px;
+    }
 
-	.lists::after {
-		content: '';
-		flex: 0 0 10px;
-	}
+    .lists::after {
+        content: '';
+        flex: 0 0 10px;
+    }
 
 .list {
-	width: 300px;
-	height: calc(100% - 10px - 17px);
+    width: 300px;
+    height: calc(100% - 10px - 17px);
 }
 
-	.list ul {
-		list-style: none;
-		margin: 0;
-		max-height: calc(100% - 36px - 36px);
-		overflow-y: auto;
-	}
+    .list ul {
+        list-style: none;
+        margin: 0;
+        max-height: calc(100% - 36px - 36px);
+        overflow-y: auto;
+    }
 
-		.list ul li {
-			/*background-color: #fff;*/
-			padding: 10px;
-			/*border-radius: 3px;
+        .list ul li {
+            /*background-color: #fff;*/
+            padding: 10px;
+            /*border-radius: 3px;
 			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);*/
-		}
+        }
 
-			/*.list ul li:not(:last-child) {
+            /*.list ul li:not(:last-child) {
 				margin-bottom: 10px;
 			}*/
 
-			.list ul li img {
-				display: block;
-				width: calc(100% + 2 * 10px);
-				margin: -10px 0 10px -10px;
-				border-top-left-radius: 3px;
-				border-top-right-radius: 3px;
-			}
+            .list ul li img {
+                display: block;
+                width: calc(100% + 2 * 10px);
+                margin: -10px 0 10px -10px;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+            }
+
+span[data-role="remove"] {
+    /*    opacity: .2;*/
+    display: none !important;
+}
+
+    span[data-role="remove"]:hover {
+        opacity: 1;
+    }
+
+.is-not-using-section {
+    color: var(--red);
+    font-size: large;
+}
+
+.remove-section-item {
+    color: var(--red);
+    opacity: .2;
+    font-size: large;
+    transition: opacity linear .2s;
+}
+
+    .remove-section-item:hover {
+        opacity: 1;
+    }
+
+.equal-sign {
+    height: 98%;
+    grid-area: 2 / 4 / 6 / 5;
+}
+
+.calculator-keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+
+.formula-section-item {
+    position: relative;
+    float: left;
+    padding: 0 .5rem;
+    font-weight: normal;
+    line-height: 1.5rem;
+    background-color: lightgray;
+    color: #4E5155;
+    font-size: .894rem;
+}
+
+.formula-day-section-item {
+    position: relative;
+    float: left;
+    padding: 0 .5rem;
+    font-weight: normal;
+    line-height: 1.5rem;
+    background-color: #8897AA;
+    color: white;
+    font-size: .894rem;
+}

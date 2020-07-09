@@ -7,7 +7,8 @@
 }
 
 .bootstrap-tagsinput {
-    width: 77% !important;
+    /*    width: 77% !important; error in template formula */
+    width: 100%;
 }
 
 .remove-section-icon {
@@ -155,4 +156,9 @@ a.disabled {
 
 .has-comment {
     color: var(--green);
+}
+
+.custom-card-hover:hover {
+    transition: all linear .2s;
+    box-shadow: 7px 7px rgba(0,0,0, .25);
 }

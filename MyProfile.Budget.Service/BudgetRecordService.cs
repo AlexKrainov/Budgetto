@@ -46,6 +46,7 @@ namespace MyProfile.Budget.Service
         public bool CreateOrUpdate(RecordsModelView budgetRecord)
         {
             budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
+
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
                 if (record.ID <= 0)// create
@@ -91,11 +92,12 @@ namespace MyProfile.Budget.Service
         {
             try
             {
+                var now = DateTime.Now.ToUniversalTime();
                 repository.Create<BudgetRecord>(new BudgetRecord
                 {
                     BudgetSectionID = budgetRecord.SectionID,
-                    DateTimeCreate = DateTime.Now.ToUniversalTime(),
-                    DateTimeEdit = DateTime.Now.ToUniversalTime(),
+                    DateTimeCreate = now,
+                    DateTimeEdit = now,
                     DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
                     Description = budgetRecord.Description,
                     IsHide = budgetRecord.IsConsider,

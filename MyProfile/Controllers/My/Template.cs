@@ -190,6 +190,7 @@ namespace MyProfile.Controllers
 
 		public IActionResult Edit(int? id)
 		{
+			ViewBag.TemplateID = id;
 			ViewBag.PeriodTypes = repository.GetAll<PeriodType>()
 				.Where(x => x.ID == (int)PeriodTypesEnum.Month || x.ID == (int)PeriodTypesEnum.Year)
 				.ToList();
@@ -217,11 +218,27 @@ namespace MyProfile.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Save([FromBody]TemplateViewModel template)
 		{
+			var templateResult = await templateService.SaveTemplate(template);
 
-			template = templateService.SaveTemplate(template);
-
-			return Json(new { isOk = true, template });
+			return Json(templateResult);
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> SaveAs([FromBody] TemplateViewModel template)
+		{
+			var tmpTemplateID = template.ID;
+			template.ID = 0;
+
+			var templateResult = await templateService.SaveTemplate(template);
+
+            if (templateResult.IsOk == false)
+            {
+				templateResult.Template.ID = tmpTemplateID;
+            }
+
+			return Json(templateResult);
+		}
+
 
 		[HttpGet]
 		public IActionResult Delete(int id)

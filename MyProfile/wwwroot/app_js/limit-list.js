@@ -26,7 +26,7 @@ var LimitListVue = new Vue({
         load: function () {
             return sendAjax("/Limit/GetLimits", null, "GET")
                 .then(function (result) {
-                    if (result.isOk = true) {
+                    if (result.isOk == true) {
                         LimitListVue.limits = result.limits;
                     }
                 });
@@ -34,7 +34,7 @@ var LimitListVue = new Vue({
         loadSections: function () {
             return sendAjax("/Section/GetAllSectionByPerson", null, "GET")
                 .then(function (result) {
-                    if (result.isOk = true) {
+                    if (result.isOk == true) {
                         LimitListVue.sections = result.sections;
                     }
                 });
@@ -42,7 +42,7 @@ var LimitListVue = new Vue({
         loadPeriodTypes: function () {
             return sendAjax("/Limit/GetPeriodTypes", null, "GET")
                 .then(function (result) {
-                    if (result.isOk = true) {
+                    if (result.isOk == true) {
                         LimitListVue.periodTypes = result.periodTypes;
                     }
                 });

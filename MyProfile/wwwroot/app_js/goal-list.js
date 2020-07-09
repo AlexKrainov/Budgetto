@@ -15,7 +15,7 @@
 		load: function () {
 			return sendAjax("/Goal/GetGoals", null, "GET")
 				.then(function (result) {
-					if (result.isOk = true) {
+					if (result.isOk == true) {
 						GoalListVue.goals = result.goals;
 					}
 				});

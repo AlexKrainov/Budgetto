@@ -119,28 +119,53 @@ namespace MyProfile.Budget.Service
 
                                     expression = expression.Replace($"[{formulaItem.ID}]", total.ToString());
                                 }
+                                else if (formulaItem.Type == FormulaFieldType.Days)
+                                {
+                                    expression = expression.Replace("[Days]", dateCounter.ToString());
+                                }
                             }
 
                             var interpreter = new Interpreter();
-                            total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand , (comma)
-                            total = Math.Round(total, column.PlaceAfterCommon);
-                            //total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
+                            try
+                            {
+                                total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand , (comma)
+                                total = Math.Round(total, column.PlaceAfterCommon);
+                                //total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
 
-                            cells.Add(new Cell
+                                cells.Add(new Cell
+                                {
+                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
+                                    NaturalValue = total,
+                                    IsShow = column.IsShow,
+                                    TemplateColumnType = column.TemplateColumnType,
+                                    dateCounter = dateCounter,
+                                    IsWeekend = isWeekend,
+                                    IsHoliday = isHoliday
+                                });
+                                footerCells.Add(new FooterCell
+                                {
+                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
+                                    NaturalValue = total
+                                });
+                            }
+                            catch (Exception ex)
                             {
-                                Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
-                                NaturalValue = total,
-                                IsShow = column.IsShow,
-                                TemplateColumnType = column.TemplateColumnType,
-                                dateCounter = dateCounter,
-                                IsWeekend = isWeekend,
-                                IsHoliday = isHoliday
-                            });
-                            footerCells.Add(new FooterCell
-                            {
-                                Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
-                                NaturalValue = total
-                            });
+                                cells.Add(new Cell
+                                {
+                                    Value = "Ошибка формулы",
+                                    NaturalValue = 0,
+                                    IsShow = column.IsShow,
+                                    TemplateColumnType = TemplateColumnType.Error,
+                                    dateCounter = dateCounter,
+                                    IsWeekend = isWeekend,
+                                    IsHoliday = isHoliday
+                                });
+                                footerCells.Add(new FooterCell
+                                {
+                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
+                                    NaturalValue = total
+                                });
+                            }
                         }
                         else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
                         {
@@ -309,6 +334,10 @@ namespace MyProfile.Budget.Service
                         if (formulaItem.Type == FormulaFieldType.Section)
                         {
                             expression += $"[{formulaItem.ID}]";
+                        }
+                        else if (formulaItem.Type == FormulaFieldType.Days)
+                        {
+                            expression += "[Days]";
                         }
                         else
                         {

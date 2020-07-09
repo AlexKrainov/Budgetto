@@ -15,7 +15,8 @@ namespace MyProfile.Entity.Model
 		YearsFor10Year = 4,
 		Percent = 5,
 		Comment = 6,
-		WeeksForMonth = 7
+		WeeksForMonth = 7,
+		Error = 8,
 	}
 
 	public enum FooterActionType
@@ -34,7 +35,8 @@ namespace MyProfile.Entity.Model
 		Number = 2,
 		Mark = 3,
 		Parentheses = 4,
-		Days = 5
+		Days = 5,
+		Month = 6
 	}
 
 	public class TemplateColumn

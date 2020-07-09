@@ -33,6 +33,11 @@ namespace MyProfile.Entity.Model
 		/// </summary>
 		public int MaxRowInAPage { get; set; }
 		public bool IsDelete { get; set; }
+		/// <summary>
+		/// Default template in PeriodType
+		/// </summary>
+		public bool IsDefault { get; set; }
+		
 		
 
 		[ForeignKey("User")]

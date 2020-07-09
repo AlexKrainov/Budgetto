@@ -14,7 +14,7 @@
 		load: function () {
 			return sendAjax("/Chart/GetCharts", null, "GET")
 				.then(function (result) {
-					if (result.isOk = true) {
+					if (result.isOk == true) {
 						ChartListVue.charts = result.charts;
 					}
 				});

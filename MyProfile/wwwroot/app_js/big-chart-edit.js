@@ -51,7 +51,7 @@
         loadSections: function () {
             return sendAjax("/Section/GetAllSectionByPerson", null, "GET")
                 .then(function (result) {
-                    if (result.isOk = true) {
+                    if (result.isOk == true) {
                         ChartEditVue.sections = result.sections;
                     }
                 });

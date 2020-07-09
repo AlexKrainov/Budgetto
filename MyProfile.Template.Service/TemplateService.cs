@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelEntitySave;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using Newtonsoft.Json;
@@ -42,6 +43,7 @@ namespace MyProfile.Template.Service
                             Description = x.Description,
                             PeriodName = x.PeriodType.Name,
                             PeriodTypeID = x.PeriodTypeID,
+                            IsDefault = x.IsDefault,
 
                             Columns = x.TemplateColumns
                                 .Select(y => new Column
@@ -139,7 +141,7 @@ namespace MyProfile.Template.Service
                             PeriodName = x.PeriodType.Name,
                             PeriodTypeID = x.PeriodTypeID,
                             IsShow = true,
-
+                            IsDefault = x.IsDefault,
                             Columns = x.TemplateColumns
                                 .Select(y => new Column
                                 {
@@ -175,26 +177,40 @@ namespace MyProfile.Template.Service
                             Name = x.Name,
                             PeriodName = x.PeriodType.Name,
                             PeriodTypeID = x.PeriodTypeID,
+                            IsDefault = x.IsDefault,
                         })
                         .ToListAsync();
         }
 
-
-
-        public TemplateViewModel SaveTemplate(TemplateViewModel template)
+        public async Task<TemplateErrorModelView> SaveTemplate(TemplateViewModel template)
         {
+            TemplateErrorModelView modelView = new TemplateErrorModelView { Template = template };
+            var userID = UserInfo.Current.ID;
+            #region Check name
+
+            if (await repository.AnyAsync<Template>(x => x.UserID == userID && x.Name == template.Name && x.ID != template.ID))
+            {
+                modelView.IsOk = false;
+                modelView.NameAlreadyExist = true;
+                modelView.ErrorMessage = "Шаблон с таким именем уже существует";
+
+                return modelView;
+            }
+
+            #endregion
             try
             {
                 if (template.ID == 0)//create
                 {
                     Template templateDB = new Template();
-                    templateDB.UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D");
+                    templateDB.UserID = userID;
                     templateDB.PeriodTypeID = template.PeriodTypeID;
                     templateDB.DateCreate = templateDB.DateEdit = DateTime.MinValue == template.DateCreate ? DateTime.Now : template.DateCreate;
                     templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;
                     templateDB.MaxRowInAPage = 30;
-                    templateDB.Name = template.Name ?? "Template";
+                    templateDB.Name = template.Name ?? "Шаблон";
                     templateDB.Description = template.Description;
+                    templateDB.IsDefault = template.IsDefault;
 
                     repository.Create(templateDB, true);
 
@@ -212,17 +228,18 @@ namespace MyProfile.Template.Service
                             PlaceAfterCommon = column.PlaceAfterCommon,
                             Format = column.Format
                         };
-                        repository.Create(templateColumnDB, true);
+                        await repository.CreateAsync(templateColumnDB, true);
 
                         foreach (var templateAreaType in column.TemplateBudgetSections)
                         {
-                            repository.Create(new Entity.Model.TemplateBudgetSection
+                            await repository.CreateAsync(new Entity.Model.TemplateBudgetSection
                             {
                                 BudgetSectionID = templateAreaType.SectionID,
                                 TemplateColumnID = templateColumnDB.ID
                             }, true);
                         }
                     }
+                    template.ID = templateDB.ID;
                 }
                 else
                 {
@@ -234,15 +251,16 @@ namespace MyProfile.Template.Service
 
                     Template templateDB = repository.GetByID<Template>(template.ID);
 
-                    templateDB.UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D");
+                    templateDB.UserID = UserInfo.Current.ID;
                     templateDB.PeriodTypeID = template.PeriodTypeID;
                     templateDB.DateEdit = DateTime.Now;
                     templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;
                     templateDB.MaxRowInAPage = 30;
-                    templateDB.Name = template.Name ?? "NameTemplate";
+                    templateDB.Name = template.Name ?? "Шаблон";
                     templateDB.Description = template.Description;
+                    templateDB.IsDefault = template.IsDefault;
 
-                    repository.Update(templateDB, true);
+                    await repository.UpdateAsync(templateDB, true);
 
                     foreach (var column in template.Columns.OrderBy(x => x.Order))
                     {
@@ -256,13 +274,13 @@ namespace MyProfile.Template.Service
                             ColumnTypeID = (int)column.TemplateColumnType,
                             FooterActionTypeID = (int)column.TotalAction,
                             PlaceAfterCommon = column.PlaceAfterCommon,
-                            Format = column.Format
+                            Format = column.Format,
                         };
-                        repository.Create(templateColumnDB, true);
+                        await repository.CreateAsync(templateColumnDB, true);
 
                         foreach (var templateAreaType in column.TemplateBudgetSections)
                         {
-                            repository.Create(new Entity.Model.TemplateBudgetSection
+                            await repository.CreateAsync(new Entity.Model.TemplateBudgetSection
                             {
                                 BudgetSectionID = templateAreaType.SectionID,
                                 TemplateColumnID = templateColumnDB.ID
@@ -273,9 +291,34 @@ namespace MyProfile.Template.Service
             }
             catch (Exception ex)
             {
-                return null;
+                modelView.IsOk = false;
+                modelView.ErrorMessage = "Произошла ошибка во время сохранения.";
             }
-            return template;
+
+            await setDefaultTemplates(template);
+
+            return modelView;
+        }
+
+        private async Task<int> setDefaultTemplates(TemplateViewModel template)
+        {
+            if (template.IsDefault)
+            {
+                var templatesWithIsDefault = await repository.GetAll<Template>
+                    (x => x.UserID == UserInfo.Current.ID
+                    && x.PeriodTypeID == template.PeriodTypeID
+                    && x.IsDefault == true
+                    && x.ID != template.ID)
+                    .ToListAsync();
+
+                for (int i = 0; i < templatesWithIsDefault.Count(); i++)
+                {
+                    templatesWithIsDefault[i].IsDefault = false;
+                    repository.Update(templatesWithIsDefault[i]);
+                }
+               return await repository.SaveAsync();
+            }
+            return 1;
         }
     }
 }

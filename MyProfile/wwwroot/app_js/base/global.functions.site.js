@@ -154,3 +154,14 @@ function ParseXml(xml, arrayTags)
 
     return result;
 }
+
+//Template methods
+function GetLinkForView(template) {
+    if (template.periodTypeID == 1) { //PeriodTypesEnum.Days
+        return `/Budget/Month?templateID=${template.id}`;
+    } else if (template.periodTypeID == 3) { //PeriodTypesEnum.Months
+        return `/Budget/Year?templateID=${template.id}`;
+    } else {
+        return '/Budget/Index/' + template.id;
+    }
+}

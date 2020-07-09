@@ -1,115 +1,132 @@
 ﻿@{
-	ViewData["Title"] = "Project list - Pages";
+    ViewData["Title"] = "Project list - Pages";
+}
+
+@section Styles {
 }
 
 @section Scripts {
-	<script src="~/app_js/template-list.js"></script>
+
+    <script src="~/app_js/template-list.js"></script>
 }
 
 <section id="template-list-vue">
 
-	<h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
-		<div class="col-12 col-md px-0 pb-2">
-			Шаблоны
-			<a class="btn btn-outline-primary rounded-pill" href="/Template/Edit">Добавить новый шаблон</a>
-		</div>
-		<div class="col-12 col-md-3 px-0 pb-2">
-			<input type="text" class="form-control" placeholder="Search..." v-model="search">
-		</div>
-	</h4>
+    <h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
+        <div class="lnr lnr-layers display-4 text-primary mr-2"></div>
+        <div class="col-12 col-md px-0 pb-2 pt-2">
+            Шаблоны
+        </div>
+    </h4>
 
-	<ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
-		<li class="nav-item">
-			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = -1">Все шаблоны</a>
-		</li>
-		<li class="nav-item">
-			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 1">По дням</a>
-		</li>
-		<li class="nav-item">
-			<a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 3">По месяцам</a>
-		</li>
-	</ul>
+    <ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
+        <li class="nav-item">
+            <a v-bind:class="['nav-link', activeTemplatePeriodTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = -1">Все шаблоны</a>
+        </li>
+        <li class="nav-item">
+            <a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 1">По дням</a>
+        </li>
+        <li class="nav-item">
+            <a v-bind:class="['nav-link', activeTemplatePeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeTemplatePeriodTypeID = 3">По месяцам</a>
+        </li>
+    </ul>
 
-	<div class="row">
-		<div class="col-sm-6 col-xl-4" v-for="template in templates" v-show="template.isShow && (activeTemplatePeriodTypeID == -1 || template.periodTypeID == activeTemplatePeriodTypeID)">
-			<div class="card mb-4">
-				<div class="card-body d-flex justify-content-between align-items-start pb-3">
-					<div>
-						<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ template.name }}</a>
-						<span class="badge badge-success align-text-bottom ml-1" v-show="template.periodTypeID == 1">{{ template.periodName }}</span>
-						<span class="badge badge-primary align-text-bottom ml-1" v-show="template.periodTypeID == 2">{{ template.periodName }}</span>
-						<span class="badge badge-info align-text-bottom ml-1" v-show="template.periodTypeID == 3">{{ template.periodName }}</span>
-						<span class="badge badge-warning align-text-bottom ml-1" v-show="template.periodTypeID == 4">{{ template.periodName }}</span>
-						<div class="text-muted small mt-1">{{ template.columns.length }} columns</div>
-					</div>
-					<div class="btn-group project-actions">
-						<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown">
-							<i class="ion ion-ios-more"></i>
-						</button>
-						<div class="dropdown-menu dropdown-menu-right">
-							<a class="dropdown-item" v-bind:href="'/Template/Edit?templateID='+ template.id">Edit</a>
-							<a class="dropdown-item" v-bind:href="'/Template/Delete/'+ template.id">Remove</a>
-						</div>
-					</div>
-				</div>
-				<div class="progress rounded-0" style="height: 3px;">
-					<div class="progress-bar" style="width: 100%"></div>
-				</div>
-				@*<div class="card-body small pt-2 pb-0">
-						<strong>{{ template.columns.length * 10 }}%</strong> columns
-					</div>*@
-				<div class="card-body pb-3">
-					{{ template.description }}
-				</div>
-				<div class="card-body pt-0">
-						<div class="row">
-							<div class="col">
-								<div class="text-muted small">Created</div>
-								<div class="font-weight-bold">{{  getDateByFormat(template.dateCreate, 'DD.MM.YYYY hh:mm:ss') }}</div>
-							</div>
-							<div class="col">
-								<div class="text-muted small">Edit</div>
-								<div class="font-weight-bold">{{  getDateByFormat(template.dateEdit, 'DD.MM.YYYY hh:mm:ss') }}</div>
-							</div>
-						</div>
-					</div>
-				<hr class="m-0">
-				<div class="card-body py-3">
-					<a class="btn btn-outline-success" v-bind:href="'/Template/Edit?templateID='+ template.id">Edit</a>
-					<a class="btn btn-outline-primary float-right" v-bind:href="getLinkForView(template)">View</a>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-sm-6 col-xl-4 template-card" v-for="template in templates"
+             v-show="template.isShow && (activeTemplatePeriodTypeID == -1 || template.periodTypeID == activeTemplatePeriodTypeID)">
+            <div class="card mb-4 border-primary custom-card-hover">
+                @*card-hover*@
+                @*v-bind:class="template.periodTypeID == 1 ? 'border-success' : template.periodTypeID == 2 ? ''"*@
+                <div class="card-body d-flex justify-content-between align-items-start pb-3">
+                    <div class="float-right">
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ template.name }}</a>
+                        <span class="badge badge-success align-text-bottom ml-1" v-show="template.periodTypeID == 1">{{ template.periodName }}</span>
+                        @*<span class="badge badge-primary align-text-bottom ml-1" v-show="template.periodTypeID == 2">{{ template.periodName }}</span>*@
+                        <span class="badge badge-info align-text-bottom ml-1" v-show="template.periodTypeID == 3">{{ template.periodName }}</span>
+                        @*<span class="badge badge-warning align-text-bottom ml-1" v-show="template.periodTypeID == 4">{{ template.periodName }}</span>*@
+                        <div class="text-muted small mt-1">{{ template.columns.length }} columns</div>
+                    </div>
+                    @*<div class="btn-group project-actions">
+                            <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown">
+                                <i class="ion ion-ios-more"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" v-bind:href="'/Template/Edit?templateID='+ template.id">Edit</a>
+                                <a class="dropdown-item" v-bind:href="'/Template/Delete/'+ template.id">Remove</a>
+                            </div>
+                        </div>*@
+                </div>
+                @*<div class="progress rounded-0" style="height: 3px;">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>*@
+                @*<div class="card-body small pt-2 pb-0">
+                        <strong>{{ template.columns.length * 10 }}%</strong> columns
+                    </div>*@
+                <div class="card-body pb-3">
+                    {{ template.description }}
+                </div>
+                @*<div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col">
+                                <div class="text-muted small">Created</div>
+                                <div class="font-weight-bold">{{  getDateByFormat(template.dateCreate, 'DD.MM.YYYY hh:mm:ss') }}</div>
+                            </div>
+                            <div class="col">
+                                <div class="text-muted small">Edit</div>
+                                <div class="font-weight-bold">{{  getDateByFormat(template.dateEdit, 'DD.MM.YYYY hh:mm:ss') }}</div>
+                            </div>
+                        </div>
+                    </div>*@
+                <hr class="m-0">
+                <div class="card-footer py-3">
+                    <a class="btn btn-outline-danger icon-btn borderless" v-bind:href="'/Template/Delete/'+ template.id">
+                        <span class="ion ion-md-trash"></span>
+                    </a>
+                    <a class="btn btn-outline-primary btn-sm" v-bind:href="getLinkForView(template)">
+                        <i class="far fa-eye pr-2"></i>View
+                    </a>
+                    <a class="btn btn-outline-success btn-sm" v-bind:href="'/Template/Edit/'+ template.id">
+                        <i class="far fa-edit pr-2"></i>Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-4 text-center pt-5">
+            <a class="btn btn-outline-primary rounded-pill" href="/Template/Edit">
+                <span class="lnr lnr-layers"></span>
+                Добавить новый шаблон
+            </a>
+        </div>
+    </div>
 
-	<hr class="border-light mt-2 mb-4">
+    <hr class="border-light mt-2 mb-4">
 
-	@*
-			pages
-			<nav>
-			<ul class="pagination justify-content-center">
-				<li class="page-item disabled">
-					<a class="page-link" href="javascript:void(0)">«</a>
-				</li>
-				<li class="page-item active">
-					<a class="page-link" href="javascript:void(0)">1</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="javascript:void(0)">2</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="javascript:void(0)">3</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="javascript:void(0)">4</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="javascript:void(0)">5</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="javascript:void(0)">»</a>
-				</li>
-			</ul>
-		</nav>*@
+    @*
+            pages
+            <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="javascript:void(0)">«</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="javascript:void(0)">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)">4</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)">5</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)">»</a>
+                </li>
+            </ul>
+        </nav>*@
 
 </section>

@@ -329,7 +329,7 @@
                     dataType: 'json',
                     context: this,
                     success: function (result) {
-                        if (result.isOk = true) {
+                        if (result.isOk == true) {
                             for (var i = 0; i < result.budgetRecord.records.length; i++) {
                                 let record = result.budgetRecord.records[i];
                                 if (record.isSaved) {
@@ -371,7 +371,7 @@
                 context: this,
                 success: function (result) {
 
-                    if (result.isOk = true) {
+                    if (result.isOk == true) {
                         this.records.push(result.record);
                         this.flatpickr.setDate(result.record.dateTimeOfPayment);
                         this.tagify.addTags([{ value: result.record.tag, id: result.record.id }]);
