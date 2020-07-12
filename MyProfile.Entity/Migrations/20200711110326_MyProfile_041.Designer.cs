@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200711110326_MyProfile_041")]
+    partial class MyProfile_041
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -863,8 +865,6 @@ namespace MyProfile.Entity.Migrations
                     b.Property<bool>("GoalPage_IsShow_Collective");
 
                     b.Property<bool>("GoalPage_IsShow_Finished");
-
-                    b.Property<bool>("LimitPage_IsShow_Collective");
 
                     b.Property<bool>("LimitPage_Show_IsFinished")
                         .ValueGeneratedOnAdd()

@@ -22,8 +22,8 @@ var TemplateListVue = new Vue({
         this.init()
             .then(function () {
                 TemplateListVue.msnry = new Masonry('#templates', {
-                    itemSelector: '.template-card:not(.d-none)',
-                    columnWidth: '.template-card-sizer',
+                    itemSelector: '.masonry-item:not(.d-none)',
+                    columnWidth: '.masonry-item-sizer',
                     originLeft: true,
                     horizontalOrder: true
                 });
@@ -48,7 +48,7 @@ var TemplateListVue = new Vue({
         reload: function () {
             setTimeout(function () {
                 TemplateListVue.msnry.layout();
-            }, 15)
+            }, 15);
         },
         getRusName: function (num) {
             return GetRusName(num, ['Колонка', 'Колонки', 'Колонок']);

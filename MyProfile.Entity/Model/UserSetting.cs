@@ -28,10 +28,22 @@ namespace MyProfile.Entity.Model
 		/// The pages Budget/Month, Budget/Year ... show/hide Invest Chart
 		/// </summary>
 		public bool BudgetPages_InvestingChart { get; set; }
+
+        #region Limit
+        /// <summary>
+        /// The pages Budget/Month, Budget/Year ... show/hide Limits 
+        /// </summary>
+        public bool BudgetPages_IsShow_Limits { get; set; }
+        /// <summary>
+        /// The pages /Limit/List, show/hide isFinished limits
+        /// </summary>
+        public bool LimitPage_Show_IsFinished { get; set; }
 		/// <summary>
-		/// The pages Budget/Month, Budget/Year ... show/hide Limits 
+		/// The pages Limit/List ... show/hide collective limits 
 		/// </summary>
-		public bool BudgetPages_IsShow_Limits { get; set; }
+		public bool LimitPage_IsShow_Collective { get; set; }
+		#endregion
+
 		/// <summary>
 		/// The pages Budget/Month, Budget/Year ... show/hide goals 
 		/// </summary>

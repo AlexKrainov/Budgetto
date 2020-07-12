@@ -51,6 +51,11 @@ namespace MyProfile.Areas.Identity.Controllers
 				user.UserSettings.GoalPage_IsShow_Collective = dbUserSettings.GoalPage_IsShow_Collective = userSettings.GoalPage_IsShow_Collective;
 				user.UserSettings.GoalPage_IsShow_Finished = dbUserSettings.GoalPage_IsShow_Finished = userSettings.GoalPage_IsShow_Finished;
 			}
+			else if (userSettings.PageName == "Limit/List")
+			{
+				user.UserSettings.LimitPage_IsShow_Collective = dbUserSettings.LimitPage_IsShow_Collective = userSettings.LimitPage_IsShow_Collective;
+				user.UserSettings.LimitPage_Show_IsFinished = dbUserSettings.LimitPage_Show_IsFinished = userSettings.LimitPage_Show_IsFinished;
+			}
 
 
 			await UserInfo.AddOrUpdate_Authenticate(user);

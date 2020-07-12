@@ -162,3 +162,7 @@ a.disabled {
     transition: all linear .2s;
     box-shadow: 7px 7px rgba(0,0,0, .25);
 }
+
+.flatpickr-innerContainer {
+    background-color: #26B4FF;
+}

@@ -21,6 +21,7 @@ namespace MyProfile.Entity.Model
 		/// Show or not in dashbord
 		/// </summary>
 		public bool IsShow { get; set; }
+		public bool IsShowInCollective { get; set; } = true;
 		public bool IsDeleted { get; set; }
 
 		[ForeignKey("User")]

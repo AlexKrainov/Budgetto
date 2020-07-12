@@ -18,5 +18,9 @@
 		{
 			await Html.RenderPartialAsync(@"../Settings/_Goal_List_Settings.cshtml");
 		}
+		 @if (Model == "Limit/List")
+		{
+			await Html.RenderPartialAsync(@"../Settings/_Limit_List_Settings.cshtml");
+		}
 	</div>
 </div>

@@ -1,0 +1,34 @@
+﻿@{
+	var UserInfo = MyProfile.Identity.UserInfo.Current;
+}
+
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+	<div class="media-body">
+		<span class="theme-settings-t-rtl_switcher">Показывать завершенные</span>
+	</div>
+	<div class="switcher switcher-sm d-block m-0">
+		<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.LimitPage_Show_IsFinished" name="user_settings"
+			   data-prop="LimitPage_Show_IsFinished" v-on:change="change">
+		<span class="switcher-indicator">
+			<span class="switcher-yes"></span>
+			<span class="switcher-no"></span>
+		</span>
+	</div>
+</label>
+<hr class="m-0 border-light">
+@if (UserInfo.IsAllowCollectiveBudget)
+{
+	<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+		<div class="media-body">
+			<span class="theme-settings-t-rtl_switcher">Показывать цели всех участников</span>
+		</div>
+		<div class="switcher switcher-sm d-block m-0">
+			<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.LimitPage_IsShow_Collective" name="user_settings"
+				   data-prop="LimitPage_IsShow_Collective" v-on:change="change">
+			<span class="switcher-indicator">
+				<span class="switcher-yes"></span>
+				<span class="switcher-no"></span>
+			</span>
+		</div>
+	</label>
+}

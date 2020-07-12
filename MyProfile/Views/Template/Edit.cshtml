@@ -1,6 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Kanban board - Pages";
-    //Pages/TicketsEdit
+    if (ViewBag.TemplateID == null)
+    {
+        ViewData["Title"] = "Создание шаблона";
+    }
+    else
+    {
+        ViewData["Title"] = "Редактирование шаблона";
+    }
 }
 
 @section Styles {

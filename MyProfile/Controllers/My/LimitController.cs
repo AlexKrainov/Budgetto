@@ -47,12 +47,13 @@ namespace MyProfile.Controllers.My
 
 			try
 			{
-				await limitService.UpdateOrCreate(limit);
+				limit = await limitService.UpdateOrCreate(limit);
 			}
 			catch (Exception ex)
 			{
-				return Json(new { isOk = false, ex.Message });
+				return Json(new { isOk = false, Message = "Вовремя сохранения лимита произошла ошибка." });
 			}
+
 			return Json(new { isOk = true, limit });
 		}
 

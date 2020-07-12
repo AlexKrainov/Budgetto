@@ -173,3 +173,23 @@ function GetRusName(n, text_forms) {
     return text_forms[2];
 }
 
+function GetFlatpickrRuConfig_Month(date, minDate, maxDate) {
+    return {
+        altInput: true,
+        locale: "ru",
+        defaultDate: date,
+        minDate: minDate,
+        maxDate: maxDate,
+        plugins: [
+            new monthSelectPlugin({
+                shorthand: true, //defaults to false
+                dateFormat: "yy/m/d", //defaults to "F Y"
+                altFormat: "F Y", //defaults to "F Y"
+                theme: "light" // defaults to "light"
+            })
+        ],
+        onChange : function (selectedDates, dateStr, instance) {
+            LimitListVue.flatpickrStart.config.maxDate = dateStr;
+        },
+    };
+}

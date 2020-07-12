@@ -119,8 +119,12 @@ namespace MyProfile.User.Service
                         BudgetPages_IsShow_BigCharts = x.UserSettings.BudgetPages_IsShow_BigCharts,
                         BudgetPages_IsShow_Goals = x.UserSettings.BudgetPages_IsShow_Goals,
                         BudgetPages_IsShow_Limits = x.UserSettings.BudgetPages_IsShow_Limits,
+
                         GoalPage_IsShow_Collective = x.UserSettings.GoalPage_IsShow_Collective,
-                        GoalPage_IsShow_Finished = x.UserSettings.GoalPage_IsShow_Finished
+                        GoalPage_IsShow_Finished = x.UserSettings.GoalPage_IsShow_Finished,
+
+                        LimitPage_Show_IsFinished = x.UserSettings.LimitPage_Show_IsFinished,
+                        LimitPage_IsShow_Collective = x.UserSettings.LimitPage_IsShow_Collective,
                     }
                 })
                 .FirstOrDefaultAsync();

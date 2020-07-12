@@ -61,6 +61,9 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<UserSettings>()
                 .Property(b => b.BudgetPages_IsShow_BigCharts)
                 .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+               .Property(b => b.LimitPage_Show_IsFinished)
+               .HasDefaultValue(true);
 
             modelBuilder.Entity<VisibleElement>()
                 .Property(b => b.IsShow_BudgetMonth)
@@ -72,6 +75,9 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<Limit>()
                 .Property(b => b.IsShow)
                 .HasDefaultValue(true);
+            modelBuilder.Entity<Limit>()
+               .Property(b => b.IsShowInCollective)
+               .HasDefaultValue(true);
 
             modelBuilder.Entity<Goal>()
                 .Property(b => b.IsShowOnDashBoard)

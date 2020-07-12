@@ -9,7 +9,8 @@
 			"BudgetVue.loadLimitCharts",
 			"BudgetVue.loadGoalCharts",
 			"BudgetVue.loadBigCharts",
-			"GoalListVue.load"
+			"GoalListVue.load",
+			"LimitListVue.load"
 		],
 	},
 	watch: {
