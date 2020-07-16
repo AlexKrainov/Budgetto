@@ -184,7 +184,7 @@ namespace MyProfile.Controllers
 
 		public async Task<JsonResult> GetTemplates()
 		{
-			var templates = await templateService.GetTemplates(x => x.UserID == UserInfo.UserID);
+			var templates = await templateService.GetTemplates(x => x.UserID == UserInfo.Current.ID);
 			return Json(new { isOk = true, templates });
 		}
 
@@ -205,7 +205,7 @@ namespace MyProfile.Controllers
 
 			if (id != null)
 			{
-				templateViewModel = await templateService.GetTemplateByID(x => x.UserID == UserInfo.UserID && x.ID == id);
+				templateViewModel = await templateService.GetTemplateByID(x => x.UserID == UserInfo.Current.ID && x.ID == id);
 			}
 
 			return Json(new

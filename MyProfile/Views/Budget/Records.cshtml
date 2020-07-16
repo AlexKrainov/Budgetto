@@ -1,151 +1,161 @@
 ﻿@model MyProfile.Entity.ModelView.TimeLineViewModel
 @{
-	ViewData["Title"] = "Courses v2 - Pages";
+    ViewData["Title"] = "Courses v2 - Pages";
+    var UserInfo = MyProfile.Identity.UserInfo.Current;
 }
 
 @section Styles {
-	<link href="~/vendor/libs/d3js/cal-heatmap/css/cal-heatmap.css" rel="stylesheet" />
-	<link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
+    <link href="~/vendor/libs/d3js/cal-heatmap/css/cal-heatmap.css" rel="stylesheet" />
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
 
-	<style>
-		
-	</style>
+    <style>
+    </style>
 }
 
 @section Scripts {
-	<script src="~/vendor/libs/select2/select2.js"></script>
-	<script src="~/vendor/libs/d3js/js/d3.v3.min.js"></script>
-	<script src="~/vendor/libs/d3js/cal-heatmap/js/cal-heatmap.min.js"></script>
-	<script src="~/vendor/libs/jquery-serialize-object/jquery.serialize-object.min.js"></script>
+    <script src="~/vendor/libs/select2/select2.js"></script>
+    <script src="~/vendor/libs/d3js/js/d3.v3.min.js"></script>
+    <script src="~/vendor/libs/d3js/cal-heatmap/js/cal-heatmap.min.js"></script>
+    <script src="~/vendor/libs/jquery-serialize-object/jquery.serialize-object.min.js"></script>
 
-	<script src="~/app_js/timeline.js"></script>
+    <script src="~/app_js/timeline.js"></script>
 }
 
-<!--
-=================================================================
-**************************** CONTENT ****************************
--->
-
-<h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
-	<div class="col-12 col-md px-0 pb-2">Timeline</div>
-	@*<div class="col-12 col-md-3 px-0 pb-2">
-			<input type="text" class="form-control" placeholder="Search...">
-		</div>*@
+<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+    <span class="lnr lnr-calendar-full display-4 text-primary mr-2"></span>
+    <span class="px-0 pb-2 pt-2">
+        Календарь
+    </span>
+    @*<span class="px-0 pb-2 ml-4">
+            <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)" v-on:click="edit()">&nbsp; Добавить цель</a>
+        </span>*@
 </h4>
 
-@*<ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
-		<li class="nav-item">
-			<a class="nav-link text-body font-weight-bold pl-0" href="javascript:void(0)">Development</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-muted" href="javascript:void(0)">Web Development</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-muted" href="javascript:void(0)">Mobile Apps</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-muted" href="javascript:void(0)">Programming Languages</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link text-muted" href="javascript:void(0)">Databases</a>
-		</li>
-	</ul>*@
-
 <div class="card mb-4">
-	<h6 class="card-header">Фильтр</h6>
-	<div class="card-body">
-		<form id="filter" class="margin-top">
-			@Html.Hidden("Count", 0)
-			<div class="row mb-5">
-				<div class="col-8">
-					<div class="input-group events-container">
-						<select id="Sections" name="Sections[]" multiple class="form-control crm-crash-list-contract-filter" style="width: 100%">
-							@for (int i = 0; i < Model.Sections.Count; i++)
-							{
-								<option selected value="@Model.Sections[i].id">@Model.Sections[i].text</option>
-							}
-						</select>
-						<span class="text-muted m-b block">Sections</span>
-						<span class="text-right">
-							<span onclick="filter.selectAll()" class="text-muted m-b block cursor-pointer link-green-hover">Select all</span>
-							<span onclick="filter.unselectAll()" class="text-muted m-b block cursor-pointer link-red-hover">Remove all</span>
-						</span>
-					</div>
-				</div>
-				<div class="col-4">
-					<label class="switcher switcher-success">
-						<input type="checkbox" class="switcher-input" name="isAmount">
-						<span class="switcher-indicator">
-							<span class="switcher-yes">
-								<span class="ion ion-md-checkmark"></span>
-							</span>
-							<span class="switcher-no">
-								<span class="ion ion-md-close"></span>
-							</span>
-						</span>
-						<span class="switcher-label">Показывает по количеству покупок </span>
-					</label>
-				</div>
-			</div>
-			@*<div>
-					<button type="button" class="btn btn-primary pull-right" onclick="timeline.search_click()">
-						@LocalizationBL.GetText(CrmUserInfo.Current.Localization, Utils.Localization.IOT.Common.SearchButton.Code)
-					</button>
-				</div>*@
-			<div class="row" id="cal-heatmap-container">
-				<div class="col-12">
-					<div class="row">
-						<div class="col-lg-1 float-e-margins">
-							@for (int i = 0; i < Model.Years.Count; i++)
-							{
-								<button type="button" class="btn btn-outline-primary mb-1" onclick="calendar.before_loading(this,@Model.Years[i].year)"
-										title="@Model.Years[i].count records" data-year="@Model.Years[i].year">
-									@Model.Years[i].year
-								</button>
-							}
-						</div>
-						<div class="col-lg-11">
-							<div id="cal-heatmap"></div>
-						</div>
-						<div id="btn_move_calendar" class="btn-group" style="margin-left: 10%;padding-top: 10px;">
-							<button type="button" class="btn btn-sm btn-outline-primary" id="domainDynamicDimension-previous"><i class="fa fa-chevron-left"></i></button>
-							<button type="button" class="btn btn-sm btn-outline-primary" id="domainDynamicDimension-next"><i class="fa fa-chevron-right"></i> </button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
+    <h6 class="card-header">Фильтр</h6>
+    <div class="card-body">
+        <form id="filter" class="margin-top">
+            @Html.Hidden("Count", 0)
+            <div class="row mb-5">
+                <div class="col-8">
+                    <div class="input-group events-container">
+                        <select id="Sections" name="Sections[]" multiple class="form-control crm-crash-list-contract-filter" style="width: 100%">
+                            @for (int i = 0; i < Model.Sections.Count; i++)
+                            {
+                                <option selected value="@Model.Sections[i].id">@Model.Sections[i].text</option>
+                            }
+                        </select>
+                        <span class="text-muted m-b block">Sections</span>
+                        <span class="text-right">
+                            <span onclick="filter.selectAll()" class="text-muted m-b block cursor-pointer link-green-hover">Select all</span>
+                            <span onclick="filter.unselectAll()" class="text-muted m-b block cursor-pointer link-red-hover">Remove all</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    @if (UserInfo.IsAllowCollectiveBudget)
+                    {
+                        <label class="switcher switcher-info">
+                            <input type="checkbox" class="switcher-input" name="isConsiderCollection" id="isConsiderCollection">
+                            <span class="switcher-indicator">
+                                <span class="switcher-yes">
+                                    <span class="ion ion-md-checkmark"></span>
+                                </span>
+                                <span class="switcher-no">
+                                    <span class="ion ion-md-close"></span>
+                                </span>
+                            </span>
+                            <span class="switcher-label">Показывать записи все участников группы </span>
+                        </label>
+                        <hr/>
+                    }
+                    <div class="switchers-stacked">
+                        <label class="switcher">
+                            <input type="radio" class="switcher-input" name="isAmount" id="isCount" checked>
+                            <span class="switcher-indicator">
+                                <span class="switcher-yes">
+                                    <span class="ion ion-md-checkmark"></span>
+                                </span>
+                                <span class="switcher-no">
+                                    <span class="ion ion-md-close"></span>
+                                </span>
+                            </span>
+                            <span class="switcher-label">Показывает по количеству внесенных записей </span>
+                        </label>
+                        <label class="switcher">
+                            <input type="radio" class="switcher-input" name="isAmount" id="isAmount">
+                            <span class="switcher-indicator">
+                                <span class="switcher-yes">
+                                    <span class="ion ion-md-checkmark"></span>
+                                </span>
+                                <span class="switcher-no">
+                                    <span class="ion ion-md-close"></span>
+                                </span>
+                            </span>
+                            <span class="switcher-label">Показывает по сумме трат в день</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            @*<div>
+                    <button type="button" class="btn btn-primary pull-right" onclick="timeline.search_click()">
+                        @LocalizationBL.GetText(CrmUserInfo.Current.Localization, Utils.Localization.IOT.Common.SearchButton.Code)
+                    </button>
+                </div>*@
+            <div class="row" id="cal-heatmap-container">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-lg-1 float-e-margins">
+                            @for (int i = 0; i < Model.Years.Count; i++)
+                            {
+                                <button type="button" class="btn btn-outline-primary mb-1" onclick="calendar.before_loading(this,@Model.Years[i].year)"
+                                        title="@Model.Years[i].count records" data-year="@Model.Years[i].year">
+                                    @Model.Years[i].year
+                                </button>
+                            }
+                        </div>
+                        <div class="col-lg-11">
+                            <div id="cal-heatmap"></div>
+                        </div>
+                        <div id="btn_move_calendar" class="btn-group" style="margin-left: 10%;padding-top: 10px;">
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="domainDynamicDimension-previous"><i class="fa fa-chevron-left"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="domainDynamicDimension-next"><i class="fa fa-chevron-right"></i> </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="card mb-4 col-7" id="timeline_records">
-	<ul class="list-group list-group-flush">
-		@Html.Partial("_TimeLineRecords")
-	</ul>
+    <ul class="list-group list-group-flush">
+        @Html.Partial("_TimeLineRecords")
+    </ul>
 </div>
 
 @*<nav>
-		<ul class="pagination">
-			<li class="page-item disabled">
-				<a class="page-link" href="javascript:void(0)">«</a>
-			</li>
-			<li class="page-item active">
-				<a class="page-link" href="javascript:void(0)">1</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">2</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">3</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">4</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">5</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="javascript:void(0)">»</a>
-			</li>
-		</ul>
-	</nav>*@
+        <ul class="pagination">
+            <li class="page-item disabled">
+                <a class="page-link" href="javascript:void(0)">«</a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">4</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">5</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">»</a>
+            </li>
+        </ul>
+    </nav>*@

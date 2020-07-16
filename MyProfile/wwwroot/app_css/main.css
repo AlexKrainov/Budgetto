@@ -166,3 +166,16 @@ a.disabled {
 .flatpickr-innerContainer {
     background-color: #26B4FF;
 }
+
+.edit-record {
+    transition: all linear .2s;
+    opacity: .2;
+}
+
+    .edit-record:hover {
+        opacity: 1;
+    }
+
+.deleted-item {
+    opacity: .5;
+}

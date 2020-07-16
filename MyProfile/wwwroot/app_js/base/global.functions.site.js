@@ -188,8 +188,16 @@ function GetFlatpickrRuConfig_Month(date, minDate, maxDate) {
                 theme: "light" // defaults to "light"
             })
         ],
-        onChange : function (selectedDates, dateStr, instance) {
-            LimitListVue.flatpickrStart.config.maxDate = dateStr;
-        },
+    };
+}
+
+function GetFlatpickrRuConfig(date, minDate, maxDate) {
+    return {
+        altInput: true,
+        locale: "ru",
+        dateFormat: 'Y/m/d',
+        defaultDate: date,
+        minDate: minDate,
+        maxDate: maxDate,
     };
 }

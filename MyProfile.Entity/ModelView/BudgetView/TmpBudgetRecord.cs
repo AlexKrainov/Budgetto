@@ -11,7 +11,7 @@ namespace MyProfile.Entity.ModelView.BudgetView
 		public string SectionName { get; set; }
 		public int AreaID { get; set; }
 		public string AreaName { get; set; }
-		public List<int> CollectionSectionIDs { get; set; }
+		public IEnumerable<int> CollectionSectionIDs { get; set; }
         public int? SectionTypeID { get; set; }
     }
 }

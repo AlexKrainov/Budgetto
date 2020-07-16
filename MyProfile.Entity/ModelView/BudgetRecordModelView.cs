@@ -6,6 +6,7 @@ namespace MyProfile.Entity.ModelView
 {
     public class BudgetRecordModelView
     {
+
         public int ID { get; set; }
         public decimal Money { get; set; }
         public string RawData { get; set; }
@@ -27,10 +28,15 @@ namespace MyProfile.Entity.ModelView
         public decimal? CurrencyRate { get; set; }
         public int? CurrencyNominal { get; set; }
         public bool IsShowForCollection { get; set; }
+        public bool IsOwner { get; set; }
+        public string UserName { get; set; }
+        public string ImageLink { get; set; }
 
 
         public bool IsSaved { get; set; } = true;
         public bool IsCorrect { get; set; } = true;
+        public bool IsDeleted { get; set; }
+        public bool IsShowCollapse { get; set; }
         public string Tag { get { return RawData; } }
 
         public string CurrencySpecificCulture { get; set; }

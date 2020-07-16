@@ -90,7 +90,7 @@ namespace MyProfile.Controllers
 					CssIcon = area.CssIcon,
 					Description = area.Description,
 					Name = area.Name,
-					UserID = UserInfo.UserID
+					UserID = UserInfo.Current.ID
 				};
 				if (budgetArea.ID > 0)
 				{
@@ -161,13 +161,15 @@ namespace MyProfile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllAreaAndSectionByPerson()
 		{
-			var areas = await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.Current.ID)
+			var currentUserID = UserInfo.Current.ID;
+
+			var areas = await repository.GetAll<BudgetArea>(x => x.UserID == currentUserID)
 				.Select(x => new
 				{
 					x.ID,
 					x.Name,
 					BudgetSections = x.BudgetSectinos
-						.Where(y => y.BudgetArea.UserID == UserInfo.UserID)
+						.Where(y => y.BudgetArea.UserID == currentUserID)
 						.Select(y => new
 						{
 							y.ID,
@@ -234,7 +236,7 @@ namespace MyProfile.Controllers
 		{
 			var budgetArea = repository.GetByID<BudgetArea>(id);
 
-			if (budgetArea.UserID != null && budgetArea.UserID == UserInfo.UserID && (budgetArea.BudgetSectinos == null || budgetArea.BudgetSectinos.Count() == 0))
+			if (budgetArea.UserID != null && budgetArea.UserID == UserInfo.Current.ID && (budgetArea.BudgetSectinos == null || budgetArea.BudgetSectinos.Count() == 0))
 			{
 				try
 				{

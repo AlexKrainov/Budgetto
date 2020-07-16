@@ -1,48 +1,90 @@
 ﻿<li class="list-group-item py-4" v-for="record in records">
-	<div class="media flex-wrap">
-		@*<div class="font-weight-semibold ml-3">
-				<a href="javascript:void(0)" class="d-block">{{ record.money }}</a>
-			</div>*@
-		<div class="media-body ml-sm-4">
-			<h5 class="mb-2">
-				<div class="float-right font-weight-semibold ml-3">{{ record.money }}</div>
-				<a href="javascript:void(0)" v-on:click="edit(record)" class="text-body">{{ record.areaName }} > {{ record.sectionName }}</a>&nbsp;
-			</h5>
-			<div class="d-flex flex-wrap align-items-center mb-2">
-				<div class="text-muted small">
-					<i class="ion ion-md-time text-primary"></i>
-					<span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
-				</div>
-				<div class="ui-stars ml-3">
-					<div class="ui-star filled">
-						<i class="ion ion-md-star"></i>
-						<i class="ion ion-md-star"></i>
-					</div>
-					<div class="ui-star filled">
-						<i class="ion ion-md-star"></i>
-						<i class="ion ion-md-star"></i>
-					</div>
-					<div class="ui-star filled">
-						<i class="ion ion-md-star"></i>
-						<i class="ion ion-md-star"></i>
-					</div>
-					<div class="ui-star filled">
-						<i class="ion ion-md-star"></i>
-						<i class="ion ion-md-star"></i>
-					</div>
-					<div class="ui-star filled">
-						<i class="ion ion-md-star"></i>
-						<i class="ion ion-md-star"></i>
-					</div>
-				</div>
-				<a href="javascript:void(0)" class="text-muted small">55</a>
-			</div>
-			<div>{{ record.description }}</div>
-			<div class="mt-2">
-				<span class="badge badge-outline-default text-muted font-weight-normal" v-show="record.isConsider" title="Семеный"><i class="fas fa-users"></i></span>
-				<span class="badge badge-outline-default text-muted font-weight-normal">Создание: {{ GetDateByFormat(record.dateTimeCreate, 'DD.MM.YYYY') }}</span>
-				<span class="badge badge-outline-default text-muted font-weight-normal">Отредактирован: {{ GetDateByFormat(record.dateTimeEdit, 'DD.MM.YYYY') }}</span>
-			</div>
-		</div>
-	</div>
+    <div class="media flex-wrap" v-if="record.isDeleted == false">
+        <div class="d-none d-sm-block">
+            <img v-bind:src="record.imageLink" alt="User image" class="d-block ui-w-50 rounded-circle" v-bind:title="record.userName">
+        </div>
+        <div class="media-body ml-sm-4">
+            <h5 class="mb-2">
+                <i class="fas fa-trash pl-2 edit-record float-right text-danger cursor-pointer" v-on:click="remove(record)" v-if="record.isOwner"></i>
+                <a href="javascript:void(0)" class="float-right font-weight-semibold ml-3" v-on:click="edit(record)" v-if="record.isOwner">
+                    {{ new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(record.money) }}
+                    <i class="fas fa-edit pl-2 edit-record"></i>
+                </a>
+                <div href="javascript:void(0)" class="float-right font-weight-semibold ml-3" v-else-if="!record.isOwner">
+                    {{ new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(record.money) }}
+                </div>
+                <div class="text-body">
+                    {{ record.areaName }} > {{ record.sectionName }}
+                </div>
+                <div class="text-muted small pt-1">
+                    <i class="ion ion-md-time text-primary"></i>
+                    <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
+                </div>
+            </h5>
+            @*<div class="d-flex flex-wrap align-items-center mb-2">
+                    <div class="text-muted small">
+                        <i class="ion ion-md-time text-primary"></i>
+                        <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
+                    </div>
+                    <div class="ui-stars ml-3">
+                        <div class="ui-star filled">
+                            <i class="ion ion-md-star"></i>
+                            <i class="ion ion-md-star"></i>
+                        </div>
+                        <div class="ui-star filled">
+                            <i class="ion ion-md-star"></i>
+                            <i class="ion ion-md-star"></i>
+                        </div>
+                        <div class="ui-star filled">
+                            <i class="ion ion-md-star"></i>
+                            <i class="ion ion-md-star"></i>
+                        </div>
+                        <div class="ui-star filled">
+                            <i class="ion ion-md-star"></i>
+                            <i class="ion ion-md-star"></i>
+                        </div>
+                        <div class="ui-star filled">
+                            <i class="ion ion-md-star"></i>
+                            <i class="ion ion-md-star"></i>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="text-muted small">55</a>
+                </div>*@
+            <div>{{ record.description }}</div>
+            <div class="mt-2">
+                <div class="card-title with-elements">
+                    <div class="card-title-elements ml-md-auto">
+                        <i class="fas fa-chevron-down cursor-pointer" data-toggle="collapse" v-bind:data-target="'#collapse_info_' + record.id" aria-expanded="false" aria-controls="collapse" v-show="!record.isShowCollapse"
+                           v-on:click="record.isShowCollapse = !record.isShowCollapse"></i>
+                        <i class="fas fa-chevron-up cursor-pointer" data-toggle="collapse" v-bind:data-target="'#collapse_info_' + record.id" aria-expanded="true" aria-controls="collapseFilter" v-show="record.isShowCollapse"
+                           v-on:click="record.isShowCollapse = !record.isShowCollapse"></i>
+                    </div>
+                </div>
+                <div class="collapse" v-bind:id="'collapse_info_' + record.id">
+                    <span class="badge badge-outline-default text-muted font-weight-normal" v-show="record.isConsider" title="Семеный"><i class="fas fa-users"></i></span>
+                    <span class="badge badge-outline-default text-muted font-weight-normal">Создание: {{ GetDateByFormat(record.dateTimeCreate, 'DD.MM.YYYY') }}</span>
+                    <span class="badge badge-outline-default text-muted font-weight-normal">Отредактирован: {{ GetDateByFormat(record.dateTimeEdit, 'DD.MM.YYYY') }}</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="media flex-wrap" v-else-if="record.isDeleted">
+        <div class="media-body ml-sm-4">
+            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" v-on:click="recovery(record)"></i>
+            <h5 class="mb-2 pr-4">
+                <div href="javascript:void(0)" class="float-right font-weight-semibold ml-3 deleted-item">
+                    {{ new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(record.money) }}
+                </div>
+                <div class="text-body deleted-item">
+                    {{ record.areaName }} > {{ record.sectionName }}
+                </div>
+                <div class="text-muted small pt-1 deleted-item">
+                    <i class="ion ion-md-time text-primary"></i>
+                    <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
+                </div>
+            </h5>
+            <div class="deleted-item">{{ record.description }}</div>
+        </div>
+    </div>
 </li>

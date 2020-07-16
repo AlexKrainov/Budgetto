@@ -15,7 +15,10 @@ namespace MyProfile.Entity.ModelView.Goal
 		public string ChartID { get; set; }
 		public decimal Percent2 { get; set; }
 		public bool IsShow { get; set; }
-	}
+        public bool IsOwner { get; set; }
+        public string UserName { get; set; }
+        public string ImageLink { get; set; }
+    }
 
 	public class RecordItem
 	{
@@ -23,7 +26,10 @@ namespace MyProfile.Entity.ModelView.Goal
 		public int GoalID { get; set; }
 		public decimal Total { get; set; }
 		public DateTime? DateTimeOfPayment { get; set; }
-		public string OwenerName { get; set; }
+		public bool IsOwner { get; set; }
+		public string UserName { get; set; }
+		public string ImageLink { get; set; }
 		public DateTime? CreateDateTime { get; set; }
-	}
+        public bool IsShow { get; set; }
+    }
 }

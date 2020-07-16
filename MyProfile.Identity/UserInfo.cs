@@ -14,12 +14,7 @@ namespace MyProfile.Identity
 {
     public static class UserInfo
     {
-        /// <summary>
-        /// tmp
-        /// </summary>
-        public static Guid UserID { get { return Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"); } }
-
-
+       
         public static readonly string USER_INFO = "UserInfo";
         public static readonly string LAST_USER_LOG_ID = "LastUserLogID";
         public static Microsoft.AspNetCore.Http.HttpContext HttpContext => _accessor.HttpContext;

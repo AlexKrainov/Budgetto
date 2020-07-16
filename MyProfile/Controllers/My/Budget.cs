@@ -62,7 +62,7 @@ namespace MyProfile.Controllers.My
             //DateTime start = new DateTime(2020, 01, 01);
             //DateTime finish = new DateTime(2020, 12, 31);
 
-            var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.UserID);
+            var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.Current.ID);
             var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
 
             return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
@@ -74,7 +74,7 @@ namespace MyProfile.Controllers.My
             BudgetControllerModelView model = new BudgetControllerModelView();
             model.SelectedDateTime = month != null ? new DateTime(DateTime.Now.Year, month ?? 1, 1) : new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             model.SelectedTemplateID = templateID ?? -1;
-            model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Month);
+            model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.Current.ID && x.PeriodTypeID == (int)PeriodTypesEnum.Month);
 
             if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
             {
@@ -99,7 +99,7 @@ namespace MyProfile.Controllers.My
                 DateTime start = new DateTime(month.Year, month.Month, 01, 00, 00, 01);
                 DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 23, 59, 59);
 
-                var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.UserID);
+                var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.Current.ID);
 
                 if (template != null)
                 {
@@ -116,7 +116,7 @@ namespace MyProfile.Controllers.My
             BudgetControllerModelView model = new BudgetControllerModelView();
             model.SelectedYear = year ?? DateTime.Now.Year;
             model.SelectedTemplateID = templateID ?? -1;
-            model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Year);
+            model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.Current.ID && x.PeriodTypeID == (int)PeriodTypesEnum.Year);
             if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
             {
                 model.SelectedTemplateID = model.Templates[0].ID;
@@ -130,7 +130,7 @@ namespace MyProfile.Controllers.My
             DateTime start = new DateTime(year, 1, 01);
             DateTime finish = new DateTime(year, 12, 31);
 
-            var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.UserID);
+            var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.Current.ID);
             if (template != null)
             {
                 var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
@@ -145,7 +145,7 @@ namespace MyProfile.Controllers.My
             BudgetControllerModelView model = new BudgetControllerModelView();
             model.SelectedYear = lastYear ?? DateTime.Now.Year;
             model.SelectedTemplateID = templateID ?? -1;
-            model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.UserID && x.PeriodTypeID == (int)PeriodTypesEnum.Year);
+            model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.Current.ID && x.PeriodTypeID == (int)PeriodTypesEnum.Year);
             if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
             {
                 model.SelectedTemplateID = model.Templates[0].ID;
@@ -159,7 +159,7 @@ namespace MyProfile.Controllers.My
             DateTime start = new DateTime(lastYear, 1, 01);
             DateTime finish = new DateTime(lastYear, 12, 31);
 
-            var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.UserID);
+            var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.Current.ID);
             if (template != null)
             {
                 var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
@@ -167,7 +167,6 @@ namespace MyProfile.Controllers.My
             }
             return Json(new { isOk = false });
         }
-
 
     }
 }

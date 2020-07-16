@@ -17,12 +17,14 @@ var LimitListVue = new Vue({
     },
     watch: {
         'limit.periodTypeID': function (newValue, oldValue) {
-            if (newValue == 3) {
-                $("#date-start").next().hide();
-                $("#date-end").next().hide();
-            } else {
+            if (newValue == -1) {
+                return;
+            } else if (newValue == 1) {
                 $("#date-start").next().show();
                 $("#date-end").next().show();
+            } else if (newValue == 3) {
+                $("#date-start").next().hide();
+                $("#date-end").next().hide();
             }
         }
     },
@@ -34,6 +36,10 @@ var LimitListVue = new Vue({
                 LimitListVue.loadPeriodTypes();
 
             });
+
+        $("#modal-limit").on("hidden.bs.modal", function () {
+            LimitListVue.closeEditModal();
+        });
     },
     methods: {
         load: function () {
@@ -128,7 +134,7 @@ var LimitListVue = new Vue({
 
                         // LimitListVue.load();
                         let limitIndex = LimitListVue.limits.findIndex(x => x.id == result.limit.id);
-                        if (limitIndex > 0) {
+                        if (limitIndex >= 0) {
                             LimitListVue.limits[limitIndex] = result.limit;
                         } else {
                             LimitListVue.limits.push(result.limit);
@@ -137,7 +143,6 @@ var LimitListVue = new Vue({
                                 LimitListVue.msnry.layout();
                             }, 100);
                         }
-
 
                         $("#modal-limit").modal("hide");
                     } else {
@@ -173,10 +178,9 @@ var LimitListVue = new Vue({
             this.limit.dateEnd = GetDateByFormat((new Date()).setMonth((new Date()).getMonth() - 1), "YYYY/MM/DD");
             this.flatpickrEnd = flatpickr('#date-to', GetFlatpickrRuConfig_Month(this.limit.dateEnd));
         },
-
-
-
-
+        closeEditModal: function () {
+            this.limit = { periodName: '', periodTypeID: -1 };
+        },
 
 
         getDateByFormat: function (date, format) {

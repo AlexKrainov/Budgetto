@@ -1,79 +1,151 @@
 ﻿@{
-	ViewData["Title"] = "Project list - Pages";
+    ViewData["Title"] = "Project list - Pages";
 }
 
 @section Styles {
 }
 
 @section Scripts {
-	<script src="~/app_js/goal-list.js"></script>
-	<script src="~/app_js/goal-edit.js"></script>
+    <script src="~/vendor/libs/masonry/masonry.js"></script>
+
+    <script src="~/app_js/goal-list.js"></script>
+    <script src="~/app_js/goal-edit.js"></script>
 }
-<h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
-	<span>Цели</span>
-	<button type="button" class="btn btn-primary rounded-pill d-block" onclick="GoalEditVue.edit()"><span class="ion ion-md-add"></span>&nbsp; Добавить цель</button>
-</h4>
 
-<div class="row" id="goal-list-vue">
-	<div class="col-sm-6 col-xl-4" v-for="goal in goals">
+<div id="goal-list-vue">
 
-		<div class="card mb-4">
-			<div class="card-body pb-0">
-				<div class="d-flex justify-content-between align-items-start">
-					<div>
-						<a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ goal.name }}</a>
-						<span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>
-						<span class="badge badge-success align-text-bottom ml-1" v-show="goal.isFinished">Закончен</span>
-						@if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)
-						{
-							<div class="text-muted small mb-1" v-show="!goal.isShowInCollective">Видите только вы</div>
-							<div class="text-muted small mb-1" v-show="goal.isShowInCollective">Видят все</div>
-						}
-					</div>
-					<div class="btn-group team-actions">
-						<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown">
-							<i class="ion ion-ios-more"></i>
-						</button>
-						<div class="dropdown-menu dropdown-menu-right">
-							<a class="dropdown-item" href="javascript:void(0)" v-on:click="addMoney(goal.id)">Добавить деньги</a>
-							<a class="dropdown-item" href="javascript:void(0)" v-on:click="edit(goal)">Редактировать</a>
-							<a class="dropdown-item" href="javascript:void(0)">Remove</a>
-						</div>
-					</div>
-				</div>
-				<div class="mt-3">
-					{{ goal.description }}
-				</div>
-			</div>
-			<div class="card-body py-3">
-				@*<div class="text-muted small mb-2">Кто участвует</div>
-					<div class="d-flex flex-wrap">
-							<a href="javascript:void(0)" class="d-block mr-1 mb-1"><img src="~/img/avatars/3-small.png" alt="" class="ui-w-30 rounded-circle"></a>
-							<a href="javascript:void(0)" class="d-block mr-1 mb-1"><img src="~/img/avatars/6-small.png" alt="" class="ui-w-30 rounded-circle"></a>
-						</div>*@
-			</div>
-			<hr class="m-0">
-			<div class="card-body">
-				<div class="d-flex justify-content-between align-items-center small">
-					<div class="font-weight-bold">{{ goal.percent }}%</div>
-					<div class="text-muted">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.totalMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }} </div>
-				</div>
-				<div class="progress mt-1" style="height: 3px;">
-					<div class="progress-bar" v-bind:style="'width: '+ goal.percent +'%;'"></div>
-				</div>
-				<div class="row mt-3">
-					<div class="col">
-						<div class="text-muted small">Начало </div>
-						<div class="small font-weight-bold">{{  getDateByFormat(goal.dateStart, 'DD.MM.YYYY') }}</div>
-					</div>
-					<div class="col">
-						<div class="text-muted small">Окончание</div>
-						<div class="small font-weight-bold">{{  getDateByFormat(goal.dateEnd, 'DD.MM.YYYY') }}</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+        <span class="lnr lnr-rocket display-4 text-primary mr-2"></span>
+        <span class="px-0 pb-2 pt-2">
+            Цели
+        </span>
+        <span class="px-0 pb-2 ml-4">
+            <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)" v-on:click="edit()">&nbsp; Добавить цель</a>
+        </span>
+    </h4>
+
+    <div class="row" id="goals">
+        <div class="col-sm-6 col-xl-4 pt-5 masonry-item-sizer position-absolute"></div>
+        <div class=" col-sm-6 col-xl-4 masonry-item "
+             v-for="goal in goals"
+             v-bind:data-id="'goal_' + goal.id">
+            <div class="card mb-4 custom-card-hover" v-bind:class="goal.isOwner ? 'border-primary' : 'border-secondary'">
+                <div class="card-body card-body pb-0">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" v-on:click="edit(goal)" title="Редактировать" v-if="goal.isOwner">{{ goal.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" title="Редактировать" v-else="!goal.isOwner">{{ goal.name }}</a>
+                        <span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>
+                        <span class="badge badge-success align-text-bottom ml-1" v-show="goal.isFinished">Закончен</span>
+                    </div>
+                    <div class="mt-3" v-show="goal.description">
+                        {{ goal.description }}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center small">
+                        <div class="font-weight-bold">{{ goal.percent }}%</div>
+                        <div class="text-muted">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.totalMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }} </div>
+                    </div>
+                    <div class="progress mt-1" style="height: 3px;">
+                        <div class="progress-bar" v-bind:style="'width: '+ goal.percent +'%;'"></div>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="card-body pb-2 pt-1 row">
+                    <div class="col-4">
+                        <div class="text-muted small display-inline">Цель</div>
+                        <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-muted small display-inline">Начало</div>
+                        <h6 class="mt-1">{{  getDateByFormat(goal.dateStart, 'DD.MM.YYYY') }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-muted small display-inline">Окончание</div>
+                        @*<span class="badge badge-outline-danger ml-1" v-show="goal.isFinished">Завершен</span>*@
+                        <h6 class="mt-1" v-show="goal.dateEnd">{{  getDateByFormat(goal.dateEnd, 'DD.MM.YYYY') }}</h6>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="card-footer p-3">
+                    <a href="void:javascript(0)" class="btn btn-primary btn-sm" v-on:click="edit(goal)" v-if="goal.isOwner">
+                        <i class="far fa-edit pr-2"></i>Редактировать
+                    </a>
+                    <a href="void:javascript(0)" title="Добавить деньги" class="btn icon-btn btn-sm btn-outline-secondary"
+                       v-on:click="addMoney(goal)" v-show="!goal.isFinished">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                    <a href="void:javascript(0)" title="Посмотреть историю" class="btn icon-btn btn-sm btn-outline-secondary"
+                       v-on:click="edit(goal, true)">
+                        <i class="fas fa-history"></i>
+                    </a>
+                    <a href="/Template/Delete/8" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-if="goal.isOwner">
+                        <span class="ion ion-md-trash"></span>
+                    </a>
+                    <div class="d-inline-flex align-items-center align-middle float-right" v-if="!goal.isOwner">
+                        <span class="px-1 ml-2 ml-lg-0">{{ goal.userName }}</span>
+                        <img v-bind:src="goal.imageLink" alt="User image" class="d-block ui-w-30 rounded-circle">
+                    </div>
+                    <div class="d-inline-flex pt-2 float-right text-secondary" v-else-if="goal.isShowInCollective">
+                        <i class="fas fa-users" title="Эту цель видят все в группе."></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-xl-4" v-for="goal in goals" style="display: none;">
+
+        <div class="card mb-4">
+            <div class="card-body pb-0">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ goal.name }}</a>
+                        <span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>
+                        <span class="badge badge-success align-text-bottom ml-1" v-show="goal.isFinished">Закончен</span>
+                        @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)
+                        {
+                            <div class="text-muted small mb-1" v-show="!goal.isShowInCollective">Видите только вы</div>
+                            <div class="text-muted small mb-1" v-show="goal.isShowInCollective">Видят все</div>
+                        }
+                    </div>
+                    <div class="btn-group team-actions">
+                        <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown">
+                            <i class="ion ion-ios-more"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="javascript:void(0)" v-on:click="addMoney(goal.id)">Добавить деньги</a>
+                            <a class="dropdown-item" href="javascript:void(0)" v-on:click="edit(goal)">Редактировать</a>
+                            <a class="dropdown-item" href="javascript:void(0)">Remove</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    {{ goal.description }}
+                </div>
+            </div>
+            <hr class="m-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center small">
+                    <div class="font-weight-bold">{{ goal.percent }}%</div>
+                    <div class="text-muted">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.totalMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }} </div>
+                </div>
+                <div class="progress mt-1" style="height: 3px;">
+                    <div class="progress-bar" v-bind:style="'width: '+ goal.percent +'%;'"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <div class="text-muted small">Начало </div>
+                        <div class="small font-weight-bold">{{  getDateByFormat(goal.dateStart, 'DD.MM.YYYY') }}</div>
+                    </div>
+                    <div class="col">
+                        <div class="text-muted small">Окончание</div>
+                        <div class="small font-weight-bold">{{  getDateByFormat(goal.dateEnd, 'DD.MM.YYYY') }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @await Html.PartialAsync("_EditGoal")
 

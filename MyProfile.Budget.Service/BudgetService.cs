@@ -60,16 +60,16 @@ namespace MyProfile.Budget.Service
             switch (template.PeriodTypeID)
             {
                 case (int)PeriodTypesEnum.Year:
-                    budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Month);
+                    budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Month).ToList();
                     totalCounter = 12;
                     break;
                 case (int)PeriodTypesEnum.Years10:
-                    budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Year);
+                    budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Year).ToList();
                     totalCounter = 10;
                     break;
                 case (int)PeriodTypesEnum.Month:
                 default:
-                    budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Day);
+                    budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Day).ToList();
                     totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
                     break;
             }
@@ -363,7 +363,7 @@ namespace MyProfile.Budget.Service
             {
                 foreach (var item in record)
                 {
-                    if (item.CollectionSectionIDs.Count > 0)
+                    if (item.CollectionSectionIDs.Count() > 0)
                     {
                         item.Total += record.Where(x => item.CollectionSectionIDs.Contains(x.SectionID)).Sum(x => x.Total);
                     }

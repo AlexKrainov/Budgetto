@@ -28,7 +28,7 @@ namespace MyProfile.Budget.Service
 
         public async Task<RecordModelView> GetByID(int id)
         {
-            return await repository.GetAll<BudgetRecord>(x => x.ID == id && x.UserID == UserInfo.UserID)
+            return await repository.GetAll<BudgetRecord>(x => x.ID == id && x.UserID == UserInfo.Current.ID)
                 .Select(x => new RecordModelView
                 {
                     ID = id,
@@ -101,7 +101,7 @@ namespace MyProfile.Budget.Service
                     DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
                     Description = budgetRecord.Description,
                     IsHide = budgetRecord.IsConsider,
-                    UserID = UserInfo.UserID,
+                    UserID = UserInfo.Current.ID,
                     Total = budgetRecord.Money,
                     RawData = budgetRecord.RawData,
                     CurrencyID = budgetRecord.CurrencyID,
@@ -118,8 +118,34 @@ namespace MyProfile.Budget.Service
             return true;
         }
 
+        public async Task<bool> RemoveRecord(BudgetRecordModelView record)
+        {
+            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
 
-        public IList<IGrouping<int, TmpBudgetRecord>> GetBudgetRecordsGroup(
+            if (db_record != null)
+            {
+                db_record.IsDeleted = true;
+                db_record.DateTimeDelete = DateTime.Now.ToUniversalTime();
+                await repository.UpdateAsync(db_record, true);
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> RecoveryRecord(BudgetRecordModelView record)
+        {
+            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+
+            if (db_record != null)
+            {
+                db_record.IsDeleted = false;
+                db_record.DateTimeDelete = null;
+                await repository.UpdateAsync(db_record, true);
+                return true;
+            }
+            return false;
+        }
+
+        public IQueryable<IGrouping<int, TmpBudgetRecord>> GetBudgetRecordsGroup(
             DateTime from,
             DateTime to,
             Func<TmpBudgetRecord, int> groupBy,
@@ -135,18 +161,15 @@ namespace MyProfile.Budget.Service
                     SectionTypeID = x.BudgetSection.SectionTypeID,
                     AreaID = x.BudgetSection.BudgetArea.ID,
                     AreaName = x.BudgetSection.BudgetArea.Name,
-                    CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
+                    CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0),
                 })
               .GroupBy(groupBy)
-              .ToList();
+              .AsQueryable();
         }
 
-        public IList<IGrouping<DateTime, TmpBudgetRecord>> GetBudgetRecordsGroupByDate(
-            DateTime from,
-            DateTime to,
-            Expression<Func<BudgetRecord, bool>> expression = null)
+        public async Task<IQueryable<IGrouping<DateTime, TmpBudgetRecord>>> GetBudgetRecordsGroupByDate(CalendarFilterModels filter)
         {
-            return _getBudgetRecords(from, to, expression)
+            return repository.GetAll(await getExpressionByCalendarFilter(filter))
                 .Select(x => new TmpBudgetRecord
                 {
                     Total = x.Total,
@@ -155,10 +178,10 @@ namespace MyProfile.Budget.Service
                     SectionName = x.BudgetSection.Name,
                     AreaID = x.BudgetSection.BudgetArea.ID,
                     AreaName = x.BudgetSection.BudgetArea.Name,
-                    CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0).ToList(),
+                    CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0)
                 })
               .GroupBy(x => x.DateTimeOfPayment.Date)
-              .ToList();
+              .AsQueryable();
         }
 
         private IQueryable<BudgetRecord> _getBudgetRecords(
@@ -185,6 +208,7 @@ namespace MyProfile.Budget.Service
 
         public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsByFilter(CalendarFilterModels filter)
         {
+            var currentUserID = UserInfo.Current.ID;
             var expression = await getExpressionByCalendarFilter(filter);
 
             return await repository
@@ -201,12 +225,17 @@ namespace MyProfile.Budget.Service
                   CurrencyID = x.CurrencyID,
                   CurrencyNominal = x.CurrencyNominal,
                   CurrencyRate = x.CurrencyRate,
+                  CurrencySpecificCulture = x.Currency.SpecificCulture,
+                  CurrencyCodeName = x.Currency.CodeName,
                   DateTimeOfPayment = x.DateTimeOfPayment,
                   SectionID = x.BudgetSectionID,
                   SectionName = x.BudgetSection.Name,
                   AreaID = x.BudgetSection.BudgetArea.ID,
                   AreaName = x.BudgetSection.BudgetArea.Name,
                   IsShowForCollection = x.IsShowForCollection,
+                  IsOwner = x.UserID == currentUserID,
+                  UserName = x.User.Name + " " + x.User.LastName,
+                  ImageLink = x.User.ImageLink,
               })
               .OrderByDescending(x => x.DateTimeOfPayment.Date)
               .ToListAsync();
@@ -238,34 +267,14 @@ namespace MyProfile.Budget.Service
                   AreaID = x.BudgetSection.BudgetArea.ID,
                   AreaName = x.BudgetSection.BudgetArea.Name,
                   IsShowForCollection = x.IsShowForCollection,
+                  IsOwner = x.UserID == currentUserID,
+                  UserName = x.User.Name + " " + x.User.LastName,
+                  ImageLink = x.User.ImageLink
               })
               .OrderByDescending(x => x.ID)
               .Take(count)
               //.OrderBy(x => x.ID)
               .ToListAsync();
-        }
-
-        private BudgetRecordModelView get(BudgetRecord x)
-        {
-            return new BudgetRecordModelView
-            {
-                ID = x.ID,
-                DateTimeCreate = x.DateTimeCreate,
-                DateTimeEdit = x.DateTimeEdit,
-                Description = x.Description,
-                IsConsider = x.IsHide,
-                RawData = x.RawData,
-                Money = x.Total,
-                CurrencyID = x.CurrencyID,
-                CurrencyNominal = x.CurrencyNominal,
-                CurrencyRate = x.CurrencyRate,
-                DateTimeOfPayment = x.DateTimeOfPayment,
-                SectionID = x.BudgetSectionID,
-                SectionName = x.BudgetSection.Name,
-                AreaID = x.BudgetSection.BudgetArea.ID,
-                AreaName = x.BudgetSection.BudgetArea.Name,
-                IsShowForCollection = x.IsShowForCollection,
-            };
         }
 
         public async Task<decimal> GetTotalSpendsForLimitByFilter(CalendarFilterModels filter)
@@ -286,6 +295,10 @@ namespace MyProfile.Budget.Service
             {
                 List<Guid> allCollectiveUserIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
                 expression = expression.And(x => allCollectiveUserIDs.Contains(x.UserID));
+
+                var userIDs_withoutCurrent = allCollectiveUserIDs.Where(x => x != currentUserID).ToList();
+
+                filter.Sections.AddRange(await repository.GetAll<BudgetSection>(x => userIDs_withoutCurrent.Contains(x.UserID ?? Guid.Parse("086d7c26-1d8d-4cc7-e776-08d7eab4d0ed"))).Select(x => x.ID).ToListAsync());
             }
             else
             {
