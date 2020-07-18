@@ -102,6 +102,27 @@ namespace MyProfile.Limit.Service
                 .FirstOrDefaultAsync();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <param name="isRemove">== true - remove, == false - recovery</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveOrRecovery(LimitModelView limit, bool isRemove)
+        {
+            var db_limit = await repository.GetAll<Entity.Model.Limit>(x => x.ID == limit.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+
+            if (db_limit != null)
+            {
+                db_limit.IsDeleted = isRemove;
+                //db_limit.date = DateTime.Now.ToUniversalTime();
+                await repository.UpdateAsync(db_limit, true);
+                return true;
+            }
+            return false;
+        }
+
         public async Task<List<LimitModelView>> GetLimitListView(Expression<Func<Entity.Model.Limit, bool>> expression = null)
         {
             var currentUser = UserInfo.Current;

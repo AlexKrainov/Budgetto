@@ -121,3 +121,4 @@ var RecordVue = new Vue({
 	methods: {
 	}
 });
+

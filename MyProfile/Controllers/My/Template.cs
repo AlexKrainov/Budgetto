@@ -184,7 +184,7 @@ namespace MyProfile.Controllers
 
 		public async Task<JsonResult> GetTemplates()
 		{
-			var templates = await templateService.GetTemplates(x => x.UserID == UserInfo.Current.ID);
+			var templates = await templateService.GetTemplates();
 			return Json(new { isOk = true, templates });
 		}
 
@@ -240,12 +240,33 @@ namespace MyProfile.Controllers
 		}
 
 
-		[HttpGet]
-		public IActionResult Delete(int id)
-		{
-			repository.Delete<MyProfile.Entity.Model.Template>(id);
 
-			return RedirectToAction("List");
+		[HttpPost]
+		public async Task<JsonResult> Remove([FromBody] TemplateViewModel template)
+		{
+			try
+			{
+				await templateService.RemoveOrRecovery(template, isRemove: true);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { isOk = false, ex.Message });
+			}
+			return Json(new { isOk = true, template });
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> Recovery([FromBody] TemplateViewModel template)
+		{
+			try
+			{
+				await templateService.RemoveOrRecovery(template, isRemove: false);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { isOk = false, ex.Message });
+			}
+			return Json(new { isOk = true, template });
 		}
 	}
 }

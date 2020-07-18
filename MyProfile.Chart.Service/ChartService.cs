@@ -300,5 +300,26 @@ namespace MyProfile.Chart.Service
             return charts;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chart"></param>
+        /// <param name="isRemove">== true - remove, == false - recovery</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveOrRecovery(ChartEditModel chart, bool isRemove)
+        {
+            var db_chart = await repository.GetAll<Chart>(x => x.ID == chart.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+
+            if (db_chart != null)
+            {
+                db_chart.IsDeleted = isRemove;
+                db_chart.LastDateEdit = DateTime.Now.ToUniversalTime();
+                await repository.UpdateAsync(db_chart, true);
+                return true;
+            }
+            return false;
+        }
+
     }
 }

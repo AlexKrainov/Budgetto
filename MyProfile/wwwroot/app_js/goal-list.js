@@ -48,6 +48,38 @@
                 GoalListVue.msnry.layout();
             }, 15);
         },
+        remove: function (goal) {
+            ShowLoading('#goal_' + goal.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/Goal/Remove",
+                data: JSON.stringify(goal),
+                context: goal,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    goal.isDeleted = response.isOk;
+                    HideLoading('#goal_' + goal.id);
+                }
+            });
+        },
+        recovery: function (goal) {
+            ShowLoading('#goal_' + goal.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/Goal/Recovery",
+                data: JSON.stringify(goal),
+                context: goal,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    goal.isDeleted = !response.isOk;
+                    HideLoading('#goal_' + goal.id);
+                }
+            });
+        },
     }
 });
 

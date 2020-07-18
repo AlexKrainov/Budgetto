@@ -32,7 +32,7 @@ namespace MyProfile.Entity.Model
 		/// by default if period month 31 (depends what cinde of month), if year - 12
 		/// </summary>
 		public int MaxRowInAPage { get; set; }
-		public bool IsDelete { get; set; }
+		public bool IsDeleted { get; set; }
 		/// <summary>
 		/// Default template in PeriodType
 		/// </summary>

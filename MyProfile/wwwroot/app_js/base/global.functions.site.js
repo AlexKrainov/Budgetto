@@ -201,3 +201,20 @@ function GetFlatpickrRuConfig(date, minDate, maxDate) {
         maxDate: maxDate,
     };
 }
+
+function ShowLoading(selector) {
+    $(selector).block({
+        message: '<div class="sk-wave sk-primary"><div class="sk-rect sk-rect1"></div> <div class="sk-rect sk-rect2"></div> <div class="sk-rect sk-rect3"></div> <div class="sk-rect sk-rect4"></div> <div class="sk-rect sk-rect5"></div></div>',
+        css: {
+            backgroundColor: 'transparent',
+            border: '0'
+        },
+        overlayCSS: {
+            backgroundColor: '#fff',
+            opacity: 0.8
+        }
+    });
+}
+function HideLoading(selector) {
+    $(selector).unblock();
+}

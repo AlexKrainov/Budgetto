@@ -65,6 +65,7 @@ $(function () {
                 //RecordVue.recordComponent.edit(record.id);
             },
             remove: function (record) {
+                ShowLoading('#record_' + record.id);
 
                 return $.ajax({
                     type: "POST",
@@ -75,11 +76,13 @@ $(function () {
                     dataType: 'json',
                     success: function (response) {
                         record.isDeleted = response.isOk;
+                        HideLoading('#record_' + record.id);
                         //calendar.after_loading(response);
                     }
                 });
             },
-            recovery: function(record) {
+            recovery: function (record) {
+                ShowLoading('#record_' + record.id);
                 return $.ajax({
                     type: "POST",
                     url: "/Budget/RecoveryRecord",
@@ -89,6 +92,7 @@ $(function () {
                     dataType: 'json',
                     success: function (response) {
                         record.isDeleted = !response.isOk;
+                        HideLoading('#record_' + record.id);
                         //calendar.after_loading(response);
                     }
                 });
@@ -151,6 +155,7 @@ var filter = {
 var timeline = {
     isLoading: true, //flag for loading ajax query 
     search_click: function () {
+        
         filter.serialize(true);
         timeline.init();
         //calendar.calHeatMap.destroy();
@@ -235,7 +240,11 @@ var timeline = {
         $("#to_up .badge").text(have + "/" + count);
     },
     toggleSpinner: function (isShowSpinner) {
-
+        if (isShowSpinner) {
+            ShowLoading('#filter');
+        } else {
+            HideLoading('#filter');
+        }
     }
 }
 

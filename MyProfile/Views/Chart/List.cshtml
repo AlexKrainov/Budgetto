@@ -1,89 +1,52 @@
 ﻿
 @{
-    ViewData["Title"] = "List";
+    ViewData["Title"] = "Графики";
 }
 
 @section Styles {
-    <style>
-        .chart {
-            background-size: 215px;
-            background-repeat: no-repeat;
-        }
 
-        .card-chart_1 {
-            background-image: url(/img/chart/line.png);
-        }
-
-        .card-chart_2 {
-            background-image: url(/img/chart/bars.png);
-        }
-
-        .card-chart_3 {
-            background-image: url(/img/chart/pie.png);
-        }
-
-        .card-chart_4 {
-            background-image: url(/img/chart/doughnut.png);
-        }
-
-        .card-chart_5 {
-            background-image: url(/img/chart/bubbles.png);
-        }
-
-        .card-chart_6 {
-            background-image: url(/img/chart/grouped.png);
-        }
-    </style>
 }
 
 @section Scripts {
+    <script src="~/vendor/libs/masonry/masonry.js"></script>
+
     <script src="~/app_js/chart-list.js"></script>
 }
 @*https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/*@
 @*https://localhost:44394/Pages/EducationCoursesV1*@
 
+<section id="chart-list-vue">
 
-<h4 class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold pt-2 mb-4">
-    <div class="col-12 col-md px-0 pb-2">Графики </div>
-    <a class="btn btn-primary rounded-pill d-block" href="/Chart/Edit">
-        <span class="ion ion-md-add"></span>&nbsp; Добавить график
-    </a>
-    @*<div class="col-12 col-md-3 px-0 pb-2">
-            <input type="text" class="form-control" placeholder="Search...">
-        </div>*@
-</h4>
-<div id="chart-list-vue">
-
+    <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+        <span class="lnr lnr-pie-chart display-4 text-primary mr-2"></span>
+        <span class="px-0 pb-2 pt-2">
+            Графики
+        </span>
+        <span class="px-0 pb-2 ml-4">
+            <a class="btn btn-outline-primary rounded-pill" href="/Chart/Edit">Добавить новый график</a>
+        </span>
+    </h4>
 
     <ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
         <li class="nav-item">
-            <a v-bind:class="['nav-link', activeChartPeriodTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeChartPeriodTypeID = -1">Все графики</a>
+            <a v-bind:class="['nav-link', activeChartPeriodTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
+               v-on:click="activeChartPeriodTypeID = -1; reloadView()">Все лимиты</a>
         </li>
         <li class="nav-item">
-            <a v-bind:class="['nav-link', activeChartPeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeChartPeriodTypeID = 1">По дням</a>
+            <a v-bind:class="['nav-link', activeChartPeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
+               v-on:click="activeChartPeriodTypeID = 1; reloadView()">По дням</a>
         </li>
         <li class="nav-item">
-            <a v-bind:class="['nav-link', activeChartPeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)" v-on:click="activeChartPeriodTypeID = 3">По месяцам</a>
+            <a v-bind:class="['nav-link', activeChartPeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
+               v-on:click="activeChartPeriodTypeID = 3; reloadView()">По месяцам</a>
         </li>
     </ul>
-    <div class="row">
-        <div class="col-sm-6 col-xl-4"
+    <div class="row" id="charts">
+        <div class="col-sm-6 col-xl-4 pt-5 masonry-item-sizer position-absolute"></div>
+        <div class="col-sm-6 col-xl-4 masonry-item "
              v-for="chart in charts"
              v-show="activeChartPeriodTypeID == -1 ? true : chart.isShowBudgetMonth && activeChartPeriodTypeID == 1 || chart.isShowBudgetYear && activeChartPeriodTypeID == 3">
-            <div class="card mb-4">
-                <h6 class="card-header with-elements border-0 pr-0 pb-0">
-                    <div class="card-header-elements ml-auto" style="margin-bottom: -41px;">
-                        <div class="btn-group mr-3">
-                            <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" style="z-index:5;">
-                                <i class="ion ion-ios-more"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" id="age-users-dropdown-menu">
-                                <a class="dropdown-item" v-bind:href="'/Chart/Edit/' + chart.id">Редактировать</a>
-                                <a class="dropdown-item text-danger" href="javascript:void(0)">Удалить</a>
-                            </div>
-                        </div>
-                    </div>
-                </h6>
+            <div class="card mb-4 custom-card-hover border-primary" v-if="chart.isDeleted == false" v-bind:id="'chart_' + chart.id">
                 <div class="w-100">
                     <a href="javascript:void(0)" class="card-img-top d-block ui-rect-60 ui-bg-cover chart" v-bind:class="'card-chart_'+chart.chartTypeID">
                         <div class="d-flex justify-content-between align-items-end ui-rect-content p-3">
@@ -91,78 +54,65 @@
                                 <span class="badge badge-primary">{{ chart.chartTypeName }}</span>
                             </div>
                             <div class="text-big">
-                                <span v-show="!chart.isShowBudgetMonth" class="badge badge-secondary" title="Показывать на ....">Месяц</span>
-                                <span v-show="!chart.isShowBudgetYear" class="badge badge-secondary">Год</span>
+
+                                <span v-show="!chart.isShowBudgetMonth" class="badge badge-secondary" title="Показывать на ...." style="opacity: .3;">Месяц</span>
                                 <span v-show="chart.isShowBudgetMonth" class="badge badge-success">Месяц</span>
+                                <span v-show="!chart.isShowBudgetYear" class="badge badge-secondary" style="opacity: .3;">Год</span>
                                 <span v-show="chart.isShowBudgetYear" class="badge badge-success">Год</span>
                             </div>
                         </div>
                     </a>
                 </div>
+                <hr class="m-0">
                 <div class="card-body">
                     <h5 class="mb-3 display-inline"><a href="javascript:void(0)" class="text-body ">{{ chart.name }}</a></h5>
                     <p class="text-muted mb-3">{{ chart.description }}</p>
-                    @*<div class="media">
-                            <div class="media-body">
-                                <div class="ui-stars">
-                                    <div class="ui-star filled">
-                                        <i class="ion ion-md-star"></i>
-                                        <i class="ion ion-md-star"></i>
-                                    </div>
-                                    <div class="ui-star filled">
-                                        <i class="ion ion-md-star"></i>
-                                        <i class="ion ion-md-star"></i>
-                                    </div>
-                                    <div class="ui-star filled">
-                                        <i class="ion ion-md-star"></i>
-                                        <i class="ion ion-md-star"></i>
-                                    </div>
-                                    <div class="ui-star filled">
-                                        <i class="ion ion-md-star"></i>
-                                        <i class="ion ion-md-star"></i>
-                                    </div>
-                                    <div class="ui-star half-filled">
-                                        <i class="ion ion-md-star"></i>
-                                        <i class="ion ion-md-star"></i>
-                                    </div>
-                                </div>
-                                <a href="javascript:void(0)" class="text-muted small">55</a>
+                </div>
+                <hr class="m-0">
+                <div class="card-footer p-3">
+                    <a v-bind:href="'/Chart/Edit/' + chart.id" class="btn btn-primary btn-sm">
+                        <i class="far fa-edit pr-2"></i>Редактировать
+                    </a>
+                    <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-on:click="remove(chart)">
+                        <span class="ion ion-md-trash"></span>
+                    </a>
+                    <div class="d-inline-flex align-items-center align-middle float-right ml-1">
+                        <span class="px-1 ml-2 ml-lg-0" title="Последний раз редактировалось">{{ getDateByFormat(chart.lastDateEdit, 'DD.MM.YYYY') }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4 custom-card-hover border-secondary" v-else-if="chart.isDeleted" v-bind:id="'chart_' + chart.id">
+                <div class="w-100 deleted-item">
+                    <a href="javascript:void(0)" class="card-img-top d-block ui-rect-60 ui-bg-cover chart" v-bind:class="'card-chart_'+chart.chartTypeID">
+                        <div class="d-flex justify-content-between align-items-end ui-rect-content p-3">
+                            <div class="flex-shrink-1">
+                                <span class="badge badge-primary">{{ chart.chartTypeName }}</span>
                             </div>
-                            <div class="text-muted small">
-                                <i class="ion ion-md-time text-primary"></i>
-                                <span>12h</span>
+                            <div class="text-big">
+
+                                <span v-show="!chart.isShowBudgetMonth" class="badge badge-secondary" title="Показывать на ...." style="opacity: .3;">Месяц</span>
+                                <span v-show="chart.isShowBudgetMonth" class="badge badge-success">Месяц</span>
+                                <span v-show="!chart.isShowBudgetYear" class="badge badge-secondary" style="opacity: .3;">Год</span>
+                                <span v-show="chart.isShowBudgetYear" class="badge badge-success">Год</span>
                             </div>
-                        </div>*@
+                        </div>
+                    </a>
+                </div>
+                <hr class="m-0">
+                <div class="card-body deleted-item">
+                    <h5 class="mb-3 display-inline"><a href="javascript:void(0)" class="text-body ">{{ chart.name }}</a></h5>
+                    <p class="text-muted mb-3">{{ chart.description }}</p>
+                </div>
+                <hr class="m-0">
+                <div class="card-footer p-3">
+                    <a href="javascript:void(0)" class="btn btn-success btn-sm" v-on:click="recovery(chart)">
+                        <i class="fa fa-undo pr-2"></i>Восстановить
+                    </a>
+                    <div class="d-inline-flex align-items-center align-middle float-right ml-1 deleted-item">
+                        <span class="px-1 ml-2 ml-lg-0" title="Последний раз редактировалось">{{ getDateByFormat(chart.lastDateEdit, 'DD.MM.YYYY') }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <hr class="border-light mt-2 mb-4">
-
-    <nav>
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="javascript:void(0)">«</a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href="javascript:void(0)">1</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">2</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">3</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">4</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">5</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">»</a>
-            </li>
-        </ul>
-    </nav>
-</div>
+</section>

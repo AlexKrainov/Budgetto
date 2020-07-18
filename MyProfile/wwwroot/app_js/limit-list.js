@@ -181,7 +181,37 @@ var LimitListVue = new Vue({
         closeEditModal: function () {
             this.limit = { periodName: '', periodTypeID: -1 };
         },
+        remove: function (limit) {
+            ShowLoading('#limit_' + limit.id);
 
+            return $.ajax({
+                type: "POST",
+                url: "/Limit/Remove",
+                data: JSON.stringify(limit),
+                context: limit,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    limit.isDeleted = response.isOk;
+                    HideLoading('#limit_' + limit.id);
+                }
+            });
+        },
+        recovery: function (limit) {
+            ShowLoading('#limit_' + limit.id);
+            return $.ajax({
+                type: "POST",
+                url: "/Limit/Recovery",
+                data: JSON.stringify(limit),
+                context: limit,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    limit.isDeleted = !response.isOk;
+                    HideLoading('#limit_' + limit.id);
+                }
+            });
+        },
 
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);

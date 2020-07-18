@@ -45,9 +45,8 @@
         <div class="col-sm-6 col-xl-4 pt-5 masonry-item-sizer position-absolute"></div>
         <div class=" col-sm-6 col-xl-4 masonry-item "
              v-for="limit in limits"
-             v-bind:class="limit.isShow && (activeLimitPeriodTypeID == -1 || limit.periodTypeID == activeLimitPeriodTypeID) ? '' : 'd-none'"
-             v-bind:data-id="'limit_' + limit.id">
-            <div class="card mb-4 custom-card-hover" v-bind:class="limit.isOwner ? 'border-primary' : 'border-secondary'">
+             v-bind:class="limit.isShow && (activeLimitPeriodTypeID == -1 || limit.periodTypeID == activeLimitPeriodTypeID) ? '' : 'd-none'">
+            <div class="card mb-4 custom-card-hover" v-bind:class="limit.isOwner ? 'border-primary' : 'border-secondary'" v-bind:id="'limit_' + limit.id" v-if="limit.isDeleted == false">
                 <div class="card-body card-body pb-0">
                     <div class="d-flex justify-content-between align-items-start">
                         <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" v-on:click="edit(limit)" title="Редактировать" v-if="limit.isOwner">{{ limit.name }}</a>
@@ -84,9 +83,9 @@
                         <h6 class="mt-1" v-show="limit.dateEnd">{{  getDateByFormat(limit.dateEnd, 'MM.YYYY') }}</h6>
                     </div>
                     @*<div class="col-4">
-                            <div class="text-muted small display-inline">Цель</div>
-                            <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
-                        </div>*@
+                    <div class="text-muted small display-inline">Цель</div>
+                    <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
+                </div>*@
                 </div>
                 <hr class="m-0">
                 <div class="card-footer p-3">
@@ -94,9 +93,9 @@
                         <i class="far fa-edit pr-2"></i>Редактировать
                     </a>
                     @*<a href="/Budget/Month?templateID=8" title="Посмотреть" class="btn icon-btn btn-sm btn-outline-secondary">
-                            <i class="far fa-eye"></i>
-                        </a>*@
-                    <a href="/Template/Delete/8" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-if="limit.isOwner">
+                    <i class="far fa-eye"></i>
+                </a>*@
+                    <a href="void:javascript(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-if="limit.isOwner" v-on:click="remove(limit)">
                         <span class="ion ion-md-trash"></span>
                     </a>
                     <div class="d-inline-flex align-items-center align-middle float-right" v-if="!limit.isOwner">
@@ -106,6 +105,49 @@
                     <div class="d-inline-flex pt-2 float-right text-secondary" v-else-if="limit.isShowInCollective">
                         <i class="fas fa-users" title="Этот лимит видят все в группе."></i>
                     </div>
+                </div>
+            </div>
+            <div class="card mb-4 custom-card-hover border-secondary" v-bind:id="'limit_' + limit.id" v-else-if="limit.isDeleted">
+                <div class="card-body card-body pb-0 deleted-item">
+                    <div class="d-flex justify-content-between align-items-start ">
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold " >{{ limit.name }}</a>
+                        <span class="badge badge-success align-text-bottom ml-1" v-show="limit.periodTypeID == 1">{{ limit.periodName }}</span>
+                        <span class="badge badge-info align-text-bottom ml-1" v-show="limit.periodTypeID == 3">{{ limit.periodName }}</span>
+                    </div>
+                    <div class="mt-3" v-show="limit.description">
+                        {{ limit.description }}
+                    </div>
+                </div>
+                <div class="card-body py-2 deleted-item" >
+                    <div class="text-muted small mb-2">Категории</div>
+                    <div class="d-flex flex-wrap">
+                        <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="section in limit.sections" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+                            <i v-bind:class="section.cssIcon"></i>
+                            <span class="ml-1">{{section.name}}</span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="card-body pb-2 pt-1 row deleted-item">
+                    <div class="col-4">
+                        <div class="text-muted small display-inline">Цель</div>
+                        <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
+                    </div>
+                    <div class="col-3">
+                        <div class="text-muted small display-inline">Начало</div>
+                        <h6 class="mt-1">{{  getDateByFormat(limit.dateStart, 'MM.YYYY') }}</h6>
+                    </div>
+                    <div class="col-5">
+                        <div class="text-muted small display-inline">Конец</div>
+                        <span class="badge badge-outline-danger ml-1" v-show="limit.isFinishLimit">Завершен</span>
+                        <h6 class="mt-1" v-show="limit.dateEnd">{{  getDateByFormat(limit.dateEnd, 'MM.YYYY') }}</h6>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="card-footer p-3">
+                    <a href="javascript:void(0)" class="btn btn-success btn-sm" v-on:click="recovery(limit)">
+                        <i class="fa fa-undo pr-2"></i>Восстановить
+                    </a>
                 </div>
             </div>
         </div>

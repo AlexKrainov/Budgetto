@@ -56,8 +56,8 @@
 		<a asp-area="" asp-controller="Goal" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-rocket"></i><div>Цели</div></a>
 	</li>
 
-	<li class="sidenav-item@(currentPage == "Chart/Edit" ? " active" : "")">
-		<a asp-area="" asp-controller="Chart" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon ion ion-md-grid"></i><div>Графики</div></a>
+	<li class="sidenav-item@(currentPage == "Chart/List" ? " active" : "")">
+		<a asp-area="" asp-controller="Chart" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-pie-chart"></i><div>Графики</div></a>
 	</li>
 	<!-- Dashboards -->
 	<li class="sidenav-item@(currentPage.StartsWith("Dashboards/") ? " active open" : "")">

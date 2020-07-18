@@ -39,7 +39,7 @@
         <div class="col-sm-6 col-xl-4 pt-5 masonry-item-sizer position-absolute"></div>
         <div class="col-sm-6 col-xl-4 masonry-item" v-for="template in templates"
              v-bind:class="template.isShow && (activeTemplatePeriodTypeID == -1 || template.periodTypeID == activeTemplatePeriodTypeID) ? '' : 'd-none'">
-            <div class="card mb-4 border-primary custom-card-hover">
+            <div class="card mb-4 border-primary custom-card-hover" v-bind:id="'template_' + template.id" v-if="template.isDeleted == false">
                 <div class="card-body d-flex justify-content-between align-items-start pb-3">
                     <div>
                         <a v-bind:href="'/Template/Edit/'+ template.id" class="text-body text-big font-weight-semibold" title="Реактировать">{{ template.name }}</a>
@@ -63,9 +63,31 @@
                     <a class="btn icon-btn btn-sm btn-outline-secondary" v-bind:href="getLinkForView(template)" title="Посмотреть">
                         <i class="far fa-eye"></i>
                     </a>
-
-                    <a class="btn icon-btn btn-sm btn-outline-secondary" v-bind:href="'/Template/Delete/'+ template.id" title="Удалить">
-                        <span class="ion ion-md-trash" ></span>
+                    <a href="void:javascript(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-on:click="remove(template)">
+                        <span class="ion ion-md-trash"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="card mb-4 custom-card-hover border-secondary" v-bind:id="'template_' + template.id" v-if="template.isDeleted">
+                <div class="card-body d-flex justify-content-between align-items-start pb-3 deleted-item">
+                    <div>
+                        <a href="javascript:void(0) " class="text-body text-big font-weight-semibold">{{ template.name }}</a>
+                        <i class="ion ion-ios-star " v-if="template.isDefault" title="Шаблон по умолчанию" style="font-size: large; color: var(--orange);"></i>
+                        <i class="ion ion-ios-star-outline" v-else="template.isDefault" title="Шаблон не по умолчанию" style="font-size: large;"></i>
+                        <div class="text-muted small mt-1"> {{ template.columns.length }} {{ getRusName(template.columns.length) }}</div>
+                    </div>
+                    <div class="btn-group project-actions">
+                        <span class="badge badge-success align-text-bottom ml-1" v-show="template.periodTypeID == 1">{{ template.periodName }}</span>
+                        <span class="badge badge-info align-text-bottom ml-1" v-show="template.periodTypeID == 3">{{ template.periodName }}</span>
+                    </div>
+                </div>
+                <div class="card-body pb-3 deleted-item">
+                    {{ template.description }}
+                </div>
+                <hr class="m-0">
+                <div class="card-footer py-3">
+                    <a href="javascript:void(0)" class="btn btn-success btn-sm" v-on:click="recovery(template)">
+                        <i class="fa fa-undo pr-2"></i>Восстановить
                     </a>
                 </div>
             </div>

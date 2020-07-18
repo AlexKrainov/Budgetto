@@ -50,13 +50,13 @@ namespace MyProfile.Controllers.My
             {
                 return Json(new { isOk = false, ex.Message });
             }
-            return Json(new { isOk = true, chart });
+            return Json(new { isOk = true, chart, href = "/Chart/List" });
         }
 
         [HttpGet]
         public async Task<IActionResult> LoadChart(int id)
         {
-            var chart = await chartService.GetChartListView(x => x.ID == id);
+            var chart = await chartService.GetChartListView(x => x.ID == id );
 
             return Json(new { chart = chart.FirstOrDefault() });
         }
@@ -72,5 +72,32 @@ namespace MyProfile.Controllers.My
             return Json(new { bigChartsData = chartsData });
         }
 
+        [HttpPost]
+        public async Task<JsonResult> Remove([FromBody] ChartEditModel chart)
+        {
+            try
+            {
+                await chartService.RemoveOrRecovery(chart, isRemove: true);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, ex.Message });
+            }
+            return Json(new { isOk = true, chart });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Recovery([FromBody] ChartEditModel chart)
+        {
+            try
+            {
+                await chartService.RemoveOrRecovery(chart, isRemove: false);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, ex.Message });
+            }
+            return Json(new { isOk = true, chart });
+        }
     }
 }

@@ -74,5 +74,34 @@ namespace MyProfile.Controllers.My
             return Json(new { goalChartsData = goalChartsData });
         }
 
+        [HttpPost]
+        public async Task<JsonResult> Remove([FromBody] GoalModelView goal)
+        {
+            try
+            {
+                await goalService.RemoveOrRecovery(goal, isRemove: true);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, ex.Message });
+            }
+            return Json(new { isOk = true, goal });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Recovery([FromBody] GoalModelView goal)
+        {
+            try
+            {
+                await goalService.RemoveOrRecovery(goal, isRemove: false);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, ex.Message });
+            }
+            return Json(new { isOk = true, goal });
+        }
+
+
     }
 }

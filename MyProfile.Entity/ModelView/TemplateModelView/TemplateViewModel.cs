@@ -20,6 +20,7 @@ namespace MyProfile.Entity.ModelView
         public bool IsShow { get; set; }
         public string Description { get; set; }
         public bool IsDefault { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class TemplateViewModel_Short

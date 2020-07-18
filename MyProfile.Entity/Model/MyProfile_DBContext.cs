@@ -65,12 +65,12 @@ namespace MyProfile.Entity.Model
                .Property(b => b.LimitPage_Show_IsFinished)
                .HasDefaultValue(true);
 
-            modelBuilder.Entity<VisibleElement>()
-                .Property(b => b.IsShow_BudgetMonth)
-                .HasDefaultValue(true);
-            modelBuilder.Entity<VisibleElement>()
-                .Property(b => b.IsShow_BudgetYear)
-                .HasDefaultValue(true);
+            //modelBuilder.Entity<VisibleElement>()
+            //    .Property(b => b.IsShow_BudgetMonth)
+            //    .HasDefaultValue(true);
+            //modelBuilder.Entity<VisibleElement>()
+            //    .Property(b => b.IsShow_BudgetYear)
+            //    .HasDefaultValue(true);
 
             modelBuilder.Entity<Limit>()
                 .Property(b => b.IsShow)

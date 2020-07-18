@@ -165,5 +165,25 @@ namespace MyProfile.Goal.Service
 
             return goals;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="goal"></param>
+        /// <param name="isRemove">== true - remove, == false - recovery</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveOrRecovery(GoalModelView goal, bool isRemove)
+        {
+            var db_item = await repository.GetAll<Entity.Model.Goal>(x => x.ID == goal.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+
+            if (db_item != null)
+            {
+                db_item.IsDeleted = isRemove;
+                //db_item. = DateTime.Now.ToUniversalTime();
+                await repository.UpdateAsync(db_item, true);
+                return true;
+            }
+            return false;
+        }
     }
 }

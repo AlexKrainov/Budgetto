@@ -68,5 +68,36 @@ namespace MyProfile.Controllers.My
 			return Json(new { limitsChartsData = limitChartsData });
 		}
 
+
+
+		[HttpPost]
+		public async Task<JsonResult> Remove([FromBody] LimitModelView limit)
+		{
+			try
+			{
+				await limitService.RemoveOrRecovery(limit, isRemove: true);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { isOk = false, ex.Message });
+			}
+			return Json(new { isOk = true, limit });
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> Recovery([FromBody] LimitModelView limit)
+		{
+			try
+			{
+				await limitService.RemoveOrRecovery(limit, isRemove: false);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { isOk = false, ex.Message });
+			}
+			return Json(new { isOk = true, limit });
+		}
+
+
 	}
 }

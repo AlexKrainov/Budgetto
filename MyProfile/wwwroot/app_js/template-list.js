@@ -52,7 +52,39 @@ var TemplateListVue = new Vue({
         },
         getRusName: function (num) {
             return GetRusName(num, ['Колонка', 'Колонки', 'Колонок']);
-        }
+        },
+        remove: function (template) {
+            ShowLoading('#template_' + template.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/Template/Remove",
+                data: JSON.stringify(template),
+                context: template,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    template.isDeleted = response.isOk;
+                    HideLoading('#template_' + template.id);
+                }
+            });
+        },
+        recovery: function (template) {
+            ShowLoading('#template_' + template.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/Template/Recovery",
+                data: JSON.stringify(template),
+                context: template,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    template.isDeleted = !response.isOk;
+                    HideLoading('#template_' + template.id);
+                }
+            });
+        },
     }
 });
 

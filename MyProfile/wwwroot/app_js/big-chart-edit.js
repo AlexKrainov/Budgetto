@@ -25,10 +25,17 @@
         elWizard.on("leaveStep", function (e, anchorObject, stepIndex, stepDirection) {
             let canGo = true;
 
-            if (stepIndex == 1) { //check for empty fields
-                if (ChartEditVue.chart.fields.length == 0) {
-
+            if (stepIndex == 0 && stepDirection == "forward") {
+                canGo = ChartEditVue.chart.chartTypeID > 0;
+                if (canGo == false) {
+                    $("#validChooseChartType").attr("style", "display:block");
+                } else {
+                    $("#validChooseChartType").removeAttr("style");
                 }
+            }
+
+            if (stepIndex == 1 && stepDirection == "forward") { //check for empty fields
+                canGo = ChartEditVue.chart.fields.length > 0 && ChartEditVue.validStep1();
             }
 
             return canGo;
@@ -68,16 +75,18 @@
                 }
             }
 
-            if (this.chart.id == 0) {
+
+            if (this.chart.id == undefined || this.chart.id <= 0) {
+                this.addField();
                 setTimeout(function () {
                     $('#big-chart-edit-vue').smartWizard("next");
-                }, 1000);
+                }, 500);
             } else {
                 //init control
                 setTimeout(function () {
 
                     for (var i = 0; i < ChartEditVue.chart.fields.length; i++) {
-                        let el_name = "#chart_section_" + ChartEditVue.chart.fields[i].id;
+                        let el_name = "#field_sections_" + ChartEditVue.chart.fields[i].id;
                         $(el_name).val(ChartEditVue.chart.fields[i].sections.map(x => x)).select2({ placeholder: 'Выбор категорий' });
 
                         el_name = "#chart_color_" + ChartEditVue.chart.fields[i].id;
@@ -105,8 +114,8 @@
             //init control
             setTimeout(function () {
 
-                let el_name = "#chart_section_" + ChartEditVue.fieldsCount;
-                $(el_name).select2({ placeholder: 'Выбор категорий' });
+                let el_name = "#field_sections_" + ChartEditVue.fieldsCount;
+                $(el_name).select2({ placeholder: 'Продукты и тд' });
 
                 el_name = "#chart_color_" + ChartEditVue.fieldsCount;
                 $(el_name).colorPick({
@@ -125,13 +134,17 @@
             }, 10);
         },
         save: function () {
+            if (this.validStep2() == false) {
+                return false;
+            }
+            ShowLoading("#big-chart-edit-vue");
             this.isSaving = true;
 
             try {
-                for (var i = 0; i < this.chart.fields.length; i++) {
-                    let el_name = "#chart_section_" + this.chart.fields[i].id;
-                    this.chart.fields[i].sections = $(el_name).select2("val");
-                }
+                //for (var i = 0; i < this.chart.fields.length; i++) {
+                //    let el_name = "#field_sections_" + this.chart.fields[i].id;
+                //    this.chart.fields[i].sections = $(el_name).select2("val");
+                //}
 
                 return sendAjax("/Chart/Save", this.chart, "POST", this)
                     .then(function (result) {
@@ -140,16 +153,64 @@
                         } else {
                             console.log(result.message);
                         }
-                        this.isSaving = false;
+                        ChartEditVue.isSaving = false;
+                        HideLoading("#big-chart-edit-vue");
+                        document.location.href = result.href;
                     });
 
             } catch (e) {
-                this.isSaving = false;
+                ChartEditVue.isSaving = false;
+                HideLoading("#big-chart-edit-vue");
             }
+        },
+        validStep1: function () {
+            let canGo = true;
+
+            for (var i = 0; i < this.chart.fields.length; i++) {
+                let field = this.chart.fields[i];
+
+                //validate name
+                let selector = "#field_name_" + field.id;
+                let $elName = $(selector);
+                if (!(field.name && field.name.length > 0)) {
+                    canGo = false;
+                    $elName.addClass("is-invalid");
+                } else {
+                    $elName.removeClass("is-invalid");
+                }
+
+                //validate sections
+                selector = "#field_sections_" + field.id;
+                let $elSection = $(selector);
+                field.sections = $elSection.val();
+                if (!(field.sections && field.sections.length > 0)) {
+                    canGo = false;
+                    $elSection.addClass("is-invalid");
+                    $elSection.next().find(".select2-selection").attr("style", "border-color: #d9534f;");
+                } else {
+                    $elSection.removeClass("is-invalid");
+                    $elSection.next().find(".select2-selection").removeAttr("style", "border-color: #d9534f;");
+                }
+            }
+            return canGo;
+        },
+        validStep2: function () {
+            let canGo = true;
+            if (this.chart.name && this.chart.name.length > 1) {
+                $("#chartName").removeClass("is-invalid");
+            } else {
+                canGo = false;
+                $("#chartName").addClass("is-invalid");
+            }
+
+            return canGo;
         },
         removeField: function (field) {
             let indexField = this.chart.fields.findIndex(x => x.id == field.id);
             this.chart.fields.splice(indexField, 1);
+        },
+        getRusName: function (num) {
+            return GetRusName(num, ['Поле', 'Поля', 'Полей']);
         }
     }
 });

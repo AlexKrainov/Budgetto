@@ -179,3 +179,32 @@ a.disabled {
 .deleted-item {
     opacity: .5;
 }
+
+.chart {
+    background-size: 215px;
+    background-repeat: no-repeat;
+}
+
+.card-chart_1 {
+    background-image: url(/img/chart/line.png);
+}
+
+.card-chart_2 {
+    background-image: url(/img/chart/bars.png);
+}
+
+.card-chart_3 {
+    background-image: url(/img/chart/pie.png);
+}
+
+.card-chart_4 {
+    background-image: url(/img/chart/doughnut.png);
+}
+
+.card-chart_5 {
+    background-image: url(/img/chart/bubbles.png);
+}
+
+.card-chart_6 {
+    background-image: url(/img/chart/grouped.png);
+}

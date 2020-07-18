@@ -125,9 +125,9 @@ namespace MyProfile.Template.Service
             return templateViewModel;
         }
 
-        public async Task<List<TemplateViewModel>> GetTemplates(Expression<Func<Template, bool>> predicate)
+        public async Task<List<TemplateViewModel>> GetTemplates()
         {
-            return await repository.GetAll<Template>(predicate)
+            return await repository.GetAll<Template>(x => x.UserID == UserInfo.Current.ID && x.IsDeleted == false)
                         .Select(x => new TemplateViewModel
                         {
                             ID = x.ID,
@@ -167,6 +167,34 @@ namespace MyProfile.Template.Service
                         })
                         .ToListAsync();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="isRemove">== true - remove, == false - recovery</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveOrRecovery(TemplateViewModel template, bool isRemove)
+        {
+            var db_item = await repository.GetAll<Template>(x => x.ID == template.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+
+            if (db_item != null)
+            {
+                db_item.IsDeleted = isRemove;
+                if (isRemove)
+                {
+                    db_item.DateDelete = DateTime.Now.ToUniversalTime();
+                }
+                else
+                {
+                    db_item.DateDelete = null;
+                }
+                await repository.UpdateAsync(db_item, true);
+                return true;
+            }
+            return false;
+        }
+
         public async Task<List<TemplateViewModel_Short>> GetNameTemplates(Expression<Func<Template, bool>> predicate)
         {
             return await repository.GetAll<Template>(predicate)
@@ -316,9 +344,11 @@ namespace MyProfile.Template.Service
                     templatesWithIsDefault[i].IsDefault = false;
                     repository.Update(templatesWithIsDefault[i]);
                 }
-               return await repository.SaveAsync();
+                return await repository.SaveAsync();
             }
             return 1;
         }
+
+
     }
 }

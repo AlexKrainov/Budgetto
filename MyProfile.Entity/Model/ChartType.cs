@@ -19,7 +19,7 @@ namespace MyProfile.Entity.Model
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
 		[Required]
-		[MaxLength(16)]
+		[MaxLength(24)]
 		public string Name { get; set; }
 		[Required]
 		[MaxLength(16)]

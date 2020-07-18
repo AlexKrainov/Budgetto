@@ -19,7 +19,8 @@ namespace MyProfile.Entity.ModelView.Chart
 		public string ChartTypeName { get; set; }
 		public DateTime DateCreate { get; set; }
 		public DateTime LastDateEdit { get; set; }
-	}
+        public bool IsDeleted { get; set; }
+    }
 
 	public class ChartFieldItem
 	{
