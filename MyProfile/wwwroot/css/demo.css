@@ -1,4 +1,8 @@
-.default-style .sidenav .app-brand.demo {
+.light-style .sidenav .app-brand.demo {
+  height: 66px;
+}
+
+.dark-style .sidenav .app-brand.demo {
   height: 66px;
 }
 
@@ -143,9 +147,16 @@ html:not(.material-style) .material-style-only {
   background: rgba(0,0,0,.04);
   color: #c7254e;
 }
+.dark-style .layout-example-block {
+  border-color: rgba(255,255,255,.2);
+  background: rgba(255,255,255,.1);
+}
 .layout-example-block code {
   background: none;
   color: #666;
+}
+.dark-style .layout-example-block code {
+  color: #fff;
 }
 
 .layout-example-block-inner {
@@ -160,21 +171,21 @@ html:not(.material-style) .material-style-only {
 
 .layout-example-block-sidenav {
   width: 24%;
-  background: #607d8b;
+  background: #607d8b !important;
 }
 .layout-example-block-sidenav code {
   color: #fff;
 }
 
 .layout-example-block-navbar {
-  background: #3ca99e;
+  background: #3ca99e !important;
 }
 .layout-example-block-navbar code {
   color: #fff;
 }
 
 .layout-example-block-content {
-  background: #9e9e9e;
+  background: #9e9e9e !important;
 }
 .layout-example-block-content code {
   color: #fff;
@@ -214,6 +225,10 @@ html:not(.material-style) .material-style-only {
   background: #fff;
 }
 
+.dark-style .layout-example-code {
+  background: #2f3238;
+}
+
 .layout-example-run {
   display: inline-block;
   margin: 3px;
@@ -222,6 +237,10 @@ html:not(.material-style) .material-style-only {
   background: transparent;
   white-space: nowrap;
   line-height: 1;
+}
+
+.dark-style .layout-example-run {
+  border-color: rgba(255, 255, 255, .2);
 }
 
 .layout-example-block-3 .layout-example-block-inner {
@@ -239,14 +258,18 @@ html:not(.material-style) .material-style-only {
       flex-grow: 1;
 }
 .layout-example-block-3 .layout-example-block-sidenav-horizontal {
-  background: #607d8b;
+  background: #607d8b !important;
 }
 .layout-example-block-3 .layout-example-block-container-fluid {
-  background: #fff;
+  background: #fff !important;
 }
 .layout-example-block-3 .layout-example-block-container-fluid code {
-  color: #666;
+  color: #666 !important;
 }
 .layout-example-block-3 .layout-example-block-footer {
-  background: #e6514a;
+  background: #e6514a !important;
+}
+
+.dark-style .layout-example-block-content .layout-example-block:not(.layout-example-block-sidenav-horizontal) code {
+  color: #666 !important;
 }

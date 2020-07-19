@@ -1,184 +1,215 @@
 ﻿@{
-	ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit";
 }
 
 @section Styles {
-	<link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />
-	<link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
-	<style>
-		.active-section {
-			border-left: 3px solid var(--blue) !important;
-			background: #D6EAF8;
-		}
+    <link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
+    <style>
+        .active-section {
+            border-left: 3px solid var(--blue) !important;
+            background: #D6EAF8;
+        }
 
-		.updated-item {
-			float: right;
-			margin-top: -20px;
-			margin-right: -32px;
-			color: var(--green);
-		}
+        .updated-item {
+            float: right;
+            margin-top: -20px;
+            margin-right: -32px;
+            color: var(--green);
+        }
 
-		.picker {
-			border-radius: 5px;
-			/*width: 40px;*/
-			width: 100%;
-			height: 20px;
-			cursor: pointer;
-			transition: all linear .2s;
-			border: thin solid #ccc;
-		}
+        .picker {
+            border-radius: 5px;
+            /*width: 40px;*/
+            width: 100%;
+            height: 20px;
+            cursor: pointer;
+            transition: all linear .2s;
+            border: thin solid #ccc;
+        }
 
 
-		#cssIcon > div.form-group {
-			height: 200px;
-			overflow-x: auto;
-			width: 103%;
-		}
+        #cssIcon > div.form-group {
+            height: 200px;
+            overflow-x: auto;
+            width: 103%;
+        }
 
-		.icon-box {
-			opacity: .8;
-			cursor: pointer;
-			margin: 5px 5px 5px;
-			display: inline-block;
-		}
+        .icon-box {
+            opacity: .8;
+            cursor: pointer;
+            margin: 5px 5px 5px;
+            display: inline-block;
+        }
 
-			.icon-box:hover {
-				opacity: 1;
-			}
+            .icon-box:hover {
+                opacity: 1;
+            }
 
-			.icon-box i {
-				font-size: large;
-			}
-	</style>
+            .icon-box i {
+                font-size: large;
+            }
+    </style>
 }
 
 @section Scripts {
-	<script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
-	<script src="~/app_js/section-list.js"></script>
+    <script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
+    <script src="~/js/section-list.js"></script>
 
-	@*<script src="~/app_js/vue-components/vue-select2-component.js"></script>*@
-	<script src="~/vendor/libs/select2/select2.js"></script>
+    @*<script src="~/js/vue-components/vue-select2-component.js"></script>*@
+    <script src="~/vendor/libs/select2/select2.js"></script>
 }
-
+<div class="" style="display: inline-block;">
+    <div class="card bg-warning border-0 text-body mb-4">
+        <div class="card-body d-flex  align-items-center p-2">
+            <i class="ion ion-md-time text-xlarge opacity-25"></i><div class="ml-2">
+                <div class="">Расходы (продукты)</div>
+                <div class="small opacity-50" style="margin-top: -5px;">
+                    Основные раходы
+                    <div class="ml-2" style="display: inline-block;">
+                        <i class="oi oi-layers d-block1"></i> +7
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
-	<div class="col-6" id="area-vue">
-		<!-- Latest events -->
-		<div class="card mb-4">
-			<h6 class="card-header with-elements">
-				<div class="card-header-title">Budget area</div>
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Search" v-model="searchText">
-					<div class="input-group-append">
-						<button type="button" class="btn btn-primary" v-on:click="create">Add</button>
-					</div>
-				</div>
-			</h6>
-			<ul class="list-group list-group-flush">
-				<li class="list-group-item py-3 cursor-pointer " v-for="area in areas" v-on:click="selectArea(area, $event)" v-show="area.isShow">
-					<i class="fa fa-circle updated-item" aria-hidden="true" v-show="area.isUpdated"></i>
-					<span class="float-right">
-						<i class="fa fa-project-diagram " style="color: var(--gray-dark);"></i>
-						{{ area.sections.length }}
-					</span>
-					<div class="font-weight-semibold">{{ area.name }}</div>
-					<small class="text-muted">{{ area.description }}</small>
-					<br />
-					<div class="inline-spacing">
-						<div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="section in area.sections" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
-							<i v-bind:class="section.cssIcon"></i>
-							<span class="ml-1">{{section.name}}</span>
-						</div>
-					</div>
-					<span>
-						<i class="fa fa-user" v-show="area.canEdit" title="Создали вы" style="color: var(--blue);"></i>
-						<i class="fa fa-user" v-show="!area.canEdit" v-bind:title="'Созданная пользователем : ' + area.owner" style="color: var(--red);"></i>
-						{{ area.owner }}
-					</span>
+    <div class="col-6" id="area-vue">
+        <!-- Latest events -->
+        <div class="card mb-4">
+            <h6 class="card-header with-elements">
+                <div class="card-header-title">Budget area</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" v-model="searchText">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" v-on:click="create">Add</button>
+                    </div>
+                </div>
+            </h6>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item py-3 cursor-pointer " v-for="area in areas" v-on:click="selectArea(area, $event)" v-show="area.isShow">
+                    <i class="fa fa-circle updated-item" aria-hidden="true" v-show="area.isUpdated"></i>
+                    <span class="float-right">
+                        <i class="fa fa-project-diagram " style="color: var(--gray-dark);"></i>
+                        {{ area.sections.length }}
+                    </span>
+                    <div class="font-weight-semibold">{{ area.name }}</div>
+                    <small class="text-muted">{{ area.description }}</small>
+                    <br />
+                    <div class="inline-spacing">
+                        <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="section in area.sections"
+                             v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+                            <i v-bind:class="section.cssIcon"></i>
+                            <span class="ml-1">{{section.name}}</span>
+                        </div>
+                        <div class="" style="display: inline-block;" v-for="section in area.sections">
+                            <div class="card border-0 text-body mb-4" 
+                             v-bind:style="'background-color: '+ section.cssColor">
+                                <div class="card-body d-flex  align-items-center p-2">
+                                    <i class="ion ion-md-time text-xlarge opacity-25"></i><div class="ml-2">
+                                        <div class="">{{section.name}}</div>
+                                        <div class="small opacity-50" style="margin-top: -5px;">
+                                            {{ area.name }}
+                                            <div class="ml-2" style="display: inline-block;">
+                                                <i class="oi oi-layers d-block1"></i> +7
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span>
+                        <i class="fa fa-user" v-show="area.canEdit" title="Создали вы" style="color: var(--blue);"></i>
+                        <i class="fa fa-user" v-show="!area.canEdit" v-bind:title="'Созданная пользователем : ' + area.owner" style="color: var(--red);"></i>
+                        {{ area.owner }}
+                    </span>
 
-					<div class="float-right">
-						<button type="button" class="btn btn-sm btn-outline-success" v-if="area.canEdit" v-on:click="edit(area)">Edit</button>
-						<button type="button" class="btn btn-sm btn-outline-danger" v-if="area.canEdit && (area.sections == undefined || area.sections.length == 0)" v-on:click="remove(area)">Remove</button>
-					</div>
-					<br />
-					<br />
-					<div v-show="area.canEdit">
-						<a class="float-right " data-toggle="collapse" v-bind:href="'#collapseIncludedArea_'+area.id" role="button" aria-expanded="false" aria-controls="collapseExample">
-							{{ area.collectiveAreas.length  }}
-							<i class="fa fa-chevron-down"></i>
-							@*<i class="fa-chevron-up"></i> v-bind:show="$('this').parant()."*@
-						</a>
-						<div class="collapse" v-bind:id="'collapseIncludedArea_'+ area.id">
-							<div class="inline-spacing">
-								<div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="collectiveArea in area.collectiveAreas">
-									<span class="ml-1">{{collectiveArea.name}} ({{collectiveArea.owner }})</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
+                    <div class="float-right">
+                        <button type="button" class="btn btn-sm btn-outline-success" v-if="area.canEdit" v-on:click="edit(area)">Edit</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" v-if="area.canEdit && (area.sections == undefined || area.sections.length == 0)" v-on:click="remove(area)">Remove</button>
+                    </div>
+                    <br />
+                    <br />
+                    <div v-show="area.canEdit">
+                        <a class="float-right " data-toggle="collapse" v-bind:href="'#collapseIncludedArea_'+area.id" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            {{ area.collectiveAreas.length  }}
+                            <i class="fa fa-chevron-down"></i>
+                            @*<i class="fa-chevron-up"></i> v-bind:show="$('this').parant()."*@
+                        </a>
+                        <div class="collapse" v-bind:id="'collapseIncludedArea_'+ area.id">
+                            <div class="inline-spacing">
+                                <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="collectiveArea in area.collectiveAreas">
+                                    <span class="ml-1">{{collectiveArea.name}} ({{collectiveArea.owner }})</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-		@*Model*@
-		@Html.Partial("_ModelArea")
+        @*Model*@
+        @Html.Partial("_ModelArea")
 
 
-	</div>
-	<div class="col-6" id="section-vue">
-		<!-- Latest events -->
-		<div class="card mb-4">
-			<h6 class="card-header with-elements">
-				<div class="card-header-title">Budget sections</div>
+    </div>
+    <div class="col-6" id="section-vue">
+        <!-- Latest events -->
+        <div class="card mb-4">
+            <h6 class="card-header with-elements">
+                <div class="card-header-title">Budget sections</div>
 
-				<div class="card-header-elements ml-auto">
-					<button type="button" class="btn btn-primary btn-xs md-btn-flat" v-on:click="create" v-show="areaID != null && areaCanEdit">Add</button>
-				</div>
-			</h6>
-			<ul class="list-group list-group-flush">
-				<li class="list-group-item py-3" v-for="section in sections" v-bind:style="'border-left: 3px solid '+ section.cssColor +';'">
-					<span class="font-weight-semibold">{{ section.name }}</span>
-					@*<span class="badge badge-pill badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
-							<i v-bind:class="section.cssIcon"></i>
-							<span class="ml-1">{{section.name}}</span>
-						</span>*@
-					<a href="javascript:void(0)" class="badge badge-success float-right" v-show="section.sectionTypeID == 1">Доходы</a>
-					<a href="javascript:void(0)" class="badge badge-danger float-right" v-show="section.sectionTypeID == 2">Расходы</a>
-					<br />
-					<small class="text-muted">{{ section.description }}</small>
-					<br /><br />
-					<span>
-						<i class="fa fa-user" v-show="section.canEdit" title="Создали вы" style="color: var(--blue);"></i>
-						<i class="fa fa-user" v-show="!section.canEdit" v-bind:title="'Созданная пользователем : ' + section.owner" style="color: var(--red);"></i>
-						{{ section.owner }}
-					</span>
-					<div class="float-right">
-						<button type="button" class="btn btn-sm btn-outline-success" v-if="section.canEdit" v-on:click="edit(section)">Edit</button>
-						<button type="button" class="btn btn-sm btn-outline-danger" v-if="section.canEdit" v-on:click="remove(section)">Remove</button>
-					</div>
-					<br />
-					<br />
-					<div v-show="section.canEdit">
+                <div class="card-header-elements ml-auto">
+                    <button type="button" class="btn btn-primary btn-xs md-btn-flat" v-on:click="create" v-show="areaID != null && areaCanEdit">Add</button>
+                </div>
+            </h6>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item py-3" v-for="section in sections" v-bind:style="'border-left: 3px solid '+ section.cssColor +';'">
+                    <span class="font-weight-semibold">{{ section.name }}</span>
+                    @*<span class="badge badge-pill badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+                            <i v-bind:class="section.cssIcon"></i>
+                            <span class="ml-1">{{section.name}}</span>
+                        </span>*@
+                    <a href="javascript:void(0)" class="badge badge-success float-right" v-show="section.sectionTypeID == 1">Доходы</a>
+                    <a href="javascript:void(0)" class="badge badge-danger float-right" v-show="section.sectionTypeID == 2">Расходы</a>
+                    <br />
+                    <small class="text-muted">{{ section.description }}</small>
+                    <br /><br />
+                    <span>
+                        <i class="fa fa-user" v-show="section.canEdit" title="Создали вы" style="color: var(--blue);"></i>
+                        <i class="fa fa-user" v-show="!section.canEdit" v-bind:title="'Созданная пользователем : ' + section.owner" style="color: var(--red);"></i>
+                        {{ section.owner }}
+                    </span>
+                    <div class="float-right">
+                        <button type="button" class="btn btn-sm btn-outline-success" v-if="section.canEdit" v-on:click="edit(section)">Edit</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" v-if="section.canEdit" v-on:click="remove(section)">Remove</button>
+                    </div>
+                    <br />
+                    <br />
+                    <div v-show="section.canEdit">
 
-						<a class="float-right " data-toggle="collapse" v-bind:href="'#collapseSection_'+section.id" role="button" aria-expanded="false" aria-controls="collapseExample">
-							{{ section.collectiveSections.length  }}
-							<i class="fa fa-chevron-down"></i>
-							@*<i class="fa-chevron-up"></i> v-bind:show="$('this').parant()."*@
-						</a>
-						<div class="collapse" v-bind:id="'collapseSection_'+ section.id">
-							<div class="inline-spacing">
-								<div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="collectiveSection in section.collectiveSections">
-									<span class="ml-1">{{collectiveSection.name}} ({{collectiveSection.owner }})</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
+                        <a class="float-right " data-toggle="collapse" v-bind:href="'#collapseSection_'+section.id" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            {{ section.collectiveSections.length  }}
+                            <i class="fa fa-chevron-down"></i>
+                            @*<i class="fa-chevron-up"></i> v-bind:show="$('this').parant()."*@
+                        </a>
+                        <div class="collapse" v-bind:id="'collapseSection_'+ section.id">
+                            <div class="inline-spacing">
+                                <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="collectiveSection in section.collectiveSections">
+                                    <span class="ml-1">{{collectiveSection.name}} ({{collectiveSection.owner }})</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-		@*Model*@
-		@Html.Partial("_ModelSection")
+        @*Model*@
+        @Html.Partial("_ModelSection")
 
-	</div>
+    </div>
 </div>

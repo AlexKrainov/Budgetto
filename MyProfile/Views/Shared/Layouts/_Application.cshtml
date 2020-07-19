@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="~/vendor/libs/spinkit/spinkit.css" />
 
 	<!--Record-->
-	<link href="~/app_css/main.css" rel="stylesheet" />
+	<link href="~/css/main.css" rel="stylesheet" />
 
 	<!-- Load polyfills -->
 	<script src="~/vendor/js/polyfills.js"></script>
@@ -98,24 +98,24 @@
     <script src="~/js/demo.js"></script>
 
     <!-- Record -->
-    <script src="~/app_js/vue-components/vue-section-component.js"></script>
-    <script src="~/app_js/vue-components/vue-record-component.js"></script>
+    <script src="~/js/vue-components/vue-section-component.js"></script>
+    <script src="~/js/vue-components/vue-record-component.js"></script>
     <script src="~/vendor/libs/tagify/dist/tagify.min.js"></script>
     <script src="~/vendor/libs/filtrex/src/filtrex.js"></script>
 
-    <script src="~/app_js/base/global.functions.site.js"></script>
-    <script src="~/app_js/base/startup.site.js"></script>
+    <script src="~/js/base/global.functions.site.js"></script>
+    <script src="~/js/base/startup.site.js"></script>
 
     @RenderSection("Scripts", required: false)
     <script>
         if (document.getElementsByClassName("page-settings").length == 1) {
             var script = document.createElement('script');
-            script.src = "../app_js/user/user-page-settings.js";
+            script.src = "../js/user/user-page-settings.js";
             document.head.appendChild(script);
         }
 
     </script>
-    @*<script src="~/app_js/base/user.js"></script>*@
+    @*<script src="~/js/base/user.js"></script>*@
 </body>
 </html>
 
