@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Категории";
 }
 
 @section Styles {
@@ -50,6 +50,7 @@
                 font-size: large;
             }
     </style>
+
 }
 
 @section Scripts {
@@ -58,62 +59,68 @@
 
     @*<script src="~/js/vue-components/vue-select2-component.js"></script>*@
     <script src="~/vendor/libs/select2/select2.js"></script>
+
 }
-<div class="" style="display: inline-block;">
-    <div class="card bg-warning border-0 text-body mb-4">
-        <div class="card-body d-flex  align-items-center p-2">
-            <i class="ion ion-md-time text-xlarge opacity-25"></i><div class="ml-2">
-                <div class="">Расходы (продукты)</div>
-                <div class="small opacity-50" style="margin-top: -5px;">
-                    Основные раходы
-                    <div class="ml-2" style="display: inline-block;">
-                        <i class="oi oi-layers d-block1"></i> +7
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+    <span class="pe-7s-albums display-4 text-primary mr-2"></span>
+    <span class="px-0 pb-2 pt-2">
+        Категории
+    </span>
+</h4>
 
 <div class="row">
-    <div class="col-6" id="area-vue">
-        <!-- Latest events -->
-        <div class="card mb-4">
+    <div class="col-md-6 col-sm-12" id="area-vue">
+
+        @*<vue-select2-component data-id="collectiveSectionIDs"
+            url=''
+            selected-property-name="id"
+            v-bind:minimum-input-length="0"
+            v-bind:metadata="[
+                     {text: 'Название категории',
+                     isOption: true,
+                     isPlaceholder: true,
+                     propertyName: 'SectionName'},
+                     {text: 'Название области',
+                     isOption: true,
+                     isPlaceholder: true,
+                     propertyName: 'AreaName'}]"></vue-select2-component>*@
+        <div class="card mb-3">
+
             <h6 class="card-header with-elements">
-                <div class="card-header-title">Budget area</div>
+                <div class="card-header-title">Области</div>
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" v-model="searchText">
+                    <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" v-on:click="create">Add</button>
+                        <button type="button" class="btn btn-primary" v-on:click="create">Добавить</button>
                     </div>
                 </div>
             </h6>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item py-3 cursor-pointer " v-for="area in areas" v-on:click="selectArea(area, $event)" v-show="area.isShow">
-                    <i class="fa fa-circle updated-item" aria-hidden="true" v-show="area.isUpdated"></i>
-                    <span class="float-right">
-                        <i class="fa fa-project-diagram " style="color: var(--gray-dark);"></i>
-                        {{ area.sections.length }}
-                    </span>
-                    <div class="font-weight-semibold">{{ area.name }}</div>
-                    <small class="text-muted">{{ area.description }}</small>
-                    <br />
-                    <div class="inline-spacing">
-                        <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="section in area.sections"
-                             v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
-                            <i v-bind:class="section.cssIcon"></i>
-                            <span class="ml-1">{{section.name}}</span>
+
+            <div class="card-body">
+
+                <div class="card ui-bordered mt-3 area-item custom-card-hover"
+                     v-for="area in areas"
+                     v-show="area.isShow_Filtered"
+                     v-bind:class="area.isShowOnSite ? 'border-primary' : 'border-secondary'">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
+                        <div>
+                            <strong>{{ area.name }}</strong> &nbsp;
+                            <a href="javascript:void(0)" class="small" v-on:click="selectArea(area, $event)">Показать категории</a><br>
+                            <small class="text-muted">{{ area.description }}</small>
                         </div>
+                    </div>
+                    <div class="inline-spacing px-2">
                         <div class="" style="display: inline-block;" v-for="section in area.sections">
-                            <div class="card border-0 text-body mb-4" 
-                             v-bind:style="'background-color: '+ section.cssColor">
+                            <div class="card border-0 text-body"
+                                 v-bind:style="'background-color: '+ section.cssColor">
                                 <div class="card-body d-flex  align-items-center p-2">
-                                    <i class="ion ion-md-time text-xlarge opacity-25"></i><div class="ml-2">
+                                    <i class="text-xlarge opacity-25" v-bind:class="section.cssIcon"></i><div class="ml-2">
                                         <div class="">{{section.name}}</div>
                                         <div class="small opacity-50" style="margin-top: -5px;">
                                             {{ area.name }}
-                                            <div class="ml-2" style="display: inline-block;">
-                                                <i class="oi oi-layers d-block1"></i> +7
+                                            <div class="ml-2" style="display: inline-block;" v-show="section.collectiveSections.length > 0">
+                                                <i class="oi oi-layers d-block1"></i> +{{section.collectiveSections.length}}
                                             </div>
                                         </div>
                                     </div>
@@ -121,95 +128,257 @@
                             </div>
                         </div>
                     </div>
-                    <span>
-                        <i class="fa fa-user" v-show="area.canEdit" title="Создали вы" style="color: var(--blue);"></i>
-                        <i class="fa fa-user" v-show="!area.canEdit" v-bind:title="'Созданная пользователем : ' + area.owner" style="color: var(--red);"></i>
-                        {{ area.owner }}
-                    </span>
 
-                    <div class="float-right">
-                        <button type="button" class="btn btn-sm btn-outline-success" v-if="area.canEdit" v-on:click="edit(area)">Edit</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger" v-if="area.canEdit && (area.sections == undefined || area.sections.length == 0)" v-on:click="remove(area)">Remove</button>
-                    </div>
-                    <br />
-                    <br />
-                    <div v-show="area.canEdit">
-                        <a class="float-right " data-toggle="collapse" v-bind:href="'#collapseIncludedArea_'+area.id" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            {{ area.collectiveAreas.length  }}
-                            <i class="fa fa-chevron-down"></i>
-                            @*<i class="fa-chevron-up"></i> v-bind:show="$('this').parant()."*@
-                        </a>
-                        <div class="collapse" v-bind:id="'collapseIncludedArea_'+ area.id">
-                            <div class="inline-spacing">
-                                <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="collectiveArea in area.collectiveAreas">
-                                    <span class="ml-1">{{collectiveArea.name}} ({{collectiveArea.owner }})</span>
-                                </div>
-                            </div>
+                    <hr class="m-0">
+                    <div class="p-3">
+                        <button class="btn btn-primary btn-sm" v-on:click="edit(area)">
+                            <i class="far fa-edit pr-2"></i>Редактировать
+                        </button>
+                        <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-on:click="remove(area)"
+                                v-if="area.sections == undefined || area.sections.length == 0">
+                            <span class="ion ion-md-trash"></span>
+                        </button>
+                        <div class="d-inline-flex align-items-center align-middle float-right ml-1">
+                            <span class="px-1 ml-2 ml-lg-0">
+                                <span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="area.isShowOnSite"></span>
+                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="area.isShowOnSite == false"></span>
+                                @*<span class="fas fa-users text-primary" title="Эту область выдят все" v-show="area.isShowInCollective"></span>
+                                    <span class="fas fa-users-slash text-secondary" title="Эту область выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
+                            </span>
                         </div>
                     </div>
-                </li>
-            </ul>
+                </div>
+                <div class="collapse table-responsive" id="order-4153148974123">
+
+                </div>
+
+            </div>
         </div>
-
-        @*Model*@
         @Html.Partial("_ModelArea")
-
-
     </div>
-    <div class="col-6" id="section-vue">
-        <!-- Latest events -->
-        <div class="card mb-4">
+    <div class="col-md-6 col-sm-12" id="section-vue">
+        <div class="card mb-3">
             <h6 class="card-header with-elements">
-                <div class="card-header-title">Budget sections</div>
-
-                <div class="card-header-elements ml-auto">
-                    <button type="button" class="btn btn-primary btn-xs md-btn-flat" v-on:click="create" v-show="areaID != null && areaCanEdit">Add</button>
+                <div class="card-header-title">
+                    Категории {{areaName ? ' для '+  areaName : '' }}
+                </div>
+                <div class="input-group" v-show="areaID != null">
+                    <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" v-on:click="create">Добавить</button>
+                    </div>
                 </div>
             </h6>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item py-3" v-for="section in sections" v-bind:style="'border-left: 3px solid '+ section.cssColor +';'">
-                    <span class="font-weight-semibold">{{ section.name }}</span>
-                    @*<span class="badge badge-pill badge-outline-secondary" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
-                            <i v-bind:class="section.cssIcon"></i>
-                            <span class="ml-1">{{section.name}}</span>
-                        </span>*@
-                    <a href="javascript:void(0)" class="badge badge-success float-right" v-show="section.sectionTypeID == 1">Доходы</a>
-                    <a href="javascript:void(0)" class="badge badge-danger float-right" v-show="section.sectionTypeID == 2">Расходы</a>
-                    <br />
-                    <small class="text-muted">{{ section.description }}</small>
-                    <br /><br />
-                    <span>
-                        <i class="fa fa-user" v-show="section.canEdit" title="Создали вы" style="color: var(--blue);"></i>
-                        <i class="fa fa-user" v-show="!section.canEdit" v-bind:title="'Созданная пользователем : ' + section.owner" style="color: var(--red);"></i>
-                        {{ section.owner }}
-                    </span>
-                    <div class="float-right">
-                        <button type="button" class="btn btn-sm btn-outline-success" v-if="section.canEdit" v-on:click="edit(section)">Edit</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger" v-if="section.canEdit" v-on:click="remove(section)">Remove</button>
-                    </div>
-                    <br />
-                    <br />
-                    <div v-show="section.canEdit">
+            <div class="card-body">
 
-                        <a class="float-right " data-toggle="collapse" v-bind:href="'#collapseSection_'+section.id" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            {{ section.collectiveSections.length  }}
-                            <i class="fa fa-chevron-down"></i>
-                            @*<i class="fa-chevron-up"></i> v-bind:show="$('this').parant()."*@
-                        </a>
-                        <div class="collapse" v-bind:id="'collapseSection_'+ section.id">
-                            <div class="inline-spacing">
-                                <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="collectiveSection in section.collectiveSections">
-                                    <span class="ml-1">{{collectiveSection.name}} ({{collectiveSection.owner }})</span>
+                <div class="card ui-bordered mt-3 custom-card-hover"
+                     v-for="section in sections"
+                     v-show="section.isShow_Filtered"
+                     v-bind:class="section.isShowOnSite ? 'border-primary' : 'border-secondary'">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
+                        <div>
+                            <strong>{{ section.name }}</strong>
+                            <br>
+                            <small class="text-muted">{{ section.description }}</small>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center">
+                            <a href="javascript:void(0)" class="badge badge-success float-right" v-show="section.sectionTypeID == 1">Доходы</a>
+                            <a href="javascript:void(0)" class="badge badge-danger float-right" v-show="section.sectionTypeID == 2">Расходы</a>
+                        </div>
+
+                    </div>
+                    <hr class="m-0">
+                    <div class="p-3">
+                        <button class="btn btn-primary btn-sm" v-on:click="edit(section)">
+                            <i class="far fa-edit pr-2"></i>Редактировать
+                        </button>
+                        <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-on:click="remove(section)" v-if="section.hasRecords == false">
+                            <span class="ion ion-md-trash"></span>
+                        </button>
+                        <div class="d-inline-flex align-items-center align-middle float-right ml-1">
+                            <span class="px-1 ml-2 ml-lg-0">
+                                <span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="section.isShowOnSite"></span>
+                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="section.isShowOnSite == false"></span>
+                                @*<span class="fas fa-users text-primary" title="Эту категорию выдят все" v-show="section.isShowInCollective"></span>
+                                    <span class="fas fa-users-slash text-secondary" title="Эту категорию выдите только вы" v-show="section.isShowInCollective == false"> </span>*@
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse table-responsive" id="order-4153148974123">
+                </div>
+
+            </div>
+        </div>
+        @Html.Partial("_ModelSection")
+    </div>
+</div>
+
+@*<div class="" style="display: inline-block;">
+        <div class="card bg-warning border-0 text-body mb-4">
+            <div class="card-body d-flex  align-items-center p-2">
+                <i class="ion ion-md-time text-xlarge opacity-25"></i><div class="ml-2">
+                    <div class="">Расходы (продукты)</div>
+                    <div class="small opacity-50" style="margin-top: -5px;">
+                        Основные раходы
+                        <div class="ml-2" style="display: inline-block;">
+                            <i class="oi oi-layers d-block1"></i> +7
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@* https://codepen.io/chrishutchinson/pen/nafEp *@
+@*<div class="row">
+        <div class="cal-4">
+
+            <div class="card card-body cards">
+                <div class="card-section display-inline-block card-1">
+                    <div class="card border-0 text-body" style="background-color: rgb(229, 233, 235);">
+                        <div class="card-body d-flex  align-items-center p-2">
+                            <i class="text-xlarge opacity-25"></i><div class="ml-2">
+                                <div>Зарплата</div> <div class="small opacity-50" style="margin-top: -5px;">
+                                    Доходы
+                                    <div class="ml-2" style="display: none;">
+                                        <i class="oi oi-layers d-block1"></i> +0
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </li>
-            </ul>
+                </div>
+                <div class="card-section display-inline-block card-2">
+                    <div class="card border-0 text-body" style="background-color: rgb(229, 233, 235);">
+                        <div class="card-body d-flex  align-items-center p-2">
+                            <i class="text-xlarge opacity-25"></i><div class="ml-2">
+                                <div>Другие доходы</div> <div class="small opacity-50" style="margin-top: -5px;">
+                                    Доходы
+                                    <div class="ml-2" style="display: none;">
+                                        <i class="oi oi-layers d-block1"></i> +0
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-section display-inline-block card-3">
+                    <div class="card border-0 text-body" style="background-color: rgb(229, 233, 235);">
+                        <div class="card-body d-flex  align-items-center p-2">
+                            <i class="text-xlarge opacity-25"></i><div class="ml-2">
+                                <div>Выплаты</div> <div class="small opacity-50" style="margin-top: -5px;">
+                                    Доходы
+                                    <div class="ml-2" style="display: none;">
+                                        <i class="oi oi-layers d-block1"></i> +0
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-section display-inline-block card-4">
+                    <div class="card border-0 text-body" style="background-color: rgb(229, 233, 235);">
+                        <div class="card-body d-flex  align-items-center p-2">
+                            <i class="text-xlarge opacity-25"></i><div class="ml-2">
+                                <div>CashBack</div> <div class="small opacity-50" style="margin-top: -5px;">
+                                    Доходы
+                                    <div class="ml-2" style="display: none;">
+                                        <i class="oi oi-layers d-block1"></i> +0
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-section display-inline-block card-5">
+                    <div class="card border-0 text-body" style="background-color: rgb(229, 233, 235);">
+                        <div class="card-body d-flex  align-items-center p-2">
+                            <i class="text-xlarge opacity-25"></i><div class="ml-2">
+                                <div>CashBack</div> <div class="small opacity-50" style="margin-top: -5px;">
+                                    Доходы
+                                    <div class="ml-2" style="display: none;">
+                                        <i class="oi oi-layers d-block1"></i> +0
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        <div class="cal-8">
+        </div>
+    </div>*@
 
-        @*Model*@
-        @Html.Partial("_ModelSection")
+@*<style>
 
-    </div>
-</div>
+        .cards {
+            cursor: pointer;
+        }
+
+            .cards .card-section {
+                border-radius: 10px;
+                position: absolute;
+                left: 0px;
+                box-shadow: 1px 2px 2px 0 #aaa;
+                -webkit-transition: all 0.4s cubic-bezier(0.63, 0.15, 0.03, 1.12);
+                transition: all 0.4s cubic-bezier(0.63, 0.15, 0.03, 1.12);
+            }
+
+                .cards .card-section.card-1 {
+                    z-index: 10;
+                    -webkit-transform: rotateZ(-2deg);
+                    transform: rotateZ(-2deg);
+                }
+
+                .cards .card-section.card-2 {
+                    z-index: 9;
+                    -webkit-transform: rotateZ(-7deg);
+                    transform: rotateZ(-7deg);
+                    -webkit-transition-delay: 0.05s;
+                    transition-delay: 0.05s;
+                }
+
+                .cards .card-section.card-3 {
+                    z-index: 8;
+                    -webkit-transform: rotateZ(5deg);
+                    transform: rotateZ(5deg);
+                    -webkit-transition-delay: 0.1s;
+                    transition-delay: 0.1s;
+                }
+
+            .cards.transition .card-section {
+                -webkit-transform: rotateZ(0deg);
+                transform: rotateZ(0deg);
+            }
+
+                .cards.transition .card-section.card-1 {
+                    left: 440px;
+                }
+
+                .cards.transition .card-section.card-2 {
+                    left: 220px;
+                }
+    </style>*@
+@*<script>
+        jQuery(document).ready(function ($) {
+            $('.cards').on('click', function () {
+                $(this).toggleClass('transition');
+            });
+
+            //$(".inline-spacing").on("click", function () {
+            //    //$(this).find(".card-section").each(function (index, el) {
+            //    //    $(el).toggleClass("transition");
+            //    //});
+            //    //$(this).find(".card-section").each(function (index, el) {
+            //    //    if (index == 0) {
+            //    //        $(el).attr("style", "    position: relative;z-index: " + index);
+            //    //    } else {
+            //    //        $(el).attr("style", "z-index: " + index + ";top: 24px;position: absolute;left: " + (index * 10 + 34) + "px;");
+            //    //    }
+            //    //});
+            //});
+        });
+    </script>*@

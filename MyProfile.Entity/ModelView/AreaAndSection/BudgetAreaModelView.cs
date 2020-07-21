@@ -15,15 +15,13 @@ namespace MyProfile.Entity.ModelView
 		public string CssIcon { get; set; }
 
 		public string Owner { get; set; }
-		public bool CanEdit { get; set; }
+		public bool IsShowOnSite { get; set; }
+        public bool IsShowInCollective { get; set; }
 
-		public bool IsShow { get; set; } = true;
+
+		public bool IsShow_Filtered { get; set; } = true;
 		public bool IsUpdated { get; set; } = false;
 
-		public List<BudgetSectionModelView> Sections { get; set; } = new List<BudgetSectionModelView>();
-		/// <summary>
-		/// For CollectiveBudget
-		/// </summary>
-		public List<BudgetAreaModelView> CollectiveAreas { get; set; } = new List<BudgetAreaModelView>();
-	}
+		public IEnumerable<BudgetSectionModelView> Sections { get; set; } = new List<BudgetSectionModelView>();
+    }
 }

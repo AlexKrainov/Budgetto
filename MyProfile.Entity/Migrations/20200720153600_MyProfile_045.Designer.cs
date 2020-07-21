@@ -10,8 +10,8 @@ using MyProfile.Entity.Model;
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    [Migration("20200617155830_MyProfile_016")]
-    partial class MyProfile_016
+    [Migration("20200720153600_MyProfile_045")]
+    partial class MyProfile_045
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,6 +58,17 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("BudgetSectionID");
 
+                    b.Property<int?>("CurrencyID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
+
+                    b.Property<int>("CurrencyNominal")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
+
+                    b.Property<decimal?>("CurrencyRate")
+                        .HasColumnType("Money");
+
                     b.Property<DateTime>("DateTimeCreate");
 
                     b.Property<DateTime?>("DateTimeDelete");
@@ -72,7 +83,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsHide");
 
-                    b.Property<bool>("IsHideForCollection");
+                    b.Property<bool>("IsShowForCollection");
 
                     b.Property<string>("RawData");
 
@@ -84,6 +95,8 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("BudgetSectionID");
+
+                    b.HasIndex("CurrencyID");
 
                     b.HasIndex("DateTimeOfPayment");
 
@@ -152,8 +165,6 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(32);
 
-                    b.Property<int>("PeriodTypeID");
-
                     b.Property<Guid>("UserID");
 
                     b.Property<int>("VisibleElementID");
@@ -161,8 +172,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("ChartTypeID");
-
-                    b.HasIndex("PeriodTypeID");
 
                     b.HasIndex("UserID");
 
@@ -207,30 +216,11 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(16);
+                        .HasMaxLength(24);
 
                     b.HasKey("ID");
 
                     b.ToTable("ChartTypes");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AreaID");
-
-                    b.Property<int?>("ChildAreaID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AreaID");
-
-                    b.HasIndex("ChildAreaID");
-
-                    b.ToTable("CollectiveAreas");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudget", b =>
@@ -238,16 +228,88 @@ namespace MyProfile.Entity.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DateCreate");
-
-                    b.Property<DateTime?>("DateDelete");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
                     b.HasKey("ID");
 
                     b.ToTable("CollectiveBudgets");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetRequest", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("CollectiveBudgetID");
+
+                    b.Property<int>("CollectiveBudgetRequestOwnerID");
+
+                    b.Property<DateTime>("DateAdded");
+
+                    b.Property<DateTime>("DateUpdate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(16);
+
+                    b.Property<Guid?>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CollectiveBudgetID");
+
+                    b.HasIndex("CollectiveBudgetRequestOwnerID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("CollectiveBudgetRequests");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetRequestOwner", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("CollectiveBudgetRequestOwners");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetUser", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("CollectiveBudgetID");
+
+                    b.Property<DateTime>("DateAdded");
+
+                    b.Property<DateTime>("DateUpdate");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(16);
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CollectiveBudgetID");
+
+                    b.HasIndex("UserID")
+                        .IsUnique();
+
+                    b.ToTable("CollectiveBudgetUsers");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveSection", b =>
@@ -267,6 +329,40 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("SectionID");
 
                     b.ToTable("CollectiveSections");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Currency", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("CanBeUser");
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(3);
+
+                    b.Property<string>("CodeName_CBR")
+                        .HasMaxLength(8);
+
+                    b.Property<int?>("CodeNumber_CBR");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(24);
+
+                    b.Property<string>("SpecificCulture")
+                        .IsRequired()
+                        .HasMaxLength(16);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Goal", b =>
@@ -350,6 +446,10 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("IsShowInCollective")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
                     b.Property<decimal>("LimitMoney")
                         .HasColumnType("Money");
 
@@ -367,6 +467,49 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Limits");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.MailLog", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("CameDateTime");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<bool>("IsSuccessful");
+
+                    b.Property<int>("MailTypeID");
+
+                    b.Property<DateTime>("SentDateTime");
+
+                    b.Property<Guid?>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MailTypeID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("MailLogs");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.MailType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("MailTypes");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PeriodType", b =>
@@ -388,22 +531,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("PeriodTypes");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.PersonSetting", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("SpecificCulture");
-
-                    b.Property<Guid>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("PersonSettings");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupChart", b =>
                 {
                     b.Property<int>("ID")
@@ -412,13 +539,13 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("BudgetSectionID");
 
-                    b.Property<int>("PartChartID");
+                    b.Property<int>("ChartFieldID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("BudgetSectionID");
 
-                    b.HasIndex("PartChartID");
+                    b.HasIndex("ChartFieldID");
 
                     b.ToTable("SectionGroupCharts");
                 });
@@ -504,7 +631,9 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsCountCollectiveBudget");
 
-                    b.Property<bool>("IsDelete");
+                    b.Property<bool>("IsDefault");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<DateTime?>("LastSeenDate");
 
@@ -583,10 +712,11 @@ namespace MyProfile.Entity.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("CollectiveBudgetID");
+                    b.Property<int>("CurrencyID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
-                    b.Property<DateTime>("DateCreate")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("DateCreate");
 
                     b.Property<DateTime?>("DateDelete");
 
@@ -596,6 +726,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("ImageLink");
 
                     b.Property<bool>("IsAllowCollectiveBudget");
+
+                    b.Property<bool>("IsConfirmEmail");
 
                     b.Property<bool>("IsDeleted");
 
@@ -607,9 +739,15 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
+                    b.Property<int>("UserTypeID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
+
                     b.HasKey("ID");
 
-                    b.HasIndex("CollectiveBudgetID");
+                    b.HasIndex("CurrencyID");
+
+                    b.HasIndex("UserTypeID");
 
                     b.ToTable("Users");
                 });
@@ -685,6 +823,10 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("BudgetPages_IsShow_BigCharts")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
                     b.Property<bool>("BudgetPages_IsShow_Goals")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
@@ -705,9 +847,30 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("GoalPage_IsShow_Finished");
 
+                    b.Property<bool>("LimitPage_IsShow_Collective");
+
+                    b.Property<bool>("LimitPage_Show_IsFinished")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
                     b.HasKey("ID");
 
                     b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.UserType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(8);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("UserTypes");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.VisibleElement", b =>
@@ -716,13 +879,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("IsShow_BudgetMonth")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsShow_BudgetMonth");
 
-                    b.Property<bool>("IsShow_BudgetYear")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsShow_BudgetYear");
 
                     b.HasKey("ID");
 
@@ -742,6 +901,10 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("BudgetRecords")
                         .HasForeignKey("BudgetSectionID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyID");
 
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("BudgetRecords")
@@ -772,11 +935,6 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("ChartTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyProfile.Entity.Model.PeriodType", "PeriodType")
-                        .WithMany()
-                        .HasForeignKey("PeriodTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("Charts")
                         .HasForeignKey("UserID")
@@ -796,15 +954,42 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
+            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetRequest", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.BudgetArea", "Area")
-                        .WithMany("CollectiveAreas")
-                        .HasForeignKey("AreaID");
+                    b.HasOne("MyProfile.Entity.Model.CollectiveBudget", "CollectiveBudget")
+                        .WithMany("CollectiveBudgetRequests")
+                        .HasForeignKey("CollectiveBudgetID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyProfile.Entity.Model.BudgetArea", "ChildArea")
+                    b.HasOne("MyProfile.Entity.Model.CollectiveBudgetRequestOwner", "CollectiveBudgetRequestOwner")
                         .WithMany()
-                        .HasForeignKey("ChildAreaID");
+                        .HasForeignKey("CollectiveBudgetRequestOwnerID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("CollectiveBudgetRequests")
+                        .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetRequestOwner", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("CollectiveBudgetRequestOwners")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetUser", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.CollectiveBudget", "CollectiveBudget")
+                        .WithMany("CollectiveBudgetUsers")
+                        .HasForeignKey("CollectiveBudgetID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithOne("CollectiveBudgetUser")
+                        .HasForeignKey("MyProfile.Entity.Model.CollectiveBudgetUser", "UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveSection", b =>
@@ -851,12 +1036,16 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.PersonSetting", b =>
+            modelBuilder.Entity("MyProfile.Entity.Model.MailLog", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                    b.HasOne("MyProfile.Entity.Model.MailType", "MailType")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("MailTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("MailLogs")
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupChart", b =>
@@ -866,9 +1055,9 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("BudgetSectionID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyProfile.Entity.Model.ChartField", "PartChart")
+                    b.HasOne("MyProfile.Entity.Model.ChartField", "ChartField")
                         .WithMany("SectionGroupCharts")
-                        .HasForeignKey("PartChartID")
+                        .HasForeignKey("ChartFieldID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -939,9 +1128,15 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.User", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.CollectiveBudget", "CollectiveBudget")
-                        .WithMany("Users")
-                        .HasForeignKey("CollectiveBudgetID");
+                    b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.UserType", "UserType")
+                        .WithMany()
+                        .HasForeignKey("UserTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.UserLog", b =>

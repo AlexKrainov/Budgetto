@@ -14,195 +14,234 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using MyProfile.Entity.ModelEntitySave;
 using MyProfile.User.Service;
+using MyProfile.Entity.ModelView.AreaAndSection;
 
 namespace MyProfile.Budget.Service
 {
-	public class SectionService
-	{
-		private IBaseRepository repository;
-		private CollectionUserService collectionUserService;
+    public class SectionService
+    {
+        private IBaseRepository repository;
+        private CollectionUserService collectionUserService;
 
-		public SectionService(IBaseRepository repository)
-		{
-			this.repository = repository;
-			this.collectionUserService = new CollectionUserService(repository);
-		}
+        public SectionService(IBaseRepository repository)
+        {
+            this.repository = repository;
+            this.collectionUserService = new CollectionUserService(repository);
+        }
 
 
-		public async Task<List<BudgetAreaModelView>> GetFullModel()
-		{
-			var thisMonth = DateTime.Now.AddDays(-DateTime.Now.Day);
-			var currentUser = UserInfo.Current;
+        public IQueryable<BudgetAreaModelView> GetFullModelByUserID()
+        {
+            Guid userID = UserInfo.Current.ID;
 
-			var areas = await GetFullModelByUserID(currentUser.ID);
-			List<Guid> allCollectiveUserIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
+            return repository.GetAll<BudgetArea>(x => x.UserID == userID)
+                .Select(x => new BudgetAreaModelView
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    CssIcon = x.CssIcon,
+                    Owner = x.User.Name,
+                    Description = x.Description,
+                    IsShowOnSite = x.IsShowOnSite,
+                    IsShowInCollective = x.IsShowInCollective,
+                    Sections = x.BudgetSectinos
+                        .Select(y => new BudgetSectionModelView
+                        {
+                            ID = y.ID,
+                            SectionTypeID = y.SectionTypeID,
+                            SectionTypeName = y.SectionTypeID != null ? y.SectionType.Name : null,
+                            Name = y.Name,
+                            Description = y.Description,
+                            CssColor = y.CssColor,
+                            CssIcon = y.CssIcon,
+                            IsShowOnSite = y.IsShowOnSite,
+                            IsShowInCollective = y.IsShowInCollective,
+                            AreaID = y.BudgetAreaID,
+                            AreaName = y.BudgetArea.Name,
+                            Owner = x.User.Name,
+                            CanEdit = x.UserID == userID,
+                            HasRecords = y.BudgetRecords.Any(),
+                            //CollectiveSections = y.CollectiveSections
+                            //.Select(z => new BudgetSectionModelView
+                            //{
+                            //    ID = z.ChildSectionID ?? 0,
+                            //    Name = z.ChildSection.Name,
+                            //    AreaName = z.ChildSection.BudgetArea.Name
+                            //}),
+                        })
+                });
+        }
 
-			if (currentUser.IsAllowCollectiveBudget && allCollectiveUserIDs.Count > 1)
-			{
-				List<BudgetAreaModelView> collectiveAreas = new List<BudgetAreaModelView>();
+        public async Task<IEnumerable<SectionLightModelView>> GetAllSectionByPerson()
+        {
+            return await repository.GetAll<BudgetSection>(x => x.UserID == UserInfo.Current.ID && x.IsShowOnSite)
+                 .Select(x => new SectionLightModelView
+                 {
+                     ID = x.ID,
+                     Name = x.Name,
+                     BudgetAreaID = x.BudgetArea.ID,
+                     BudgetAreaname = x.BudgetArea.Name
+                 })
+                 .ToListAsync();
+        }
 
-				foreach (var UserID in allCollectiveUserIDs.Where(x => x != currentUser.ID))
-				{
-					collectiveAreas.AddRange(await GetFullModelByUserID(UserID));
-				}
+        public async Task<IEnumerable<BudgetSectionModelView>> GetAllSectionForRecords()
+        {
+            return await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID && x.IsShowOnSite)
+                .OrderByDescending(x => x.BudgetRecords.Count())
+                .Select(x => new BudgetSectionModelView
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    Description = x.Description,
+                    CssIcon = x.CssIcon,
+                    CssColor = x.CssColor,
+                    AreaName = x.BudgetArea.Name,
+                    AreaID = x.BudgetAreaID,
+                    RecordCount = x.BudgetRecords.Count(),
+                    IsShow = true,
+                    CollectiveSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
+                    {
+                        ID = y.ChildSection.ID,
+                        CanEdit = false,
+                        Description = y.ChildSection.Description,
+                        Name = y.ChildSection.Name,
+                        Owner = y.ChildSection.User.Name,
+                        IsShowOnSite = true,
 
-				var allIncludedArea = areas.SelectMany(x => x.CollectiveAreas).Select(y => y.ID).ToList();
+                    })
+                })
+                .ToListAsync();
+        }
 
-				for (int i = 0; i < collectiveAreas.Count; i++)
-				{
-					if (allIncludedArea.Any(x => x == collectiveAreas[i].ID))
-					{
-						var mainArea = areas.FirstOrDefault(x => x.CollectiveAreas.Any(y => y.ID == collectiveAreas[i].ID));
-						var includedArea = mainArea.CollectiveAreas.FirstOrDefault(y => y.ID == collectiveAreas[i].ID);
-						includedArea.Name = collectiveAreas[i].Name;
-						includedArea.Description = collectiveAreas[i].Description;
-						includedArea.Owner = collectiveAreas[i].Owner;
-						includedArea.CanEdit = false;
+        public async Task<IEnumerable<AreaLightModelView>> GetAllAreaAndSectionByPerson()
+        {
+            var currentUserID = UserInfo.Current.ID;
 
-						//var removeSectionID = new List<int>();
+            return await repository.GetAll<BudgetArea>(x => x.UserID == currentUserID && x.IsShowOnSite)
+                .Select(x => new AreaLightModelView
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    BudgetSections = x.BudgetSectinos
+                        .Where(y => y.BudgetArea.UserID == currentUserID)
+                        .Select(y => new SectionLightModelView
+                        {
+                            ID = y.ID,
+                            Name = y.Name,
+                        })
+                })
+                .ToListAsync();
+        }
 
-						foreach (var collectiveAreaSection in collectiveAreas[i].Sections)
-						{
-							if (mainArea.Sections.SelectMany(y => y.CollectiveSections).Any(x => x.ID == collectiveAreaSection.ID))
-							{
-								var includedAreaWithSection = mainArea.Sections.FirstOrDefault(y => y.CollectiveSections.Any(x => x.ID == collectiveAreaSection.ID));
-								var includedCollectiveSection = includedAreaWithSection.CollectiveSections.FirstOrDefault(y => y.ID == collectiveAreaSection.ID);
+        public async Task<BudgetAreaModelView> CreateOrUpdateArea(BudgetAreaModelView area)
+        {
+            var budgetArea = new BudgetArea
+            {
+                ID = area.ID,
+                CssIcon = area.CssIcon,
+                Description = area.Description,
+                Name = area.Name,
+                UserID = UserInfo.Current.ID,
+                IsShowInCollective = area.IsShowInCollective,
+                IsShowOnSite = area.IsShowOnSite,
+            };
+            if (budgetArea.ID > 0)
+            {
+                await repository.UpdateAsync(budgetArea, true);
+            }
+            else
+            {
+                await repository.CreateAsync(budgetArea, true);
+            }
 
-								includedCollectiveSection.Name = collectiveAreaSection.Name;
-								includedCollectiveSection.Description = collectiveAreaSection.Description;
-								includedCollectiveSection.Owner = collectiveAreaSection.Owner;
-								includedCollectiveSection.CanEdit = false;
-							}
-							else
-							{
-								mainArea.Sections.Add(collectiveAreaSection);
-							}
-						}
-					}
-					else
-					{
-						areas.Add(collectiveAreas[i]);
-					}
-				}
-			}
+            area.ID = budgetArea.ID;
+            area.IsUpdated = true;
+            return area;
+        }
 
-			return areas;
-		}
+        public async Task<BudgetSectionModelView> CreateOrUpdateSection(BudgetSectionModelView section)
+        {
+            var budgetSection = new BudgetSection
+            {
+                ID = section.ID,
+                CssIcon = section.CssIcon,
+                CssColor = section.CssColor,
+                Description = section.Description,
+                Name = section.Name,
+                BudgetAreaID = section.AreaID,
+                SectionTypeID = section.SectionTypeID,
+                UserID = UserInfo.Current.ID,
+                IsShowInCollective = section.IsShowInCollective,
+                IsShowOnSite = section.IsShowOnSite,
+            };
+            if (budgetSection.ID > 0)
+            {
+                await repository.UpdateAsync(budgetSection, true);
+            }
+            else
+            {
+                await repository.CreateAsync(budgetSection, true);
+            }
 
-		private async Task<List<BudgetAreaModelView>> GetFullModelByUserID(Guid UserID)
-		{
-			Guid userID = UserInfo.Current.ID;
+            await SaveIncludedSection(section.ID, section.CollectiveSections.Select(x => x.ID).ToList());
 
-			var areas = await repository.GetAll<BudgetArea>(x => x.UserID == UserID)
-				.Select(x => new BudgetAreaModelView
-				{
-					UserID = x.UserID ?? Guid.Empty,
-					ID = x.ID,
-					Name = x.Name,
-					CssIcon = x.CssIcon,
-					Owner = x.User.Name,
-					CanEdit = x.UserID == userID,
-					Description = x.Description,
-					CollectiveAreas = x.CollectiveAreas.Select(y => new BudgetAreaModelView { ID = y.ChildAreaID ?? 0, Name = y.ChildArea.Name }).ToList(),
-					Sections = x.BudgetSectinos
-						.Select(y => new BudgetSectionModelView
-						{
-							UserID = y.UserID ?? Guid.Empty,
-							ID = y.ID,
-							SectionTypeID = y.SectionTypeID,
-							SectionTypeName = y.SectionTypeID != null ? y.SectionType.Name : null,
-							Name = y.Name,
-							Description = y.Description,
-							CssColor = y.CssColor,
-							CssIcon = y.CssIcon,
-							IsShow = y.IsShow,
-							AreaID = y.BudgetAreaID,
-							AreaName = y.BudgetArea.Name,
-							Owner = x.User.Name,
-							CanEdit = x.UserID == userID,
-							CollectiveSections = y.CollectiveSections.Select(z => new BudgetSectionModelView { ID = z.ChildSectionID ?? 0, Name = z.ChildSection.Name }).ToList(),
-						}).ToList()
-				})
-				.ToListAsync();
+            section.ID = budgetSection.ID;
+            section.AreaID = budgetSection.BudgetAreaID;
 
-			return areas;
-		}
+            section.IsUpdated = true;
+            return section;
+        }
 
-		public async Task<int> SaveIncludedArea(int areaID, List<int> includedAreas)
-		{
-			var area = await repository.GetAll<BudgetArea>(x => x.ID == areaID)
-				.Include(x => x.CollectiveAreas)
-				.FirstOrDefaultAsync();
+        public async Task<int> SaveIncludedSection(int sectionID, List<int> includedSections)
+        {
+            var section = await repository.GetAll<BudgetSection>(x => x.ID == sectionID)
+                .Include(x => x.CollectiveSections)
+                .FirstOrDefaultAsync();
 
-			if (includedAreas != null && includedAreas.Count > 0)
-			{
-				if (area.CollectiveAreas.Count() > 0)
-				{
-					repository.DeleteRange(area.CollectiveAreas);
-				}
+            if (includedSections != null && includedSections.Count > 0)
+            {
+                if (section.CollectiveSections.Count() > 0)
+                {
+                    repository.DeleteRange(section.CollectiveSections);
+                }
 
-				List<CollectiveArea> collectiveAreas = new List<CollectiveArea>();
+                List<CollectiveSection> collectiveSections = new List<CollectiveSection>();
 
-				foreach (var includedArea in includedAreas)
-				{
-					collectiveAreas.Add(new CollectiveArea { AreaID = areaID, ChildAreaID = includedArea });
-				}
-				area.CollectiveAreas = collectiveAreas;
-			}
-			else
-			{
-				repository.DeleteRange(area.CollectiveAreas);
-			}
+                foreach (var includedArea in includedSections)
+                {
+                    collectiveSections.Add(new CollectiveSection { SectionID = sectionID, ChildSectionID = includedArea });
+                }
+                section.CollectiveSections = collectiveSections;
+            }
+            else
+            {
+                if (section != null)
+                {
+                    repository.DeleteRange(section.CollectiveSections);
+                }
+            }
 
-			return await repository.SaveAsync();
-		}
+            return await repository.SaveAsync();
+        }
 
-		public async Task<int> SaveIncludedSection(int sectionID, List<int> includedSections)
-		{
-			var section = await repository.GetAll<BudgetSection>(x => x.ID == sectionID)
-				.Include(x => x.CollectiveSections)
-				.FirstOrDefaultAsync();
+        public async Task<List<Select2Item>> GetSectionsForSelect2()
+        {
+            return await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.Current.ID || x.UserID == null)
+                .SelectMany(x => x.BudgetSectinos)
+                .Select(x => new Select2Item
+                {
+                    id = x.ID,
+                    text = x.Name,
+                })
+                .ToListAsync();
+        }
 
-			if (includedSections != null && includedSections.Count > 0)
-			{
-				if (section.CollectiveSections.Count() > 0)
-				{
-					repository.DeleteRange(section.CollectiveSections);
-				}
-
-				List<CollectiveSection> collectiveSections = new List<CollectiveSection>();
-
-				foreach (var includedArea in includedSections)
-				{
-					collectiveSections.Add(new CollectiveSection { SectionID = sectionID, ChildSectionID = includedArea });
-				}
-				section.CollectiveSections = collectiveSections;
-			}
-			else
-			{
-				repository.DeleteRange(section.CollectiveSections);
-			}
-
-			return await repository.SaveAsync();
-		}
-
-		public async Task<List<Select2Item>> GetSectionsForSelect2()
-		{
-			return await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.Current.ID || x.UserID == null)
-				.SelectMany(x => x.BudgetSectinos)
-				.Select(x => new Select2Item
-				{
-					id = x.ID,
-					text = x.Name,
-				})
-				.ToListAsync();
-		}
-
-		public async Task<List<int>> GetCollectionSectionBySectionID(List<int> sectionIDs)
-		{
-			return await repository.GetAll<CollectiveSection>(x => sectionIDs.Contains(x.SectionID ?? 0))
-			 .Select(x => x.ChildSectionID ?? 0)
-			 .ToListAsync();
-		}
-	}
+        public async Task<List<int>> GetCollectionSectionBySectionID(List<int> sectionIDs)
+        {
+            return await repository.GetAll<CollectiveSection>(x => sectionIDs.Contains(x.SectionID ?? 0))
+             .Select(x => x.ChildSectionID ?? 0)
+             .ToListAsync();
+        }
+    }
 }

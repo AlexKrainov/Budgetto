@@ -32,9 +32,13 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("IsPrivate");
+                    b.Property<bool>("IsShowInCollective")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
-                    b.Property<bool>("IsShow");
+                    b.Property<bool>("IsShowOnSite")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -121,9 +125,13 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("IsPrivate");
+                    b.Property<bool>("IsShowInCollective")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
-                    b.Property<bool>("IsShow");
+                    b.Property<bool>("IsShowOnSite")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -219,25 +227,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("ChartTypes");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AreaID");
-
-                    b.Property<int?>("ChildAreaID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AreaID");
-
-                    b.HasIndex("ChildAreaID");
-
-                    b.ToTable("CollectiveAreas");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudget", b =>
@@ -969,17 +958,6 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("ChartFields")
                         .HasForeignKey("ChartID")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.BudgetArea", "Area")
-                        .WithMany("CollectiveAreas")
-                        .HasForeignKey("AreaID");
-
-                    b.HasOne("MyProfile.Entity.Model.BudgetArea", "ChildArea")
-                        .WithMany()
-                        .HasForeignKey("ChildAreaID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetRequest", b =>

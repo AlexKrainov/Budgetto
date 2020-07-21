@@ -1,49 +1,55 @@
 ﻿<div class="modal fade" id="modal-area">
-	<div class="modal-dialog">
-		<form class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">
-					Payment <span class="font-weight-light">Budget Area</span><br>
-				</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-			</div>
-			<div class="modal-body">
-				<div class="form-row">
-					<div class="form-group col">
-						<label class="form-label">Name</label>
-						<input type="text" class="form-control" placeholder="Name" v-model="area.name">
-					</div>
-				</div>
-				<div class="form-row">
-					<div class="form-group col mb-0">
-						<label class="form-label">Description</label>
-						<textarea class="form-control" v-model="area.description" placeholder="Description"></textarea>
-					</div>
-				</div>
-				<div class="form-row">
-					<div class="form-group col mb-0">
-						<label class="form-label">Included area</label>
-						<select id="collectiveArea" multiple class="form-control">
-							<option v-for="_area in areas"
-									v-if="!_area.canEdit"
-									v-bind:value="_area.id">
-								{{ _area.name }}
-							</option>
-							<option v-for="_area in area.collectiveAreas"
-									v-if="!_area.canEdit"
-									v-bind:value="_area.id"
-									selected>
-								{{ _area.name }}
-							</option>
-						</select>
-					</div>
-
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" v-on:click="save">Save</button>
-			</div>
-		</form>
-	</div>
+    <div class="modal-dialog">
+        <form class="modal-content" method="post" v-on:submit="checkForm">
+            <div class="modal-header">
+                <h5 class="modal-title" v-show="area.id == undefined">
+                    Содание области
+                </h5>
+                <h5 class="modal-title" v-show="area.id">
+                    Редактирование области
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label class="form-label">Введите название</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" class="form-control" placeholder="Регулярные траты, ремонт в ванной ..." v-model="area.name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col mb-0">
+                        <label class="form-label">Введите описание области</label>
+                        <textarea class="form-control" v-model="area.description" placeholder="Описание"></textarea>
+                    </div>
+                </div>
+                @*<div class="form-row mt-3 ml-1">
+                    <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" v-model="area.isShowInCollective">
+                            <span class="custom-control-label">Показывать всей группе</span>
+                        </label>
+                    </div>
+                </div>*@
+                <div class="form-row mt-3 ml-1">
+                    <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" v-model="area.isShowOnSite">
+                            <span class="custom-control-label">Показывать везде на сайте</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button class="btn btn-primary" type="submit"
+                        v-bind:disabled="isSaving"
+                        v-on:click="save">
+                    <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                    Сохранить
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

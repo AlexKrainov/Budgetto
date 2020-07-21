@@ -10,8 +10,8 @@ using MyProfile.Entity.Model;
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    [Migration("20200704164624_MyProfile_031")]
-    partial class MyProfile_031
+    [Migration("20200721133955_MyProfile_047")]
+    partial class MyProfile_047
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,9 +34,13 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("IsPrivate");
+                    b.Property<bool>("IsShowInCollective")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
-                    b.Property<bool>("IsShow");
+                    b.Property<bool>("IsShowOnSite")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -58,6 +62,17 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("BudgetSectionID");
 
+                    b.Property<int?>("CurrencyID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
+
+                    b.Property<int>("CurrencyNominal")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
+
+                    b.Property<decimal?>("CurrencyRate")
+                        .HasColumnType("Money");
+
                     b.Property<DateTime>("DateTimeCreate");
 
                     b.Property<DateTime?>("DateTimeDelete");
@@ -72,7 +87,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsHide");
 
-                    b.Property<bool>("IsHideForCollection");
+                    b.Property<bool>("IsShowForCollection");
 
                     b.Property<string>("RawData");
 
@@ -84,6 +99,8 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("BudgetSectionID");
+
+                    b.HasIndex("CurrencyID");
 
                     b.HasIndex("DateTimeOfPayment");
 
@@ -110,9 +127,13 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("IsPrivate");
+                    b.Property<bool>("IsShowInCollective")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
-                    b.Property<bool>("IsShow");
+                    b.Property<bool>("IsShowOnSite")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -203,30 +224,11 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(16);
+                        .HasMaxLength(24);
 
                     b.HasKey("ID");
 
                     b.ToTable("ChartTypes");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AreaID");
-
-                    b.Property<int?>("ChildAreaID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AreaID");
-
-                    b.HasIndex("ChildAreaID");
-
-                    b.ToTable("CollectiveAreas");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudget", b =>
@@ -349,21 +351,22 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(3);
 
+                    b.Property<string>("CodeName_CBR")
+                        .HasMaxLength(8);
+
+                    b.Property<int?>("CodeNumber_CBR");
+
                     b.Property<string>("Icon")
                         .IsRequired()
                         .HasMaxLength(1);
 
-                    b.Property<string>("IntlSpecificCulture")
-                        .IsRequired()
-                        .HasMaxLength(8);
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(16);
+                        .HasMaxLength(24);
 
                     b.Property<string>("SpecificCulture")
                         .IsRequired()
-                        .HasMaxLength(8);
+                        .HasMaxLength(16);
 
                     b.HasKey("ID");
 
@@ -448,6 +451,10 @@ namespace MyProfile.Entity.Migrations
                     b.Property<bool>("IsDeleted");
 
                     b.Property<bool>("IsShow")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsShowInCollective")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
@@ -632,7 +639,9 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsCountCollectiveBudget");
 
-                    b.Property<bool>("IsDelete");
+                    b.Property<bool>("IsDefault");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<DateTime?>("LastSeenDate");
 
@@ -711,6 +720,10 @@ namespace MyProfile.Entity.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("CurrencyID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
+
                     b.Property<DateTime>("DateCreate");
 
                     b.Property<DateTime?>("DateDelete");
@@ -739,6 +752,8 @@ namespace MyProfile.Entity.Migrations
                         .HasDefaultValue(1);
 
                     b.HasKey("ID");
+
+                    b.HasIndex("CurrencyID");
 
                     b.HasIndex("UserTypeID");
 
@@ -840,6 +855,12 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("GoalPage_IsShow_Finished");
 
+                    b.Property<bool>("LimitPage_IsShow_Collective");
+
+                    b.Property<bool>("LimitPage_Show_IsFinished")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
                     b.HasKey("ID");
 
                     b.ToTable("UserSettings");
@@ -866,13 +887,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("IsShow_BudgetMonth")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsShow_BudgetMonth");
 
-                    b.Property<bool>("IsShow_BudgetYear")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsShow_BudgetYear");
 
                     b.HasKey("ID");
 
@@ -892,6 +909,10 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("BudgetRecords")
                         .HasForeignKey("BudgetSectionID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyID");
 
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("BudgetRecords")
@@ -939,17 +960,6 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("ChartFields")
                         .HasForeignKey("ChartID")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.CollectiveArea", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.BudgetArea", "Area")
-                        .WithMany("CollectiveAreas")
-                        .HasForeignKey("AreaID");
-
-                    b.HasOne("MyProfile.Entity.Model.BudgetArea", "ChildArea")
-                        .WithMany()
-                        .HasForeignKey("ChildAreaID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetRequest", b =>
@@ -1126,6 +1136,11 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.User", b =>
                 {
+                    b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("MyProfile.Entity.Model.UserType", "UserType")
                         .WithMany()
                         .HasForeignKey("UserTypeID")

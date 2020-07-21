@@ -298,7 +298,9 @@ namespace MyProfile.Budget.Service
 
                 var userIDs_withoutCurrent = allCollectiveUserIDs.Where(x => x != currentUserID).ToList();
 
-                filter.Sections.AddRange(await repository.GetAll<BudgetSection>(x => userIDs_withoutCurrent.Contains(x.UserID ?? Guid.Parse("086d7c26-1d8d-4cc7-e776-08d7eab4d0ed"))).Select(x => x.ID).ToListAsync());
+                filter.Sections.AddRange(await repository.GetAll<BudgetSection>(
+                    x => userIDs_withoutCurrent.Contains(x.UserID ?? Guid.Parse("086d7c26-1d8d-4cc7-e776-08d7eab4d0ed")) 
+                    && x.IsShowInCollective).Select(x => x.ID).ToListAsync());
             }
             else
             {

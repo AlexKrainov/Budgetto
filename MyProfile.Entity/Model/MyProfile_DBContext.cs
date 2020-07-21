@@ -31,9 +31,6 @@ namespace MyProfile.Entity.Model
 
             #endregion
 
-            modelBuilder.Entity<CollectiveArea>()
-                .HasOne(x => x.Area)
-                .WithMany(y => y.CollectiveAreas);
             modelBuilder.Entity<CollectiveSection>()
                 .HasOne(x => x.Section)
                 .WithMany(y => y.CollectiveSections);
@@ -97,6 +94,20 @@ namespace MyProfile.Entity.Model
                 .Property(b => b.CurrencyNominal)
                 .HasDefaultValue(1);
 
+            modelBuilder.Entity<BudgetSection>()
+               .Property(b => b.IsShowInCollective)
+               .HasDefaultValue(true);
+            modelBuilder.Entity<BudgetSection>()
+                .Property(b => b.IsShowOnSite)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<BudgetArea>()
+               .Property(b => b.IsShowInCollective)
+               .HasDefaultValue(true);
+            modelBuilder.Entity<BudgetArea>()
+                .Property(b => b.IsShowOnSite)
+                .HasDefaultValue(true);
+
             #endregion
         }
 
@@ -107,7 +118,6 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateBudgetSection> TemplateBudgetSections { get; set; }
         public virtual DbSet<CollectiveBudget> CollectiveBudgets { get; set; }
-        public virtual DbSet<CollectiveArea> CollectiveAreas { get; set; }
         public virtual DbSet<CollectiveSection> CollectiveSections { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }

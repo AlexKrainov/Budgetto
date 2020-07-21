@@ -23,13 +23,13 @@ namespace MyProfile.Entity.Model
 		public string CssColor { get; set; }
 
 		/// <summary>
-		/// Hide but not delete
+		/// Hide in record add
 		/// </summary>
-		public bool IsShow { get; set; } = true;
+		public bool IsShowOnSite { get; set; } = true;
 		/// <summary>
 		/// Can see only owner
 		/// </summary>
-		public bool IsPrivate { get; set; } 
+		public bool IsShowInCollective { get; set; } 
 
 		[ForeignKey("User")]
 		public Guid? UserID { get; set; }

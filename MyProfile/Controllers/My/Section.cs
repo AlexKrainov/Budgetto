@@ -68,7 +68,7 @@ namespace MyProfile.Controllers
 		{
 			try
 			{
-				var areas = await sectionService.GetFullModel();
+				var areas =  sectionService.GetFullModelByUserID();
 				return Json(new { isOk = true, areas });
 			}
 			catch (Exception ex)
@@ -84,28 +84,8 @@ namespace MyProfile.Controllers
 		{
 			try
 			{
-				var budgetArea = new BudgetArea
-				{
-					ID = area.ID,
-					CssIcon = area.CssIcon,
-					Description = area.Description,
-					Name = area.Name,
-					UserID = UserInfo.Current.ID
-				};
-				if (budgetArea.ID > 0)
-				{
-					await repository.UpdateAsync(budgetArea, true);
-				}
-				else
-				{
-					await repository.CreateAsync(budgetArea, true);
-				}
-
-				await sectionService.SaveIncludedArea(budgetArea.ID, area.CollectiveAreas.Select(x => x.ID).ToList());
-
-				area.ID = budgetArea.ID;
-				area.IsUpdated = true;
-
+				await sectionService.CreateOrUpdateArea(area);
+				
 				return Json(new { isOk = true, area });
 			}
 			catch (Exception ex)
@@ -121,32 +101,7 @@ namespace MyProfile.Controllers
 		{
 			try
 			{
-				var budgetSection = new BudgetSection
-				{
-					ID = section.ID,
-					CssIcon = section.CssIcon,
-					CssColor = section.CssColor,
-					Description = section.Description,
-					Name = section.Name,
-					BudgetAreaID = section.AreaID,
-					SectionTypeID = section.SectionTypeID
-					//UserID = UserInfo.UserID
-				};
-				if (budgetSection.ID > 0)
-				{
-					await repository.UpdateAsync(budgetSection, true);
-				}
-				else
-				{
-					await repository.CreateAsync(budgetSection, true);
-				}
-
-				await sectionService.SaveIncludedSection(section.ID, section.CollectiveSections.Select(x => x.ID).ToList());
-
-				section.ID = budgetSection.ID;
-				section.AreaID = budgetSection.BudgetAreaID;
-
-				section.IsUpdated = true;
+				await sectionService.CreateOrUpdateSection(section);
 
 				return Json(new { isOk = true, section });
 			}
@@ -161,22 +116,7 @@ namespace MyProfile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllAreaAndSectionByPerson()
 		{
-			var currentUserID = UserInfo.Current.ID;
-
-			var areas = await repository.GetAll<BudgetArea>(x => x.UserID == currentUserID)
-				.Select(x => new
-				{
-					x.ID,
-					x.Name,
-					BudgetSections = x.BudgetSectinos
-						.Where(y => y.BudgetArea.UserID == currentUserID)
-						.Select(y => new
-						{
-							y.ID,
-							y.Name,
-						})
-				})
-				.ToListAsync();
+			var areas = await sectionService.GetAllAreaAndSectionByPerson();
 
 			return Json(new { isOk = true, areas });
 		}
@@ -184,15 +124,7 @@ namespace MyProfile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllSectionByPerson()
 		{
-			var sections = await repository.GetAll<BudgetSection>(x => x.UserID == UserInfo.Current.ID)
-				.Select(x => new
-				{
-					x.ID,
-					x.Name,
-					BudgetAreaID = x.BudgetArea.ID,
-					BudgetAreaname = x.BudgetArea.Name
-				})
-				.ToListAsync();
+			var sections = await sectionService.GetAllSectionByPerson(); 
 
 			return Json(new { isOk = true, sections });
 		}
@@ -200,31 +132,7 @@ namespace MyProfile.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetSectins()
 		{
-			var sections = await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID)
-				.OrderByDescending(x => x.BudgetRecords.Count())
-				.Select(x => new
-				{
-					ID = x.ID,
-					Name = x.Name,
-					Description = x.Description,
-					CssIcon = x.CssIcon,
-					CssColor = x.CssColor,
-					AreaName = x.BudgetArea.Name,
-					AreaID = x.BudgetAreaID,
-					RecordCount = x.BudgetRecords.Count(),
-					IsShow = true,
-					CollectionSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
-					{
-						ID = y.ChildSection.ID,
-						CanEdit = false,
-						Description = y.ChildSection.Description,
-						Name = y.ChildSection.Name,
-						Owner = y.ChildSection.User.Name,
-						IsShow = true,
-
-					}).ToList()
-				})
-				.ToListAsync();
+			var sections = await sectionService.GetAllSectionForRecords(); 
 
 			return Json(new { isOk = true, sections });
 		}

@@ -19,26 +19,24 @@ namespace MyProfile.Entity.Model
 		/// <summary>
 		/// Hide but not delete
 		/// </summary>
-		public bool IsShow { get; set; } = true;
+		public bool IsShowOnSite { get; set; } = true;
 		public string Description { get; set; }
 		[MaxLength(64)]
 		public string CssIcon { get; set; }
 		/// <summary>
-		/// Can see only owner
+		/// Can see only owner or all budget group
 		/// </summary>
-		public bool IsPrivate { get; set; }
+		public bool IsShowInCollective { get; set; }
 
 		[ForeignKey("User")]
 		public Guid? UserID { get; set; }
 
 		public virtual User User { get; set; }
 		public virtual ICollection<BudgetSection> BudgetSectinos { get; set; }
-		public virtual ICollection<CollectiveArea> CollectiveAreas { get; set; }
 
 		public BudgetArea()
 		{
 			this.BudgetSectinos = new HashSet<BudgetSection>();
-			this.CollectiveAreas = new HashSet<CollectiveArea>();
 		}
 	}
 }
