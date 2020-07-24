@@ -20,7 +20,15 @@ namespace MyProfile.Entity.ModelView.User
 
     public class UserSettingsClientSide
     {
+        public bool Dashboard_Month_IsShow_EarningChart { get; set; }
+        public bool Dashboard_Month_IsShow_SpendingChart { get; set; }
+        public bool Dashboard_Month_IsShow_InvestingChart { get; set; }
 
+        public bool Dashboard_Month_IsShow_LimitCharts { get; set; }
+
+        public bool Dashboard_Month_IsShow_GoalCharts { get; set; }
+
+        public bool Dashboard_Month_IsShow_BigCharts { get; set; }
     }
     public class CurrencyClientSide 
     {

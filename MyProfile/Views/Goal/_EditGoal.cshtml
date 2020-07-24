@@ -66,8 +66,16 @@
                             <div class="form-row mt-3">
                                 <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
                                     <label class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" v-model="goal.isShowOnDashBoard" checked>@*v-on:change="finishgoal"*@
-                                        <span class="custom-control-label">Показывать на стринице дашборда</span>
+                                        <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetMonth" checked>@*v-on:change="finishgoal"*@
+                                        <span class="custom-control-label">Показывать на стринице дашборда месяц</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetYear" checked>@*v-on:change="finishgoal"*@
+                                        <span class="custom-control-label">Показывать на стринице дашборда год</span>
                                     </label>
                                 </div>
                             </div>

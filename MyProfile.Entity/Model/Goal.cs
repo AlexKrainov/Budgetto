@@ -17,18 +17,16 @@ namespace MyProfile.Entity.Model
 		public decimal? ExpectationMoney { get; set; }
 		public DateTime? DateStart { get; set; }
 		public DateTime? DateEnd { get; set; }
-		/// <summary>
-		/// Show or not on dashboard
-		/// </summary>
-		public bool IsShowOnDashBoard { get; set; }
-		public bool IsShowInCollective { get; set; }
 		public bool IsFinished { get; set; }
 		public bool IsDeleted { get; set; }
 
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }
+		[ForeignKey("VisibleElement")]
+		public int VisibleElementID { get; set; }
 
 		public virtual User User { get; set; }
+		public virtual VisibleElement VisibleElement { get; set; }
 
 		public virtual ICollection<GoalRecord> GoalRecords { get; set; }
 

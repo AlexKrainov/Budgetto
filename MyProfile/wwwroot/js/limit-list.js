@@ -7,8 +7,8 @@ var LimitListVue = new Vue({
 
         //edit
         limit: { periodName: '', periodTypeID: -1 },
-        flatpickrStart: {},
-        flatpickrEnd: {},
+        //flatpickrStart: {},
+        //flatpickrEnd: {},
         msnry: {},
 
         sections: [],
@@ -16,17 +16,17 @@ var LimitListVue = new Vue({
         isSaving: false,
     },
     watch: {
-        'limit.periodTypeID': function (newValue, oldValue) {
-            if (newValue == -1) {
-                return;
-            } else if (newValue == 1) {
-                $("#date-start").next().show();
-                $("#date-end").next().show();
-            } else if (newValue == 3) {
-                $("#date-start").next().hide();
-                $("#date-end").next().hide();
-            }
-        }
+        //'limit.periodTypeID': function (newValue, oldValue) {
+        //    if (newValue == -1) {
+        //        return;
+        //    } else if (newValue == 1) {
+        //        $("#date-start").next().show();
+        //        $("#date-end").next().show();
+        //    } else if (newValue == 3) {
+        //        $("#date-start").next().hide();
+        //        $("#date-end").next().hide();
+        //    }
+        //}
     },
     computed: {},
     mounted: function () {
@@ -86,30 +86,25 @@ var LimitListVue = new Vue({
             if (limit) {
                 this.limit = { ...limit };
             } else {
-                this.limit = { periodName: '', periodTypeID: -1 };
+                this.limit = { periodName: '', periodTypeID: -1, isShowOnDashboard: true };
 
                 $("#limitSections").val(null).select2();
 
                 this.limit.periodTypeID = this.periodTypes[0].id;
                 this.limit.periodName = this.periodTypes[0].name;
-
-                this.limit.dateStart = GetDateByFormat(moment(), "YYYY/MM/DD");
-                this.limit.yearStart = moment().years();
-                this.limit.yearEnd = null;
-
             }
 
-            let startConfig = GetFlatpickrRuConfig_Month(this.limit.dateStart);
-            startConfig.onChange = function (selectedDates, dateStr, instance) {
-                LimitListVue.flatpickrEnd.config.minDate = dateStr;
-            };
-            let endConfig = GetFlatpickrRuConfig_Month(this.limit.dateEnd);
-            endConfig.onChange = function (selectedDates, dateStr, instance) {
-                LimitListVue.flatpickrStart.config.maxDate = dateStr;
-            };
+            //let startConfig = GetFlatpickrRuConfig_Month(this.limit.dateStart);
+            //startConfig.onChange = function (selectedDates, dateStr, instance) {
+            //    LimitListVue.flatpickrEnd.config.minDate = dateStr;
+            //};
+            //let endConfig = GetFlatpickrRuConfig_Month(this.limit.dateEnd);
+            //endConfig.onChange = function (selectedDates, dateStr, instance) {
+            //    LimitListVue.flatpickrStart.config.maxDate = dateStr;
+            //};
 
-            this.flatpickrStart = flatpickr('#date-start', startConfig);
-            this.flatpickrEnd = flatpickr('#date-end', endConfig);
+            //this.flatpickrStart = flatpickr('#date-start', startConfig);
+            //this.flatpickrEnd = flatpickr('#date-end', endConfig);
 
             if (this.limit.sections) {
                 $("#limitSections").val(this.limit.sections.map(x => x.id)).select2();
@@ -139,7 +134,7 @@ var LimitListVue = new Vue({
                         } else {
                             LimitListVue.limits.push(result.limit);
                             setTimeout(function () {
-                                LimitListVue.msnry.addItems($("div[data-id=limit_" + result.limit.id + "]"));
+                                LimitListVue.msnry.addItems($("#limit_" + result.limit.id).parent());
                                 LimitListVue.msnry.layout();
                             }, 100);
                         }
@@ -174,10 +169,10 @@ var LimitListVue = new Vue({
             }
             return isOk;
         },
-        finishLimit: function () {
-            this.limit.dateEnd = GetDateByFormat((new Date()).setMonth((new Date()).getMonth() - 1), "YYYY/MM/DD");
-            this.flatpickrEnd = flatpickr('#date-to', GetFlatpickrRuConfig_Month(this.limit.dateEnd));
-        },
+        //finishLimit: function () {
+        //    this.limit.dateEnd = GetDateByFormat((new Date()).setMonth((new Date()).getMonth() - 1), "YYYY/MM/DD");
+        //    this.flatpickrEnd = flatpickr('#date-to', GetFlatpickrRuConfig_Month(this.limit.dateEnd));
+        //},
         closeEditModal: function () {
             this.limit = { periodName: '', periodTypeID: -1 };
         },

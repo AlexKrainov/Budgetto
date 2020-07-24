@@ -14,7 +14,7 @@ namespace MyProfile.Identity
 {
     public static class UserInfo
     {
-       
+
         public static readonly string USER_INFO = "UserInfo";
         public static readonly string LAST_USER_LOG_ID = "LastUserLogID";
         public static Microsoft.AspNetCore.Http.HttpContext HttpContext => _accessor.HttpContext;
@@ -156,6 +156,15 @@ namespace MyProfile.Identity
                     SpecificCulture = currentUser.Currency.SpecificCulture,
                     CodeName_CBR = currentUser.Currency.CodeName_CBR,
                     CodeNumber_CBR = currentUser.Currency.CodeNumber_CBR,
+                },
+                UserSettings = new UserSettingsClientSide
+                {
+                    Dashboard_Month_IsShow_BigCharts = currentUser.UserSettings.BudgetPages_IsShow_BigCharts,
+                    Dashboard_Month_IsShow_EarningChart = currentUser.UserSettings.BudgetPages_EarningChart,
+                    Dashboard_Month_IsShow_GoalCharts = currentUser.UserSettings.BudgetPages_IsShow_Goals,
+                    Dashboard_Month_IsShow_InvestingChart = currentUser.UserSettings.BudgetPages_InvestingChart,
+                    Dashboard_Month_IsShow_LimitCharts = currentUser.UserSettings.BudgetPages_IsShow_Limits,
+                    Dashboard_Month_IsShow_SpendingChart = currentUser.UserSettings.BudgetPages_SpendingChart,
                 }
             };
         }

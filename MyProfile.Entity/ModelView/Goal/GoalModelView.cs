@@ -9,9 +9,11 @@ namespace MyProfile.Entity.ModelView.Goal
 		public string OwenerName { get; set; }
 		public decimal TotalMoney { get; set; }
 		public decimal Percent { get; set; }
+        public bool IsShow_BudgetMonth { get; set; }
+        public bool IsShow_BudgetYear { get; set; }
+        public bool IsShowInCollective { get; set; }
 
-
-		public List<RecordItem> Records { get; set; } = new List<RecordItem>();
+        public List<RecordItem> Records { get; set; } = new List<RecordItem>();
 		public string ChartID { get; set; }
 		public decimal Percent2 { get; set; }
 		public bool IsShow { get; set; }

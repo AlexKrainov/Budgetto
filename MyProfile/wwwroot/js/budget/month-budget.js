@@ -14,7 +14,6 @@
         records: [],
 
         //table
-        showFilter: false,
 
         //total charts
         earningData: { isShow: true },
@@ -43,26 +42,8 @@
         this.templateID = document.getElementById("templateID_hidden").value;
         this.budgetDate = GetDateByFormat(Date.parse(document.getElementById("budgetDate_hidden").value), "YYYY/MM/DD");
 
-        //if (this.templateID == -1) {
-        //	let options = document.getElementById("templates").children;
-        //	if (options && options.length > 0) {
-        //		options[0]["selected"] = "selected";
-        //	}
-        //}
-
-        this.flatpickr = flatpickr('#budget-date', {
-            altInput: true,
-            //dateFormat: 'd.m.Y',
-            defaultDate: this.budgetDate,
-            plugins: [
-                new monthSelectPlugin({
-                    shorthand: true, //defaults to false
-                    dateFormat: "yy/m/d", //defaults to "F Y"
-                    altFormat: "F Y", //defaults to "F Y"
-                    theme: "dark" // defaults to "light"
-                })
-            ]
-        });
+        let dateConfig = GetFlatpickrRuConfig_Month(this.budgetDate);
+        this.flatpickrStart = flatpickr('#budget-date', dateConfig);
 
         //table
         $('#modalTimeLine').on('hide.bs.modal', function () {
@@ -88,6 +69,11 @@
         },
         //Total charts
         loadTotalCharts: function () {
+            if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart
+                || UserInfo.UserSettings.Dashboard_Month_IsShow_SpendingChart
+                || UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart)) {
+                return false;
+            }
             return $.ajax({
                 type: "GET",
                 url: "/BudgetTotal/Load?to=" + this.budgetDate,
@@ -113,8 +99,8 @@
                     datasets: [{
                         data: this.earningData.data,
                         borderWidth: 1,
-                        backgroundColor: 'rgba(136, 151, 170, .2)',
-                        borderColor: 'rgba(136, 151, 170, 1)',
+                        backgroundColor: 'rgba(2, 188, 119, .2)',
+                        borderColor: 'rgba(2, 188, 119, 1)',
                         pointBorderColor: 'rgba(0,0,0,0)',
                         pointRadius: 1,
                         lineTension: 0
@@ -150,8 +136,8 @@
                     datasets: [{
                         data: this.spendingData.data,
                         borderWidth: 1,
-                        backgroundColor: 'rgba(206, 221, 54, .2)',
-                        borderColor: 'rgba(206, 221, 54, 1)',
+                        backgroundColor: 'rgba(217, 83, 79, .2)',
+                        borderColor: 'rgba(217, 83, 79, 1)',
                         pointBorderColor: 'rgba(0,0,0,0)',
                         pointRadius: 1,
                         lineTension: 0
@@ -231,6 +217,9 @@
         },
         //Limit charts
         loadLimitCharts: function () {
+            if (!UserInfo.UserSettings.Dashboard_Month_IsShow_LimitCharts) {
+                return false;
+            }
             return $.ajax({
                 type: "GET",
                 url: "/Limit/LoadCharts?date=" + this.budgetDate + "&periodTypesEnum=" + 1,
@@ -253,15 +242,15 @@
                     this.limitsCharts[i].destroy();
                 }
 
-                let backgroundColor = ['#4CAF50', '#f9f9f9']; //green
-                let hoverBackgroundColor = ['#4CAF50', '#f9f9f9'];//green
+                let backgroundColor = ['#4CAF50', '#ededed']; //green
+                let hoverBackgroundColor = ['#4CAF50', '#ededed'];//green
 
                 if (limitChartData.percent1 > 85) {
-                    backgroundColor = ['#d9534f', '#f9f9f9'];//red
-                    hoverBackgroundColor = ['#d9534f', '#f9f9f9'];//red
+                    backgroundColor = ['#d9534f', '#ededed'];//red
+                    hoverBackgroundColor = ['#d9534f', '#ededed'];//red
                 } else if (limitChartData.percent1 > 65) {
-                    backgroundColor = ['#FFD950', '#f9f9f9'];//yellow
-                    hoverBackgroundColor = ['#FFD950', '#f9f9f9'];//yellow
+                    backgroundColor = ['#FFD950', '#ededed'];//yellow
+                    hoverBackgroundColor = ['#FFD950', '#ededed'];//yellow
                 }
 
                 this.limitsCharts[i] = new Chart(document.getElementById(limitChartData.chartID).getContext("2d"), {
@@ -307,9 +296,13 @@
         },
         //Goal charts
         loadGoalCharts: function () {
+            if (!UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts) {
+                return false;
+            }
+
             return $.ajax({
                 type: "GET",
-                url: "/Goal/LoadCharts?date=" + this.budgetDate,
+                url: `/Goal/LoadCharts?date=${this.budgetDate}&periodTypesEnum=${1}`,
                 contentType: "application/json",
                 dataType: 'json',
                 context: this,
@@ -329,16 +322,16 @@
                     this.goalCharts[i].destroy();
                 }
 
-                let backgroundColor = ['#4CAF50', '#f9f9f9']; //green
-                let hoverBackgroundColor = ['#4CAF50', '#f9f9f9'];//green
+                let backgroundColor = ['#4CAF50', '#ededed']; //green
+                let hoverBackgroundColor = ['#4CAF50', '#ededed'];//green
 
                 if (goalChartData.percent < 0) {
-                    backgroundColor = ['#d9534f', '#f9f9f9'];//red
-                    hoverBackgroundColor = ['#d9534f', '#f9f9f9'];//red
+                    backgroundColor = ['#d9534f', '#ededed'];//red
+                    hoverBackgroundColor = ['#d9534f', '#ededed'];//red
                 }
                 //else if (goalChartData.percent > 65) {
-                //	backgroundColor = ['#FFD950', '#f9f9f9'];//yellow
-                //	hoverBackgroundColor = ['#FFD950', '#f9f9f9'];//yellow
+                //	backgroundColor = ['#FFD950', '#ededed'];//yellow
+                //	hoverBackgroundColor = ['#FFD950', '#ededed'];//yellow
                 //}
 
                 this.goalCharts[i] = new Chart(document.getElementById(goalChartData.chartID).getContext("2d"), {
@@ -385,6 +378,14 @@
         },
         //big charts
         loadBigCharts: function () {
+            if (!UserInfo.UserSettings.Dashboard_Month_IsShow_BigCharts) {
+                return false;
+            }
+
+            for (var i = 0; i < this.bigChartsData.length; i++) {
+                ShowLoading('#bigChart_' + this.bigChartsData[i].chartID);
+            }
+
             return $.ajax({
                 type: "GET",
                 url: "/Chart/LoadCharts?date=" + this.budgetDate + "&periodType=" + 1,
@@ -394,6 +395,10 @@
                 success: function (response) {
 
                     this.bigChartsData = response.bigChartsData;
+
+                    for (var i = 0; i < this.bigChartsData.length; i++) {
+                        HideLoading('#bigChart_' + this.bigChartsData[i].chartID);
+                    }
 
                     setTimeout(this.initBigChartCharts, 10);
                 }
@@ -431,11 +436,19 @@
                 }
             }
         },
-        refresh: function () {
-            this.load()
-                .then(function () {
-                    BudgetVue.initTable();
-                });
+        refresh: function (type) {
+            if (type == undefined || type == 'onlyTable') {
+                this.load()
+                    .then(function () {
+                        BudgetVue.initTable();
+                    });
+            }
+
+            if (type == 'onlyTable') {
+                return false;
+            }
+
+
             this.loadTotalCharts();
             this.loadLimitCharts();
             this.loadGoalCharts();
@@ -532,6 +545,16 @@
         },
         closeTimeline() {
             this.clearAllStyle();
+        },
+        getCurrencyValue: function (record) {
+            let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(record.money);
+            if (UserInfo.Currency.ID != record.currencyID) {
+                try {
+                    value += " (" + new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(CalculateExpression(record.tag)) + ")";
+                } catch (e) {
+                }
+            }
+            return value;
         },
         GetDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);

@@ -36,7 +36,7 @@ namespace MyProfile.Goal.Service
                 var userIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
                 predicate = predicate.And(x => userIDs.Contains(x.UserID)
                     && (x.UserID != currentUser.ID ? x.User.IsAllowCollectiveBudget : true)
-                    && (x.UserID != currentUser.ID ? x.IsShowInCollective : true)
+                    && (x.UserID != currentUser.ID ? x.VisibleElement.IsShowInCollective : true)
                     && (currentUser.UserSettings.GoalPage_IsShow_Finished ? true : x.IsFinished == false)
                     && x.IsDeleted == false);
             }
@@ -58,8 +58,9 @@ namespace MyProfile.Goal.Service
                     DateStart = x.DateStart,
                     Description = x.Description,
                     IsFinished = x.IsFinished,
-                    IsShowInCollective = x.IsShowInCollective,
-                    IsShowOnDashBoard = x.IsShowOnDashBoard,
+                    IsShowInCollective = x.VisibleElement.IsShowInCollective,
+                    IsShow_BudgetMonth = x.VisibleElement.IsShow_BudgetMonth,
+                    IsShow_BudgetYear = x.VisibleElement.IsShow_BudgetYear,
                     Name = x.Name,
                     ExpectationMoney = x.ExpectationMoney,
                     IsOwner = currentUser.ID == x.UserID,
@@ -113,11 +114,27 @@ namespace MyProfile.Goal.Service
 
             if (goal.ID == 0)
             {
+                goal.VisibleElement = new VisibleElement
+                {
+                    IsShow_BudgetMonth = goal.IsShow_BudgetMonth,
+                    IsShow_BudgetYear = goal.IsShow_BudgetYear,
+                };
+
                 await repository.CreateAsync(goal, true);
             }
             else
             {
-                await repository.UpdateAsync(goal, true);
+                var dbGoal = await repository.GetAll<Goal>(x => x.ID == goal.ID).FirstOrDefaultAsync();
+                dbGoal.DateEnd = goal.DateEnd;
+                dbGoal.DateStart = goal.DateStart;
+                dbGoal.Description = goal.Description;
+                dbGoal.ExpectationMoney = goal.ExpectationMoney;
+                dbGoal.IsFinished = goal.IsFinished;
+                dbGoal.Name = goal.Name;
+                dbGoal.VisibleElement.IsShow_BudgetMonth = goal.IsShow_BudgetMonth;
+                dbGoal.VisibleElement.IsShow_BudgetYear = goal.IsShow_BudgetYear;
+
+                await repository.UpdateAsync(dbGoal, true);
             }
 
             return await repository.GetAll<Goal>(x => x.ID == goal.ID)
@@ -129,8 +146,9 @@ namespace MyProfile.Goal.Service
                     DateStart = x.DateStart,
                     Description = x.Description,
                     IsFinished = x.IsFinished,
-                    IsShowInCollective = x.IsShowInCollective,
-                    IsShowOnDashBoard = x.IsShowOnDashBoard,
+                    IsShowInCollective = x.VisibleElement.IsShowInCollective,
+                    IsShow_BudgetMonth = x.VisibleElement.IsShow_BudgetMonth,
+                    IsShow_BudgetYear = x.VisibleElement.IsShow_BudgetYear,
                     Name = x.Name,
                     ExpectationMoney = x.ExpectationMoney,
                     IsOwner = true,
@@ -152,10 +170,18 @@ namespace MyProfile.Goal.Service
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<GoalModelView>> GetChartData(DateTime start, DateTime finish)
+        public async Task<List<GoalModelView>> GetChartData(DateTime start, DateTime finish, PeriodTypesEnum periodTypesEnum)
         {
             var currentUser = UserInfo.Current;
-            var goals = await GetGoalListView(x => x.IsShowOnDashBoard);
+            List<GoalModelView> goals = new List<GoalModelView>();
+            if (periodTypesEnum == PeriodTypesEnum.Month)
+            {
+                goals = await GetGoalListView(x => x.VisibleElement.IsShow_BudgetMonth);
+            }
+            else if (periodTypesEnum == PeriodTypesEnum.Year)
+            {
+                goals = await GetGoalListView(x => x.VisibleElement.IsShow_BudgetYear);
+            }
             //(x.DateEnd == null && x.DateStart <= start) || (x.DateStart <= start && x.DateEnd >= finish));
 
             for (int i = 0; i < goals.Count; i++)

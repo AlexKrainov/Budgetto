@@ -32,43 +32,32 @@ namespace MyProfile.Limit.Service
 
         public async Task<LimitModelView> UpdateOrCreate(LimitModelView limit)
         {
-            if (limit.PeriodTypeID == (int)PeriodTypesEnum.Year)
-            {
-                try
-                {
-                    limit.DateStart = new DateTime(int.Parse(limit.YearStart), 01, 01, 0, 0, 1);
-                }
-                catch (Exception)
-                {
-                    limit.DateStart = new DateTime(DateTime.Now.Year, 01, 01);
-                }
-
-                try
-                {
-                    if (!string.IsNullOrEmpty(limit.YearEnd))
-                    {
-                        limit.DateEnd = new DateTime(int.Parse(limit.YearEnd), 12, 31, 23, 59, 59);
-                    }
-                }
-                catch (Exception)
-                {
-                    // limit.DateEnd = new DateTime(DateTime.Now.Year, 01, 01);
-                }
-            }
 
             limit.UserID = UserInfo.Current.ID;
             limit.SectionGroupLimits = limit.NewSections.Distinct().Select(x => new SectionGroupLimit { BudgetSectionID = x.ID, LimitID = limit.ID }).ToList();
 
             if (limit.ID > 0)
             {
-                repository.DeleteRange(
-                    await repository.GetAll<Entity.Model.Limit>(x => x.ID == limit.ID)
-                        .SelectMany(y => y.SectionGroupLimits)
-                        .ToListAsync(), true);
-                await repository.UpdateAsync(limit, true);
+                var dbLimit = await repository.GetAll<Entity.Model.Limit>(x => x.ID == limit.ID).FirstOrDefaultAsync();
+                repository.DeleteRange(dbLimit.SectionGroupLimits, true);
+
+                dbLimit.Name = limit.Name;
+                dbLimit.Description = limit.Description;
+                dbLimit.LimitMoney = limit.LimitMoney;
+                dbLimit.PeriodTypeID = limit.PeriodTypeID;
+                dbLimit.SectionGroupLimits = limit.SectionGroupLimits;
+                dbLimit.VisibleElement.IsShowInCollective = limit.IsShowInCollective;
+                dbLimit.VisibleElement.IsShowOnDashboards = limit.IsShowOnDashboard;
+
+                await repository.UpdateAsync(dbLimit, true);
             }
             else
             {
+                limit.VisibleElement = new VisibleElement
+                {
+                    IsShowOnDashboards = limit.IsShowOnDashboard,
+                    IsShowInCollective = limit.IsShowInCollective,
+                };
                 await repository.CreateAsync(limit, true);
             }
 
@@ -76,18 +65,14 @@ namespace MyProfile.Limit.Service
                 .Select(x => new LimitModelView
                 {
                     ID = limit.ID,
-                    DateEnd = limit.DateEnd,
-                    DateStart = limit.DateStart,
                     Description = limit.Description,
                     LimitMoney = limit.LimitMoney,
                     Name = limit.Name,
-                    IsShow = limit.IsShow,
+                    IsShowOnDashboard = limit.IsShowOnDashboard,
+                    IsShowInCollective = limit.IsShowInCollective,
                     PeriodName = x.PeriodType.Name,
                     PeriodTypeID = x.PeriodTypeID,
-                    IsShowInCollective = x.IsShowInCollective,
-                    IsFinishLimit = limit.DateEnd != null && limit.DateEnd.Value < DateTime.Now ? true : false,
-                    YearEnd = limit.DateEnd != null ? limit.DateEnd.Value.Year.ToString() : null,
-                    YearStart = limit.DateStart != null ? limit.DateStart.Value.Year.ToString() : null,
+                    IsFinishLimit = limit.IsFinished,
                     IsOwner = limit.UserID == x.UserID,
                     UserName = x.User.Name + " " + x.User.LastName,
                     ImageLink = x.User.ImageLink,
@@ -128,51 +113,46 @@ namespace MyProfile.Limit.Service
             var currentUser = UserInfo.Current;
             var predicate = PredicateBuilder.True<Entity.Model.Limit>();
 
-            if (currentUser.UserSettings.LimitPage_IsShow_Collective)
-            {
-                var userIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
+            //if (currentUser.UserSettings.LimitPage_IsShow_Collective)
+            //{
+            //    var userIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
 
-                predicate = predicate.And(x => userIDs.Contains(x.UserID)
-                    && (x.UserID != currentUser.ID ? x.User.IsAllowCollectiveBudget : true)
-                    && (x.UserID != currentUser.ID ? x.IsShowInCollective : true)
-                    && (currentUser.UserSettings.LimitPage_Show_IsFinished ? true : x.DateEnd == null || x.DateEnd != null && x.DateEnd.Value > DateTime.Now)
-                    && x.IsDeleted == false);
-            }
-            else
-            {
-                predicate = predicate.And(x => currentUser.ID == x.UserID
-                && (currentUser.UserSettings.LimitPage_Show_IsFinished ? true : x.DateEnd == null || x.DateEnd != null && x.DateEnd.Value > DateTime.Now)
-                && x.IsDeleted == false);
-            }
+            //    predicate = predicate.And(x => userIDs.Contains(x.UserID)
+            //        && (x.UserID != currentUser.ID ? x.User.IsAllowCollectiveBudget : true)
+            //        && (x.UserID != currentUser.ID ? x.VisibleElement.IsShowInCollective : true)
+            //        && (currentUser.UserSettings.LimitPage_Show_IsFinished ? true : x.DateEnd == null || x.DateEnd != null && x.DateEnd.Value > DateTime.Now)
+            //        && x.IsDeleted == false);
+            //}
+            //else
+            //{
+            predicate = predicate.And(x => currentUser.ID == x.UserID
+            && x.IsDeleted == false);
+            //}
 
             if (expression != null) { predicate = predicate.And(expression); }
 
             return await repository.GetAll(predicate)
                 .Select(x => new LimitModelView
                 {
-                    DateEnd = x.DateEnd,
-                    DateStart = x.DateStart,
-                    YearEnd = x.DateEnd != null ? x.DateEnd.Value.Year.ToString() : null,
-                    YearStart = x.DateStart != null ? x.DateStart.Value.Year.ToString() : null,
                     ID = x.ID,
                     Description = x.Description,
                     LimitMoney = x.LimitMoney,
                     Name = x.Name,
-                    IsShow = x.IsShow,
+                    IsShowOnDashboard = x.VisibleElement.IsShowOnDashboards,
                     PeriodName = x.PeriodType.Name,
                     PeriodTypeID = x.PeriodTypeID,
-                    IsShowInCollective = x.IsShowInCollective,
-                    IsFinishLimit = x.DateEnd != null && x.DateEnd.Value < DateTime.Now ? true : false,
+                    IsShowInCollective = x.VisibleElement.IsShowInCollective,
+                    IsFinishLimit = x.IsFinished,
                     IsOwner = currentUser.ID == x.UserID,
                     UserName = x.User.Name + " " + x.User.LastName,
                     ImageLink = x.User.ImageLink,
-                    Sections = x.SectionGroupLimits.Select(y => new Entity.ModelView.BudgetSectionModelView //.OrderBy(z => z.BudgetSection.BudgetRecords)
+                    Sections = x.SectionGroupLimits.Select(y => new Entity.ModelView.BudgetSectionModelView
                     {
                         ID = y.BudgetSectionID,
                         Name = y.BudgetSection.Name,
                         CssColor = y.BudgetSection.CssColor,
                         CssIcon = y.BudgetSection.CssIcon,
-                    }).ToList()
+                    })
                 })
                 .ToListAsync();
         }
@@ -183,7 +163,7 @@ namespace MyProfile.Limit.Service
 
             var limits = await GetLimitListView(x =>
                 x.PeriodTypeID == (int)periodTypesEnum
-                && ((x.DateEnd == null && x.DateStart <= start) || (x.DateStart <= start && x.DateEnd >= finish)));
+                && x.VisibleElement.IsShowOnDashboards);
 
             var currentUser = UserInfo.Current;
 
@@ -210,7 +190,7 @@ namespace MyProfile.Limit.Service
                 decimal percent2 = decimal.Zero;
                 bool isThisMonth = finish.Month == DateTime.Now.Month && finish.Year == DateTime.Now.Year;
 
-                var totalDays = (finish - start).Days;
+                var totalDays = 1 + (finish - start).Days;
                 var leftDays = (finish - DateTime.Now).Days;
                 var leftMoneyToSpend = limit.LimitMoney - totalSpended;
 

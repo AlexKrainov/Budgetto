@@ -1,9 +1,11 @@
-﻿<div class="col-sm-6 col-md-6 col-lg-6 col-xl-6" v-for="chartData in bigChartsData" v-show="chartData.isShow">
-	<div class="card pt-2 mb-4">
-		<div class="d-flex align-items-center position-relative mt-4" style="height:310px;">
-			<div class="w-100 position-absolute" style="height:310px;top:0;">
-				<canvas v-bind:id="chartData.chartID"></canvas>
-			</div>
-		</div>
-	</div>
+﻿<div class="col-sm-6 col-md-6 col-lg-6 col-xl-6" v-for="chartData in bigChartsData"
+     v-show="chartData.isShow"
+     v-bind:id="'bigChart_'+chartData.chartID">
+    <div class="card pt-2 mb-4">
+        <div class="d-flex align-items-center position-relative mt-4" style="height:310px;">
+            <div class="w-100 position-absolute" style="height:310px;top:0;">
+                <canvas v-bind:id="chartData.chartID"></canvas>
+            </div>
+        </div>
+    </div>
 </div>

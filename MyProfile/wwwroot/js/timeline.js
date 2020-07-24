@@ -97,8 +97,15 @@ $(function () {
                     }
                 });
             },
-            onClickCollapse: function () {
-                record.isShowCollapse = !record.isShowCollapse;
+            getCurrencyValue: function (record) {
+                let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(record.money);
+                if (UserInfo.Currency.ID != record.currencyID) {
+                    try {
+                        value += " (" + new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(CalculateExpression(record.tag)) + ")";
+                    } catch (e) {
+                    }
+                }
+                return value;
             }
         }
     });
@@ -155,7 +162,7 @@ var filter = {
 var timeline = {
     isLoading: true, //flag for loading ajax query 
     search_click: function () {
-        
+
         filter.serialize(true);
         timeline.init();
         //calendar.calHeatMap.destroy();

@@ -13,6 +13,11 @@ namespace MyProfile.Entity.Model
 
 		public bool IsShow_BudgetMonth { get; set; }
 		public bool IsShow_BudgetYear { get; set; }
+        public bool IsShowInCollective { get; set; }
+		/// <summary>
+		/// Show on the pages Budget month and budget year
+		/// </summary>
+        public bool IsShowOnDashboards { get; set; }
 
-	}
+    }
 }

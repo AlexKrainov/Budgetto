@@ -29,13 +29,13 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div class="form-row">
-                <div class="form-group col">
-                    <label class="form-label">Date</label>
-                    <input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh">
+                <div class="form-group col-4">
+                    <label class="form-label">Месяц</label>
+                    <input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh(undefined)">
                 </div>
                 <div class="form-group col">
-                    <label class="form-label">Template</label>
-                    <select id="templates" v-model="templateID" v-on:change="refresh" class="form-control">
+                    <label class="form-label">Шаблон</label>
+                    <select id="templates" v-model="templateID" v-on:change="refresh('onlyTable')" class="form-control">
                         @foreach (var template in Model.Templates)
                         {
                             if (!template.IsDefault)
@@ -65,15 +65,16 @@
 
     <div class="row">
         @await Html.PartialAsync("_TotalView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+    </div>
+    <div class="row">
         @await Html.PartialAsync("_LimitsView")
+    </div>
+    <div class="row">
         @await Html.PartialAsync("_GoalsView")
+    </div>
+    <div class="row">
         @await Html.PartialAsync("_BigChartView")
     </div>
-    <div class="row">
-    </div>
-    <div class="row">
-    </div>
-
     <div class="card">
         <div class="card-body" style="padding-bottom:5px;">
             <div class="card-title with-elements">
@@ -88,14 +89,11 @@
                             <span class="switcher-no"></span>
                         </span>
                     </label>
-                    <i class="fas fa-chevron-down cursor-pointer" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" v-show="!showFilter" v-on:click="showFilter = true;"></i>
-                    <i class="fas fa-chevron-up cursor-pointer" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter" v-show="showFilter" v-on:click="showFilter = false"></i>
+                    <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3"><i class="collapse-icon"></i></a>
                 </div>
             </div>
-            <div class="collapse" id="collapseFilter">
-                <div class="card card-body">
-                    Filter :)
-                </div>
+            <div class="collapse table-responsive" id="collapseFilter">
+                Filter :)
             </div>
         </div>
         <div class="card-datatable table-responsive" style="padding-top:0px;">

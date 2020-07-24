@@ -46,7 +46,8 @@
         <div class=" col-sm-6 col-xl-4 masonry-item "
              v-for="limit in limits"
              v-bind:class="limit.isShow && (activeLimitPeriodTypeID == -1 || limit.periodTypeID == activeLimitPeriodTypeID) ? '' : 'd-none'">
-            <div class="card mb-4 custom-card-hover" v-bind:class="limit.isOwner ? 'border-primary' : 'border-secondary'" v-bind:id="'limit_' + limit.id" v-if="limit.isDeleted == false">
+            <div class="card mb-4 custom-card-hover" v-bind:class="limit.isOwner ? 'border-primary' : 'border-secondary'"
+                 v-bind:id="'limit_' + limit.id" v-if="limit.isDeleted == false">
                 <div class="card-body card-body pb-0">
                     <div class="d-flex justify-content-between align-items-start">
                         <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" v-on:click="edit(limit)" title="Редактировать" v-if="limit.isOwner">{{ limit.name }}</a>
@@ -73,7 +74,7 @@
                         <div class="text-muted small display-inline">Цель</div>
                         <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
                     </div>
-                    <div class="col-3">
+                    @*<div class="col-3">
                         <div class="text-muted small display-inline">Начало</div>
                         <h6 class="mt-1">{{  getDateByFormat(limit.dateStart, 'MM.YYYY') }}</h6>
                     </div>
@@ -81,11 +82,11 @@
                         <div class="text-muted small display-inline">Конец</div>
                         <span class="badge badge-outline-danger ml-1" v-show="limit.isFinishLimit">Завершен</span>
                         <h6 class="mt-1" v-show="limit.dateEnd">{{  getDateByFormat(limit.dateEnd, 'MM.YYYY') }}</h6>
-                    </div>
+                    </div>*@
                     @*<div class="col-4">
-                    <div class="text-muted small display-inline">Цель</div>
-                    <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
-                </div>*@
+                            <div class="text-muted small display-inline">Цель</div>
+                            <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
+                        </div>*@
                 </div>
                 <hr class="m-0">
                 <div class="card-footer p-3">
@@ -93,24 +94,35 @@
                         <i class="far fa-edit pr-2"></i>Редактировать
                     </a>
                     @*<a href="/Budget/Month?templateID=8" title="Посмотреть" class="btn icon-btn btn-sm btn-outline-secondary">
-                    <i class="far fa-eye"></i>
-                </a>*@
+                            <i class="far fa-eye"></i>
+                        </a>*@
                     <a href="void:javascript(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-if="limit.isOwner" v-on:click="remove(limit)">
                         <span class="ion ion-md-trash"></span>
                     </a>
-                    <div class="d-inline-flex align-items-center align-middle float-right" v-if="!limit.isOwner">
-                        <span class="px-1 ml-2 ml-lg-0">{{ limit.userName }}</span>
-                        <img v-bind:src="limit.imageLink" alt="User image" class="d-block ui-w-30 rounded-circle">
+                    <div class="d-inline-flex align-items-center align-middle float-right ml-1">
+                        <span class="px-1 ml-2 ml-lg-0">
+                            <span class="fas fa-eye text-primary" title="Показывать на страницу дашборда" v-show="limit.isShowOnDashboard"></span>
+                            <span class="fas fa-eye-slash text-secondary" title="Скрывать на страницу дашборда" v-show="limit.isShowOnDashboard == false"></span>
+                            @*<span class="fas fa-users text-primary" title="Эту область выдят все" v-show="area.isShowInCollective"></span>
+                                <span class="fas fa-users-slash text-secondary" title="Эту область выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
+                        </span>
                     </div>
-                    <div class="d-inline-flex pt-2 float-right text-secondary" v-else-if="limit.isShowInCollective">
-                        <i class="fas fa-users" title="Этот лимит видят все в группе."></i>
-                    </div>
+                    @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)
+                    {
+                        <div class="d-inline-flex align-items-center align-middle float-right" v-if="!limit.isOwner">
+                            <span class="px-1 ml-2 ml-lg-0">{{ limit.userName }}</span>
+                            <img v-bind:src="limit.imageLink" alt="User image" class="d-block ui-w-30 rounded-circle">
+                        </div>
+                        <div class="d-inline-flex pt-2 float-right text-secondary" v-else-if="limit.isShowInCollective">
+                            <i class="fas fa-users" title="Этот лимит видят все в группе."></i>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="card mb-4 custom-card-hover border-secondary" v-bind:id="'limit_' + limit.id" v-else-if="limit.isDeleted">
                 <div class="card-body card-body pb-0 deleted-item">
                     <div class="d-flex justify-content-between align-items-start ">
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold " >{{ limit.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold ">{{ limit.name }}</a>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="limit.periodTypeID == 1">{{ limit.periodName }}</span>
                         <span class="badge badge-info align-text-bottom ml-1" v-show="limit.periodTypeID == 3">{{ limit.periodName }}</span>
                     </div>
@@ -118,7 +130,7 @@
                         {{ limit.description }}
                     </div>
                 </div>
-                <div class="card-body py-2 deleted-item" >
+                <div class="card-body py-2 deleted-item">
                     <div class="text-muted small mb-2">Категории</div>
                     <div class="d-flex flex-wrap">
                         <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="section in limit.sections" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">

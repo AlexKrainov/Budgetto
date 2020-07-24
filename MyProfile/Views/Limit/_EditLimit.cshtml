@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <div class="form-row">
+                @*<div class="form-row">
                     <div class="form-group col">
                         <label class="form-label">Начало периода</label>
                         <span class="text-danger">*</span>
@@ -47,12 +47,12 @@
                         <input type="number" class="form-control" id="year-end" v-model="limit.yearEnd" name="yearEnd" required min="2020" max="2050" v-show="limit.periodTypeID == 3" value="2020" />
                         <input type="text" class="form-control" id="date-end" v-model="limit.dateEnd" name="dateEnd" v-show="limit.periodTypeID == 1">
                     </div>
-                </div>
+                </div>*@
                 <div class="form-row">
                     <div class="form-group col">
                         <label class="form-label">Категории</label>
                         <span class="text-danger">*</span>
-                        <select multiple class="form-control" id="limitSections" name="newSections" required >
+                        <select multiple class="form-control" id="limitSections" name="newSections" required style="width:100%">
                             <option v-for="_section in sections"
                                     v-bind:value="_section.id">
                                 {{ _section.name }}
@@ -83,10 +83,19 @@
                 </div>
                 <div class="form-group mt-4">
                     <label class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="isShowInCollective" v-model="limit.isShowInCollective" name="isShowInCollective">
-                        <span class="custom-control-label">Показывать в общей группе</span>
+                        <input type="checkbox" class="custom-control-input" id="isShowOnDashboard" v-model="limit.isShowOnDashboard" name="isShowOnDashboard">
+                        <span class="custom-control-label">Показывать на странице дашбора</span>
                     </label>
                 </div>
+                @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)
+                {
+                    <div class="form-group mt-4">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="isShowInCollective" v-model="limit.isShowInCollective" name="isShowInCollective">
+                            <span class="custom-control-label">Показывать в общей группе</span>
+                        </label>
+                    </div>
+                }
             </div>
             <div class="modal-footer">
                 <div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="limit.id">

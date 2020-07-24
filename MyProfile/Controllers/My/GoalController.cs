@@ -64,12 +64,12 @@ namespace MyProfile.Controllers.My
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadCharts(DateTime date)
+        public async Task<IActionResult> LoadCharts(DateTime date, PeriodTypesEnum periodTypesEnum)
         {
             DateTime start = new DateTime(date.Year, date.Month, 01, 00, 00, 01);
             DateTime finish = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 23, 59, 59);
 
-            List<GoalModelView> goalChartsData = await goalService.GetChartData(start, finish);
+            List<GoalModelView> goalChartsData = await goalService.GetChartData(start, finish, periodTypesEnum);
 
             return Json(new { goalChartsData = goalChartsData });
         }

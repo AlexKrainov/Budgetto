@@ -108,7 +108,7 @@ namespace MyProfile.Areas.Identity.Controllers
                     {
                         DateCreate = now,
                         Email = test.Email,
-                        IsAllowCollectiveBudget = true,
+                        IsAllowCollectiveBudget = false,
                         Name = test.Email,
                         ImageLink = "/img/user-min.png",
                         Password = test.Password,

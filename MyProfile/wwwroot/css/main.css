@@ -210,3 +210,13 @@ a.disabled {
 .card-chart_6 {
     background-image: url(/img/chart/grouped.png);
 }
+
+@media (min-width: 576px) {
+    .modal-slide .modal-dialog {
+        width: 45rem !important;
+    }
+}
+
+.light-style .flatpickr-calendar.open {
+    z-index: 1130 !important;
+}

@@ -203,18 +203,34 @@ function GetFlatpickrRuConfig(date, minDate, maxDate) {
 }
 
 function ShowLoading(selector) {
+    var overlayBg = themeSettings.isDarkStyle()
+        ? '#22252B'
+        : '#fff';
     $(selector).block({
-        message: '<div class="sk-wave sk-primary"><div class="sk-rect sk-rect1"></div> <div class="sk-rect sk-rect2"></div> <div class="sk-rect sk-rect3"></div> <div class="sk-rect sk-rect4"></div> <div class="sk-rect sk-rect5"></div></div>',
+        message: '<div class="sk-wave sk-primary mx-auto"><div class="sk-wave-rect"></div><div class="sk-wave-rect"></div><div class="sk-wave-rect"></div><div class="sk-wave-rect"></div><div class="sk-wave-rect"></div></div>',
         css: {
             backgroundColor: 'transparent',
-            border: '0'
+            border: '0',
+            zIndex: 9999999
         },
         overlayCSS: {
-            backgroundColor: '#fff',
-            opacity: 0.8
+            backgroundColor: overlayBg,
+            opacity: 0.8,
+            zIndex: 9999990
         }
     });
 }
 function HideLoading(selector) {
     $(selector).unblock();
+}
+
+function CurrencyCalculateExpression(rawData, exchangeRate) {
+    let newValue = `(${rawData}) * ${exchangeRate}`;
+    let func = compileExpression(newValue);
+    return func("1");
+}
+
+function CalculateExpression(rawData) {
+    let func = compileExpression(rawData);
+    return func("1");
 }

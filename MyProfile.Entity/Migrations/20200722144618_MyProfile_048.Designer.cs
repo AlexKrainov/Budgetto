@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200722144618_MyProfile_048")]
+    partial class MyProfile_048
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -390,6 +392,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsFinished");
 
+                    b.Property<bool>("IsShowInCollective");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -438,11 +442,19 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("DateEnd");
+
+                    b.Property<DateTime?>("DateStart");
+
                     b.Property<string>("Description");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<bool>("IsFinished");
+                    b.Property<bool>("IsShow");
+
+                    b.Property<bool>("IsShowInCollective")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<decimal>("LimitMoney")
                         .HasColumnType("Money");
@@ -454,15 +466,11 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<Guid>("UserID");
 
-                    b.Property<int>("VisibleElementID");
-
                     b.HasKey("ID");
 
                     b.HasIndex("PeriodTypeID");
 
                     b.HasIndex("UserID");
-
-                    b.HasIndex("VisibleElementID");
 
                     b.ToTable("Limits");
                 });
@@ -778,20 +786,11 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("IP")
                         .HasMaxLength(64);
 
-                    b.Property<bool>("IsPhone");
-
-                    b.Property<bool>("IsTablet");
-
-                    b.Property<bool>("IsUserVisible");
-
                     b.Property<string>("Location")
                         .HasMaxLength(64);
 
                     b.Property<string>("OS_Name")
                         .HasMaxLength(32);
-
-                    b.Property<string>("ObjectID")
-                        .HasMaxLength(40);
 
                     b.Property<string>("Os_Version")
                         .HasMaxLength(16);
@@ -886,21 +885,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("IsShowInCollective")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(false);
+                    b.Property<bool>("IsShow_BudgetMonth");
 
-                    b.Property<bool>("IsShowOnDashboards")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("IsShow_BudgetMonth")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("IsShow_BudgetYear")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsShow_BudgetYear");
 
                     b.HasKey("ID");
 
@@ -1057,11 +1044,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.VisibleElement", "VisibleElement")
-                        .WithMany()
-                        .HasForeignKey("VisibleElementID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -6,98 +6,108 @@ using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Limit;
 using MyProfile.Entity.Repository;
+using MyProfile.Identity;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 
 namespace MyProfile.Controllers.My
 {
-	public class LimitController : Controller
-	{
-		private IBaseRepository repository;
-		private LimitService limitService;
-		private DictionariesService dictionariesService;
+    public class LimitController : Controller
+    {
+        private IBaseRepository repository;
+        private LimitService limitService;
+        private DictionariesService dictionariesService;
 
-		public LimitController(IBaseRepository repository,
-			LimitService limitService,
-			LittleDictionaries.Service.DictionariesService dictionariesService)
-		{
-			this.repository = repository;
-			this.limitService = limitService;
-			this.dictionariesService = dictionariesService;
-		}
-		[HttpGet]
-		public async Task<IActionResult> List()
-		{
-			return View();
-		}
+        public LimitController(IBaseRepository repository,
+            LimitService limitService,
+            LittleDictionaries.Service.DictionariesService dictionariesService)
+        {
+            this.repository = repository;
+            this.limitService = limitService;
+            this.dictionariesService = dictionariesService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            return View();
+        }
 
-		public async Task<JsonResult> GetLimits()
-		{
-			return Json(new { isOk = true, limits = await limitService.GetLimitListView() });
-		}
+        public async Task<JsonResult> GetLimits()
+        {
+            var currentUser = UserInfo.Current;
 
-		public async Task<JsonResult> GetPeriodTypes()
-		{
-			return Json(new { isOk = true, periodTypes = dictionariesService.GetPeriodTypes() });
-		}
+            if (currentUser.UserSettings.LimitPage_Show_IsFinished)
+            {
+                return Json(new { isOk = true, limits = await limitService.GetLimitListView() });
+            }
+            else
+            {
+                return Json(new { isOk = true, limits = await limitService.GetLimitListView(x => x.IsFinished == false) });
+            }
+        }
 
-		[HttpPost]
-		public async Task<JsonResult> Save([FromBody] LimitModelView limit)
-		{
+        public async Task<JsonResult> GetPeriodTypes()
+        {
+            return Json(new { isOk = true, periodTypes = dictionariesService.GetPeriodTypes() });
+        }
 
-			try
-			{
-				limit = await limitService.UpdateOrCreate(limit);
-			}
-			catch (Exception ex)
-			{
-				return Json(new { isOk = false, Message = "Вовремя сохранения лимита произошла ошибка." });
-			}
+        [HttpPost]
+        public async Task<JsonResult> Save([FromBody] LimitModelView limit)
+        {
 
-			return Json(new { isOk = true, limit });
-		}
+            try
+            {
+                limit = await limitService.UpdateOrCreate(limit);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, Message = "Вовремя сохранения лимита произошла ошибка." });
+            }
 
-		[HttpGet]
-		public async Task<IActionResult> LoadCharts(DateTime date, PeriodTypesEnum periodTypesEnum)
-		{
-			DateTime start = new DateTime(date.Year, date.Month, 01, 00, 00, 01);
-			DateTime finish = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 23, 59, 59);
+            return Json(new { isOk = true, limit });
+        }
 
-			List<LimitChartModelView> limitChartsData = await limitService.GetChartData(start, finish, periodTypesEnum);
+        [HttpGet]
+        public async Task<IActionResult> LoadCharts(DateTime date, PeriodTypesEnum periodTypesEnum)
+        {
+            DateTime start = new DateTime(date.Year, date.Month, 01, 00, 00, 00);
+            DateTime finish = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 23, 59, 59);
 
-			return Json(new { limitsChartsData = limitChartsData });
-		}
+            List<LimitChartModelView> limitChartsData = await limitService.GetChartData(start, finish, periodTypesEnum);
 
-
-
-		[HttpPost]
-		public async Task<JsonResult> Remove([FromBody] LimitModelView limit)
-		{
-			try
-			{
-				await limitService.RemoveOrRecovery(limit, isRemove: true);
-			}
-			catch (Exception ex)
-			{
-				return Json(new { isOk = false, ex.Message });
-			}
-			return Json(new { isOk = true, limit });
-		}
-
-		[HttpPost]
-		public async Task<JsonResult> Recovery([FromBody] LimitModelView limit)
-		{
-			try
-			{
-				await limitService.RemoveOrRecovery(limit, isRemove: false);
-			}
-			catch (Exception ex)
-			{
-				return Json(new { isOk = false, ex.Message });
-			}
-			return Json(new { isOk = true, limit });
-		}
+            return Json(new { limitsChartsData = limitChartsData });
+        }
 
 
-	}
+
+        [HttpPost]
+        public async Task<JsonResult> Remove([FromBody] LimitModelView limit)
+        {
+            try
+            {
+                await limitService.RemoveOrRecovery(limit, isRemove: true);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, ex.Message });
+            }
+            return Json(new { isOk = true, limit });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Recovery([FromBody] LimitModelView limit)
+        {
+            try
+            {
+                await limitService.RemoveOrRecovery(limit, isRemove: false);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, ex.Message });
+            }
+            return Json(new { isOk = true, limit });
+        }
+
+
+    }
 }

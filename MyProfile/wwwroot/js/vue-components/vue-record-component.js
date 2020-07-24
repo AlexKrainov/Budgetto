@@ -275,9 +275,7 @@
                 }
                 let tagValue;
                 try {
-                    let newValue = `(${record.tag}) * ${this.exchangeRate}`;
-                    let func = compileExpression(newValue);
-                    record.money = func("1");
+                    record.money = CurrencyCalculateExpression(record.tag, this.exchangeRate); 
 
                     func = compileExpression(record.tag);
                     tagValue = func("1");

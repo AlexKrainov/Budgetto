@@ -69,17 +69,7 @@ namespace MyProfile.Entity.Model
             //    .Property(b => b.IsShow_BudgetYear)
             //    .HasDefaultValue(true);
 
-            modelBuilder.Entity<Limit>()
-                .Property(b => b.IsShow)
-                .HasDefaultValue(true);
-            modelBuilder.Entity<Limit>()
-               .Property(b => b.IsShowInCollective)
-               .HasDefaultValue(true);
-
-            modelBuilder.Entity<Goal>()
-                .Property(b => b.IsShowOnDashBoard)
-                .HasDefaultValue(true);
-
+        
             modelBuilder.Entity<User>()
                 .Property(b => b.UserTypeID)
                 .HasDefaultValue(1);
@@ -108,6 +98,19 @@ namespace MyProfile.Entity.Model
                 .Property(b => b.IsShowOnSite)
                 .HasDefaultValue(true);
 
+
+            modelBuilder.Entity<VisibleElement>()
+              .Property(b => b.IsShowInCollective)
+              .HasDefaultValue(false);
+            modelBuilder.Entity<VisibleElement>()
+              .Property(b => b.IsShowOnDashboards)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<VisibleElement>()
+              .Property(b => b.IsShow_BudgetMonth)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<VisibleElement>()
+              .Property(b => b.IsShow_BudgetYear)
+              .HasDefaultValue(true);
             #endregion
         }
 
