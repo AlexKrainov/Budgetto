@@ -11,7 +11,7 @@ using MyProfile.Goal.Service;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 
-namespace MyProfile.Controllers.My
+namespace MyProfile.Controllers
 {
     public class GoalController : Controller
     {

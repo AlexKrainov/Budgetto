@@ -7,13 +7,13 @@ using MyProfile.Chart.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Chart;
 
-namespace MyProfile.Controllers.My
+namespace MyProfile.Controllers
 {
-    public class Chart : Controller
+    public class ChartController : Controller
     {
         private ChartService chartService;
 
-        public Chart(ChartService chartService)
+        public ChartController(ChartService chartService)
         {
             this.chartService = chartService;
 

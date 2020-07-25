@@ -16,10 +16,12 @@
 			class="text-right">
 			<td v-for="(cell, cellIndex) in row"
 				v-show="cell.isShow"
-				v-html="getCellValue(cell)"
-				v-on:click="clickCell(rowIndex, cellIndex, $event)"
+				v-html="getCellContent(cell,cellIndex,rowIndex)"
+				v-on:mouseenter="mouseenterCell($event)"
+				v-on:mouseleave="mouseleaveCell($event)"
 				class="cell-hover"
 				v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]">
+
 			</td>
 		</tr>
 	</tbody>

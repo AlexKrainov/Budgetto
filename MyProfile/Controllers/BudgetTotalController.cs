@@ -14,7 +14,7 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Template.Service;
 
-namespace MyProfile.Controllers.My
+namespace MyProfile.Controllers
 {
 	public partial class BudgetTotalController : Controller
 	{

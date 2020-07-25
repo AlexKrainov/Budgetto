@@ -56,6 +56,7 @@ namespace MyProfile.Budget.Service
             int totalCounter = 0;
             IList<IGrouping<int, TmpBudgetRecord>> budgetRecords;
             List<string> columnsFormula = GetColumnsFormula(template);
+            var dateTimeNow = DateTime.Now;
 
             switch (template.PeriodTypeID)
             {
@@ -84,15 +85,24 @@ namespace MyProfile.Budget.Service
                 List<FooterCell> footerCells = new List<FooterCell>();
                 bool isWeekend = false,
                     isHoliday = false;
+                DateTime currentDate = dateTimeNow;
 
                 #region understand is it weekend or not 
                 if (template.PeriodTypeID == (int)PeriodTypesEnum.Month)
                 {
-                    var currentDate = new DateTime(from.Year, from.Month, dateCounter);
+                    currentDate = new DateTime(from.Year, from.Month, dateCounter);
                     isWeekend = currentDate.DayOfWeek == DayOfWeek.Sunday || currentDate.DayOfWeek == DayOfWeek.Saturday;
                     isHoliday = DateSystem.IsPublicHoliday(currentDate, CountryCode.RU);
                 }
                 #endregion
+
+                var cell = new Cell
+                {
+                    dateCounter = dateCounter,
+                    IsWeekend = isWeekend,
+                    IsHoliday = isHoliday,
+                    CurrentDate = currentDate,
+                };
 
                 if (budgetRecords.Count != indexBudgetRecords && budgetRecords.FirstOrDefault(x => x.Key == dateCounter) != null)
                 {
@@ -103,6 +113,9 @@ namespace MyProfile.Budget.Service
                     {
                         var column = template.Columns[columnIndex];
                         string expression = columnsFormula[columnIndex];
+
+                        cell.TemplateColumnType = column.TemplateColumnType;
+                        cell.IsShow = column.IsShow;
 
                         if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
                         {
@@ -132,16 +145,10 @@ namespace MyProfile.Budget.Service
                                 total = Math.Round(total, column.PlaceAfterCommon);
                                 //total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
 
-                                cells.Add(new Cell
-                                {
-                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
-                                    NaturalValue = total,
-                                    IsShow = column.IsShow,
-                                    TemplateColumnType = column.TemplateColumnType,
-                                    dateCounter = dateCounter,
-                                    IsWeekend = isWeekend,
-                                    IsHoliday = isHoliday
-                                });
+                                cell.Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU"));
+                                cell.NaturalValue = total;
+
+                                cells.Add(cell.CloneObject());
                                 footerCells.Add(new FooterCell
                                 {
                                     Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
@@ -150,16 +157,11 @@ namespace MyProfile.Budget.Service
                             }
                             catch (Exception ex)
                             {
-                                cells.Add(new Cell
-                                {
-                                    Value = "Ошибка формулы",
-                                    NaturalValue = 0,
-                                    IsShow = column.IsShow,
-                                    TemplateColumnType = TemplateColumnType.Error,
-                                    dateCounter = dateCounter,
-                                    IsWeekend = isWeekend,
-                                    IsHoliday = isHoliday
-                                });
+                                cell.Value = "Ошибка формулы";
+                                cell.NaturalValue = 0;
+                                cell.TemplateColumnType = TemplateColumnType.Error;
+
+                                cells.Add(cell.CloneObject());
                                 footerCells.Add(new FooterCell
                                 {
                                     Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
@@ -169,17 +171,9 @@ namespace MyProfile.Budget.Service
                         }
                         else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
                         {
-                            string v = SetFormatForDate(new DateTime(from.Year, from.Month, dateCounter), column.Format, column.TemplateColumnType);
+                            cell.Value = SetFormatForDate(new DateTime(from.Year, from.Month, dateCounter), column.Format, column.TemplateColumnType);
 
-                            cells.Add(new Cell
-                            {
-                                Value = v,
-                                IsShow = column.IsShow,
-                                TemplateColumnType = column.TemplateColumnType,
-                                dateCounter = dateCounter,
-                                IsWeekend = isWeekend,
-                                IsHoliday = isHoliday
-                            });
+                            cells.Add(cell.CloneObject());
                             footerCells.Add(new FooterCell
                             {
                                 Value = "0",
@@ -189,15 +183,9 @@ namespace MyProfile.Budget.Service
                         else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
                         {
                             string v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
-                            cells.Add(new Cell
-                            {
-                                Value = (new DateTime(from.Year, dateCounter, 1)).ToString("MM.yyyy"),
-                                IsShow = column.IsShow,
-                                TemplateColumnType = column.TemplateColumnType,
-                                dateCounter = dateCounter,
-                                IsWeekend = isWeekend,
-                                IsHoliday = isHoliday
-                            });
+                            cell.Value = (new DateTime(from.Year, dateCounter, 1)).ToString("MM.yyyy");
+
+                            cells.Add(cell.CloneObject());
                             footerCells.Add(new FooterCell
                             {
                                 Value = "0",
@@ -222,16 +210,9 @@ namespace MyProfile.Budget.Service
                         {
                             v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
                         }
+                        cell.Value = v;
 
-                        cells.Add(new Cell
-                        {
-                            Value = v,
-                            IsShow = column.IsShow,
-                            TemplateColumnType = column.TemplateColumnType,
-                            dateCounter = dateCounter,
-                            IsWeekend = isWeekend,
-                            IsHoliday = isHoliday
-                        });
+                        cells.Add(cell.CloneObject());
                         footerCells.Add(new FooterCell
                         {
                             Value = "0",

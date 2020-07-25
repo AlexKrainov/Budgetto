@@ -151,9 +151,9 @@
         id: String,
         name: String,
 
-
         //Events
-        aftersave: Event
+        afterSave: Event,
+        //showModel: Event,
     },
     data: function () {
         return {
@@ -275,7 +275,7 @@
                 }
                 let tagValue;
                 try {
-                    record.money = CurrencyCalculateExpression(record.tag, this.exchangeRate); 
+                    record.money = CurrencyCalculateExpression(record.tag, this.exchangeRate);
 
                     func = compileExpression(record.tag);
                     tagValue = func("1");
@@ -337,8 +337,12 @@
                                     }
                                 }
                             }
-                            this.$emit("aftersave", 123);
+                            this.$emit("afterSave", 123);
                             this.isSaving = false;
+
+                            if (this.after_save_callback && typeof (this.after_save_callback) === "string") {
+                                this.after_save_callback = window.getFunctionFromString(this.after_save_callback);
+                            }
 
                             if (typeof (this.after_save_callback) === "function") {
                                 try {
@@ -346,13 +350,14 @@
                                 } catch (e) {
                                     console.log(e);
                                 }
+                                this.after_save_callback = null;
                             }
                         }
                         return result;
                     },
                     error: function (xhr, status, error) {
                         console.log(error);
-                        this.$emit("aftersave", 123);
+                        this.$emit("afterSave", 123);
                         this.isSaving = false;
                     }
                 }, this);
@@ -507,6 +512,18 @@
         },
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
+        },
+
+        showModel: function (dateTime, callback) {
+            if (dateTime) {
+                this.flatpickr.setDate(dateTime);
+            } else {
+                this.flatpickr.setDate("today");
+            }
+
+            this.after_save_callback = callback;
+
+            $("#modal-record").modal("show");
         }
     }
 });

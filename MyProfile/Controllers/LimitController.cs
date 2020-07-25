@@ -10,7 +10,7 @@ using MyProfile.Identity;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 
-namespace MyProfile.Controllers.My
+namespace MyProfile.Controllers
 {
     public class LimitController : Controller
     {

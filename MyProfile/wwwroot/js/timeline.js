@@ -60,7 +60,7 @@ $(function () {
                 return GetDateByFormat(date, format);
             },
             edit: function (record) {
-                RecordVue.recordComponent.editByElement(record, timeline.calendar_day_click_after_change_record);
+                RecordVue.editByElement(record, timeline.calendar_day_click_after_change_record);
 
                 //RecordVue.recordComponent.edit(record.id);
             },

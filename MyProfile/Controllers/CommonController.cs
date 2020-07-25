@@ -3,7 +3,7 @@ using MyProfile.Entity.Repository;
 using MyProfile.LittleDictionaries.Service;
 using System.Threading.Tasks;
 
-namespace MyProfile.Controllers.My
+namespace MyProfile.Controllers
 {
     public class CommonController : Controller
     {

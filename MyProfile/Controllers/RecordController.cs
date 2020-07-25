@@ -7,7 +7,7 @@ using MyProfile.Budget.Service;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
 
-namespace MyProfile.Controllers.My
+namespace MyProfile.Controllers
 {
 	public class RecordController : Controller
 	{

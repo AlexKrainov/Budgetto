@@ -436,8 +436,8 @@
                 }
             }
         },
-        refresh: function (type) {
-            if (type == undefined || type == 'onlyTable') {
+        refresh: function (type, onlyRuntimeData) {
+            if (type == undefined || type == 'onlyTable' || onlyRuntimeData) {
                 this.load()
                     .then(function () {
                         BudgetVue.initTable();
@@ -448,17 +448,52 @@
                 return false;
             }
 
-
+            if (onlyRuntimeData) {
+                this.loadTotalCharts();
+                this.loadLimitCharts();
+                this.loadBigCharts();
+                return false;
+            }
             this.loadTotalCharts();
             this.loadLimitCharts();
             this.loadGoalCharts();
             this.loadBigCharts();
+        },
+        refreshAfterChangeRecords: function (dateTimeOfPayment) {
+            let dateOfPayment = moment(dateTimeOfPayment);
+            let currentBudgetDate = moment(this.budgetDate);
+            if (dateOfPayment.get("month") == currentBudgetDate.get("month") && dateOfPayment.get("year") == currentBudgetDate.get("year")) {
+                return this.refresh(undefined, true);
+            }
+            return false;
         },
         initTable: function () {
             $("#table").DataTable();
         },
 
         //View cell
+        getCellContent: function (cell, cellIndex, rowIndex) {
+            return this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell);
+        },
+        getCellActions: function (cell, cellIndex, rowIndex) {
+            return `
+            <span class="float-left cell-actions">
+                <i class="ion ion-md-add add-cell-action" onclick='RecordVue.showModel("${cell.currentDate}", "BudgetVue.refreshAfterChangeRecords")'></i>
+                <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickCell(${rowIndex}, ${cellIndex}, event)"></i>
+            </span>`;
+        },
+        mouseenterCell: function ($event) {
+            if ($event.target.nodeName == "TD" && $event.target.classList.contains("show-actions") == false) {
+                $event.target.classList.add("show-actions");
+                return;
+            }
+        },
+        mouseleaveCell: function ($event) {
+            if ($event.target.nodeName == "TD" && $event.target.classList.contains("show-actions")) {
+                $event.target.classList.remove("show-actions");
+                return;
+            }
+        },
         getCellValue: function (cell) {
             if (cell.value.indexOf(",")) {
                 let values = cell.value.split(",");
@@ -560,8 +595,7 @@
             return GetDateByFormat(date, format);
         },
         edit: function (record) {
-
-            RecordVue.recordComponent.editByElement(record, BudgetVue.load);
+            RecordVue.editByElement(record, BudgetVue.refreshAfterChangeRecords);
 
             $("#modalTimeLine").modal("hide");
         }
