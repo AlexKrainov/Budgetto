@@ -1,39 +1,38 @@
 ﻿<table class="table table-bordered compact"
-	   id="table"
-	   data-searching="false"
-	   data-paging="false"
-	   data-fixed-header="true">
-	<thead>
-		<tr class="text-center">
-			<th v-for="(column, columnIndex) in template.columns" 
-				v-html="column.name" 
-				v-show="column.isShow"
-				v-bind:class="column.styleForTableView"></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr v-for="(row, rowIndex) in rows" 
-			class="text-right">
-			<td v-for="(cell, cellIndex) in row"
-				v-show="cell.isShow"
-				v-html="getCellContent(cell,cellIndex,rowIndex)"
-				v-on:mouseenter="mouseenterCell($event)"
-				v-on:mouseleave="mouseleaveCell($event)"
-				class="cell-hover"
-				v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]">
-
-			</td>
-		</tr>
-	</tbody>
-	<tfoot>
-		<tr>
-			<td v-for="(cell, cellIndex) in footerRow"
-				v-show="cell.isShow"
-				v-html="getCellValue(cell)"
-				v-on:click="clickFooterCell(cellIndex)"
-				class="cell-hover">
-			</td>
-		</tr>
-	</tfoot>
+       id="table"
+       data-searching="false"
+       data-paging="false"
+       data-fixed-header="true">
+    <thead>
+        <tr class="text-center">
+            <th v-for="(column, columnIndex) in template.columns"
+                v-html="column.name"
+                v-show="column.isShow"
+                v-bind:class="column.styleForTableView"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr v-for="(row, rowIndex) in rows"
+            class="text-right">
+            <td v-for="(cell, cellIndex) in row"
+                v-show="cell.isShow"
+                v-html="getCellContent(cell,cellIndex,rowIndex)"
+                v-on:mouseenter="mouseenterCell($event)"
+                v-on:mouseleave="mouseleaveCell($event)"
+                class="cell-hover"
+                v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]">
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr class="text-right">
+            <td v-for="(cell, cellIndex) in footerRow"
+                v-show="cell.isShow"
+                v-html="getCellFooterContent(cell, cellIndex)"
+                v-on:mouseenter="mouseenterCell($event)"
+                v-on:mouseleave="mouseleaveCell($event)"
+                class="cell-hover">
+            </td>
+        </tr>
+    </tfoot>
 </table>
-@await Html.PartialAsync("_TimeLineDialog")

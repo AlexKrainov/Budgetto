@@ -34,6 +34,7 @@ namespace MyProfile.Entity.ModelView
 
         public bool IsSaved { get; set; } = true;
         public bool IsCorrect { get; set; } = true;
+        public bool IsShowForFilter { get; set; } = true;
         public bool IsDeleted { get; set; }
         public bool IsShowForCollection { get; set; }
         public string Tag { get { return RawData; } }

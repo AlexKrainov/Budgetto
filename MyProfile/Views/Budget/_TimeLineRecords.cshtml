@@ -1,4 +1,4 @@
-﻿<li class="list-group-item py-4" v-for="record in records" v-bind:id="'record_'+record.id">
+﻿<li class="list-group-item py-4" v-for="record in records" v-bind:id="'record_'+record.id" v-show="record.isShowForFilter">
     <div class="media flex-wrap" v-if="record.isDeleted == false">
         <div class="d-none d-sm-block">
             <img v-bind:src="record.imageLink" alt="User image" class="d-block ui-w-50 rounded-circle" v-bind:title="record.userName">

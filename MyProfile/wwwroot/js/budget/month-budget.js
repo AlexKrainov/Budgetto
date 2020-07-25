@@ -475,24 +475,21 @@
         getCellContent: function (cell, cellIndex, rowIndex) {
             return this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell);
         },
+        getCellFooterContent: function (cell, cellIndex) {
+            return this.getCellFooterActions(cellIndex) + this.getCellValue(cell);
+        },
         getCellActions: function (cell, cellIndex, rowIndex) {
             return `
             <span class="float-left cell-actions">
                 <i class="ion ion-md-add add-cell-action" onclick='RecordVue.showModel("${cell.currentDate}", "BudgetVue.refreshAfterChangeRecords")'></i>
-                <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickCell(${rowIndex}, ${cellIndex}, event)"></i>
+                <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickCell(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"></i>
             </span>`;
         },
-        mouseenterCell: function ($event) {
-            if ($event.target.nodeName == "TD" && $event.target.classList.contains("show-actions") == false) {
-                $event.target.classList.add("show-actions");
-                return;
-            }
-        },
-        mouseleaveCell: function ($event) {
-            if ($event.target.nodeName == "TD" && $event.target.classList.contains("show-actions")) {
-                $event.target.classList.remove("show-actions");
-                return;
-            }
+        getCellFooterActions: function (cellIndex) {
+            return `
+            <span class="float-left cell-actions">
+                <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickFooterCell(${cellIndex})"></i>
+            </span>`;
         },
         getCellValue: function (cell) {
             if (cell.value.indexOf(",")) {
@@ -507,7 +504,19 @@
                 return `<span>${cell.value}</span>`;
             }
         },
-        clickCell: function (rowIndex, cellIndex, event) {
+        mouseenterCell: function ($event) {
+            if ($event.target.nodeName == "TD" && $event.target.classList.contains("show-actions") == false) {
+                $event.target.classList.add("show-actions");
+                return;
+            }
+        },
+        mouseleaveCell: function ($event) {
+            if ($event.target.nodeName == "TD" && $event.target.classList.contains("show-actions")) {
+                $event.target.classList.remove("show-actions");
+                return;
+            }
+        },
+        clickCell: function (rowIndex, cellIndex, currentDate, event) {
             let templateColumnTypes = [2, 3, 4, 7]; // DaysForMonth = 2,MonthsForYear = 3,YearsFor10Year = 4,WeeksForMonth = 7
 
             let sections = [];
@@ -526,12 +535,11 @@
 
             let filter = {
                 sections: sections,
-                startDate: moment(this.budgetDate).add(rowIndex, "days").format(),
-                endDate: moment(this.budgetDate).add((rowIndex + 1), "days").add(-1, "minutes").format()
+                startDate: moment(this.budgetDate, "YYYY/MM/DD").add(rowIndex, "days").format(),
+                endDate: moment(this.budgetDate, "YYYY/MM/DD").add((rowIndex + 1), "days").add(-1, "minutes").format()
             };
 
-
-            return this.loadTimeLine(filter)
+            return HistoryVue.showHistory(filter, currentDate);
         },
         clickFooterCell: function (cellIndex) {
             let filter = {
@@ -542,7 +550,7 @@
 
             this.stylingClickedCells(event, "td_s", cellIndex);
 
-            return this.loadTimeLine(filter)
+            return HistoryVue.showHistory(filter)
         },
         stylingClickedCells(event, type, cellIndex) {
             this.clearAllStyle();
@@ -564,41 +572,7 @@
                 console.log(i);
             }
         },
-        loadTimeLine: function (filter) {
-            return $.ajax({
-                type: "POST",
-                url: "/Budget/LoadingRecordsForTableView",
-                data: JSON.stringify(filter),
-                contentType: "application/json",
-                dataType: 'json',
-                context: this,
-                success: function (response) {
-                    this.records = response.data;
-                    $("#modalTimeLine").modal("show");
-                }
-            });
-        },
-        closeTimeline() {
-            this.clearAllStyle();
-        },
-        getCurrencyValue: function (record) {
-            let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(record.money);
-            if (UserInfo.Currency.ID != record.currencyID) {
-                try {
-                    value += " (" + new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(CalculateExpression(record.tag)) + ")";
-                } catch (e) {
-                }
-            }
-            return value;
-        },
-        GetDateByFormat: function (date, format) {
-            return GetDateByFormat(date, format);
-        },
-        edit: function (record) {
-            RecordVue.editByElement(record, BudgetVue.refreshAfterChangeRecords);
 
-            $("#modalTimeLine").modal("hide");
-        }
     }
 });
 

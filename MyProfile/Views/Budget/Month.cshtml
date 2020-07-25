@@ -16,6 +16,7 @@
     <script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
 
     <script src="~/js/budget/month-budget.js"></script>
+    <script src="~/js/budget/history-model.js"></script>
     @*<script src="~/js/budget/table-view.js"></script>*@
 }
 
@@ -103,4 +104,7 @@
 
 </div>
 
+<div id="history-vue">
+    @await Html.PartialAsync("_TimeLineDialog")
+</div>
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Month")

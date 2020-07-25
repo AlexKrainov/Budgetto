@@ -57,6 +57,7 @@ namespace MyProfile.Budget.Service
             IList<IGrouping<int, TmpBudgetRecord>> budgetRecords;
             List<string> columnsFormula = GetColumnsFormula(template);
             var dateTimeNow = DateTime.Now;
+            UserInfoModel currentUser = UserInfo.Current;
 
             switch (template.PeriodTypeID)
             {
@@ -74,7 +75,7 @@ namespace MyProfile.Budget.Service
                     totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
                     break;
             }
-            if (UserInfo.Current.IsAllowCollectiveBudget && UserInfo.Current.UserSettings.BudgetPages_WithCollective)
+            if (currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective)
             {
                 AddCollectionRecords(budgetRecords);
             }
@@ -145,13 +146,13 @@ namespace MyProfile.Budget.Service
                                 total = Math.Round(total, column.PlaceAfterCommon);
                                 //total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
 
-                                cell.Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU"));
+                                cell.Value = total.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
                                 cell.NaturalValue = total;
 
                                 cells.Add(cell.CloneObject());
                                 footerCells.Add(new FooterCell
                                 {
-                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
+                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture)),
                                     NaturalValue = total
                                 });
                             }
@@ -164,7 +165,7 @@ namespace MyProfile.Budget.Service
                                 cells.Add(cell.CloneObject());
                                 footerCells.Add(new FooterCell
                                 {
-                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture("ru-RU")),
+                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture)),
                                     NaturalValue = total
                                 });
                             }
@@ -255,6 +256,7 @@ namespace MyProfile.Budget.Service
 
         private List<Cell> CalculateFooter(List<List<FooterCell>> footersData, TemplateViewModel template)
         {
+            var specificCulture = UserInfo.Current.Currency.SpecificCulture;
             List<Cell> footer = new List<Cell>();
             decimal v;
 
@@ -273,22 +275,22 @@ namespace MyProfile.Budget.Service
                     case FooterActionType.Sum:
                         v = total.Sum();
                         v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
-                        cell.Value = v.ToString();
+                        cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
                         break;
                     case FooterActionType.Avr:
                         v = total.Average();
                         v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
-                        cell.Value = v.ToString();
+                        cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
                         break;
                     case FooterActionType.Min:
                         v = total.Min();
                         v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
-                        cell.Value = v.ToString();
+                        cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
                         break;
                     case FooterActionType.Max:
                         v = total.Max();
                         v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
-                        cell.Value = v.ToString();
+                        cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
                         break;
                     case FooterActionType.Undefined:
                     default:

@@ -1,14 +1,36 @@
 ﻿<div class="modal modal-slide fade" id="modalTimeLine">
-	<div class="modal-dialog">
-		<form class="modal-content" style="background: #f5f5f5;">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-			<div class="modal-body">
-				<div class="row card">
-					<ul class="list-group list-group-flush">
-						@Html.Partial("_TimeLineRecords")
-					</ul>
-				</div>
-			</div>
-		</form>
-	</div>
+    <div class="modal-dialog">
+        <form class="modal-content" style="background: #f5f5f5;">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            <div class="modal-body" style="flex:auto">
+                <nav class="navbar navbar-expand-lg bg-white mb-4">
+                    <div class="container">
+
+                        <a href="javascript:void(0);" class="navbar-brand text-large line-height-1 py-3">История</a>
+
+                        <a class="nav-link cursor-pointer" v-on:click="add">
+                            <i class="ion ion-md-add navbar-icon align-middle" style="color:var(--success);"></i>
+                            <span class="d-lg-none align-middle">&nbsp; Добавить запись на эту дату</span>
+                        </a>
+
+                        <div class="navbar-collapse collapse" id="header-11">
+                            <div class="navbar-nav align-items-lg-center ml-auto">
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text ion ion-ios-search"></div>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <div class=" card">
+                    <ul class="list-group list-group-flush">
+                        @Html.Partial("_TimeLineRecords")
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
