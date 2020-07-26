@@ -234,3 +234,31 @@ function CalculateExpression(rawData) {
     let func = compileExpression(rawData);
     return func("1");
 }
+
+//table
+function tableOrder(d) {
+    let str = d.toString();
+    let index = str.search("data-value");
+    let subString = str.substring(12 + index);
+    let indexSubString = subString.search('"');
+    let dataValue = subString.substring(0, indexSubString);
+    return dataValue * 1;
+}
+function tablePreOrder(d) {
+    let str = d.toString();
+    let index = str.search("data-type");
+    let dataColumnType = str.substring(11 + index, 12 + index);
+
+    switch (dataColumnType) {
+        case TemplateColumnTypeEnum.BudgetSection:
+            return "money";
+        case TemplateColumnTypeEnum.DaysForMonth:
+        case TemplateColumnTypeEnum.MonthsForYear:
+        case TemplateColumnTypeEnum.YearForYear:
+            return "day"
+        default:
+            return "money";
+    }
+
+    return 'money';
+}

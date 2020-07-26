@@ -93,8 +93,17 @@
                     <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3"><i class="collapse-icon"></i></a>
                 </div>
             </div>
-            <div class="collapse table-responsive" id="collapseFilter">
-                Filter :)
+            <div class="collapse table-responsive bg-light " id="collapseFilter">
+                <div class="float-right">
+                    <button type="button" class="btn icon-btn borderless my-2"
+                            v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-default': 'btn-outline-primary'">
+                        <i class="ion ion-md-menu" v-on:click="pageViewSettings.isTableViewCompact = false; savePageSettings();" title="Обычный вид таблицы"></i>
+                    </button>
+                    <button type="button" class="btn icon-btn borderless my-2 mr-2"
+                            v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-primary': 'btn-outline-default'">
+                        <i class="ion ion-md-reorder" v-on:click="pageViewSettings.isTableViewCompact = true; savePageSettings();" title="Компактный вид таблицы"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="card-datatable table-responsive" style="padding-top:0px;">

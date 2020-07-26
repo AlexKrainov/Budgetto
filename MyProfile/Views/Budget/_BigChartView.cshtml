@@ -2,7 +2,7 @@
      v-show="chartData.isShow"
      v-bind:id="'bigChart_'+chartData.chartID">
     <div class="card pt-2 mb-4">
-        <div class="d-flex align-items-center position-relative mt-4" style="height:310px;">
+        <div class="d-flex align-items-center position-relative mt-4" v-bind:style="'height:' + bigChartHeight + 'px;'">
             <div class="w-100 position-absolute" style="height:310px;top:0;">
                 <canvas v-bind:id="chartData.chartID"></canvas>
             </div>

@@ -1,8 +1,10 @@
-﻿<table class="table table-bordered compact"
+﻿<table class="table table-bordered dataTable table-hover"
+       v-bind:class="pageViewSettings.isTableViewCompact ? 'compact' : ''"
        id="table"
        data-searching="false"
        data-paging="false"
-       data-fixed-header="true">
+       data-fixed-header="true"
+       data-col-reorder="true">
     <thead>
         <tr class="text-center">
             <th v-for="(column, columnIndex) in template.columns"

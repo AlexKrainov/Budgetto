@@ -351,6 +351,9 @@
                                     console.log(e);
                                 }
                                 this.after_save_callback = null;
+                            } else {
+                                //if it's a budget page we need to update data
+
                             }
                         }
                         return result;

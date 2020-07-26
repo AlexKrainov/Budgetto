@@ -8,7 +8,9 @@
             "GoalListVue.load",
             "LimitListVue.load"
         ],
-        partActions: []
+        partActions: [],
+
+        ajaxData: null,
     },
     watch: {
     },
@@ -35,7 +37,11 @@
                 }
             }
 
-            return $.ajax({
+            if (this.ajaxData && (this.ajaxData.readyState == 1 || this.ajaxData.readyState == 3)) { // OPENED & LOADING
+                this.ajaxData.abort();
+            }
+
+            this.ajaxData = $.ajax({
                 type: "POST",
                 url: "/UserSettings/SaveSettings",
                 data: JSON.stringify(settings),
@@ -49,6 +55,7 @@
                     }
                 }
             });
+            return this.ajaxData;
         },
         change: function (isCallActions, partActions) {
             this.isCallActions = isCallActions;

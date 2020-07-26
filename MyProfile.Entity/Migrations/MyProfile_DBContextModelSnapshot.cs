@@ -860,6 +860,10 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
+                    b.Property<string>("WebSiteTheme_CodeName")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue("light");
+
                     b.HasKey("ID");
 
                     b.ToTable("UserSettings");

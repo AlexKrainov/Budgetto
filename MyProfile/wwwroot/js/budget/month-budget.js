@@ -14,15 +14,19 @@
         records: [],
 
         //table
+        pageViewSettings: {
+            version: 1.0,
+            isTableViewCompact: false
+        },
 
         //total charts
-        earningData: { isShow: true },
+        earningData: {},
         earningChart: undefined,
 
-        spendingData: { isShow: true },
+        spendingData: {},
         spendingChart: undefined,
 
-        investingData: { isShow: true },
+        investingData: {},
         investingChart: undefined,
 
         //limit charts
@@ -35,10 +39,14 @@
 
         //Big charts
         bigChartsData: [],
-        bigCharts: []
+        bigCharts: [],
+        bigChartHeight: 310,
     },
-    watch: {},
+    watch: {
+    },
     mounted: function () {
+        this.getPageSettings();
+
         this.templateID = document.getElementById("templateID_hidden").value;
         this.budgetDate = GetDateByFormat(Date.parse(document.getElementById("budgetDate_hidden").value), "YYYY/MM/DD");
 
@@ -52,7 +60,13 @@
 
         this.refresh();
 
-        window.layoutHelpers.on('resize', this.resizeTotalCharts);
+        window.layoutHelpers.on('resize', this.resizeAll);
+
+        this.earningData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart;
+        this.spendingData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_SpendingChart;
+        this.investingData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart;
+
+        RecordVue.callback = this.refreshAfterChangeRecords;
     },
     methods: {
         load: function () {
@@ -200,7 +214,8 @@
                     maintainAspectRatio: false
                 }
             });
-            this.resizeTotalCharts();
+
+            setTimeout(this.resizeTotalCharts, 50);
         },
         resizeTotalCharts: function () {
             if (this.earningChart) {
@@ -366,8 +381,7 @@
                 });
 
             }
-            //setTimeout(this.resizeGoalCharts, 10);
-            this.resizeGoalCharts();
+            setTimeout(this.resizeGoalCharts, 10);
         },
         resizeGoalCharts: function () {
             for (var i = 0; i < this.goalCharts.length; i++) {
@@ -407,8 +421,42 @@
         initBigChartCharts: function () {
             for (var i = 0; i < this.bigChartsData.length; i++) {
                 let bigChartData = this.bigChartsData[i];
+                let options = null;
+
                 if (this.bigCharts[i]) {
                     this.bigCharts[i].destroy();
+                }
+
+                switch (bigChartData.chartTypeCodeName) {
+                    case "line":
+                    case "bar":
+                        options = {
+                            title: {
+                                display: true,
+                                text: bigChartData.name,
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        // Include a dollar sign in the ticks
+                                        callback: function (value, index, values) {
+                                            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value)
+                                        }
+                                    }
+                                }]
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        console.log(arguments);
+                                        return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value);
+                                    }
+                                }
+                            },
+                        };
+
+                        break;
+                    default:
                 }
 
                 this.bigCharts[i] = new Chart(document.getElementById(bigChartData.chartID), {
@@ -417,12 +465,7 @@
                         datasets: bigChartData.dataSets,
                         labels: bigChartData.labels
                     },
-                    options: {
-                        title: {
-                            display: true,
-                            text: bigChartData.name
-                        }
-                    }
+                    options: options
                 });
 
             }
@@ -430,10 +473,20 @@
             this.resizeBigCharts();
         },
         resizeBigCharts: function () {
+            let chartSize = 0;
             for (var i = 0; i < this.bigCharts.length; i++) {
-                if (this.bigCharts[i]) {
-                    this.bigCharts[i].resize();
+                let chart = this.bigCharts[i];
+                if (chart) {
+                    chart.resize();
+                    chartSize = chart.height;
                 }
+            }
+            if (chartSize < 300) {
+                this.bigChartHeight = 310;
+            } else if (chartSize >= 300 && chartSize <= 450) {
+                this.bigChartHeight = 410;
+            } else {
+                this.bigChartHeight = 510;
             }
         },
         refresh: function (type, onlyRuntimeData) {
@@ -461,11 +514,17 @@
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
             let dateOfPayment = moment(dateTimeOfPayment);
-            let currentBudgetDate = moment(this.budgetDate);
+            let currentBudgetDate = moment(this.budgetDate, "YYYY/MM/DD");
             if (dateOfPayment.get("month") == currentBudgetDate.get("month") && dateOfPayment.get("year") == currentBudgetDate.get("year")) {
                 return this.refresh(undefined, true);
             }
             return false;
+        },
+        resizeAll: function () {
+            this.resizeTotalCharts();
+            this.resizeLimitCharts();
+            this.resizeGoalCharts();
+            this.resizeBigCharts();
         },
         initTable: function () {
             $("#table").DataTable();
@@ -481,7 +540,7 @@
         getCellActions: function (cell, cellIndex, rowIndex) {
             return `
             <span class="float-left cell-actions">
-                <i class="ion ion-md-add add-cell-action" onclick='RecordVue.showModel("${cell.currentDate}", "BudgetVue.refreshAfterChangeRecords")'></i>
+                <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')"></i>
                 <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickCell(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"></i>
             </span>`;
         },
@@ -496,12 +555,12 @@
                 let values = cell.value.split(",");
 
                 if (values.length == 2) {
-                    return `<span>${values[0]}<span class="money-muted">,${values[1]}</span></span>`;
+                    return `<span data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'>${values[0]}<span class="money-muted">,${values[1]}</span></span>`;
                 } else {
-                    return `<span>${cell.value}</span>`;
+                    return `<span data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'>${cell.value}</span>`;
                 }
             } else {
-                return `<span>${cell.value}</span>`;
+                return `<span data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'>${cell.value}</span>`;
             }
         },
         mouseenterCell: function ($event) {
@@ -570,6 +629,25 @@
             for (var i = 0; i < el_s.length; i++) {
                 el_s[i].classList.remove("table-primary");
                 console.log(i);
+            }
+        },
+        // page and table settings
+        savePageSettings: function () {
+            localStorage.setItem("pageViewSettings", JSON.stringify(this.pageViewSettings));
+        },
+        savePageSettings: function () {
+            localStorage.setItem("pageViewSettings", JSON.stringify(this.pageViewSettings));
+        },
+        getPageSettings: function () {
+            let pageViewSettings = localStorage.getItem("pageViewSettings");
+            if (pageViewSettings != null) {
+                try {
+                    pageViewSettings = JSON.parse(pageViewSettings);
+
+                    this.pageViewSettings = pageViewSettings;
+                } catch (e) {
+
+                }
             }
         },
 

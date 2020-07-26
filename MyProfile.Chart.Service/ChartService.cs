@@ -274,7 +274,7 @@ namespace MyProfile.Chart.Service
 
             if (expression != null) { predicate = predicate.And(expression); }
 
-            var charts = await repository.GetAll<Chart>(predicate)
+            return await repository.GetAll<Chart>(predicate)
                 .Select(x => new ChartEditModel
                 {
                     ID = x.ID,
@@ -293,11 +293,9 @@ namespace MyProfile.Chart.Service
                         Name = y.Name,
                         ID = y.ID,
                         Sections = y.SectionGroupCharts.Select(z => z.BudgetSectionID).ToList()
-                    }).ToList()
+                    })
                 })
                 .ToListAsync();
-
-            return charts;
         }
 
 

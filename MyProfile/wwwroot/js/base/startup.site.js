@@ -108,23 +108,39 @@
 //});
 
 $(document).ready(function () {
-	
+    $.fn.dataTable.ext.type.detect.unshift(tablePreOrder);
+    $.fn.dataTable.ext.type.order['money-pre'] = tableOrder;
+    $.fn.dataTable.ext.type.order['day-pre'] = tableOrder;
 });
 
+
+
 var RecordVue = new Vue({
-	el: "#record-container",
-	computed: {
-		recordComponent: function () {
-			return this.$children[0];
-		}
-	},
-	methods: {
-		showModel: function (dateTime, callback) {
-			return this.recordComponent.showModel(dateTime, callback);
+    el: "#record-container",
+    data: {
+        callback: null,
+    },
+    computed: {
+        recordComponent: function () {
+            return this.$children[0];
+        }
+    },
+    methods: {
+        addRecord: function myfunction() {
+            if (RecordVue.callback) {
+                return this.recordComponent.showModel(undefined, RecordVue.callback);
+            } else {
+                return this.recordComponent.showModel();
+            }
+        },
+        showModel: function (dateTime, callback) {
+            return this.recordComponent.showModel(dateTime, callback);
         },
         editByElement: function (record, callback) {
-			return this.recordComponent.editByElement(record, callback);
+            return this.recordComponent.editByElement(record, callback);
         },
-	}
+    }
 });
+
+
 

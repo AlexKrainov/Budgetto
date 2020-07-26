@@ -173,6 +173,7 @@ namespace MyProfile.Budget.Service
                         else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
                         {
                             cell.Value = SetFormatForDate(new DateTime(from.Year, from.Month, dateCounter), column.Format, column.TemplateColumnType);
+                            cell.NaturalValue = cell.dateCounter;
 
                             cells.Add(cell.CloneObject());
                             footerCells.Add(new FooterCell
@@ -185,6 +186,7 @@ namespace MyProfile.Budget.Service
                         {
                             string v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
                             cell.Value = (new DateTime(from.Year, dateCounter, 1)).ToString("MM.yyyy");
+                            cell.NaturalValue = cell.dateCounter;
 
                             cells.Add(cell.CloneObject());
                             footerCells.Add(new FooterCell
@@ -212,6 +214,7 @@ namespace MyProfile.Budget.Service
                             v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
                         }
                         cell.Value = v;
+                        cell.NaturalValue = dateCounter;
 
                         cells.Add(cell.CloneObject());
                         footerCells.Add(new FooterCell

@@ -14,7 +14,7 @@ namespace MyProfile.Entity.ModelView.Chart
 		public bool IsShowBudgetYear { get; set; }
 
 		public ChartTypesEnum ChartTypeID { get; set; }
-		public List<ChartFieldItem> Fields { get; set; }
+		public IEnumerable<ChartFieldItem> Fields { get; set; }
 		public string ChartTypeCodeName { get; set; }
 		public string ChartTypeName { get; set; }
 		public DateTime DateCreate { get; set; }

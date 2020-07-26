@@ -61,7 +61,9 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<UserSettings>()
                .Property(b => b.LimitPage_Show_IsFinished)
                .HasDefaultValue(true);
-
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.WebSiteTheme_CodeName)
+              .HasDefaultValue(WebSiteThemeEnum.Light);
             //modelBuilder.Entity<VisibleElement>()
             //    .Property(b => b.IsShow_BudgetMonth)
             //    .HasDefaultValue(true);
@@ -69,7 +71,7 @@ namespace MyProfile.Entity.Model
             //    .Property(b => b.IsShow_BudgetYear)
             //    .HasDefaultValue(true);
 
-        
+
             modelBuilder.Entity<User>()
                 .Property(b => b.UserTypeID)
                 .HasDefaultValue(1);

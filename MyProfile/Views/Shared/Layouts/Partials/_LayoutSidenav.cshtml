@@ -40,10 +40,6 @@
         <li class="sidenav-divider mb-1"></li>
         @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
 
-        <li class="sidenav-item@(currentPage == "Budget/Records" ? " active" : "")">
-            <a asp-area="" asp-controller="Budget" asp-action="Records" class="sidenav-link"><i class="sidenav-icon lnr lnr-calendar-full"></i><div>Календарь</div></a>
-        </li>
-
         <li class="sidenav-item@(currentPage == "Limit/List" ? " active" : "")">
             <a asp-area="" asp-controller="Limit" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-frame-expand"></i><div>Лимиты</div></a>
         </li>
@@ -54,6 +50,10 @@
 
         <li class="sidenav-item@(currentPage == "Chart/List" ? " active" : "")">
             <a asp-area="" asp-controller="Chart" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-pie-chart"></i><div>Графики</div></a>
+        </li>
+
+        <li class="sidenav-item@(currentPage == "Budget/Records" ? " active" : "")">
+            <a asp-area="" asp-controller="Budget" asp-action="Records" class="sidenav-link"><i class="sidenav-icon lnr lnr-calendar-full"></i><div>Календарь</div></a>
         </li>
 
         <li class="sidenav-divider mb-1"></li>

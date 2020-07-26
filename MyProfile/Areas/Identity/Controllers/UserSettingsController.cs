@@ -29,8 +29,8 @@ namespace MyProfile.Areas.Identity.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> SaveSettings([FromBody] UserSettingsModelView userSettings)
 		{
-			var dbUserSettings = await repository.GetAll<UserSettings>(x => x.ID == UserInfo.Current.ID).FirstOrDefaultAsync();
 			var user = UserInfo.Current;
+			var dbUserSettings = await repository.GetAll<UserSettings>(x => x.ID == user.ID).FirstOrDefaultAsync();
 
 			if (userSettings.PageName == "Budget/Month" || userSettings.PageName == "Budget/Year")
 			{
@@ -57,10 +57,9 @@ namespace MyProfile.Areas.Identity.Controllers
 				user.UserSettings.LimitPage_Show_IsFinished = dbUserSettings.LimitPage_Show_IsFinished = userSettings.LimitPage_Show_IsFinished;
 			}
 
-
 			await UserInfo.AddOrUpdate_Authenticate(user);
 
-			await repository.UpdateAsync(dbUserSettings);
+			await repository.UpdateAsync(dbUserSettings, true);
 
 			return Json(new { isOk = true });
 		}
