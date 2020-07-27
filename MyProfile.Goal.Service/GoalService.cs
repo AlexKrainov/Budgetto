@@ -77,7 +77,6 @@ namespace MyProfile.Goal.Service
                         Total = y.Total,
                     })
                     .OrderByDescending(h => h.DateTimeOfPayment)
-                    .ToList()
                 })
                 .ToListAsync();
 

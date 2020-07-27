@@ -70,6 +70,10 @@
             } else if (sectionType == 3) { //Invest chart
                 UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart = BudgetVue.investingData.isShow = document.querySelector("[data-prop=BudgetPages_InvestingChart]").checked;
             }
+
+            if (typeof (BudgetVue.refrehViewTable) == "function") {
+                setTimeout(BudgetVue.refrehViewTable, 50);
+            }
         },
         toggleLimits: function (method) {
             let checked = document.querySelector("[data-prop=BudgetPages_IsShow_Limits]").checked;
@@ -77,6 +81,10 @@
                 BudgetVue.limitsChartsData[i].isShow = checked;
             }
             UserInfo.UserSettings.Dashboard_Month_IsShow_LimitCharts = checked;
+
+            if (checked == false && typeof (BudgetVue.refrehViewTable) == "function") {
+                setTimeout(BudgetVue.refrehViewTable, 50);
+            }
         },
         toggleGoals: function (method) {
             let checked = document.querySelector("[data-prop=BudgetPages_IsShow_Goals]").checked;
@@ -84,6 +92,10 @@
                 BudgetVue.goalChartsData[i].isShow = checked;
             }
             UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts = checked;
+
+            if (checked == false && typeof (BudgetVue.refrehViewTable) == "function") {
+                setTimeout(BudgetVue.refrehViewTable, 50);
+            }
         },
         toggleBigCharts: function (method) {
             let checked = document.querySelector("[data-prop=BudgetPages_IsShow_BigCharts]").checked;
@@ -91,6 +103,10 @@
                 BudgetVue.bigChartsData[i].isShow = checked;
             }
             UserInfo.UserSettings.Dashboard_Month_IsShow_BigCharts = checked;
+
+            if (checked == false && typeof (BudgetVue.refrehViewTable) == "function") {
+                setTimeout(BudgetVue.refrehViewTable, 50);
+            }
         },
 
         callMethod: function (method) {

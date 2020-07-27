@@ -160,12 +160,12 @@ namespace MyProfile.Limit.Service
         public async Task<List<LimitChartModelView>> GetChartData(DateTime start, DateTime finish, PeriodTypesEnum periodTypesEnum)
         {
             List<LimitChartModelView> limitCharts = new List<LimitChartModelView>();
+            var currentUser = UserInfo.Current;
 
             var limits = await GetLimitListView(x =>
                 x.PeriodTypeID == (int)periodTypesEnum
                 && x.VisibleElement.IsShowOnDashboards);
 
-            var currentUser = UserInfo.Current;
 
             for (int i = 0; i < limits.Count; i++)
             {
@@ -177,7 +177,9 @@ namespace MyProfile.Limit.Service
                     EndDate = finish,
                     Sections = limit.Sections.Select(x => x.ID).ToList()
                 };
+
                 filter.IsConsiderCollection = currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective;
+
                 if (filter.IsConsiderCollection)
                 {
                     filter.Sections.AddRange(await sectionService.GetCollectionSectionBySectionID(filter.Sections));

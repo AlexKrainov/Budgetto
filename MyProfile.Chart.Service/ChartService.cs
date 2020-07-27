@@ -6,7 +6,9 @@ using MyProfile.Entity.ModelView.Chart;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -111,8 +113,21 @@ namespace MyProfile.Chart.Service
 
         public async Task<List<ChartViewModel>> GetChartData(DateTime start, DateTime finish, PeriodTypesEnum periodTypesEnum)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            List<string> stopwatchs = new List<string>();
+
+            stopwatch.Start();//1
+
             var currentUser = UserInfo.Current;
+
+            stopwatch.Stop();
+            stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
+            stopwatch.Reset();
+
             List<ChartEditModel> charts = new List<ChartEditModel>();
+
+
+            stopwatch.Start();//2
 
             if (periodTypesEnum == PeriodTypesEnum.Month)
             {
@@ -122,16 +137,56 @@ namespace MyProfile.Chart.Service
             {
                 charts = await GetChartListView(x => x.VisibleElement.IsShow_BudgetYear);
             }
-            var allSections = charts.SelectMany(x => x.Fields).SelectMany(x => x.Sections).ToList();
 
-            var data = budgetRecordService.GetBudgetRecordsGroup(start, finish,
+            stopwatch.Stop();
+            stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
+            stopwatch.Reset();
+
+            stopwatch.Start();//3
+
+            var chartIDs = charts.Select(x => x.ID);
+            var allSections = repository.GetAll<Chart>(x => chartIDs.Contains(x.ID))
+                .SelectMany(x => x.ChartFields)
+                .SelectMany(x => x.SectionGroupCharts)
+                .Select(x => x.BudgetSectionID);
+
+            stopwatch.Stop();
+            stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
+            stopwatch.Reset();
+
+            stopwatch.Start();//4
+
+            var dataGroupByDay = budgetRecordService.GetBudgetRecordsGroup(start, finish,
                 x => x.DateTimeOfPayment.Day,
-                y => allSections.Contains(y.BudgetSectionID));
+                y => allSections.Contains(y.BudgetSectionID)).ToList();
+
+            //var dataGroupBySection = budgetRecordService.GetBudgetRecordsGroup(start, finish,
+            //   x => x.SectionID,
+            //   y => allSections.Contains(y.BudgetSectionID));
+
+
+            stopwatch.Stop();
+            stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
+            stopwatch.Reset();
 
             List<ChartViewModel> chartData = new List<ChartViewModel>();
 
+            var labels = new List<string>();
+            int totalDays = (int)((finish - start).TotalDays + 1);
+            Hashtable dataHashtable = new Hashtable();
+
+            if (periodTypesEnum == PeriodTypesEnum.Month)
+            {
+                for (int day = 1; day < totalDays; day++)
+                {
+                    labels.Add(day.ToString());
+                }
+            }
+
             foreach (var chart in charts)
             {
+                stopwatch.Start();//5
+
                 ChartViewModel chartViewModel = new ChartViewModel
                 {
                     ChartID = "bigChart_" + chart.ID,
@@ -150,11 +205,6 @@ namespace MyProfile.Chart.Service
 
                         if (periodTypesEnum == PeriodTypesEnum.Month)
                         {
-                            for (int day = 1; day < (finish - start).TotalDays; day++)
-                            {
-                                chartViewModel.Labels.Add(day.ToString());
-                            }
-
                             foreach (var fieldItem in chart.Fields)
                             {
                                 var chartLine = new ChartLineViewModel
@@ -162,24 +212,19 @@ namespace MyProfile.Chart.Service
                                     Label = fieldItem.Name,
                                     BorderColor = fieldItem.CssColor,
                                     Fill = true,
-                                    Data = new List<decimal>()
+                                    Data = new decimal[totalDays + 1]
                                 };
 
-                                for (int day = 1; day < (finish - start).TotalDays; day++)
+                                foreach (var _data in dataGroupByDay)
                                 {
-                                    var _data = data.FirstOrDefault(x => x.Key == day);
-
-                                    if (_data != null)
-                                    {
-                                        chartLine.Data.Add(_data.Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total));
-                                    }
-                                    else
-                                    {
-                                        chartLine.Data.Add(0);
-                                    }
+                                    chartLine.Data[_data.Key] = _data.Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total);
                                 }
+
+                                chartLine.Data = chartLine.Data.Skip(1).ToArray();
+
                                 chartViewModel.DataSets.Add(chartLine);
                             }
+                            chartViewModel.Labels = labels;
                         }
                         else if (periodTypesEnum == PeriodTypesEnum.Year)
                         {
@@ -201,7 +246,16 @@ namespace MyProfile.Chart.Service
                             foreach (var fieldItem in chart.Fields)
                             {
                                 chartPie.BackgroundColor.Add(fieldItem.CssColor);
-                                chartPie.Data.Add(data.SelectMany(x => x).Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total));
+
+                                chartPie.Data.Add(await budgetRecordService.GetTotalSpendsForLimitByFilter(new Entity.ModelView.CalendarFilterModels
+                                {
+                                    StartDate = start,
+                                    EndDate = finish,
+                                    Sections = fieldItem.Sections.ToList()
+                                })); //<-- 1100 ElapsedMilliseconds
+
+                                //chartPie.Data.Add(dataGroupBySection.Where(x => fieldItem.Sections.Contains(x.Key)).Sum(y => y.Sum(p => p.Total))); //<-- 3600 ElapsedMilliseconds
+                                //chartPie.Data.Add(data2.Where(x => fieldItem.Sections.Contains(x.Key)).Sum(x => x.Key));//<-- 7100 ElapsedMilliseconds
 
                                 chartViewModel.Labels.Add(fieldItem.Name);
                             }
@@ -217,35 +271,25 @@ namespace MyProfile.Chart.Service
                     case ChartTypesEnum.GroupedBar:
                         if (periodTypesEnum == PeriodTypesEnum.Month)
                         {
-                            for (int day = 1; day < (finish - start).TotalDays; day++)
-                            {
-                                chartViewModel.Labels.Add(day.ToString());
-                            }
-
                             foreach (var fieldItem in chart.Fields)
                             {
                                 var chartLine = new ChartGroupedBarViewModel
                                 {
                                     Label = fieldItem.Name,
                                     BackgroundColor = fieldItem.CssColor,
-                                    Data = new List<decimal>()
+                                    Data = new decimal[totalDays + 1]
                                 };
 
-                                for (int day = 1; day < (finish - start).TotalDays; day++)
+                                foreach (var _data in dataGroupByDay)
                                 {
-                                    var _data = data.FirstOrDefault(x => x.Key == day);
-
-                                    if (_data != null)
-                                    {
-                                        chartLine.Data.Add(_data.Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total));
-                                    }
-                                    else
-                                    {
-                                        chartLine.Data.Add(0);
-                                    }
+                                   chartLine.Data[_data.Key] = _data.Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total);
                                 }
+
+                                chartLine.Data = chartLine.Data.Skip(1).ToArray();
+
                                 chartViewModel.DataSets.Add(chartLine);
                             }
+                            chartViewModel.Labels = labels;
                         }
                         else if (periodTypesEnum == PeriodTypesEnum.Year)
                         {
@@ -258,6 +302,10 @@ namespace MyProfile.Chart.Service
                 }
 
                 chartData.Add(chartViewModel);
+
+                stopwatch.Stop();
+                stopwatchs.Add(chart.ChartTypeCodeName + " : " + (stopwatch.ElapsedMilliseconds).ToString());
+                stopwatch.Reset();
             }
 
             return chartData;
@@ -292,7 +340,8 @@ namespace MyProfile.Chart.Service
                         CssColor = y.CssColor,
                         Name = y.Name,
                         ID = y.ID,
-                        Sections = y.SectionGroupCharts.Select(z => z.BudgetSectionID).ToList()
+                        Sections = y.SectionGroupCharts
+                            .Select(z => z.BudgetSectionID)
                     })
                 })
                 .ToListAsync();

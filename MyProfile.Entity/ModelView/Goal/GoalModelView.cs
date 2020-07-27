@@ -13,7 +13,7 @@ namespace MyProfile.Entity.ModelView.Goal
         public bool IsShow_BudgetYear { get; set; }
         public bool IsShowInCollective { get; set; }
 
-        public List<RecordItem> Records { get; set; } = new List<RecordItem>();
+        public IEnumerable<RecordItem> Records { get; set; } = new List<RecordItem>();
 		public string ChartID { get; set; }
 		public decimal Percent2 { get; set; }
 		public bool IsShow { get; set; }

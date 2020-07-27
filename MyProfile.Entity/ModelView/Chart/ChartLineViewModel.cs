@@ -8,7 +8,7 @@ namespace MyProfile.Entity.ModelView.Chart
 	{
 		public string Label { get; set; }
 		public string BorderColor { get; set; }
-		public List<decimal> Data { get; set; }
+		public decimal[] Data { get; set; }
 		public bool Fill { get; set; }
 	}
 }

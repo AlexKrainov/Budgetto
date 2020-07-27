@@ -14,6 +14,7 @@
         records: [],
 
         //table
+        dataTable: null,
         pageViewSettings: {
             version: 1.0,
             isTableViewCompact: false
@@ -229,6 +230,7 @@
             if (this.investingChart) {
                 this.investingChart.resize();
             }
+            this.refrehViewTable();
         },
         //Limit charts
         loadLimitCharts: function () {
@@ -308,6 +310,7 @@
                     this.limitsCharts[i].resize();
                 }
             }
+            this.refrehViewTable();
         },
         //Goal charts
         loadGoalCharts: function () {
@@ -389,6 +392,7 @@
                     this.goalCharts[i].resize();
                 }
             }
+            this.refrehViewTable();
         },
         //big charts
         loadBigCharts: function () {
@@ -454,7 +458,31 @@
                                 }
                             },
                         };
+                        break;
+                    case "doughnut":
+                    case "pie":
+                        options = {
+                            title: {
+                                display: true,
+                                text: bigChartData.name,
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        let label = "";
+                                        let money = "";
+                                        try {
+                                            label = data.labels[tooltipItem.index];
+                                            money = data.datasets[0].data[tooltipItem.index];
+                                        } catch (e) {
+                                            console.log(e);
+                                        }
 
+                                        return `${label}: ${new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money)}`;
+                                    }
+                                }
+                            },
+                        };
                         break;
                     default:
                 }
@@ -485,10 +513,12 @@
                 this.bigChartHeight = 310;
             } else if (chartSize >= 300 && chartSize <= 450) {
                 this.bigChartHeight = 410;
-            } else {
-                this.bigChartHeight = 510;
+            } else if (chartSize > 450) {
+                this.bigChartHeight = 600;
             }
+            this.refrehViewTable();
         },
+        //resize and refresh
         refresh: function (type, onlyRuntimeData) {
             if (type == undefined || type == 'onlyTable' || onlyRuntimeData) {
                 this.load()
@@ -502,15 +532,16 @@
             }
 
             if (onlyRuntimeData) {
+                this.loadBigCharts();
                 this.loadTotalCharts();
                 this.loadLimitCharts();
-                this.loadBigCharts();
                 return false;
             }
+
+            this.loadBigCharts();
             this.loadTotalCharts();
             this.loadLimitCharts();
             this.loadGoalCharts();
-            this.loadBigCharts();
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
             let dateOfPayment = moment(dateTimeOfPayment);
@@ -526,10 +557,14 @@
             this.resizeGoalCharts();
             this.resizeBigCharts();
         },
-        initTable: function () {
-            $("#table").DataTable();
+        refrehViewTable: function () {
+            if (this.dataTable && this.dataTable.fixedHeader) {
+                this.dataTable.fixedHeader.adjust()
+            }
         },
-
+        initTable: function () {
+            this.dataTable = $("#table").DataTable();
+        },
         //View cell
         getCellContent: function (cell, cellIndex, rowIndex) {
             return this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell);

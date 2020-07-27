@@ -87,6 +87,7 @@ namespace MyProfile.Budget.Service
                 bool isWeekend = false,
                     isHoliday = false;
                 DateTime currentDate = dateTimeNow;
+                var interpreter = new Interpreter();
 
                 #region understand is it weekend or not 
                 if (template.PeriodTypeID == (int)PeriodTypesEnum.Month)
@@ -139,7 +140,6 @@ namespace MyProfile.Budget.Service
                                 }
                             }
 
-                            var interpreter = new Interpreter();
                             try
                             {
                                 total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand , (comma)
@@ -265,33 +265,33 @@ namespace MyProfile.Budget.Service
 
             for (int i = 0; i < template.Columns.Count; i++)
             {
-                List<decimal> total = new List<decimal>();
+                List<decimal> totals = new List<decimal>();
                 Cell cell = new Cell() { IsShow = template.Columns[i].IsShow };
 
                 foreach (var footerRow in footersData)
                 {
-                    total.Add(footerRow[i].NaturalValue);
+                    totals.Add(footerRow[i].NaturalValue);
                 }
 
                 switch (template.Columns[i].TotalAction)
                 {
                     case FooterActionType.Sum:
-                        v = total.Sum();
+                        v = totals.Sum();
                         v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
                         cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
                         break;
                     case FooterActionType.Avr:
-                        v = total.Average();
+                        v = totals.Average();
                         v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
                         cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
                         break;
                     case FooterActionType.Min:
-                        v = total.Min();
+                        v = totals.Min();
                         v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
                         cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
                         break;
                     case FooterActionType.Max:
-                        v = total.Max();
+                        v = totals.Max();
                         v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
                         cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
                         break;
