@@ -29,6 +29,12 @@ namespace MyProfile.Entity.ModelView.User
         public bool Dashboard_Month_IsShow_GoalCharts { get; set; }
 
         public bool Dashboard_Month_IsShow_BigCharts { get; set; }
+        public bool Dashboard_Year_IsShow_BigCharts { get; set; }
+        public bool Dashboard_Year_IsShow_EarningChart { get; set; }
+        public bool Dashboard_Year_IsShow_GoalCharts { get; set; }
+        public bool Dashboard_Year_IsShow_InvestingChart { get; set; }
+        public bool Dashboard_Year_IsShow_LimitCharts { get; set; }
+        public bool Dashboard_Year_IsShow_SpendingChart { get; set; }
     }
     public class CurrencyClientSide 
     {

@@ -2,13 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>MyProfile</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Logs\**" />
     <Compile Remove="wwwroot\vendor\libs\vue\src\**" />
+    <Content Remove="Logs\**" />
     <Content Remove="wwwroot\vendor\libs\vue\src\**" />
+    <EmbeddedResource Remove="Logs\**" />
     <EmbeddedResource Remove="wwwroot\vendor\libs\vue\src\**" />
+    <None Remove="Logs\**" />
     <None Remove="wwwroot\vendor\libs\vue\src\**" />
+    <TypeScriptCompile Remove="Logs\**" />
     <TypeScriptCompile Remove="wwwroot\vendor\libs\vue\src\**" />
   </ItemGroup>
 
@@ -31,6 +37,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,5 +87,21 @@
     <Folder Include="wwwroot\img\chart\" />
     <Folder Include="wwwroot\video\" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
 
 </Project>

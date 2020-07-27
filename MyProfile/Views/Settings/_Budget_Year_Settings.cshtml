@@ -1,20 +1,105 @@
 ﻿@{
-	var UserInfo = MyProfile.Identity.UserInfo.Current;
+    var UserInfo = MyProfile.Identity.UserInfo.Current;
 }
 
 @if (UserInfo.IsAllowCollectiveBudget)
 {
-	<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
-		<div class="media-body">
-			<span class="theme-settings-t-rtl_switcher">Учитывать траты всех</span>
-		</div>
-		<div class="switcher switcher-sm d-block m-0">
-			<input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_WithCollective" name="user_settings" data-prop="BudgetPages_WithCollective" v-on:change="change">
-			<span class="switcher-indicator">
-				<span class="switcher-yes"></span>
-				<span class="switcher-no"></span>
-			</span>
-		</div>
-	</label>
-	<hr class="m-0 border-light">
+    <label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+        <div class="media-body">
+            <span class="theme-settings-t-rtl_switcher">Учитывать траты всех</span>
+        </div>
+        <div class="switcher switcher-sm d-block m-0">
+            <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_WithCollective" name="user_settings"
+                   data-prop="BudgetPages_WithCollective" v-on:change="change(true)">
+            <span class="switcher-indicator">
+                <span class="switcher-yes"></span>
+                <span class="switcher-no"></span>
+            </span>
+        </div>
+    </label>
+    <hr class="m-0 border-light">
 }
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Итоги за месяц</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать график доходов</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_EarningWidget" name="user_settings" data-prop="Year_EarningWidget"
+               v-on:change="toggleBudgetTotal(@((int)MyProfile.Entity.Model.SectionTypeEnum.Earnings)); change(false, ['BudgetVue.loadTotalCharts']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать график расходов</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_SpendingWidget" name="user_settings" data-prop="Year_SpendingWidget"
+               v-on:change="toggleBudgetTotal(@((int)MyProfile.Entity.Model.SectionTypeEnum.Spendings), 'BudgetVue.loadTotalCharts'); change(false, ['BudgetVue.loadTotalCharts']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать график инвестиций</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_InvestingWidget" name="user_settings" data-prop="Year_InvestingWidget"
+               v-on:change="toggleBudgetTotal(3, 'BudgetVue.loadTotalCharts'); change(false, ['BudgetVue.loadTotalCharts']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
+<hr class="m-0 border-light">
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Лимиты</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать лимиты</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_LimitWidgets" name="user_settings" data-prop="Year_LimitWidgets"
+               v-on:change="toggleLimits(); change(false, ['BudgetVue.loadLimitCharts']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
+<hr class="m-0 border-light">
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Цели</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать цели</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_GoalWidgets" name="user_settings" data-prop="Year_GoalWidgets"
+               v-on:change="toggleGoals(); change(false, ['BudgetVue.loadGoalCharts']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Графики</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать большие графики</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_BigCharts" name="user_settings" data-prop="Year_BigCharts"
+               v-on:change="toggleBigCharts(); change(false, ['BudgetVue.loadBigCharts']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>

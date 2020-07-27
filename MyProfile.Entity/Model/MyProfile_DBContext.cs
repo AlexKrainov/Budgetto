@@ -41,26 +41,44 @@ namespace MyProfile.Entity.Model
                 .Property(b => b.BudgetPages_WithCollective)
                 .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
-                .Property(b => b.BudgetPages_EarningChart)
+                .Property(b => b.Month_EarningWidget)
                 .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
-                .Property(b => b.BudgetPages_SpendingChart)
+                .Property(b => b.Month_SpendingWidget)
                 .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
-                .Property(b => b.BudgetPages_InvestingChart)
+                .Property(b => b.Month_InvestingWidget)
                 .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
-                .Property(b => b.BudgetPages_IsShow_Limits)
+                .Property(b => b.Month_LimitWidgets)
                 .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
-                .Property(b => b.BudgetPages_IsShow_Goals)
+                .Property(b => b.Month_GoalWidgets)
                 .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
-                .Property(b => b.BudgetPages_IsShow_BigCharts)
+                .Property(b => b.Month_BigCharts)
                 .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
                .Property(b => b.LimitPage_Show_IsFinished)
                .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_LimitWidgets)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_BigCharts)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_EarningWidget)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_GoalWidgets)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_InvestingWidget)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_SpendingWidget)
+              .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.WebSiteTheme_CodeName)
               .HasDefaultValue(WebSiteThemeEnum.Light);

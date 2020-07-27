@@ -159,12 +159,19 @@ namespace MyProfile.Identity
                 },
                 UserSettings = new UserSettingsClientSide
                 {
-                    Dashboard_Month_IsShow_BigCharts = currentUser.UserSettings.BudgetPages_IsShow_BigCharts,
-                    Dashboard_Month_IsShow_EarningChart = currentUser.UserSettings.BudgetPages_EarningChart,
-                    Dashboard_Month_IsShow_GoalCharts = currentUser.UserSettings.BudgetPages_IsShow_Goals,
-                    Dashboard_Month_IsShow_InvestingChart = currentUser.UserSettings.BudgetPages_InvestingChart,
-                    Dashboard_Month_IsShow_LimitCharts = currentUser.UserSettings.BudgetPages_IsShow_Limits,
-                    Dashboard_Month_IsShow_SpendingChart = currentUser.UserSettings.BudgetPages_SpendingChart,
+                    Dashboard_Month_IsShow_BigCharts = currentUser.UserSettings.Month_BigCharts,
+                    Dashboard_Month_IsShow_EarningChart = currentUser.UserSettings.Month_EarningWidget,
+                    Dashboard_Month_IsShow_GoalCharts = currentUser.UserSettings.Month_GoalWidgets,
+                    Dashboard_Month_IsShow_InvestingChart = currentUser.UserSettings.Month_InvestingWidget,
+                    Dashboard_Month_IsShow_LimitCharts = currentUser.UserSettings.Month_LimitWidgets,
+                    Dashboard_Month_IsShow_SpendingChart = currentUser.UserSettings.Month_SpendingWidget,
+
+                    Dashboard_Year_IsShow_BigCharts = currentUser.UserSettings.Year_BigCharts,
+                    Dashboard_Year_IsShow_EarningChart = currentUser.UserSettings.Year_EarningWidget,
+                    Dashboard_Year_IsShow_GoalCharts = currentUser.UserSettings.Year_GoalWidgets,
+                    Dashboard_Year_IsShow_InvestingChart = currentUser.UserSettings.Year_InvestingWidget,
+                    Dashboard_Year_IsShow_LimitCharts = currentUser.UserSettings.Year_LimitWidgets,
+                    Dashboard_Year_IsShow_SpendingChart = currentUser.UserSettings.Year_SpendingWidget,
                 }
             };
         }

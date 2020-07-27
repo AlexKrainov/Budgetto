@@ -64,11 +64,11 @@
         },
         toggleBudgetTotal: function (sectionType, method) {
             if (sectionType == 1) {//EarningChart
-                UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart = BudgetVue.earningData.isShow = document.querySelector("[data-prop=BudgetPages_EarningChart]").checked;
+                UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart = BudgetVue.earningData.isShow = document.querySelector("[data-prop=Month_EarningWidget]").checked;
             } else if (sectionType == 2) { //SpendingChart
-                UserInfo.UserSettings.Dashboard_Month_IsShow_SpendingChart = BudgetVue.spendingData.isShow = document.querySelector("[data-prop=BudgetPages_SpendingChart]").checked;
+                UserInfo.UserSettings.Dashboard_Month_IsShow_SpendingChart = BudgetVue.spendingData.isShow = document.querySelector("[data-prop=Month_SpendingWidget]").checked;
             } else if (sectionType == 3) { //Invest chart
-                UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart = BudgetVue.investingData.isShow = document.querySelector("[data-prop=BudgetPages_InvestingChart]").checked;
+                UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart = BudgetVue.investingData.isShow = document.querySelector("[data-prop=Month_InvestingWidget]").checked;
             }
 
             if (typeof (BudgetVue.refrehViewTable) == "function") {
@@ -76,7 +76,7 @@
             }
         },
         toggleLimits: function (method) {
-            let checked = document.querySelector("[data-prop=BudgetPages_IsShow_Limits]").checked;
+            let checked = document.querySelector("[data-prop=Month_LimitWidgets]").checked;
             for (var i = 0; i < BudgetVue.limitsChartsData.length; i++) {
                 BudgetVue.limitsChartsData[i].isShow = checked;
             }
@@ -87,7 +87,7 @@
             }
         },
         toggleGoals: function (method) {
-            let checked = document.querySelector("[data-prop=BudgetPages_IsShow_Goals]").checked;
+            let checked = document.querySelector("[data-prop=Month_GoalWidgets]").checked;
             for (var i = 0; i < BudgetVue.goalChartsData.length; i++) {
                 BudgetVue.goalChartsData[i].isShow = checked;
             }
@@ -98,7 +98,7 @@
             }
         },
         toggleBigCharts: function (method) {
-            let checked = document.querySelector("[data-prop=BudgetPages_IsShow_BigCharts]").checked;
+            let checked = document.querySelector("[data-prop=Month_BigCharts]").checked;
             for (var i = 0; i < BudgetVue.bigChartsData.length; i++) {
                 BudgetVue.bigChartsData[i].isShow = checked;
             }

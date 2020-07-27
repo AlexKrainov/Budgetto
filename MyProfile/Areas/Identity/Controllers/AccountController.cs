@@ -125,9 +125,9 @@ namespace MyProfile.Areas.Identity.Controllers
                         UserSettings = new Entity.Model.UserSettings
                         {
                             BudgetPages_WithCollective = true,
-                            BudgetPages_EarningChart = true,
-                            BudgetPages_InvestingChart = true,
-                            BudgetPages_SpendingChart = true,
+                            Month_EarningWidget = true,
+                            Month_InvestingWidget = true,
+                            Month_SpendingWidget = true,
                         }
                     }, true);
 

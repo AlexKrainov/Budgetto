@@ -196,7 +196,7 @@ namespace MyProfile.Chart.Service
                     ChartTypeCodeName = chart.ChartTypeCodeName,
                     DataSets = new List<IChartDataSet>(),
                     Labels = new List<string>(),
-                    IsShow = currentUser.UserSettings.BudgetPages_IsShow_BigCharts
+                    IsShow = currentUser.UserSettings.Month_BigCharts
                 };
 
                 switch (chart.ChartTypeID)
@@ -317,7 +317,7 @@ namespace MyProfile.Chart.Service
             var predicate = PredicateBuilder.True<Chart>();
 
             predicate = predicate.And(x => x.UserID == currentUser.ID
-                //&& currentUser.UserSettings.BudgetPages_IsShow_BigCharts
+                //&& currentUser.UserSettings.Month_BigCharts
                 && x.IsDeleted == false);
 
             if (expression != null) { predicate = predicate.And(expression); }

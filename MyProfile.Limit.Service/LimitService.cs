@@ -226,7 +226,7 @@ namespace MyProfile.Limit.Service
                     Percent2 = percent2,
                     Percent1 = 100 - percent2,
                     IsThisMonth = isThisMonth,
-                    IsShow = currentUser.UserSettings.BudgetPages_IsShow_Limits,
+                    IsShow = currentUser.UserSettings.Month_LimitWidgets,
                     //Sections
                 });
             }

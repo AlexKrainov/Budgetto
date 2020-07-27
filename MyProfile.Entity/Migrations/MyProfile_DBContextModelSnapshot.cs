@@ -822,30 +822,6 @@ namespace MyProfile.Entity.Migrations
                 {
                     b.Property<Guid>("ID");
 
-                    b.Property<bool>("BudgetPages_EarningChart")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("BudgetPages_InvestingChart")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("BudgetPages_IsShow_BigCharts")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("BudgetPages_IsShow_Goals")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("BudgetPages_IsShow_Limits")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("BudgetPages_SpendingChart")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
                     b.Property<bool>("BudgetPages_WithCollective")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
@@ -860,9 +836,57 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("Month_BigCharts")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_EarningWidget")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_GoalWidgets")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_InvestingWidget")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_LimitWidgets")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_SpendingWidget")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
                     b.Property<string>("WebSiteTheme_CodeName")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue("light");
+
+                    b.Property<bool>("Month_BigCharts")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_EarningWidget")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_GoalWidgets")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_InvestingWidget")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_LimitWidgets")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("Month_SpendingWidget")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.HasKey("ID");
 

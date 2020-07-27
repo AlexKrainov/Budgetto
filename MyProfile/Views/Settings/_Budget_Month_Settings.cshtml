@@ -25,7 +25,7 @@
         <span class="theme-settings-t-rtl_switcher">Показывать график доходов</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_EarningChart" name="user_settings" data-prop="BudgetPages_EarningChart"
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_EarningWidget" name="user_settings" data-prop="Month_EarningWidget"
                v-on:change="toggleBudgetTotal(@((int)MyProfile.Entity.Model.SectionTypeEnum.Earnings)); change(false, ['BudgetVue.loadTotalCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
@@ -38,7 +38,7 @@
         <span class="theme-settings-t-rtl_switcher">Показывать график расходов</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_SpendingChart" name="user_settings" data-prop="BudgetPages_SpendingChart"
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_SpendingWidget" name="user_settings" data-prop="Month_SpendingWidget"
                v-on:change="toggleBudgetTotal(@((int)MyProfile.Entity.Model.SectionTypeEnum.Spendings), 'BudgetVue.loadTotalCharts'); change(false, ['BudgetVue.loadTotalCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
@@ -51,7 +51,7 @@
         <span class="theme-settings-t-rtl_switcher">Показывать график инвестиций</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_InvestingChart" name="user_settings" data-prop="BudgetPages_InvestingChart"
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_InvestingWidget" name="user_settings" data-prop="Month_InvestingWidget"
                v-on:change="toggleBudgetTotal(3, 'BudgetVue.loadTotalCharts'); change(false, ['BudgetVue.loadTotalCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
@@ -66,7 +66,7 @@
         <span class="theme-settings-t-rtl_switcher">Показывать лимиты</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_IsShow_Limits" name="user_settings" data-prop="BudgetPages_IsShow_Limits"
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_LimitWidgets" name="user_settings" data-prop="Month_LimitWidgets"
                v-on:change="toggleLimits(); change(false, ['BudgetVue.loadLimitCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
@@ -81,7 +81,7 @@
         <span class="theme-settings-t-rtl_switcher">Показывать цели</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_IsShow_Goals" name="user_settings" data-prop="BudgetPages_IsShow_Goals"
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_GoalWidgets" name="user_settings" data-prop="Month_GoalWidgets"
                v-on:change="toggleGoals(); change(false, ['BudgetVue.loadGoalCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
@@ -95,7 +95,7 @@
         <span class="theme-settings-t-rtl_switcher">Показывать большие графики</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.BudgetPages_IsShow_BigCharts" name="user_settings" data-prop="BudgetPages_IsShow_BigCharts"
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_BigCharts" name="user_settings" data-prop="Month_BigCharts"
                v-on:change="toggleBigCharts(); change(false, ['BudgetVue.loadBigCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>

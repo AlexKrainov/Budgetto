@@ -185,7 +185,7 @@ namespace MyProfile.Goal.Service
 
             for (int i = 0; i < goals.Count; i++)
             {
-                goals[i].IsShow = currentUser.UserSettings.BudgetPages_IsShow_Goals;
+                goals[i].IsShow = currentUser.UserSettings.Month_GoalWidgets;
             }
 
             return goals;

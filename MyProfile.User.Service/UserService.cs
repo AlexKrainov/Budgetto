@@ -113,12 +113,20 @@ namespace MyProfile.User.Service
                     UserSettings = new UserSettings
                     {
                         BudgetPages_WithCollective = x.UserSettings.BudgetPages_WithCollective,
-                        BudgetPages_EarningChart = x.UserSettings.BudgetPages_EarningChart,
-                        BudgetPages_InvestingChart = x.UserSettings.BudgetPages_InvestingChart,
-                        BudgetPages_SpendingChart = x.UserSettings.BudgetPages_SpendingChart,
-                        BudgetPages_IsShow_BigCharts = x.UserSettings.BudgetPages_IsShow_BigCharts,
-                        BudgetPages_IsShow_Goals = x.UserSettings.BudgetPages_IsShow_Goals,
-                        BudgetPages_IsShow_Limits = x.UserSettings.BudgetPages_IsShow_Limits,
+                        
+                        Month_EarningWidget = x.UserSettings.Month_EarningWidget,
+                        Month_InvestingWidget = x.UserSettings.Month_InvestingWidget,
+                        Month_SpendingWidget = x.UserSettings.Month_SpendingWidget,
+                        Month_BigCharts = x.UserSettings.Month_BigCharts,
+                        Month_GoalWidgets = x.UserSettings.Month_GoalWidgets,
+                        Month_LimitWidgets = x.UserSettings.Month_LimitWidgets,
+
+                        Year_EarningWidget = x.UserSettings.Year_EarningWidget,
+                        Year_InvestingWidget = x.UserSettings.Year_InvestingWidget,
+                        Year_SpendingWidget = x.UserSettings.Year_SpendingWidget,
+                        Year_BigCharts = x.UserSettings.Year_BigCharts,
+                        Year_GoalWidgets = x.UserSettings.Year_GoalWidgets,
+                        Year_LimitWidgets = x.UserSettings.Year_LimitWidgets,
 
                         GoalPage_IsShow_Collective = x.UserSettings.GoalPage_IsShow_Collective,
                         GoalPage_IsShow_Finished = x.UserSettings.GoalPage_IsShow_Finished,
