@@ -161,6 +161,17 @@ namespace MyProfile.Limit.Service
         {
             List<LimitChartModelView> limitCharts = new List<LimitChartModelView>();
             var currentUser = UserInfo.Current;
+            bool isShow = true;
+
+
+            if (periodTypesEnum == PeriodTypesEnum.Month)
+            {
+                isShow = currentUser.UserSettings.Month_LimitWidgets;
+            }
+            else if (periodTypesEnum == PeriodTypesEnum.Year)
+            {
+                isShow = currentUser.UserSettings.Year_LimitWidgets;
+            }
 
             var limits = await GetLimitListView(x =>
                 x.PeriodTypeID == (int)periodTypesEnum
@@ -226,7 +237,7 @@ namespace MyProfile.Limit.Service
                     Percent2 = percent2,
                     Percent1 = 100 - percent2,
                     IsThisMonth = isThisMonth,
-                    IsShow = currentUser.UserSettings.Month_LimitWidgets,
+                    IsShow = isShow,
                     //Sections
                 });
             }

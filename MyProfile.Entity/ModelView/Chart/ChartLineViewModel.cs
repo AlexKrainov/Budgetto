@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyProfile.Entity.ModelView.Chart
 {
-	public class ChartLineViewModel : IChartDataSet
+	public class ChartLineViewModel : IChartData
 	{
 		public string Label { get; set; }
 		public string BorderColor { get; set; }

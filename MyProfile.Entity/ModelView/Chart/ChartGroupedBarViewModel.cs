@@ -4,10 +4,10 @@ using System.Text;
 
 namespace MyProfile.Entity.ModelView.Chart
 {
-	public class ChartGroupedBarViewModel : IChartDataSet
-	{
-		public string Label { get; set; }
-		public string BackgroundColor { get; set; }
-		public decimal[] Data { get; set; }
-	}
+    public class ChartGroupedBarViewModel : IChartData
+    {
+        public string Label { get; set; }
+        public string BackgroundColor { get; set; }
+        public decimal[] Data { get; set; }
+    }
 }

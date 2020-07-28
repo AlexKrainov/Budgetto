@@ -173,19 +173,23 @@ namespace MyProfile.Goal.Service
         {
             var currentUser = UserInfo.Current;
             List<GoalModelView> goals = new List<GoalModelView>();
+            bool isShow = true;
+
             if (periodTypesEnum == PeriodTypesEnum.Month)
             {
+                isShow = currentUser.UserSettings.Month_GoalWidgets;
                 goals = await GetGoalListView(x => x.VisibleElement.IsShow_BudgetMonth);
             }
             else if (periodTypesEnum == PeriodTypesEnum.Year)
             {
+                isShow = currentUser.UserSettings.Year_GoalWidgets;
                 goals = await GetGoalListView(x => x.VisibleElement.IsShow_BudgetYear);
             }
             //(x.DateEnd == null && x.DateStart <= start) || (x.DateStart <= start && x.DateEnd >= finish));
 
             for (int i = 0; i < goals.Count; i++)
             {
-                goals[i].IsShow = currentUser.UserSettings.Month_GoalWidgets;
+                goals[i].IsShow = isShow;
             }
 
             return goals;

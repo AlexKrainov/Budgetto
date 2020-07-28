@@ -35,7 +35,7 @@ namespace MyProfile.Budget.Service
             TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.Year_EarningWidget };
             TotalModelView investinData = new TotalModelView { IsShow = currentUser.UserSettings.Year_InvestingWidget };
 
-            if (currentUser.UserSettings.Month_SpendingWidget)
+            if (currentUser.UserSettings.Year_SpendingWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Spendings);
                 spendingData.data = tuple.Item1.ToArray();
@@ -43,7 +43,6 @@ namespace MyProfile.Budget.Service
                 spendingData.Name = "Расходы";
                 spendingData.SectionTypeEnum = SectionTypeEnum.Spendings;
                 spendingData.Total = (tuple.Item1.Sum()).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
-                spendingData.IsShow = currentUser.UserSettings.Month_SpendingWidget;
 
 
                 //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
@@ -65,7 +64,7 @@ namespace MyProfile.Budget.Service
                 //}
             }
 
-            if (currentUser.UserSettings.Month_EarningWidget)
+            if (currentUser.UserSettings.Year_EarningWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Earnings);
 
@@ -120,8 +119,6 @@ namespace MyProfile.Budget.Service
                 spendingData.Name = "Расходы";
                 spendingData.SectionTypeEnum = SectionTypeEnum.Spendings;
                 spendingData.Total = (tuple.Item1[tuple.Item1.Count - 1]).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
-                spendingData.IsShow = currentUser.UserSettings.Month_SpendingWidget;
-
 
                 if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 {

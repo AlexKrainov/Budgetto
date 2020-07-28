@@ -1,6 +1,8 @@
 ﻿var BudgetVue = new Vue({
     el: "#budget-vue",
     data: {
+        periodType: BudgetMethods.periodType,
+
         budgetDate: null,
         budgetYear: null,
         templateID: null,
@@ -54,6 +56,7 @@
             if (this.earningChart) {
                 this.earningChart.destroy();
             }
+            //  if (this.earningData.data) {
             this.earningChart = new Chart(document.getElementById('earningChart').getContext("2d"), {
                 type: 'line',
                 data: {
@@ -87,10 +90,12 @@
                     maintainAspectRatio: false
                 }
             });
+            // }
 
             if (this.spendingChart) {
                 this.spendingChart.destroy()
             }
+            // if (this.spendingData.data) {
             this.spendingChart = new Chart(document.getElementById('spendingChart').getContext("2d"), {
                 type: 'line',
                 data: {
@@ -124,13 +129,15 @@
                     maintainAspectRatio: false
                 }
             });
+            // }
 
+            //if (this.investingData.data) {
             this.investingChart = new Chart(document.getElementById('statistics-chart-5').getContext("2d"), {
                 type: 'line',
                 data: {
                     datasets: [{
-                        data: [24, 92, 77, 90, 91, 78, 28, 49, 23, 81, 15, 97, 94, 16, 99, 61,
-                            38, 34, 48, 3, 5, 21, 27, 4, 33, 40, 46, 47, 48, 60
+                        data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+                            15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15
                         ],
                         borderWidth: 1,
                         backgroundColor: 'rgba(136, 151, 170, .2)',
@@ -161,6 +168,7 @@
                     maintainAspectRatio: false
                 }
             });
+            //}
 
             setTimeout(this.resizeTotalCharts, 50);
         },
@@ -179,17 +187,230 @@
             this.refrehViewTable();
         },
         //Limit charts
-        loadLimitCharts: WidgetsMethods.loadLimitCharts,
-        initLimitCharts: WidgetsMethods.initLimitCharts,
-        resizeLimitCharts: WidgetsMethods.resizeLimitCharts,
+        loadLimitCharts: BudgetMethods.loadLimitCharts,
+        initLimitCharts: function () {
+            for (var i = 0; i < this.limitsChartsData.length; i++) {
+                let limitChartData = this.limitsChartsData[i];
+
+                if (this.limitsCharts[i]) {
+                    this.limitsCharts[i].destroy();
+                }
+
+                let backgroundColor = ['#4CAF50', '#ededed']; //green
+                let hoverBackgroundColor = ['#4CAF50', '#ededed'];//green
+
+                if (limitChartData.percent1 > 85) {
+                    backgroundColor = ['#d9534f', '#ededed'];//red
+                    hoverBackgroundColor = ['#d9534f', '#ededed'];//red
+                } else if (limitChartData.percent1 > 65) {
+                    backgroundColor = ['#FFD950', '#ededed'];//yellow
+                    hoverBackgroundColor = ['#FFD950', '#ededed'];//yellow
+                }
+
+                this.limitsCharts[i] = new Chart(document.getElementById(limitChartData.chartID).getContext("2d"), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [limitChartData.percent1, limitChartData.percent2],
+                            backgroundColor: backgroundColor,
+                            hoverBackgroundColor: hoverBackgroundColor,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                display: false,
+                            }],
+                            yAxes: [{
+                                display: false
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            enabled: false
+                        },
+                        cutoutPercentage: 94,
+                        responsive: false,
+                        maintainAspectRatio: false
+                    }
+                });
+
+            }
+            this.resizeLimitCharts();
+        },
+        resizeLimitCharts: function () {
+            for (var i = 0; i < this.limitsCharts.length; i++) {
+                if (this.limitsCharts[i]) {
+                    this.limitsCharts[i].resize();
+                }
+            }
+            this.refrehViewTable();
+        },
         //Goal charts
-        loadGoalCharts: WidgetsMethods.loadGoalCharts,
-        initGoalCharts: WidgetsMethods.initGoalCharts,
-        resizeGoalCharts: WidgetsMethods.resizeGoalCharts,
+        loadGoalCharts: BudgetMethods.loadGoalCharts,
+        initGoalCharts: function () {
+            for (var i = 0; i < this.goalChartsData.length; i++) {
+                let goalChartData = this.goalChartsData[i];
+
+                if (this.goalCharts[i]) {
+                    this.goalCharts[i].destroy();
+                }
+
+                let backgroundColor = ['#4CAF50', '#ededed']; //green
+                let hoverBackgroundColor = ['#4CAF50', '#ededed'];//green
+
+                if (goalChartData.percent < 0) {
+                    backgroundColor = ['#d9534f', '#ededed'];//red
+                    hoverBackgroundColor = ['#d9534f', '#ededed'];//red
+                }
+                //else if (goalChartData.percent > 65) {
+                //	backgroundColor = ['#FFD950', '#ededed'];//yellow
+                //	hoverBackgroundColor = ['#FFD950', '#ededed'];//yellow
+                //}
+
+                this.goalCharts[i] = new Chart(document.getElementById(goalChartData.chartID).getContext("2d"), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [goalChartData.percent, goalChartData.percent2],
+                            backgroundColor: backgroundColor,
+                            hoverBackgroundColor: hoverBackgroundColor,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                display: false,
+                            }],
+                            yAxes: [{
+                                display: false
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            enabled: false
+                        },
+                        cutoutPercentage: 94,
+                        responsive: false,
+                        maintainAspectRatio: false
+                    }
+                });
+
+            }
+            setTimeout(this.resizeGoalCharts, 10);
+        },
+        resizeGoalCharts: function () {
+            for (var i = 0; i < this.goalCharts.length; i++) {
+                if (this.goalCharts[i]) {
+                    this.goalCharts[i].resize();
+                }
+            }
+            this.refrehViewTable();
+        },
         //big charts
-        loadBigCharts: WidgetsMethods.loadBigCharts,
-        initBigChartCharts: WidgetsMethods.initBigChartCharts,
-        resizeBigCharts: WidgetsMethods.resizeBigCharts,
+        loadBigCharts: BudgetMethods.loadBigCharts,
+        initBigChartCharts: function () {
+            for (var i = 0; i < this.bigChartsData.length; i++) {
+                let bigChartData = this.bigChartsData[i];
+                let options = null;
+
+                if (this.bigCharts[i]) {
+                    this.bigCharts[i].destroy();
+                }
+
+                switch (bigChartData.chartTypeCodeName) {
+                    case "line":
+                    case "bar":
+                        options = {
+                            title: {
+                                display: true,
+                                text: bigChartData.name,
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        // Include a dollar sign in the ticks
+                                        callback: function (value, index, values) {
+                                            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value)
+                                        }
+                                    }
+                                }]
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        console.log(arguments);
+                                        return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value);
+                                    }
+                                }
+                            },
+                        };
+                        break;
+                    case "doughnut":
+                    case "pie":
+                        options = {
+                            title: {
+                                display: true,
+                                text: bigChartData.name,
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        let label = "";
+                                        let money = "";
+                                        try {
+                                            label = data.labels[tooltipItem.index];
+                                            money = data.datasets[0].data[tooltipItem.index];
+                                        } catch (e) {
+                                            console.log(e);
+                                        }
+
+                                        return `${label}: ${new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money)}`;
+                                    }
+                                }
+                            },
+                        };
+                        break;
+                    default:
+                }
+
+                this.bigCharts[i] = new Chart(document.getElementById(bigChartData.chartID), {
+                    type: bigChartData.chartTypeCodeName,
+                    data: {
+                        datasets: bigChartData.dataSets,
+                        labels: bigChartData.labels
+                    },
+                    options: options
+                });
+
+            }
+            //setTimeout(this.resizeBigCharts, 10);
+            this.resizeBigCharts();
+        },
+        resizeBigCharts: function () {
+            let chartSize = 0;
+            for (var i = 0; i < this.bigCharts.length; i++) {
+                let chart = this.bigCharts[i];
+                if (chart) {
+                    chart.resize();
+                    chartSize = chart.height;
+                }
+            }
+            if (chartSize < 300) {
+                this.bigChartHeight = 310;
+            } else if (chartSize >= 300 && chartSize <= 450) {
+                this.bigChartHeight = 410;
+            } else if (chartSize > 450) {
+                this.bigChartHeight = 600;
+            }
+            this.refrehViewTable();
+        },
         //resize and refresh
         refresh: function (type, onlyRuntimeData) {
             if (type == undefined || type == 'onlyTable' || onlyRuntimeData) {
@@ -217,10 +438,23 @@
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
             let dateOfPayment = moment(dateTimeOfPayment);
-            let currentBudgetDate = moment(this.budgetDate, "YYYY/MM/DD");
-            if (dateOfPayment.get("month") == currentBudgetDate.get("month") && dateOfPayment.get("year") == currentBudgetDate.get("year")) {
-                return this.refresh(undefined, true);
+
+            if (this.periodType == PeriodTypeEnum.Month) {
+
+                let currentBudgetDate = moment(this.budgetDate, "YYYY/MM/DD");
+
+                if (dateOfPayment.get("month") == currentBudgetDate.get("month") && dateOfPayment.get("year") == currentBudgetDate.get("year")) {
+                    return this.refresh(undefined, true);
+                }
+
+            } else if (this.periodType == PeriodTypeEnum.Year) {
+
+                if (dateOfPayment.get("year") == this.budgetYear) {
+                    return this.refresh(undefined, true);
+                }
             }
+
+
             return false;
         },
         resizeAll: function () {
@@ -299,20 +533,33 @@
                 return;
             }
 
-            let filter = {
-                sections: sections,
-                startDate: moment(this.budgetDate, "YYYY/MM/DD").add(rowIndex, "days").format(),
-                endDate: moment(this.budgetDate, "YYYY/MM/DD").add((rowIndex + 1), "days").add(-1, "minutes").format()
-            };
+            let filter = { sections: sections };
+            if (this.periodType == PeriodTypeEnum.Month) {
+
+                filter.startDate = moment(this.budgetDate, "YYYY/MM/DD").add(rowIndex, "days").format();
+                filter.endDate = moment(this.budgetDate, "YYYY/MM/DD").add((rowIndex + 1), "days").add(-1, "minutes").format();
+
+            } else if (this.periodType == PeriodTypeEnum.Year) {
+
+                filter.startDate = moment(currentDate, "YYYY/MM/DD").format();
+                filter.endDate = moment(currentDate, "YYYY/MM/DD").endOf("month").format();
+            }
 
             return HistoryVue.showHistory(filter, currentDate);
         },
         clickFooterCell: function (cellIndex) {
-            let filter = {
-                sections: this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID),
-                startDate: moment(this.budgetDate).format(),
-                endDate: moment(this.budgetDate).endOf("month").format()
-            };
+
+            let filter = { sections: this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID) };
+            if (this.periodType == PeriodTypeEnum.Month) {
+
+                filter.startDate = moment(this.budgetDate).format();
+                filter.endDate = moment(this.budgetDate).endOf("month").format();
+
+            } else if (this.periodType == PeriodTypeEnum.Year) {
+
+                filter.startDate = `${this.budgetYear}-01-01T00:00:01+00:00`;
+                filter.endDate = `${this.budgetYear}-12-31T23:59:59+00:00"`;
+            }
 
             this.stylingClickedCells(event, "td_s", cellIndex);
 

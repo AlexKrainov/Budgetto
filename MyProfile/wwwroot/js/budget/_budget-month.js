@@ -1,4 +1,5 @@
 ﻿var BudgetMethods = {
+    periodType: PeriodTypeEnum.Month,
     mounted: function () {
         this.getPageSettings();
 
@@ -55,6 +56,73 @@
                 this.investingData = response.investingData;
 
                 this.initTotalCharts();
+            }
+        });
+    },
+    //Limit charts
+    loadLimitCharts: function () {
+        if (!UserInfo.UserSettings.Dashboard_Month_IsShow_LimitCharts) {
+            return false;
+        }
+        return $.ajax({
+            type: "GET",
+            url: "/Limit/LoadCharts?date=" + this.budgetDate + "&periodTypesEnum=1",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+
+                this.limitsChartsData = response.limitsChartsData;
+
+                setTimeout(this.initLimitCharts, 10);
+            }
+        });
+    },
+    //Goal charts
+    loadGoalCharts: function () {
+        if (!UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts) {
+            return false;
+        }
+
+        return $.ajax({
+            type: "GET",
+            url: `/Goal/LoadCharts?date=${this.budgetDate}&periodTypesEnum=1`,
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+
+                this.goalChartsData = response.goalChartsData;
+
+                setTimeout(this.initGoalCharts, 10);
+            }
+        });
+    },
+    //big charts
+    loadBigCharts: function () {
+        if (!UserInfo.UserSettings.Dashboard_Month_IsShow_BigCharts) {
+            return false;
+        }
+
+        for (var i = 0; i < this.bigChartsData.length; i++) {
+            ShowLoading('#bigChart_' + this.bigChartsData[i].chartID);
+        }
+
+        return $.ajax({
+            type: "GET",
+            url: "/Chart/LoadCharts?date=" + this.budgetDate + "&periodType=1",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+
+                this.bigChartsData = response.bigChartsData;
+
+                for (var i = 0; i < this.bigChartsData.length; i++) {
+                    HideLoading('#bigChart_' + this.bigChartsData[i].chartID);
+                }
+
+                setTimeout(this.initBigChartCharts, 10);
             }
         });
     },

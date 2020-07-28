@@ -108,9 +108,11 @@
 //});
 
 $(document).ready(function () {
-    $.fn.dataTable.ext.type.detect.unshift(tablePreOrder);
-    $.fn.dataTable.ext.type.order['money-pre'] = tableOrder;
-    $.fn.dataTable.ext.type.order['day-pre'] = tableOrder;
+    if ($.fn.dataTable) {
+        $.fn.dataTable.ext.type.detect.unshift(tablePreOrder);
+        $.fn.dataTable.ext.type.order['money-pre'] = tableOrder;
+        $.fn.dataTable.ext.type.order['day-pre'] = tableOrder;
+    }
 });
 
 

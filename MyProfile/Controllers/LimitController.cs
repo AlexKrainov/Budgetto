@@ -68,10 +68,19 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadCharts(DateTime date, PeriodTypesEnum periodTypesEnum)
+        public async Task<IActionResult> LoadCharts(DateTime? date, int year, PeriodTypesEnum periodTypesEnum)
         {
-            DateTime start = new DateTime(date.Year, date.Month, 01, 00, 00, 00);
-            DateTime finish = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 23, 59, 59);
+            DateTime start, finish;
+            if (date != null)
+            {
+                start = new DateTime(date.Value.Year, date.Value.Month, 01, 00, 00, 00);
+                finish = new DateTime(date.Value.Year, date.Value.Month, DateTime.DaysInMonth(date.Value.Year, date.Value.Month), 23, 59, 59);
+            }
+            else
+            {
+                start = new DateTime(year, 1, 01, 00, 00, 00);
+                finish = new DateTime(year, 12, 31, 23, 59, 59);
+            }
 
             List<LimitChartModelView> limitChartsData = await limitService.GetChartData(start, finish, periodTypesEnum);
 

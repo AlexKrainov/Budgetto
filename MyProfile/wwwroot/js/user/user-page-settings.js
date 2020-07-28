@@ -62,47 +62,40 @@
             this.partActions = partActions;
             this.saveBudgetSettings();
         },
-        toggleBudgetTotal: function (sectionType, method) {
+        toggleBudgetTotal_Month: function (sectionType, dataProp) {
+            let checked = document.querySelector("[data-prop=" + dataProp + "]").checked;
             if (sectionType == 1) {//EarningChart
-                UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart = BudgetVue.earningData.isShow = document.querySelector("[data-prop=Month_EarningWidget]").checked;
+                UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart = BudgetVue.earningData.isShow = checked;
             } else if (sectionType == 2) { //SpendingChart
-                UserInfo.UserSettings.Dashboard_Month_IsShow_SpendingChart = BudgetVue.spendingData.isShow = document.querySelector("[data-prop=Month_SpendingWidget]").checked;
+                UserInfo.UserSettings.Dashboard_Month_IsShow_SpendingChart = BudgetVue.spendingData.isShow = checked;
             } else if (sectionType == 3) { //Invest chart
-                UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart = BudgetVue.investingData.isShow = document.querySelector("[data-prop=Month_InvestingWidget]").checked;
+                UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart = BudgetVue.investingData.isShow = checked;
             }
 
             if (typeof (BudgetVue.refrehViewTable) == "function") {
                 setTimeout(BudgetVue.refrehViewTable, 50);
             }
         },
-        toggleLimits: function (method) {
-            let checked = document.querySelector("[data-prop=Month_LimitWidgets]").checked;
-            for (var i = 0; i < BudgetVue.limitsChartsData.length; i++) {
-                BudgetVue.limitsChartsData[i].isShow = checked;
+        toggleBudgetTotal_Year: function (sectionType, dataProp) {
+            let checked = document.querySelector("[data-prop=" + dataProp + "]").checked;
+            if (sectionType == 1) {//EarningChart
+                UserInfo.UserSettings.Dashboard_Year_IsShow_EarningChart = BudgetVue.earningData.isShow = checked;
+            } else if (sectionType == 2) { //SpendingChart
+                UserInfo.UserSettings.Dashboard_Year_IsShow_SpendingChart = BudgetVue.spendingData.isShow = checked;
+            } else if (sectionType == 3) { //Invest chart
+                UserInfo.UserSettings.Dashboard_Year_IsShow_InvestingChart = BudgetVue.investingData.isShow = checked;
             }
-            UserInfo.UserSettings.Dashboard_Month_IsShow_LimitCharts = checked;
 
-            if (checked == false && typeof (BudgetVue.refrehViewTable) == "function") {
+            if (typeof (BudgetVue.refrehViewTable) == "function") {
                 setTimeout(BudgetVue.refrehViewTable, 50);
             }
         },
-        toggleGoals: function (method) {
-            let checked = document.querySelector("[data-prop=Month_GoalWidgets]").checked;
-            for (var i = 0; i < BudgetVue.goalChartsData.length; i++) {
-                BudgetVue.goalChartsData[i].isShow = checked;
+        toggleElements: function (fieldname, dataProp, dashboardname) {
+            let checked = document.querySelector("[data-prop=" + dataProp + "]").checked;
+            for (var i = 0; i < BudgetVue[fieldname].length; i++) {
+                BudgetVue[fieldname][i].isShow = checked;
             }
-            UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts = checked;
-
-            if (checked == false && typeof (BudgetVue.refrehViewTable) == "function") {
-                setTimeout(BudgetVue.refrehViewTable, 50);
-            }
-        },
-        toggleBigCharts: function (method) {
-            let checked = document.querySelector("[data-prop=Month_BigCharts]").checked;
-            for (var i = 0; i < BudgetVue.bigChartsData.length; i++) {
-                BudgetVue.bigChartsData[i].isShow = checked;
-            }
-            UserInfo.UserSettings.Dashboard_Month_IsShow_BigCharts = checked;
+            UserInfo.UserSettings[dashboardname] = checked;
 
             if (checked == false && typeof (BudgetVue.refrehViewTable) == "function") {
                 setTimeout(BudgetVue.refrehViewTable, 50);

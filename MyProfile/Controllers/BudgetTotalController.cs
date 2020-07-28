@@ -32,8 +32,8 @@ namespace MyProfile.Controllers
         public async Task<IActionResult> LoadByMonth(DateTime to)
         {
             var values = await budgetTotalService.GetDataByMonth(to);
-            
-            return Json(new { EarningData = values.Item1, SpendingData = values.Item2, InvestingData = values.Item3 });
+
+            return Json(new { SpendingData = values.Item1, EarningData = values.Item2, InvestingData = values.Item3 });
         }
 
         [HttpGet]
@@ -41,7 +41,7 @@ namespace MyProfile.Controllers
         {
             var values = await budgetTotalService.GetDataByYear(year);
 
-            return Json(new { EarningData = values.Item1, SpendingData = values.Item2, InvestingData = values.Item3 });
+            return Json(new { SpendingData = values.Item1, EarningData = values.Item2, InvestingData = values.Item3 });
         }
     }
 }

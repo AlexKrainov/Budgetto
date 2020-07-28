@@ -96,6 +96,10 @@ namespace MyProfile.Budget.Service
                     isWeekend = currentDate.DayOfWeek == DayOfWeek.Sunday || currentDate.DayOfWeek == DayOfWeek.Saturday;
                     isHoliday = DateSystem.IsPublicHoliday(currentDate, CountryCode.RU);
                 }
+                else if (template.PeriodTypeID == (int)PeriodTypesEnum.Year)
+                {
+                    currentDate = new DateTime(from.Year, dateCounter, 1);
+                }
                 #endregion
 
                 var cell = new Cell

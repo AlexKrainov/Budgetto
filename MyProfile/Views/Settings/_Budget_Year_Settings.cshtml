@@ -26,7 +26,7 @@
     </div>
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_EarningWidget" name="user_settings" data-prop="Year_EarningWidget"
-               v-on:change="toggleBudgetTotal(@((int)MyProfile.Entity.Model.SectionTypeEnum.Earnings)); change(false, ['BudgetVue.loadTotalCharts']);">
+               v-on:change="toggleBudgetTotal_Year(@((int)MyProfile.Entity.Model.SectionTypeEnum.Earnings), 'Year_EarningWidget'); change(false, ['BudgetVue.loadTotalCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>
@@ -39,7 +39,7 @@
     </div>
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_SpendingWidget" name="user_settings" data-prop="Year_SpendingWidget"
-               v-on:change="toggleBudgetTotal(@((int)MyProfile.Entity.Model.SectionTypeEnum.Spendings), 'BudgetVue.loadTotalCharts'); change(false, ['BudgetVue.loadTotalCharts']);">
+               v-on:change="toggleBudgetTotal_Year(@((int)MyProfile.Entity.Model.SectionTypeEnum.Spendings), 'Year_SpendingWidget'); change(false, ['BudgetVue.loadTotalCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>
@@ -52,7 +52,7 @@
     </div>
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_InvestingWidget" name="user_settings" data-prop="Year_InvestingWidget"
-               v-on:change="toggleBudgetTotal(3, 'BudgetVue.loadTotalCharts'); change(false, ['BudgetVue.loadTotalCharts']);">
+               v-on:change="toggleBudgetTotal_Year(3,'Year_InvestingWidget'); change(false, ['BudgetVue.loadTotalCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>
@@ -67,7 +67,7 @@
     </div>
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_LimitWidgets" name="user_settings" data-prop="Year_LimitWidgets"
-               v-on:change="toggleLimits(); change(false, ['BudgetVue.loadLimitCharts']);">
+               v-on:change="toggleElements('limitsChartsData', 'Year_LimitWidgets', 'Dashboard_Year_IsShow_LimitCharts'); change(false, ['BudgetVue.loadLimitCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>
@@ -82,7 +82,7 @@
     </div>
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_GoalWidgets" name="user_settings" data-prop="Year_GoalWidgets"
-               v-on:change="toggleGoals(); change(false, ['BudgetVue.loadGoalCharts']);">
+               v-on:change="toggleElements('goalChartsData','Year_GoalWidgets', 'Dashboard_Year_IsShow_GoalCharts'); change(false, ['BudgetVue.loadGoalCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>
@@ -96,7 +96,7 @@
     </div>
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_BigCharts" name="user_settings" data-prop="Year_BigCharts"
-               v-on:change="toggleBigCharts(); change(false, ['BudgetVue.loadBigCharts']);">
+               v-on:change="toggleElements('bigChartsData', 'Year_BigCharts', 'Dashboard_Year_IsShow_BigCharts'); change(false, ['BudgetVue.loadBigCharts']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>
