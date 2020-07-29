@@ -5,37 +5,34 @@
 			<article class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">
-						Payment
-						<span class="font-weight-light">Information</span>
-						<br>
-						<small class="text-muted">We need payment information to process your order.</small>
+						Добавление записи
 					</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
 				</div>
 				<div class="modal-body">
 					<div class="form-row">
 						<div class="form-group col">
-						<label class="form-label">Date</label>
+						<label class="form-label">Дата</label>
 							<div class="input-group">
 							<span class="input-group-prepend">
-								<button v-on:click="addDays(-1)" class="btn btn-default" type="button" title="Минус 1 день"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+								<button v-on:click="addDays(-7)" class="btn btn-default" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left font-size-large" aria-hidden="true"></i></button>
 							</span>
 							<span class="input-group-prepend">
-								<button v-on:click="addDays(-7)" class="btn btn-default" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left" aria-hidden="true"></i></button>
+								<button v-on:click="addDays(-1)" class="btn btn-default" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
 							</span>
-							<input type="text" class="form-control" id="record-date" v-model="dateTimeOfPayment">
+							<input type="text" class="form-control record-date" id="record-date" v-model="dateTimeOfPayment" >
 							<span class="input-group-append">
-								<button v-on:click="addDays(7)" class="btn btn-default" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
+								<button v-on:click="addDays(1)" class="btn btn-default" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
 							</span>
 							<span class="input-group-append">
-								<button v-on:click="addDays(1)" class="btn btn-default" type="button" title="Плюс 1 день"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+								<button v-on:click="addDays(7)" class="btn btn-default" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right font-size-large" aria-hidden="true"></i></button>
 							</span>
 						</div>
 						</div>
 					</div>
 					<section class="form-row">
 						<div class="form-group col">
-							<label class="form-label">Money</label>
+							<label class="form-label">Деньги</label>
 							<div class="input-group">
 								<input type="text" class="form-control" id="money" data-role="tagsinput">
 								<div class="input-group-prepend">
@@ -75,6 +72,7 @@
 							<div class="row" v-for="record in records" v-show="record.isCorrect">
 								<div class="col-6 mb-3">
 									<a href="javascript:void(0)" 
+                                        class="a-hover"
                                         v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'" 
                                         title="Добавить описание" 
                                         v-on:click="descriptionRecord = record">
@@ -130,7 +128,7 @@
                     </div>
 				</div>
 				<div class="modal-footer">
-                <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                <div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="isShowCollectionElement">
 					<label class="custom-control custom-checkbox">
 						<input type="checkbox" class="custom-control-input" v-model="isShowInCollection">
 						<span class="custom-control-label">Show in collective budget</span>
@@ -138,9 +136,9 @@
 				</div>
 					<button class="btn btn-primary" type="button" v-bind:disabled="isSaving" v-on:click="save($emit)" >
 						<span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
-						Add
+						Добавить
 					</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 				</div>
 			</article>
 		</div>
@@ -158,6 +156,7 @@
     data: function () {
         return {
             dateTimeOfPayment: null,
+            isShowCollectionElement: true,
             isShowInCollection: true,
             records: [],
             counter: -99,
@@ -185,11 +184,8 @@
     },
     mounted: function () {
 
-        this.flatpickr = flatpickr('#record-date', {
-            altInput: true,
-            //dateFormat: 'd.m.Y',
-            defaultDate: "today"// Date.now()
-        });
+        this.flatpickr = flatpickr('#record-date', GetFlatpickrRuConfig());
+
         //https://github.com/yairEO/tagify#events
         //https://yaireo.github.io/tagify/
         //https://rawgit.com/joewalnes/filtrex/master/example/colorize.html
@@ -207,6 +203,8 @@
             .then(function () {
                 this.loadHistory();
             });
+
+        this.isShowCollectionElement = UserInfo.IsAllowCollectiveBudget;
 
         $('#modal-record').on('show.bs.modal', function () {
 
@@ -313,7 +311,7 @@
 
                 let obj = {
                     dateTimeOfPayment: this.flatpickr.latestSelectedDateObj.toLocaleDateString(),
-                    isShowInCollection: this.isShowInCollection,
+                    isShowInCollection: this.isShowCollectionElement == false ? false : this.isShowInCollection,
                     records: this.records.filter(x => x.isCorrect)
                 };
 

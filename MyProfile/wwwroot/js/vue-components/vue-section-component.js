@@ -11,7 +11,7 @@
 						v-bind:title="section.description"
 						v-show="section.isShow"
 						v-bind:class="['badge', 'badge-pill', section.cssColor == undefined ? 'badge-default' : '' ]"
-						v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
+						v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor +';background-color: '+ section.cssBackground">
 							<i v-bind:class="section.cssIcon"></i>
 							{{ section.name }}</a>
 	                        

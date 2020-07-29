@@ -5,7 +5,8 @@
         area: {},
 
         isSaving: false,
-        searchText: null
+        searchText: null,
+
     },
     watch: {
         searchText: function (newValue, oldValue) {
@@ -39,7 +40,7 @@
 
             SectionVue.sections = area.sections;
             SectionVue.areaID = area.id;
-            SectionVue.areaName= area.name;
+            SectionVue.areaName = area.name;
 
             SectionVue.areas = this.areas.map(function (x) { return { name: x.name, id: x.id } });
         },
@@ -126,6 +127,184 @@ var SectionVue = new Vue({
         searchIcon: '',
         searchText: null,
         isSaving: false,
+
+        //https://materializecss.com/color.html
+        colors: [
+            {
+                id: 1,
+                background: '#ffebee',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            }, {
+                id: 2,
+                background: '#ffcdd2',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            }, {
+                id: 3,
+                background: '#ef9a9a',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 4,
+                background: '#f44336',
+                color: "#fff",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 5,
+                background: '#fbe9e7',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 6,
+                background: '#ffccbc',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 7,
+                background: '#ffab91',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 8,
+                background: '#ff8a65',
+                color: "#fff",
+                border: '',
+                selected: false,
+            },
+
+
+            //Yellow
+            {
+                id: 9,
+                background: '#ffe0b2',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            }, {
+                id: 10,
+                background: '#ffcc80',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 11,
+                background: '#ffb74d',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 12,
+                background: '#ffa726',
+                color: "#fff",
+                border: '',
+                selected: false,
+            },
+
+            //gray
+            {
+                id: 13,
+                background: '#eeeeee',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 14,
+                background: '#e0e0e0',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 15,
+                background: '#bdbdbd',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 16,
+                background: '#9e9e9e',
+                color: "#fff",
+                border: '',
+                selected: false,
+            },
+
+            //green
+
+            {
+                id: 17,
+                background: '#b9f6ca',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 18,
+                background: '#69f0ae',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 19,
+                background: '#00e676',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 20,
+                background: '#00c853',
+                color: "#fff",
+                border: '',
+                selected: false,
+            },
+
+            //blue
+            {
+                id: 21,
+                background: '#e3f2fd',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 22,
+                background: '#bbdefb',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 23,
+                background: '#90caf9',
+                color: "rgba(24,28,33,0.8)",
+                border: '',
+                selected: false,
+            },
+            {
+                id: 24,
+                background: '#2196f3',
+                color: "#fff",
+                border: '',
+                selected: false,
+            }],
     },
     watch: {
         searchIcon: function (newValue, oldValue) {
@@ -164,47 +343,38 @@ var SectionVue = new Vue({
                 isShow_Filtered: true,
                 sectionTypeID: null,
                 hasRecords: false,
+                cssIcon: null,
             };
-
-            $("#cssColor").colorPick({
-                'initialColor': "#E5E9EB",
-                //'palette': ['#5BADFF', "#F06568", "#3C9E71","#C6C6C6"],
-                //'localizationColor': [],
-                'onColorSelected': function () {
-                    //let title = '';
-                    //let localColor = this.localizationColor.find(x => x.ColorCode.toUpperCase() == this.color.toUpperCase());
-                    //if (localColor && localColor.ColorName) {
-                    //title = localColor.ColorName;
-                    SectionVue.section.cssColor = this.color;
-                    //$("#carColorLocal").text(title);
-                    //this.element.attr("title", title);
-                    this.element.css({ 'backgroundColor': this.color, 'color': this.color });
-                    //}
-                }
-            });
-
+            this.chooseColor();
+            $("#accordion2-2, #accordion2-1").removeClass("show");
+            this.changeSectionType(2)
+        
             $("#modal-section").modal("show");
         },
         edit: function (section) {
             this.section = { ...section };
+
             $("#collectiveSections").select2();
 
-            $("#cssColor").colorPick({
-                'initialColor': this.section.cssColor ? this.section.cssColor : "#E5E9EB",
-                //'palette': ['#5BADFF', "#F06568", "#3C9E71","#C6C6C6"],
-                //'localizationColor': [],
-                'onColorSelected': function () {
-                    //let title = '';
-                    //let localColor = this.localizationColor.find(x => x.ColorCode.toUpperCase() == this.color.toUpperCase());
-                    //if (localColor && localColor.ColorName) {
-                    //title = localColor.ColorName;
-                    SectionVue.section.cssColor = this.color;
-                    //$("#carColorLocal").text(title);
-                    //this.element.attr("title", title);
-                    this.element.css({ 'backgroundColor': this.color, 'color': this.color });
-                    //}
-                }
-            });
+            this.chooseColor(this.section.cssBackground);
+            $("#accordion2-2, #accordion2-1").removeClass("show");
+
+            //$("#cssColor").colorPick({
+            //    'initialColor': this.section.cssColor ? this.section.cssColor : "#E5E9EB",
+            //    //'palette': ['#5BADFF', "#F06568", "#3C9E71","#C6C6C6"],
+            //    //'localizationColor': [],
+            //    'onColorSelected': function () {
+            //        //let title = '';
+            //        //let localColor = this.localizationColor.find(x => x.ColorCode.toUpperCase() == this.color.toUpperCase());
+            //        //if (localColor && localColor.ColorName) {
+            //        //title = localColor.ColorName;
+            //        SectionVue.section.cssColor = this.color;
+            //        //$("#carColorLocal").text(title);
+            //        //this.element.attr("title", title);
+            //        this.element.css({ 'backgroundColor': this.color, 'color': this.color });
+            //        //}
+            //    }
+            //});
 
             $("#modal-section").modal("show");
         },
@@ -227,7 +397,8 @@ var SectionVue = new Vue({
         },
         selectIcon: function (item) {
             this.section.cssIcon = item.nameClass;
-            this.searchIcon = '';
+            //this.searchIcon = '';
+            $("#accordion2-2, #accordion2-1").removeClass("show");
         },
         save: function () {
             if (this.checkForm() == false) {
@@ -247,7 +418,7 @@ var SectionVue = new Vue({
                                 //SectionVue.sections.push(result.section);
                                 AreaVue.areas[areaIndex].sections.push(result.section);
                             } else {
-                               // SectionVue.sections[index] = result.section;
+                                // SectionVue.sections[index] = result.section;
                                 let sectionIndex = AreaVue.areas[areaIndex].sections.findIndex(x => x.id == result.section.id);
                                 AreaVue.areas[areaIndex].sections[sectionIndex] = result.section;
                             }
@@ -288,5 +459,23 @@ var SectionVue = new Vue({
         changeSectionType: function (val) {
             this.section.sectionTypeID = (val == this.section.sectionTypeID ? null : val);
         },
+        chooseColor: function (cssBackground) {
+            for (var i = 0; i < this.colors.length; i++) {
+                this.colors[i].selected = false;
+            }
+
+            if (cssBackground) {
+                let index = this.colors.findIndex(x => x.background == cssBackground);
+
+                this.colors[index].selected = true;
+                this.section.cssColor = this.colors[index].color;
+                this.section.cssBackground = this.colors[index].background;
+
+                $("#accordion2-2, #accordion2-1").removeClass("show");
+            } else {
+                this.section.cssColor = '';
+                this.section.cssBackground = '';
+            }
+        }
     }
 });

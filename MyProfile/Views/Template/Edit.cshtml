@@ -16,22 +16,20 @@
     <link href="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
 
     <link href="~/css/template.css" rel="stylesheet" />
-    <style>
-    </style>
 }
 
 @section Scripts {
     <!-- Dependencies -->
     <script src="~/vendor/libs/dragula/dragula.js"></script>
     <script src="~/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
-    <link rel="stylesheet" href="~/vendor/libs/dragula/dragula.js">
+    <script src="~/vendor/libs/dragula/dragula.js"></script>
     <script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
 
     <script src="~/js/pages_kanban-board.js"></script>
     <script src="~/js/template.js"></script>
 }
 
-<section id="template-columns">
+<section id="template-columns" style="margin-bottom: 250px;">
     <input type="hidden" name="templateID" id="templateID" value="@ViewBag.TemplateID" />
 
     <div class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold mb-4">
@@ -46,12 +44,16 @@
             <div class="row no-gutters">
                 <div class="col-sm-3 col-md-4 col-lg-4 col-xl-4">
                     <div class="form-group">
+                        <label class="form-label">Название шаблона</label>
                         <input type="text" class="form-control" v-model="template.name" placeholder="Название шаблона">
                     </div>
                 </div>
-                <div class="col-sm-3 col-md-4 col-lg-3 col-xl-3 pl-3">
+                <div class="col-sm-3 col-md-4 col-lg-3 col-xl-3 pl-3 pt-4">
                     <div class="dropdown">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" v-text="template.periodName"></button>
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                data-toggle="dropdown"
+                                v-text="template.periodName"
+                                v-bind:disabled="template.columns && template.columns.length > 0"></button>
                         <div class="dropdown-menu">
                             @foreach (MyProfile.Entity.Model.PeriodType periodType in ViewBag.PeriodTypes)
                             {
@@ -64,22 +66,22 @@
                 <div class="col-sm-6 col-md-4 col-lg-5 col-xl-5">
 
                     <!-- Dates -->
-                    <div class="row no-gutters row-bordered row-border-light ui-bordered mb-4">
-                        <div class="col py-1 px-3">
-                            <div class="text-muted small">Created at</div>
-                            <div class="font-weight-semibold">{{ GetDateByFormat(template.dateCreate, 'DD.MM.YYYY HH:mm') }}</div>
-                        </div>
-                        <div class="col py-1 px-3">
-                            <div class="text-muted small">Last update</div>
-                            <div class="font-weight-semibold">{{ GetDateByFormat(template.dateEdit, 'DD.MM.YYYY HH:mm') }} </div>
-                        </div>
-                    </div>
+                    @*<div class="row no-gutters row-bordered row-border-light ui-bordered mb-4">
+                            <div class="col py-1 px-3">
+                                <div class="text-muted small">Created at</div>
+                                <div class="font-weight-semibold">{{ GetDateByFormat(template.dateCreate, 'DD.MM.YYYY HH:mm') }}</div>
+                            </div>
+                            <div class="col py-1 px-3">
+                                <div class="text-muted small">Last update</div>
+                                <div class="font-weight-semibold">{{ GetDateByFormat(template.dateEdit, 'DD.MM.YYYY HH:mm') }} </div>
+                            </div>
+                        </div>*@
 
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Description</label>
-                <textarea class="form-control" v-model="template.description" rows="2"></textarea>
+                <label class="form-label">Описание</label>
+                <textarea class="form-control" v-model="template.description" rows="2" placeholder="Описание шаблона"></textarea>
             </div>
             <div class="form-group">
                 <label class="custom-control custom-checkbox">
@@ -91,29 +93,29 @@
         </div>
 
         <div class="card-footer">
-            <button type="button" class="btn btn-primary"
+            <button type="button" class="btn btn-primary" v-on:click="saveTemplate(false)" v-bind:disabled="isSavingTemplate">
+                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSavingTemplate"></span>
+                <i class="ion ion-ios-save pr-2" v-show="!isSavingTemplate" style="font-size: large;"></i>
+                Сохранить
+            </button>
+            <button type="button" class="btn btn-outline-primary"
                     v-on:click="saveTemplate(true)"
                     v-bind:disabled="isSavingTemplate"
                     v-show="template.id != 0">
                 <span class="spinner-border" role="status" aria-hidden="true" v-show="isSavingTemplate"></span>
-                <i class="ion ion-ios-save  pr-2" v-show="!isSavingTemplate"></i>
-                Сохранить как
-            </button>
-            <button type="button" class="btn btn-primary" v-on:click="saveTemplate(false)" v-bind:disabled="isSavingTemplate">
-                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSavingTemplate"></span>
-                <i class="ion ion-ios-save  pr-2" v-show="!isSavingTemplate"></i>
-                Сохранить
+                <i class="ion ion-ios-save pr-2" v-show="!isSavingTemplate" style="font-size: large;"></i>
+                Создать копию
             </button>
 
             <a class="btn btn-default ml-4" v-bind:href="getLinkForView(template)" v-show="template.id != 0 && errorMessage == null">
-                <i class="far fa-eye pr-2"></i>Посмотреть
+                <i class="far fa-eye pr-2" style="font-size: large;"></i>Посмотреть
             </a>
 
             <a href="/Template/Delete/@ViewBag.TemplateID" class="btn btn-outline-danger icon-btn borderless float-right" v-show="template.id > 0">
                 <span class="ion ion-md-trash"></span>
             </a>
         </div>
-        <div class="ml-4" style=" margin-top: -12px;">
+        <div class="ml-4" style=" margin-top: -12px;" v-show="template.id">
             <span class="text-muted small">Последний раз редактировалось: {{ GetDateByFormat(template.dateEdit, 'DD.MM.YYYY') }} </span>
         </div>
     </div>
@@ -140,7 +142,7 @@
                     <div class="tab-content">
                         <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
                             <div class="d-flex justify-content-between align-items-start">
-                                <input type="text" class="form-control " placeholder="Название колонки" v-model="column.name">
+                                <input type="text" class="form-control ignore-dnd" placeholder="Название колонки" v-model="column.name">
                                 <div class="btn-group team-actions">
                                     <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow mt-1" data-toggle="dropdown" aria-expanded="false">
                                         <i class="ion ion-ios-more"></i>
@@ -170,7 +172,7 @@
 
                             </div>
                             <div class="card-footer text-center py-2">
-                                <a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+                                <a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Добавить категорию</a>
                             </div>
                         </div>
                         <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
@@ -244,7 +246,7 @@
                                 </li>
                             </ul>
                             <div class="card-footer text-center py-2">
-                                <a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Add option</a>
+                                <a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Добавить категорию</a>
                             </div>
                         </div>
                     </div>
@@ -383,7 +385,7 @@
             </div>
             <div class="list ignore-dnd">
                 <div class="card mb-3">
-                    <button type="button" class="btn btn-outline-primary" v-on:click="addColumn" v-show="template.periodTypeID > 0">Add column</button>
+                    <button type="button" class="btn btn-outline-primary" v-on:click="addColumn" v-show="template.periodTypeID > 0">Добавить колонку</button>
                 </div>
             </div>
         </div>

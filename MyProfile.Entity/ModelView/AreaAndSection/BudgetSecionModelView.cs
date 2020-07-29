@@ -33,5 +33,6 @@ namespace MyProfile.Entity.ModelView
         public int RecordCount { get; set; }
         public bool IsShow { get; set; }
         public bool HasRecords { get; set; }
+        public string CssBackground { get; set; }
     }
 }

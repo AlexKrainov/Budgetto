@@ -21,6 +21,10 @@ namespace MyProfile.Entity.Model
 		public string CssIcon { get; set; }
 		[MaxLength(24)]
 		public string CssColor { get; set; }
+		[MaxLength(24)]
+		public string CssBackground { get; set; }
+		[MaxLength(24)]
+		public string CssBorder { get; set; }
 
 		/// <summary>
 		/// Hide in record add

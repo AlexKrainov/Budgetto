@@ -100,8 +100,13 @@
         addColumn_Complete: function () {
             $("#modalDataTypeColumn").modal("hide");
             this.template.columns.push(this.column);
-            //$("input[name=data-column-type]:selected").removeProp("selected");
-            this.column = {};
+
+            if (TemplateColumnTypeEnum.BudgetSection == this.column.templateColumnType) {
+                this.column.totalAction = 1;
+                this.addColumnOption_step1(this.column);
+            } else {
+                this.column = {};
+            }
         },
         addColumnOption_step1: function (column) {
             this.column = column;
@@ -121,10 +126,11 @@
                 this.column.name = section.name;
             }
 
+
             this.column.templateBudgetSections.push({
                 id: this.counterTemplateBudgetSections++,
                 sectionID: section.id,
-                sectionName: section.name
+                sectionName: section.name,
             });
             $("#modals-slide").modal("hide");
         },

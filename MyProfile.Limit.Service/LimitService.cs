@@ -81,6 +81,7 @@ namespace MyProfile.Limit.Service
                         ID = y.BudgetSectionID,
                         Name = y.BudgetSection.Name,
                         CssColor = y.BudgetSection.CssColor,
+                        CssBackground = y.BudgetSection.CssBackground,
                         CssIcon = y.BudgetSection.CssIcon,
                     }).ToList()
                 })
@@ -151,6 +152,7 @@ namespace MyProfile.Limit.Service
                         ID = y.BudgetSectionID,
                         Name = y.BudgetSection.Name,
                         CssColor = y.BudgetSection.CssColor,
+                        CssBackground = y.BudgetSection.CssBackground,
                         CssIcon = y.BudgetSection.CssIcon,
                     })
                 })

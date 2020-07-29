@@ -110,6 +110,12 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<BudgetSection>()
                 .Property(b => b.IsShowOnSite)
                 .HasDefaultValue(true);
+            modelBuilder.Entity<BudgetSection>()
+                .Property(b => b.CssBackground)
+                .HasDefaultValue("#eeeeee");
+            modelBuilder.Entity<BudgetSection>()
+               .Property(b => b.CssColor)
+               .HasDefaultValue("#rgba(24,28,33,0.8)");
 
             modelBuilder.Entity<BudgetArea>()
                .Property(b => b.IsShowInCollective)

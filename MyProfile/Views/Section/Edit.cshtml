@@ -3,7 +3,7 @@
 }
 
 @section Styles {
-    <link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />
+    @*<link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />*@
     <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
     <style>
         .active-section {
@@ -54,13 +54,14 @@
 }
 
 @section Scripts {
-    <script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
+    @*<script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>*@
     <script src="~/js/section-list.js"></script>
 
     @*<script src="~/js/vue-components/vue-select2-component.js"></script>*@
     <script src="~/vendor/libs/select2/select2.js"></script>
-
 }
+
+
 
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
     <span class="pe-7s-albums display-4 text-primary mr-2"></span>
@@ -90,7 +91,7 @@
             <h6 class="card-header with-elements">
                 <div class="card-header-title">Области</div>
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
+                    <input type="text" class="form-control" placeholder="Поиск области" v-model="searchText">
                     <div class="input-group-append">
                         <button type="button" class="btn btn-primary" v-on:click="create">Добавить</button>
                     </div>
@@ -113,11 +114,11 @@
                     <div class="cards">
                         <div class="card-section" v-for="section in area.sections">
                             <div class="card border-0 text-body"
-                                 v-bind:style="'background-color: '+ section.cssColor">
-                                <div class="card-body d-flex  align-items-center p-2">
-                                    <i class="text-xlarge opacity-25" v-bind:class="section.cssIcon"></i><div class="ml-2">
+                                 v-bind:style="'background-color:' + section.cssBackground">
+                                <div class="card-body d-flex  align-items-center p-2" v-bind:style="'color:'+section.cssColor">
+                                    <i class="text-xlarge opacity-75" v-bind:class="section.cssIcon"></i><div class="ml-2">
                                         <div class="">{{section.name}}</div>
-                                        <div class="small opacity-50" style="margin-top: -5px;">
+                                        <div class="small opacity-75" style="margin-top: -5px;">
                                             {{ area.name }}
                                             <div class="ml-2" style="display: inline-block;" v-show="section.collectiveSections.length > 0">
                                                 <i class="oi oi-layers d-block1"></i> +{{section.collectiveSections.length}}
@@ -163,7 +164,7 @@
                     Категории {{areaName ? ' для '+  areaName : '' }}
                 </div>
                 <div class="input-group" v-show="areaID != null">
-                    <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
+                    <input type="text" class="form-control" placeholder="Поиск категори" v-model="searchText">
                     <div class="input-group-append">
                         <button type="button" class="btn btn-primary" v-on:click="create">Добавить</button>
                     </div>
@@ -175,15 +176,16 @@
                      v-for="section in sections"
                      v-show="section.isShow_Filtered"
                      v-bind:class="section.isShowOnSite ? 'border-primary' : 'border-secondary'">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
-                        <div>
+                    <div class="p-3">
+                        <i class="text-xlarge opacity-75" v-bind:class="section.cssIcon"></i>
+                        <div class="float-right">
+                            <a href="javascript:void(0)" class="badge badge-success " v-show="section.sectionTypeID == 1">Доходы</a>
+                            <a href="javascript:void(0)" class="badge badge-danger " v-show="section.sectionTypeID == 2">Расходы</a>
+                        </div>
+                        <div class="display-inline ml-2">
                             <strong>{{ section.name }}</strong>
                             <br>
                             <small class="text-muted">{{ section.description }}</small>
-                        </div>
-                        <div class="d-flex flex-wrap align-items-center">
-                            <a href="javascript:void(0)" class="badge badge-success float-right" v-show="section.sectionTypeID == 1">Доходы</a>
-                            <a href="javascript:void(0)" class="badge badge-danger float-right" v-show="section.sectionTypeID == 2">Расходы</a>
                         </div>
 
                     </div>
@@ -249,7 +251,7 @@
         margin-bottom: 10px;
         box-shadow: 6px 2px 8px 3px rgba(0,0,0, 0.25);
         transition: 0.5s;
-        border: 1px solid gray;
+        /*        border: 1px solid gray;*/
         border-radius: 7px;
     }
 
@@ -262,7 +264,7 @@
             z-index: 10;
         }
 </style>
-<div class="row">
+<div class="row" style="display: none;">
     <div class="cal-4">
 
         <div class="cards">
@@ -415,9 +417,9 @@
 </script>
 
 <style>
-/*    js Animated Card Stacks*/
-/*    https://www.youtube.com/watch?v=NXtz59SJYfM*/
-/*    https://css-tricks.com/*/
+    /*    js Animated Card Stacks*/
+    /*    https://www.youtube.com/watch?v=NXtz59SJYfM*/
+    /*    https://css-tricks.com/*/
     .cont {
         display: grid;
     }
@@ -444,7 +446,7 @@
             transform: translateY(-1rem);
         }
 </style>
-<div class="row">
+<div class="row" style="display: none;">
     <div class="col-3 cont">
         <div class="cards">
             <div class="_card">

@@ -1,6 +1,8 @@
 ﻿:root {
     --danger-color: #d9534f;
+    --primary-color: #d9534f;
 }
+
 
 .default-style .select2-dropdown {
     z-index: 1100 !important;
@@ -235,12 +237,15 @@ td.show-actions span.cell-actions {
     -o-transition: all .1s linear .1s;
     transition: all .1s linear .1s;
 }
+
 .add-cell-action {
     font-size: 18px;
 }
+
 .show-history-cell-action {
     font-size: 16px;
 }
+
 .cell-actions:hover > .add-cell-action {
     color: var(--green);
 }
@@ -253,4 +258,22 @@ td.show-actions span.cell-actions {
 }
 
 .show-history-cell-action:hover {
+}
+
+.cell-hover:hover, .a-hover:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.cell-hover:active, .a-hover:active {
+    color: var(--primary-color);
+}
+
+.record-date {
+    font-weight: 600 !important;
+    text-align: center;
+}
+
+.font-size-large {
+    font-size: large;
 }
