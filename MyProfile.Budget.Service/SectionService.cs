@@ -69,6 +69,7 @@ namespace MyProfile.Budget.Service
                             //    AreaName = z.ChildSection.BudgetArea.Name
                             //}),
                         })
+                        .OrderByDescending(p => p.Name.Length)
                 });
         }
 

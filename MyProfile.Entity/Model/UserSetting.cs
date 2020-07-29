@@ -72,7 +72,7 @@ namespace MyProfile.Entity.Model
         /// </summary>
         public bool Year_GoalWidgets { get; set; }
         /// <summary>
-        /// The pages Budget/Month... show/hide big charts 
+        /// The pages Budget/Year... show/hide big charts 
         /// </summary>
         public bool Year_BigCharts { get; set; }
         #endregion

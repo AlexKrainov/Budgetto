@@ -164,6 +164,7 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<CollectiveBudgetRequestOwner> CollectiveBudgetRequestOwners { get; set; }
         public virtual DbSet<CollectiveBudgetUser> CollectiveBudgetUsers { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
+        public virtual DbSet<Resource> Resources { get; set; }
 
 
     }

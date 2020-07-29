@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200728170316_MyProfile_02")]
+    partial class MyProfile_02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -544,7 +546,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Extension")
                         .IsRequired()
-                        .HasMaxLength(24);
+                        .HasMaxLength(8);
 
                     b.Property<string>("FolderName")
                         .IsRequired()
@@ -552,11 +554,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(40);
-
-                    b.Property<string>("SrcPath")
-                        .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(32);
 
                     b.HasKey("ID");
 

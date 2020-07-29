@@ -80,6 +80,17 @@
                 console.log("not save");
             }
         },
+        encodeImageFileAsURL: function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                AccountSettingsVue.user.imageBase64 = reader.result;
+                //$("#photo").attr("src", reader.result);
+                //console.log('RESULT', reader.result)
+            }
+            reader.readAsDataURL(file);
+        },
+
 
         //Change password tab
         saveNewPassword: function () {

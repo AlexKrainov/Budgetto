@@ -46,6 +46,7 @@
     <ProjectReference Include="..\MyProfile.Budget.Service\MyProfile.Budget.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Chart.Service\MyProfile.Chart.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
+    <ProjectReference Include="..\MyProfile.File.Service\MyProfile.File.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Goal.Service\MyProfile.Goal.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
     <ProjectReference Include="..\MyProfile.Limit.Service\MyProfile.Limit.Service.csproj" />
@@ -85,6 +86,7 @@
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Areas\Identity\Models\" />
     <Folder Include="wwwroot\img\chart\" />
+    <Folder Include="wwwroot\resources\users\" />
     <Folder Include="wwwroot\video\" />
   </ItemGroup>
 

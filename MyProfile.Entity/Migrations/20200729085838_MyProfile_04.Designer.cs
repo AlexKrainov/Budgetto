@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200729085838_MyProfile_04")]
+    partial class MyProfile_04
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -550,13 +552,13 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(32);
 
+                    b.Property<string>("FullPath")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40);
-
-                    b.Property<string>("SrcPath")
-                        .IsRequired()
-                        .HasMaxLength(256);
 
                     b.HasKey("ID");
 

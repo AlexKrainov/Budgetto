@@ -11,6 +11,7 @@ using MyProfile.Budget.Service;
 using MyProfile.Chart.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
+using MyProfile.File.Service;
 using MyProfile.Goal.Service;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
@@ -51,6 +52,7 @@ namespace MyProfile
             services.AddScoped<GoalService>();
             services.AddScoped<ChartService>();
             services.AddScoped<UserService>();
+            services.AddScoped<FileWorkerService>();
 
             services.AddScoped<UserEmailService>();
             #endregion

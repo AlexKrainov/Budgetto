@@ -37,6 +37,10 @@
     <Compile Remove="Migrations\20200727173450_MyProfile_055.Designer.cs" />
     <Compile Remove="Migrations\20200727173602_MyProfile_055.cs" />
     <Compile Remove="Migrations\20200727173602_MyProfile_055.Designer.cs" />
+    <Compile Remove="Migrations\20200728163232_MyProfile_02.cs" />
+    <Compile Remove="Migrations\20200728163232_MyProfile_02.Designer.cs" />
+    <Compile Remove="Migrations\20200729081046_MyProfile_03.cs" />
+    <Compile Remove="Migrations\20200729081046_MyProfile_03.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

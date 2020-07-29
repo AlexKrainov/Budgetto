@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
+using MyProfile.File.Service;
 using MyProfile.Identity;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,17 @@ namespace MyProfile.User.Service
         private IBaseRepository repository;
         private UserLogService userLogService;
         private UserEmailService userConfirmEmailService;
+        private FileWorkerService fileWorkerService;
 
         public UserService(IBaseRepository repository,
             UserLogService userLogService,
-            UserEmailService userConfirmEmailService)
+            UserEmailService userConfirmEmailService,
+            FileWorkerService fileWorkerService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
             this.userConfirmEmailService = userConfirmEmailService;
+            this.fileWorkerService = fileWorkerService;
         }
 
         public UserInfoModel GetUserSettings()
@@ -67,6 +71,39 @@ namespace MyProfile.User.Service
             dbUser.Name = user.Name = userInfoModel.Name;
             dbUser.LastName = user.LastName = userInfoModel.LastName;
             dbUser.Email = user.Email = userInfoModel.Email;
+
+
+            if (!string.IsNullOrEmpty(userInfoModel.ImageBase64))
+            {
+                //сначало создаем/апдейтим файл и дальше сохраняем его в базу
+
+                if (dbUser.Resource == null)
+                {
+                    dbUser.Resource = new Resource
+                    {
+                        BodyBase64 = userInfoModel.ImageBase64
+                    };
+                }
+                else
+                {
+                    dbUser.Resource.BodyBase64 = userInfoModel.ImageBase64;
+                }
+
+                if (dbUser.ResourceID == null)
+                {
+                    fileWorkerService.CreateFileFromBase64(dbUser.Resource, ResourceFolder.Users);
+                }
+                else if (userInfoModel.ResourceID == null)
+                {
+                    fileWorkerService.UpdateFileFromBase64(dbUser.Resource, ResourceFolder.Users);
+                }
+                else
+                {
+
+                }
+                userInfoModel.ImageLink = user.ImageLink = dbUser.ImageLink = dbUser.Resource.SrcPath;
+                userInfoModel.ImageBase64 = null;
+            }
 
             await repository.UpdateAsync(dbUser, true);
 
@@ -113,7 +150,7 @@ namespace MyProfile.User.Service
                     UserSettings = new UserSettings
                     {
                         BudgetPages_WithCollective = x.UserSettings.BudgetPages_WithCollective,
-                        
+
                         Month_EarningWidget = x.UserSettings.Month_EarningWidget,
                         Month_InvestingWidget = x.UserSettings.Month_InvestingWidget,
                         Month_SpendingWidget = x.UserSettings.Month_SpendingWidget,

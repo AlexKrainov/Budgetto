@@ -41,11 +41,14 @@ namespace MyProfile.Entity.Model
         public int UserTypeID { get; set; }
         [ForeignKey("Currency")]
         public int CurrencyID { get; set; }
+        [ForeignKey("Resource")]
+        public int? ResourceID { get; set; }
 
         public virtual CollectiveBudgetUser CollectiveBudgetUser { get; set; }
         public virtual UserSettings UserSettings { get; set; }
         public virtual UserType UserType { get; set; }
         public virtual Currency Currency { get; set; }
+        public virtual Resource Resource { get; set; }
 
         public virtual IEnumerable<BudgetArea> BudgetAreas { get; set; }
         public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }

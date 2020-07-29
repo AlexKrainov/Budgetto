@@ -6,6 +6,7 @@ namespace MyProfile.Entity.ModelView
     {
         public int? LastUserLogID { get; set; }
         public Guid CollectiveBudgetID { get; set; }
+        public string ImageBase64 { get; set; }
 
         public UserInfoModel()
         {

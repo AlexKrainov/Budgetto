@@ -377,6 +377,8 @@
                 context: this,
                 success: function (result) {
 
+                    this.clearAll();
+
                     if (result.isOk == true) {
                         this.records.push(result.record);
                         this.flatpickr.setDate(result.record.dateTimeOfPayment);
@@ -394,6 +396,8 @@
             }, this);
         },
         editByElement: function (record, callback) {
+            this.clearAll();
+
             this.records.push(record);
 
             this.setCurrentCurrency(record.currencyID);
@@ -413,6 +417,10 @@
                 record.sectionID = section.id;
                 record.sectionName = section.name
             }
+        },
+        clearAll: function () {
+            this.records = [];
+            this.tagify.removeAllTags()
         },
 
         addDays: function (days) {
