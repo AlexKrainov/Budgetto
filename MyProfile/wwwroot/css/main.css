@@ -268,7 +268,7 @@ td.show-actions span.cell-actions {
 .cell-hover:active, .a-hover:active {
     color: var(--primary-color);
 }
-
+/* record model */
 .record-date {
     font-weight: 600 !important;
     text-align: center;
@@ -276,4 +276,58 @@ td.show-actions span.cell-actions {
 
 .font-size-large {
     font-size: large;
+}
+
+.records .record-item-actions {
+    opacity: 0.15;
+    -webkit-transition: all .5s linear .10s;
+    -o-transition: all .5s linear .10s;
+    transition: all .5s linear .10s;
+}
+
+.records:hover .record-item-actions {
+    opacity: 1;
+    -webkit-transition: all .1s linear .1s;
+    -o-transition: all .1s linear .1s;
+    transition: all .1s linear .1s;
+}
+
+.record-item-actions:hover {
+    color: var(--green);
+    /*    color: var(--blue);*/
+}
+
+.comment-actions {
+    opacity: 0.15;
+    -webkit-transition: all .5s linear .10s;
+    -o-transition: all .5s linear .10s;
+    transition: all .5s linear .10s;
+}
+
+    .comment-actions:hover {
+        opacity: 1;
+        -webkit-transition: all .1s linear .1s;
+        -o-transition: all .1s linear .1s;
+        transition: all .1s linear .1s;
+    }
+
+    .comment-actions > i.fa-trash-alt:hover {
+        color: var(--red);
+        /*    color: var(--blue);*/
+    }
+
+
+.show-comment {
+    visibility: visible !important;
+    -webkit-transition: all .2s linear .10s;
+    -o-transition: all .2s linear .10s;
+    transition: all .2s linear .10s;
+}
+
+.hide-comment {
+    height: 20px;
+    visibility: hidden !important;
+    -webkit-transition: all .2s linear .2s;
+    -o-transition: all .2s linear .2s;
+    transition: all .2s linear .2s;
 }

@@ -1,9 +1,9 @@
 ﻿Vue.component("vue-section-component", {
-	template: `<div v-bind:id="id" v-bind:name="name">
+	template: `<div >
 				<input type='search'
 					class="form-control form-control-sm"
 					v-on:input="onsearch"/>
-					<div class="inline-spacing" style="height: 200px; overflow-x: overlay;"  >
+					<div class="inline-spacing" style="height: 200px; overflow-x: overlay;" id='record-sections' >
                       <a 
 						href="javascript:void(0)" 
 						v-for="section in dataSectionItems"
@@ -32,6 +32,7 @@
 		}
 	},
 	mounted: function () {
+		new PerfectScrollbar(document.getElementById('record-sections'));
 		return $.ajax({
 			type: "GET",
 			url: "/Section/GetSectins",

@@ -206,10 +206,12 @@ namespace MyProfile.Budget.Service
                     for (int i = 0; i < allColumnsCount; i++)
                     {
                         var column = template.Columns[i];
-                        string v = "0";
+                        string v = 0.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture)); 
 
-                        //if (column.TemplateColumnType == TemplateColumnType.BudgetSection)
-                        if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
+                        if (column.TemplateColumnType == TemplateColumnType.BudgetSection && currentDate > dateTimeNow)
+                        {
+                            v = "";
+                        }else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
                         {
                             v = SetFormatForDate(new DateTime(from.Year, from.Month, dateCounter), column.Format, column.TemplateColumnType);
                         }
