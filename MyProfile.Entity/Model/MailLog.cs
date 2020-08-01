@@ -17,6 +17,7 @@ namespace MyProfile.Entity.Model
         public DateTime? CameDateTime { get; set; }
         public string Comment { get; set; }
         public bool IsSuccessful { get; set; }
+        public int Code { get; set; }
 
         [ForeignKey("User")]
         public Guid? UserID { get; set; }

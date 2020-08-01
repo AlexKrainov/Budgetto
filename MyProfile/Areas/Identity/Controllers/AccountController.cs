@@ -45,29 +45,36 @@ namespace MyProfile.Areas.Identity.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string Email, string Password, string ReturnUrl)
+        public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
-            //if (string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Password))
-            //{
-            //    Email = "ialexkrainov2@gmail.com";
-            //    Password = "BlXlR1234";
-            //}
-            var user = await userService.AuthenticateOrUpdateUserInfo(Email, Password, UserActionType.Login);
+            var user = await userService.CheckUser(login.Email, login.Password);
+
+            if (user != null && await userLogService.CheckLimitEnter(user.ID, UserActionType.Login))
+            {
+                var emailID = await userEmailService.LoginConfirmation(user);
+
+                if (emailID != Guid.Empty)
+                {
+                    return Json(new { isOk = true, emailID });
+                }
+            }
 
             if (user != null)
             {
-                if (Url.IsLocalUrl(ReturnUrl))
+                user = await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.Login);
+
+                if (Url.IsLocalUrl(login.ReturnUrl))
                 {
-                    return Redirect(ReturnUrl);
+                    return Json(new { isOk = true, href = login.ReturnUrl });
                 }
                 else
                 {
-                    return RedirectToAction("Month", "Budget", new { area = "" });
+                    return Json(new { isOk = true, href = "/Budget/Month" });
                 }
-                //ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            ViewData["ErrorMessage"] = "Некорректные почта и(или) пароль.";
-            return View();
+
+            return Json(new { isOk = false, textError = "Некорректные почта и(или) пароль." });
+
         }
 
         public async Task<IActionResult> Logout()
@@ -82,139 +89,142 @@ namespace MyProfile.Areas.Identity.Controllers
         }
 
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Registration(string Email)
-        {
-            return View("Registration", Email);
-        }
-
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Registration([FromBody] test test)
+        public async Task<IActionResult> Registration([FromBody] LoginModel registrationModel)
         {
-            if (!string.IsNullOrEmpty(test.Email) && !string.IsNullOrEmpty(test.Password))
+            if (!string.IsNullOrEmpty(registrationModel.Email) && !string.IsNullOrEmpty(registrationModel.Password))
             {
-                if (await repository.AnyAsync<Entity.Model.User>(x => x.Email == test.Email && x.IsDeleted == false))
+                if (await repository.AnyAsync<Entity.Model.User>(x => x.Email == registrationModel.Email && x.IsDeleted == false))
                 {
-                    return Json(new { isOk = false, message = $"В системе уже есть пользователь с такой почтой ({ test.Email })." });
+                    return Json(new { isOk = false, message = $"В системе уже есть пользователь с такой почтой ({ registrationModel.Email })." });
                 }
-
-                var now = DateTime.Now;
 
                 try
                 {
-                    await repository.CreateAsync(new Entity.Model.User
-                    {
-                        DateCreate = now,
-                        Email = test.Email,
-                        IsAllowCollectiveBudget = false,
-                        Name = test.Email,
-                        ImageLink = "/img/user-min.png",
-                        Password = test.Password,
-                        CollectiveBudgetUser = new Entity.Model.CollectiveBudgetUser
-                        {
-                            DateAdded = now,
-                            DateUpdate = now,
-                            Status = Entity.Model.CollectiveUserStatusType.Accepted.ToString(),
-                            CollectiveBudget = new Entity.Model.CollectiveBudget
-                            {
-                                Name = test.Email,
-                            }
-                        },
-                        UserSettings = new Entity.Model.UserSettings
-                        {
-                            BudgetPages_WithCollective = true,
-                            Month_EarningWidget = true,
-                            Month_InvestingWidget = true,
-                            Month_SpendingWidget = true,
-                        }
-                    }, true);
+                    await userService.CreateUser(registrationModel.Email, registrationModel.Password);
 
-                    var user = await userService.AuthenticateOrUpdateUserInfo(test.Email, test.Password, UserActionType.Registration);
+                    var user = await userService.CheckUser(registrationModel.Email, registrationModel.Password);
                     //Maybe send another pool
-                    await userEmailService.ConfirmEmail(user);
+                    try
+                    {
+                        var emailID = await userEmailService.ConfirmEmail(user);
+                        if (emailID != Guid.Empty)
+                        {
+                            return Json(new { isOk = true, isShowCode = true, emailID });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
 
-                    return Json(new { isOk = true, href = "/Budget/Month" });
+                    user = await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.Registration);
+                    return Json(new { isOk = true, isShowCode = false, href = "/Budget/Month" });
+
                 }
                 catch (Exception ex)
                 {
                     return Json(new { isOk = false, message = $"Во время создания пользователя произошла ошибка." });
                 }
-
             }
-
             return Json(new { isOk = false, message = $"Все поля обязательны для заполнения." });
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword(string Email)
-        {
-            return View("ResetPassword", new ResetPasswordModel { Email = Email });
-        }
-
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword(string Email, bool isResetPassword)
+        public async Task<IActionResult> RecoveryPassword([FromBody] LoginModel login)
         {
-            ResetPasswordModel model = new ResetPasswordModel { Email = Email, IsOk = true };
+            var user = await userService.CheckUser(login.Email);
 
-            if (ModelState.IsValid && !string.IsNullOrEmpty(Email) && Email.Contains("@") && Email.Contains("."))
+            if (user == null)
             {
-                var user = await repository.GetAll<Entity.Model.User>(x => x.Email == Email && x.IsDeleted == false)
-                    .Select(x => new Entity.Model.User
-                    {
-                        ID = x.ID,
-                        Email = x.Email,
-                    })
-                    .FirstOrDefaultAsync();
-
-                if (user != null)
-                {
-                    await userEmailService.ResetPassword(user);
-
-                    model.Message = "Письмо с ссылкой на восстановление пароля отправлено на почту.";
-
-                    return View(model);
-                }
+                return Json(new { isOk = false, message = $"Не удалось найти пользователя с такой почтой. Пожалуйста зарегистрируйтесь " });
             }
 
-            model.Message = "Не удалось найти пользователя с такой почтой.";
-            model.IsOk = false;
+            var emailID = await userEmailService.RecoveryPassword(user);
 
-            return View(model);
+            if (emailID != Guid.Empty)
+            {
+                return Json(new { isOk = true, emailID });
+            }
+
+            return Json(new { isOk = false, message = "Извините, произошла ошибка во время восстановления пароля. Пожалуйста попробуйте позже." });
         }
-
-        [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword2(Guid id)
+        public async Task<IActionResult> Resend([FromBody] ResendCodeModel model)
         {
-            return View("ResetPassword2", id);
+            if (model.EmailID != Guid.Empty)
+            {
+                Guid emailID = Guid.Empty;
+                var userID = await userEmailService.CancelLastEmail(model.EmailID);
+                var user = await userService.CheckUser(null, null, userID);
+
+                if (model.LastActionID == 0)//Login
+                {
+                    emailID = await userEmailService.LoginConfirmation(user, true);
+                }
+                else if (model.LastActionID == 1)//Registration
+                {
+                    emailID = await userEmailService.ConfirmEmail(user, true);
+                }
+                else if (model.LastActionID == 2) //recoveryPassword
+                {
+                    emailID = await userEmailService.RecoveryPassword(user, true);
+                }
+                return Json(new { isOk = true, emailID, message = "Сообщение отправлено повторно" });
+            }
+
+            return Json(new { isOk = false, message = "Не удалось отправить сообщение повторно. Попробуйте позже.", href = "/Budget/Month" });
         }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CheckCode([FromBody] CheckCodeModel checkCodeModel)
+        {
+            Guid userID;
+            try
+            {
+                userID = await userEmailService.CheckCode(checkCodeModel.EmailID, checkCodeModel.Code);
+
+                if (userID == Guid.Empty)
+                {
+                    return Json(new { isOk = false, message = "Неверный код. Попробуйте еще." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isOk = false, message = "Неверный код. Попробуйте еще." });
+            }
+
+            if (checkCodeModel.LastActionID == 2)//recoveryPassword
+            {
+                return Json(new { isOk = true, canChangePassword = true, userID });
+            }
+
+            var user = await userService.CheckUser(null, null, userID);
+
+            await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.EnterAfterCode);
+
+            return Json(new { isOk = true, href = "/Budget/Month" });
+        }
+
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword2(Guid id,  string newPassword)
+        public async Task<IActionResult> RecoveryPassword2([FromBody] ResetPasswordModel model)
         {
             string errorMessage = string.Empty;
-            if (id != Guid.Empty
-                && !string.IsNullOrEmpty(newPassword)
-                && newPassword.Length >= 5)
+            if (model.ID != Guid.Empty
+                && !string.IsNullOrEmpty(model.NewPassword)
+                && model.NewPassword.Length >= 5)
             {
                 try
                 {
-                    var userID = await userEmailService.ResetPassword_Complete(id);
-                    await userService.UpdatePassword(newPassword, userID);
+                    await userService.UpdatePassword(model.NewPassword, model.ID);
 
-                    var userData = await repository.GetAll<Entity.Model.User>(x => x.ID == userID)
-                        .Select(x => new
-                        {
-                            x.Email
-                        })
-                        .FirstOrDefaultAsync();
+                    var user = await userService.CheckUser(null, null, model.ID);
 
-                    await userService.AuthenticateOrUpdateUserInfo(userData.Email, newPassword, UserActionType.ResetPassword);
+                    await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.ResetPassword);
 
                     return Json(new { isOk = true, href = "/Budget/Month" });
                 }
@@ -227,16 +237,28 @@ namespace MyProfile.Areas.Identity.Controllers
         }
 
     }
-    public class test
+    public class LoginModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public string ReturnUrl { get; set; }
     }
 
+
+    public class CheckCodeModel
+    {
+        public Guid EmailID { get; set; }
+        public int LastActionID { get; set; }
+        public int Code { get; set; }
+    }
     public class ResetPasswordModel
     {
-        public bool? IsOk { get; set; } = null;
-        public string Message { get; set; }
-        public string Email { get; set; }
+        public Guid ID { get; set; }
+        public string NewPassword { get; set; }
+    }
+    public class ResendCodeModel
+    {
+        public Guid EmailID { get; set; }
+        public int LastActionID { get; set; }
     }
 }

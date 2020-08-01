@@ -17,6 +17,7 @@ using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 using MyProfile.Template.Service;
 using MyProfile.User.Service;
+using MyProfile.User.Service.PasswordWorker;
 
 namespace MyProfile
 {
@@ -53,6 +54,7 @@ namespace MyProfile
             services.AddScoped<ChartService>();
             services.AddScoped<UserService>();
             services.AddScoped<FileWorkerService>();
+            services.AddScoped<PasswordService>();
 
             services.AddScoped<UserEmailService>();
             #endregion

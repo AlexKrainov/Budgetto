@@ -15,6 +15,7 @@ namespace Email.Service
 {
     public class UserEmailService
     {
+
         private IBaseRepository _repository;
         private IEmailSender _emailSender;
         private IHostingEnvironment hostingEnvironment;
@@ -32,39 +33,46 @@ namespace Email.Service
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<int> ConfirmEmail(User user)
+        public async Task<Guid> ConfirmEmail(User user, bool isResend = false)
         {
+            user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
+            Random random = new Random();
+
             MailLog mailLog = new MailLog
             {
                 ID = Guid.NewGuid(),
                 IsSuccessful = true,
-                MailTypeID = (int)MailTypeEnum.ConfirmEmail,
+                MailTypeID = isResend ? (int)MailTypeEnum.ConfirmEmail : (int)MailTypeEnum.ResendByUser,
                 SentDateTime = DateTime.Now.ToUniversalTime(),
                 UserID = user.ID,
                 Email = user.Email,
+                Code = (random.Next(1000, 9999)),
             };
-            string confirmUrl = @"https://" + httpContextAccessor.HttpContext.Request.Host.Value.ToString() + @"/Identity/Account/ConfirmEmail?id=" + mailLog.ID;
+            //string confirmUrl = @"https://" + httpContextAccessor.HttpContext.Request.Host.Value.ToString() + @"/Identity/Account/ConfirmEmail?id=" + mailLog.ID;
 
             try
             {
-                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\ConfirmEmail.html"))
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\CodeEmail.html"))
                 {
                     body = reader.ReadToEnd();
                 }
 
-                body = body.Replace("${Link}", confirmUrl);
+                body = body.Replace("${Code}", mailLog.Code.ToString());
 
-                await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
+                // await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
             }
             catch (Exception ex)
             {
                 mailLog.IsSuccessful = false;
                 mailLog.Comment = ex.Message;
+
+                await _repository.CreateAsync(mailLog, true);
+                return Guid.Empty;
             }
 
             await _repository.CreateAsync(mailLog, true);
-            return 1;
+            return mailLog.ID;
         }
 
         public async Task<int> ConfirmEmail_Complete(Guid id)
@@ -85,45 +93,122 @@ namespace Email.Service
             return 1;
         }
 
-        public async Task<int> ResetPassword(User user)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="isResend"></param>
+        /// <returns>if the this site cannot send email, retun guid.empty</returns>
+        public async Task<Guid> LoginConfirmation(User user, bool isResend = false)
         {
+            user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
+            Random random = new Random();
+
             MailLog mailLog = new MailLog
             {
                 ID = Guid.NewGuid(),
                 IsSuccessful = true,
-                MailTypeID = (int)MailTypeEnum.ResetPassword,
+                MailTypeID = isResend ? (int)MailTypeEnum.Login : (int)MailTypeEnum.ResendByUser,
                 SentDateTime = DateTime.Now.ToUniversalTime(),
                 UserID = user.ID,
                 Email = user.Email,
+                Code = (random.Next(1000, 9999)),
             };
-            string confirmUrl = @"https://" + httpContextAccessor.HttpContext.Request.Host.Value.ToString() + @"/Identity/Account/ResetPassword2?id=" + mailLog.ID;
+            //string confirmUrl = @"https://" + httpContextAccessor.HttpContext.Request.Host.Value.ToString() + @"/Identity/Account/ConfirmEmail?id=" + mailLog.ID;
 
             try
             {
-                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\ResetPassword.html"))
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\CodeEmail.html"))
                 {
                     body = reader.ReadToEnd();
                 }
 
-                body = body.Replace("${Link}", confirmUrl);
+                body = body.Replace("${Code}", mailLog.Code.ToString());
 
-                await _emailSender.SendEmailAsync(user.Email, "Сброс пароля", body);
+                // await _emailSender.SendEmailAsync(user.Email, "Подтверждение входа", body);
+            }
+            catch (Exception ex)
+            {
+                //
+                mailLog.IsSuccessful = false;
+                mailLog.Comment = ex.Message;
+                await _repository.CreateAsync(mailLog, true);
+                return Guid.Empty;
+            }
+
+            await _repository.CreateAsync(mailLog, true);
+            return mailLog.ID;
+        }
+
+
+
+        public async Task<Guid> RecoveryPassword(User user, bool isResend = false)
+        {
+            user.Email = "ialexkrainov2@gmail.com";
+            string body = string.Empty;
+            Random random = new Random();
+
+            MailLog mailLog = new MailLog
+            {
+                ID = Guid.NewGuid(),
+                IsSuccessful = true,
+                MailTypeID = isResend ? (int)MailTypeEnum.ResetPassword : (int)MailTypeEnum.ResendByUser,
+                SentDateTime = DateTime.Now.ToUniversalTime(),
+                UserID = user.ID,
+                Email = user.Email,
+                Code = (random.Next(1000, 9999)),
+            };
+            //string confirmUrl = @"https://" + httpContextAccessor.HttpContext.Request.Host.Value.ToString() + @"/Identity/Account/ResetPassword2?id=" + mailLog.ID;
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\CodeEmail.html"))
+                {
+                    body = reader.ReadToEnd();
+                }
+
+                body = body.Replace("${Code}", mailLog.Code.ToString());
+
+                //await _emailSender.SendEmailAsync(user.Email, "Сброс пароля", body);
             }
             catch (Exception ex)
             {
                 mailLog.IsSuccessful = false;
                 mailLog.Comment = ex.Message;
+                await _repository.CreateAsync(mailLog, true);
+
+                return Guid.Empty;
             }
 
             await _repository.CreateAsync(mailLog, true);
-            return 1;
 
+            return mailLog.ID;
         }
 
-        public async Task<Guid> ResetPassword_Complete(Guid id)
+        public async Task<Guid> CheckCode(Guid mailLogID, int code)
         {
-            var mailLog = await _repository.GetAll<MailLog>(x => x.ID == id).FirstOrDefaultAsync();
+            var mailLog = await _repository.GetAll<MailLog>(x => x.ID == mailLogID).FirstOrDefaultAsync();
+
+            if (mailLog.Code == code)
+            {
+                mailLog.CameDateTime = DateTime.Now.ToUniversalTime();
+
+                if ((mailLog.UserID == null || mailLog.UserID == Guid.Empty)
+                    && !string.IsNullOrEmpty(mailLog.Email))
+                {
+                    mailLog.UserID = await _repository.GetAll<User>(x => x.Email == mailLog.Email).Select(x => x.ID).FirstOrDefaultAsync();
+                }
+
+                await _repository.UpdateAsync(mailLog, true);
+                return mailLog.UserID ?? Guid.Empty;
+            }
+            return Guid.Empty;
+        }
+
+        public async Task<Guid> CancelLastEmail(Guid emailID)
+        {
+            var mailLog = await _repository.GetAll<MailLog>(x => x.ID == emailID).FirstOrDefaultAsync();
 
             mailLog.CameDateTime = DateTime.Now.ToUniversalTime();
 

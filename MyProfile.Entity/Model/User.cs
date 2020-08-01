@@ -19,8 +19,11 @@ namespace MyProfile.Entity.Model
         public string Email { get; set; }
         public bool IsConfirmEmail { get; set; }
         [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        [MaxLength(44)]
+        public string HashPassword { get; set; }
+        [Required]
+        [MaxLength(44)]
+        public string SaltPassword { get; set; }
         public string ImageLink { get; set; }
         [Required]
         public DateTime DateCreate { get; set; }

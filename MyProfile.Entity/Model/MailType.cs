@@ -11,6 +11,8 @@ namespace MyProfile.Entity.Model
         Undefined = 0,
         ConfirmEmail = 1,
         ResetPassword = 2,
+        Login = 3,
+        ResendByUser = 4
     }
 
     public class MailType

@@ -1,10 +1,11 @@
-@{
-    ViewData["Title"] = "Login v3 - Pages";
+﻿@{
+    ViewData["Title"] = "Регистрация аккаунта";
     Layout = "LayoutBlank";
 }
 
 @section Styles {
     <!-- Page -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="~/vendor/css/pages/authentication.css">
     <style>
         .error {
@@ -12,22 +13,17 @@
         }
     </style>
 }
-
 @section Scripts {
-    <script>
-        function goToRegistration() {
-            let email = document.getElementById("email").value;
-            document.location.href = "/Identity/Account/Registration?email=" + email;
-        }
-
-        function passwordReset() {
-            let email = document.getElementById("email").value;
-            document.location.href = "/Identity/Account/ResetPassword?email=" + email;
-        }
-    </script>
+    <script src="~/vendor/libs/vue/dist/vue.js"></script>
+    <script src="~/js/areas/pages/login.js"></script>
 }
 
-<div class="authentication-wrapper authentication-3">
+<!--
+=================================================================
+**************************** CONTENT ****************************
+-->
+
+<div class="authentication-wrapper authentication-3" id="login-vue">
     <div class="authentication-inner">
 
         <!-- Side container -->
@@ -42,13 +38,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula ex eu gravida faucibus. Suspendisse viverra pharetra purus. Proin fringilla ac lorem at sagittis. Proin tincidunt dui et nunc ultricies dignissim.
                 </div>
             </div>
-            <!-- /.Text -->
         </div>
-        <!-- / Side container -->
-        <!-- Form container -->
         <div class="d-flex col-lg-4 align-items-center bg-white p-5">
-            <!-- Inner container -->
-            <!-- Have to add `.d-flex` to control width via `.col-*` classes -->
             <div class="d-flex col-sm-7 col-md-5 col-lg-12 px-0 px-xl-4 mx-auto">
                 <div class="w-100">
 
@@ -62,33 +53,160 @@
                     </div>
                     <!-- / Logo -->
 
-                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0">Login to Your Account</h4>
+                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0" v-show="login.isShow">Авторизация</h4>
+                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0" v-show="registration.isShow">Создание аккаунта</h4>
+                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0" v-show="recoveryPassword.isShow || recoveryPassword2.isShow">Восстановление пароля</h4>
+                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0" v-show="enterCode.isShow">Ввод кода</h4>
 
-                    <!-- Form -->
-                    <form class="my-5" method="post">
+                    <!-- login -->
+                    <form class="my-5 login" v-show="login.isShow">
                         <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="text" class="form-control" name="email" id="email">
+                            <label class="form-label">Почта</label>
+                            <input type="text" class="form-control" v-model="email" tabindex="1">
                         </div>
                         <div class="form-group">
                             <label class="form-label d-flex justify-content-between align-items-end">
-                                <div>Password</div>
-                                <a href="javascript:void(0)" class="d-block small" onclick="passwordReset()" >Забыли пароль?</a>
+                                <div>Пароль</div>
+                                <a href="javascript:void(0)" class="d-block small" v-on:click="changeView(login.id, recoveryPassword.id)">Забыли пароль?</a>
                             </label>
-                            <input type="password" class="form-control" name="password">
+                            <input type="password" class="form-control" v-model="password" tabindex="2">
                         </div>
                         <div class="d-flex justify-content-between align-items-center m-0">
                             <label class="custom-control custom-checkbox m-0">
                                 <input type="checkbox" class="custom-control-input">
-                                <span class="custom-control-label">Remember me</span>
+                                <span class="custom-control-label">Запомнить меня</span>
                             </label>
-                            <button type="submit" class="btn btn-primary">Войти</button>
+                            <button class="btn btn-primary" type="button" tabindex="3"
+                                    v-bind:disabled="isSaving"
+                                    v-on:click="loginSave">
+                                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                                Войти
+                            </button>
+                        </div>
+                        <div class="text-center text-muted mt-4">
+                            Если у вас еще нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(login.id,registration.id)">Зарегистрироваться</a>
                         </div>
                     </form>
-                    <!-- / Form -->
+                    <!-- / login -->
+                    <!-- registration -->
+                    <form class="my-5" method="post" v-show="registration.isShow">
+                        <div class="form-group">
+                            <label class="form-label">Почта</label>
+                            <input type="text" class="form-control" v-model="email">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" class="form-control" name="password"
+                                   v-model="password"
+                                   v-bind:class="passwordValid ? '' : 'error'">
+                        </div>
+                        <div class="alert alert-warning mt-3" v-show="!passwordValid">
+                            Пароль должен содержать больше 5 символов и поля должны совпадать.
+                        </div>
+                        <button type="button" class="btn btn-primary btn-block mt-4"
+                                v-bind:disabled="isSaving"
+                                v-on:click="onRegistration">
+                            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                            Зарегистрироваться
+                        </button>
+                        <div class="text-center text-muted mt-4">
+                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(registration.id,login.id)">Авторизоваться</a>
+                        </div>
+                    </form>
+                    <!-- / registration -->
+                    <!-- recoveryPassword -->
+                    <form class="my-5" v-show="recoveryPassword.isShow">
+                        <p>
+                            Введите ваш email и мы вышлем вам на почту письмо с кодом
+                        </p>
 
-                    <div class="text-center text-muted">
-                        Если у вас еще нет аккаунта <a href="javascript:void(0)" onclick="goToRegistration()">Зарегистрироваться</a>
+                        <div class="form-group">
+                            <input type="text" class="form-control" v-model="email">
+                        </div>
+                        <button type="button" class="btn btn-primary btn-block mt-4"
+                                v-bind:disabled="isSaving"
+                                v-on:click="onRecoveryPassword">
+                            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                            Отправить письмо
+                        </button>
+                        <div class="text-center text-muted mt-4">
+                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword.id, login.id)">Авторизоваться</a>
+                            или если нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword.id, registration.id)">Зарегистрироваться</a>
+                        </div>
+                    </form>
+                    <!-- / recoveryPassword -->
+                    <!-- recoveryPassword2 -->
+                    <form class="my-5" method="post" v-show="recoveryPassword2.isShow">
+                        <p>
+                            Введите новый пароль
+                        </p>
+
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password"
+                                   v-model="password"
+                                   v-bind:class="passwordValid ? '' : 'error'">
+                        </div>
+                        <button type="button" class="btn btn-primary btn-block mt-4"
+                                v-bind:disabled="isSaving"
+                                v-on:click="onSetNewPassword">
+                            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                            Обновть пароль
+                        </button>
+                        <div class="text-center text-muted mt-4">
+                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword2.id, login.id)">Авторизоваться</a>
+                            или если нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword2.id, registration.id)">Зарегистрироваться</a>
+                        </div>
+                    </form>
+                    <!-- / recoveryPassword -->
+                    <!-- enterCode -->
+                    <form class="my-5" method="post" v-show="enterCode.isShow">
+                        <p>
+                            Вам на почту было отправлено письмо. Пожалуйста введите код из письма.
+                        </p>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" class="form-control" v-model="enterCode.code" min="" max="9999" maxlength="4">
+                                <span class="input-group-append">
+                                    <button class="btn btn-secondary" type="button" title="Отправить повторно"
+                                            v-on:click="resend"
+                                            v-bind:disabled="enterCode.canResend == false">
+                                        <i class="fas fa-undo "></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <small class="form-text text-muted" v-show="enterCode.canResend == false">
+                                {{ enterCode.canResend ? '' : 'Отправить код повторно через : '+ enterCode.seconds}}
+                            </small>
+                        </div>
+                        <button class="btn btn-primary btn-block" type="button" tabindex="3"
+                                v-bind:disabled="isSaving"
+                                v-on:click="checkCode">
+                            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                            Проверить
+                        </button>
+                        <div class="text-center text-muted mt-4">
+                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(login.id)">Авторизоваться</a>
+                            или если нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(registration.id)">Зарегистрироваться</a>
+                        </div>
+                    </form>
+                    <!-- / enterCode -->
+                    @*@if (Model.IsOk == true)
+                        {
+                        }
+                        else if (Model.IsOk == false)
+                        {
+                            <div class="alert alert-danger mt-3">
+                                @Model.Message
+                            </div>
+                        }*@
+                    <div class="alert alert-success mt-3 alert-dismissible" v-show="textMessage">
+                        <button type="button" class="close" data-dismiss="alert" v-on:click="textMessage = null">×</button>
+                        {{ textMessage }}
+                    </div>
+                    <div class="alert alert-danger mt-3 alert-dismissible" v-show="textError">
+                        <button type="button" class="close" data-dismiss="alert" v-on:click="textError = null">×</button>
+                        {{ textError }}
                     </div>
 
                 </div>
