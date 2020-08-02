@@ -60,7 +60,7 @@ namespace Email.Service
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
 
-                // await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
+                await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
             }
             catch (Exception ex)
             {
@@ -126,7 +126,7 @@ namespace Email.Service
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
 
-                // await _emailSender.SendEmailAsync(user.Email, "Подтверждение входа", body);
+                await _emailSender.SendEmailAsync(user.Email, "Подтверждение входа", body);
             }
             catch (Exception ex)
             {
@@ -170,7 +170,7 @@ namespace Email.Service
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
 
-                //await _emailSender.SendEmailAsync(user.Email, "Сброс пароля", body);
+                await _emailSender.SendEmailAsync(user.Email, "Сброс пароля", body);
             }
             catch (Exception ex)
             {

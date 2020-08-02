@@ -73,7 +73,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 }
             }
 
-            return Json(new { isOk = false, textError = "Некорректные почта и(или) пароль." });
+            return Json(new { isOk = false, textError = "Неверная почта и(или) пароль." });
 
         }
 

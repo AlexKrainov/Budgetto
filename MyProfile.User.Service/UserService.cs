@@ -234,12 +234,6 @@ namespace MyProfile.User.Service
                  })
                  .FirstOrDefaultAsync();
 
-            if (user.SaltPassword == "")
-            {
-                return user;
-            }
-
-
             if (user != null)
             {
                 if (password != null && user.HashPassword != passwordService.GenerateHashSHA256(password, user.SaltPassword))

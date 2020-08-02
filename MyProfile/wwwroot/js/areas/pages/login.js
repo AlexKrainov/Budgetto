@@ -4,7 +4,10 @@
         email: null,
         password: null,
 
-        isDirty: false,
+        isHiddenPassword: true,
+        isValidEmail: true,
+        isValidPassword: true,
+        isValidCode: true,
         textError: null,
         textMessage: null,
 
@@ -47,6 +50,15 @@
             return this.email && this.email.indexOf("@") > 0 && this.email.indexOf(".") > 0;
         }
     },
+    watch: {
+        isHiddenPassword: function (newValue, oldValue) {
+            if (newValue) {
+                $("input[name=password]").prop("type", "password");
+            } else {
+                $("input[name=password]").prop("type", "text");
+            }
+        }
+    },
     mounted: function () {
         this.changeView(this.login.id);
     },
@@ -67,13 +79,14 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
-                    this.isSaving = false;
                     if (response.isOk == false) {
                         this.textError = response.textError;
+                        this.isSaving = false;
                     } else {
                         if (response.emailID) {
                             this.enterCode.emailID = response.emailID;
                             this.changeView(this.login.id, this.enterCode.id);
+                            this.isSaving = false;
                         } else if (response.href) {
                             document.location.href = response.href;
                         }
@@ -90,10 +103,15 @@
         checkForm: function (e) {
             let isOk = true;
 
-            if (!this.passwordValid) {
+            this.isValidPassword = this.passwordValid
+
+            if (!this.isValidPassword) {
                 isOk = false;
             }
-            if (!this.emailValid) {
+
+            this.isValidEmail = this.emailValid;
+
+            if (!this.isValidEmail) {
                 isOk = false;
             }
             if (isOk == false && e) {
@@ -115,14 +133,15 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
-                    this.isSaving = false;
                     if (response.isOk == false) {
                         this.textError = response.message;
+                        this.isSaving = false;
                     } else {
                         //document.location.href = response.href;
                         if (response.isShowCode) {
                             this.enterCode.emailID = response.emailID;
                             this.changeView(this.registration.id, this.enterCode.id);
+                            this.isSaving = false;
                         } else {
                             document.location.href = response.href;
                         }
@@ -140,8 +159,10 @@
         onRecoveryPassword: function () {
 
             if (this.emailValid == false) {
+                this.isValidEmail = false;
                 return false;
             }
+            this.isValidEmail = true;
             this.textError = null;
 
             this.isSaving = true;
@@ -153,13 +174,13 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
-                    this.isSaving = false;
                     if (response.isOk == false) {
                         this.textError = response.message;
                     } else {
                         this.enterCode.emailID = response.emailID;
                         this.changeView(this.recoveryPassword.id, this.enterCode.id);
                     }
+                    this.isSaving = false;
                     return response;
                 },
                 error: function (xhr, status, error) {
@@ -170,8 +191,10 @@
         },
         onSetNewPassword: function () {
             if (this.passwordValid == false) {
+                this.isValidPassword = false;
                 return false;
             }
+            this.isValidPassword = true;
 
             this.isSaving = true;
             return $.ajax({
@@ -182,9 +205,9 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
-                    this.isSaving = false;
                     if (response.isOk == false) {
                         this.textError = response.message;
+                        this.isSaving = false;
                     } else {
                         document.location.href = response.href;
                     }
@@ -199,9 +222,12 @@
         },
 
         checkCode: function () {
-            if (!this.enterCode.emailID) {
+            if (!(this.enterCode.emailID && this.enterCode.code && this.enterCode.code.length == 4)) {
+                this.isValidCode = false;
                 return false;
             }
+            this.isValidCode = true;
+          
             this.textError = null;
 
             this.isSaving = true;
@@ -214,13 +240,14 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
-                    this.isSaving = false;
                     if (response.isOk == false) {
                         this.textError = response.message;
+                        this.isSaving = false;
                     } else {
                         if (response.canChangePassword) {
                             this.recoveryPassword2.userID = response.userID;
                             this.changeView(this.checkCode.id, this.recoveryPassword2.id);
+                            this.isSaving = false;
                         } else {
                             document.location.href = response.href;
                         }
@@ -235,6 +262,9 @@
         },
 
         changeView: function (fromViewID, toViewID) {
+            this.isValidEmail = true;
+            this.isValidPassword = true;
+            this.isValidCode = true;
 
             switch (toViewID) {
                 case this.login.id:
@@ -303,6 +333,11 @@
             if (!this.enterCode.emailID) {
                 return false;
             }
+
+            if (this.enterCode.seconds > 0) {
+                return false;
+            }
+
             this.checkCode.code = null;
             this.textError = null;
             this.textMessage = null;
@@ -316,7 +351,6 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
-                    this.isSaving = false;
                     if (response.isOk == false) {
                         this.textError = response.message;
                         document.location.href = response.href;
@@ -324,6 +358,7 @@
                         this.enterCode.emailID = response.emailID;
                         //this.changeView(this.registration.id, this.enterCode.id);
                         this.showResendCodeButton();
+                        this.isSaving = false;
                     }
                     return response;
                 },

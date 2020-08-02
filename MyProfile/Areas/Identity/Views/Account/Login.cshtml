@@ -53,23 +53,36 @@
                     </div>
                     <!-- / Logo -->
 
-                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0" v-show="login.isShow">Авторизация</h4>
-                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0" v-show="registration.isShow">Создание аккаунта</h4>
-                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0" v-show="recoveryPassword.isShow || recoveryPassword2.isShow">Восстановление пароля</h4>
-                    <h4 class="text-center text-lighter font-weight-normal mt-5 mb-0" v-show="enterCode.isShow">Ввод кода</h4>
+                    <h4 class="text-center text-lighter font-weight-normal mt-4 mb-0" v-show="login.isShow">Авторизация</h4>
+                    <h4 class="text-center text-lighter font-weight-normal mt-4 mb-0" v-show="registration.isShow">Создание аккаунта</h4>
+                    <h4 class="text-center text-lighter font-weight-normal mt-4 mb-0" v-show="recoveryPassword.isShow || recoveryPassword2.isShow">Восстановление пароля</h4>
+                    <h4 class="text-center text-lighter font-weight-normal mt-4 mb-0" v-show="enterCode.isShow">Ввод кода</h4>
 
                     <!-- login -->
                     <form class="my-5 login" v-show="login.isShow">
                         <div class="form-group">
                             <label class="form-label">Почта</label>
-                            <input type="text" class="form-control" v-model="email" tabindex="1">
+                            <input type="text" class="form-control" v-model="email" tabindex="1"
+                                   v-bind:class="isValidEmail ? '' : 'is-invalid'">
+                            <small class="invalid-feedback">Пожалуйста, введите корректный адрес электронной почты.</small>
                         </div>
                         <div class="form-group">
                             <label class="form-label d-flex justify-content-between align-items-end">
                                 <div>Пароль</div>
                                 <a href="javascript:void(0)" class="d-block small" v-on:click="changeView(login.id, recoveryPassword.id)">Забыли пароль?</a>
                             </label>
-                            <input type="password" class="form-control" v-model="password" tabindex="2">
+                            <div class="input-group">
+                                <input type="password" class="form-control" v-model="password" tabindex="2" name="password"
+                                       v-bind:class="isValidPassword ? '' : 'is-invalid'">
+                                <span class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" title="Показать пароль" style="border-radius: 0px 4px 4px 0px;"
+                                            v-on:click="isHiddenPassword = !isHiddenPassword">
+                                        <i class="fas fa-eye" v-show="isHiddenPassword"></i>
+                                        <i class="fas fa-eye-slash" v-show="isHiddenPassword == false"></i>
+                                    </button>
+                                </span>
+                                <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
+                            </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center m-0">
                             <label class="custom-control custom-checkbox m-0">
@@ -92,16 +105,30 @@
                     <form class="my-5" method="post" v-show="registration.isShow">
                         <div class="form-group">
                             <label class="form-label">Почта</label>
-                            <input type="text" class="form-control" v-model="email">
+                            <input type="text" class="form-control" v-model="email" tabindex="1"
+                                   v-bind:class="isValidEmail ? '' : 'is-invalid'">
+                            <small class="invalid-feedback">Пожалуйста, введите корректный адрес электронной почты.</small>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Пароль</label>
-                            <input type="password" class="form-control" name="password"
-                                   v-model="password"
-                                   v-bind:class="passwordValid ? '' : 'error'">
-                        </div>
-                        <div class="alert alert-warning mt-3" v-show="!passwordValid">
-                            Пароль должен содержать больше 5 символов и поля должны совпадать.
+                            <label class="form-label d-flex justify-content-between align-items-end">
+                                <div>Пароль</div>
+                                <a href="javascript:void(0)" class="d-block small" v-on:click="changeView(login.id, recoveryPassword.id)">Забыли пароль?</a>
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" v-model="password" tabindex="2" name="password"
+                                       v-bind:class="isValidPassword ? '' : 'is-invalid'">
+                                <span class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" title="Показать пароль" style="border-radius: 0px 4px 4px 0px;"
+                                            v-on:click="isHiddenPassword = !isHiddenPassword">
+                                        <i class="fas fa-eye" v-show="isHiddenPassword"></i>
+                                        <i class="fas fa-eye-slash" v-show="isHiddenPassword == false"></i>
+                                    </button>
+                                </span>
+                                <small class="form-text text-muted">
+                                    Пароль должен содержать больше 5 символов
+                                </small>
+                                <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
+                            </div>
                         </div>
                         <button type="button" class="btn btn-primary btn-block mt-4"
                                 v-bind:disabled="isSaving"
@@ -119,9 +146,10 @@
                         <p>
                             Введите ваш email и мы вышлем вам на почту письмо с кодом
                         </p>
-
                         <div class="form-group">
-                            <input type="text" class="form-control" v-model="email">
+                            <input type="text" class="form-control" v-model="email" tabindex="1"
+                                   v-bind:class="isValidEmail ? '' : 'is-invalid'">
+                            <small class="invalid-feedback">Пожалуйста, введите корректный адрес электронной почты.</small>
                         </div>
                         <button type="button" class="btn btn-primary btn-block mt-4"
                                 v-bind:disabled="isSaving"
@@ -142,9 +170,21 @@
                         </p>
 
                         <div class="form-group">
-                            <input type="password" class="form-control" name="password"
-                                   v-model="password"
-                                   v-bind:class="passwordValid ? '' : 'error'">
+                            <div class="input-group">
+                                <input type="password" class="form-control" v-model="password" tabindex="2" name="password"
+                                       v-bind:class="isValidPassword ? '' : 'is-invalid'">
+                                <span class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" title="Показать пароль" style="border-radius: 0px 4px 4px 0px;"
+                                            v-on:click="isHiddenPassword = !isHiddenPassword">
+                                        <i class="fas fa-eye" v-show="isHiddenPassword"></i>
+                                        <i class="fas fa-eye-slash" v-show="isHiddenPassword == false"></i>
+                                    </button>
+                                </span>
+                                <small class="form-text text-muted">
+                                    Пароль должен содержать больше 5 символов
+                                </small>
+                                <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
+                            </div>
                         </div>
                         <button type="button" class="btn btn-primary btn-block mt-4"
                                 v-bind:disabled="isSaving"
@@ -163,17 +203,19 @@
                         <p>
                             Вам на почту было отправлено письмо. Пожалуйста введите код из письма.
                         </p>
-
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="number" class="form-control" v-model="enterCode.code" min="" max="9999" maxlength="4">
+                                <input type="number" class="form-control" min="" max="9999" maxlength="4"
+                                       v-model="enterCode.code"
+                                       v-bind:class="isValidCode ? '' : 'is-invalid'">
                                 <span class="input-group-append">
-                                    <button class="btn btn-secondary" type="button" title="Отправить повторно"
+                                    <button class="btn btn-outline-secondary" type="button" title="Отправить повторно" style="border-radius: 0px 4px 4px 0px;"
                                             v-on:click="resend"
                                             v-bind:disabled="enterCode.canResend == false">
                                         <i class="fas fa-undo "></i>
                                     </button>
                                 </span>
+                                <small class="invalid-feedback">Пожалуйста, введите корректный 4-х значный код.</small>
                             </div>
                             <small class="form-text text-muted" v-show="enterCode.canResend == false">
                                 {{ enterCode.canResend ? '' : 'Отправить код повторно через : '+ enterCode.seconds}}
