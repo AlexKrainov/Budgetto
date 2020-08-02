@@ -31,7 +31,7 @@ namespace MyProfile.Areas.Identity.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveUserInfo([FromBody] UserInfoModel user)
         {
-            return Json(new { isOk = true, user = await userService.SaveUserInfo(user) });
+            return Json(new { isOk = true, user = await userService.UpdateUser(user) });
         }
 
         [HttpGet]

@@ -47,7 +47,7 @@ namespace MyProfile.Areas.Identity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
-            var user = await userService.CheckUser(login.Email, login.Password);
+            var user = await userService.CheckAndGetUser(login.Email, login.Password);
 
             if (user != null && await userLogService.CheckLimitEnter(user.ID, UserActionType.Login))
             {
@@ -104,7 +104,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 {
                     await userService.CreateUser(registrationModel.Email, registrationModel.Password);
 
-                    var user = await userService.CheckUser(registrationModel.Email, registrationModel.Password);
+                    var user = await userService.CheckAndGetUser(registrationModel.Email, registrationModel.Password);
                     //Maybe send another pool
                     try
                     {
@@ -134,7 +134,7 @@ namespace MyProfile.Areas.Identity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> RecoveryPassword([FromBody] LoginModel login)
         {
-            var user = await userService.CheckUser(login.Email);
+            var user = await userService.CheckAndGetUser(login.Email);
 
             if (user == null)
             {
@@ -158,7 +158,7 @@ namespace MyProfile.Areas.Identity.Controllers
             {
                 Guid emailID = Guid.Empty;
                 var userID = await userEmailService.CancelLastEmail(model.EmailID);
-                var user = await userService.CheckUser(null, null, userID);
+                var user = await userService.CheckAndGetUser(null, null, userID);
 
                 if (model.LastActionID == 0)//Login
                 {
@@ -201,7 +201,8 @@ namespace MyProfile.Areas.Identity.Controllers
                 return Json(new { isOk = true, canChangePassword = true, userID });
             }
 
-            var user = await userService.CheckUser(null, null, userID);
+            var user = await userService.CheckAndGetUser(null, null, userID);
+            user.IsConfirmEmail = await userService.SetConfirmEmail(userID, true);
 
             await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.EnterAfterCode);
 
@@ -222,7 +223,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 {
                     await userService.UpdatePassword(model.NewPassword, model.ID);
 
-                    var user = await userService.CheckUser(null, null, model.ID);
+                    var user = await userService.CheckAndGetUser(null, null, model.ID);
 
                     await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.ResetPassword);
 
