@@ -1,4 +1,5 @@
 ﻿@model MyProfile.Entity.ModelView.TimeLineViewModel
+@using Newtonsoft.Json
 @{
     ViewData["Title"] = "Courses v2 - Pages";
     var UserInfo = MyProfile.Identity.UserInfo.Current;
@@ -34,21 +35,24 @@
 <div class="card mb-4">
     <h6 class="card-header">Фильтр</h6>
     <div class="card-body">
-        <form id="filter" class="margin-top" v-cloak>
+        <form id="filter" class="margin-top">
             @Html.Hidden("Count", 0)
             <div class="row mb-5">
                 <div class="col-8">
-                    <div class="input-group events-container">
-                        <select id="Sections" name="Sections[]" multiple class="form-control crm-crash-list-contract-filter" style="width: 100%">
-                            @for (int i = 0; i < Model.Sections.Count; i++)
+                    <div class="input-group">
+                        <select id="Sections" name="Sections[]" multiple class="form-control" style="width: 100%"
+                                data-items='@Html.Raw(JsonConvert.SerializeObject(Model.Sections))'>
+                            @foreach (var _section in Model.Sections)
                             {
-                                <option selected value="@Model.Sections[i].id">@Model.Sections[i].text</option>
+                                <option selected value="@_section.ID">@_section.Name</option>
                             }
                         </select>
                         <span class="text-muted m-b block">Категории</span>
                         <span class="text-right">
-                            <span onclick="filter.selectAll()" class="text-muted m-b block cursor-pointer link-green-hover">Выбрать все категории</span>
-                            <span onclick="filter.unselectAll()" class="text-muted m-b block cursor-pointer link-red-hover">Очистить форму</span>
+                            <span onclick="filter.selectOnlyType(2)" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Выбрать только расходы</span>|
+                            <span onclick="filter.selectOnlyType(1)" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать только доходы</span>|
+                            <span onclick="filter.selectAll()" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все категории</span>|
+                            <span onclick="filter.unselectAll()" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить форму</span>
                         </span>
                     </div>
                 </div>
@@ -128,9 +132,9 @@
     </div>
 </div>
 
-<div class="card mb-4 col-7" id="timeline_records" v-cloak>
-    <ul class="list-group list-group-flush">
-        @Html.Partial("_TimeLineRecords")
+<div class="card mb-4 col-7 pl-0" id="timeline_records" v-cloak>
+    <ul class="list-group list-group-flush" style=" margin-left: -5px;">
+        @Html.Partial("_Records")
     </ul>
 </div>
 

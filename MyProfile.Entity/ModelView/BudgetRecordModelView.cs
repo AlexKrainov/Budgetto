@@ -41,6 +41,9 @@ namespace MyProfile.Entity.ModelView
 
         public string CurrencySpecificCulture { get; set; }
         public string CurrencyCodeName { get; set; }
+        public string CssIcon { get; set; }
+        public string CssBackground { get; set; }
+        public string CssColor { get; set; }
     }
 
     /// <summary>

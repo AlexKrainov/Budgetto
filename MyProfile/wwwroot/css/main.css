@@ -180,6 +180,15 @@ a.disabled {
         opacity: 1;
     }
 
+.record-item {
+    border-left: .25rem solid !important;
+    border-radius: 10.5px !important;
+}
+
+.record-icon {
+    font-size: 50px;
+}
+
 .deleted-item {
     opacity: .5;
 }
@@ -330,4 +339,8 @@ td.show-actions span.cell-actions {
     -webkit-transition: all .2s linear .2s;
     -o-transition: all .2s linear .2s;
     transition: all .2s linear .2s;
+}
+
+.text-decoration {
+    text-decoration: underline;
 }

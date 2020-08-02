@@ -1,7 +1,12 @@
-﻿<li class="list-group-item py-4" v-for="record in records" v-bind:id="'record_'+record.id" v-show="record.isShowForFilter">
+﻿<li class="list-group-item py-4 record-item"
+    v-for="record in records"
+    v-bind:id="'record_'+record.id"
+    v-show="record.isShowForFilter"
+    v-bind:style="'border-left-color: '+record.cssBackground+' !important;'">
     <div class="media flex-wrap" v-if="record.isDeleted == false">
-        <div class="d-none d-sm-block">
-            <img v-bind:src="record.imageLink" alt="User image" class="d-block ui-w-50 rounded-circle" v-bind:title="record.userName">
+        <div class="">
+            @*<img v-bind:src="record.imageLink" alt="User image" class="d-block ui-w-50 rounded-circle" v-bind:title="record.userName">*@
+            <i class="record-icon" v-bind:class="record.cssIcon"></i>
         </div>
         <div class="media-body ml-sm-4">
             <h5 class="mb-2">

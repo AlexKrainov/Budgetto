@@ -13,14 +13,14 @@ var gMapOptions;
 
 $(function () {
     filter.init_filter();
-
     //WinMove(); // draggble .ibox
 
     vueTimeline = new Vue({
         el: "#timeline_records",
         data: {
             records: [],
-            currentDate: ""
+            currentDate: "",
+            sections: [],
         },
         updated: function () {
             this.$nextTick(function () {
@@ -29,6 +29,9 @@ $(function () {
 
                 //timeline.after_loading(false);// worked very bad
             });
+        },
+        mounted: function () {
+            this.sections = $("#Sections").data("items");
         },
         methods: {
             add: function (arr) {
@@ -156,7 +159,22 @@ var filter = {
     },
     unselectAll: function () {
         $("#Sections").val(null).trigger("change");
-    }
+    },
+    selectOnlyType: function (sectionTypeID) {
+        $("#Sections").val(null);
+
+        let selecteSections = [];
+
+        for (var i = 0; i < vueTimeline.sections.length; i++) {
+            let section = vueTimeline.sections[i];
+
+            if (section.SectionTypeID == sectionTypeID) {
+                selecteSections.push(section.ID);
+            }
+        }
+
+        $("#Sections").val(selecteSections).trigger("change");
+    },
 }
 
 var timeline = {

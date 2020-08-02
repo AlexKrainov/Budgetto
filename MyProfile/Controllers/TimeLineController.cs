@@ -15,7 +15,7 @@ namespace MyProfile.Controllers
 {
     public partial class BudgetController : Controller
     {
-        public async Task<IActionResult> Records()
+        public async Task<IActionResult> TimeLine ()
         {
             TimeLineViewModel model = new TimeLineViewModel();
 
@@ -24,7 +24,9 @@ namespace MyProfile.Controllers
                 .GroupBy(x => x)
                 .Select(x => new YearsAndCount { year = x.Key })
                 .ToListAsync();
-            model.Sections = await sectionService.GetSectionsForSelect2();
+            model.Sections = await sectionService.GetAllSectionByPerson();
+
+
 
             return View(model);
         }

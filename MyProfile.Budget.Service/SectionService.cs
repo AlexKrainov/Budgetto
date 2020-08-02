@@ -82,7 +82,9 @@ namespace MyProfile.Budget.Service
                      ID = x.ID,
                      Name = x.Name,
                      BudgetAreaID = x.BudgetArea.ID,
-                     BudgetAreaname = x.BudgetArea.Name
+                     BudgetAreaname = x.BudgetArea.Name,
+                     CssBackground = x.CssBackground,
+                     SectionTypeID = x.SectionTypeID,
                  })
                  .ToListAsync();
         }
@@ -227,18 +229,6 @@ namespace MyProfile.Budget.Service
             }
 
             return await repository.SaveAsync();
-        }
-
-        public async Task<List<Select2Item>> GetSectionsForSelect2()
-        {
-            return await repository.GetAll<BudgetArea>(x => x.UserID == UserInfo.Current.ID || x.UserID == null)
-                .SelectMany(x => x.BudgetSectinos)
-                .Select(x => new Select2Item
-                {
-                    id = x.ID,
-                    text = x.Name,
-                })
-                .ToListAsync();
         }
 
         public async Task<List<int>> GetCollectionSectionBySectionID(List<int> sectionIDs)
