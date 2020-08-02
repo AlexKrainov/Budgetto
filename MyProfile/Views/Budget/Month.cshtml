@@ -20,7 +20,7 @@
     @*<script src="~/js/budget/table-view.js"></script>*@
 }
 
-<div id="budget-vue">
+<div id="budget-vue" v-cloak>
 
     <input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
     <input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />

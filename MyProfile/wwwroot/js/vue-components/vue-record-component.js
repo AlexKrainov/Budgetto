@@ -194,7 +194,7 @@
 
         });
         $('#modal-record').on('hide.bs.modal', function () {
-            
+
         });
     },
     methods: {
@@ -314,15 +314,12 @@
                     context: this,
                     success: function (result) {
                         if (result.isOk == true) {
-                            for (var i = 0; i < result.budgetRecord.records.length; i++) {
-                                let record = result.budgetRecord.records[i];
-                                if (record.isSaved) {
-                                    let index = this.tagify.getTagIndexByValue(record.tag);
-                                    if (index >= 0) {
-                                        this.tagify.removeTag(record.tag);
-                                    }
-                                    this.descriptionRecord = ""; 
-                                }
+                            if (result.budgetRecord.records.findIndex(x => x.isSaved == false) == -1) {
+                                this.clearAll();
+                            } else {
+                                let records = result.budgetRecord.records.filter(x => x.isSaved);
+                                let tags = records.map(x => x.tag)
+                                this.tagify.removeTags(tags);
                             }
                             this.$emit("afterSave", 123);
                             this.isSaving = false;
@@ -337,12 +334,12 @@
                                 } catch (e) {
                                     console.log(e);
                                 }
-                                this.after_save_callback = null;
+                                // this.after_save_callback = null;
                             } else {
                                 //if it's a budget page we need to update data
 
                             }
-                           
+
                         }
                         return result;
                     },

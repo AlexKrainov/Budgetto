@@ -101,13 +101,13 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<JsonResult> RemoveRecord([FromBody] BudgetRecordModelView record)
         {
-            return Json(new { isOk = await budgetRecordService.RemoveRecord(record)});
+            return Json(new { isOk = await budgetRecordService.RemoveRecord(record), record.DateTimeOfPayment});
         }
 
         [HttpPost]
         public async Task<JsonResult> RecoveryRecord([FromBody] BudgetRecordModelView record)
         {
-            return Json(new { isOk = await budgetRecordService.RecoveryRecord(record) });
+            return Json(new { isOk = await budgetRecordService.RecoveryRecord(record), record.DateTimeOfPayment });
         }
     }
 }

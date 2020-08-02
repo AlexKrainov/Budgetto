@@ -4,7 +4,6 @@
         user: {},
         oldEmail: null,
         newPassword: null,
-        newPassword2: null,
 
         //Collective tab
         collectiveSearchedUser: {},
@@ -18,6 +17,8 @@
 
         //metadate
         isSaving: false,
+        isValidPassword: true,
+        isHiddenPassword: true,
     },
     computed: {
         validName: function () {
@@ -26,17 +27,23 @@
         validEmail: function () {
             return this.user.email && this.user.email.indexOf("@") > 0 && this.user.email.indexOf(".") > 0;
         },
-        validPasswords: function () {
-            return (this.newPassword == null && this.newPassword2 == null)
-                || (this.newPassword != null && this.newPassword.length >= 5
-                    && this.newPassword2 != null && this.newPassword2.length >= 5
-                    && this.newPassword === this.newPassword2)
+        validPassword: function () {
+            return (this.newPassword != null
+                && this.newPassword != ""
+                && this.newPassword.length >= 5);
         },
         validCollectiveUserSearch: function () {
             return this.collectiveUserSearch.indexOf("@") > 0 && this.collectiveUserSearch.indexOf(".") > 0
         }
     },
     watch: {
+        isHiddenPassword: function (newValue, oldValue) {
+            if (newValue) {
+                $("input[name=password]").prop("type", "password");
+            } else {
+                $("input[name=password]").prop("type", "text");
+            }
+        }
     },
     mounted: function () {
         this.loadUser();
@@ -94,19 +101,20 @@
 
         //Change password tab
         saveNewPassword: function () {
-            if (this.validPasswords) {
+            if (this.validPassword) {
+                this.isValidPassword = true;
                 this.isSaving = true;
 
                 return sendAjax("/Identity/Account/ChangePassword", this.newPassword, "POST")
                     .then(function (result) {
                         if (result.isOk) {
                             AccountSettingsVue.newPassword = null;
-                            AccountSettingsVue.newPassword2 = null;
                             AccountSettingsVue.isSaving = false;
                         }
                     });
             } else {
                 console.log("not save");
+                this.isValidPassword = false;
             }
         },
 

@@ -227,7 +227,6 @@
                 return false;
             }
             this.isValidCode = true;
-          
             this.textError = null;
 
             this.isSaving = true;
@@ -265,6 +264,8 @@
             this.isValidEmail = true;
             this.isValidPassword = true;
             this.isValidCode = true;
+            this.textError = null;
+            this.textMessage = null;
 
             switch (toViewID) {
                 case this.login.id:

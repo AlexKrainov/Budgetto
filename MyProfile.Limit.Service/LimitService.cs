@@ -179,6 +179,9 @@ namespace MyProfile.Limit.Service
                 x.PeriodTypeID == (int)periodTypesEnum
                 && x.VisibleElement.IsShowOnDashboards);
 
+            bool isThisMonth = finish.Month == DateTime.Now.Month && finish.Year == DateTime.Now.Year;
+            var totalDays = 1 + (finish - start).Days;
+            var leftDays = (finish - DateTime.Now).Days;
 
             for (int i = 0; i < limits.Count; i++)
             {
@@ -203,10 +206,7 @@ namespace MyProfile.Limit.Service
                 //leftMoneyInADay
                 decimal leftMoneyInADay = decimal.Zero;
                 decimal percent2 = decimal.Zero;
-                bool isThisMonth = finish.Month == DateTime.Now.Month && finish.Year == DateTime.Now.Year;
 
-                var totalDays = 1 + (finish - start).Days;
-                var leftDays = (finish - DateTime.Now).Days;
                 var leftMoneyToSpend = limit.LimitMoney - totalSpended;
 
                 if (leftMoneyToSpend > 0)
@@ -219,7 +219,7 @@ namespace MyProfile.Limit.Service
                     {
                         leftMoneyInADay = totalSpended / totalDays;
                     }
-                    if (totalSpended > 0)
+                    if (totalSpended >= 0)
                     {
                         percent2 = Math.Round(leftMoneyToSpend / limit.LimitMoney * 100, 2);
                     }

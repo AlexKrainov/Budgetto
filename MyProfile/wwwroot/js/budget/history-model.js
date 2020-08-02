@@ -68,6 +68,24 @@
             RecordVue.editByElement(record, BudgetVue.refreshAfterChangeRecords);
 
             $("#modalTimeLine").modal("hide");
-        }
+        },
+        remove: function (record) {
+            ShowLoading('#record_' + record.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/Budget/RemoveRecord",
+                data: JSON.stringify(record),
+                context: record,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    record.isDeleted = response.isOk;
+                    HideLoading('#record_' + record.id);
+                    BudgetVue.refreshAfterChangeRecords()
+                    //calendar.after_loading(response);
+                }
+            });
+        },
     }
 });

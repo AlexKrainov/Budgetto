@@ -23,7 +23,8 @@
                 v-on:mouseenter="mouseenterCell($event)"
                 v-on:mouseleave="mouseleaveCell($event)"
                 class="cell-hover"
-                v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]">
+                v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]"
+                >
             </td>
         </tr>
     </tbody>
