@@ -172,6 +172,9 @@ namespace MyProfile.Identity
                     Dashboard_Year_IsShow_InvestingChart = currentUser.UserSettings.Year_InvestingWidget,
                     Dashboard_Year_IsShow_LimitCharts = currentUser.UserSettings.Year_LimitWidgets,
                     Dashboard_Year_IsShow_SpendingChart = currentUser.UserSettings.Year_SpendingWidget,
+
+                    WebSiteTheme = currentUser.UserSettings.WebSiteTheme_CodeName,
+                    
                 }
             };
         }

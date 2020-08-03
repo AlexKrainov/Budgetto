@@ -190,7 +190,7 @@ namespace MyProfile.Chart.Service
                 labels = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
             }
 
-            foreach (var chart in charts)
+            foreach (var chart in charts.OrderBy(x => x.IsBig))
             {
                 stopwatch.Start();//5
 
@@ -203,7 +203,8 @@ namespace MyProfile.Chart.Service
                     ChartTypeCodeName = chart.ChartTypeCodeName,
                     DataSets = new List<IChartDataSet>(),
                     Labels = new List<string>(),
-                    IsShow = isShow
+                    IsShow = isShow,
+                    IsBig = chart.IsBig,
                 };
 
                 switch (chart.ChartTypeID)
@@ -241,6 +242,11 @@ namespace MyProfile.Chart.Service
                                 {
                                     chartLine.Data[_data.Key] = _data.Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total);
                                 }
+
+                                chartLine.TotalValue = chartLine.Data.Sum();
+                                chartLine.AvgValue = chartLine.Data.Average();
+                                chartLine.MinValue = chartLine.Data.Min();
+                                chartLine.MaxValue = chartLine.Data.Max();
 
                                 chartLine.Data = chartLine.Data.Skip(1).ToArray();
 
@@ -282,6 +288,10 @@ namespace MyProfile.Chart.Service
                                         Sections = fieldItem.Sections.ToList()
                                     });
                                 }
+                                chartLine.TotalValue = chartLine.Data.Sum();
+                                chartLine.AvgValue = chartLine.Data.Average();
+                                chartLine.MinValue = chartLine.Data.Min();
+                                chartLine.MaxValue = chartLine.Data.Max();
 
                                 chartLine.Data = chartLine.Data.Skip(1).ToArray();
 
@@ -366,6 +376,7 @@ namespace MyProfile.Chart.Service
                     ChartTypeName = x.ChartType.Name,
                     IsShowBudgetMonth = x.VisibleElement.IsShow_BudgetMonth,
                     IsShowBudgetYear = x.VisibleElement.IsShow_BudgetYear,
+                    IsBig = x.ChartType.IsBig,
                     Fields = x.ChartFields.Select(y => new ChartFieldItem
                     {
                         CssColor = y.CssColor,

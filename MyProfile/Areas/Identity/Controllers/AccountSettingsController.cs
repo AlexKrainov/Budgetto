@@ -15,7 +15,7 @@ namespace MyProfile.Areas.Identity.Controllers
             return View();
         }
 
-        #region General settings
+        #region User info
         [HttpGet]
         public IActionResult LoadUserSettings()
         {
@@ -123,6 +123,16 @@ namespace MyProfile.Areas.Identity.Controllers
                 isOk = await collectionUserService.OfferAction(offerID, action)
             });
         }
+        #endregion
+
+        #region User settings
+        
+             [HttpPost]
+        public async Task<IActionResult> SaveUserSettings([FromBody] UserSettingsModelView userSettings)
+        {
+            return Json(new { isOk = true, user = await userService.UpdateUserSettings(userSettings) });
+        }
+
         #endregion
     }
 

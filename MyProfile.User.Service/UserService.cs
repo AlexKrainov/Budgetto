@@ -48,6 +48,10 @@ namespace MyProfile.User.Service
                 LastName = currentUser.LastName,
                 Name = currentUser.Name,
                 IsConfirmEmail = currentUser.IsConfirmEmail,
+                UserSettings = new UserSettings
+                {
+                    WebSiteTheme_CodeName = currentUser.UserSettings.WebSiteTheme_CodeName
+                },
             };
         }
 
@@ -127,6 +131,8 @@ namespace MyProfile.User.Service
 
             return user;
         }
+
+
 
         public async Task<UserInfoModel> AuthenticateOrUpdateUserInfo(UserInfoModel user, string userActionType)
         {
@@ -273,6 +279,20 @@ namespace MyProfile.User.Service
             }
 
             return userInfoModel;
+        }
+
+        public async Task<int> UpdateUserSettings(UserSettingsModelView userSettings)
+        {
+            var user = UserInfo.Current;
+            var dbUser = await repository.GetAll<Entity.Model.User>(x => x.ID == user.ID)
+                .FirstOrDefaultAsync();
+
+            user.UserSettings.WebSiteTheme_CodeName = dbUser.UserSettings.WebSiteTheme_CodeName = userSettings.WebSiteTheme_CodeName;
+
+            await repository.UpdateAsync(dbUser, true);
+            await UserInfo.AddOrUpdate_Authenticate(user);
+
+            return 1;
         }
         #endregion
     }

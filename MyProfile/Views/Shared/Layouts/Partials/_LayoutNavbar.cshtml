@@ -5,7 +5,7 @@
 }
 
 <!-- Layout navbar -->
-<nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center bg-white container-p-x" id="layout-navbar">
+<nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x @(currentUser.UserSettings.WebSiteTheme_CodeName == "dark" ? "bg-navbar-theme" : "bg-white")" id="layout-navbar">
 
     <!-- Brand demo (see wwwroot/css/demo/demo.css) -->
     <a asp-area="" asp-controller="Dashboards" asp-action="Dashboard1" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">

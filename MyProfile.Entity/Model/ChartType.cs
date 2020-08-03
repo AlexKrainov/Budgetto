@@ -28,5 +28,6 @@ namespace MyProfile.Entity.Model
 		/// 
 		/// </summary>
 		public bool IsUsing { get; set; }
-	}
+        public bool IsBig { get; set; }
+    }
 }

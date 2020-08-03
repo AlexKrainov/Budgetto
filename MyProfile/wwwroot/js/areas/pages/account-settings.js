@@ -1,7 +1,10 @@
 ﻿var AccountSettingsVue = new Vue({
     el: "#account-settings",
     data: {
-        user: {},
+        user: {
+            userSettings: {}
+        },
+        oldTheme: "",
         oldEmail: null,
         newPassword: null,
 
@@ -49,11 +52,12 @@
         this.loadUser();
     },
     methods: {
-        //General settings tab
+        //User info
         loadUser: function (id) {
             return sendAjax("/Identity/Account/LoadUserSettings", null, "GET")
                 .then(function (result) {
                     AccountSettingsVue.user = result.user;
+                    AccountSettingsVue.oldTheme = result.user.userSettings.webSiteTheme_CodeName;
                     AccountSettingsVue.oldEmail = result.user.email;
 
                     AccountSettingsVue.refreshCollectiveList();
@@ -199,8 +203,21 @@
                     }
                 });
         },
+        //User settings
+        saveUserSettings: function () {
+            this.isSaving = true;
 
+            UserInfo.UserSettings.WebSiteTheme = this.user.userSettings.webSiteTheme_CodeName;
 
+            return sendAjax("/Identity/Account/SaveUserSettings", this.user.userSettings, "POST")
+                .then(function (result) {
+                    AccountSettingsVue.isSaving = false;
+
+                    if (AccountSettingsVue.oldTheme != AccountSettingsVue.user.userSettings.webSiteTheme_CodeName) {
+                        document.location.href = document.location.href;
+                    }
+                });
+        },
 
 
 

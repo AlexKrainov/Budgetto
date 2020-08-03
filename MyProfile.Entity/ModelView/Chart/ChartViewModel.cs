@@ -15,5 +15,6 @@ namespace MyProfile.Entity.ModelView.Chart
 		public List<IChartDataSet> DataSets { get; set; }
 		public string Decription { get; set; }
 		public bool IsShow { get; set; }
-	}
+        public bool IsBig { get; set; }
+    }
 }

@@ -20,6 +20,7 @@ namespace MyProfile.Entity.ModelView.Chart
 		public DateTime DateCreate { get; set; }
 		public DateTime LastDateEdit { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsBig { get; set; }
     }
 
 	public class ChartFieldItem

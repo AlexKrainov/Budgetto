@@ -137,6 +137,7 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<VisibleElement>()
               .Property(b => b.IsShow_BudgetYear)
               .HasDefaultValue(true);
+
             #endregion
         }
 

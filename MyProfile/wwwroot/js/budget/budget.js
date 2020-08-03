@@ -329,17 +329,23 @@
                     case "bar":
                         options = {
                             title: {
-                                display: true,
+                                display: bigChartData.chartTypesEnum == 2,
                                 text: bigChartData.name,
                             },
                             scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        fontColor: themeSettings.isDarkStyle() ? '#fff' : '#aaa'
+                                    }
+                                }],
                                 yAxes: [{
                                     ticks: {
                                         // Include a dollar sign in the ticks
                                         callback: function (value, index, values) {
                                             return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value)
-                                        }
-                                    }
+                                        },
+                                        fontColor: themeSettings.isDarkStyle() ? '#fff' : '#aaa'
+                                    },
                                 }]
                             },
                             tooltips: {
@@ -350,6 +356,11 @@
                                     }
                                 }
                             },
+                            legend: themeSettings.isDarkStyle() ? {
+                                labels: { fontColor: '#fff' }
+                            } : {},
+                            responsive: false,
+                            maintainAspectRatio: false
                         };
                         break;
                     case "doughnut":
@@ -359,6 +370,24 @@
                                 display: true,
                                 text: bigChartData.name,
                             },
+                            //scales: {
+                            //    xAxes: [{
+                            //        gridLines: {
+                            //            display: false
+                            //        },
+                            //        ticks: {
+                            //            fontColor: themeSettings.isDarkStyle() ? '#fff' : '#aaa'
+                            //        }
+                            //    }],
+                            //    yAxes: [{
+                            //        gridLines: {
+                            //            display: false
+                            //        },
+                            //        ticks: {
+                            //            fontColor: themeSettings.isDarkStyle() ? '#fff' : '#aaa',
+                            //        }
+                            //    }]
+                            //},
                             tooltips: {
                                 callbacks: {
                                     label: function (tooltipItem, data) {
@@ -603,6 +632,11 @@
 
                 }
             }
+        },
+
+        //helpers
+        getCurrencyValue: function (value) {
+            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value);
         },
     }
 });

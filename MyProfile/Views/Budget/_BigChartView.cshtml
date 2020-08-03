@@ -1,24 +1,69 @@
-﻿<div class="col-sm-6 col-md-6 col-lg-6 col-xl-6" v-for="chartData in bigChartsData"
-     v-show="chartData.isShow"
-     v-bind:id="'bigChart_'+chartData.chartID">
-    @*v-if="chartData.chartTypeCodeName == 'doughnut' || chartData.chartTypeCodeName == 'pie' || (chartData.chartTypeCodeName == 'bar' && chartData.chartTypesEnum == 2)"*@
-    <div class="card pt-2 mb-4">
-        <div class="d-flex align-items-center position-relative mt-4" v-bind:style="'height:' + bigChartHeight + 'px;'">
-            <div class="w-100 position-absolute" style="height:310px;top:0;">
-                <canvas v-bind:id="chartData.chartID"></canvas>
+﻿<section v-for="chartData in bigChartsData"
+         v-bind:class="chartData.isBig ? 'card mb-4 col-12' : 'col-sm-6 col-md-6 col-lg-6 col-xl-6'"
+         v-show="chartData.isShow"
+         v-bind:id="'bigChart_'+chartData.chartID">
+    <article v-if="chartData.isBig == false">
+        <div class="card pt-2 mb-4">
+            <div class="d-flex align-items-center position-relative mt-4" v-bind:style="'height:' + bigChartHeight + 'px;'">
+                <div class="w-100 position-absolute" style="height:310px;top:0;">
+                    <canvas v-bind:id="chartData.chartID"></canvas>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-@*<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12"
-     v-show="chartData.isShow"
-     v-bind:id="'bigChart_'+chartData.chartID"
-     v-else-if="chartData.chartTypeCodeName == 'line' || (chartData.chartTypeCodeName == 'bar' && chartData.chartTypesEnum == 6)">
-    <div class="card pt-2 mb-4">
-        <div class="d-flex align-items-center position-relative mt-4" v-bind:style="'height:' + bigChartHeight + 'px;'">
-            <div class="w-100 position-absolute" style="height:310px;top:0;">
-                <canvas v-bind:id="chartData.chartID"></canvas>
+    </article>
+    <article v-if="chartData.isBig">
+        <h6 class="card-header with-elements">
+            <div class="card-header-title">{{ chartData.name }}</div>
+            <div class="card-header-elements ml-auto">
+                <label class="text m-0">
+                    <span class="text-light text-tiny font-weight-semibold align-middle">
+                        SHOW STATS
+                    </span>
+                    <span class="switcher switcher-sm d-inline-block align-middle mr-0 ml-2">
+                        <input type="checkbox" class="switcher-input" checked="">
+                        <span class="switcher-indicator">
+                            <span class="switcher-yes"></span>
+                            <span class="switcher-no"></span>
+                        </span>
+                    </span>
+                </label>
+            </div>
+        </h6>
+        <div class="row no-gutters row-bordered">
+            <div class="col-md-8 col-lg-12 col-xl-8">
+                <div class="card-body pt-0">
+                    <div style="height: 240px;">
+                        <canvas v-bind:id="chartData.chartID" style="display: block; height: 240px; width: 713px;" width="891" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-lg-12 col-xl-4">
+                <div class="card-body">
+                    @*<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-default md-btn-flat">
+                                <input type="radio" name="btn-radio" checked> Total
+                            </label>
+                            <label class="btn btn-default md-btn-flat">
+                                <input type="radio" name="btn-radio"> Avg
+                            </label>
+                            <label class="btn btn-default md-btn-flat">
+                                <input type="radio" name="btn-radio"> Min
+                            </label>
+                            <label class="btn btn-default md-btn-flat active">
+                                <input type="radio" name="btn-radio"> Max
+                            </label>
+                        </div>*@
+                    <div class="row" v-for="dataSet in chartData.dataSets">
+                        <div class="col-6 col-xl-5 text-muted mb-3">{{ dataSet.label }}</div>
+                        <div class="col-6 col-xl-7 mb-3">
+                            <span class="text-big">{{ getCurrencyValue(dataSet.totalValue) }}</span>
+                            @*<sup class="text-success">+12%</sup>*@
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
-</div>*@
+    </article>
+</section>
