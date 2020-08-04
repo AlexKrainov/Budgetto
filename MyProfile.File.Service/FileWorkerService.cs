@@ -30,6 +30,10 @@ namespace MyProfile.File.Service
                     fullPath += "users\\";
                     resource.FolderName = "users";
                     break;
+                case ResourceFolder.Feedback:
+                    fullPath += "feedback\\";
+                    resource.FolderName = "feedback";
+                    break;
                 default:
                     break;
             }

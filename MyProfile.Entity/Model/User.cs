@@ -61,6 +61,7 @@ namespace MyProfile.Entity.Model
         public virtual IEnumerable<MailLog> MailLogs { get; set; }
         public virtual IEnumerable<CollectiveBudgetRequest> CollectiveBudgetRequests { get; set; }
         public virtual IEnumerable<CollectiveBudgetRequestOwner> CollectiveBudgetRequestOwners { get; set; }
+        public virtual IEnumerable<ChatUser> ChatUsers { get; set; }
 
         public User()
         {
@@ -72,6 +73,7 @@ namespace MyProfile.Entity.Model
             this.MailLogs = new HashSet<MailLog>();
             this.CollectiveBudgetRequests = new HashSet<CollectiveBudgetRequest>();
             this.CollectiveBudgetRequestOwners = new HashSet<CollectiveBudgetRequestOwner>();
+            this.ChatUsers = new HashSet<ChatUser>();
         }
     }
 }

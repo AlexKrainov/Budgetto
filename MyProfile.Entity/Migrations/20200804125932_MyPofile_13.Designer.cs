@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200804125932_MyPofile_13")]
+    partial class MyPofile_13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,13 +272,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("ChatID");
 
-                    b.Property<DateTime>("DateAdded");
-
-                    b.Property<DateTime?>("DateLeft");
-
                     b.Property<bool>("IsChatOwner");
-
-                    b.Property<bool>("IsMute");
 
                     b.Property<bool>("Left");
 
@@ -453,8 +449,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ChatID")
-                        .IsUnique();
+                    b.HasIndex("ChatID");
 
                     b.ToTable("Feedbacks");
                 });
@@ -1258,8 +1253,8 @@ namespace MyProfile.Entity.Migrations
             modelBuilder.Entity("MyProfile.Entity.Model.Feedback", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.Chat", "Chat")
-                        .WithOne("Feedback")
-                        .HasForeignKey("MyProfile.Entity.Model.Feedback", "ChatID")
+                        .WithMany()
+                        .HasForeignKey("ChatID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

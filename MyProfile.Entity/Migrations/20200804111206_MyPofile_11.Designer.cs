@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200804111206_MyPofile_11")]
+    partial class MyPofile_11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,6 +249,8 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ChartTypeID");
+
                     b.Property<DateTime>("DateCreate");
 
                     b.Property<DateTime>("DateEdit");
@@ -257,7 +261,15 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(512);
 
+                    b.Property<Guid>("UserID");
+
+                    b.Property<int>("VisibleElementID");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("ChartTypeID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Chats");
                 });
@@ -270,17 +282,9 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("ChatID");
 
-                    b.Property<DateTime>("DateAdded");
-
-                    b.Property<DateTime?>("DateLeft");
-
                     b.Property<bool>("IsChatOwner");
 
-                    b.Property<bool>("IsMute");
-
-                    b.Property<bool>("Left");
-
-                    b.Property<Guid>("UserID");
+                    b.Property<Guid?>("UserID");
 
                     b.HasKey("ID");
 
@@ -453,8 +457,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ChatID")
-                        .IsUnique();
+                    b.HasIndex("ChatID");
 
                     b.ToTable("Feedbacks");
                 });
@@ -779,19 +782,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("SectionTypeViews");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.SiteSettings", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("EmailsForFeedback");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("SiteSettings");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Template", b =>
@@ -1193,6 +1183,19 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Chat", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.ChartType", "ChartType")
+                        .WithMany()
+                        .HasForeignKey("ChartTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.ChatUser", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.Chat", "Chat")
@@ -1202,8 +1205,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("ChatUsers")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CollectiveBudgetRequest", b =>
@@ -1258,8 +1260,8 @@ namespace MyProfile.Entity.Migrations
             modelBuilder.Entity("MyProfile.Entity.Model.Feedback", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.Chat", "Chat")
-                        .WithOne("Feedback")
-                        .HasForeignKey("MyProfile.Entity.Model.Feedback", "ChatID")
+                        .WithMany()
+                        .HasForeignKey("ChatID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

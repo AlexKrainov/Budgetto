@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyProfile.Budget.Service;
 using MyProfile.Chart.Service;
+using MyProfile.Chat.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.File.Service;
@@ -55,6 +56,8 @@ namespace MyProfile
             services.AddScoped<UserService>();
             services.AddScoped<FileWorkerService>();
             services.AddScoped<PasswordService>();
+            services.AddScoped<ChatService>();
+            services.AddScoped<FeedbackService>();
 
             services.AddScoped<UserEmailService>();
             #endregion

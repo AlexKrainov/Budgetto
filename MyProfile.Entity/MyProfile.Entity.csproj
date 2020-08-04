@@ -41,6 +41,12 @@
     <Compile Remove="Migrations\20200728163232_MyProfile_02.Designer.cs" />
     <Compile Remove="Migrations\20200729081046_MyProfile_03.cs" />
     <Compile Remove="Migrations\20200729081046_MyProfile_03.Designer.cs" />
+    <Compile Remove="Migrations\20200804105856_MyPofile_11.cs" />
+    <Compile Remove="Migrations\20200804105856_MyPofile_11.Designer.cs" />
+    <Compile Remove="Migrations\20200804110810_MyPofile_11.cs" />
+    <Compile Remove="Migrations\20200804110810_MyPofile_11.Designer.cs" />
+    <Compile Remove="Migrations\20200804125447_MyPofile_13.cs" />
+    <Compile Remove="Migrations\20200804125447_MyPofile_13.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

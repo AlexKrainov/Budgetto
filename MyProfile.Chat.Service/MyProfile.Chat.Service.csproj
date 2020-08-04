@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Email.Service\Email.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.File.Service\MyProfile.File.Service.csproj" />
+  </ItemGroup>
+
+</Project>

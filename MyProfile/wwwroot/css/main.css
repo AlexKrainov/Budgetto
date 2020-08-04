@@ -235,9 +235,9 @@ a.disabled {
 /*table*/
 td span.cell-actions {
     opacity: 0;
-    -webkit-transition: all .5s linear .10s;
-    -o-transition: all .5s linear .10s;
-    transition: all .5s linear .10s;
+    -webkit-transition: all .2s linear .1s;
+    -o-transition: all .2s linear .10s;
+    transition: all .2s linear .10s;
 }
 
 td.show-actions span.cell-actions {

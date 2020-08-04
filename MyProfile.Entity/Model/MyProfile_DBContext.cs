@@ -35,6 +35,10 @@ namespace MyProfile.Entity.Model
                 .HasOne(x => x.Section)
                 .WithMany(y => y.CollectiveSections);
 
+            //modelBuilder.Entity<ChatUser>()
+            //    .HasOne(x => x.User)
+            //    .WithMany(y => y.use);
+
             #region Default value
 
             modelBuilder.Entity<UserSettings>()
@@ -172,7 +176,12 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<CollectiveBudgetUser> CollectiveBudgetUsers { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
-
+        public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<ChatUser> ChatUsers{ get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<ResourceMessage> ResourceMessages { get; set; }
+        public virtual DbSet<Feedback> Feedbacks { get; set; }
+        public virtual DbSet<SiteSettings> SiteSettings { get; set; }
 
     }
 }

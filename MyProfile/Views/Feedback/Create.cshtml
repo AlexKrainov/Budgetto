@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@section Styles {
+    <link href="~/vendor/css/pages/tickets.css" rel="stylesheet" />
+    <style>
+
+        .feeling i {
+            font-size: 35px;
+            -webkit-transition: all .5s linear .10s;
+            -o-transition: all .5s linear .10s;
+            transition: all .5s linear .10s;
+        }
+
+        .feeling .fa-sad-cry:hover,
+        .fa-sad-cry .active {
+            color: var(--red);
+        }
+
+        .feeling .fa-grin-beam:hover {
+            color: var(--orange);
+        }
+
+        .feeling .fa-meh:hover {
+            color: var(--gray);
+        }
+
+        .feeling .fa-smile:hover {
+            color: var(--info);
+        }
+
+        .feeling .fa-grin-beam:hover {
+            color: var(--green);
+        }
+    </style>
+}
+
+@section Scripts {
+
+    <script src="~/js/feedback-create.js"></script>
+}
+
+
+<article id="feedback-vue">
+
+    <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+        <span class="lnr lnr-smile display-4 text-primary mr-2"></span>
+        <span class="lnr lnr-neutral display-4 text-primary mr-2"></span>
+        <span class="lnr lnr-sad display-4 text-primary mr-2"></span>
+        <span class="px-0 pb-2 pt-2">
+            Feedback
+        </span>
+    </h4>
+    <div class="card">
+
+
+        <div class="card-body" v-show="viewOne">
+
+            <div row="row">
+                <div class="col-6 pl-0">
+                    <div class="form-group">
+                        <label class="form-label">Тип обращения</label>
+                        <select class="custom-select" v-model="feedback.topic">
+                            <option value="want" selected>Пожелания</option>
+                            <option value="remark">Замечание</option>
+                            <option value="error">Ошибка</option>
+                            <option value="heed help">Нужна помощь</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6 pl-0">
+                    <div class="form-group">
+                        <label class="form-label">Срочность</label>
+                        <select class="custom-select" v-model="feedback.priority">
+                            <option value="5">Очень важно и срочно</option>
+                            <option value="4">Срочно</option>
+                            <option value="3" selected>Средней срочности</option>
+                            <option value="2">Почти не срочности</option>
+                            <option value="1">Не срочно</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label class="form-label">Как вы сейчас себя чувствуете ?</label>
+                        <span class="text-large ml-4 feeling">
+                            <i class="cursor-pointer far fa-sad-cry active"></i>
+                            <i class="cursor-pointer far fa-grin-beam"></i>
+                            <i class="cursor-pointer far fa-meh"></i>
+                            <i class="cursor-pointer far fa-smile"></i>
+                            <i class="cursor-pointer far fa-grin-beam"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8 order-2 order-md-1">
+                    <div class="form-group">
+                        <label class="form-label">Описание</label>
+                        <textarea class="form-control" rows="3" placeholder="Напишите нам что нравиться, что не нравится. Что не хватает. Что нужно добавить срочно. Ошибки, недочеты."
+                                  v-model="feedback.text"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-bordered px-3 pt-3">
+                <label class="form-label">Прикрепите файлы</label>
+                <div class="clearfix">
+                    <div class="ui-feed-icon-container float-left pt-2 mr-3 mb-3" v-for="img in feedback.images">
+                        <a href="javascript:void(0)" class="ui-icon ui-feed-icon ion ion-md-close bg-secondary text-white"
+                           v-on:click="removeImage(img)"></a>
+                        <a href="javascript:void(0)" class="ticket-file-img" v-bind:style='"background-image: url(" + img.imageBase64 + ")"'></a>
+                    </div>
+                    <label class="ticket-file-add float-left bg-lighter text-muted mt-2 mb-3">
+                        <span class="ion ion-md-add"></span>
+                        <input type="file" class="account-settings-fileinput" v-on:change="encodeImageFileAsURL" accept="image/*" style="display: none;">
+                    </label>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary" type="button"
+                        v-bind:disabled="isSaving"
+                        v-on:click="save">
+                    <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                    Сохранить
+                </button>
+            </div>
+        </div>
+        <div v-show="!viewOne">
+            <h4 class="media align-items-center font-weight-bold py-3 mb-4">
+                <span class="lnr lnr-hourglass display-4 text-primary mr-2"></span>
+                <div class="media-body ml-3">
+                    Спасибо за обращение
+                    <div class="text-muted text-tiny mt-1">
+                        <small class="font-weight-normal">В кратчайшие сроки мы рассмотрим ваше обращение</small>
+                    </div>
+                </div>
+            </h4>
+        </div>
+    </div>
+</article>
