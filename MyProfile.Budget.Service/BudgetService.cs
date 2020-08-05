@@ -58,6 +58,7 @@ namespace MyProfile.Budget.Service
             List<string> columnsFormula = GetColumnsFormula(template);
             var dateTimeNow = DateTime.Now;
             UserInfoModel currentUser = UserInfo.Current;
+            NumberFormatInfo numberFormatInfo = new CultureInfo(currentUser.Currency.SpecificCulture, false).NumberFormat;
 
             switch (template.PeriodTypeID)
             {
@@ -150,13 +151,16 @@ namespace MyProfile.Budget.Service
                                 total = Math.Round(total, column.PlaceAfterCommon);
                                 //total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
 
-                                cell.Value = total.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                                
+                                numberFormatInfo.CurrencyDecimalDigits = column.PlaceAfterCommon;
+
+                                cell.Value = total.ToString("C", numberFormatInfo);
                                 cell.NaturalValue = total;
 
                                 cells.Add(cell.CloneObject());
                                 footerCells.Add(new FooterCell
                                 {
-                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture)),
+                                    Value = total.ToString("C", numberFormatInfo),
                                     NaturalValue = total
                                 });
                             }
@@ -169,7 +173,7 @@ namespace MyProfile.Budget.Service
                                 cells.Add(cell.CloneObject());
                                 footerCells.Add(new FooterCell
                                 {
-                                    Value = total.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture)),
+                                    Value = total.ToString("C", numberFormatInfo),
                                     NaturalValue = total
                                 });
                             }

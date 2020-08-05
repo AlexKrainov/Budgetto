@@ -22,7 +22,7 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveFeedback([FromBody] FeedbackCreateModelView feedback)
         {
-            return Json(new { isOk  = await feedbackService.Create(feedback) });
+            return Json(new { isOk = await feedbackService.Create(feedback) });
         }
 
 

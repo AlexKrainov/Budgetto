@@ -70,7 +70,7 @@ namespace MyProfile.Chat.Service
                 {
                     DateCreate = now,
                     DateEdit = now,
-                    Title = feedback.Title,
+                    Title = feedback.Title ?? "Feedback",
                     Messages = new List<Message> { new Message
                     {
                         DateCreate = now,
@@ -85,7 +85,8 @@ namespace MyProfile.Chat.Service
                     {
                         Priority = feedback.Priority,
                         Status = feedback.Status,
-                        Topic = feedback.Topic.ToString()
+                        Topic = feedback.Topic.ToString(),
+                        MoodID = feedback.MoodID
                     }
                 };
 

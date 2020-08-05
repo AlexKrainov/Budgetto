@@ -5,7 +5,7 @@
             title: null,
             text: null,
             priority: 3,
-            topic: "want",
+            topic: "Want",
             status: "new",
             images: [
                 //{
@@ -29,7 +29,7 @@
                 FeedbackVue.feedback.images.push({
                     id: FeedbackVue.imagesNumber,
                     imageBase64: reader.result
-                })
+                });
                 FeedbackVue.imagesNumber++;
             }
             reader.readAsDataURL(file);
@@ -37,6 +37,11 @@
         removeImage: function (img) {
             let index = this.feedback.images.findIndex(x => x.id == img.id);
             this.feedback.images.splice(index, 1);
+        },
+        choosedMood: function (event, moodID) {
+            $(".feeling i").removeClass("active");
+            $(event.target).addClass("active");
+            this.feedback.moodID = moodID;
         },
         save: function () {
             this.isSaving = true;
@@ -50,7 +55,12 @@
                 context: this,
                 success: function (response) {
 
-                    this.viewOne = false;
+                    if (response.isOk) {
+                        this.viewOne = false;
+                    } else {
+
+                    }
+
                     this.isSaving = false;
                 }
             });

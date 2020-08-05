@@ -64,11 +64,11 @@
     <!-- This file MUST be included after core stylesheets and layout-helpers.js in the <head> section -->
     <script src="~/vendor/js/theme-settings.js"></script>
     <script>
-		//window.themeSettings = new ThemeSettings({
-		//	cssFilenamePattern: '%name%.css',
-		//	cssPath: '/vendor/css/rtl/',
-  //          themesPath: '/vendor/css/rtl/'
-  //      });
+		window.themeSettings = new ThemeSettings({
+			cssFilenamePattern: '%name%.css',
+			cssPath: '/vendor/css/rtl/',
+            themesPath: '/vendor/css/rtl/'
+        });
 		 var UserInfo = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(currentUser, Newtonsoft.Json.Formatting.None))');
     </script>
 

@@ -502,7 +502,7 @@
         },
         //View cell
         getCellContent: function (cell, cellIndex, rowIndex) {
-            return this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell);
+            return this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell, cellIndex, rowIndex);
         },
         getCellFooterContent: function (cell, cellIndex) {
             return this.getCellFooterActions(cellIndex) + this.getCellValue(cell);
@@ -511,7 +511,7 @@
             return `
             <span class="float-left cell-actions">
                 <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')"></i>
-                <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickCell(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"></i>
+                <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"></i>
             </span>`;
         },
         getCellFooterActions: function (cellIndex) {
@@ -520,17 +520,20 @@
                 <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickFooterCell(${cellIndex})"></i>
             </span>`;
         },
-        getCellValue: function (cell) {
+        getCellValue: function (cell, cellIndex, rowIndex) {
             if (cell.value.indexOf(",")) {
                 let values = cell.value.split(",");
+                let generalValue = `data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'`;
 
                 if (values.length == 2) {
-                    return `<span data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'>${values[0]}<span class="money-muted">,${values[1]}</span></span>`;
+                    return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)">${values[0]}
+                                <span class="money-muted">,${values[1]}</span>
+                            </span>`;
                 } else {
-                    return `<span data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'>${cell.value}</span>`;
+                    return `<span ${generalValue}>${cell.value}</span>`;
                 }
             } else {
-                return `<span data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'>${cell.value}</span>`;
+                return `<span ${generalValue}>${cell.value}</span>`;
             }
         },
         mouseenterCell: function ($event) {
@@ -545,7 +548,7 @@
                 return;
             }
         },
-        clickCell: function (rowIndex, cellIndex, currentDate, event) {
+        showHistory: function (rowIndex, cellIndex, currentDate, event) {
             let templateColumnTypes = [2, 3, 4, 7]; // DaysForMonth = 2,MonthsForYear = 3,YearsFor10Year = 4,WeeksForMonth = 7
 
             let sections = [];

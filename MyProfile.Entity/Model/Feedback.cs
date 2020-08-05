@@ -16,9 +16,10 @@ namespace MyProfile.Entity.Model
 		[MaxLength(128)]
 		public string Topic { get; set; }
 		public int Priority { get; set; }
+        public int MoodID { get; set; }
 
 
-		[ForeignKey("Chat")]
+        [ForeignKey("Chat")]
 		public int ChatID { get; set; }
 
 		public virtual Chat Chat { get; set; }
