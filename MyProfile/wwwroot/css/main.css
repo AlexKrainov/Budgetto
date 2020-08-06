@@ -189,6 +189,25 @@ a.disabled {
     font-size: 50px;
 }
 
+.records .record-item-actions {
+    opacity: 0.15;
+    -webkit-transition: all .5s linear .10s;
+    -o-transition: all .5s linear .10s;
+    transition: all .5s linear .10s;
+}
+
+.records:hover .record-item-actions {
+    opacity: 1;
+    -webkit-transition: all .1s linear .1s;
+    -o-transition: all .1s linear .1s;
+    transition: all .1s linear .1s;
+}
+
+.record-item-actions:hover {
+    color: var(--green);
+    /*    color: var(--blue);*/
+}
+
 .deleted-item {
     opacity: .5;
 }
@@ -251,6 +270,10 @@ td.show-actions span.cell-actions {
     font-size: 18px;
 }
 
+.remind-cell-action {
+    font-size: 17px;
+}
+
 .show-history-cell-action {
     font-size: 16px;
 }
@@ -262,6 +285,12 @@ td.show-actions span.cell-actions {
 .cell-actions:hover > .show-history-cell-action {
     color: var(--blue);
 }
+
+.cell-actions:hover > .remind-cell-action {
+    color: var(--orange);
+}
+
+
 
 .add-cell-action:hover {
 }
@@ -287,24 +316,7 @@ td.show-actions span.cell-actions {
     font-size: large;
 }
 
-.records .record-item-actions {
-    opacity: 0.15;
-    -webkit-transition: all .5s linear .10s;
-    -o-transition: all .5s linear .10s;
-    transition: all .5s linear .10s;
-}
 
-.records:hover .record-item-actions {
-    opacity: 1;
-    -webkit-transition: all .1s linear .1s;
-    -o-transition: all .1s linear .1s;
-    transition: all .1s linear .1s;
-}
-
-.record-item-actions:hover {
-    color: var(--green);
-    /*    color: var(--blue);*/
-}
 
 .comment-actions {
     opacity: 0.15;
@@ -343,4 +355,38 @@ td.show-actions span.cell-actions {
 
 .text-decoration {
     text-decoration: underline;
+}
+
+/*Reminder*/
+.reminder-icons i {
+    opacity: 0.75;
+    font-size: 35px;
+    -webkit-transition: all .08s linear .05s;
+    -o-transition: all .08s linear .05s;
+    transition: all .08s linear .05s;
+}
+
+    .reminder-icons i:hover,
+    .reminder-icons i.active {
+        opacity: 1;
+        color: var(--orange);
+    }
+
+.reminder-icon {
+    font-size: 50px;
+}
+
+.edit-reminder {
+    transition: all linear .2s;
+    opacity: .2;
+}
+
+    .edit-reminder:hover {
+        opacity: 1;
+    }
+
+
+.active-item {
+    border-left: 3px solid var(--blue) !important;
+    background: #D6EAF8 !important;
 }

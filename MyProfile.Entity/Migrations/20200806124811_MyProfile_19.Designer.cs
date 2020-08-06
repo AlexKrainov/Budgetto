@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200806124811_MyProfile_19")]
+    partial class MyProfile_19
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -654,9 +656,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CssIcon")
-                        .HasMaxLength(32);
-
                     b.Property<DateTime>("DateCreate");
 
                     b.Property<DateTime>("DateEdit");
@@ -669,6 +668,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsRepeat");
 
+                    b.Property<int>("ReminderTypeID");
+
                     b.Property<int?>("RepeatEvery");
 
                     b.Property<string>("Title")
@@ -678,6 +679,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<Guid>("UserID");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ReminderTypeID");
 
                     b.HasIndex("UserID");
 
@@ -701,6 +704,28 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("ReminderID");
 
                     b.ToTable("ReminderDates");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.ReminderType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(16);
+
+                    b.Property<string>("CssIcon")
+                        .HasMaxLength(32);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ReminderTypes");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Resource", b =>
@@ -1389,6 +1414,11 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Reminder", b =>
                 {
+                    b.HasOne("MyProfile.Entity.Model.ReminderType", "ReminderType")
+                        .WithMany()
+                        .HasForeignKey("ReminderTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("Reminders")
                         .HasForeignKey("UserID")

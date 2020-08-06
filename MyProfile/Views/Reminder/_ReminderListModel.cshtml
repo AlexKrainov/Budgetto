@@ -1,0 +1,40 @@
+﻿<div class="modal modal-slide fade" id="modalReminderTimeLine">
+    <div class="modal-dialog">
+        <form class="modal-content" style="background: #f5f5f5;">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            <div class="modal-body" style="flex:auto">
+                <nav class="navbar navbar-expand-lg bg-white mb-4">
+                    <div class="container">
+
+                        <a href="javascript:void(0);" class="navbar-brand text-large line-height-1 py-3">Напоминания</a>
+
+                        <a class="nav-link cursor-pointer" v-on:click="edit()">
+                            <i class="ion ion-md-add navbar-icon align-middle" style="color:var(--success);"></i>
+                            <span class="d-lg-none align-middle">&nbsp; Добавить новое уведомление на эту дату</span>
+                        </a>
+
+                        {{ GetDateByFormat(dateTime, 'DD.MM.YYYY') }}
+                        @*<div class="navbar-collapse collapse" id="header-11">
+            <div class="navbar-nav align-items-lg-center ml-auto">
+                <div class="input-group w-100">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text ion ion-ios-search"></div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
+                </div>
+            </div>
+        </div>*@
+                    </div>
+                </nav>
+                
+                    @Html.Partial("../Reminder/_ReminderEditPart.cshtml")
+                
+                <div class=" card pl-0">
+                    <ul class="list-group list-group-flush" style=" margin-left: -5px;">
+                        @Html.Partial("../Reminder/_Reminders.cshtml")
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

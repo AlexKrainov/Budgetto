@@ -177,11 +177,13 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<Currency> Currencies { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
-        public virtual DbSet<ChatUser> ChatUsers{ get; set; }
+        public virtual DbSet<ChatUser> ChatUsers { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<ResourceMessage> ResourceMessages { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<SiteSettings> SiteSettings { get; set; }
+        public virtual DbSet<Reminder> Reminders { get; set; }
+        public virtual DbSet<ReminderDate> ReminderDates { get; set; }
 
     }
 }

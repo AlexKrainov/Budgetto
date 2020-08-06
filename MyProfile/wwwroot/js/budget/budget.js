@@ -508,10 +508,12 @@
             return this.getCellFooterActions(cellIndex) + this.getCellValue(cell);
         },
         getCellActions: function (cell, cellIndex, rowIndex) {
+
             return `
             <span class="float-left cell-actions">
                 <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')"></i>
                 <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"></i>
+                <i class="fas fa-bell remind-cell-action" onclick="ReminderVue.showReminders('${cell.currentDate}')"></i>
             </span>`;
         },
         getCellFooterActions: function (cellIndex) {

@@ -1,0 +1,43 @@
+﻿<li class="list-group-item py-4 _reminder-item"
+    v-for="_reminder in reminders"
+    v-bind:id="'reminder_'+_reminder.id"
+    v-show="_reminder.isShowForFilter"
+    v-bind:class="_reminder.id == reminder.id ? 'active-item' : ''">
+    <div class="media flex-wrap" v-if="_reminder.isDeleted == false">
+        <div class="">
+            <i class="reminder-icon" v-bind:class="_reminder.cssIcon"></i>
+        </div>
+        <div class="media-body ml-sm-4">
+            <h5 class="mb-2">
+                <i class="fas fa-trash pl-2 edit-reminder float-right text-danger cursor-pointer"
+                   v-on:click="remove(_reminder)"></i>
+                <a href="javascript:void(0)" class="float-right font-weight-semibold ml-3" v-on:click="edit(_reminder)">
+                    <i class="fas fa-edit pl-2 edit-record"></i>
+                </a>
+                <div class="small float-right">
+                    <i class="ion ion-md-time text-primary"></i>
+                    <span>{{ GetDateByFormat(_reminder.dateReminder, 'DD.MM.YYYY') }} </span>
+                </div>
+                <div class="text-body">
+                    {{ _reminder.title }}
+                </div>
+            </h5>
+            <div>{{ _reminder.description }}</div>
+        </div>
+    </div>
+    <div class="media flex-wrap" v-else-if="_reminder.isDeleted">
+        <div class="media-body ml-sm-4">
+            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" v-on:click="recovery(_reminder)"></i>
+            <h5 class="mb-2 pr-4">
+                <div class="text-body deleted-item">
+                    {{ _reminder.title }}
+                </div>
+                <div class="text-muted small pt-1 deleted-item">
+                    <i class="ion ion-md-time text-primary"></i>
+                    <span>{{ GetDateByFormat(_reminder.dateReminder, 'DD.MM.YYYY') }} </span>
+                </div>
+            </h5>
+            <div class="deleted-item">{{ _reminder.description }}</div>
+        </div>
+    </div>
+</li>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200806103729_MyProfile_17")]
+    partial class MyProfile_17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -655,13 +657,13 @@ namespace MyProfile.Entity.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CssIcon")
-                        .HasMaxLength(32);
+                        .HasMaxLength(64);
 
                     b.Property<DateTime>("DateCreate");
 
                     b.Property<DateTime>("DateEdit");
 
-                    b.Property<DateTime?>("DateReminder");
+                    b.Property<DateTime?>("DateReminde");
 
                     b.Property<string>("Description");
 
@@ -690,7 +692,7 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateReminder");
+                    b.Property<DateTime>("DateReminde");
 
                     b.Property<bool>("IsDone");
 

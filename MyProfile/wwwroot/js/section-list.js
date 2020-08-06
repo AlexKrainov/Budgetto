@@ -34,9 +34,9 @@
         },
         selectArea: function (area, event) {
             document.querySelectorAll("#area-vue .area-item").forEach(function (el, index) {
-                el.classList.remove("active-section");
+                el.classList.remove("active-item");
             });
-            $(event.target).closest(".area-item").addClass("active-section");
+            $(event.target).closest(".area-item").addClass("active-item");
 
             SectionVue.sections = area.sections;
             SectionVue.areaID = area.id;
