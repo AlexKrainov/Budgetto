@@ -18,6 +18,7 @@ using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 using MyProfile.Reminder.Service;
 using MyProfile.Template.Service;
+using MyProfile.ToDoList.Service;
 using MyProfile.User.Service;
 using MyProfile.User.Service.PasswordWorker;
 
@@ -60,6 +61,7 @@ namespace MyProfile
             services.AddScoped<ChatService>();
             services.AddScoped<FeedbackService>();
             services.AddScoped<ReminderService>();
+            services.AddScoped<ToDoListService>();
 
             services.AddScoped<UserEmailService>();
             #endregion

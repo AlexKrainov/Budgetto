@@ -54,6 +54,7 @@
     <ProjectReference Include="..\MyProfile.LittleDictionaries.Service\MyProfile.LittleDictionaries.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Reminder.Service\MyProfile.Reminder.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Template.Service\MyProfile.Template.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.ToDoList.Service\MyProfile.ToDoList.Service.csproj" />
     <ProjectReference Include="..\MyProfile.User.Service\MyProfile.User.Service.csproj" />
   </ItemGroup>
 
