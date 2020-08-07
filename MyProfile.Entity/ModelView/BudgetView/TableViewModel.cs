@@ -1,7 +1,7 @@
 ﻿using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.Reminder;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MyProfile.Entity.ModelView.BudgetView
 {
@@ -18,6 +18,7 @@ namespace MyProfile.Entity.ModelView.BudgetView
         public bool IsWeekend { get; set; }
         public bool IsHoliday { get; set; }
         public DateTime CurrentDate { get; set; }
+        public List<ReminderCell> Reminders { get; set; } = new List<ReminderCell>();
 
         /// <summary>
         /// Too long, because boxing and unboxing
@@ -38,7 +39,8 @@ namespace MyProfile.Entity.ModelView.BudgetView
                 IsShow = this.IsShow,
                 IsWeekend = this.IsWeekend,
                 NaturalValue = this.NaturalValue,
-                TemplateColumnType = this.TemplateColumnType
+                TemplateColumnType = this.TemplateColumnType,
+                Reminders = this.Reminders,
             };
         }
     }
@@ -46,5 +48,11 @@ namespace MyProfile.Entity.ModelView.BudgetView
     {
     }
 
+    public class ReminderCell
+    {
+        public string CssIcon { get; set; }
+        public int Count { get; set; }
+        public string Titles { get; set; }
+    }
 
 }

@@ -500,43 +500,79 @@
         initTable: function () {
             this.dataTable = $("#table").DataTable();
         },
+
         //View cell
         getCellContent: function (cell, cellIndex, rowIndex) {
-            return this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell, cellIndex, rowIndex);
+            if (this.periodType == PeriodTypeEnum.Month) {
+                return `<div class="cell-head">${this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell, cellIndex, rowIndex)}</div>
+                    <div class="cell-footer mt-1">
+                        <span class="cell-reminder-icons" onclick="ReminderVue.showReminders('${cell.currentDate}')">${this.getRemindersIcons(cell)}</span>
+                        <span class="cell-section-icons"></span>
+                    </div>`;
+            } else {
+                return `<div class="cell-head">${this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell, cellIndex, rowIndex)}</div>
+                    <div class="cell-footer mt-1"><span class="cell-reminder-icons"></span><span class="cell-section-icons"></span></div>`;
+            }
         },
+
         getCellFooterContent: function (cell, cellIndex) {
             return this.getCellFooterActions(cellIndex) + this.getCellValue(cell);
         },
         getCellActions: function (cell, cellIndex, rowIndex) {
-
-            return `
-            <span class="float-left cell-actions">
-                <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')"></i>
-                <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"></i>
-                <i class="fas fa-bell remind-cell-action" onclick="ReminderVue.showReminders('${cell.currentDate}')"></i>
-            </span>`;
+            if (this.periodType == PeriodTypeEnum.Month) {
+                return `
+                    <span class="float-left cell-actions">
+                        <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')" title="Добавить запись" ></i>
+                        <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)" title="Посмотреть историю"></i>
+                        <i class="remind-cell-action">+<i class="fas fa-bell" onclick="ReminderVue.addReminders('${cell.currentDate}')" title="Добавить напоминание"></i></i>
+                    </span>`;
+            } else {
+                return `
+                    <span class="float-left cell-actions">
+                        <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')"></i>
+                        <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"></i>
+                    </span>`;
+            }
         },
         getCellFooterActions: function (cellIndex) {
             return `
-            <span class="float-left cell-actions">
-                <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickFooterCell(${cellIndex})"></i>
-            </span>`;
+                <span class="float-left cell-actions">
+                    <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickFooterCell(${cellIndex})"></i>
+                </span>`;
         },
         getCellValue: function (cell, cellIndex, rowIndex) {
             if (cell.value.indexOf(",")) {
                 let values = cell.value.split(",");
-                let generalValue = `data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'`;
+                let generalValue = ` data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'`;
 
                 if (values.length == 2) {
-                    return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)">${values[0]}
+                    return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${values[0]}
                                 <span class="money-muted">,${values[1]}</span>
-                            </span>`;
+                            </span> `;
                 } else {
-                    return `<span ${generalValue}>${cell.value}</span>`;
+                    return `<span ${generalValue}> ${cell.value}</span>`;
                 }
             } else {
-                return `<span ${generalValue}>${cell.value}</span>`;
+                return `<span ${generalValue}> ${cell.value}</span>`;
             }
+        },
+        getRemindersIcons: function (cell) {
+            if (cell.templateColumnType == 2) {//Type days
+                let icons = ``;
+                for (var i = 0; i < cell.reminders.length; i++) {
+
+                    let reminder = cell.reminders[i];
+                    let count = "";
+
+                    if (reminder.count > 1) {
+                        count = reminder.count;
+                    }
+
+                    icons += `<span class="mr-3"><i class="${reminder.cssIcon}" title="${reminder.titles}"></i><span class="reminder-count">${count}</span></span>`;
+                }
+                return icons;
+            }
+            return "";
         },
         mouseenterCell: function ($event) {
             if ($event.target.nodeName == "TD" && $event.target.classList.contains("show-actions") == false) {
@@ -591,8 +627,8 @@
 
             } else if (this.periodType == PeriodTypeEnum.Year) {
 
-                filter.startDate = `${this.budgetYear}-01-01T00:00:01+00:00`;
-                filter.endDate = `${this.budgetYear}-12-31T23:59:59+00:00"`;
+                filter.startDate = `${this.budgetYear} -01 - 01T00: 00: 01 + 00: 00`;
+                filter.endDate = `${this.budgetYear} -12 - 31T23: 59: 59 + 00: 00"`;
             }
 
             this.stylingClickedCells(event, "td_s", cellIndex);

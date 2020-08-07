@@ -12,26 +12,35 @@
         isNew: true,
     },
     watch: {
-        searchText: function (newValue, oldValue) {
-            if (newValue) {
-                newValue = newValue.toLocaleLowerCase();
-            }
+        //searchText: function (newValue, oldValue) {
+        //    if (newValue) {
+        //        newValue = newValue.toLocaleLowerCase();
+        //    }
 
-            for (var i = 0; i < this.reminders.length; i++) {
-                let record = this.reminders[i];
+        //    for (var i = 0; i < this.reminders.length; i++) {
+        //        let reminder = this.reminders[i];
 
-                record.isShowForFilter = record.sectionName.toLocaleLowerCase().indexOf(newValue) >= 0
-                    || (record.description && record.description.toLocaleLowerCase().indexOf(newValue) >= 0)
-                    || record.areaName.toLocaleLowerCase().indexOf(newValue) >= 0
-                    || (record.userName && record.userName.toLocaleLowerCase().indexOf(newValue) >= 0);
-            }
-        }
+        //        reminder.isShowForFilter = reminder.sectionName.toLocaleLowerCase().indexOf(newValue) >= 0
+        //            || (reminder.description && reminder.description.toLocaleLowerCase().indexOf(newValue) >= 0)
+        //            || reminder.areaName.toLocaleLowerCase().indexOf(newValue) >= 0
+        //            || (reminder.userName && reminder.userName.toLocaleLowerCase().indexOf(newValue) >= 0);
+        //    }
+        //}
     },
     mounted: function () {
     },
     methods: {
         showReminders: function (dateTime) {
             this.dateTime = dateTime;
+            this.close();
+
+            return this.loadTimeLine(dateTime);
+        },
+        addReminders: function (dateTime) {
+            this.dateTime = dateTime;
+            this.close();
+
+            this.edit();
 
             return this.loadTimeLine(dateTime);
         },
@@ -72,44 +81,27 @@
 
             if (reminder) {
                 this.isNew = false;
-                this.reminder = reminder;
+                this.reminder = { ...reminder };
 
                 let config = GetFlatpickrRuConfig(this.reminder.dateReminder);
-                this.flatpickrReminder = flatpickr('#dateReminder', config);
+                this.flatpickrReminder = flatpickr('#reminderDateReminder', config);
             } else {
                 this.isNew = true;
                 this.reminder.dateReminder = this.dateTime;
 
                 let config = GetFlatpickrRuConfig(this.dateTime);
-                this.flatpickrReminder = flatpickr('#dateReminder', config);
+                this.flatpickrReminder = flatpickr('#reminderDateReminder', config);
             }
 
             this.chooseReminderIcon(this.reminder.cssIcon);
         },
         close: function () {
             this.isShowModal = false;
-            this.reminder = {};
-        },
-        remove: function (reminder) {
-
-            ShowLoading('#reminder_' + record.id);
-
-            return $.ajax({
-                type: "POST",
-                url: "/Reminder/Remove",
-                data: JSON.stringify(reminder),
-                context: reminder,
-                contentType: "application/json",
-                dataType: 'json',
-                success: function (response) {
-                    record.isDeleted = response.isOk;
-                    HideLoading('#reminder_' + reminder.id);
-                }
-            });
+            this.reminder = { isRepeat: false };
         },
 
         save: function () {
-            //HideLoading('#record_' + record.id);
+            //HideLoading('#record_' + reminder.id);
 
             if (this.checkValid() == false) {
                 return false;
@@ -128,29 +120,86 @@
 
                     if (response.isOk) {
                         let index = this.reminders.findIndex(x => x.id == response.data.id);
+                        //Check date
                         if (index == -1) {
                             this.reminders.push(response.data);
                         } else {
                             this.reminders[index] = response.data;
                         }
-                        this.isShowModal = false;
                         BudgetVue.refresh("onlyTable");
+
+                        this.close();
+                    } else {
+
                     }
 
-                    this.isSaving = true;
-
+                    this.isSaving = false;
                 },
                 error: function () {
-                    this.isSaving = true;
+                    this.isSaving = false;
 
                 }
             });
         },
         checkValid: function () {
+            let isOk = true;
+            $("#reminderTitle, #reminderDateReminder").removeClass("is-invalid")
 
+            if (!(this.reminder.title && this.reminder.title.length > 0)) {
+                isOk = false;
+                $("#reminderTitle").addClass("is-invalid")
+            }
 
-            return true;
-        }
+            if (!(this.reminder.cssIcon && this.reminder.cssIcon.length > 0)) {
+                isOk = false;
+                $("#reminderIcons").css("display", "block");
+            } else {
+                $("#reminderIcons").css("display", "none");
+            }
+
+            if (!(this.reminder.dateReminder && this.reminder.dateReminder.length > 0)) {
+                isOk = false;
+                $("#reminderDateReminder").addClass("is-invalid")
+            }
+
+            return isOk;
+        },
+        remove: function (reminder) {
+
+            ShowLoading('#reminder_' + reminder.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/Reminder/Remove",
+                data: JSON.stringify(reminder),
+                context: reminder,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    reminder.isDeleted = response.isDeleted;
+                    HideLoading('#reminder_' + reminder.id);
+                    BudgetVue.refresh("onlyTable");
+                }
+            });
+        },
+        recovery: function (reminder) {
+
+            ShowLoading('#reminder_' + reminder.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/Reminder/Recovery",
+                data: JSON.stringify(reminder),
+                context: reminder,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    reminder.isDeleted = !response.isRecovery;
+                    HideLoading('#reminder_' + reminder.id);
+                    BudgetVue.refresh("onlyTable");
+                }
+            });
+        },
     }
 });
 

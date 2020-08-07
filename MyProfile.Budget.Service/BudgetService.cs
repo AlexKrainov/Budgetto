@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.BudgetView;
+using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Reminder.Service;
 using MyProfile.User.Service;
 using Nager.Date;
 using System;
@@ -24,12 +26,14 @@ namespace MyProfile.Budget.Service
         private IBaseRepository repository;
         private CollectionUserService collectionUserService;
         private BudgetRecordService budgetRecordService;
+        private ReminderService reminderService;
 
         public BudgetService(IBaseRepository repository)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
             this.budgetRecordService = new BudgetRecordService(repository);
+            this.reminderService = new ReminderService(repository);
         }
         #region Budget table view
 
@@ -54,9 +58,11 @@ namespace MyProfile.Budget.Service
             int allColumnsCount = template.Columns.Count;
             int indexBudgetRecords = 0;
             int totalCounter = 0;
-            IList<IGrouping<int, TmpBudgetRecord>> budgetRecords;
-            List<string> columnsFormula = GetColumnsFormula(template);
             var dateTimeNow = DateTime.Now;
+
+            IList<IGrouping<int, TmpBudgetRecord>> budgetRecords;
+            List<ReminderShortModelView> reminders = null;
+            List<string> columnsFormula = GetColumnsFormula(template);
             UserInfoModel currentUser = UserInfo.Current;
             NumberFormatInfo numberFormatInfo = new CultureInfo(currentUser.Currency.SpecificCulture, false).NumberFormat;
 
@@ -74,6 +80,8 @@ namespace MyProfile.Budget.Service
                 default:
                     budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Day).ToList();
                     totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
+
+                    reminders = reminderService.GetRemindersByDate(from, to).ToList();
                     break;
             }
             if (currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective)
@@ -151,7 +159,7 @@ namespace MyProfile.Budget.Service
                                 total = Math.Round(total, column.PlaceAfterCommon);
                                 //total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
 
-                                
+
                                 numberFormatInfo.CurrencyDecimalDigits = column.PlaceAfterCommon;
 
                                 cell.Value = total.ToString("C", numberFormatInfo);
@@ -183,6 +191,23 @@ namespace MyProfile.Budget.Service
                             cell.Value = SetFormatForDate(new DateTime(from.Year, from.Month, dateCounter), column.Format, column.TemplateColumnType);
                             cell.NaturalValue = cell.dateCounter;
 
+                            if (reminders != null && reminders.Count != 0)
+                            {
+                                var z = reminders
+                                    .Where(x => currentDate.Date == x.DateReminder.Value.Date)
+                                    .GroupBy(x => x.CssIcon)
+                                    .Select(x => new ReminderCell
+                                    {
+                                        CssIcon = x.Key,
+                                        Count = x.Count(),
+                                        Titles = x.FirstOrDefault().Title,
+                                    })
+                                    .ToList();
+
+
+                                cell.Reminders.AddRange(z);
+                            }
+
                             cells.Add(cell.CloneObject());
                             footerCells.Add(new FooterCell
                             {
@@ -210,14 +235,33 @@ namespace MyProfile.Budget.Service
                     for (int i = 0; i < allColumnsCount; i++)
                     {
                         var column = template.Columns[i];
-                        string v = 0.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture)); 
+                        string v = 0.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
                         if (column.TemplateColumnType == TemplateColumnType.BudgetSection && currentDate > dateTimeNow)
                         {
                             v = "";
-                        }else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
+                        }
+                        else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
                         {
                             v = SetFormatForDate(new DateTime(from.Year, from.Month, dateCounter), column.Format, column.TemplateColumnType);
+
+                            if (reminders != null && reminders.Count != 0)
+                            {
+                                var z = reminders
+                                    .Where(x => currentDate.Date == x.DateReminder.Value.Date)
+                                    .GroupBy(x => x.CssIcon)
+                                    .Select(x => new ReminderCell
+                                    {
+                                        CssIcon = x.Key,
+                                        Count = x.Count(),
+                                        Titles = x.FirstOrDefault().Title,
+                                    })
+                                    .ToList();
+
+
+                                cell.Reminders.AddRange(z);
+                            }
+
                         }
                         else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
                         {

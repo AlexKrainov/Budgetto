@@ -26,15 +26,18 @@
         </div>
     </div>
     <div class="media flex-wrap" v-else-if="_reminder.isDeleted">
+        <div class="deleted-item">
+            <i class="reminder-icon" v-bind:class="_reminder.cssIcon"></i>
+        </div>
         <div class="media-body ml-sm-4">
             <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" v-on:click="recovery(_reminder)"></i>
             <h5 class="mb-2 pr-4">
-                <div class="text-body deleted-item">
-                    {{ _reminder.title }}
-                </div>
-                <div class="text-muted small pt-1 deleted-item">
+                <div class="text-muted small float-right deleted-item">
                     <i class="ion ion-md-time text-primary"></i>
                     <span>{{ GetDateByFormat(_reminder.dateReminder, 'DD.MM.YYYY') }} </span>
+                </div>
+                <div class="text-body deleted-item">
+                    {{ _reminder.title }}
                 </div>
             </h5>
             <div class="deleted-item">{{ _reminder.description }}</div>

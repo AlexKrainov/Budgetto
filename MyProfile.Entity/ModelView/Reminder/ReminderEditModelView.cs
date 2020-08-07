@@ -2,9 +2,18 @@
 
 namespace MyProfile.Entity.ModelView.Reminder
 {
+    public enum RepeatEveryType
+    {
+        Undefined = 0,
+        Day,
+        Week,
+        Month,
+        Year
+    }
+
     public class ReminderEditModelView
     {
-        public bool isShowForFilter;
+        public bool isShowForFilter = true;
         public bool isDeleted;
 
         public int ID { get; set; }

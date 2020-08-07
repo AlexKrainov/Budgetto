@@ -32,5 +32,19 @@ namespace MyProfile.Controllers
             return Json(new { IsOk = result, data = reminder });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Remove([FromBody] ReminderEditModelView reminder)
+        {
+            var result = await reminderService.RemoveOrRecovery(reminder, true);
+            return Json(new { IsOk = true, data = reminder, isDeleted = true });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Recovery([FromBody] ReminderEditModelView reminder)
+        {
+            var result = await reminderService.RemoveOrRecovery(reminder, false);
+            return Json(new { IsOk = true, data = reminder, isRecovery = true });
+        }
+
     }
 }

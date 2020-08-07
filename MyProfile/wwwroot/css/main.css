@@ -290,7 +290,20 @@ td.show-actions span.cell-actions {
     color: var(--orange);
 }
 
+.cell-reminder-icons i,
+.cell-section-icons i {
+    font-size: 23px;
+}
 
+.reminder-count {
+    position: absolute;
+    margin-top: -6px;
+}
+
+.cell-reminder-icons {
+    float: left;
+    color: var(--orange);
+}
 
 .add-cell-action:hover {
 }

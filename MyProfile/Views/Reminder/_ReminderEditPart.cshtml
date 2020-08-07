@@ -8,22 +8,21 @@
         </h5>
     </div>
     <div class="card-body">
-        <div class="form-row">
-            <div class="form-group col">
-                <label class="form-label">Название лимита</label>
-                <span class="text-danger">*</span>
-                <input type="text"
-                       class="form-control"
-                       placeholder="День рождение Василия"
-                       name="name"
-                       v-model="reminder.title"
-                       required>
-                <small class="invalid-feedback">Обязательное поле</small>
-            </div>
+        <div class="form-group">
+            <label class="form-label">Название лимита</label>
+            <span class="text-danger">*</span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="День рождение Василия"
+                   id="reminderTitle"
+                   v-model="reminder.title">
+            <small class="invalid-feedback">Обязательное поле</small>
         </div>
 
-        <div class="form-row">
-            <label class="form-label">Выберите иконку напоминания</label>
+        <div class="form-group">
+            <label class="form-label">Выберите иконку</label>
+            <span class="text-danger">*</span>
+            <br />
             <span class="text-large mx-4 reminder-icons">
                 <i v-on:click="chooseReminderIcon('pe-7s-car')" class="cursor-pointer pe-7s-car"></i>
                 <i v-on:click="chooseReminderIcon('pe-7s-piggy')" class="cursor-pointer pe-7s-piggy"></i>
@@ -43,17 +42,19 @@
                 <i v-on:click="chooseReminderIcon('pe-7s-call')" class="cursor-pointer pe-7s-call "></i>
                 <i v-on:click="chooseReminderIcon('pe-7s-alarm')" class="cursor-pointer pe-7s-alarm "></i>
             </span>
+            <br />
+            <small class="invalid-feedback" id="reminderIcons">Обязательное поле</small>
         </div>
 
-        <div class="form-row">
+        <div class="form-group">
             <label class="form-label">Начало</label>
-            <input type="text" class="form-control" id="dateReminder" v-model="reminder.dateReminder">
+            <span class="text-danger">*</span>
+            <input type="text" class="form-control" id="reminderDateReminder" v-model="reminder.dateReminder">
+            <small class="invalid-feedback">Обязательное поле</small>
         </div>
-        <div class="form-row">
-            <div class="form-group col mb-0">
-                <label class="form-label">Описание</label>
-                <textarea class="form-control" v-model="reminder.description" placeholder="" name="description"></textarea>
-            </div>
+        <div class="form-group">
+            <label class="form-label">Описание</label>
+            <textarea class="form-control" v-model="reminder.description" placeholder="" name="description"></textarea>
         </div>
         <div class="form-group mt-4">
             <label class="custom-control custom-checkbox">
@@ -61,21 +62,19 @@
                 <span class="custom-control-label">Повторять</span>
             </label>
         </div>
-        <div class="form-row" v-show="reminder.isRepeat">
-            <div class="form-group col mb-0">
-                <label class="form-label">Повторять каждый</label>
-                <select class="form-control" v-model="reminder.repeatEvery">
-                    <option value="Day">День</option>
-                    <option value="Week">Неделю</option>
-                    <option value="Month">Месяц</option>
-                    <option value="Year">Год</option>
-                </select>
-            </div>
+        <div class="form-group" v-show="reminder.isRepeat">
+            <label class="form-label">Повторять каждый</label>
+            <select class="form-control" v-model="reminder.repeatEvery">
+                <option value="Day">День</option>
+                <option value="Week">Неделю</option>
+                <option value="Month">Месяц</option>
+                <option value="Year">Год</option>
+            </select>
         </div>
 
     </div>
     <div class="card-footer">
-        <button class="btn btn-primary" type="submit"
+        <button class="btn btn-primary" type="button"
                 v-bind:disabled="isSaving"
                 v-on:click="save">
             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
@@ -84,3 +83,4 @@
         <button type="button" class="btn btn-default" v-on:click="close">Закрыть</button>
     </div>
 </div>
+
