@@ -48,6 +48,10 @@
     color: var(--success) !important;
 }
 
+.link-orange-hover:hover {
+    color: var(--orange) !important;
+}
+
 .badge.indicator {
     margin: -4px 0px 0px 7px !important;
 }
@@ -141,7 +145,7 @@
 }
 
 .display-inline {
-    display: inline;
+    display: inline !important;
 }
 
 a.disabled {
@@ -402,4 +406,49 @@ td.show-actions span.cell-actions {
 .active-item {
     border-left: 3px solid var(--blue) !important;
     background: #D6EAF8 !important;
+}
+
+
+/*ToDoList*/
+.todolist-checked {
+    color: #a3a4a6;
+    text-decoration: line-through;
+}
+
+.folder-icons i {
+    opacity: 0.75;
+    font-size: 35px;
+    -webkit-transition: all .08s linear .05s;
+    -o-transition: all .08s linear .05s;
+    transition: all .08s linear .05s;
+}
+
+    .folder-icons i:hover,
+    .folder-icons i.active {
+        opacity: 1;
+        color: var(--success);
+    }
+
+.folder-icon {
+    font-size: 50px;
+}
+
+.todo-item {
+}
+
+.todo-item-actions span {
+    opacity: .1;
+    font-size: 18px;
+    -webkit-transition: all .08s linear .05s;
+    -o-transition: all .08s linear .05s;
+    transition: all .08s linear .05s;
+}
+
+    .todo-item-actions span.link-green {
+        opacity: 1;
+        color: var(--success) !important;
+    }
+
+.todo-item:hover .todo-item-actions span {
+    opacity: 1;
 }

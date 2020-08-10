@@ -68,8 +68,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ModelView\ToDoList\" />
-  </ItemGroup>
-
 </Project>

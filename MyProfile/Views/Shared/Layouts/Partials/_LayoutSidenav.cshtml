@@ -56,6 +56,10 @@
         <li class="sidenav-item@(currentPage == "Budget/TimeLine" ? " active" : "")">
             <a asp-area="" asp-controller="Budget" asp-action="TimeLine" class="sidenav-link"><i class="sidenav-icon lnr lnr-calendar-full"></i><div>Календарь</div></a>
         </li>
+        
+        <li class="sidenav-item@(currentPage == "ToDoList/List" ? " active" : "")">
+            <a asp-area="" asp-controller="ToDoList" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr lnr-list"></i><div>Списки</div></a>
+        </li>
 
         <li class="sidenav-divider mb-1"></li>
         @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@

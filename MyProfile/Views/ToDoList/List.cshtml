@@ -1,7 +1,311 @@
-﻿
-@{
-    ViewData["Title"] = "List";
+﻿@{
+    ViewData["Title"] = "Project list - Pages";
 }
 
-<h1>List</h1>
+@section Styles {
+    <link href="~/vendor/css/pages/messages.css" rel="stylesheet" />
+}
 
+@section Scripts {
+    <script src="~/vendor/libs/masonry/masonry.js"></script>
+
+    <script src="~/pages/list/todo-list.js"></script>
+}
+
+<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+    <span class="lnr lnr-list display-4 text-primary mr-2"></span>
+    <span class="px-0 pb-2 pt-2">
+        Списки
+    </span>
+    <span class="px-0 pb-2 ml-4">
+        <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)" v-on:click="edit()">Добавить новый лимит</a>
+    </span>
+</h4>
+
+<div class="card messages-card" id="todo-list-vue" v-cloak>
+    <div class="row no-gutters">
+
+        <!-- Messages sidebox -->
+        <div class="messages-sidebox messages-scroll col">
+
+            <div class="card-body py-3">
+                <h4>
+                    Папки
+                </h4>
+            </div>
+            <hr class="border-light m-0">
+
+            <div class="card-body pt-3">
+                <input type="text" class="form-control form-control-sm mb-4" placeholder="Поиск..."
+                       v-model="searchFolderText">
+
+                <!-- Mail boxes -->
+                <a href="javascript:void(0)" class="text-body d-flex justify-content-between align-items-center py-2"
+                   v-for="_folder in folders"
+                   v-bind:class="_folder.id == folder.id ? 'font-weight-bold' : ''"
+                   v-on:click="selecteFolder(_folder)"
+                   v-bind:style="_folder.isShow ? '' : 'display: none !important;'">
+                    <div>
+                        <i v-bind:class="[_folder.cssIcon, _folder.id == folder.id ? 'font-weight-bold' : '']"></i> &nbsp; {{ _folder.title }}
+                    </div>
+                    <div class="badge badge-primary">15</div>
+                </a>
+                <!-- / Mail boxes -->
+
+                <hr class="border-light my-4">
+
+            </div>
+
+        </div>
+        <!-- / Messages sidebox -->
+        <!-- Messages list -->
+        <div class="col" v-show="isEdit == false" id="listOfLists">
+
+            <!-- Controls -->
+            <div class="media flex-wrap align-items-center py-2 px-2">
+                <div class="media-body d-flex flex-wrap flex-basis-100 flex-basis-sm-auto">
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Добавить новый список"
+                            v-on:click="edit()">
+                        <i class="ion ion-md-add"></i>
+                    </button>
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Обновить папку"
+                            v-on:click="load">
+                        <i class="ion ion-md-refresh"></i>
+                    </button>
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Удалить выбранные списки"
+                            v-on:click="removeLists">
+                        <i class="ion ion-md-trash"></i>
+                    </button>
+
+                </div>
+                <input type="text" class="form-control form-control-sm float-right" style="width: 200px" placeholder="Поиск..."
+                       v-model="searchListText">
+
+            </div>
+            <hr class="border-light m-0">
+            <!-- / Controls -->
+
+            <ul class="list-group messages-list">
+
+                <li class="list-group-item px-4"
+                    v-for="_list in folder.lists"
+                    v-show="_list.isShow"
+                    v-bind:id="'list_'+_list.id">
+                    <div class="message-checkbox mr-1"
+                         v-show="_list.isDeleted == false">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input"
+                                   v-bind:checked="_list.selected"
+                                   v-on:click="_list.selected = !_list.selected">
+                            <span class="custom-control-label"></span>
+                        </label>
+                    </div>
+                    <a href="javascript:void(0)" class="ion ion-md-star-outline d-block text-lighter text-big mr-3"
+                       v-if="_list.isDeleted == false"></a>
+                    <a href="javascript:void(0)" class="message-subject flex-shrink-1 text-body d-block font-weight-bold"
+                       v-on:click="selecteList(_list)"
+                       v-if="_list.isDeleted == false">
+                        {{ _list.title }}
+                    </a>
+                    <a href="javascript:void(0)" class="message-subject flex-shrink-1 text-body d-block text-muted"
+                       v-else-if="_list.isDeleted == true">
+                        {{ _list.title }}
+                    </a>
+                    <div class="message-date text-muted">
+                        1d ago
+                        <i class="fa fa-undo pl-2 cursor-pointer text-success" v-show="_list.isDeleted" v-on:click="recovery(_list)"></i>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+        <div class="col" v-show="isEdit">
+            <!-- Controls -->
+            <div class="media flex-wrap align-items-center py-3 px-2">
+                <div class="media-body d-flex flex-wrap flex-basis-100 flex-basis-sm-auto">
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Mark as unread"
+                            v-on:click="edit()"
+                            v-bind:disabled="!folder">
+                        <i class="ion ion-md-add"></i>
+                    </button>
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-sidebox-toggler d-lg-none d-block text-muted text-large mr-2"><i class="ion ion-md-more"></i></button>
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Refresh"><i class="ion ion-md-refresh"></i></button>
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Mark as important"><i class="ion ion-md-alert"></i></button>
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Move to spam"><i class="ion ion-md-folder-open"></i></button>
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Move to trash"><i class="ion ion-md-trash"></i></button>
+                </div>
+
+                <div class="d-flex flex-wrap">
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted"><i class="ion ion-ios-arrow-back"></i></button>
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted"><i class="ion ion-ios-arrow-forward"></i></button>
+                </div>
+            </div>
+            <hr class="border-light m-0">
+            <!-- / Controls -->
+            <div class="card-body">
+
+                <!-- Header -->
+                @*<h4 class="m-0" v-show="list.id <= 0">
+                        Создание нового списока
+                    </h4>
+                    <h4 class="m-0" v-show="list.id > 0">
+                        Редактирование списка
+                    </h4>
+                    <hr class="my-4">*@
+                @*<a href="javascript:void(0)" class="messages-sidebox-toggler d-lg-none text-muted align-middle pr-3 mr-1"><i class="ion ion-md-more"></i></a>*@
+                @*<a href="javascript:void(0)" class="messages-sidebox-toggler d-lg-none text-muted align-middle pr-3 mr-1"><i class="ion ion-md-more"></i></a>*@
+                <!-- / Header -->
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="form-label">Название списка</label>
+                        <input type="text" class="form-control" v-model="list.title" id="listTitle">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="form-label">Навзвание папки</label>
+                        <select class="form-control" v-model="list.folderID" disabled>
+                            <option v-bind:value="_folder.id" v-for="_folder in folders">{{ _folder.title }}</option>
+                        </select>
+                        <span class="text-muted m-b block cursor-pointer link-green-hover text-decoration"
+                              v-on:click="editFolder(true)">Редактировать папку</span>
+                        <span class="text-muted m-b block cursor-pointer link-orange-hover text-decoration"
+                              v-on:click="editFolder(false)">Создать новую папку</span>
+                    </div>
+                </div>
+
+                <div id="tasks-inner">
+                    <div class="card-body">
+                        <div class="custom-controls-stacked">
+                            <div class="pb-2 todo-item"
+                                 v-for="_item in list.items"
+                                 v-show="_item.isDeleted == false">
+                                <label class="ui-todo-item custom-control custom-checkbox display-inline">
+                                    <input type="checkbox" class="custom-control-input"
+                                           v-bind:checked="_item.isDone"
+                                           v-on:click="_item.isDone = !_item.isDone">
+                                    <span class="custom-control-label"></span>
+                                </label>
+                                <span class="custom-control-label" v-bind:class="_item.isDone ? 'todolist-checked' : ''">{{ _item.text }}</span>
+                                @*<span class="ui-todo-badge badge badge-outline-default font-weight-normal ml-2">58 mins left</span>*@
+                                <span class="todo-item-actions ml-4 pl-4">
+                                    <span class="ion ion-md-create link-green-hover cursor-pointer mr-2" title="Редактировать запись"
+                                          v-bind:class="item != null && _item.id == item.id ? 'link-green': ''"
+                                          v-on:click="editItem(_item)"></span>
+                                    <span class="ion ion-md-trash link-red-hover cursor-pointer " title="Удалить"
+                                          v-on:click="_item.isDeleted = true"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Type your task" id="input-text"
+                               v-on:keypress="keyPress"
+                               v-model="text">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" v-on:click="addItem">
+                                {{item == null ? "Добавить" : "Сохранить"}}
+                            </button>
+                        </div>
+                        <small class="invalid-feedback">Это поле не должно быть пустым</small>
+                    </div>
+                </div>
+                <!-- Footer -->
+                <div class="text-right mt-4">
+                    <button type="button" class="btn btn-primary ml-2"
+                            v-bind:disabled="isSaving"
+                            v-on:click="saveList(true)">
+                        <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                        Сохранить и продолжить
+                    </button>
+                    <button type="button" class="btn btn-primary ml-2"
+                            v-bind:disabled="isSaving"
+                            v-on:click="saveList(false)">
+                        <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                        Сохранить и уйти
+                    </button>
+                    <button type="button" class="btn btn-default ml-2"
+                            v-on:click="isEdit = false">
+                        Закрыть
+                    </button>
+                </div>
+                <!-- / Footer -->
+
+            </div>
+        </div>
+        <!-- / Messages list -->
+
+    </div><!-- / .row -->
+
+    <div class="modal fade" id="modal-folder">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" v-show="folder.id == undefined">
+                        Содание папки
+                    </h5>
+                    <h5 class="modal-title" v-show="folder.id">
+                        Редактирование папки
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body pt-0">
+                    <div class="form-group">
+                        <label class="form-label">Название папки</label>
+                        <span class="text-danger">*</span>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Продукты"
+                               id="folderTitle"
+                               v-model="folder.title">
+                        <small class="invalid-feedback">Обязательное поле</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Выберите иконку</label>
+                        <br />
+                        <span class="text-large mx-4 folder-icons">
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-albums')" class="cursor-pointer ion ion-ios-albums"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-alert')" class="cursor-pointer ion ion-ios-alert"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-attach')" class="cursor-pointer ion ion-ios-attach"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-basket')" class="cursor-pointer ion ion-md-basket"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-cart')" class="cursor-pointer ion ion-md-cart"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-airplane')" class="cursor-pointer ion ion-ios-airplane"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-beer')" class="cursor-pointer ion ion-ios-beer"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-wine')" class="cursor-pointer ion ion-ios-wine"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-boat')" class="cursor-pointer ion ion-md-boat"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-bicycle')" class="cursor-pointer ion ion-ios-bicycle"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-body')" class="cursor-pointer ion ion-ios-body"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-book')" class="cursor-pointer ion ion-ios-book"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-bus')" class="cursor-pointer ion ion-md-bus"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-calendar')" class="cursor-pointer ion ion-md-calendar"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-call')" class="cursor-pointer ion ion-ios-call"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-car')" class="cursor-pointer ion ion-md-car"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-checkbox-outline')" class="cursor-pointer ion ion-md-checkbox-outline"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-happy')" class="cursor-pointer ion ion-md-happy"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-home')" class="cursor-pointer ion ion-ios-home"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-ios-mail')" class="cursor-pointer ion ion-ios-mail"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-people')" class="cursor-pointer ion ion-md-people"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-pricetag')" class="cursor-pointer ion ion-md-pricetag"></i>
+                            <i v-on:click="chooseFolderIcon('ion ion-md-pricetags')" class="cursor-pointer ion ion-md-pricetags"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button"
+                            v-bind:disabled="isFolderSaving"
+                            v-on:click="saveFolder">
+                        <span class="spinner-border" role="status" aria-hidden="true" v-show="isFolderSaving"></span>
+                        Сохранить
+                    </button>
+                    <button type="button" class="btn btn-default " data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*@await Html.PartialAsync(@"../Settings/Settings.cshtml", "Goal/List")*@

@@ -186,6 +186,7 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<ReminderDate> ReminderDates { get; set; }
         public virtual DbSet<ToDoList> ToDoLists { get; set; }
         public virtual DbSet<ToDoListItem> ToDoListItems { get; set; }
+        public virtual DbSet<ToDoListFolder> ToDoListFolders { get; set; }
 
     }
 }

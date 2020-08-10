@@ -13,18 +13,16 @@ namespace MyProfile.Entity.Model
 		public string Title { get; set; }
 		public DateTime DateCreate { get; set; }
 		public DateTime DateEdit { get; set; }
-		[MaxLength(32)]
-		public string CssIcon { get; set; }
 		public bool IsDeleted { get; set; }
 
-		[ForeignKey("User")]
-		public Guid UserID { get; set; }
+		[ForeignKey("ToDoListFolder")]
+		public int ToDoListFolderID { get; set; }
 		[ForeignKey("PeriodType")]
 		public int PeriodTypeID { get; set; }
 		[ForeignKey("VisibleElement")]
 		public int VisibleElementID { get; set; }
 
-		public virtual User User { get; set; }
+		public virtual ToDoListFolder ToDoListFolder { get; set; }
 		public virtual PeriodType PeriodType { get; set; }
 		public virtual VisibleElement VisibleElement { get; set; }
 
