@@ -452,3 +452,23 @@ td.show-actions span.cell-actions {
 .todo-item:hover .todo-item-actions span {
     opacity: 1;
 }
+
+.folder-edit-button {
+    opacity: .05;
+    -webkit-transition: all .10s linear .10s;
+    -o-transition: all .10s linear .10s;
+    transition: all .10s linear .10s;
+}
+
+a.folder-text:hover .folder-edit-button {
+    opacity: 1;
+}
+
+.folder-edit-button:hover {
+    font-size: 16px;
+}
+
+margin-right {
+    margin-right: 0px !important;
+    margin-left:auto !important;
+}

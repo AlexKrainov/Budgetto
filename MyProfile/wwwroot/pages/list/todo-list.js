@@ -1,10 +1,10 @@
 ﻿var ToDoListVue = new Vue({
     el: "#todo-list-vue",
     data: {
-        folders: [],
+        folders: [{ lists: [{ isDeleted: false, isDoneCount: 0 }] }],
 
         //Edit list
-        list: { isDeleted: false },
+        list: { isDeleted: false, isDoneCount: 0 },
         text: null,
 
         //Edit item
@@ -63,6 +63,12 @@
     },
     mounted: function () {
         this.load();
+
+        $('.messages-sidebox-toggler').click(function (e) {
+            $("a.messages-sidebox-toggler").
+                e.preventDefault();
+            $('.messages-wrapper, .messages-card').toggleClass('messages-sidebox-open');
+        });
     },
     methods: {
         load: function () {
@@ -98,44 +104,42 @@
                     id: 0,
                     isDeleted: false,
                     selected: false,
+                    isFavorite: false,
+                    isNewToday: true,
+                    isEditToday: false,
+                    isDoneCount: 0,
                 }
             }
 
             this.isEdit = true;
         },
-
-        addItem: function () {
-            if (!this.list.items) {
-                this.list.items = [];
-            }
-
-            if (!this.text || this.text.length == 0) {
-                $("#input-text").addClass("is-invalid");
-
+        toggleFavorite: function (list) {
+            if (this.isSaving) {
                 return false;
-            } else {
-                $("#input-text").removeClass("is-invalid");
-
             }
+            this.isSaving = true;
+            list.isFavorite = !list.isFavorite;
 
-            if (this.item) {
-                let index = this.list.items.findIndex(x => x.id == this.item.id);
-                if (index != -1) {
-                    this.list.items[index].text = this.text;
+            return $.ajax({
+                type: "GET",
+                url: "/ToDoList/ToggleFavorite?listID=" + list.id + "&isFavorite=" + list.isFavorite,
+                context: {
+                    $this: this, list: list
+                },
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+
+                    if (response.isOk == false) {
+                        this.list.isFavorite = !this.list.isFavorite;
+                    }
+                    this.$this.isSaving = false;
+                },
+                error: function () {
+                    this.$this.isSaving = false;
                 }
-            } else {
-                this.list.items.push({
-                    id: this.id,
-                    text: this.text,
-                    isDone: false,
-                    isDeleted: false,
-                });
-                this.id++;
-            }
-            this.text = null;
-            this.item = null;
+            });
         },
-
 
         saveList: function (isContinuousOnThisList) {
             if (this.checkListValid() == false) {
@@ -143,7 +147,7 @@
             }
 
             if (!(this.list.title && this.list.title.length > 0)) {
-                this.list.title = this.list.items[0];
+                this.list.title = this.list.items[0].text;
             }
 
             this.isSaving = true;
@@ -174,7 +178,7 @@
                             let listIndex = this.$this.folder.lists.findIndex(x => x.id == response.list.id);
 
                             if (listIndex >= 0) {
-                                this.$this.folder.lists.slice(list, 1);
+                                this.$this.folder.lists.splice(list, 1);
 
                                 let folderIndex = this.$this.folders.findIndex(x => x.id == response.list.folderID);
                                 if (folderIndex > 0) {
@@ -268,6 +272,44 @@
         editItem: function (item) {
             this.text = item.text;
             this.item = item;
+            $("#input-text").focus();
+        },
+        addItem: function () {
+            if (!this.list.items) {
+                this.list.items = [];
+            }
+
+            if (!this.text || this.text.length == 0) {
+                $("#input-text").addClass("is-invalid");
+
+                return false;
+            } else {
+                $("#input-text").removeClass("is-invalid");
+
+            }
+
+            if (this.item) {
+                let index = this.list.items.findIndex(x => x.id == this.item.id);
+                if (index != -1) {
+                    this.list.items[index].text = this.text;
+                }
+            } else {
+                this.list.items.push({
+                    id: this.id,
+                    text: this.text,
+                    isDone: false,
+                    isDeleted: false,
+                });
+                this.id++;
+            }
+            this.text = null;
+            this.item = null;
+        },
+        clearItem: function () {
+            if (this.item) {
+                this.item = null;
+            }
+            this.text = null;
         },
         //removeItem: function (item) {
         //    if (item.id > 0) {
@@ -275,7 +317,7 @@
         //    } else {
         //        let index = this.list.items.findIndex(x => x.id == item.id);
         //        if (index != -1) {
-        //            this.list.items.slice(index, 1);
+        //            this.list.items.splice(index, 1);
         //        }
         //    }
         //},
@@ -304,12 +346,13 @@
 
 
         //Folder 
-        editFolder: function (isEdit) {
+        editFolder: function (isEdit, folderID) {
             //FolderID
             if (isEdit == false) {
-                let index = this.folders.findIndex(x => x.id == this.folderID);
+                let index = this.folders.findIndex(x => x.id == folderID);
                 if (index != -1) {
                     this.folder = { ... this.folders[index] };
+                    this.chooseFolderIcon(this.folder.cssIcon);
                     $("#modal-folder").modal("show");
                     return true;
                 }
@@ -324,11 +367,13 @@
                 isOwner: true,
             };
 
+
             $("#modal-folder").modal("show");
         },
         chooseFolderIcon: function (cssIcon) {
+            let newCssIcon = cssIcon.replace(" ", ".");
             $(".folder-icons i").removeClass("active");
-            $(".folder-icons i." + cssIcon).addClass("active");
+            $(".folder-icons i." + newCssIcon).addClass("active");
             this.folder.cssIcon = cssIcon;
 
         },
@@ -390,6 +435,35 @@
             }
 
             return isOk;
+        },
+        removeFolder: function () {
+            this.isFolderSaving = true;
+            return $.ajax({
+                type: "POST",
+                url: "/ToDoList/RemoveFolder",
+                data: JSON.stringify(this.folder),
+                context: this,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+
+                    if (response.isOk) {
+                        let index = this.folders.findIndex(x => x.id == response.folder.id);
+                        if (index != -1) {
+                            this.folders.splice(index, 1);
+                            this.folder = {};
+                        }
+                        $("#modal-folder").modal("hide");
+                    } else {
+                        //todo show error
+                    }
+
+                    this.isFolderSaving = false;
+                },
+                error: function () {
+                    this.isFolderSaving = false;
+                }
+            });
         },
 
 

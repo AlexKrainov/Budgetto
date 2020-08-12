@@ -27,6 +27,7 @@ namespace MyProfile.Entity.ModelView.ToDoList
         public int PeriodTypeID { get; set; }
         public string Title { get; set; }
         //public VisibleElement VisibleElement { get; set; }
+        public bool IsFavorite { get; set; }
         public bool IsShowInCollective { get; set; }
         public IEnumerable<ToDoListItemModelView> Items { get; set; }
 
@@ -36,6 +37,11 @@ namespace MyProfile.Entity.ModelView.ToDoList
         public bool IsOwner { get; set; }
         public string UserName { get; set; }
         public string ImageLink { get; set; }
+        public DateTime DateEdit { get; set; }
+        public DateTime DateCreate { get; set; }
+        public bool IsNewToday { get; set; }
+        public bool IsEditToday { get; set; }
+        public int IsDoneCount;
     }
 
     public class ToDoListItemModelView

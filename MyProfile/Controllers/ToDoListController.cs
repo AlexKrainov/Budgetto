@@ -54,6 +54,13 @@ namespace MyProfile.Controllers
 
             return Json(new { isOk = result, listIDs });
         }
+        [HttpPost]
+        public async Task<IActionResult> RemoveFolder([FromBody] FolderListModelView folder)
+        {
+            var result = await toDoListService.RemoveFolder(folder);
+
+            return Json(new { isOk = result, folder });
+        }
 
         //[HttpPost]
         //public async Task<IActionResult> RemoveItem([FromBody] ToDoListItemModelView item)
@@ -69,6 +76,14 @@ namespace MyProfile.Controllers
             var result = await toDoListService.Recovery(listID);
 
             return Json(new { isOk = result, listID });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ToggleFavorite(int listID, bool isFavorite)
+        {
+            var result = await toDoListService.ToggleFavorite(listID, isFavorite);
+
+            return Json(new { isOk = result, listID, isFavorite });
         }
     }
 }

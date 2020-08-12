@@ -13,6 +13,7 @@ namespace MyProfile.Entity.Model
         public string Text { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime DateEdit { get; set; }
+        public int Order { get; set; }
         public bool IsDone { get; set; }
 
         [ForeignKey("ToDoList")]

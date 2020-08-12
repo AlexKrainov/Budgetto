@@ -13,7 +13,8 @@ namespace MyProfile.Entity.Model
 		public string Title { get; set; }
 		public DateTime DateCreate { get; set; }
 		public DateTime DateEdit { get; set; }
-		public bool IsDeleted { get; set; }
+        public bool IsFavorite { get; set; }
+        public bool IsDeleted { get; set; }
 
 		[ForeignKey("ToDoListFolder")]
 		public int ToDoListFolderID { get; set; }
