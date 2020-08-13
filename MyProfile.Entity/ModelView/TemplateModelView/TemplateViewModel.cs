@@ -49,18 +49,28 @@ namespace MyProfile.Entity.ModelView
         {
             get
             {
+                var style = "";
                 if (!string.IsNullOrEmpty(ColumnSectionType))
                 {
                     if (ColumnSectionType == "Spendings")
                     {
-                        return "table-danger";
+                        style += "table-danger";
                     }
                     else if (ColumnSectionType == "Earnings")
                     {
-                        return "table-success";
+                        style += "table-success";
                     }
                 }
-                return "";
+
+                if (TemplateColumnType == TemplateColumnType.DaysForMonth)
+                {
+                    style += " cell-days ";
+                }
+                if (TemplateColumnType == TemplateColumnType.MonthsForYear)
+                {
+                    style += " cell-months ";
+                }
+                return style;
             }
         }
     }

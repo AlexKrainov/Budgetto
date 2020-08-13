@@ -520,16 +520,22 @@
         },
         getCellActions: function (cell, cellIndex, rowIndex) {
             if (this.periodType == PeriodTypeEnum.Month) {
-                return `
+                if (cell.templateColumnType == 2) {//Days
+                    return `
                     <span class="float-left cell-actions">
                         <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')" title="Добавить запись" ></i>
                         <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)" title="Посмотреть историю"></i>
                         <i class="remind-cell-action">+<i class="fas fa-bell" onclick="ReminderVue.addReminders('${cell.currentDate}')" title="Добавить напоминание"></i></i>
                     </span>`;
+                } else {
+                    return `
+                    <span class="float-left cell-actions">
+                        <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)" title="Посмотреть историю"></i>
+                    </span>`;
+                }
             } else {
                 return `
                     <span class="float-left cell-actions">
-                        <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')"></i>
                         <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"></i>
                     </span>`;
             }

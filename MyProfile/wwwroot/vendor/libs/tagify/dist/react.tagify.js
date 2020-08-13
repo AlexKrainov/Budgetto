@@ -1,73 +1,8 @@
-import React from "react";
-import Tagify from "./tagify.min.js";
-import "./tagify.css";
+/**
+ * Tagify (v 3.17.7)- tags input component
+ * By Yair Even-Or
+ * Don't sell this code. (c)
+ * https://github.com/yairEO/tagify
+ */
 
-class Tags extends React.Component {
-  constructor(props) {
-    super(props);
-    this._handleRef = this._handleRef.bind(this);
-  }
-
-  componentDidMount() {
-    if( this.props.value )
-      this.component.value = this.props.value
-
-    this.tagify = new Tagify(this.component, this.props.settings || {});
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const tagify = this.tagify
-
-    // check if value has changed
-    if (nextProps.value && nextProps.value.join() !== this.props.value.join()) {
-      tagify.loadOriginalValues(nextProps.value)
-      // this.tagify.addTags(nextProps.value, true, true)
-    }
-
-    this.tagify.settings.whitelist = nextProps.settings.whitelist
-
-    if (nextProps.showDropdown) {
-      tagify.dropdown.show.call(tagify, nextProps.showDropdown)
-      tagify.toggleFocusClass(true)
-    }
-    else if ("showDropdown" in nextProps && !nextProps.showDropdown) {
-      tagify.dropdown.hide.call(tagify)
-    }
-
-    // do not allow react to re-render since the component is modifying its own HTML
-    return false;
-  }
-
-  _handleRef(component) {
-    this.component = component;
-  }
-
-  render() {
-    const attrs = {
-      ref        : this._handleRef,
-      name       : this.props.name,
-      className  : this.props.className,
-      placeholder: this.props.class,
-      autoFocus  : this.props.autofocus,
-      value      : this.props.children
-    }
-
-    const { className } = this.props
-
-    return React.createElement(
-      "div",
-      { className },
-      React.createElement(
-        this.props.mode,
-        Object.assign({}, attrs, { defaultValue:this.props.initialValue })
-      )
-    );
-  }
-}
-
-Tags.defaultProps = {
-  value: [],
-  mode: "input"
-};
-
-export default Tags;
+!function(e,t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?module.exports=t():e.React.tagify=t()}(this,function(){"use strict";function u(e){return(u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var e,G=function(e){if(e&&e.__esModule)return e;if(null===e||"object"!==u(e)&&"function"!=typeof e)return{default:e};var t=a();if(t&&t.has(e))return t.get(e);var n={},r=Object.defineProperty&&Object.getOwnPropertyDescriptor;for(var o in e)if(Object.prototype.hasOwnProperty.call(e,o)){var i=r?Object.getOwnPropertyDescriptor(e,o):null;i&&(i.get||i.set)?Object.defineProperty(n,o,i):n[o]=e[o]}n.default=e,t&&t.set(e,n);return n}(require("react")),H=require("react-dom/server"),t=require("prop-types"),L=(e=require("./tagify.min.js"))&&e.__esModule?e:{default:e};function a(){if("function"!=typeof WeakMap)return null;var e=new WeakMap;return a=function(){return e},e}function Q(e){return function(e){if(Array.isArray(e)){for(var t=0,n=new Array(e.length);t<e.length;t++)n[t]=e[t];return n}}(e)||function(e){if(Symbol.iterator in Object(e)||"[object Arguments]"===Object.prototype.toString.call(e))return Array.from(e)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance")}()}function U(e){return e}function n(e){function t(e){J.current=e}var n=e.name,r=e.value,o=void 0===r?"":r,i=e.loading,u=void 0!==i&&i,a=e.onInput,c=void 0===a?U:a,f=e.onAdd,l=void 0===f?U:f,s=e.onRemove,d=void 0===s?U:s,p=e.onEdit,y=void 0===p?U:p,v=e.onInvalid,g=void 0===v?U:v,m=e.onClick,b=void 0===m?U:m,h=e.onKeydown,w=void 0===h?U:h,O=e.onFocus,j=void 0===O?U:O,E=e.onBlur,S=void 0===E?U:E,M=e.onChange,x=void 0===M?U:M,R=e.readOnly,T=e.children,k=e.settings,A=void 0===k?{}:k,N=e.InputMode,P=void 0===N?"input":N,_=e.autoFocus,C=e.className,F=e.whitelist,I=e.tagifyRef,q=e.placeholder,D=void 0===q?"":q,V=e.defaultValue,W=e.showDropdown,B=(0,G.useRef)(),J=(0,G.useRef)(),K=(0,G.useRef)(),z=(0,G.useMemo)(function(){return{ref:t,name:n,value:T||("string"==typeof o?o:JSON.stringify(o)),className:C,readOnly:R,onChange:x,autoFocus:_,placeholder:D,defaultValue:V}},[V,D,_,C,T,x,R,o,n]);return(0,G.useEffect)(function(){!function(e){if(e)for(var n in e){String(e[n]).includes(".createElement")&&function(){var t=e[n];e[n]=function(e){return(0,H.renderToStaticMarkup)(G.default.createElement(t,e))}}()}}(A.templates),"textarea"==P&&(A.mode="mix");var e=new L.default(J.current,A);return c&&e.on("input",c),l&&e.on("add",l),d&&e.on("remove",d),y&&e.on("edit",y),g&&e.on("invalid",g),w&&e.on("keydown",w),j&&e.on("focus",j),S&&e.on("blur",S),b&&e.on("click",b),I&&(I.current=e),K.current=e,function(){e.destroy()}},[]),(0,G.useEffect)(function(){B.current&&K.current.loadOriginalValues(o)},[o]),(0,G.useEffect)(function(){var e;B.current&&(e=K.current.settings.whitelist).splice.apply(e,[0,K.current.settings.whitelist.length].concat(Q(F||[])))},[F]),(0,G.useEffect)(function(){B.current&&K.current.loading(u)},[u]),(0,G.useEffect)(function(){var e=K.current;B.current&&(W?(e.dropdown.show.call(e,W),e.toggleFocusClass(!0)):e.dropdown.hide.call(e))},[W]),(0,G.useEffect)(function(){B.current=!0},[]),G.default.createElement("div",{className:"tags-input"},G.default.createElement(P,z))}n.propTypes={name:t.string,value:(0,t.oneOfType)([t.string,t.array]),loading:t.bool,children:t.element,onChange:t.func,readOnly:t.bool,settings:t.object,InputMode:t.string,autoFocus:t.bool,className:t.string,tagifyRef:t.object,whitelist:t.array,placeholder:t.string,defaultValue:(0,t.oneOfType)([t.string,t.array]),showDropdown:(0,t.oneOfType)([t.string,t.bool])};var r=G.default.memo(n);r.displayName="Tags";var o=r;return exports.default=o,r});

@@ -184,7 +184,9 @@ a.disabled {
         opacity: 1;
     }
 
-.record-item {
+
+
+.records-timeline .record-item {
     border-left: .25rem solid !important;
     border-radius: 10.5px !important;
 }
@@ -294,6 +296,10 @@ td.show-actions span.cell-actions {
     color: var(--orange);
 }
 
+.cell-months, .cell-days {
+    min-width: 100px;
+}
+
 .cell-reminder-icons i,
 .cell-section-icons i {
     font-size: 23px;
@@ -329,10 +335,21 @@ td.show-actions span.cell-actions {
     text-align: center;
 }
 
-.font-size-large {
-    font-size: large;
+#modal-record .record-item a {
+    font-size: medium;
 }
 
+/*@media()*/
+@media screen and (max-width: 600px) {
+    .modal-record-date-button {
+        width: auto;
+    }
+}
+@media screen and (min-width: 600px) {
+    .modal-record-date-button {
+        width: 100px;
+    }
+}
 
 
 .comment-actions {
@@ -470,5 +487,5 @@ a.folder-text:hover .folder-edit-button {
 
 margin-right {
     margin-right: 0px !important;
-    margin-left:auto !important;
+    margin-left: auto !important;
 }

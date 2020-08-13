@@ -14,17 +14,17 @@
 						<div class="form-group col">
 							<div class="input-group">
 							<span class="input-group-prepend">
-								<button v-on:click="addDays(-7)" class="btn btn-default" type="button" title="Минус 7 дней" style="width: 100px;"><i class="fa fa-angle-double-left font-size-large" aria-hidden="true"></i></button>
+								<button v-on:click="addDays(-7)" class="btn btn-default modal-record-date-button" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left font-size-large" aria-hidden="true"></i></button>
 							</span>
 							<span class="input-group-prepend">
-								<button v-on:click="addDays(-1)" class="btn btn-default" type="button" title="Минус 1 день" style="width: 100px;"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
+								<button v-on:click="addDays(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
 							</span>
 							<input type="text" class="form-control record-date" id="record-date" v-model="dateTimeOfPayment" >
 							<span class="input-group-append">
-								<button v-on:click="addDays(1)" class="btn btn-default" type="button" title="Плюс 1 день" style="width: 100px;"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
+								<button v-on:click="addDays(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
 							</span>
 							<span class="input-group-append">
-								<button v-on:click="addDays(7)" class="btn btn-default" type="button" title="Плюс 7 дней" style="width: 100px;"><i class="fa fa-angle-double-right font-size-large" aria-hidden="true"></i></button>
+								<button v-on:click="addDays(7)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right font-size-large" aria-hidden="true"></i></button>
 							</span>
 						</div>
 						</div>
@@ -93,6 +93,7 @@
 							<vue-section-component data-search-id="searchSection"
 												   data-search-style="max-width: 300px;"
 												   v-on:onchoose="onChooseSection"></vue-section-component>
+                            <small class="invalid-feedback" v-show="isErrorSelectSection">Выберите для все внесенных чисел соответствующие категории.</small>
 						</div>
 					</div>
 					<div class="form-row " v-bind:class="descriptionRecord ? 'show-comment': 'hide-comment'">
@@ -120,7 +121,7 @@
 				</div>
 					<button class="btn btn-primary" type="button" v-bind:disabled="isSaving" v-on:click="save($emit)" >
 						<span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
-						Добавить
+                        {{ isEditMode ? 'Редактировать': 'Добавить' }}
 					</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 				</div>
@@ -163,6 +164,8 @@
 
             //state
             isSaving: false,
+            isEditMode: false,
+            isErrorSelectSection: false,
             after_save_callback: Event,
         }
     },
@@ -202,6 +205,11 @@
             let total;
             let isCorrect = false;
 
+            //remove dublicate after edit
+            if (this.records.some(x => x.tag == item.value)) {
+                return false;
+            }
+
             try {
                 let func = compileExpression(item.value);
                 total = func("1");
@@ -234,7 +242,10 @@
                 };
 
                 this.records.push(newRecords);
-                this.descriptionRecord = newRecords;
+                    
+                if (newRecords.isCorrect) {
+                    this.descriptionRecord = newRecords;
+                }
             } else {
                 let el = this.records.find(x => x.id == item.id);
                 el.money = total;
@@ -297,6 +308,10 @@
         save: function (emit) {
             if (this.records && this.records.length > 0 && this.records.some(x => x.isCorrect)) {
 
+                if (this.checkValidBeforeSave() == false) {
+                    return false;
+                }
+
                 let obj = {
                     dateTimeOfPayment: this.flatpickr.latestSelectedDateObj.toLocaleDateString(),
                     isShowInCollection: this.isShowCollectionElement == false ? false : this.isShowInCollection,
@@ -339,7 +354,7 @@
                                 //if it's a budget page we need to update data
 
                             }
-
+                            this.isEditMode = false;
                         }
                         return result;
                     },
@@ -349,7 +364,16 @@
                         this.isSaving = false;
                     }
                 }, this);
+            } else {
+                return false;
             }
+        },
+        checkValidBeforeSave: function () {
+            let isOk = true;
+            //for (var i = 0; i < this.records.length; i++) {
+
+            //}
+            return isOk;
         },
         editByID: function (id) {
             this.isSaving = true;
@@ -392,7 +416,7 @@
             this.tagify.addTags([{ value: record.tag, id: record.id }]);
 
             this.after_save_callback = callback;
-
+            this.isEditMode = true;
             $("#modal-record").modal("show");
         },
         onChooseSection: function (section) {
