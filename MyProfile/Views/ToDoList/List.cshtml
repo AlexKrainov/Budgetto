@@ -12,13 +12,10 @@
     <script src="~/pages/list/todo-list.js"></script>
 }
 
-<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+<h4 class="d-flex flex-wrap w-100 font-weight-bold">
     <span class="lnr lnr-list display-4 text-primary mr-2"></span>
     <span class="px-0 pb-2 pt-2">
         Списки
-    </span>
-    <span class="px-0 pb-2 ml-4">
-        <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)" v-on:click="edit()">Добавить новый лимит</a>
     </span>
 </h4>
 
@@ -117,7 +114,7 @@
                         {{ _list.title }}
                     </a>
                     <span class="badge badge-pill badge-default" v-show="_list.items.length > 0 && _list.items.length != _list.isDoneCount">
-                        {{ _list.items.length+"/"+_list.isDoneCount  }}
+                        {{ _list.items.length+"/"+ _list.isDoneCount  }}
                     </span>
                     <span class="badge badge-pill badge-secondary" v-show="_list.items.length > 0 && _list.items.length == _list.isDoneCount">
                         {{ _list.items.length+"/"+_list.isDoneCount  }}

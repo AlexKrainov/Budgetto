@@ -65,8 +65,7 @@
         this.load();
 
         $('.messages-sidebox-toggler').click(function (e) {
-            $("a.messages-sidebox-toggler").
-                e.preventDefault();
+            e.preventDefault();
             $('.messages-wrapper, .messages-card').toggleClass('messages-sidebox-open');
         });
     },
@@ -78,7 +77,7 @@
                 .then(function (result) {
                     if (result.isOk == true) {
                         ToDoListVue.folders = result.folders;
-
+                        ToDoListVue.getListItemIsDoneCount();
                         ToDoListVue.folder = ToDoListVue.folders[0];
                         HideLoading("#listOfLists");
                     }
@@ -88,6 +87,7 @@
             this.folder = { ...folder };
             this.isEdit = false;
         },
+        //List
         selecteList: function (list) {
             this.list = { ...list };
             this.isEdit = true;
@@ -108,7 +108,7 @@
                     isNewToday: true,
                     isEditToday: false,
                     isDoneCount: 0,
-                }
+                };
             }
 
             this.isEdit = true;
@@ -140,7 +140,6 @@
                 }
             });
         },
-
         saveList: function (isContinuousOnThisList) {
             if (this.checkListValid() == false) {
                 return false;
@@ -157,7 +156,8 @@
                 url: "/ToDoList/EditList",
                 data: JSON.stringify(this.list),
                 context: {
-                    $this: this, isContinuousOnThisList: isContinuousOnThisList
+                    $this: this,
+                    isContinuousOnThisList: isContinuousOnThisList
                 },
                 contentType: "application/json",
                 dataType: 'json',
@@ -192,9 +192,8 @@
                     } else {
                         //ToDo error
                     }
-
+                    this.$this.getListItemIsDoneCount();
                     this.$this.isEdit = this.isContinuousOnThisList;
-
                     this.$this.isSaving = false;
                 },
                 error: function () {
@@ -311,44 +310,11 @@
             }
             this.text = null;
         },
-        //removeItem: function (item) {
-        //    if (item.id > 0) {
-        //        item.isDeleted = true;
-        //    } else {
-        //        let index = this.list.items.findIndex(x => x.id == item.id);
-        //        if (index != -1) {
-        //            this.list.items.splice(index, 1);
-        //        }
-        //    }
-        //},
-        //removeItem: function (item) {
-        //    if (item.id > 0) {
-
-        //        return $.ajax({
-        //            type: "POST",
-        //            url: "/ToDoList/RemoveItem",
-        //            data: JSON.stringify(item),
-        //            context: this.item,
-        //            contentType: "application/json",
-        //            dataType: 'json',
-        //            success: function (response) {
-        //                if (response.isOk) {
-        //                    ToDoListVue._removeItem(this);
-        //                }
-        //            },
-        //            error: function () {
-        //            }
-        //        });
-        //    } else {
-        //        this._removeItem(item);
-        //    }
-        //},
-
 
         //Folder 
         editFolder: function (isEdit, folderID) {
             //FolderID
-            if (isEdit == false) {
+            if (isEdit) {
                 let index = this.folders.findIndex(x => x.id == folderID);
                 if (index != -1) {
                     this.folder = { ... this.folders[index] };
@@ -366,7 +332,6 @@
                 isShow: true,
                 isOwner: true,
             };
-
 
             $("#modal-folder").modal("show");
         },
@@ -480,6 +445,46 @@
         click: function (item) {
             item.isDone = !item.isDone;
         },
+        getListItemIsDoneCount: function () {
+            for (var i = 0; i < this.folders.length; i++) {
+                for (var j = 0; j < this.folders[i].lists.length; j++) {
+                    this.folders[i].lists[j].isDoneCount = this.folders[i].lists[j].items.filter(x => x.isDone).length;
+                }
+            }
+        },
+
+        //removeItem: function (item) {
+        //    if (item.id > 0) {
+        //        item.isDeleted = true;
+        //    } else {
+        //        let index = this.list.items.findIndex(x => x.id == item.id);
+        //        if (index != -1) {
+        //            this.list.items.splice(index, 1);
+        //        }
+        //    }
+        //},
+        //removeItem: function (item) {
+        //    if (item.id > 0) {
+
+        //        return $.ajax({
+        //            type: "POST",
+        //            url: "/ToDoList/RemoveItem",
+        //            data: JSON.stringify(item),
+        //            context: this.item,
+        //            contentType: "application/json",
+        //            dataType: 'json',
+        //            success: function (response) {
+        //                if (response.isOk) {
+        //                    ToDoListVue._removeItem(this);
+        //                }
+        //            },
+        //            error: function () {
+        //            }
+        //        });
+        //    } else {
+        //        this._removeItem(item);
+        //    }
+        //},
     }
 });
 

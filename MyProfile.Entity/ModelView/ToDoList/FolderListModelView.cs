@@ -41,7 +41,6 @@ namespace MyProfile.Entity.ModelView.ToDoList
         public DateTime DateCreate { get; set; }
         public bool IsNewToday { get; set; }
         public bool IsEditToday { get; set; }
-        public int IsDoneCount;
     }
 
     public class ToDoListItemModelView

@@ -50,7 +50,6 @@ namespace MyProfile.ToDoList.Service
                             IsFavorite = y.IsFavorite,
                             IsNewToday = y.DateCreate.Date == todate,
                             IsEditToday = y.DateCreate.Date != todate && y.DateEdit.Date == todate,
-                            IsDoneCount = y.ToDoListItems.Count(c => c.IsDone),
                             Items = y.ToDoListItems
                                 .OrderByDescending(p => p.IsDone)
                                 .ThenBy(p => p.DateCreate)
@@ -137,7 +136,6 @@ namespace MyProfile.ToDoList.Service
                             DateCreate = y.DateCreate,
                             IsNewToday = y.DateCreate.Date == todate,
                             IsEditToday = y.DateCreate.Date != todate && y.DateEdit.Date == todate,
-                            IsDoneCount = y.ToDoListItems.Count(c => c.IsDone),
                             Items = y.ToDoListItems
                                 .OrderByDescending(p => p.IsDone)
                                 .ThenBy(p => p.DateCreate)
@@ -193,7 +191,6 @@ namespace MyProfile.ToDoList.Service
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
-            int isDoneCount = 0; //bug
 
             try
             {
@@ -238,7 +235,6 @@ namespace MyProfile.ToDoList.Service
                     };
 
                     await repository.CreateAsync(toDoList, true);
-                    isDoneCount = toDoList.ToDoListItems.Count(x => x.IsDone);
 
                     list.ID = toDoList.ID;
                 }
@@ -300,7 +296,6 @@ namespace MyProfile.ToDoList.Service
                     }
 
                     todoList.ToDoListItems = items;
-                    isDoneCount = todoList.ToDoListItems.Count(x => x.IsDone);
 
                     await repository.UpdateAsync(todoList, true);
                 }
@@ -311,7 +306,6 @@ namespace MyProfile.ToDoList.Service
             }
 
             list = await GetListByID(list.ID);
-            list.IsDoneCount = isDoneCount;
 
             return true;
         }
