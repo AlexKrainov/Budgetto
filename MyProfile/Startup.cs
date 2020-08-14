@@ -125,10 +125,23 @@ namespace MyProfile
             }
             else
             {
-                app.UseExceptionHandler("/Dashboards/Dashboard1");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseExceptionHandler("/Error/StatusCode");//For 500 error
                 app.UseHsts();
             }
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Error/Error_404";
+                    await next();
+                }
+                if (context.Response.StatusCode == 500)
+                {
+                    context.Request.Path = "/Error/Error_500";
+                    await next();
+                }
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

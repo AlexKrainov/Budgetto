@@ -32,7 +32,7 @@
 					<section class="form-row">
 						<div class="form-group col">
 							<div class="input-group">
-								<input type="text" class="form-control" id="money" data-role="tagsinput">
+								<input type="text" class="form-control" id="money">
 								<div class="input-group-prepend">
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ currentCurrency.icon }}</button>
 									<div class="dropdown-menu" >
@@ -45,6 +45,7 @@
 									</div>
 								</div>
 							</div>
+                        <small class="text-muted">Двойное нажатие для редактирования</small>
 						</div>
 					</section>
                     <section class="form-inline mb-4" v-show="currentCurrencyID != 1">
@@ -81,11 +82,13 @@
                                         <span v-on:click="descriptionRecord = record" >+ <i class="far fa-comment"></i></span>
                                     </span>
 								</div>
-								<div class="col-6 mb-3 ">
+								<div class="col-6 mb-3 text-right">
 									<span class="text-muted">{{ record.sectionName }} </span>
 									<span class="fa fa-trash remove-section-icon cursor-pointer ml-1"
 										  v-on:click="record.sectionID = -1; record.sectionName = '';"
 										  v-show="record.sectionName"></span>
+                                    <span class="text-danger"
+                                            v-show="isErrorSelectSection && !record.sectionName"><i class="ion ion-ios-alert"></i> Не выбрана категория</span>
 								</div>
 							</div>
 						</div>
@@ -93,7 +96,6 @@
 							<vue-section-component data-search-id="searchSection"
 												   data-search-style="max-width: 300px;"
 												   v-on:onchoose="onChooseSection"></vue-section-component>
-                            <small class="invalid-feedback" v-show="isErrorSelectSection">Выберите для все внесенных чисел соответствующие категории.</small>
 						</div>
 					</div>
 					<div class="form-row " v-bind:class="descriptionRecord ? 'show-comment': 'hide-comment'">
@@ -184,7 +186,9 @@
             placeholder: "550 или 100+500 или 199.99"
         });
 
-        this.tagify.on('remove', this.removeTag);
+        this.tagify
+            .on('remove', this.removeTag);
+            //.on('keydown', this.keydownTagify)
 
         this.loadCurrenciesInfo()
             .then(function () {
@@ -203,6 +207,7 @@
     methods: {
         transformTag: function (item) {
             let total;
+            let value = item.value;
             let isCorrect = false;
 
             //remove dublicate after edit
@@ -210,8 +215,17 @@
                 return false;
             }
 
+            //bug with 015
+            if (value && value[0] == "0") {
+                try {
+                    value = value * 1;
+                } catch (e) {
+                    item.value = value;
+                }
+            }
+
             try {
-                let func = compileExpression(item.value);
+                let func = compileExpression(value.toString());
                 total = func("1");
                 if (total) {
                     item.style = "--tag-bg: #02BC77";
@@ -238,11 +252,13 @@
                     sectionID: -1,
                     sectionName: "",
                     description: undefined,
-                    currencyID: this.currentCurrencyID
+                    currencyRate: null,
+                    currencyNominal: 1,
+                    currencyID: this.currentCurrencyID,
                 };
 
                 this.records.push(newRecords);
-                    
+
                 if (newRecords.isCorrect) {
                     this.descriptionRecord = newRecords;
                 }
@@ -252,6 +268,13 @@
                 el.tag = item.value;
             }
         },
+        //keydownTagify: function (event) {
+        //    console.log(event.detail.originalEvent.key);
+
+        //    if (event.detail.originalEvent.key == ",") {
+        //        event.detail.originalEvent.key = ".";
+        //    }
+        //},
         removeTag: function (event) {
             if (event.detail.data && event.detail.data.value) {
                 let removeIndex = this.records.findIndex(x => x.tag == event.detail.data.value);
@@ -286,15 +309,15 @@
             = ${new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.money)}`;
             }
 
-            try {
-                let func = compileExpression(record.tag);
-                record.money = func("1");
-                record.currencyRate = null;
-                record.currencyNominal = 1;
-                record.currencyID = this.currentCurrencyID;
-            } catch (e) {
+            //try {
+            //    let func = compileExpression(record.tag);
+            //    record.money = func("1");
+            //    record.currencyRate = null;
+            //    record.currencyNominal = 1;
+            //    record.currencyID = this.currentCurrencyID;
+            //} catch (e) {
 
-            }
+            //}
 
             if (record.tag == record.money) {
                 return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.money);
@@ -370,9 +393,14 @@
         },
         checkValidBeforeSave: function () {
             let isOk = true;
-            //for (var i = 0; i < this.records.length; i++) {
+            this.isErrorSelectSection = false;
 
-            //}
+            for (var i = 0; i < this.records.length; i++) {
+                if (this.records[i].sectionID == -1) {
+                    this.isErrorSelectSection = true;
+                }
+            }
+
             return isOk;
         },
         editByID: function (id) {

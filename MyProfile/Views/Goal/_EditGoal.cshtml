@@ -42,6 +42,13 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
+                                    <label class="form-label">На что копим/Название цели</label>
+                                    <span class="text-danger">*</span>
+                                    <input type="text" class="form-control" placeholder="Name" v-model="goal.name" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
                                     <label class="form-label">Сколько нужно накопить ?</label>
                                     <span class="text-danger">*</span>
                                     <input type="number" class="form-control" placeholder="Money" v-model="goal.expectationMoney" required min="0">
@@ -51,15 +58,8 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col">
-                                    <label class="form-label">На что копим/Название цели</label>
-                                    <span class="text-danger">*</span>
-                                    <input type="text" class="form-control" placeholder="Name" v-model="goal.name" required>
-                                </div>
-                            </div>
-                            <div class="form-row">
                                 <div class="form-group col mb-0">
-                                    <label class="form-label">Описание</label>
+                                    <label class="form-label">Введите дополнительную информацию</label>
                                     <textarea class="form-control" v-model="goal.description" placeholder="Description"></textarea>
                                 </div>
                             </div>

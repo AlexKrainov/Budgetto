@@ -28,7 +28,8 @@
     @*<input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />*@
 
     <!-- Head block -->
-    <div class="container-m-nx container-m-ny bg-white container-p-x py-4 mb-0">
+    
+    <div class="container-m-nx container-m-ny theme-bg-white container-p-x py-4 mb-0">
 
         <div class="d-flex justify-content-between align-items-center">
             <div class="form-row">
@@ -98,12 +99,14 @@
             <div class="collapse table-responsive bg-light " id="collapseFilter">
                 <div class="float-right">
                     <button type="button" class="btn icon-btn borderless my-2"
-                            v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-default': 'btn-outline-primary'">
-                        <i class="ion ion-md-menu" v-on:click="pageViewSettings.isTableViewCompact = false; savePageSettings();" title="Обычный вид таблицы"></i>
+                            v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-default': 'btn-outline-primary'"
+                            v-on:click="pageViewSettings.isTableViewCompact = false; savePageSettings();">
+                        <i class="ion ion-md-menu" title="Обычный вид таблицы"></i>
                     </button>
                     <button type="button" class="btn icon-btn borderless my-2 mr-2"
-                            v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-primary': 'btn-outline-default'">
-                        <i class="ion ion-md-reorder" v-on:click="pageViewSettings.isTableViewCompact = true; savePageSettings();" title="Компактный вид таблицы"></i>
+                            v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-primary': 'btn-outline-default'"
+                            v-on:click="pageViewSettings.isTableViewCompact = true; savePageSettings();">
+                        <i class="ion ion-md-reorder" title="Компактный вид таблицы"></i>
                     </button>
                 </div>
             </div>

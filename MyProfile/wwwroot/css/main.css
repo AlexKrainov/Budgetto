@@ -345,6 +345,7 @@ td.show-actions span.cell-actions {
         width: auto;
     }
 }
+
 @media screen and (min-width: 600px) {
     .modal-record-date-button {
         width: 100px;
@@ -488,4 +489,15 @@ a.folder-text:hover .folder-edit-button {
 margin-right {
     margin-right: 0px !important;
     margin-left: auto !important;
+}
+
+
+.green-bottom-line {
+    border-bottom: 3px solid var(--green) !important;
+    border-radius: 5px !important;
+}
+
+.red-bottom-line {
+    border-bottom: 3px solid var(--danger-color) !important;
+    border-radius: 5px !important ;
 }
