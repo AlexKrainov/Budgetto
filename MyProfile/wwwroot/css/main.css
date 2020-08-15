@@ -4,7 +4,7 @@
 }
 
 
-.default-style .select2-dropdown {
+.default-style .select2-dropdown, .select2-container--open  {
     z-index: 1100 !important;
 }
 
@@ -188,7 +188,7 @@ a.disabled {
 
 .records-timeline .record-item {
     border-left: .25rem solid !important;
-    border-radius: 10.5px !important;
+    border-radius: 5px !important;
 }
 
 .record-icon {
@@ -486,7 +486,7 @@ a.folder-text:hover .folder-edit-button {
     font-size: 16px;
 }
 
-margin-right {
+.margin-right {
     margin-right: 0px !important;
     margin-left: auto !important;
 }

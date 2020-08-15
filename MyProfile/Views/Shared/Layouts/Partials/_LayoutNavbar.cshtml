@@ -5,7 +5,8 @@
 }
 
 <!-- Layout navbar -->
-<nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x @(currentUser.UserSettings.WebSiteTheme_CodeName == "dark" ? "bg-navbar-theme" : "bg-white")" id="layout-navbar">
+@*layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x @(currentUser.UserSettings.WebSiteTheme_CodeName == "dark" ? "bg-navbar-theme" : "bg-white")*@
+<nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x bg-navbar-theme" id="layout-navbar">
 
     <!-- Brand demo (see wwwroot/css/demo/demo.css) -->
     <a asp-area="" asp-controller="Dashboards" asp-action="Dashboard1" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
@@ -172,8 +173,8 @@
             <div class="navbar-user nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
                     <span class="d-inline-flex flex-lg-row-reverse align-items-center align-middle">
-                        <img src="@currentUser.ImageLink" alt="User image" class="d-block ui-w-30 rounded-circle">
-                        <span class="px-1 mr-lg-2 ml-2 ml-lg-0">@currentUser.Name @currentUser.LastName</span>
+                        <img src="@currentUser.ImageLink" alt="User image" class="d-block ui-w-30 rounded-circle" id="userImageLink" style=" max-height: 24px;">
+                        <span class="px-1 mr-lg-2 ml-2 ml-lg-0" id="userName">@currentUser.Name @currentUser.LastName</span>
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">

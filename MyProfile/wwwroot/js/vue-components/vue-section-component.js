@@ -33,25 +33,28 @@
 	},
 	mounted: function () {
 		new PerfectScrollbar(document.getElementById('record-sections'));
-		return $.ajax({
-			type: "GET",
-			url: "/Section/GetSectins",
-			data: null,
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'json',
-			context: this,
-			success: function (result) {
-				if (result.isOk) {
-					this.dataSectionItems = result.sections;
-				}
-				return result;
-			},
-			error: function (xhr, status, error) {
-				console.log(error);
-			}
-		}, this);
+		this.load();
 	},
 	methods: {
+        load: function () {
+			return $.ajax({
+				type: "GET",
+				url: "/Section/GetSectins",
+				data: null,
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'json',
+				context: this,
+				success: function (result) {
+					if (result.isOk) {
+						this.dataSectionItems = result.sections;
+					}
+					return result;
+				},
+				error: function (xhr, status, error) {
+					console.log(error);
+				}
+			}, this);
+        },
 		onsearch: function (event) {
 			for (var i = 0; i < this.dataSectionItems.length; i++) {
 				this.dataSectionItems[i].isShow = this.dataSectionItems[i].name.toLocaleLowerCase().indexOf(event.target.value.toLocaleLowerCase()) >= 0;

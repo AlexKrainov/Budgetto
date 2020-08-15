@@ -27,7 +27,7 @@
                         <span class="text-danger">*</span>
                         <input type="text"
                                class="form-control"
-                               placeholder=" Продукты"
+                               placeholder="Продукты"
                                name="name"
                                v-model="limit.name"
                                required>
@@ -52,7 +52,7 @@
                     <div class="form-group col">
                         <label class="form-label">Категории</label>
                         <span class="text-danger">*</span>
-                        <select multiple class="form-control" id="limitSections" name="newSections" required style="width:100%">
+                        <select multiple class="form-control" id="limitSections" required style="width:100%">
                             <option v-for="_section in sections"
                                     v-bind:value="_section.id">
                                 {{ _section.name }}

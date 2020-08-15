@@ -179,6 +179,7 @@ namespace MyProfile.User.Service
                     Month_EarningWidget = true,
                     Month_InvestingWidget = true,
                     Month_SpendingWidget = true,
+                    WebSiteTheme_CodeName = WebSiteThemeEnum.Light,
                 }
             }, true);
 

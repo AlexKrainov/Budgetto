@@ -88,23 +88,11 @@ var LimitListVue = new Vue({
             } else {
                 this.limit = { periodName: '', periodTypeID: -1, isShowOnDashboard: true };
 
-                $("#limitSections").val(null).select2();
+                //$("#limitSections").val(null).select2();
 
                 this.limit.periodTypeID = this.periodTypes[0].id;
                 this.limit.periodName = this.periodTypes[0].name;
             }
-
-            //let startConfig = GetFlatpickrRuConfig_Month(this.limit.dateStart);
-            //startConfig.onChange = function (selectedDates, dateStr, instance) {
-            //    LimitListVue.flatpickrEnd.config.minDate = dateStr;
-            //};
-            //let endConfig = GetFlatpickrRuConfig_Month(this.limit.dateEnd);
-            //endConfig.onChange = function (selectedDates, dateStr, instance) {
-            //    LimitListVue.flatpickrStart.config.maxDate = dateStr;
-            //};
-
-            //this.flatpickrStart = flatpickr('#date-start', startConfig);
-            //this.flatpickrEnd = flatpickr('#date-end', endConfig);
 
             if (this.limit.sections) {
                 $("#limitSections").val(this.limit.sections.map(x => x.id)).select2();

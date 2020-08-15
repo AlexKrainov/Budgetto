@@ -19,8 +19,7 @@
 			@* style="padding-top: 0px !important;" *@
 				<div class="media-body small mr-3">
 					<div class="font-weight-semibold mb-3">{{ limitChartData.name }}</div>
-					<div class="mb-1">Лимит: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney) }}</div>
-					<div class="mb-1">Потрачено: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney) }}</div>
+                    <div class="mb-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney) }}</div>
 					<div v-show="limitChartData.isThisMonth"> Примерно осталось расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
 					<div v-show="!limitChartData.isThisMonth"> Примерно было расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
 				</div>

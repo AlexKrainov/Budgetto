@@ -3,7 +3,8 @@
 }
 <!DOCTYPE html>
 
-<html lang="ru" class="layout-navbar-fixed mdl-js layout-fixed @(currentUser.UserSettings.WebSiteTheme == "dark" ? "dark-style": "light-style")" dir="ltr">
+<!--<html lang="ru" class="layout-navbar-fixed mdl-js layout-fixed @(currentUser.UserSettings.WebSiteTheme == "dark" ? "dark-style": "light-style")" dir="ltr">-->
+<html lang="ru" class="default-style layout-navbar-fixed mdl-js" dir="ltr">
 <head>
     <title>@ViewData["Title"] - Asp.Net Core Demo</title>
 
@@ -28,20 +29,20 @@
     <link rel="stylesheet" href="~/vendor/fonts/pe-icon-7-stroke.css">
 
     <!-- Core stylesheets -->
-    @if (currentUser.UserSettings.WebSiteTheme == "dark")
-    {
-        <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap-dark.css" class="theme-settings-bootstrap-css">
-        <link rel="stylesheet" href="~/vendor/css/rtl/appwork-dark.css" class="theme-settings-appwork-css">
-        <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate-dark.css" class="theme-settings-theme-css">
-        <link rel="stylesheet" href="~/vendor/css/rtl/colors-dark.css" class="theme-settings-colors-css">
-    }
-    else
-    {
-        <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap.css" class="theme-settings-bootstrap-css">
-        <link rel="stylesheet" href="~/vendor/css/rtl/appwork.css" class="theme-settings-appwork-css">
-        <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate.css" class="theme-settings-theme-css">
-        <link rel="stylesheet" href="~/vendor/css/rtl/colors.css" class="theme-settings-colors-css">
-    }
+    @*@if (currentUser.UserSettings.WebSiteTheme == "dark")
+        {
+            <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap-dark.css" class="theme-settings-bootstrap-css">
+            <link rel="stylesheet" href="~/vendor/css/rtl/appwork-dark.css" class="theme-settings-appwork-css">
+            <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate-dark.css" class="theme-settings-theme-css">
+            <link rel="stylesheet" href="~/vendor/css/rtl/colors-dark.css" class="theme-settings-colors-css">
+        }
+        else
+        {*@
+    <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap.css" class="theme-settings-bootstrap-css">
+    <link rel="stylesheet" href="~/vendor/css/rtl/appwork.css" class="theme-settings-appwork-css">
+    <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate.css" class="theme-settings-theme-css">
+    <link rel="stylesheet" href="~/vendor/css/rtl/colors.css" class="theme-settings-colors-css">
+    @* }*@
 
     <link rel="stylesheet" href="~/vendor/css/rtl/uikit.css">
     <link rel="stylesheet" href="~/css/demo.css">
@@ -57,7 +58,7 @@
     <script src="~/vendor/js/polyfills.js"></script>
     <script>document['documentMode'] === 10 && document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.~locale.en"><\/script>')</script>
 
-@*    <script src="~/vendor/js/material-ripple.js"></script>*@
+    <script src="~/vendor/js/material-ripple.js"></script>
     <script src="~/vendor/js/layout-helpers.js"></script>
 
     <!-- Theme settings -->
@@ -69,6 +70,7 @@
 			cssPath: '/vendor/css/rtl/',
             themesPath: '/vendor/css/rtl/'
         });
+
 		 var UserInfo = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(currentUser, Newtonsoft.Json.Formatting.None))');
     </script>
 
@@ -87,13 +89,10 @@
 <body>
     <div class="page-loader"><div class="bg-primary"></div></div>
 
-
     @RenderBody()
     <div id="record-container" style="float:inherit">
         <vue-record-component id="test3" name="test3"></vue-record-component>
     </div>
-
-
 
     <!-- Core scripts -->
     <script src="~/vendor/libs/popper/popper.js"></script>
@@ -112,7 +111,6 @@
     <script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
     <script src="~/vendor/libs/flatpickr/l10n/ru.js"></script>
     <script src="~/vendor/libs/toastr/toastr.js"></script>
-    @*<script src="~/js/demo.js"></script>*@
 
     <!-- Record -->
     <script src="~/js/vue-components/vue-section-component.js"></script>
@@ -130,7 +128,6 @@
             script.src = "../js/user/user-page-settings.js";
             document.head.appendChild(script);
         }
-
     </script>
     @*<script src="~/js/base/user.js"></script>*@
 </body>

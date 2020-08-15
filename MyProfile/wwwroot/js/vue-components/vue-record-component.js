@@ -100,7 +100,7 @@
 					</div>
 					<div class="form-row " v-bind:class="descriptionRecord ? 'show-comment': 'hide-comment'">
 						<div class="form-group col">
-							<label class="form-label">Комментарий к {{ showRecord(descriptionRecord) }}</label>
+							<label class="form-label">Комментарий для {{ showRecord(descriptionRecord) }}</label>
                             <span class="comment-actions cursor-pointer ml-3">
                                 <i class="fa fa-trash" 
                                     v-on:click="descriptionRecord.description = null;"
@@ -169,6 +169,11 @@
             isEditMode: false,
             isErrorSelectSection: false,
             after_save_callback: Event,
+        }
+    },
+    computed: {
+        sectionComponent: function () {
+            return this.$children[0];
         }
     },
     mounted: function () {

@@ -437,6 +437,7 @@ var SectionVue = new Vue({
                         }
                         AreaVue.$forceUpdate();//bug areaVuew doesn't update section in a view
                         $("#modal-section").modal("hide");
+                        RecordVue.updateSectionComponent()
                     }
                     SectionVue.isSaving = false;
                 });

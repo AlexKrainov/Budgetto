@@ -108,12 +108,50 @@
 //});
 
 $(document).ready(function () {
+    // Auto update layout
+    window.layoutHelpers.setAutoUpdate(true);
+
+    // Collapse menu
+    if ($('#layout-sidenav').hasClass('sidenav-horizontal') || window.layoutHelpers.isSmallScreen()) {
+        return;
+    }
+
+    try {
+        window.layoutHelpers.setCollapsed(
+            localStorage.getItem('layoutCollapsed') === 'true',
+            false
+        );
+    } catch (e) { }
+
+    // Initialize sidenav
+    $('#layout-sidenav').each(function () {
+        new SideNav(this, {
+            orientation: $(this).hasClass('sidenav-horizontal') ? 'horizontal' : 'vertical'
+        });
+    });
+
+    // Initialize sidenav togglers
+    $('body').on('click', '.layout-sidenav-toggle', function (e) {
+        e.preventDefault();
+        window.layoutHelpers.toggleCollapsed();
+        if (!window.layoutHelpers.isSmallScreen()) {
+            try { localStorage.setItem('layoutCollapsed', String(window.layoutHelpers.isCollapsed())); } catch (e) { }
+        }
+    });
+
+    //if ($('html').attr('dir') === 'rtl') {
+    //    $('#layout-navbar .dropdown-menu').toggleClass('dropdown-menu-right');
+    //}
+
+
+
     if ($.fn.dataTable) {
         $.fn.dataTable.ext.type.detect.unshift(tablePreOrder);
         $.fn.dataTable.ext.type.order['money-pre'] = tableOrder;
         $.fn.dataTable.ext.type.order['day-pre'] = tableOrder;
     }
 });
+
 
 
 
@@ -141,6 +179,9 @@ var RecordVue = new Vue({
         editByElement: function (record, callback) {
             return this.recordComponent.editByElement(record, callback);
         },
+        updateSectionComponent: function () {
+            this.recordComponent.sectionComponent.load();
+        }
     }
 });
 

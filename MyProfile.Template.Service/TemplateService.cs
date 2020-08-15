@@ -79,7 +79,7 @@ namespace MyProfile.Template.Service
                     await repository.SaveAsync();
                 }
 
-                if (addCollectiveBudget)
+                if (false)//addCollectiveBudget)
                 {
                     //Check if all peaple has IsAllowCollectiveBudget
                     var allTemplateSections = templateViewModel.Columns

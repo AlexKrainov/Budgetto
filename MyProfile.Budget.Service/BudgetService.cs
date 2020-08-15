@@ -235,6 +235,9 @@ namespace MyProfile.Budget.Service
                     for (int i = 0; i < allColumnsCount; i++)
                     {
                         var column = template.Columns[i];
+                        cell.TemplateColumnType = column.TemplateColumnType;
+                        cell.IsShow = column.IsShow;
+
                         string v = 0.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
                         if (column.TemplateColumnType == TemplateColumnType.BudgetSection && currentDate > dateTimeNow)

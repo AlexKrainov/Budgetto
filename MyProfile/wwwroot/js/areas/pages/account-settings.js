@@ -83,9 +83,15 @@
 
                 return sendAjax("/Identity/Account/SaveUserInfo", this.user, "POST")
                     .then(function (result) {
-                        AccountSettingsVue.user = result.user;
-                        AccountSettingsVue.oldEmail = result.user.email;
-                        AccountSettingsVue.isSaving = false;
+                        if (result.isOk) {
+                            $("#userImageLink").prop("src", result.user.imageLink);
+                            $("#userName").text(result.user.name + " " + result.user.lastName);
+
+                            AccountSettingsVue.user = result.user;
+                            AccountSettingsVue.oldEmail = result.user.email;
+                            AccountSettingsVue.isSaving = false;
+
+                        }
                     });
             } else {
                 console.log("not save");
@@ -214,7 +220,8 @@
                     AccountSettingsVue.isSaving = false;
 
                     if (AccountSettingsVue.oldTheme != AccountSettingsVue.user.userSettings.webSiteTheme_CodeName) {
-                        document.location.href = document.location.href;
+                        themeSettings.setStyle(AccountSettingsVue.user.userSettings.webSiteTheme_CodeName)
+                        //document.location.href = document.location.href;
                     }
                 });
         },
