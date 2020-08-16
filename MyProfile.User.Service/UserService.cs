@@ -8,6 +8,7 @@ using MyProfile.File.Service;
 using MyProfile.Identity;
 using MyProfile.User.Service.PasswordWorker;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -112,6 +113,8 @@ namespace MyProfile.User.Service
 
                          LimitPage_Show_IsFinished = x.UserSettings.LimitPage_Show_IsFinished,
                          LimitPage_IsShow_Collective = x.UserSettings.LimitPage_IsShow_Collective,
+
+                         WebSiteTheme_CodeName = x.UserSettings.WebSiteTheme_CodeName,
                      }
                  })
                  .FirstOrDefaultAsync();
@@ -180,7 +183,429 @@ namespace MyProfile.User.Service
                     Month_InvestingWidget = true,
                     Month_SpendingWidget = true,
                     WebSiteTheme_CodeName = WebSiteThemeEnum.Light,
-                }
+                },
+                CurrencyID = 1,
+                UserTypeID = (int)UserTypeEnum.User,
+                ToDoListFolders = new List<ToDoListFolder>
+                {
+                    new ToDoListFolder
+                    {
+                        Title = "Списки покупок",
+                        CssIcon = "ion ion-md-cart"
+                    },
+                    new ToDoListFolder
+                    {
+                        Title = "Долгосрочные цели",
+                        CssIcon = "ion ion-ios-home"
+                    },
+                },
+                BudgetAreas = new List<BudgetArea> {
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Краткосрочные покупки",
+                    CodeName = "ShortTermPurchases",
+                    Description = null,
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Продукты",
+                            Description = "Краткосрочные покупки в магазинах",
+                            CodeName = "Products",
+                            CssIcon = "fas fa-shopping-cart",
+                            CssColor = "#fff",
+                            CssBackground = "#f44336",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Фастфуд",
+                            CodeName = "FastFood",
+                            CssIcon = "fas fa-hamburger",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#ffcdd2",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                         new BudgetSection
+                        {
+                            Name = "Общ. транспорт",
+                            CodeName = "CommonTransport",
+                            CssIcon = "fas fa-bus",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#ffebee",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                    }
+                },
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Общие расходы",
+                    CodeName = "GeneralExpenses",
+                    Description = null,
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Книги",
+                            Description = "Books",
+                            CodeName = "Books",
+                            CssIcon = "fas fa-book",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#eeeeee",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                         new BudgetSection
+                        {
+                            Name = "Налоги",
+                            CodeName = "Taxes",
+                            CssIcon = "fas fa-landmark",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#bdbdbd",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        }
+                    }
+                },
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Долгосрочные расходы",
+                    CodeName = "LongTermExpenses",
+                    Description = null,
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Одежда",
+                            CodeName = "Clothes",
+                            CssIcon = "fas fa-tshirt",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#ffcc80",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Крупная бытовая тех.",
+                            Description = "Телевизор, пылесос, стиральная машинка и тд.",
+                            CodeName = "LargeHouseholdAppliances",
+                            CssIcon = "fas fa-tv",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#ffb74d",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        }
+                    }
+                },
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Доходы",
+                    CodeName = "Income",
+                    Description = null,
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Зарплата",
+                            CodeName = "Salary",
+                            CssIcon = "fas fa-wallet",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#00e676",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Earnings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Доп. доходы",
+                            CodeName = "OtherIncome",
+                            CssIcon = "fas fa-donate",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#b9f6ca",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Earnings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Кэшбэки",
+                            CodeName = "Cashback",
+                            CssIcon = "fas fa-ruble-sign",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#b9f6ca",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Earnings,
+                        },
+                         new BudgetSection
+                        {
+                            Name = "Инвестиции",
+                            Description = "Депозиты, акции, облигации и тд",
+                            CodeName = "Investing",
+                            CssIcon = "fas fa-piggy-bank",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#b9f6ca",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Earnings,
+                        }
+                    }
+                },
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Ремонт",
+                    CodeName = "Repairs",
+                    Description = "Все возможные ремонты",
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Ремонт на кухне",
+                            CodeName = "KitchenRenovation",
+                            CssIcon = "fas fa-paint-roller",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#ffb74d",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Ремонт в квартире",
+                            CodeName = "ApartmentRenovation",
+                            CssIcon = "fas fa-brush",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#ffb74d",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Ремонт на даче",
+                            CodeName = "RepairInTheCountry",
+                            CssIcon = "fas fa-home",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#ffe0b2",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Ремонт у родителей",
+                            CodeName = "RepairsAtParents",
+                            CssIcon = "fas fa-paint-roller",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#ffb74d",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        }
+
+                    }
+                },
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Регулярные платежи",
+                    CodeName = "RecurringPayments",
+                    Description = null,
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Электричество",
+                            CodeName = "Electricity",
+                            CssIcon = "fas fa-plug",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#eeeeee",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "За квартиру",
+                            CodeName = "ForTheApartment",
+                            CssIcon = "far fa-building",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#e0e0e0",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Связь",
+                            CodeName = "Communication",
+                            CssIcon = "fas fa-phone",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#eeeeee",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Интернет",
+                            CodeName = "WiFi",
+                            CssIcon = "fas fa-wifi",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#eeeeee",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        }
+                    }
+                },
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Медицина",
+                    CodeName = "Medicine",
+                    Description = null,
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Стоматология",
+                            Description = "Краткосрочные покупки в магазинах",
+                            CodeName = "Dentistry",
+                            CssIcon = "fas fa-tooth",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#bdbdbd",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Посещение врача",
+                            Description = "Прием врача, консультация, массаж, все возможные обследования",
+                            CodeName = "VisitDoctor",
+                            CssIcon = "fas fa-user-md",
+                            CssColor = "#fff",
+                            CssBackground = "#9e9e9e",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        }
+                    }
+                },
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Отдых",
+                    CodeName = "Recreation",
+                    Description = null,
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Рестораны",
+                            CodeName = "Restaurants",
+                            CssIcon = "fas fa-glass-cheers",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#bbdefb",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Путешествия",
+                            CodeName = "Travels",
+                            CssIcon = "fas fa-plane",
+                            CssColor = "#fff",
+                            CssBackground = "#2196f3",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Выезд за город",
+                            CodeName = "OutOfTown",
+                            CssIcon = "fas fa-drumstick-bite",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#bbdefb",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        }
+                    }
+                },
+                new BudgetArea
+                {
+                    IsShowOnSite = true,
+                    IsShowInCollective = true,
+                    Name = "Авто",
+                    CodeName = "Auto",
+                    Description = null,
+                    BudgetSectinos = new List<BudgetSection>
+                    {
+                        new BudgetSection
+                        {
+                            Name = "Страховка",
+                            Description = "Осаго, каско и тд",
+                            CodeName = "CarInsurance",
+                            CssIcon = "fas fa-car",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#e0e0e0",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Бензин",
+                            CodeName = "Petrol",
+                            CssIcon = "fas fa-fill-drip",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#e0e0e0",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        },
+                        new BudgetSection
+                        {
+                            Name = "Ремонт авто",
+                            CodeName = "AutoRepair",
+                            CssIcon = "fas fa-hammer",
+                            CssColor = "rgba(24,28,33,0.8)",
+                            CssBackground = "#e0e0e0",
+                            IsShowInCollective = true,
+                            IsShowOnSite = true,
+                            SectionTypeID = (int)SectionTypeEnum.Spendings,
+                        }
+                    }
+                },
+                },
+
             }, true);
 
             return 1;

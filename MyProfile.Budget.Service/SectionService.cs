@@ -39,7 +39,6 @@ namespace MyProfile.Budget.Service
                 {
                     ID = x.ID,
                     Name = x.Name,
-                    CssIcon = x.CssIcon,
                     Owner = x.User.Name,
                     Description = x.Description,
                     IsShowOnSite = x.IsShowOnSite,
@@ -144,7 +143,6 @@ namespace MyProfile.Budget.Service
             var budgetArea = new BudgetArea
             {
                 ID = area.ID,
-                CssIcon = area.CssIcon,
                 Description = area.Description,
                 Name = area.Name,
                 UserID = UserInfo.Current.ID,

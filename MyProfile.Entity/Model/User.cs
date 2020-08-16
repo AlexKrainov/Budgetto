@@ -63,6 +63,7 @@ namespace MyProfile.Entity.Model
         public virtual IEnumerable<CollectiveBudgetRequestOwner> CollectiveBudgetRequestOwners { get; set; }
         public virtual IEnumerable<ChatUser> ChatUsers { get; set; }
         public virtual IEnumerable<Reminder> Reminders { get; set; }
+        public virtual IEnumerable<ToDoListFolder> ToDoListFolders { get; set; }
 
         public User()
         {
@@ -76,6 +77,7 @@ namespace MyProfile.Entity.Model
             this.CollectiveBudgetRequestOwners = new HashSet<CollectiveBudgetRequestOwner>();
             this.ChatUsers = new HashSet<ChatUser>();
             this.Reminders = new HashSet<Reminder>();
+            this.ToDoListFolders = new HashSet<ToDoListFolder>();
         }
     }
 }

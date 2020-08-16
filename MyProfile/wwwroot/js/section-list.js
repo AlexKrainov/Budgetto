@@ -42,6 +42,11 @@
             SectionVue.areaID = area.id;
             SectionVue.areaName = area.name;
 
+
+            $("html, body").animate({
+                scrollTop: $("#section-vue").offset().top - 75
+            }, 1000);
+
             SectionVue.areas = this.areas.map(function (x) { return { name: x.name, id: x.id } });
         },
         create: function () {
@@ -75,6 +80,9 @@
                             AreaVue.areas.push(result.area);
                         } else {
                             AreaVue.areas[index] = result.area;
+                        }
+                        if (SectionVue.areaID == result.area.id) {
+                            SectionVue.areaName = result.area.name;
                         }
                         $("#modal-area").modal("hide");
                         AreaVue.isSaving = false;
@@ -348,7 +356,7 @@ var SectionVue = new Vue({
             this.chooseColor();
             $("#accordion2-2, #accordion2-1").removeClass("show");
             this.changeSectionType(2)
-        
+
             $("#modal-section").modal("show");
         },
         edit: function (section) {

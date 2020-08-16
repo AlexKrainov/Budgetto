@@ -21,8 +21,6 @@ namespace MyProfile.Entity.Model
 		/// </summary>
 		public bool IsShowOnSite { get; set; } = true;
 		public string Description { get; set; }
-		[MaxLength(64)]
-		public string CssIcon { get; set; }
 		/// <summary>
 		/// Can see only owner or all budget group
 		/// </summary>

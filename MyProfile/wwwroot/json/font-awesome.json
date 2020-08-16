@@ -1,413 +1,400 @@
 [
-	{
-		"nameClass": "fab fa-amazon-pay",
-		"name": "fa-amazon-pay",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-airbnb",
-		"name": "fa-airbnb ",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-amazon",
-		"name": "fa-amazon",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-ambulance",
-		"name": "fa-ambulance",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-android",
-		"name": "fa-android",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-app-store-ios",
-		"name": "fa-app-store-ios",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-app-store",
-		"name": "fa-app-store",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-apple-pay",
-		"name": "fa-apple-pay",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-bicycle",
-		"name": "fa-bicycle",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-apple-alt",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-apple",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-baby-carriage",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-barcode",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-beer",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-biking",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-bicycle",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-birthday-cake",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-bone",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-book",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-brain",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-brush",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "far fa-building",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-bus",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-car",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-car-side",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-cat",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-cart-plus",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-cc-paypal",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-charging-station",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-church",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-clinic-medical",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-cocktail",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-coffee",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-dog",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-donate",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-ebay",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-euro-sign",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-faucet",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-fill-drip",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-first-aid",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-glass-martini-alt",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-glass-cheers",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "far fa-grin",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-hamburger",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-hand-holding-heart",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-hand-holding-medical",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-heartbeat",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-hospital-user",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-hospital-alt",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "far fa-hospital",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-laptop",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "far fa-money-bill-alt",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-money-check-alt",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-newspaper",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-oil-can",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-paint-roller",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-people-carry",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-phone",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-phone-alt",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-piggy-bank",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-pizza-slice",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-plane-departure",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-plane-arrival",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-plug",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-poo",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-prescription-bottle-alt",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-ruble-sign",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-satellite-dish",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-shopping-cart",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-ship",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-shopify",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-skiing",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-skating",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-shopping-basket",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-subway",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-syringe",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-swimmer",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-toilet",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-trash-alt",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-truck",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fab fa-youtube",
-		"name": "",
-		"isShow": true
-	},
-	{
-		"nameClass": "fas fa-wine-glass-alt",
-		"name": "",
-		"isShow": true
-	}
+  {
+    "nameClass": "fas fa-shopping-cart",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-shopping-basket",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-beer",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-birthday-cake",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-drumstick-bite",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-cocktail",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-coffee",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-glass-cheers",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-hamburger",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-pizza-slice",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-shopify",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-toilet",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-poo",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-tshirt",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-tv",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-trash-alt",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-bone",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-cat",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-dog",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-people-carry",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-paint-roller",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-brush",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-hammer",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-biking",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-bicycle",
+    "name": "fa-bicycle",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-baby-carriage",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-bus",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-taxi",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-car",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-car-side",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-truck",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-subway",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-car-crash",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-charging-station",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-gas-pump",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-car-battery",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-fill-drip",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-ship",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-plane",
+    "name": "",
+    "isShow": true
+  },
+
+  {
+    "nameClass": "fas fa-book",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-brain",
+    "name": "",
+    "isShow": true
+  },
+
+  {
+    "nameClass": "far fa-building",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-home",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-faucet",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-plug",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-satellite-dish",
+    "name": "",
+    "isShow": true
+  },
+
+  {
+    "nameClass": "fas fa-phone",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-tooth",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-user-md",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-skiing",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-skating",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-swimmer",
+    "name": "",
+    "isShow": true
+  },
+
+  {
+    "nameClass": "fas fa-clinic-medical",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-hand-holding-medical",
+    "name": "",
+    "isShow": true
+  },
+
+  {
+    "nameClass": "fas fa-donate",
+    "name": "",
+    "isShow": true
+  },
+
+  {
+    "nameClass": "far fa-money-bill-alt",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-wallet",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-credit-card",
+    "name": "",
+    "isShow": true
+  },
+
+  {
+    "nameClass": "fas fa-piggy-bank",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-newspaper",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-laptop",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-wifi",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-tree",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-landmark",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-baby",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-amazon-pay",
+    "name": "fa-amazon-pay",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-airbnb",
+    "name": "fa-airbnb ",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-amazon",
+    "name": "fa-amazon",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-android",
+    "name": "fa-android",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-app-store",
+    "name": "fa-app-store",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-apple-pay",
+    "name": "fa-apple-pay",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-apple",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-cc-paypal",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-ebay",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fab fa-youtube",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-euro-sign",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-dollar-sign",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-ruble-sign",
+    "name": "",
+    "isShow": true
+  }
 
 ]

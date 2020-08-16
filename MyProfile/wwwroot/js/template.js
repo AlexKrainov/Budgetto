@@ -104,8 +104,11 @@
             if (TemplateColumnTypeEnum.BudgetSection == this.column.templateColumnType) {
                 this.column.totalAction = 1;
                 this.addColumnOption_step1(this.column);
-            } else {
-                this.column = {};
+            } if (TemplateColumnTypeEnum.DaysForMonth == this.column.templateColumnType) {
+                this.column.name = "Дни";
+                this.column.format = "dd";
+            } if (TemplateColumnTypeEnum.MonthsForYear == this.column.templateColumnType) {
+                this.column.name = "Месяц";
             }
         },
         addColumnOption_step1: function (column) {
