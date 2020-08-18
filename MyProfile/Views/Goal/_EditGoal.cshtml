@@ -44,14 +44,14 @@
                                 <div class="form-group col">
                                     <label class="form-label">На что копим/Название цели</label>
                                     <span class="text-danger">*</span>
-                                    <input type="text" class="form-control" placeholder="Name" v-model="goal.name" required>
+                                    <input type="text" class="form-control" placeholder="" v-model="goal.name" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label class="form-label">Сколько нужно накопить ?</label>
                                     <span class="text-danger">*</span>
-                                    <input type="number" class="form-control" placeholder="Money" v-model="goal.expectationMoney" required min="0">
+                                    <input type="number" class="form-control" placeholder="" v-model="goal.expectationMoney" required min="0">
                                     <div class="text-muted small mt-1" v-show="goal.expectationMoney">
                                         {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }}
                                     </div>
@@ -60,7 +60,7 @@
                             <div class="form-row">
                                 <div class="form-group col mb-0">
                                     <label class="form-label">Введите дополнительную информацию</label>
-                                    <textarea class="form-control" v-model="goal.description" placeholder="Description"></textarea>
+                                    <textarea class="form-control" v-model="goal.description" placeholder=""></textarea>
                                 </div>
                             </div>
                             <div class="form-row mt-3">
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                                <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetYear" checked>@*v-on:change="finishgoal"*@
                                         <span class="custom-control-label">Показывать на стринице дашборда год</span>
@@ -82,7 +82,7 @@
                             @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)
                             {
                                 <div class="form-row">
-                                    <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                                    <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
                                         <label class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" v-model="goal.isShowInCollective" checked>@*v-on:change="finishgoal"*@
                                             <span class="custom-control-label">Показывать всем</span>

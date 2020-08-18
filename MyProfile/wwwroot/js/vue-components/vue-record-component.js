@@ -67,7 +67,7 @@
                         </div>
                     </section>
 					<div class="form-row">
-						<div class="form-group col-7">
+						<div class="form-group col-6">
 							<div class="row records" v-for="record in records" v-show="record.isCorrect">
 								<div class="col-6 mb-3 record-item">
 									<a href="javascript:void(0)" 
@@ -92,9 +92,11 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group col-5">
+						<div class="form-group col-6">
 							<vue-section-component data-search-id="searchSection"
-												   data-search-style="max-width: 300px;"
+												   data-records-style="height: 200px; overflow-x: overlay;"
+                                                   data-class="cards-small"
+                                                   v-bind:is-show-filter="true"
 												   v-on:onchoose="onChooseSection"></vue-section-component>
 						</div>
 					</div>
@@ -363,6 +365,11 @@
                                 let records = result.budgetRecord.records.filter(x => x.isSaved);
                                 let tags = records.map(x => x.tag)
                                 this.tagify.removeTags(tags);
+
+                                //remove comment
+                                if (records.findIndex(x => x.tag == this.descriptionRecord.tag) >= 0) {
+                                    this.descriptionRecord = "";
+                                }
                             }
                             this.$emit("afterSave", 123);
                             this.isSaving = false;
@@ -462,7 +469,8 @@
         },
         clearAll: function () {
             this.records = [];
-            this.tagify.removeAllTags()
+            this.tagify.removeAllTags();
+            this.descriptionRecord = "";
         },
 
         addDays: function (days) {

@@ -188,6 +188,7 @@ var timeline = {
     calendar_day_click_after_change_record(dateTimeOfPayment) {
         dateTimeOfPayment = moment(dateTimeOfPayment);
         timeline.calendar_day_click(dateTimeOfPayment.date(), dateTimeOfPayment.get("months"), dateTimeOfPayment.get("year"));
+        calendar.before_loading($("button[data-year=" + moment().get("year") + "]"), moment().get("year"));
     },
     calendar_day_click: function (day, month, year) {
         filter.serialize(false);
@@ -350,6 +351,12 @@ var calendar = {
         }
 
         // #endregion
+        let itemName = [];
+        if ($("#isAmount").prop("checked")) {
+            itemName = ["₽", "₽"]
+        } else {
+            itemName = ["запись", "записей"]
+        }
 
         calendar.calHeatMap = new CalHeatMap();
         calendar.calHeatMap.init({
@@ -384,7 +391,7 @@ var calendar = {
             subDomainDateFormat: function (date) {
                 return moment(date).format(dateFormatForCalendar); // Use the moment library to format the Date
             },
-            itemName: ["запись", "записей"],
+            itemName: itemName,
             onClick: calendar.day_click,
             onComplete: calendar.onComplete
         });

@@ -4,7 +4,7 @@
 }
 
 
-.default-style .select2-dropdown, .select2-container--open  {
+.default-style .select2-dropdown, .select2-container--open {
     z-index: 1100 !important;
 }
 
@@ -499,5 +499,93 @@ a.folder-text:hover .folder-edit-button {
 
 .red-bottom-line {
     border-bottom: 3px solid var(--danger-color) !important;
-    border-radius: 5px !important ;
+    border-radius: 5px !important;
 }
+
+
+
+/*region cards start*/
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+   /* margin-left: 44px;
+    margin-right: 68px;*/
+}
+
+.card-section {
+    /*        margin-right: -5rem;*/
+    margin-bottom: 5px;
+    margin-right: 2px;
+    box-shadow: 6px 2px 8px 3px rgba(0,0,0, 0.25);
+    transition: 0.5s;
+    border-radius: 7px;
+}
+
+    .card-section .card {
+        border-radius: 7px;
+    }
+
+    /* .card-section .card-body {
+            border: 1px solid gray;
+            border-radius: 7px;
+        }*/
+
+    .card-section:not(:first-child) {
+        /*            margin-right: -4rem;*/
+    }
+
+    .card-section:hover {
+        /*            transform: translateY(-1rem);*/
+        z-index: 10;
+    }
+
+.section-name {
+    font-size: small;
+}
+
+.card-section-text {
+}
+
+.cards-container {
+    padding: .25rem !important;
+}
+
+.area-name {
+}
+
+.cards-small .area-name {
+    display: none;
+}
+
+.cards-small .icon-large {
+    font-size: 125% !important;
+}
+
+
+.cards-medium .icon-large {
+    font-size: 150% !important;
+}
+.cards-medium .area-name {
+    font-size: 80%;
+    font-weight: 400;
+}
+
+
+.cards-big .section-name {
+    font-size: 14px;
+}
+
+.cards-big .cards-container {
+    padding: .5rem !important;
+}
+
+.cards-big .icon-large {
+    font-size: 175% !important;
+}
+.cards-big .area-name {
+    font-size: 85%;
+    font-weight: 400;
+}
+
+/*region cards end*/

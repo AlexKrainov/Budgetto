@@ -56,6 +56,111 @@
     <script src="~/vendor/libs/select2/select2.js"></script>
 }
 
+<div class="row ">
+    <div class="col-5">
+        <div class="cards cards-small">
+            <div class="card-section card" style="color: rgba(24, 28, 33, 0.8); background-color: rgb(255, 171, 145);">
+                <div class="card-body d-flex align-items-center cards-container">
+                    <i class="icon-large opacity-75 fas fa-shopping-cart"></i>
+                    <div class="ml-2 card-section-text">
+                        <div class="section-name">Расходы (продукты)</div>
+                        <div class="small opacity-75 area-name" style="margin-top: -5px;">
+                            Основные раходы
+                            <div class="ml-2" style="display: none;">
+                                <i class="oi oi-layers d-block1"></i> +0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-section card" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+                <div class="card-body d-flex  align-items-center cards-container">
+                    <i class="icon-large opacity-75 fas fa-shopping-basket"></i>
+                    <div class="ml-2 card-section-text">
+                        <div class="section-name">Регулярные платежы</div>
+                        <div class="small opacity-75 area-name" style="margin-top: -5px;">
+                            Основные раходы
+                            <div class="ml-2" style="display: none;">
+                                <i class="oi oi-layers d-block1"></i> +0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-section card" style="color: rgb(255, 255, 255); background-color: rgb(244, 67, 54);">
+                <div class="card-body d-flex  align-items-center cards-container">
+                    <i class="icon-large opacity-75 fas fa-prescription-bottle-alt"></i>
+                    <div class="ml-2 card-section-text">
+                        <div class="section-name">Траты на ребенка</div>
+                        <div class="small opacity-75 area-name" style="margin-top: -5px;">
+                            Основные раходы
+                            <div class="ml-2" style="display: none;">
+                                <i class="oi oi-layers d-block1"></i> +0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-section card" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+                <div class=" cards-container card-body d-flex  align-items-center">
+                    <i class="icon-large opacity-75 fas fa-shopping-basket"></i>
+                    <div class="ml-2 card-section-text">
+                        <div class="section-name">Прочие расходы</div>
+                        <div class="small opacity-75 area-name" style="margin-top: -5px;">
+                            Основные раходы
+                            <div class="ml-2" style="display: none;">
+                                <i class="oi oi-layers d-block1"></i> +0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-section card" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+                <div class="cards-container card-body d-flex  align-items-center">
+                    <i class="icon-large opacity-75 fas fa-faucet"></i>
+                    <div class="ml-2 card-section-text">
+                        <div class="section-name">Коммунальные</div>
+                        <div class="small opacity-75 area-name" style="margin-top: -5px;">
+                            Основные раходы
+                            <div class="ml-2" style="display: none;">
+                                <i class="oi oi-layers d-block1"></i> +0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-section card" style="color: rgb(255, 255, 255); background-color: rgb(244, 67, 54);">
+                <div class="cards-container card-body d-flex  align-items-center">
+                    <i class="icon-large opacity-75 fas fa-warehouse"></i>
+                    <div class="ml-2 card-section-text">
+                        <div class="section-name">За квартиру</div>
+                        <div class="small opacity-75 area-name" style="margin-top: -5px;">
+                            Основные раходы
+                            <div class="ml-2" style="display: none;">
+                                <i class="oi oi-layers d-block1"></i> +0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-section card" style="color: rgba(24, 28, 33, 0.8); background-color: rgb(239, 154, 154);">
+                <div class="cards-container card-body d-flex  align-items-center">
+                    <i class="text-large opacity-75 fas fa-bus"></i>
+                    <div class="ml-2 card-section-text">
+                        <div class="section-name">Проездной</div>
+                        <div class="small opacity-75 area-name" style="margin-top: -5px;">
+                            Основные раходы
+                            <div class="ml-2" style="display: none;">
+                                <i class="oi oi-layers d-block1"></i> +0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
@@ -106,12 +211,17 @@
                             <small class="text-muted">{{ area.description }}</small>
                         </div>
                     </div>
-                    <div class="cards">
+                    <vue-section-component id="test2"
+                                           name="test"
+                                           data-class="cards-big"
+                                           v-on:onchoose="addColumnOption_step2"></vue-section-component>
+                    @*<div class="cards">
                         <div class="card-section" v-for="section in area.sections">
                             <div class="card border-0 text-body"
                                  v-bind:style="'background-color:' + section.cssBackground">
                                 <div class="card-body d-flex  align-items-center p-2" v-bind:style="'color:'+section.cssColor">
-                                    <i class="text-xlarge opacity-75" v-bind:class="section.cssIcon"></i><div class="ml-2">
+                                    <i class="text-xlarge opacity-75" v-bind:class="section.cssIcon"></i>
+                                    <div class="ml-2">
                                         <div class="">{{section.name}}</div>
                                         <div class="small opacity-75" style="margin-top: -5px;">
                                             {{ area.name }}
@@ -123,7 +233,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
 
                     <hr class="m-0">
                     <div class="p-3">
@@ -139,7 +249,7 @@
                                 <span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="area.isShowOnSite"></span>
                                 <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="area.isShowOnSite == false"></span>
                                 @*<span class="fas fa-users text-primary" title="Эту область выдят все" v-show="area.isShowInCollective"></span>
-                                    <span class="fas fa-users-slash text-secondary" title="Эту область выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
+                    <span class="fas fa-users-slash text-secondary" title="Эту область выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
                             </span>
                         </div>
                     </div>
@@ -211,54 +321,44 @@
     </div>
 </div>
 
-@*<div class="" style="display: inline-block;">
-        <div class="card bg-warning border-0 text-body mb-4">
-            <div class="card-body d-flex  align-items-center p-2">
-                <i class="ion ion-md-time text-xlarge opacity-25"></i><div class="ml-2">
-                    <div class="">Расходы (продукты)</div>
-                    <div class="small opacity-50" style="margin-top: -5px;">
-                        Основные раходы
-                        <div class="ml-2" style="display: inline-block;">
-                            <i class="oi oi-layers d-block1"></i> +7
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
-@* https://codepen.io/chrishutchinson/pen/nafEp *@
-
-<style>
-    .cont {
-        display: grid;
-    }
-
-    .cards {
-        display: flex;
-        flex-wrap: wrap;
-        margin-left: 44px;
-        margin-right: 68px;
-    }
-
-    .card-section {
-        margin-right: -5rem;
-        margin-bottom: 10px;
-        box-shadow: 6px 2px 8px 3px rgba(0,0,0, 0.25);
-        transition: 0.5s;
-        /*        border: 1px solid gray;*/
-        border-radius: 7px;
-    }
-
-        .card-section:not(:first-child) {
-            margin-right: -4rem;
+@*<style>
+        .cont {
+            display: grid;
         }
 
-        .card-section:hover {
-            transform: translateY(-1rem);
-            z-index: 10;
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 44px;
+            margin-right: 68px;
         }
-</style>
+
+        .card-section {
+            margin-right: -5rem;
+            margin-bottom: 10px;
+            box-shadow: 6px 2px 8px 3px rgba(0,0,0, 0.25);
+            transition: 0.5s;
+            border-radius: 7px;
+        }
+
+            .card-section .card {
+                border-radius: 7px;
+            }
+
+            .card-section .card-body {
+                border: 1px solid gray;
+                border-radius: 7px;
+            }
+
+            .card-section:not(:first-child) {
+                margin-right: -4rem;
+            }
+
+            .card-section:hover {
+                transform: translateY(-1rem);
+                z-index: 10;
+            }
+    </style>*@
 <div class="row" style="display: none;">
     <div class="cal-4">
 
@@ -338,129 +438,4 @@
     </div>
     <div class="cal-8">
     </div>
-</div>
-
-@*<style>
-
-        .cards {
-            cursor: pointer;
-        }
-
-            .cards .card-section {
-                border-radius: 10px;
-                position: absolute;
-                left: 0px;
-                box-shadow: 1px 2px 2px 0 #aaa;
-                -webkit-transition: all 0.4s cubic-bezier(0.63, 0.15, 0.03, 1.12);
-                transition: all 0.4s cubic-bezier(0.63, 0.15, 0.03, 1.12);
-            }
-
-                .cards .card-section.card-1 {
-                    z-index: 10;
-                    -webkit-transform: rotateZ(-2deg);
-                    transform: rotateZ(-2deg);
-                }
-
-                .cards .card-section.card-2 {
-                    z-index: 9;
-                    -webkit-transform: rotateZ(-7deg);
-                    transform: rotateZ(-7deg);
-                    -webkit-transition-delay: 0.05s;
-                    transition-delay: 0.05s;
-                }
-
-                .cards .card-section.card-3 {
-                    z-index: 8;
-                    -webkit-transform: rotateZ(5deg);
-                    transform: rotateZ(5deg);
-                    -webkit-transition-delay: 0.1s;
-                    transition-delay: 0.1s;
-                }
-
-            .cards.transition .card-section {
-                -webkit-transform: rotateZ(0deg);
-                transform: rotateZ(0deg);
-            }
-
-                .cards.transition .card-section.card-3 {
-                    left: 240px;
-                }
-
-                .cards.transition .card-section.card-2 {
-                    left: 120px;
-                }
-    </style>*@
-<script>
-    jQuery(document).ready(function ($) {
-        $('.cards').on('click', function () {
-            $(this).toggleClass('transition');
-        });
-
-        //$(".inline-spacing").on("click", function () {
-        //    //$(this).find(".card-section").each(function (index, el) {
-        //    //    $(el).toggleClass("transition");
-        //    //});
-        //    //$(this).find(".card-section").each(function (index, el) {
-        //    //    if (index == 0) {
-        //    //        $(el).attr("style", "    position: relative;z-index: " + index);
-        //    //    } else {
-        //    //        $(el).attr("style", "z-index: " + index + ";top: 24px;position: absolute;left: " + (index * 10 + 34) + "px;");
-        //    //    }
-        //    //});
-        //});
-    });
-</script>
-
-<style>
-    /*    js Animated Card Stacks*/
-    /*    https://www.youtube.com/watch?v=NXtz59SJYfM*/
-    /*    https://css-tricks.com/*/
-    .cont {
-        display: grid;
-    }
-
-    .cards {
-        display: flex;
-        flex-wrap: wrap;
-        margin-left: 44px;
-    }
-
-    ._card {
-        background: white;
-        border-radius: 1rem;
-        padding: 2rem;
-        margin-left: -2rem;
-        box-shadow: 4px 4px 12px 2px rgba(0,0,0, 0.75);
-    }
-
-        ._card:not(:first-child) {
-            margin-left: -4rem;
-        }
-
-        ._card:hover {
-            transform: translateY(-1rem);
-        }
-</style>
-<div class="row" style="display: none;">
-    <div class="col-3 cont">
-        <div class="cards">
-            <div class="_card">
-                <h2>Title</h2>
-                <p>Description</p>
-            </div>
-            <div class="_card">
-                <h2>Title</h2>
-                <p>Description</p>
-            </div>
-            <div class="_card">
-                <h2>Title</h2>
-                <p>Description</p>
-            </div>
-            <div class="_card">
-                <h2>Title</h2>
-                <p>Description</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-9"></div>
 </div>

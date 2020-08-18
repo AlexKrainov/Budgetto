@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewData["Title"] = "Section_version_circle";
+}
+
+<style>
+    .card-section {
+        /*-webkit-transition: all .1s linear .2s;
+        -o-transition: all .1s linear .2s;*/
+        transition: all 0.5s ease-in-out 0.05s;
+        border-radius: 30px !important;
+    }
+
+        .card-section .card-body {
+            border-radius: 30px !important;
+        }
+
+        .card-section .card-section-text {
+            text-indent: -9999px;
+            /*            -webkit-transition: all .1s linear .1s;
+            -o-transition: all .1s linear .1s;*/
+            transition: all 0.5s ease-in-out 0.05s;
+        }
+
+        .card-section:hover .card-section-text {
+            text-indent: 10px;
+        }
+
+        .card-section:hover, .card-section:hover .card-body {
+            border-radius: 7px !important;
+        }
+
+    .cont {
+        display: grid;
+    }
+
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 44px;
+        margin-right: 68px;
+    }
+
+    .card-section {
+        /*        margin-right: -5rem;*/
+        margin-bottom: 10px;
+        box-shadow: 6px 2px 8px 3px rgba(0,0,0, 0.25);
+        transition: 0.5s;
+        border-radius: 7px;
+    }
+
+        .card-section .card {
+            border-radius: 7px;
+        }
+
+        .card-section .card-body {
+            border: 1px solid gray;
+            border-radius: 7px;
+        }
+
+        .card-section:not(:first-child) {
+            /*            margin-right: -4rem;*/
+        }
+
+        .card-section:hover {
+            /*            transform: translateY(-1rem);*/
+            z-index: 10;
+        }
+</style>
+
+<div class="cards">
+    <div class="card-section card" style="color: rgba(24, 28, 33, 0.8);background-color: rgb(255, 171, 145);">
+        <div class="card-body d-flex align-items-center p-2" style="color: rgba(24, 28, 33, 0.8);background-color: rgb(255, 171, 145);">
+            <i class="text-xlarge opacity-75 fas fa-shopping-cart"></i>
+            <div class="ml-1 card-section-text">
+                <div class="">Расходы (продукты)</div>
+                <div class=" small opacity-75" style="margin-top: -5px;">
+                    Основные раходы
+                    <div class="ml-2" style="display: none;">
+                        <i class="oi oi-layers d-block1"></i> +0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-section card" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+        <div class="card-body d-flex  align-items-center p-2" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+            <i class="text-xlarge opacity-75 fas fa-shopping-basket"></i>
+            <div class="ml-1 card-section-text">
+                <div>Регулярные платежы</div>
+                <div class="small opacity-75" style="margin-top: -5px;">
+                    Основные раходы
+                    <div class="ml-2" style="display: none;">
+                        <i class="oi oi-layers d-block1"></i> +0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-section card" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+        <div class="card-body d-flex  align-items-center p-2" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+            <i class="text-xlarge opacity-75 fas fa-prescription-bottle-alt"></i>
+            <div class="ml-1 card-section-text">
+                <div>Траты на ребенка</div>
+                <div class="small opacity-75" style="margin-top: -5px;">
+                    Основные раходы
+                    <div class="ml-2" style="display: none;">
+                        <i class="oi oi-layers d-block1"></i> +0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-section card" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+        <div class="card-body d-flex  align-items-center p-2" style="color: rgb(255, 255, 255);background-color: rgb(244, 67, 54);">
+            <i class="text-xlarge opacity-75 fas fa-shopping-basket"></i>
+            <div class="ml-1 card-section-text">
+                <div>Прочие расходы</div> <div class="small opacity-75" style="margin-top: -5px;">
+                    Основные раходы
+                    <div class="ml-2" style="display: none;">
+                        <i class="oi oi-layers d-block1"></i> +0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

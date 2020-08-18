@@ -62,10 +62,9 @@
                 <div class="card-body py-2">
                     <div class="text-muted small mb-2">Категории</div>
                     <div class="d-flex flex-wrap">
-                        <div class="badge badge-pill badge-outline-secondary mr-1 mb-1" v-for="section in limit.sections" v-bind:style="'box-shadow: 0 0 0 1px '+ section.cssColor +' inset; color: '+ section.cssColor">
-                            <i v-bind:class="section.cssIcon"></i>
-                            <span class="ml-1">{{section.name}}</span>
-                        </div>
+                        <vue-section-component data-class="cards-medium"
+                                               v-bind:is-show-filter="false"
+                                               v-bind:data-items="limit.sections"></vue-section-component>
                     </div>
                 </div>
                 <hr class="m-0">
