@@ -1,6 +1,6 @@
 ﻿Vue.component("vue-section-component", {
     template: `
-<div>
+<div v-bind:id="dataId">
     <input type='search'
            class="form-control form-control-sm"
            v-on:input="onsearch" 
@@ -30,7 +30,7 @@
 </div>`,
     props: {
         dataSearchId: String,
-        id: String,
+        dataId: String,
         name: String,
         onchoose: Event,
         isShowFilter: {
@@ -55,13 +55,19 @@
             sections: [],
         }
     },
+    watch: {
+        dataItems: function (newValue) {
+            console.log("watch");
+            this.updateSections();
+        }
+    },
     mounted: function () {
         new PerfectScrollbar(document.getElementsByClassName('cards')[0]);
 
         if (this.dataItems == undefined) {
             this.load();
         } else {
-            this.sections = this.dataItems;
+            this.updateSections();
         }
     },
     methods: {
@@ -89,5 +95,13 @@
                 this.sections[i].isShow = this.sections[i].name.toLocaleLowerCase().indexOf(event.target.value.toLocaleLowerCase()) >= 0;
             }
         },
+        updateSections: function (newItems) {
+            if (newItems) {
+                this.sections = newItems;
+            } else {
+                this.sections = this.dataItems;
+            }
+            this.$forceUpdate();
+        }
     }
 });

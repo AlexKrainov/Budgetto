@@ -44,6 +44,7 @@ namespace MyProfile.Budget.Service
                     IsShowOnSite = x.IsShowOnSite,
                     IsShowInCollective = x.IsShowInCollective,
                     Sections = x.BudgetSectinos
+                        .OrderBy(p => p.ID)
                         .Select(y => new BudgetSectionModelView
                         {
                             ID = y.ID,
@@ -61,6 +62,8 @@ namespace MyProfile.Budget.Service
                             Owner = x.User.Name,
                             CanEdit = x.UserID == userID,
                             HasRecords = y.BudgetRecords.Any(),
+                            IsShow_Filtered = true,
+                            IsShow = true,
                             //CollectiveSections = y.CollectiveSections
                             //.Select(z => new BudgetSectionModelView
                             //{
@@ -69,7 +72,6 @@ namespace MyProfile.Budget.Service
                             //    AreaName = z.ChildSection.BudgetArea.Name
                             //}),
                         })
-                        .OrderByDescending(p => p.Name.Length)
                 });
         }
 
@@ -103,6 +105,7 @@ namespace MyProfile.Budget.Service
                     AreaName = x.BudgetArea.Name,
                     AreaID = x.BudgetAreaID,
                     RecordCount = x.BudgetRecords.Count(),
+                    IsShow_Filtered = true,
                     IsShow = true,
                     CollectiveSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
                     {

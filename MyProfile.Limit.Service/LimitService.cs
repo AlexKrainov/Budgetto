@@ -83,7 +83,7 @@ namespace MyProfile.Limit.Service
                         CssColor = y.BudgetSection.CssColor,
                         CssBackground = y.BudgetSection.CssBackground,
                         CssIcon = y.BudgetSection.CssIcon,
-                        isShow_Filtered = true,
+                        IsShow_Filtered = true,
                         IsShow = true,
                         AreaName = y.BudgetSection.BudgetArea.Name,
                     }).ToList()
@@ -157,7 +157,7 @@ namespace MyProfile.Limit.Service
                         CssColor = y.BudgetSection.CssColor,
                         CssBackground = y.BudgetSection.CssBackground,
                         CssIcon = y.BudgetSection.CssIcon,
-                        isShow_Filtered = true,
+                        IsShow_Filtered = true,
                         IsShow = true,
                         AreaName = y.BudgetSection.BudgetArea.Name,
                     })

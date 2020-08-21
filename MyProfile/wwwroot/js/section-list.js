@@ -118,6 +118,14 @@
                     });
             }
         },
+        updateSectionComponent: function () {
+            for (var i = 0; i < this.$children.length; i++) {
+                let areaID = this.$children[i].dataId.replace("areaid_", "");
+
+                let areaIndex = this.areas.findIndex(x => x.id == areaID);
+                let childrenIndex = this.$children[i].updateSections(this.areas[areaIndex].sections);
+            }
+        },
     }
 });
 
@@ -441,11 +449,12 @@ var SectionVue = new Vue({
 
                                 let newAreaIndex = AreaVue.areas.findIndex(x => x.id == result.section.areaID);
                                 AreaVue.areas[newAreaIndex].sections.push(result.section);
+
                             }
                         }
                         AreaVue.$forceUpdate();//bug areaVuew doesn't update section in a view
                         $("#modal-section").modal("hide");
-                        RecordVue.updateSectionComponent()
+                        AreaVue.updateSectionComponent();
                     }
                     SectionVue.isSaving = false;
                 });

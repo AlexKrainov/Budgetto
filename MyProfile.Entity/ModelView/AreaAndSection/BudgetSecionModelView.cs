@@ -19,7 +19,7 @@ namespace MyProfile.Entity.ModelView
 		public int AreaID { get; set; }
 		public string AreaName { get; set; }
 		public bool IsUpdated { get; set; }
-		public bool isShow_Filtered { get; set; } = true;
+		public bool IsShow_Filtered { get; set; } = true;
 
 		public string Owner { get; set; }
 		public bool CanEdit { get; set; }
