@@ -13,6 +13,7 @@ using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Template.Service;
+using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
@@ -24,18 +25,21 @@ namespace MyProfile.Controllers
         private BudgetService budgetService;
         private SectionService sectionService;
         private BudgetRecordService budgetRecordService;
+        private UserLogService userLogService;
 
         public BudgetController(IBaseRepository repository,
             BudgetService budgetService,
             TemplateService templateService,
             SectionService sectionService,
-            BudgetRecordService budgetRecordService)
+            BudgetRecordService budgetRecordService,
+            UserLogService userLogService)
         {
             this.repository = repository;
             this.templateService = templateService;
             this.budgetService = budgetService;
             this.sectionService = sectionService;
             this.budgetRecordService = budgetRecordService;
+            this.userLogService = userLogService;
             //	new BudgetRecord
             //	{
             //		Total = 140,
@@ -88,6 +92,8 @@ namespace MyProfile.Controllers
                 }
             }
 
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BudgetMonth_Page);
+
             return View(model);
         }
 
@@ -121,6 +127,9 @@ namespace MyProfile.Controllers
             {
                 model.SelectedTemplateID = model.Templates[0].ID;
             }
+
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BudgetYear_Page);
+
             return View(model);
         }
 

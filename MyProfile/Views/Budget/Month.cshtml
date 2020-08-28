@@ -28,40 +28,24 @@
     <input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />
 
     <!-- Head block -->
-    
+
     <div class="container-m-nx container-m-ny theme-bg-white container-p-x py-4 mb-0">
 
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="form-row">
-                <div class="form-group col-4">
-                    <label class="form-label">Месяц</label>
-                    <input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh(undefined)">
-                </div>
-                <div class="form-group col">
-                    <label class="form-label">Шаблон</label>
-                    <select id="templates" v-model="templateID" v-on:change="refresh('onlyTable')" class="form-control">
-                        @foreach (var template in Model.Templates)
-                        {
-                            if (!template.IsDefault)
-                            {
-                                <option value="@template.ID">@template.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@template.ID" selected>@template.Name</option>
-                            }
-                        }
-                    </select>
-                </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label">Месяц</label>
+                <input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh(undefined)">
             </div>
-            <div>
+            <div class="col-md-4">
                 <h2 class="font-weight-light mb-2">Server Statistics</h2>
                 <div class="badge badge-success font-weight-bold">RUNNING</div>
             </div>
-            <button class="btn btn-lg btn-default" id="test">
-                <i class="ion ion-md-power text-danger"></i>&nbsp;
-                Shut Down
-            </button>
+            <div class="col-md-4">
+                <button class="btn btn-lg btn-default" id="test">
+                    <i class="ion ion-md-power text-danger"></i>&nbsp;
+                    Shut Down
+                </button>
+            </div>
         </div>
     </div>
     <!-- / Head block -->
@@ -82,17 +66,28 @@
     <div class="card">
         <div class="card-body" style="padding-bottom:5px;">
             <div class="card-title with-elements">
-                <h5 class="m-0 mr-2">Table</h5>
+                <select id="templates" v-model="templateID" style="width: 300px"
+                        v-on:change="refresh('onlyTable')" class="form-control form-control-sm">
+                    @foreach (var template in Model.Templates)
+                    {
+                        if (!template.IsDefault)
+                        {
+                            <option value="@template.ID">@template.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@template.ID" selected>@template.Name</option>
+                        }
+                    }
+                </select>
+                <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать шаблон"
+                   v-bind:href="'/Template/Edit/'+template.id" >
+                    <i class="ion ion-md-create" ></i>
+                </a>
+
                 <div class="card-title-elements">
                 </div>
                 <div class="card-title-elements ml-md-auto">
-                    <label class="switcher switcher-sm mr-0">
-                        <input type="checkbox" class="switcher-input">
-                        <span class="switcher-indicator">
-                            <span class="switcher-yes"></span>
-                            <span class="switcher-no"></span>
-                        </span>
-                    </label>
                     <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3"><i class="collapse-icon"></i></a>
                 </div>
             </div>

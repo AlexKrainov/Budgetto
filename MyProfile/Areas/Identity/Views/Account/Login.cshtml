@@ -242,11 +242,11 @@
                                 @Model.Message
                             </div>
                         }*@
-                    <div class="alert alert-success mt-3 alert-dismissible" v-show="textMessage">
+                    <div class="callout callout-success mt-3" v-show="textMessage">
                         <button type="button" class="close" data-dismiss="alert" v-on:click="textMessage = null">×</button>
                         {{ textMessage }}
                     </div>
-                    <div class="alert alert-danger mt-3 alert-dismissible" v-show="textError">
+                    <div class="callout callout-danger mt-3" v-show="textError">
                         <button type="button" class="close" data-dismiss="alert" v-on:click="textError = null">×</button>
                         {{ textError }}
                     </div>

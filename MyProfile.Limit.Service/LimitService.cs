@@ -20,6 +20,7 @@ namespace MyProfile.Limit.Service
         private CollectionUserService collectionUserService;
         private BudgetRecordService budgetRecordService;
         private SectionService sectionService;
+        private UserLogService userLogService;
 
         public LimitService(IBaseRepository repository,
             CollectionUserService collectionUserService)
@@ -28,12 +29,13 @@ namespace MyProfile.Limit.Service
             this.collectionUserService = collectionUserService;
             this.budgetRecordService = new BudgetRecordService(repository);
             this.sectionService = new SectionService(repository);
+            this.userLogService = new UserLogService(repository);
         }
 
         public async Task<LimitModelView> UpdateOrCreate(LimitModelView limit)
         {
-
-            limit.UserID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
+            limit.UserID = currentUser.ID;
             limit.SectionGroupLimits = limit.NewSections.Distinct().Select(x => new SectionGroupLimit { BudgetSectionID = x.ID, LimitID = limit.ID }).ToList();
 
             if (limit.ID > 0)
@@ -50,6 +52,7 @@ namespace MyProfile.Limit.Service
                 dbLimit.VisibleElement.IsShowOnDashboards = limit.IsShowOnDashboard;
 
                 await repository.UpdateAsync(dbLimit, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Limit_Edit);
             }
             else
             {
@@ -59,6 +62,7 @@ namespace MyProfile.Limit.Service
                     IsShowInCollective = limit.IsShowInCollective,
                 };
                 await repository.CreateAsync(limit, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Limit_Create);
             }
 
             return await repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.ID == limit.ID)
@@ -100,13 +104,15 @@ namespace MyProfile.Limit.Service
         /// <returns></returns>
         public async Task<bool> RemoveOrRecovery(LimitModelView limit, bool isRemove)
         {
-            var db_limit = await repository.GetAll<Entity.Model.Limit>(x => x.ID == limit.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+            var currentUser = UserInfo.Current;
+            var db_limit = await repository.GetAll<Entity.Model.Limit>(x => x.ID == limit.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
             if (db_limit != null)
             {
                 db_limit.IsDeleted = isRemove;
                 //db_limit.date = DateTime.Now.ToUniversalTime();
                 await repository.UpdateAsync(db_limit, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Limit_Delete);
                 return true;
             }
             return false;

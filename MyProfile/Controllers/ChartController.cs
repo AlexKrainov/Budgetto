@@ -6,22 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using MyProfile.Chart.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Chart;
+using MyProfile.Identity;
+using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
     public class ChartController : Controller
     {
         private ChartService chartService;
+        private UserLogService userLogService;
 
-        public ChartController(ChartService chartService)
+        public ChartController(ChartService chartService, UserLogService userLogService)
         {
             this.chartService = chartService;
-
+            this.userLogService = userLogService;
         }
 
         [HttpGet]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BigCharts_Page);
             return View();
         }
 
@@ -33,8 +37,9 @@ namespace MyProfile.Controllers
 
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BigChartEdit_Page);
             return View(id);
         }
 

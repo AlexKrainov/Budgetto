@@ -49,8 +49,11 @@ namespace MyProfile.Areas.Identity.Controllers
         {
             var user = await userService.CheckAndGetUser(login.Email, login.Password);
 
-            if (user != null && await userLogService.CheckLimitEnter(user.ID, UserActionType.Login))
+            //check limit enter 20 times
+            if (user != null && await userLogService.CheckLimitEnter())
             {
+                await userLogService.CreateSession(user.ID, UserLogActionType.LimitLogin);
+
                 var emailID = await userEmailService.LoginConfirmation(user);
 
                 if (emailID != Guid.Empty)
@@ -61,7 +64,7 @@ namespace MyProfile.Areas.Identity.Controllers
 
             if (user != null)
             {
-                user = await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.Login);
+                user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Login);
 
                 if (Url.IsLocalUrl(login.ReturnUrl))
                 {
@@ -73,6 +76,8 @@ namespace MyProfile.Areas.Identity.Controllers
                 }
             }
 
+            await userLogService.CreateSession(null, UserLogActionType.TryLogin);
+
             return Json(new { isOk = false, textError = "Неверная почта и(или) пароль." });
 
         }
@@ -81,7 +86,7 @@ namespace MyProfile.Areas.Identity.Controllers
         {
             if (UserInfo.Current != null)
             {
-                await userLogService.CreateAction(UserInfo.Current.ID, UserActionType.Logout);
+                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Logout);
             }
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -97,6 +102,7 @@ namespace MyProfile.Areas.Identity.Controllers
             {
                 if (await repository.AnyAsync<Entity.Model.User>(x => x.Email == registrationModel.Email && x.IsDeleted == false))
                 {
+                    await userLogService.CreateSession(null, UserLogActionType.TryRegistration, $"Login: {registrationModel.Email}, Password:{registrationModel.Password}, Comment= we already have user with this email");
                     return Json(new { isOk = false, message = $"В системе уже есть пользователь с такой почтой ({ registrationModel.Email })." });
                 }
 
@@ -105,9 +111,12 @@ namespace MyProfile.Areas.Identity.Controllers
                     await userService.CreateUser(registrationModel.Email, registrationModel.Password);
 
                     var user = await userService.CheckAndGetUser(registrationModel.Email, registrationModel.Password);
+
                     //Maybe send another pool
                     try
                     {
+                        user.UserSessionID = await userLogService.CreateSession(user.ID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}");
+
                         var emailID = await userEmailService.ConfirmEmail(user);
                         if (emailID != Guid.Empty)
                         {
@@ -116,14 +125,17 @@ namespace MyProfile.Areas.Identity.Controllers
                     }
                     catch (Exception ex)
                     {
+                        await userLogService.CreateSession(user.ID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}, Error = {ex.Message}");
+                        await userLogService.CreateLog(userID: user.ID, where: "AccountController.Registration_1", errorText: ex.Message);
                     }
 
-                    user = await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.Registration);
+                    user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Registration);
                     return Json(new { isOk = true, isShowCode = false, href = "/Budget/Month" });
 
                 }
                 catch (Exception ex)
                 {
+                    await userLogService.CreateLog(where: "AccountController.Registration_2", errorText: ex.Message);
                     return Json(new { isOk = false, message = $"Во время создания пользователя произошла ошибка." });
                 }
             }
@@ -138,15 +150,21 @@ namespace MyProfile.Areas.Identity.Controllers
 
             if (user == null)
             {
+                await userLogService.CreateSession(null, UserLogActionType.RecoveryPassword_Step1, $"The user did not find (email = {login.Email})");
+
                 return Json(new { isOk = false, message = $"Не удалось найти пользователя с такой почтой. Пожалуйста зарегистрируйтесь " });
             }
 
             var emailID = await userEmailService.RecoveryPassword(user);
 
+
             if (emailID != Guid.Empty)
             {
+                await userLogService.CreateSession(user.ID, UserLogActionType.RecoveryPassword_Step1);
+
                 return Json(new { isOk = true, emailID });
             }
+            await userLogService.CreateSession(user.ID, UserLogActionType.RecoveryPassword_Step1, $"Problem when send recovery password (email = {login.Email})");
 
             return Json(new { isOk = false, message = "Извините, произошла ошибка во время восстановления пароля. Пожалуйста попробуйте позже." });
         }
@@ -168,10 +186,13 @@ namespace MyProfile.Areas.Identity.Controllers
                 {
                     emailID = await userEmailService.ConfirmEmail(user, true);
                 }
-                else if (model.LastActionID == 2) //recoveryPassword
+                else if (model.LastActionID == 2) //RecoveryPassword
                 {
                     emailID = await userEmailService.RecoveryPassword(user, true);
                 }
+
+                await userLogService.CreateSession(user.ID, UserLogActionType.ResendEmail);
+
                 return Json(new { isOk = true, emailID, message = "Сообщение отправлено повторно" });
             }
 
@@ -188,23 +209,27 @@ namespace MyProfile.Areas.Identity.Controllers
 
                 if (userID == Guid.Empty)
                 {
+                    await userLogService.CreateSession(null, UserLogActionType.CheckCode);
                     return Json(new { isOk = false, message = "Неверный код. Попробуйте еще." });
                 }
             }
             catch (Exception ex)
             {
+                await userLogService.CreateSession(null, UserLogActionType.CheckCode, $"Error: {ex.Message}");
                 return Json(new { isOk = false, message = "Неверный код. Попробуйте еще." });
             }
 
             if (checkCodeModel.LastActionID == 2)//recoveryPassword
             {
+                await userLogService.CreateSession(null, UserLogActionType.CheckCode, $"The user can recovery password");
+
                 return Json(new { isOk = true, canChangePassword = true, userID });
             }
 
             var user = await userService.CheckAndGetUser(null, null, userID);
             user.IsConfirmEmail = await userService.SetConfirmEmail(userID, true);
 
-            await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.EnterAfterCode);
+            await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.LoginAfterCode);
 
             return Json(new { isOk = true, href = "/Budget/Month" });
         }
@@ -215,6 +240,7 @@ namespace MyProfile.Areas.Identity.Controllers
         public async Task<IActionResult> RecoveryPassword2([FromBody] ResetPasswordModel model)
         {
             string errorMessage = string.Empty;
+
             if (model.ID != Guid.Empty
                 && !string.IsNullOrEmpty(model.NewPassword)
                 && model.NewPassword.Length >= 5)
@@ -225,15 +251,19 @@ namespace MyProfile.Areas.Identity.Controllers
 
                     var user = await userService.CheckAndGetUser(null, null, model.ID);
 
-                    await userService.AuthenticateOrUpdateUserInfo(user, UserActionType.ResetPassword);
+                    await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.LoginAfterResetPassword);
 
                     return Json(new { isOk = true, href = "/Budget/Month" });
                 }
                 catch (Exception ex)
                 {
                     errorMessage = ex.Message;
+                    await userLogService.CreateLog(where: "AccountController.RecoveryPassword2", errorText: ex.Message);
                 }
             }
+
+            await userLogService.CreateSession(null, UserLogActionType.LoginAfterResetPassword, $"Error = {errorMessage}");
+
             return Json(new { isOk = false, message = "Не удалось обновить пароль. Ошибка сервера.", errorMessage });
         }
 

@@ -1,10 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyProfile.Identity;
+using MyProfile.User.Service;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {
     public class ErrorController : Controller
     {
+        private UserLogService userLogService;
+
+        public ErrorController(UserLogService userLogService)
+        {
+            this.userLogService = userLogService;
+        }
+
         public IActionResult StatusCode()
         {
             if (Response.StatusCode == (int)HttpStatusCode.NotFound)
@@ -18,13 +28,15 @@ namespace MyProfile.Controllers
 
             return View();
         }
-        public IActionResult Error_404()
+        public async Task<IActionResult> Error_404()
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Error404_Page);
             return View();
         }
 
-        public IActionResult Error_500()
+        public async Task<IActionResult> Error_500()
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Error500_Page);
             return View();
         }
     }

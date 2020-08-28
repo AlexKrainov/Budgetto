@@ -18,12 +18,15 @@ namespace MyProfile.Goal.Service
     {
         private IBaseRepository repository;
         private CollectionUserService collectionUserService;
+        private UserLogService userLogService;
 
         public GoalService(IBaseRepository repository,
-            CollectionUserService collectionUserService)
+            CollectionUserService collectionUserService,
+            UserLogService userLogService)
         {
             this.repository = repository;
             this.collectionUserService = collectionUserService;
+            this.userLogService = userLogService;
         }
 
         public async Task<List<GoalModelView>> GetGoalListView(Expression<Func<Goal, bool>> expression = null)
@@ -109,7 +112,8 @@ namespace MyProfile.Goal.Service
 
         public async Task<GoalModelView> UpdateOrCreate(GoalModelView goal)
         {
-            goal.UserID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
+            goal.UserID = currentUser.ID;
 
             if (goal.ID == 0)
             {
@@ -120,6 +124,7 @@ namespace MyProfile.Goal.Service
                 };
 
                 await repository.CreateAsync(goal, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Goal_Create);
             }
             else
             {
@@ -134,6 +139,7 @@ namespace MyProfile.Goal.Service
                 dbGoal.VisibleElement.IsShow_BudgetYear = goal.IsShow_BudgetYear;
 
                 await repository.UpdateAsync(dbGoal, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Goal_Edit);
             }
 
             return await repository.GetAll<Goal>(x => x.ID == goal.ID)
@@ -203,13 +209,15 @@ namespace MyProfile.Goal.Service
         /// <returns></returns>
         public async Task<bool> RemoveOrRecovery(GoalModelView goal, bool isRemove)
         {
-            var db_item = await repository.GetAll<Entity.Model.Goal>(x => x.ID == goal.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+            var currentUser = UserInfo.Current;
+            var db_item = await repository.GetAll<Goal>(x => x.ID == goal.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
             if (db_item != null)
             {
                 db_item.IsDeleted = isRemove;
                 //db_item. = DateTime.Now.ToUniversalTime();
                 await repository.UpdateAsync(db_item, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Goal_Delete);
                 return true;
             }
             return false;

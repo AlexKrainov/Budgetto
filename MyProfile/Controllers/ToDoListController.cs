@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.ModelView.ToDoList;
+using MyProfile.Identity;
 using MyProfile.ToDoList.Service;
+using MyProfile.User.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,14 +11,17 @@ namespace MyProfile.Controllers
     public class ToDoListController : Controller
     {
         private ToDoListService toDoListService;
+        private UserLogService userLogService;
 
-        public ToDoListController(ToDoListService toDoListService)
+        public ToDoListController(ToDoListService toDoListService, UserLogService userLogService)
         {
             this.toDoListService = toDoListService;
+            this.userLogService = userLogService;
         }
 
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.ToDoLists_Page);
 
             return View();
         }

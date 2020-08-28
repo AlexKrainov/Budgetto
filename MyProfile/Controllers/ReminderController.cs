@@ -4,22 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.ModelView.Reminder;
+using MyProfile.Identity;
 using MyProfile.Reminder.Service;
+using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
     public class ReminderController : Controller
     {
         private ReminderService reminderService;
+        private UserLogService userLogService;
 
-        public ReminderController(ReminderService reminderService)
+        public ReminderController(ReminderService reminderService, UserLogService userLogService)
         {
             this.reminderService = reminderService;
+            this.userLogService = userLogService;
         }
 
         [HttpGet]
         public async Task<IActionResult> LoadReminders(DateTime currentDate)
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Reminder_Part);
+
             return Json(new { IsOk = true, data = await reminderService.GetRimindersByDate(currentDate) });
         }
 

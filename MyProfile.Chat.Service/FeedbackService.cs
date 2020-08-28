@@ -4,6 +4,7 @@ using MyProfile.Entity.ModelView.Feedback;
 using MyProfile.Entity.Repository;
 using MyProfile.File.Service;
 using MyProfile.Identity;
+using MyProfile.User.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,14 +18,17 @@ namespace MyProfile.Chat.Service
         private UserEmailService userEmailService;
         private IBaseRepository repository;
         private FileWorkerService fileWorkerService;
+        private UserLogService userLogService;
 
         public FeedbackService(UserEmailService userEmailService,
             IBaseRepository repository,
-            FileWorkerService fileWorkerService)
+            FileWorkerService fileWorkerService,
+            UserLogService userLogService )
         {
             this.userEmailService = userEmailService;
             this.repository = repository;
             this.fileWorkerService = fileWorkerService;
+            this.userLogService = userLogService;
         }
 
         public async Task<bool> Create(FeedbackCreateModelView feedback)
@@ -93,12 +97,12 @@ namespace MyProfile.Chat.Service
 
                 await repository.CreateAsync(chat, true);
 
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Feedback_Create);
 
                 //userEmailSender.SendFeedback(chat);
             }
             catch (Exception ex)
             {
-
                 return false;
             }
 

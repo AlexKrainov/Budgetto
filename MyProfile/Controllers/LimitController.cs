@@ -9,6 +9,7 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
+using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
@@ -17,18 +18,24 @@ namespace MyProfile.Controllers
         private IBaseRepository repository;
         private LimitService limitService;
         private DictionariesService dictionariesService;
+        private UserLogService userLogService;
 
         public LimitController(IBaseRepository repository,
             LimitService limitService,
-            LittleDictionaries.Service.DictionariesService dictionariesService)
+            LittleDictionaries.Service.DictionariesService dictionariesService,
+            UserLogService userLogService)
         {
             this.repository = repository;
             this.limitService = limitService;
             this.dictionariesService = dictionariesService;
+            this.userLogService = userLogService;
         }
+
         [HttpGet]
         public async Task<IActionResult> List()
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Limit_Page);
+
             return View();
         }
 

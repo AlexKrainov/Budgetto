@@ -8,8 +8,10 @@ using MyProfile.Entity.ModelView.Goal;
 using MyProfile.Entity.ModelView.Limit;
 using MyProfile.Entity.Repository;
 using MyProfile.Goal.Service;
+using MyProfile.Identity;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
+using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
@@ -17,16 +19,20 @@ namespace MyProfile.Controllers
     {
         private IBaseRepository repository;
         private GoalService goalService;
+        private UserLogService userLogService;
 
         public GoalController(IBaseRepository repository,
-            GoalService goalService)
+            GoalService goalService,
+            UserLogService userLogService)
         {
             this.repository = repository;
             this.goalService = goalService;
+            this.userLogService = userLogService;
         }
         [HttpGet]
         public async Task<IActionResult> List()
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Goal_Page);
             return View();
         }
 

@@ -107,7 +107,7 @@
                         if (result.isOk && result.wasDeleted) {
                             toastr.success(result.text);
                             let index = AreaVue.areas.findIndex(x => x.id == result.id);
-                            if (index && index > 0) {
+                            if (index != -1) {
                                 AreaVue.areas.splice(index, 1);
                             }
                         } else if (result.isOk && result.wasDeleted == false) {
@@ -401,7 +401,7 @@ var SectionVue = new Vue({
                     if (result.isOk && result.wasDeleted) {
                         toastr.success(result.text);
                         let index = SectionVue.sections.findIndex(x => x.id == result.id);
-                        if (index && index > 0) {
+                        if (index != -1) {
                             SectionVue.sections.splice(index, 1);
                         }
                     } else if (result.isOk && result.wasDeleted == false) {

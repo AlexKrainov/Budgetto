@@ -2,6 +2,7 @@
 using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.User.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace MyProfile.Reminder.Service
     public class ReminderService
     {
         private IBaseRepository repository;
+        private UserLogService userLogService;
 
         public ReminderService(IBaseRepository baseRepository)
         {
             this.repository = baseRepository;
+            this.userLogService = new UserLogService(baseRepository);
         }
 
         public async Task<IList<ReminderEditModelView>> GetRimindersByDate(DateTime currentDate)
@@ -51,7 +54,7 @@ namespace MyProfile.Reminder.Service
 
         public async Task<bool> CreateOrUpdate(ReminderEditModelView reminderEdit)
         {
-            var currentInfoID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
 
             var reminderDates = GetReminderDates(reminderEdit);
@@ -61,7 +64,7 @@ namespace MyProfile.Reminder.Service
                 if (reminderEdit.ID > 0)//Update
                 {
                     var reminder = await repository.GetAll<Reminder>(x => x.ID == reminderEdit.ID
-                    && x.UserID == currentInfoID
+                    && x.UserID == currentUser.ID
                     && x.IsDeleted == false)
                         .FirstOrDefaultAsync();
 
@@ -81,12 +84,13 @@ namespace MyProfile.Reminder.Service
                     reminder.ReminderDates = reminderDates;
 
                     await repository.UpdateAsync(reminder, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Reminder_Edit);
                 }
                 else
                 {
                     var reminder = new Reminder();
 
-                    reminder.UserID = currentInfoID;
+                    reminder.UserID = currentUser.ID;
                     reminderEdit.DateEdit = reminderEdit.DateCreate = reminder.DateEdit = reminder.DateCreate = now;
 
                     reminder.Title = reminderEdit.Title;
@@ -98,6 +102,7 @@ namespace MyProfile.Reminder.Service
                     reminder.ReminderDates = reminderDates;
 
                     await repository.CreateAsync(reminder, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Reminder_Create);
 
                     reminderEdit.ID = reminder.ID;
 
@@ -136,11 +141,11 @@ namespace MyProfile.Reminder.Service
 
         public async Task<bool> RemoveOrRecovery(ReminderEditModelView reminderEdit, bool isDelete)
         {
-            var currentInfoID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
 
             var reminder = await repository.GetAll<Reminder>(x => x.ID == reminderEdit.ID
-                    && x.UserID == currentInfoID)
+                    && x.UserID == currentUser.ID)
                 .FirstOrDefaultAsync();
 
             reminder.DateEdit = now;
@@ -149,6 +154,7 @@ namespace MyProfile.Reminder.Service
             try
             {
                 await repository.UpdateAsync(reminder, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Reminder_Delete);
 
             }
             catch (Exception ex)

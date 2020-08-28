@@ -3,6 +3,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.ToDoList;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.User.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,13 @@ namespace MyProfile.ToDoList.Service
     public class ToDoListService
     {
         private IBaseRepository repository;
+        private UserLogService userLogService;
 
-        public ToDoListService(IBaseRepository baseRepository)
+        public ToDoListService(IBaseRepository baseRepository,
+            UserLogService userLogService)
         {
             this.repository = baseRepository;
+            this.userLogService = userLogService;
         }
 
         public async Task<List<FolderListModelView>> GetListFolders()
@@ -72,11 +76,11 @@ namespace MyProfile.ToDoList.Service
 
         public async Task<bool> RemoveFolder(FolderListModelView folder)
         {
-            var currentUserID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
 
             try
             {
-                var folderDB = await repository.GetAll<ToDoListFolder>(x => x.UserID == currentUserID && x.ID == folder.ID)
+                var folderDB = await repository.GetAll<ToDoListFolder>(x => x.UserID == currentUser.ID && x.ID == folder.ID)
                     .FirstOrDefaultAsync();
 
                 if (folderDB != null)
@@ -90,6 +94,7 @@ namespace MyProfile.ToDoList.Service
                         await repository.DeleteAsync<VisibleElement>(visibleElementID);
                     }
                     await repository.SaveAsync();
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Delete);
                 }
             }
             catch (Exception ex)
@@ -154,7 +159,7 @@ namespace MyProfile.ToDoList.Service
 
         public async Task<bool> CreateOrUpdateFolder(FolderListModelView folder)
         {
-            var currentUserID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
 
             try
             {
@@ -164,19 +169,22 @@ namespace MyProfile.ToDoList.Service
                     {
                         Title = folder.Title,
                         CssIcon = folder.CssIcon,
-                        UserID = currentUserID,
+                        UserID = currentUser.ID,
                     };
                     await repository.CreateAsync(folderDB, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Create);
                     folder.ID = folderDB.ID;
+
                 }
                 else
                 {
-                    var folderDB = await repository.GetAll<ToDoListFolder>(x => x.ID == folder.ID && x.UserID == currentUserID).FirstOrDefaultAsync();
+                    var folderDB = await repository.GetAll<ToDoListFolder>(x => x.ID == folder.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
                     folderDB.Title = folder.Title;
                     folderDB.CssIcon = folder.CssIcon;
 
                     await repository.UpdateAsync(folderDB, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Edit);
                 }
             }
             catch (Exception ex)
@@ -235,6 +243,7 @@ namespace MyProfile.ToDoList.Service
                     };
 
                     await repository.CreateAsync(toDoList, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListList_Create);
 
                     list.ID = toDoList.ID;
                 }
@@ -298,6 +307,7 @@ namespace MyProfile.ToDoList.Service
                     todoList.ToDoListItems = items;
 
                     await repository.UpdateAsync(todoList, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListList_Edit);
                 }
             }
             catch (Exception ex)
@@ -337,12 +347,12 @@ namespace MyProfile.ToDoList.Service
 
         public async Task<bool> Recovery(int listID)
         {
-            var currentUserID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
 
             try
             {
-                var listDB = await repository.GetAll<ToDoList>(x => x.ID == listID && x.ToDoListFolder.UserID == currentUserID).FirstOrDefaultAsync();
+                var listDB = await repository.GetAll<ToDoList>(x => x.ID == listID && x.ToDoListFolder.UserID == currentUser.ID).FirstOrDefaultAsync();
 
                 if (listDB != null)
                 {
@@ -350,6 +360,7 @@ namespace MyProfile.ToDoList.Service
                     listDB.DateEdit = now;
 
                     await repository.UpdateAsync(listDB, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListList_Recovery);
                 }
                 else
                 {
@@ -366,11 +377,11 @@ namespace MyProfile.ToDoList.Service
 
         public async Task<bool> RemoveListsByIDs(List<ItemDelete> listIDs)
         {
-            var currentUserID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
             var onlyIDs = listIDs.Select(x => x.ID);
 
-            var lists = await repository.GetAll<ToDoList>(x => x.ToDoListFolder.UserID == currentUserID && onlyIDs.Contains(x.ID)).ToListAsync();
+            var lists = await repository.GetAll<ToDoList>(x => x.ToDoListFolder.UserID == currentUser.ID && onlyIDs.Contains(x.ID)).ToListAsync();
 
             try
             {
@@ -385,6 +396,7 @@ namespace MyProfile.ToDoList.Service
                 {
                     listIDs[i].IsDeleted = true;
                 }
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListList_Delete);
             }
             catch (Exception ex)
             {

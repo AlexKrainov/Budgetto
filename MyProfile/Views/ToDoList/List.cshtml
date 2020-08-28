@@ -34,7 +34,10 @@
             <hr class="border-light m-0">
 
             <div class="card-body pt-3">
-                <input type="text" class="form-control form-control-sm mb-4" placeholder="Поиск..."
+                <span class="cursor-pointer" v-on:click="editFolder">
+                    +  <i class="ion ion-md-folder-open d-block1"></i>
+                </span>
+                <input type="text" class="form-control form-control-sm mb-4" placeholder="Поиск..." style="display: inline; width: 80%; padding-left: 3px;"
                        v-model="searchFolderText">
 
                 <a href="javascript:void(0)" class="text-body d-flex justify-content-between align-items-center py-2 folder-text"
@@ -176,7 +179,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label class="form-label">Навзвание папки</label>
-                        <select class="form-control" v-model="list.folderID" disabled>
+                        <select class="form-control" v-model="list.folderID">
                             <option v-bind:value="_folder.id" v-for="_folder in folders">{{ _folder.title }}</option>
                         </select>
                         <span class="text-muted m-b block cursor-pointer link-orange-hover text-decoration"

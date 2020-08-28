@@ -155,6 +155,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<CollectiveSection> CollectiveSections { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<UserSession> UserSessions { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<UserLog> UserLogs { get; set; }
         public virtual DbSet<TemplateColumn> TemplateColumns { get; set; }
         public virtual DbSet<PeriodType> PeriodTypes { get; set; }

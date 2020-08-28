@@ -6,6 +6,7 @@ using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.User.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ namespace MyProfile.Template.Service
     public class TemplateService
     {
         private IBaseRepository repository;
+        private UserLogService userLogService;
 
-        public TemplateService(IBaseRepository repository)
+        public TemplateService(IBaseRepository repository, UserLogService userLogService)
         {
             this.repository = repository;
+            this.userLogService = userLogService;
         }
 
         public async Task<TemplateViewModel> GetTemplateByID(Expression<Func<Template, bool>> predicate, bool addCollectiveBudget = true)
@@ -176,7 +179,8 @@ namespace MyProfile.Template.Service
         /// <returns></returns>
         public async Task<bool> RemoveOrRecovery(TemplateViewModel template, bool isRemove)
         {
-            var db_item = await repository.GetAll<Template>(x => x.ID == template.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+            var currentUser = UserInfo.Current;
+            var db_item = await repository.GetAll<Template>(x => x.ID == template.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
             if (db_item != null)
             {
@@ -190,6 +194,7 @@ namespace MyProfile.Template.Service
                     db_item.DateDelete = null;
                 }
                 await repository.UpdateAsync(db_item, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, db_item.DateDelete != null ?  UserLogActionType.TemplateDelete : UserLogActionType.TemplateRecovery);
                 return true;
             }
             return false;
@@ -213,10 +218,10 @@ namespace MyProfile.Template.Service
         public async Task<TemplateErrorModelView> SaveTemplate(TemplateViewModel template)
         {
             TemplateErrorModelView modelView = new TemplateErrorModelView { Template = template };
-            var userID = UserInfo.Current.ID;
+            var currentUser = UserInfo.Current;
             #region Check name
 
-            if (await repository.AnyAsync<Template>(x => x.UserID == userID && x.Name == template.Name && x.ID != template.ID))
+            if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
             {
                 modelView.IsOk = false;
                 modelView.NameAlreadyExist = true;
@@ -231,7 +236,7 @@ namespace MyProfile.Template.Service
                 if (template.ID == 0)//create
                 {
                     Template templateDB = new Template();
-                    templateDB.UserID = userID;
+                    templateDB.UserID = currentUser.ID;
                     templateDB.PeriodTypeID = template.PeriodTypeID;
                     templateDB.DateCreate = templateDB.DateEdit = DateTime.MinValue == template.DateCreate ? DateTime.Now : template.DateCreate;
                     templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;
@@ -268,6 +273,8 @@ namespace MyProfile.Template.Service
                         }
                     }
                     template.ID = templateDB.ID;
+
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.TemplateCreate);
                 }
                 else
                 {
@@ -315,6 +322,7 @@ namespace MyProfile.Template.Service
                             }, true);
                         }
                     }
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.TemplateEdit);
                 }
             }
             catch (Exception ex)

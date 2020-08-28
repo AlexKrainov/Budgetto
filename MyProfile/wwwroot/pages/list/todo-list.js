@@ -178,11 +178,11 @@
                             let listIndex = this.$this.folder.lists.findIndex(x => x.id == response.list.id);
 
                             if (listIndex >= 0) {
-                                this.$this.folder.lists.splice(list, 1);
+                                this.$this.folder.lists.splice(this.$this.list, 1);
 
                                 let folderIndex = this.$this.folders.findIndex(x => x.id == response.list.folderID);
                                 if (folderIndex > 0) {
-                                    this.$this.folders[folderIndex].lists.push = response.list;
+                                    this.$this.folders[folderIndex].lists.push(response.list);
                                     this.$this.folder = this.$this.folders[folderIndex];
                                 } else {
                                     this.$this.load();
@@ -336,11 +336,14 @@
             $("#modal-folder").modal("show");
         },
         chooseFolderIcon: function (cssIcon) {
+            if (!cssIcon) {
+                return true;
+            }
+
             let newCssIcon = cssIcon.replace(" ", ".");
             $(".folder-icons i").removeClass("active");
             $(".folder-icons i." + newCssIcon).addClass("active");
             this.folder.cssIcon = cssIcon;
-
         },
         saveFolder: function () {
             //HideLoading('#record_' + reminder.id);

@@ -10,8 +10,10 @@ namespace MyProfile.Areas.Identity.Controllers
     public partial class AccountController : Controller
     {
         [HttpGet]
-        public IActionResult AccountSettings()
+        public async Task<IActionResult> AccountSettings()
         {
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.AccountSetting_Page);
+
             return View();
         }
 
@@ -114,9 +116,9 @@ namespace MyProfile.Areas.Identity.Controllers
                 offers = await collectionUserService.CheckOffers()
             });
         }
-        
+
         [HttpGet]
-        public async Task<IActionResult> OfferAction(int offerID,[FromQuery] bool action)
+        public async Task<IActionResult> OfferAction(int offerID, [FromQuery] bool action)
         {
             return Json(new
             {
@@ -126,8 +128,8 @@ namespace MyProfile.Areas.Identity.Controllers
         #endregion
 
         #region User settings
-        
-             [HttpPost]
+
+        [HttpPost]
         public async Task<IActionResult> SaveUserSettings([FromBody] UserSettingsModelView userSettings)
         {
             return Json(new { isOk = true, user = await userService.UpdateUserSettings(userSettings) });

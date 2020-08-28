@@ -2,9 +2,9 @@
 
 namespace MyProfile.Entity.ModelView
 {
-    public class UserInfoModel : MyProfile.Entity.Model.User
+    public class UserInfoModel : Model.User
     {
-        public int? LastUserLogID { get; set; }
+        public Guid UserSessionID { get; set; }
         public Guid CollectiveBudgetID { get; set; }
         public string ImageBase64 { get; set; }
 

@@ -26,7 +26,7 @@ namespace MyProfile.Controllers
                 .ToListAsync();
             model.Sections = await sectionService.GetAllSectionByPerson();
 
-
+            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.TimeLine_Page);
 
             return View(model);
         }

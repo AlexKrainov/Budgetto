@@ -141,11 +141,9 @@ namespace MyProfile.User.Service
         {
             if (user != null)
             {
-                user.LastUserLogID = await userLogService.CreateAction(user.ID, userActionType);
+                user.UserSessionID = await userLogService.CreateSession(user.ID, userActionType);
 
                 await UserInfo.AddOrUpdate_Authenticate(user); // аутентификация
-                UserInfo.LastUserLogID = (int)user.LastUserLogID;
-
             }
             return user;
         }
@@ -704,6 +702,7 @@ namespace MyProfile.User.Service
                 await UserInfo.AddOrUpdate_Authenticate(user);
             }
 
+            await userLogService.CreateUserLog(user.UserSessionID, UserLogActionType.User_Edit);
             return userInfoModel;
         }
 

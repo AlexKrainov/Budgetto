@@ -19,11 +19,13 @@ namespace MyProfile.Budget.Service
     {
         private IBaseRepository repository;
         private CollectionUserService collectionUserService;
+        private UserLogService userLogService;
 
         public BudgetRecordService(IBaseRepository repository)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
+            this.userLogService = new UserLogService(repository);
         }
 
         public async Task<RecordModelView> GetByID(int id)
@@ -43,15 +45,18 @@ namespace MyProfile.Budget.Service
                 .FirstOrDefaultAsync();
         }
 
-        public bool CreateOrUpdate(RecordsModelView budgetRecord)
+        public async Task<bool> CreateOrUpdate(RecordsModelView budgetRecord)
         {
+            var currentUser = UserInfo.Current;
+            bool isEdit = false;
+            bool isCreate = false;
             budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
 
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
                 if (record.ID <= 0)// create
                 {
-                    record.IsSaved = Create(new BudgetRecordModelView
+                    record.IsSaved = await Create(new BudgetRecordModelView
                     {
                         SectionID = record.SectionID,
                         Money = record.Money,
@@ -63,6 +68,7 @@ namespace MyProfile.Budget.Service
                         CurrencyRate = record.CurrencyRate,
                         IsShowForCollection = budgetRecord.IsShowInCollection
                     });
+                    isCreate = true;
                 }
                 else
                 {//edit
@@ -82,18 +88,27 @@ namespace MyProfile.Budget.Service
                     dbRecord.DateTimeEdit = now;
 
                     repository.Update(dbRecord, true);
+                    isEdit = true;
                 }
+            }
+            if (isEdit)
+            {
+                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Record_Edit);
+            }
+            if (isCreate)
+            {
+                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Record_Create);
             }
 
             return true;
         }
 
-        public bool Create(BudgetRecordModelView budgetRecord)
+        public async Task<bool> Create(BudgetRecordModelView budgetRecord)
         {
             try
             {
                 var now = DateTime.Now.ToUniversalTime();
-                repository.Create<BudgetRecord>(new BudgetRecord
+                repository.Create(new BudgetRecord
                 {
                     BudgetSectionID = budgetRecord.SectionID,
                     DateTimeCreate = now,
@@ -120,26 +135,30 @@ namespace MyProfile.Budget.Service
 
         public async Task<bool> RemoveRecord(BudgetRecordModelView record)
         {
-            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+            var currentUser = UserInfo.Current;
+            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
             if (db_record != null)
             {
                 db_record.IsDeleted = true;
                 db_record.DateTimeDelete = DateTime.Now.ToUniversalTime();
                 await repository.UpdateAsync(db_record, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Delete);
                 return true;
             }
             return false;
         }
         public async Task<bool> RecoveryRecord(BudgetRecordModelView record)
         {
-            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == UserInfo.Current.ID).FirstOrDefaultAsync();
+            var currentUser = UserInfo.Current;
+            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
             if (db_record != null)
             {
                 db_record.IsDeleted = false;
                 db_record.DateTimeDelete = null;
                 await repository.UpdateAsync(db_record, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Recovery);
                 return true;
             }
             return false;
@@ -302,7 +321,7 @@ namespace MyProfile.Budget.Service
                 var userIDs_withoutCurrent = allCollectiveUserIDs.Where(x => x != currentUserID).ToList();
 
                 filter.Sections.AddRange(await repository.GetAll<BudgetSection>(
-                    x => userIDs_withoutCurrent.Contains(x.UserID ?? Guid.Parse("086d7c26-1d8d-4cc7-e776-08d7eab4d0ed")) 
+                    x => userIDs_withoutCurrent.Contains(x.UserID ?? Guid.Parse("086d7c26-1d8d-4cc7-e776-08d7eab4d0ed"))
                     && x.IsShowInCollective).Select(x => x.ID).ToListAsync());
             }
             else

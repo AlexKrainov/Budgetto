@@ -6,6 +6,7 @@ using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.ModelView.Chart;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.User.Service;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,11 +23,13 @@ namespace MyProfile.Chart.Service
     {
         private IBaseRepository repository;
         private BudgetRecordService budgetRecordService;
+        private UserLogService userLogService;
 
         public ChartService(IBaseRepository repository)
         {
             this.repository = repository;
             this.budgetRecordService = new BudgetRecordService(repository);
+            this.userLogService = new UserLogService(repository);
         }
 
         public async Task<int> CreateOrUpdate(ChartEditModel chart)
@@ -78,6 +81,7 @@ namespace MyProfile.Chart.Service
                 repository.DeleteRange(oldChart.ChartFields);
                 await repository.SaveAsync();
                 await repository.UpdateAsync(newChart, true);
+                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BigChart_Edit);
             }
             else
             {
@@ -108,6 +112,7 @@ namespace MyProfile.Chart.Service
 
                 await repository.CreateAsync(newChart, true);
                 await repository.SaveAsync();
+                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BigChart_Create);
             }
             return 1;
         }
@@ -405,6 +410,7 @@ namespace MyProfile.Chart.Service
                 db_chart.IsDeleted = isRemove;
                 db_chart.LastDateEdit = DateTime.Now.ToUniversalTime();
                 await repository.UpdateAsync(db_chart, true);
+                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, isRemove ? UserLogActionType.BigChart_Delete : UserLogActionType.BigChart_Recovery);
                 return true;
             }
             return false;

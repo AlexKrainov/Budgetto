@@ -6,21 +6,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-    public class UserLog
+    /// <summary>
+    /// Use this object for error on the site
+    /// </summary>
+    public class Log
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public DateTime CurrentDateTime { get; set; }
-        [StringLength(64)]
-        public string ActionCodeName { get; set; }
+        public string Where { get; set; }
         public string Comment { get; set; }
+        public string ErrorText { get; set; }
 
-        [ForeignKey("UserSession")]
-        public Guid UserSessionID { get; set; }
+        [ForeignKey("User")]
+        public Guid? UserID { get; set; }
+        [ForeignKey("UserLog")]
+        public int? UserLogID { get; set; }
 
 
-        public virtual UserSession UserSession { get; set; }
+        public virtual User User { get; set; }
+        public virtual UserLog UserLog { get; set; }
 
     }
 }

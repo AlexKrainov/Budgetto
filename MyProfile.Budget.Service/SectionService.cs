@@ -22,11 +22,13 @@ namespace MyProfile.Budget.Service
     {
         private IBaseRepository repository;
         private CollectionUserService collectionUserService;
+        private UserLogService userLogService;
 
         public SectionService(IBaseRepository repository)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
+            this.userLogService = new UserLogService(repository);
         }
 
 
@@ -143,22 +145,25 @@ namespace MyProfile.Budget.Service
 
         public async Task<BudgetAreaModelView> CreateOrUpdateArea(BudgetAreaModelView area)
         {
+            var currentUser = UserInfo.Current;
             var budgetArea = new BudgetArea
             {
                 ID = area.ID,
                 Description = area.Description,
                 Name = area.Name,
-                UserID = UserInfo.Current.ID,
+                UserID = currentUser.ID,
                 IsShowInCollective = area.IsShowInCollective,
                 IsShowOnSite = area.IsShowOnSite,
             };
             if (budgetArea.ID > 0)
             {
                 await repository.UpdateAsync(budgetArea, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Edit);
             }
             else
             {
                 await repository.CreateAsync(budgetArea, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Create);
             }
 
             area.ID = budgetArea.ID;
@@ -168,6 +173,7 @@ namespace MyProfile.Budget.Service
 
         public async Task<BudgetSectionModelView> CreateOrUpdateSection(BudgetSectionModelView section)
         {
+            var currentUser = UserInfo.Current;
             var budgetSection = new BudgetSection
             {
                 ID = section.ID,
@@ -185,10 +191,12 @@ namespace MyProfile.Budget.Service
             if (budgetSection.ID > 0)
             {
                 await repository.UpdateAsync(budgetSection, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Section_Edit);
             }
             else
             {
                 await repository.CreateAsync(budgetSection, true);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Section_Create);
             }
 
             await SaveIncludedSection(section.ID, section.CollectiveSections.Select(x => x.ID).ToList());
@@ -238,5 +246,53 @@ namespace MyProfile.Budget.Service
              .Select(x => x.ChildSectionID ?? 0)
              .ToListAsync();
         }
+
+        #region Deletes
+        public async Task<Tuple<bool, bool, string>> DeleteArea(int areaID)
+        {
+            var currentUser = UserInfo.Current;
+            var budgetArea = await repository.GetAll<BudgetArea>()
+                .Where(x => x.ID == areaID && x.UserID == currentUser.ID)
+                .FirstOrDefaultAsync();
+
+            if (budgetArea != null && (budgetArea.BudgetSectinos == null || budgetArea.BudgetSectinos.Count() == 0))
+            {
+                try
+                {
+                    await repository.DeleteAsync(budgetArea, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Delete);
+                }
+                catch (Exception ex)
+                {
+                    return new Tuple<bool, bool, string>(false, false, "Не удалось удалить !");
+                }
+                return new Tuple<bool, bool, string>(true, true, "Удаление прошло успешно");
+            }
+            return new Tuple<bool, bool, string>(true, false, "Не удалось удалить!");
+        }
+
+        public async Task<Tuple<bool, bool, string>> DeleteSection(int sectionID)
+        {
+            var currentUser = UserInfo.Current;
+            var budgetSection = await repository.GetAll<BudgetSection>()
+                .Where(x => x.ID == sectionID && x.UserID == currentUser.ID)
+                .FirstOrDefaultAsync();
+
+            if (budgetSection != null && (budgetSection.BudgetRecords == null || budgetSection.BudgetRecords.Count() == 0))
+            {
+                try
+                {
+                    await repository.DeleteAsync(budgetSection, true);
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Section_Delete);
+                }
+                catch (Exception ex)
+                {
+                    return new Tuple<bool, bool, string>(false, false, "Не удалось удалить !");
+                }
+                return new Tuple<bool, bool, string>(true, true, "Удаление прошло успешно");
+            }
+            return new Tuple<bool, bool, string>(true, false, "Не удалось удалить!");
+        }
+        #endregion
     }
 }
