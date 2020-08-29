@@ -131,7 +131,6 @@ namespace MyProfile.User.Service
                     user.HashPassword = null;
                 }
             }
-
             return user;
         }
 
@@ -188,13 +187,18 @@ namespace MyProfile.User.Service
                 {
                     new ToDoListFolder
                     {
-                        Title = "Списки покупок",
+                        Title = "Краткосрочные покупки",
                         CssIcon = "ion ion-md-cart"
                     },
                     new ToDoListFolder
                     {
-                        Title = "Долгосрочные цели",
+                        Title = "Среднесрочные покупки",
                         CssIcon = "ion ion-ios-home"
+                    },
+                    new ToDoListFolder
+                    {
+                        Title = "Долгосрочные цели",
+                        CssIcon = "ion ion-md-car"
                     },
                 },
                 BudgetAreas = new List<BudgetArea> {

@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -175,6 +178,28 @@ namespace MyProfile.Controllers
                 return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
             }
             return Json(new { isOk = false });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetRateFromBank(string link, DateTime date)
+        {
+            string text = string.Empty;
+            var _link = link + date.ToString("dd/MM/yyyy");
+            WebRequest wr = WebRequest.Create(_link);
+            wr.Timeout = 3500;
+
+            try
+            {
+                var response = await wr.GetResponseAsync();
+                var readStream = new StreamReader(((HttpWebResponse)response).GetResponseStream(), Encoding.GetEncoding("windows-1251"));
+                text = readStream.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                userLogService.CreateLog(UserInfo.Current.ID, where: "Budget.GetRateFromBank", errorText: ex.Message, comment: _link);
+            }
+
+            return Json(new { isOk = true, response = text });
         }
 
     }

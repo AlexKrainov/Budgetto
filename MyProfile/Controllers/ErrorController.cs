@@ -30,13 +30,19 @@ namespace MyProfile.Controllers
         }
         public async Task<IActionResult> Error_404()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Error404_Page);
+            if (UserInfo.Current != null)
+            {
+                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Error404_Page);
+            }
             return View();
         }
 
         public async Task<IActionResult> Error_500()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Error500_Page);
+            if (UserInfo.Current != null)
+            {
+                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Error500_Page);
+            }
             return View();
         }
     }
