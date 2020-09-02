@@ -50,6 +50,7 @@
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
     <ProjectReference Include="..\MyProfile.File.Service\MyProfile.File.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Goal.Service\MyProfile.Goal.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.HelpCenter.Service\MyProfile.HelpCenter.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
     <ProjectReference Include="..\MyProfile.Limit.Service\MyProfile.Limit.Service.csproj" />
     <ProjectReference Include="..\MyProfile.LittleDictionaries.Service\MyProfile.LittleDictionaries.Service.csproj" />
@@ -87,6 +88,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Help\Data\" />
+    <Folder Include="Areas\Help\Models\" />
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Areas\Identity\Models\" />
     <Folder Include="wwwroot\img\chart\" />

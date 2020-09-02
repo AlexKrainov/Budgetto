@@ -552,14 +552,15 @@
                 let generalValue = ` data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'`;
 
                 if (values.length == 2) {
-                    return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${values[0]}
+                    return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> 
+                                ${values[0]}
                                 <span class="money-muted">,${values[1]}</span>
                             </span> `;
                 } else {
-                    return `<span ${generalValue}> ${cell.value}</span>`;
+                    return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
                 }
             } else {
-                return `<span ${generalValue}> ${cell.value}</span>`;
+                return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
             }
         },
         getRemindersIcons: function (cell) {

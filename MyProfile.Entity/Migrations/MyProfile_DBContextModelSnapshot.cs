@@ -519,6 +519,63 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("GoalRecords");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.HelpArticle", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AreaName")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<DateTime>("DateCreate");
+
+                    b.Property<DateTime>("DateEdit");
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<bool>("IsVisible");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasMaxLength(512);
+
+                    b.Property<Guid?>("OwnerID");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(512);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("OwnerID");
+
+                    b.ToTable("HelpArticles");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.HelpArticleUserView", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateView");
+
+                    b.Property<int>("HelpArticleID");
+
+                    b.Property<Guid?>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("HelpArticleID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("HelpArticleUserViews");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
                 {
                     b.Property<int>("ID")
@@ -1463,6 +1520,25 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.Goal", "Goal")
                         .WithMany("GoalRecords")
                         .HasForeignKey("GoalID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.HelpArticle", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("OwnerID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.HelpArticleUserView", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.HelpArticle", "HelpArticle")
+                        .WithMany("HelpArticleUserViews")
+                        .HasForeignKey("HelpArticleID")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MyProfile.Entity.Model.User", "User")

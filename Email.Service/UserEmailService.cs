@@ -36,7 +36,7 @@ namespace Email.Service
 
         public async Task<Guid> ConfirmEmail(User user, bool isResend = false)
         {
-            user.Email = "ialexkrainov2@gmail.com";
+           // user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
             Random random = new Random();
 
@@ -102,7 +102,7 @@ namespace Email.Service
         /// <returns>if the this site cannot send email, retun guid.empty</returns>
         public async Task<Guid> LoginConfirmation(User user, bool isResend = false)
         {
-            user.Email = "ialexkrainov2@gmail.com";
+           // user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
             Random random = new Random();
 
@@ -146,7 +146,7 @@ namespace Email.Service
 
         public async Task<Guid> RecoveryPassword(User user, bool isResend = false)
         {
-            user.Email = "ialexkrainov2@gmail.com";
+            //user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
             Random random = new Random();
 

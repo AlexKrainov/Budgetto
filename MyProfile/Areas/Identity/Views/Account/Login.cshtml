@@ -124,11 +124,11 @@
                                         <i class="fas fa-eye-slash" v-show="isHiddenPassword == false"></i>
                                     </button>
                                 </span>
-                                <small class="form-text text-muted">
-                                    Пароль должен содержать больше 5 символов
-                                </small>
-                                <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
                             </div>
+                            <small class="form-text text-muted">
+                                Пароль должен содержать больше 5 символов
+                            </small>
+                            <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
                         </div>
                         <button type="button" class="btn btn-primary btn-block mt-4"
                                 v-bind:disabled="isSaving"
@@ -201,7 +201,7 @@
                     <!-- enterCode -->
                     <form class="my-5" method="post" v-show="enterCode.isShow">
                         <p>
-                            Вам на почту было отправлено письмо. Пожалуйста введите код из письма.
+                            Вам на почту было отправлено письмо. Пожалуйста введите <b>код </b>из письма.
                         </p>
                         <div class="form-group">
                             <div class="input-group">

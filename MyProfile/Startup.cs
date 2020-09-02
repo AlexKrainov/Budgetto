@@ -14,6 +14,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.File.Service;
 using MyProfile.Goal.Service;
+using MyProfile.HelpCenter.Service;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 using MyProfile.Reminder.Service;
@@ -62,6 +63,7 @@ namespace MyProfile
             services.AddScoped<FeedbackService>();
             services.AddScoped<ReminderService>();
             services.AddScoped<ToDoListService>();
+            services.AddScoped<HelpCenterService>();
 
             services.AddScoped<UserEmailService>();
             #endregion

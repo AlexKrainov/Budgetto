@@ -1,0 +1,305 @@
+﻿@model MyProfile.Entity.ModelView.HelpCenter.ArticleModelView
+
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/Layouts/_Layout1.cshtml";
+}
+
+
+@section Styles {
+    <link href="~/vendor/css/blog.css" rel="stylesheet" />
+}
+
+@section Scripts {
+
+    <script src="~/pages/_areas/help_center/article.js"></script>
+}
+
+<div class="container" id="help-article" data-article-id="@Model.ID" v-cloak>
+    <div class="row mt-5">
+
+        <!-- Article -->
+        <div class="col">
+            <!-- Article head -->
+            <div class="text-center text-success small font-weight-bold text-uppercase mb-3">@Model.AreaName</div>
+            <h2 class="text-center mb-3">@Model.Title</h2>
+            <div class="text-center text-muted text-tiny mb-4">
+                @if (!string.IsNullOrEmpty(Model.UserName))
+                {
+                    <a href="#" class="text-muted">@Model.UserName</a> 
+                    <span> \ </span>
+                }
+                 @Model.DateEdit.ToString("dd.MM.yyyy")
+            </div>
+            <hr class="blog-separator border-primary mx-auto mb-5">
+
+            <!-- Article content -->
+            @await Html.PartialAsync(Model.Link)
+            <!-- / Article content -->
+            <!-- Article info -->
+            <div class="my-5">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a href="#" class="text-muted">
+                                <i class="ion ion-md-eye text-large align-middle"></i>&nbsp;
+                                <span class="align-middle">@Model.Views</span>
+                            </a>
+                            @*&nbsp; &nbsp; &nbsp;
+                            <a href="#" class="text-muted">
+                                <i class="ion ion-ios-text text-lighter text-large align-middle"></i>&nbsp;
+                                <span class="align-middle">6</span>
+                            </a>*@
+                        </div>
+                        @*<div>
+                            <a href="#" class="text-muted">
+                                <i class="ion ion-logo-twitter text-twitter text-large align-middle"></i>&nbsp;
+                                <span class="align-middle">7</span>
+                            </a>
+                            &nbsp; &nbsp; &nbsp;
+                            <a href="#" class="text-muted">
+                                <i class="ion ion-logo-facebook text-facebook text-large align-middle"></i>&nbsp;
+                                <span class="align-middle">12</span>
+                            </a>
+                        </div>*@
+                    </div>
+                    @*<div class="media align-items-center bg-lighter py-3 px-4 mt-4">
+                        <img src="/products/appwork/v152/assets_/img/avatars/6-small.png" alt="" class="d-block ui-w-40 rounded-circle">
+                        <div class="media-body ml-3">
+                            <a href="#" class="text-body">Mae Gibson</a>
+                            <div class="text-muted small">
+                                UI/UX designer
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-success d-block">+ Follow</a>
+                    </div>*@
+                </div>
+
+            <!-- Other articles -->
+            @*<hr class="blog-separator border-primary mx-auto mb-4">
+                <h5 class="text-center font-weight-bold pb-5 m-0">Похожие темы</h5>
+
+                <div class="ui-bordered mb-5">
+                    <div class="row no-gutters row-bordered">
+                        <div class="col-md-6">
+                            <div class="media p-3">
+                                <div class="ui-w-40">
+                                    <div class="ui-square ui-bg-cover" style="background-image: url('/products/appwork/v152/assets_/img/bg/9.jpg');"></div>
+                                </div>
+                                <div class="media-body ml-3">
+                                    <div class="mb-1">
+                                        <a href="#" class="link-animated theme-text-dark">Comment On The Importance Of Human Life</a>
+                                    </div>
+                                    <div class="text-light text-tiny"><a href="#" class="text-light">KENNETH FRAZIER</a> &nbsp;\&nbsp; MAY 21, 2018</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="media p-3">
+                                <div class="ui-w-40">
+                                    <div class="ui-square ui-bg-cover" style="background-image: url('/products/appwork/v152/assets_/img/bg/10.jpg');"></div>
+                                </div>
+                                <div class="media-body ml-3">
+                                    <div class="mb-1">
+                                        <a href="#" class="link-animated theme-text-dark">Les Houches The Hidden Gem Of The Chamonix Valley</a>
+                                    </div>
+                                    <div class="text-light text-tiny"><a href="#" class="text-light">ALICE HAMPTON</a> &nbsp;\&nbsp; MAY 5, 2018</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="media p-3">
+                                <div class="ui-w-40">
+                                    <div class="ui-square ui-bg-cover" style="background-image: url('/products/appwork/v152/assets_/img/bg/11.jpg');"></div>
+                                </div>
+                                <div class="media-body ml-3">
+                                    <div class="mb-1">
+                                        <a href="#" class="link-animated theme-text-dark">Cheap Romantic Vacations</a>
+                                    </div>
+                                    <div class="text-light text-tiny"><a href="#" class="text-light">ARTHUR DUNCAN</a> &nbsp;\&nbsp; APRIL 19, 2018</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="media p-3">
+                                <div class="ui-w-40">
+                                    <div class="ui-square ui-bg-cover" style="background-image: url('/products/appwork/v152/assets_/img/bg/12.jpg');"></div>
+                                </div>
+                                <div class="media-body ml-3">
+                                    <div class="mb-1">
+                                        <a href="#" class="link-animated theme-text-dark">Big Savings On Gas While You Travel</a>
+                                    </div>
+                                    <div class="text-light text-tiny"><a href="#" class="text-light">BELLE ROSS</a> &nbsp;\&nbsp; APRIL 9, 2018</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+            @* <!-- Comments -->
+
+                <hr class="blog-separator border-primary mx-auto mb-4">
+                    <h5 class="text-center font-weight-bold pb-5 m-0"><span class="text-light">6</span> COMMENTS</h5>
+
+                    <div class="bg-lighter mb-4">
+                        <div class="p-4">
+                            <div class="media align-items-center">
+                                <img src="/products/appwork/v152/assets_/img/avatars/12-small.png" alt="" class="d-block ui-w-40 rounded-circle">
+                                <div class="media-body ml-3">
+                                    <div class="text-body font-weight-semibold">Arthur Duncan</div>
+                                    <div class="text-muted small">22 May</div>
+                                </div>
+                            </div>
+                            <hr>
+                            Ea inani epicurei mea. No docendi antiopam quo, ad dicant viderer cotidieque vix. Ea mea dicat ludus, utroque explicari conclusionemque ius eu, in scaevola tractatos persecuti per.
+                            <div class="small font-weight-semibold mt-3">
+                                <a href="#" class="text-light">Reply</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second-level comments -->
+                    <div class="pl-4 ml-5">
+                        <div class="bg-lighter mb-4">
+                            <div class="p-4">
+                                <div class="media align-items-center">
+                                    <img src="/products/appwork/v152/assets_/img/avatars/7-small.png" alt="" class="d-block ui-w-40 rounded-circle">
+                                    <div class="media-body ml-3">
+                                        <div class="text-body font-weight-semibold">Alice Hampton</div>
+                                        <div class="text-muted small">22 May</div>
+                                    </div>
+                                </div>
+                                <hr>
+                                Ea inani epicurei mea. No docendi antiopam quo, ad dicant viderer cotidieque vix. Ea mea dicat ludus, utroque explicari conclusionemque ius eu, in scaevola tractatos persecuti per.
+                                <div class="small font-weight-semibold mt-3">
+                                    <a href="#" class="text-light">Reply</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-lighter mb-4">
+                            <div class="p-4">
+                                <div class="media align-items-center">
+                                    <img src="/products/appwork/v152/assets_/img/avatars/12-small.png" alt="" class="d-block ui-w-40 rounded-circle">
+                                    <div class="media-body ml-3">
+                                        <div class="text-body font-weight-semibold">Arthur Duncan</div>
+                                        <div class="text-muted small">22 May</div>
+                                    </div>
+                                </div>
+                                <hr>
+                                Ea inani epicurei mea. No docendi antiopam quo, ad dicant viderer cotidieque vix. Ea mea dicat ludus, utroque explicari conclusionemque ius eu, in scaevola tractatos persecuti per.
+                                <div class="small font-weight-semibold mt-3">
+                                    <a href="#" class="text-light">Reply</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Second-level comments -->
+
+                    <div class="bg-lighter mb-4">
+                        <div class="p-4">
+                            <div class="media align-items-center">
+                                <img src="/products/appwork/v152/assets_/img/avatars/4-small.png" alt="" class="d-block ui-w-40 rounded-circle">
+                                <div class="media-body ml-3">
+                                    <div class="text-body font-weight-semibold">Kenneth Frazier</div>
+                                    <div class="text-muted small">22 May</div>
+                                </div>
+                            </div>
+                            <hr>
+                            Ea inani epicurei mea. No docendi antiopam quo, ad dicant viderer cotidieque vix. Ea mea dicat ludus, utroque explicari conclusionemque ius eu, in scaevola tractatos persecuti per.
+                            <div class="small font-weight-semibold mt-3">
+                                <a href="#" class="text-light">Reply</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second-level comments -->
+                    <div class="pl-4 ml-5">
+                        <div class="bg-lighter mb-4">
+                            <div class="p-4">
+                                <div class="media align-items-center">
+                                    <img src="/products/appwork/v152/assets_/img/avatars/5-small.png" alt="" class="d-block ui-w-40 rounded-circle">
+                                    <div class="media-body ml-3">
+                                        <div class="text-body font-weight-semibold">Nellie Maxwell</div>
+                                        <div class="text-muted small">22 May</div>
+                                    </div>
+                                </div>
+                                <hr>
+                                Ea inani epicurei mea. No docendi antiopam quo, ad dicant viderer cotidieque vix. Ea mea dicat ludus, utroque explicari conclusionemque ius eu, in scaevola tractatos persecuti per.
+                                <div class="small font-weight-semibold mt-3">
+                                    <a href="#" class="text-light">Reply</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Second-level comments -->
+
+                    <div class="bg-lighter mb-4">
+                        <div class="p-4">
+                            <div class="media align-items-center">
+                                <img src="/products/appwork/v152/assets_/img/avatars/6-small.png" alt="" class="d-block ui-w-40 rounded-circle">
+                                <div class="media-body ml-3">
+                                    <div class="text-body font-weight-semibold">Mae Gibson</div>
+                                    <div class="text-muted small">22 May</div>
+                                </div>
+                            </div>
+                            <hr>
+                            Ea inani epicurei mea. No docendi antiopam quo, ad dicant viderer cotidieque vix. Ea mea dicat ludus, utroque explicari conclusionemque ius eu, in scaevola tractatos persecuti per.
+                            <div class="small font-weight-semibold mt-3">
+                                <a href="#" class="text-light">Reply</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <h5 class="font-weight-bold pt-4 mb-4">LEAVE A COMMENT</h5>
+                    <form class="mb-5">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control rounded-0" placeholder="Your name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="email" class="form-control rounded-0" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="6" class="form-control rounded-0" placeholder="Message"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary rounded-0">Post a Message</button>
+                    </form>
+                    <!-- / Form -->*@
+
+        </div>
+
+        <!-- / Article -->
+        <!-- Side content -->
+        <div class="col-lg-4 pl-xl-5">
+            <div class="ui-bordered p-4 mb-4">
+                <h6 class="small font-weight-bold mb-2">Популярные статьи</h6>
+                <hr class="blog-separator border-primary">
+                <div class="media mb-3" v-for="topArticle in topArticles">
+                    <div class="media-body ml-3">
+                        <div class="mb-1">
+                            <a v-bind:href="'/Help/Center/ViewArticle?id='+topArticle.id" class="link-animated theme-text-dark">{{ topArticle.title }}</a>
+                        </div>
+                        <div class="text-light text-tiny"><a href="#" class="text-light" v-show="topArticle.userName">{{topArticle.userName}} &nbsp;\&nbsp; </a> {{  getDateByFormat(topArticle.dateEdit, 'DD.MM.YYYY') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-bordered p-4 mb-4">
+                <h6 class="small font-weight-bold mb-2">Если остались вопросы</h6>
+                <hr class="blog-separator border-primary">
+                <div class="d-flex flex-wrap">
+                    <a asp-area="" asp-controller="Feedback" asp-action="Create" class="footer-link pt-3 ml-4">
+                        @*<i class="sidenav-icon pe-7s-display1"></i>*@
+                        <div>Feedback</div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <!-- / Side content -->
+
+    </div>
+</div>
+

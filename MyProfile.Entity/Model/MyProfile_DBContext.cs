@@ -189,6 +189,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<ToDoList> ToDoLists { get; set; }
         public virtual DbSet<ToDoListItem> ToDoListItems { get; set; }
         public virtual DbSet<ToDoListFolder> ToDoListFolders { get; set; }
+        public virtual DbSet<HelpArticle> HelpArticles { get; set; }
+        public virtual DbSet<HelpArticleUserView> HelpArticleUserViews { get; set; }
 
     }
 }

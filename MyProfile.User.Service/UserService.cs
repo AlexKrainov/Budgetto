@@ -81,6 +81,9 @@ namespace MyProfile.User.Service
                      LastName = x.LastName,
                      Name = x.Name,
                      UserTypeID = x.UserTypeID,
+                     IsConfirmEmail = x.IsConfirmEmail,
+                     CurrencyID = x.CurrencyID,
+                     UserType = x.UserType,
                      //CollectiveBudget = new CollectiveBudget
                      //{
                      //    ID = x.CollectiveBudget.ID,

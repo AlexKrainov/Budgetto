@@ -509,7 +509,7 @@ a.folder-text:hover .folder-edit-button {
 .cards {
     display: flex;
     flex-wrap: wrap;
-   /* margin-left: 44px;
+    /* margin-left: 44px;
     margin-right: 68px;*/
 }
 
@@ -566,6 +566,7 @@ a.folder-text:hover .folder-edit-button {
 .cards-medium .icon-large {
     font-size: 150% !important;
 }
+
 .cards-medium .area-name {
     font-size: 80%;
     font-weight: 400;
@@ -583,9 +584,14 @@ a.folder-text:hover .folder-edit-button {
 .cards-big .icon-large {
     font-size: 175% !important;
 }
+
 .cards-big .area-name {
     font-size: 85%;
     font-weight: 400;
 }
 
 /*region cards end*/
+
+.margin-top-auto {
+    margin-top: auto !important;
+}

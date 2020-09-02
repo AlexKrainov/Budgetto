@@ -48,7 +48,7 @@
                         <small class="text-muted">Двойное нажатие для редактирования</small>
 						</div>
 					</section>
-                    <section class="form-inline mb-4" v-show="currentCurrencyID != 1">
+                    <section id="currency-container" class="form-inline mb-4" v-show="currentCurrencyID != 1">
                         <label class="form-check mr-sm-2 mb-2 mb-sm-0">
                             <input class="form-check-input" type="checkbox"
                                         v-model="isUseBankRate" 
@@ -511,6 +511,7 @@
             //this.exchangeNominal = cur.Nominal["#text"];
             //return;
             //This request has been blocked; the content must be served over HTTPS.
+            ShowLoading("#currency-container");
             return $.ajax({
                 type: "GET",
                 url: "/Budget/GetRateFromBank?link=" + this.currentCurrency.cbR_Link + "&date=" + dateInFormat, // "http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002&VAL_NM_RQ=R01235",
@@ -526,10 +527,12 @@
                         this.isUseBankRate = false;
                         toastr.error("Извините, не удалось подгрузить данные из ЦБ.");
                     }
+                    HideLoading("#currency-container");
                     return response;
                 },
                 error: function (xhr, status, error) {
                     console.log(error);
+                    HideLoading("#currency-container");
                 }
             });
         },

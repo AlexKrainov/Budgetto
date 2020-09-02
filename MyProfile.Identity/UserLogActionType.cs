@@ -33,6 +33,8 @@
         public const string Error404_Page = "Error404_Page";
         public const string Error500_Page = "Error500_Page";
         public const string Feedback_Page = "Feedback_Page";
+        public const string HelpCenter_Page = "HelpCenter_Page";
+        public const string HelpCenter_Article_Page = "HelpCenter_Article_Page";
 
         public const string Reminder_Part = "Reminder_Part";
         public const string ToDoListEdit_Part = "ToDoListEdit_Part";
@@ -83,5 +85,7 @@
         public const string ToDoListList_Recovery = "ToDoListList_Recovery";
 
         public const string User_Edit = "User_Edit";
+
+        
     }
 }

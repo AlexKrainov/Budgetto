@@ -10,7 +10,13 @@ namespace MyProfile.Entity.ModelView.BudgetView
     }
     public class Cell : ICloneable
     {
+        /// <summary>
+        ///  Format 36 903,35 ₽
+        /// </summary>
         public string Value { get; set; }
+        /// <summary>
+        /// Format 36903.35
+        /// </summary>
         public decimal NaturalValue { get; set; }
         public bool IsShow { get; set; } = true;
         public TemplateColumnType TemplateColumnType { get; set; }

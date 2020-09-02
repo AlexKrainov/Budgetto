@@ -238,7 +238,9 @@ namespace MyProfile.Budget.Service
                         cell.TemplateColumnType = column.TemplateColumnType;
                         cell.IsShow = column.IsShow;
 
-                        string v = 0.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                        numberFormatInfo.CurrencyDecimalDigits = column.PlaceAfterCommon;
+
+                        string v = 0.ToString("C", numberFormatInfo);
 
                         if (column.TemplateColumnType == TemplateColumnType.BudgetSection && currentDate > dateTimeNow)
                         {
