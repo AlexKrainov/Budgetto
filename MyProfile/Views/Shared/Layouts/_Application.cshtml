@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 <!--<html lang="ru" class="layout-navbar-fixed mdl-js layout-fixed @(currentUser.UserSettings.WebSiteTheme == "dark" ? "dark-style": "light-style")" dir="ltr">-->
-<html lang="ru" class="default-style layout-navbar-fixed mdl-js" dir="ltr">
+<html lang="ru" class="default-style layout-navbar-fixed mdl-js layout-fixed" dir="ltr">
 <head>
     <title>@ViewData["Title"] - Asp.Net Core Demo</title>
 
@@ -68,10 +68,19 @@
 		window.themeSettings = new ThemeSettings({
 			cssFilenamePattern: '%name%.css',
 			cssPath: '/vendor/css/rtl/',
-            themesPath: '/vendor/css/rtl/'
+            themesPath: '/vendor/css/rtl/',
+            @if (currentUser.UserSettings.WebSiteTheme == "dark")
+            {
+                @Html.Raw("styles: ['dark','dark-style'],")
+            }
         });
 
-		 var UserInfo = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(currentUser, Newtonsoft.Json.Formatting.None))');
+        var UserInfo = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(currentUser, Newtonsoft.Json.Formatting.None))');
+
+        //if (window.themeSettings.isLightStyle() && ) {
+
+        //}
+
     </script>
 
     <!-- Core scripts -->
@@ -113,21 +122,24 @@
     <script src="~/vendor/libs/toastr/toastr.js"></script>
 
     <!-- Record -->
-    <script src="~/js/vue-components/vue-section2-component.js"></script>
-    <script src="~/js/vue-components/vue-record-component.js"></script>
+    <script src="~/vue-components/vue-section2-component.js"></script>
+    <script src="~/vue-components/vue-record-component.js"></script>
     <script src="~/vendor/libs/tagify/dist/tagify.min.js"></script>
     <script src="~/vendor/libs/filtrex/src/filtrex.js"></script>
 
-    <script src="~/js/base/global.functions.site.js"></script>
-    <script src="~/js/base/startup.site.js"></script>
+    <script src="~/pages/_base/global.functions.site.js"></script>
+    <script src="~/pages/_base/startup.site.js"></script>
 
     @RenderSection("Scripts", required: false)
     <script>
         if (document.getElementsByClassName("page-settings").length == 1) {
             var script = document.createElement('script');
-            script.src = "../js/user/user-page-settings.js";
+            script.src = "../pages/_base/page-settings.js";
             document.head.appendChild(script);
         }
+
+
+
     </script>
     @*<script src="~/js/base/user.js"></script>*@
 </body>

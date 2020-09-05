@@ -420,10 +420,15 @@ td.show-actions span.cell-actions {
         opacity: 1;
     }
 
-
 .active-item {
     border-left: 3px solid var(--blue) !important;
+}
+
+html.light-style .active-item {
     background: #D6EAF8 !important;
+}
+html.dark-style .active-item {
+    background: #1C1F24 !important;
 }
 
 
@@ -595,3 +600,28 @@ a.folder-text:hover .folder-edit-button {
 .margin-top-auto {
     margin-top: auto !important;
 }
+
+
+/*region start - dark style*/
+html.dark-style table.dataTable tbody tr {
+    background-color: #393a3b !important;
+}
+
+html.light-style .modal-content {
+    background: #f5f5f5 !important;
+}
+
+html.dark-style table.fixedHeader-floating {
+    background-color: #393a3b !important;
+}
+
+html.dark-style .list-group-item:not(.not-dark) {
+    background-color: #1C1F24 !important;
+} html.dark-style .chart-list-5 .chart-list-item {
+    background-color: #32353b;
+    color: white;
+} html.dark-style #colorPick {
+    background-color: #393a3b !important;
+}
+
+/*region end - dark style*/

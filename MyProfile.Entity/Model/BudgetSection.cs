@@ -25,7 +25,6 @@ namespace MyProfile.Entity.Model
 		public string CssBackground { get; set; }
 		[MaxLength(24)]
 		public string CssBorder { get; set; }
-
 		/// <summary>
 		/// Hide in record add
 		/// </summary>
@@ -35,22 +34,18 @@ namespace MyProfile.Entity.Model
 		/// </summary>
 		public bool IsShowInCollective { get; set; } 
 
-		[ForeignKey("User")]
-		public Guid? UserID { get; set; }
 		[ForeignKey("BudgetArea")]
 		public int BudgetAreaID { get; set; }
 		[ForeignKey("SectionType")]
 		public int? SectionTypeID { get; set; }
 
 
-		public virtual User User { get; set; }
 		public virtual BudgetArea BudgetArea { get; set; }
 		public virtual SectionType SectionType { get; set; }
 
 
 		public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }
 		public virtual IEnumerable<CollectiveSection> CollectiveSections { get; set; }
-
 		public virtual IEnumerable<SectionGroupLimit> SectionGroupLimits { get; set; }
 
 		public BudgetSection()

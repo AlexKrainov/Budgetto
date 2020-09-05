@@ -1,4 +1,19 @@
-﻿var AccountSettingsVue = new Vue({
+﻿$(function () {
+
+    $('.account-settings-multiselect').each(function () {
+        $(this)
+            .wrap('<div class="position-relative"></div>')
+            .select2({
+                dropdownParent: $(this).parent()
+            });
+    });
+
+    $('.account-settings-tagsinput').tagsinput({ tagClass: 'badge badge-default' });
+
+});
+
+
+var AccountSettingsVue = new Vue({
     el: "#account-settings",
     data: {
         user: {
@@ -108,7 +123,6 @@
             reader.readAsDataURL(file);
         },
 
-
         //Change password tab
         saveNewPassword: function () {
             if (this.validPassword) {
@@ -209,6 +223,7 @@
                     }
                 });
         },
+
         //User settings
         saveUserSettings: function () {
             this.isSaving = true;

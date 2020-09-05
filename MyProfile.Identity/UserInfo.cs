@@ -147,6 +147,7 @@ namespace MyProfile.Identity
                 IsAllowCollectiveBudget = currentUser.IsAllowCollectiveBudget,
                 IsConfirmEmail = currentUser.IsConfirmEmail,
                 LastName = currentUser.LastName,
+                UserType = currentUser.UserType.CodeName,
                 Currency = new CurrencyClientSide
                 {
                     ID = currentUser.Currency.ID,
@@ -230,13 +231,23 @@ namespace MyProfile.Identity
                 },
                 new MenuItemViewModel
                 {
+                    Title = "Календарь",
+                    Area ="",
+                    Controller = "Budget",
+                    Action = "TimeLine",
+                    Icon = "lnr lnr-calendar-full",
+                    IsLastBeforeLine = false,
+                },
+                 new MenuItemViewModel
+                {
                     Title = "Шаблоны",
                     Area ="",
                     Controller = "Template",
-                    Action = "Line",
+                    Action = "List",
                     Icon = "lnr lnr-layers",
                     IsLastBeforeLine = false,
                 },
+
                   new MenuItemViewModel
                 {
                     Title = "Категории",

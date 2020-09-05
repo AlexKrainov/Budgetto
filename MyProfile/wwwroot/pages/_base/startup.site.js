@@ -130,6 +130,7 @@ $(document).ready(function () {
         });
     });
 
+   
     // Initialize sidenav togglers
     $('body').on('click', '.layout-sidenav-toggle', function (e) {
         e.preventDefault();

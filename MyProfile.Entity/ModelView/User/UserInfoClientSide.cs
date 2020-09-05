@@ -16,6 +16,7 @@ namespace MyProfile.Entity.ModelView.User
 
         public virtual UserSettingsClientSide UserSettings { get; set; }
         public virtual CurrencyClientSide Currency { get; set; }
+        public string UserType { get; set; }
     }
 
     public class UserSettingsClientSide

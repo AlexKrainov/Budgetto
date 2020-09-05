@@ -32,11 +32,14 @@
                     }
                 });
         },
-        selectArea: function (area, event) {
+        selectArea: function (areaID, sectionID) {
             document.querySelectorAll("#area-vue .area-item").forEach(function (el, index) {
                 el.classList.remove("active-item");
             });
-            $(event.target).closest(".area-item").addClass("active-item");
+
+            let area = this.areas.filter(x => x.id == areaID)[0];
+
+            $(".area-item[data-area-id=" + area.id + "]").closest(".area-item").addClass("active-item");
 
             SectionVue.sections = area.sections;
             SectionVue.areaID = area.id;
@@ -48,6 +51,10 @@
             }, 1000);
 
             SectionVue.areas = this.areas.map(function (x) { return { name: x.name, id: x.id } });
+
+            if (sectionID) {
+                SectionVue.edit(area.sections.filter(x => x.id == sectionID)[0]);
+            }
         },
         create: function () {
             this.area = {
@@ -126,6 +133,9 @@
                 let childrenIndex = this.$children[i].updateSections(this.areas[areaIndex].sections);
             }
         },
+        onChooseSection: function (section) {
+            this.selectArea(section.areaID, section.id);
+        }
     }
 });
 

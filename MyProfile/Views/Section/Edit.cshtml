@@ -45,14 +45,52 @@
                 font-size: large;
             }
     </style>
+    <style>
+        .card-colors {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 44px;
+            margin-right: 68px;
+        }
 
+        .card-color-section {
+            margin-right: -5rem;
+            margin-bottom: 10px;
+            box-shadow: 6px 2px 8px 3px rgba(0,0,0, 0.25);
+            transition: 0.5s;
+            border-radius: 7px;
+            border: 1px solid gray;
+        }
+
+            .card-color .card {
+                border-radius: 7px;
+            }
+
+            .card-color-section .card-body {
+                border: 1px solid gray;
+                border-radius: 7px;
+            }
+
+            .card-color-section:not(:first-child) {
+                margin-right: -4rem;
+            }
+
+            .card-color-section:hover {
+                transform: translateY(-1rem);
+                z-index: 10;
+            }
+        .card-color-section-selected {
+            z-index: 10;
+            border: 1px solid black;
+        }
+    </style>
 }
 
 @section Scripts {
     @*<script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>*@
-    <script src="~/js/section-list.js"></script>
+    <script src="~/pages/section/section-list.js"></script>
 
-    @*<script src="~/js/vue-components/vue-select2-component.js"></script>*@
+    @*<script src="~/vue-components/vue-select2-component.js"></script>*@
     <script src="~/vendor/libs/select2/select2.js"></script>
 }
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
@@ -81,11 +119,12 @@
                 <div class="card ui-bordered mt-3 area-item custom-card-hover"
                      v-for="area in areas"
                      v-show="area.isShow_Filtered"
+                     v-bind:data-area-id="area.id"
                      v-bind:class="area.isShowOnSite ? 'border-primary' : 'border-secondary'">
                     <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
                         <div>
                             <strong>{{ area.name }}</strong> &nbsp;
-                            <a href="javascript:void(0)" class="small" v-on:click="selectArea(area, $event)">Показать категории</a><br>
+                            <a href="javascript:void(0)" class="small" v-on:click="selectArea(area.id)">Показать категории</a><br>
                             <small class="text-muted">{{ area.description }}</small>
                         </div>
                     </div>
@@ -93,7 +132,8 @@
                                            data-records-style="margin-left: 15px;"
                                            v-bind:data-id="'areaid_'+area.id"
                                            v-bind:is-show-filter="false"
-                                           v-bind:data-items="area.sections"></vue-section-component>
+                                           v-bind:data-items="area.sections"
+                                           v-on:onchoose="onChooseSection"></vue-section-component>
                     <hr class="m-0">
                     <div class="p-3">
                         <button class="btn btn-primary btn-sm" v-on:click="edit(area)">

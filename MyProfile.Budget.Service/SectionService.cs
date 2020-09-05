@@ -79,7 +79,7 @@ namespace MyProfile.Budget.Service
 
         public async Task<IEnumerable<SectionLightModelView>> GetAllSectionByPerson()
         {
-            return await repository.GetAll<BudgetSection>(x => x.UserID == UserInfo.Current.ID && x.IsShowOnSite)
+            return await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID && x.IsShowOnSite)
                  .Select(x => new SectionLightModelView
                  {
                      ID = x.ID,
@@ -115,7 +115,7 @@ namespace MyProfile.Budget.Service
                         CanEdit = false,
                         Description = y.ChildSection.Description,
                         Name = y.ChildSection.Name,
-                        Owner = y.ChildSection.User.Name,
+                        Owner = y.ChildSection.BudgetArea.User.Name,
                         IsShowOnSite = true,
 
                     })
@@ -184,7 +184,6 @@ namespace MyProfile.Budget.Service
                 Name = section.Name,
                 BudgetAreaID = section.AreaID,
                 SectionTypeID = section.SectionTypeID,
-                UserID = UserInfo.Current.ID,
                 IsShowInCollective = section.IsShowInCollective,
                 IsShowOnSite = section.IsShowOnSite,
             };
@@ -275,7 +274,7 @@ namespace MyProfile.Budget.Service
         {
             var currentUser = UserInfo.Current;
             var budgetSection = await repository.GetAll<BudgetSection>()
-                .Where(x => x.ID == sectionID && x.UserID == currentUser.ID)
+                .Where(x => x.ID == sectionID && x.BudgetArea.UserID == currentUser.ID)
                 .FirstOrDefaultAsync();
 
             if (budgetSection != null && (budgetSection.BudgetRecords == null || budgetSection.BudgetRecords.Count() == 0))

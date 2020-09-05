@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Edit";
+    var currentUser = MyProfile.Identity.UserInfo.Current;
 }
 
 @section Styles {
@@ -38,7 +39,7 @@
     <script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
     <script src="~/vendor/libs/select2/select2.js"></script>
 
-    <script src="~/js/big-chart-edit.js"></script>
+    <script src="~/pages/chart/chart-edit.js"></script>
 }
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
     <span class="lnr lnr-pie-chart display-4 text-primary mr-2"></span>
@@ -138,7 +139,7 @@
             <div class="card-body">
                 <div class="row1">
                     <div class="col-md" v-for="(field, index) in chart.fields">
-                        <div class="card mb-3 background-color-lightgray">
+                        <div class="card mb-3 @( currentUser.UserSettings.WebSiteTheme_CodeName == "dark" ? "bg-navbar-theme" : "background-color-lightgray") ">
                             <div class="card-body">
                                 <div class="form-group">
                                     <span>#{{ ++index }}</span>

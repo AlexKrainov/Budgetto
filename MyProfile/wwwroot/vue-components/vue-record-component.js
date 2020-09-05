@@ -522,7 +522,9 @@
                     if (response.isOk && response.response) {
                         let obj = ParseXml(response.response);
                         let cur = obj.ValCurs.Valute.find(x => x.ID == this.currentCurrency.codeName_CBR);
-                        this.exchangeRate = cur.Value["#text"].replaceAll(",", ".");
+                        if (cur) {
+                            this.exchangeRate = cur.Value["#text"].replaceAll(",", ".");
+                        }
                     } else {
                         this.isUseBankRate = false;
                         toastr.error("Извините, не удалось подгрузить данные из ЦБ.");

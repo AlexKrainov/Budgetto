@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>MyProfile</AssemblyName>
 <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+<UserSecretsId>ab63dad2-81de-464f-866e-bb232b22f90b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -93,8 +94,6 @@
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Areas\Identity\Models\" />
     <Folder Include="wwwroot\img\chart\" />
-    <Folder Include="wwwroot\pages\budget\" />
-    <Folder Include="wwwroot\pages\limit\" />
     <Folder Include="wwwroot\resources\feedback\" />
     <Folder Include="wwwroot\resources\users\" />
     <Folder Include="wwwroot\video\" />

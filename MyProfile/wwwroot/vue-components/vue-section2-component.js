@@ -1,11 +1,12 @@
 ﻿Vue.component("vue-section-component", {
     template: `
-<div v-bind:id="dataId">
+<div v-bind:id="dataId" >
     <input type='search'
            class="form-control form-control-sm"
            v-on:input="onsearch" 
+            v-model="searchText"
             v-show="isShowFilter"/>
-    <div class="cards" v-bind:style="dataRecordsStyle"
+    <div class="cards" v-bind:style="searchText ? '' : dataRecordsStyle"
         v-bind:class="dataClass">
         <div class="card-section card cursor-pointer"
              v-for="section in sections"
@@ -53,6 +54,7 @@
         return {
             count: 0,
             sections: [],
+            searchText: null,
         }
     },
     watch: {
@@ -91,8 +93,10 @@
             }, this);
         },
         onsearch: function (event) {
+            let value = event.target.value.toLocaleLowerCase();
+
             for (var i = 0; i < this.sections.length; i++) {
-                this.sections[i].isShow = this.sections[i].name.toLocaleLowerCase().indexOf(event.target.value.toLocaleLowerCase()) >= 0;
+                this.sections[i].isShow = this.sections[i].name.toLocaleLowerCase().indexOf(value) >= 0;
             }
         },
         updateSections: function (newItems) {

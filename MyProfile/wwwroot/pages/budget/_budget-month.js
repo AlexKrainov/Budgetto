@@ -91,6 +91,9 @@
             dataType: 'json',
             context: this,
             success: function (response) {
+                if (!UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts) {
+                    return false;
+                }
 
                 this.goalChartsData = response.goalChartsData;
 
@@ -115,6 +118,10 @@
             dataType: 'json',
             context: this,
             success: function (response) {
+
+                if (!UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts) {
+                    return false;
+                }
 
                 this.bigChartsData = response.bigChartsData;
 

@@ -58,8 +58,13 @@
             });
         },
         chooseReminderIcon: function (cssIcon) {
+            if (!cssIcon) {
+                return true;
+            }
+
+            let newCssIcon = cssIcon.replace(" ", ".");
             $(".reminder-icons i").removeClass("active");
-            $(".reminder-icons i." + cssIcon).addClass("active");
+            $(".reminder-icons i." + newCssIcon).addClass("active");
             this.reminder.cssIcon = cssIcon;
         },
 
