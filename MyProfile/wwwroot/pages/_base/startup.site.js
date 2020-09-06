@@ -177,8 +177,8 @@ var RecordVue = new Vue({
         showModel: function (dateTime, callback) {
             return this.recordComponent.showModel(dateTime, callback);
         },
-        editByElement: function (record, callback) {
-            return this.recordComponent.editByElement(record, callback);
+        editByElement: function (record, callback, args) {
+            return this.recordComponent.editByElement(record, callback, args);
         },
         updateSectionComponent: function () {
             this.recordComponent.sectionComponent.load();

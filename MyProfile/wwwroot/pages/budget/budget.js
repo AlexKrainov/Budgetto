@@ -50,6 +50,7 @@
     mounted: BudgetMethods.mounted,
     methods: {
         load: BudgetMethods.load,
+        changeView: BudgetMethods.changeView,
         //Total charts
         loadTotalCharts: BudgetMethods.loadTotalCharts,
         initTotalCharts: function () {
@@ -441,19 +442,23 @@
             this.refrehViewTable();
         },
         //resize and refresh
-        refresh: function (type, onlyRuntimeData) {
-            if (type == undefined || type == 'onlyTable' || onlyRuntimeData) {
+        refresh: function (typeRefresh) {
+            //let typeRefresh = [
+            //    "onlyTable",
+            //    "runtimeData",
+            //];
+            if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData") {
                 this.load()
                     .then(function () {
                         BudgetVue.initTable();
                     });
             }
 
-            if (type == 'onlyTable') {
+            if (typeRefresh == 'onlyTable') {
                 return false;
             }
 
-            if (onlyRuntimeData) {
+            if (typeRefresh == "runtimeData") {
                 this.loadBigCharts();
                 this.loadTotalCharts();
                 this.loadLimitCharts();
@@ -473,13 +478,13 @@
                 let currentBudgetDate = moment(this.budgetDate, "YYYY/MM/DD");
 
                 if (dateOfPayment.get("month") == currentBudgetDate.get("month") && dateOfPayment.get("year") == currentBudgetDate.get("year")) {
-                    return this.refresh(undefined, true);
+                    return this.refresh("runtimeData");
                 }
 
             } else if (this.periodType == PeriodTypeEnum.Year) {
 
                 if (dateOfPayment.get("year") == this.budgetYear) {
-                    return this.refresh(undefined, true);
+                    return this.refresh("runtimeData");
                 }
             }
 

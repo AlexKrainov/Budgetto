@@ -1,137 +1,146 @@
 ﻿Vue.component("vue-record-component", {
     template: `<div class="row" v-bind:id="id" v-bind:name="name">
-	<div class="modal  fade" id="modal-record">
-		<div class="modal-dialog modal-lg">
-			<article class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">
-						Добавление записи
-					</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-				</div>
-				<div class="modal-body">
-					<div class="form-row">
-						<div class="form-group col">
-							<div class="input-group">
-							<span class="input-group-prepend">
-								<button v-on:click="addDays(-7)" class="btn btn-default modal-record-date-button" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left font-size-large" aria-hidden="true"></i></button>
-							</span>
-							<span class="input-group-prepend">
-								<button v-on:click="addDays(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
-							</span>
-							<input type="text" class="form-control record-date" id="record-date" v-model="dateTimeOfPayment" >
-							<span class="input-group-append">
-								<button v-on:click="addDays(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
-							</span>
-							<span class="input-group-append">
-								<button v-on:click="addDays(7)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right font-size-large" aria-hidden="true"></i></button>
-							</span>
-						</div>
-						</div>
-					</div>
-					<section class="form-row">
-						<div class="form-group col">
-							<div class="input-group">
-								<input type="text" class="form-control" id="money">
-								<div class="input-group-prepend">
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ currentCurrency.icon }}</button>
-									<div class="dropdown-menu" >
-										<a class="dropdown-item" 
-                                            href="javascript:void(0)"
-                                            v-for="currencyInfo in currencyInfos"
-                                            v-bind:class="currentCurrencyID == currencyInfo.id ? 'active' : ''" 
-                                            v-on:click="changeCurrency(currencyInfo)">{{ currencyInfo.icon }}</a>
-
-									</div>
-								</div>
-							</div>
-                        <small class="text-muted">Двойное нажатие для редактирования</small>
-						</div>
-					</section>
-                    <section id="currency-container" class="form-inline mb-4" v-show="currentCurrencyID != 1">
-                        <label class="form-check mr-sm-2 mb-2 mb-sm-0">
-                            <input class="form-check-input" type="checkbox"
-                                        v-model="isUseBankRate" 
-                                        v-on:change="getRate">
-                            <div class="form-check-label">
-                               Брать курс из цб на эту дату
-                            </div>
-                        </label>
-                        <div class="input-group text-right">
-                            <input type="number" class="form-control" 
-                                    v-model="exchangeRate"
-                                    v-bind:disabled="isUseBankRate">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">₽</div>
+    <div class="modal  fade" id="modal-record">
+        <div class="modal-dialog modal-lg">
+            <article class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Добавление записи
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <button v-on:click="addDays(-7)" class="btn btn-default modal-record-date-button" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left font-size-large" aria-hidden="true"></i></button>
+                                </span>
+                                <span class="input-group-prepend">
+                                    <button v-on:click="addDays(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
+                                </span>
+                                <input type="text" class="form-control record-date" id="record-date" v-model="dateTimeOfPayment">
+                                <span class="input-group-append">
+                                    <button v-on:click="addDays(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
+                                </span>
+                                <span class="input-group-append">
+                                    <button v-on:click="addDays(7)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right font-size-large" aria-hidden="true"></i></button>
+                                </span>
                             </div>
                         </div>
+                    </div>
+                    <section id="record-add-section" v-show="isShowHistory == false">
+
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="money">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ currentCurrency.icon }}</button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item"
+                                               href="javascript:void(0)"
+                                               v-for="currencyInfo in currencyInfos"
+                                               v-bind:class="currentCurrencyID == currencyInfo.id ? 'active' : ''"
+                                               v-on:click="changeCurrency(currencyInfo)">{{ currencyInfo.icon }}</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Двойное нажатие для редактирования</small>
+                            </div>
+                        </div>
+                        <div id="currency-container" class="form-inline mb-4" v-show="currentCurrencyID != 1">
+                            <label class="form-check mr-sm-2 mb-2 mb-sm-0">
+                                <input class="form-check-input" type="checkbox"
+                                       v-model="isUseBankRate"
+                                       v-on:change="getRate">
+                                <div class="form-check-label">
+                                    Брать курс из цб на эту дату
+                                </div>
+                            </label>
+                            <div class="input-group text-right">
+                                <input type="number" class="form-control"
+                                       v-model="exchangeRate"
+                                       v-bind:disabled="isUseBankRate">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">₽</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <div class="row records" v-for="record in records" v-show="record.isCorrect">
+                                    <div class="col-6 mb-3 record-item">
+                                        <a href="javascript:void(0)"
+                                           class="a-hover font-weight-bold font-size-large"
+                                           v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'"
+                                           title="Добавить описание"
+                                           v-on:click="descriptionRecord = record">
+                                            {{ showRecord(record) }}
+                                            <i class="fas badge badge-dot indicator fa-comment-dots has-comment" v-show="record.description != undefined && record.description != ''"></i>
+                                        </a>
+                                        <span class="record-item-actions cursor-pointer font-size-large ml-3">
+                                            <span v-on:click="descriptionRecord = record">+ <i class="far fa-comment"></i></span>
+                                        </span>
+                                    </div>
+                                    <div class="col-6 mb-3 text-right">
+                                        <span class="text-muted">{{ record.sectionName }} </span>
+                                        <span class="fa fa-trash remove-section-icon cursor-pointer ml-1"
+                                              v-on:click="record.sectionID = -1; record.sectionName = '';"
+                                              v-show="record.sectionName"></span>
+                                        <span class="text-danger"
+                                              v-show="isErrorSelectSection && !record.sectionName"><i class="ion ion-ios-alert"></i> Не выбрана категория</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <vue-section-component data-search-id="searchSection"
+                                                       data-records-style="height: 200px; overflow-x: overlay;"
+                                                       data-class="cards-small"
+                                                       v-bind:is-show-filter="true"
+                                                       v-on:onchoose="onChooseSection"></vue-section-component>
+                            </div>
+                        </div>
+                        <div class="form-row " v-bind:class="descriptionRecord ? 'show-comment': 'hide-comment'">
+                            <div class="form-group col">
+                                <label class="form-label">Комментарий для {{ showRecord(descriptionRecord) }}</label>
+                                <span class="comment-actions cursor-pointer ml-3">
+                                    <i class="fa fa-trash"
+                                       v-on:click="descriptionRecord.description = null;"
+                                       v-show="descriptionRecord.description"></i>
+                                </span>
+                                <div class="input-group">
+                                    <textarea class="form-control"
+                                              v-model="descriptionRecord.description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
                     </section>
-					<div class="form-row">
-						<div class="form-group col-6">
-							<div class="row records" v-for="record in records" v-show="record.isCorrect">
-								<div class="col-6 mb-3 record-item">
-									<a href="javascript:void(0)" 
-                                        class="a-hover font-weight-bold font-size-large"
-                                        v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'" 
-                                        title="Добавить описание" 
-                                        v-on:click="descriptionRecord = record">
-                                        {{ showRecord(record) }}
-									<i class="fas badge badge-dot indicator fa-comment-dots has-comment" v-show="record.description != undefined && record.description != ''"></i>
-									</a>
-                                    <span class="record-item-actions cursor-pointer font-size-large ml-3">
-                                        <span v-on:click="descriptionRecord = record" >+ <i class="far fa-comment"></i></span>
-                                    </span>
-								</div>
-								<div class="col-6 mb-3 text-right">
-									<span class="text-muted">{{ record.sectionName }} </span>
-									<span class="fa fa-trash remove-section-icon cursor-pointer ml-1"
-										  v-on:click="record.sectionID = -1; record.sectionName = '';"
-										  v-show="record.sectionName"></span>
-                                    <span class="text-danger"
-                                            v-show="isErrorSelectSection && !record.sectionName"><i class="ion ion-ios-alert"></i> Не выбрана категория</span>
-								</div>
-							</div>
-						</div>
-						<div class="form-group col-6">
-							<vue-section-component data-search-id="searchSection"
-												   data-records-style="height: 200px; overflow-x: overlay;"
-                                                   data-class="cards-small"
-                                                   v-bind:is-show-filter="true"
-												   v-on:onchoose="onChooseSection"></vue-section-component>
-						</div>
-					</div>
-					<div class="form-row " v-bind:class="descriptionRecord ? 'show-comment': 'hide-comment'">
-						<div class="form-group col">
-							<label class="form-label">Комментарий для {{ showRecord(descriptionRecord) }}</label>
-                            <span class="comment-actions cursor-pointer ml-3">
-                                <i class="fa fa-trash" 
-                                    v-on:click="descriptionRecord.description = null;"
-                                    v-show="descriptionRecord.description"></i>
-                            </span>
-							<div class="input-group">
-								<textarea class="form-control"
-                                    v-model="descriptionRecord.description"></textarea>
-							</div>
-						</div>
-					</div>
-                   
-				</div>
-				<div class="modal-footer">
-                <div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="isShowCollectionElement">
-					<label class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" v-model="isShowInCollection">
-						<span class="custom-control-label">Show in collective budget</span>
-					</label>
-				</div>
-					<button class="btn btn-primary" type="button" v-bind:disabled="isSaving" v-on:click="save($emit)" >
-						<span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                    <section id="history-records" v-show="isShowHistory">
+                        <vue-record-history-component>
+                        </vue-record-history-component>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" v-show="isShowHistory == false" v-on:click="showHistory(true)">История</a>
+                    <a href="javascript:void(0)" v-show="isShowHistory == true" v-on:click="showHistory(false)">Добавить запись</a>
+                    <div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="isShowCollectionElement">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" v-model="isShowInCollection">
+                            <span class="custom-control-label">Show in collective budget</span>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" type="button" v-bind:disabled="isSaving" v-on:click="save($emit)">
+                        <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                         {{ isEditMode ? 'Редактировать': 'Добавить' }}
-					</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-				</div>
-			</article>
-		</div>
-	</div>
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </article>
+        </div>
+    </div>
 </div>
 `,
     props: {
@@ -159,8 +168,7 @@
 
             descriptionRecord: "",
 
-            showHistory: false,
-            historyRecords: [],
+            isShowHistory: false,
 
             //components
             flatpickr: {},
@@ -171,16 +179,27 @@
             isEditMode: false,
             isErrorSelectSection: false,
             after_save_callback: Event,
+            after_save_callback_args: undefined,
         }
     },
     computed: {
         sectionComponent: function () {
             return this.$children[0];
+        },
+        historyComponent: function () {
+            return this.$children[1];
         }
     },
     mounted: function () {
 
-        this.flatpickr = flatpickr('#record-date', GetFlatpickrRuConfig());
+        let flatpickrConfig = GetFlatpickrRuConfig();
+        flatpickrConfig.onChange = function (selectedDates, dateStr, instance) {
+            if (RecordVue.recordComponent.isShowHistory) {
+                RecordVue.recordComponent.historyComponent.dateTimeOfPayment =
+                    RecordVue.recordComponent.flatpickr.latestSelectedDateObj.toLocaleDateString();
+            }
+        };
+        this.flatpickr = flatpickr('#record-date', flatpickrConfig);
 
         //https://github.com/yairEO/tagify#events
         //https://yaireo.github.io/tagify/
@@ -199,7 +218,7 @@
 
         this.loadCurrenciesInfo()
             .then(function () {
-                //this.loadHistory();
+
             });
 
         this.isShowCollectionElement = UserInfo.IsAllowCollectiveBudget;
@@ -208,7 +227,7 @@
 
         });
         $('#modal-record').on('hide.bs.modal', function () {
-
+            RecordVue.recordComponent.isShowHistory = false;
         });
     },
     methods: {
@@ -375,12 +394,19 @@
                             this.isSaving = false;
 
                             if (this.after_save_callback && typeof (this.after_save_callback) === "string") {
+
                                 this.after_save_callback = window.getFunctionFromString(this.after_save_callback);
                             }
 
                             if (typeof (this.after_save_callback) === "function") {
                                 try {
-                                    this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
+                                    if (this.after_save_callback_args != undefined) {
+                                        this.after_save_callback.call(this, this.after_save_callback_args);
+                                        this.this.after_save_callback_args = undefined
+                                    } else {
+                                        this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
+                                    }
+                                    
                                 } catch (e) {
                                     console.log(e);
                                 }
@@ -444,7 +470,7 @@
                 }
             }, this);
         },
-        editByElement: function (record, callback) {
+        editByElement: function (record, callback, args) {
             this.clearAll();
 
             this.records.push(record);
@@ -456,6 +482,7 @@
             this.tagify.addTags([{ value: record.tag, id: record.id }]);
 
             this.after_save_callback = callback;
+            this.after_save_callback_args = args;
             this.isEditMode = true;
             $("#modal-record").modal("show");
         },
@@ -500,17 +527,7 @@
             return;
         },
         getRateFromBank: function () {
-            //ToDo: Go to cbr.ru
             let dateInFormat = this.flatpickr.latestSelectedDateObj.toLocaleDateString();
-
-            //let dateInFormat = moment(this.flatpickr.latestSelectedDateObj).format("DD/MM/YYYY");
-            //let response = '<?xml version="1.0" encoding="windows-1251"?><ValCurs Date="02.03.2002" name="Foreign Currency Market"><Valute ID="R01010"><NumCode>036</NumCode><CharCode>AUD</CharCode><Nominal>1</Nominal><Name>Австралийский доллар</Name><Value>16,0102</Value></Valute><Valute ID="R01035"><NumCode>826</NumCode><CharCode>GBP</CharCode><Nominal>1</Nominal><Name>Фунт стерлингов Соединенного королевства</Name><Value>43,8254</Value></Valute><Valute ID="R01090"><NumCode>974</NumCode><CharCode>BYR</CharCode><Nominal>1000</Nominal><Name>Белорусских рублей</Name><Value>18,4290</Value></Valute><Valute ID="R01215"><NumCode>208</NumCode><CharCode>DKK</CharCode><Nominal>10</Nominal><Name>Датских крон</Name><Value>36,1010</Value></Valute><Valute ID="R01235"><NumCode>840</NumCode><CharCode>USD</CharCode><Nominal>1</Nominal><Name>Доллар США</Name><Value>30,9436</Value></Valute><Valute ID="R01239"><NumCode>978</NumCode><CharCode>EUR</CharCode><Nominal>1</Nominal><Name>Евро</Name><Value>26,8343</Value></Valute><Valute ID="R01310"><NumCode>352</NumCode><CharCode>ISK</CharCode><Nominal>100</Nominal><Name>Исландских крон</Name><Value>30,7958</Value></Valute><Valute ID="R01335"><NumCode>398</NumCode><CharCode>KZT</CharCode><Nominal>100</Nominal><Name>Казахстанских тенге</Name><Value>20,3393</Value></Valute><Valute ID="R01350"><NumCode>124</NumCode><CharCode>CAD</CharCode><Nominal>1</Nominal><Name>Канадский доллар</Name><Value>19,3240</Value></Valute><Valute ID="R01535"><NumCode>578</NumCode><CharCode>NOK</CharCode><Nominal>10</Nominal><Name>Норвежских крон</Name><Value>34,7853</Value></Valute><Valute ID="R01589"><NumCode>960</NumCode><CharCode>XDR</CharCode><Nominal>1</Nominal><Name>СДР (специальные права заимствования)</Name><Value>38,4205</Value></Valute><Valute ID="R01625"><NumCode>702</NumCode><CharCode>SGD</CharCode><Nominal>1</Nominal><Name>Сингапурский доллар</Name><Value>16,8878</Value></Valute><Valute ID="R01700"><NumCode>792</NumCode><CharCode>TRL</CharCode><Nominal>1000000</Nominal><Name>Турецких лир</Name><Value>22,2616</Value></Valute><Valute ID="R01720"><NumCode>980</NumCode><CharCode>UAH</CharCode><Nominal>10</Nominal><Name>Украинских гривен</Name><Value>58,1090</Value></Valute><Valute ID="R01770"><NumCode>752</NumCode><CharCode>SEK</CharCode><Nominal>10</Nominal><Name>Шведских крон</Name><Value>29,5924</Value></Valute><Valute ID="R01775"><NumCode>756</NumCode><CharCode>CHF</CharCode><Nominal>1</Nominal><Name>Швейцарский франк</Name><Value>18,1861</Value></Valute><Valute ID="R01820"><NumCode>392</NumCode><CharCode>JPY</CharCode><Nominal>100</Nominal><Name>Японских иен</Name><Value>23,1527</Value></Valute></ValCurs>';
-            //let obj = ParseXml(response);
-            //let cur = obj.ValCurs.Valute.find(x => x.ID == this.currentCurrency.codeName_CBR);
-            //this.exchangeRate = cur.Value["#text"].replaceAll(",", ".");
-            //this.exchangeNominal = cur.Nominal["#text"];
-            //return;
-            //This request has been blocked; the content must be served over HTTPS.
             ShowLoading("#currency-container");
             return $.ajax({
                 type: "GET",
@@ -563,30 +580,10 @@
                 }
             });
         },
-        loadHistory: function () {
-            return $.ajax({
-                type: "GET",
-                url: "/Budget/GetLastRecords?last=5",
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                context: this,
-                success: function (response) {
-                    if (response.isOk) {
-                        this.historyRecords = response.data;
-                    }
-
-                    return response;
-                },
-                error: function (xhr, status, error) {
-                    console.log(error);
-                }
-            });
-        },
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
-
-        showModel: function (dateTime, callback) {
+        showModel: function (dateTime, callback, args) {
             if (dateTime) {
                 this.flatpickr.setDate(dateTime);
             } else {
@@ -594,31 +591,18 @@
             }
 
             this.after_save_callback = callback;
+            this.after_save_callback_args = args;
 
             $("#modal-record").modal("show");
             document.getElementById("money").focus()
+        },
+
+        //History
+        showHistory: function (isShow) {
+            this.isShowHistory = isShow;
+            if (isShow) {
+                this.historyComponent.dateTimeOfPayment = this.flatpickr.latestSelectedDateObj.toLocaleDateString();
+            }
         }
     }
 });
-
-//<div class="card-body" style="padding-bottom:5px;">
-//    <div class="card-title with-elements">
-//        <h5 class="m-0 mr-2">История</h5>
-//        <div class="card-title-elements ml-md-auto">
-//            <i class="fas fa-chevron-down cursor-pointer" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" v-show="!showHistory" v-on:click="showHistory = true;"></i>
-//        <i class="fas fa-chevron-up cursor-pointer" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter" v-show="showHistory" v-on:click="showHistory = false"></i>
-//</div>
-//                        </div >
-//    <div class="collapse" id="collapseFilter">
-//        <div class="card card-body">
-//            <div class="media pb-1 mb-3 bg-lighter" v-for="historyRecord in historyRecords">
-//                <div class="media-body align-self-center">
-//                    <span>{{ historyRecord.areaName }} > {{ historyRecord.sectionName }}</span>
-//                    <a href="javascript:void(0)" v-on: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(historyRecord.money) }}</a>
-//                <div class="text-muted small">{{ getDateByFormat(historyRecord.dateTimeOfPayment, 'DD.MM.YYYY') }}</div>
-//                <div class="text-muted small">{{ historyRecord.description }}</div>
-//            </div>
-//        </div>
-//    </div>
-//                        </div >
-//                    </div >

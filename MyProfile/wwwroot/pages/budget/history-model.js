@@ -18,7 +18,9 @@
                 record.isShowForFilter = record.sectionName.toLocaleLowerCase().indexOf(newValue) >= 0
                     || (record.description && record.description.toLocaleLowerCase().indexOf(newValue) >= 0)
                     || record.areaName.toLocaleLowerCase().indexOf(newValue) >= 0
-                    || (record.userName && record.userName.toLocaleLowerCase().indexOf(newValue) >= 0);
+                    || (record.userName && record.userName.toLocaleLowerCase().indexOf(newValue) >= 0)
+                    || record.money.toString().indexOf(newValue) >= 0
+                    || record.rawData.indexOf(newValue) >= 0;
             }
         }
     },

@@ -36,7 +36,13 @@
             });
         $.fn.dataTable.SearchPanes.defaults = false;
     },
+    changeView: function (months) {
+        var result = new Date(this.flatpickrStart.latestSelectedDateObj);
+        result.setMonth(result.getMonth() + months);
+        console.log(result);
 
+        this.flatpickrStart.setDate(result, true);
+    },
     //Total charts
     loadTotalCharts: function () {
         if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart

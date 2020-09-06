@@ -77,7 +77,7 @@ namespace MyProfile.Budget.Service
                 });
         }
 
-        public async Task<IEnumerable<SectionLightModelView>> GetAllSectionByPerson()
+        public async Task<IEnumerable<SectionLightModelView>> GetAllSectionByUser()
         {
             return await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID && x.IsShowOnSite)
                  .Select(x => new SectionLightModelView

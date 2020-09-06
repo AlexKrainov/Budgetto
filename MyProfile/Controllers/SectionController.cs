@@ -94,7 +94,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSectionByPerson()
         {
-            var sections = await sectionService.GetAllSectionByPerson();
+            var sections = await sectionService.GetAllSectionByUser();
 
             return Json(new { isOk = true, sections });
         }

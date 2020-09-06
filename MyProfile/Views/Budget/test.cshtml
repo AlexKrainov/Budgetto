@@ -1,0 +1,143 @@
+﻿<div class="row" v-bind:id="id" v-bind:name="name">
+    <div class="modal  fade" id="modal-record">
+        <div class="modal-dialog modal-lg">
+            <article class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Добавление записи
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <button v-on:click="addDays(-7)" class="btn btn-default modal-record-date-button" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left font-size-large" aria-hidden="true"></i></button>
+                                </span>
+                                <span class="input-group-prepend">
+                                    <button v-on:click="addDays(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
+                                </span>
+                                <input type="text" class="form-control record-date" id="record-date" v-model="dateTimeOfPayment">
+                                <span class="input-group-append">
+                                    <button v-on:click="addDays(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
+                                </span>
+                                <span class="input-group-append">
+                                    <button v-on:click="addDays(7)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right font-size-large" aria-hidden="true"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <section id="record-add-section" v-show="showHistory == false">
+
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="money">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ currentCurrency.icon }}</button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item"
+                                               href="javascript:void(0)"
+                                               v-for="currencyInfo in currencyInfos"
+                                               v-bind:class="currentCurrencyID == currencyInfo.id ? 'active' : ''"
+                                               v-on:click="changeCurrency(currencyInfo)">{{ currencyInfo.icon }}</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Двойное нажатие для редактирования</small>
+                            </div>
+                        </div>
+                        <div id="currency-container" class="form-inline mb-4" v-show="currentCurrencyID != 1">
+                            <label class="form-check mr-sm-2 mb-2 mb-sm-0">
+                                <input class="form-check-input" type="checkbox"
+                                       v-model="isUseBankRate"
+                                       v-on:change="getRate">
+                                <div class="form-check-label">
+                                    Брать курс из цб на эту дату
+                                </div>
+                            </label>
+                            <div class="input-group text-right">
+                                <input type="number" class="form-control"
+                                       v-model="exchangeRate"
+                                       v-bind:disabled="isUseBankRate">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">₽</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <div class="row records" v-for="record in records" v-show="record.isCorrect">
+                                    <div class="col-6 mb-3 record-item">
+                                        <a href="javascript:void(0)"
+                                           class="a-hover font-weight-bold font-size-large"
+                                           v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'"
+                                           title="Добавить описание"
+                                           v-on:click="descriptionRecord = record">
+                                            {{ showRecord(record) }}
+                                            <i class="fas badge badge-dot indicator fa-comment-dots has-comment" v-show="record.description != undefined && record.description != ''"></i>
+                                        </a>
+                                        <span class="record-item-actions cursor-pointer font-size-large ml-3">
+                                            <span v-on:click="descriptionRecord = record">+ <i class="far fa-comment"></i></span>
+                                        </span>
+                                    </div>
+                                    <div class="col-6 mb-3 text-right">
+                                        <span class="text-muted">{{ record.sectionName }} </span>
+                                        <span class="fa fa-trash remove-section-icon cursor-pointer ml-1"
+                                              v-on:click="record.sectionID = -1; record.sectionName = '';"
+                                              v-show="record.sectionName"></span>
+                                        <span class="text-danger"
+                                              v-show="isErrorSelectSection && !record.sectionName"><i class="ion ion-ios-alert"></i> Не выбрана категория</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <vue-section-component data-search-id="searchSection"
+                                                       data-records-style="height: 200px; overflow-x: overlay;"
+                                                       data-class="cards-small"
+                                                       v-bind:is-show-filter="true"
+                                                       v-on:onchoose="onChooseSection"></vue-section-component>
+                            </div>
+                        </div>
+                        <div class="form-row " v-bind:class="descriptionRecord ? 'show-comment': 'hide-comment'">
+                            <div class="form-group col">
+                                <label class="form-label">Комментарий для {{ showRecord(descriptionRecord) }}</label>
+                                <span class="comment-actions cursor-pointer ml-3">
+                                    <i class="fa fa-trash"
+                                       v-on:click="descriptionRecord.description = null;"
+                                       v-show="descriptionRecord.description"></i>
+                                </span>
+                                <div class="input-group">
+                                    <textarea class="form-control"
+                                              v-model="descriptionRecord.description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                    <section id="history-section" v-show="showHistory">
+                        <vue-record-history-component>
+                        </vue-record-history-component>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <a href="void:javascript(0)" v-show="showHistory == false" v-on:click="showHistory = true;">History</a>
+                    <a href="void:javascript(0)" v-show="showHistory == true" v-on:click="showHistory = false;">Add record</a>
+                    <div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="isShowCollectionElement">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" v-model="isShowInCollection">
+                            <span class="custom-control-label">Show in collective budget</span>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" type="button" v-bind:disabled="isSaving" v-on:click="save($emit)">
+                        <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                        {{ isEditMode ? 'Редактировать': 'Добавить' }}
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>

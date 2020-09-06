@@ -1,121 +1,135 @@
 ﻿var BudgetMethods = {
-	periodType: PeriodTypeEnum.Year,
-	mounted: function () {
-		this.getPageSettings();
-		this.templateID = document.getElementById("templateID_hidden").value;
-		this.budgetYear = document.getElementById("budgetMonth_hidden").value;
+    periodType: PeriodTypeEnum.Year,
+    mounted: function () {
+        this.getPageSettings();
+        this.templateID = document.getElementById("templateID_hidden").value;
+        this.budgetYear = document.getElementById("budgetMonth_hidden").value;
 
-		this.refresh();
-		window.layoutHelpers.on('resize', this.resizeAll);
+        this.refresh();
+        window.layoutHelpers.on('resize', this.resizeAll);
 
-		//this.earningData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart;
-		//this.spendingData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_SpendingChart;
-		//this.investingData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart;
+        //this.earningData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart;
+        //this.spendingData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_SpendingChart;
+        //this.investingData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart;
 
-		RecordVue.callback = this.refreshAfterChangeRecords;
-	},
-	load: function () {
-		return sendAjax("/Budget/GetYearBudget?year=" + this.budgetYear + "&templateID=" + this.templateID, null, "POST")
-			.then(function (result) {
-				if (result.isOk == true) {
-					BudgetVue.rows = result.rows;
-					BudgetVue.footerRow = result.footerRow;
-					BudgetVue.template = result.template;
+        RecordVue.callback = this.refreshAfterChangeRecords;
+    },
+    load: function () {
+        return sendAjax("/Budget/GetYearBudget?year=" + this.budgetYear + "&templateID=" + this.templateID, null, "POST")
+            .then(function (result) {
+                if (result.isOk == true) {
+                    BudgetVue.rows = result.rows;
+                    BudgetVue.footerRow = result.footerRow;
+                    BudgetVue.template = result.template;
 
-				}
-			});
+                }
+            });
 
-		$.fn.dataTable.SearchPanes.defaults = false;
-	},
-	//Total charts
-	loadTotalCharts: function () {
-		if (!(UserInfo.UserSettings.Dashboard_Year_IsShow_InvestingChart
-			|| UserInfo.UserSettings.Dashboard_Year_IsShow_SpendingChart
-			|| UserInfo.UserSettings.Dashboard_Year_IsShow_EarningChart)) {
-			return false;
-		}
-		return $.ajax({
-			type: "GET",
-			url: "/BudgetTotal/LoadByYear?year=" + this.budgetYear,
-			contentType: "application/json",
-			dataType: 'json',
-			context: this,
-			success: function (response) {
-				this.earningData = response.earningData;
-				this.spendingData = response.spendingData;
-				this.investingData = response.investingData;
+        $.fn.dataTable.SearchPanes.defaults = false;
+    },
+    changeView: function (year) {
+        let select = $("#budget-year")[0];
+        let selectedIndex = select.selectedIndex;
+        let allOptions = select.options.length;
 
-				this.initTotalCharts();
-			}
-		});
-	},
-	//Limit charts
-	loadLimitCharts: function () {
-		if (!UserInfo.UserSettings.Dashboard_Year_IsShow_LimitCharts) {
-			return false;
-		}
-		return $.ajax({
-			type: "GET",
-			url: "/Limit/LoadCharts?year=" + this.budgetYear + "&periodTypesEnum=3",
-			contentType: "application/json",
-			dataType: 'json',
-			context: this,
-			success: function (response) {
+        if (year == -1 && selectedIndex != 0) {
+            this.budgetYear = this.budgetYear * 1 + year;
+            return this.refresh("runtimeData");
+        }
+        if (year == 1 && ++selectedIndex < allOptions) {
+            this.budgetYear = this.budgetYear * 1 + year;
+            return this.refresh("runtimeData");
+        }
+    },
+    //Total charts
+    loadTotalCharts: function () {
+        if (!(UserInfo.UserSettings.Dashboard_Year_IsShow_InvestingChart
+            || UserInfo.UserSettings.Dashboard_Year_IsShow_SpendingChart
+            || UserInfo.UserSettings.Dashboard_Year_IsShow_EarningChart)) {
+            return false;
+        }
+        return $.ajax({
+            type: "GET",
+            url: "/BudgetTotal/LoadByYear?year=" + this.budgetYear,
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+                this.earningData = response.earningData;
+                this.spendingData = response.spendingData;
+                this.investingData = response.investingData;
 
-				this.limitsChartsData = response.limitsChartsData;
+                this.initTotalCharts();
+            }
+        });
+    },
+    //Limit charts
+    loadLimitCharts: function () {
+        if (!UserInfo.UserSettings.Dashboard_Year_IsShow_LimitCharts) {
+            return false;
+        }
+        return $.ajax({
+            type: "GET",
+            url: "/Limit/LoadCharts?year=" + this.budgetYear + "&periodTypesEnum=3",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
 
-				setTimeout(this.initLimitCharts, 10);
-			}
-		});
-	},
-	//Goal charts
-	loadGoalCharts: function () {
-		if (!UserInfo.UserSettings.Dashboard_Year_IsShow_GoalCharts) {
-			return false;
-		}
+                this.limitsChartsData = response.limitsChartsData;
 
-		return $.ajax({
-			type: "GET",
-			url: `/Goal/LoadCharts?year=${this.budgetYear}&periodTypesEnum=3`,
-			contentType: "application/json",
-			dataType: 'json',
-			context: this,
-			success: function (response) {
+                setTimeout(this.initLimitCharts, 10);
+            }
+        });
+    },
+    //Goal charts
+    loadGoalCharts: function () {
+        if (!UserInfo.UserSettings.Dashboard_Year_IsShow_GoalCharts) {
+            return false;
+        }
 
-				this.goalChartsData = response.goalChartsData;
+        return $.ajax({
+            type: "GET",
+            url: `/Goal/LoadCharts?year=${this.budgetYear}&periodTypesEnum=3`,
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
 
-				setTimeout(this.initGoalCharts, 10);
-			}
-		});
-	},
-	//big charts
-	loadBigCharts: function () {
-		if (!UserInfo.UserSettings.Dashboard_Year_IsShow_BigCharts) {
-			return false;
-		}
+                this.goalChartsData = response.goalChartsData;
 
-		for (var i = 0; i < this.bigChartsData.length; i++) {
-			ShowLoading('#bigChart_' + this.bigChartsData[i].chartID);
-		}
+                setTimeout(this.initGoalCharts, 10);
+            }
+        });
+    },
+    //big charts
+    loadBigCharts: function () {
+        if (!UserInfo.UserSettings.Dashboard_Year_IsShow_BigCharts) {
+            return false;
+        }
 
-		return $.ajax({
-			type: "GET",
-			url: "/Chart/LoadCharts?year=" + this.budgetYear + "&periodType=3",
-			contentType: "application/json",
-			dataType: 'json',
-			context: this,
-			success: function (response) {
+        for (var i = 0; i < this.bigChartsData.length; i++) {
+            ShowLoading('#bigChart_' + this.bigChartsData[i].chartID);
+        }
 
-				this.bigChartsData = response.bigChartsData;
+        return $.ajax({
+            type: "GET",
+            url: "/Chart/LoadCharts?year=" + this.budgetYear + "&periodType=3",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
 
-				for (var i = 0; i < this.bigChartsData.length; i++) {
-					HideLoading('#bigChart_' + this.bigChartsData[i].chartID);
-				}
+                this.bigChartsData = response.bigChartsData;
 
-				setTimeout(this.initBigChartCharts, 10);
-			}
-		});
-	},
+                for (var i = 0; i < this.bigChartsData.length; i++) {
+                    HideLoading('#bigChart_' + this.bigChartsData[i].chartID);
+                }
+
+                setTimeout(this.initBigChartCharts, 10);
+            }
+        });
+    },
 };
 
 //var BudgetVue1 = new Vue({

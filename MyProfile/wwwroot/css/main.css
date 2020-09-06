@@ -623,5 +623,8 @@ html.dark-style .list-group-item:not(.not-dark) {
 } html.dark-style #colorPick {
     background-color: #393a3b !important;
 }
+html.dark-style .tagify__input::before{
+    color: white !important;
+}
 
 /*region end - dark style*/

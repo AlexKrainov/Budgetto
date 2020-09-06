@@ -15,7 +15,7 @@ namespace MyProfile.Controllers
 {
     public partial class BudgetController : Controller
     {
-        public async Task<IActionResult> TimeLine ()
+        public async Task<IActionResult> TimeLine()
         {
             TimeLineViewModel model = new TimeLineViewModel();
 
@@ -24,7 +24,7 @@ namespace MyProfile.Controllers
                 .GroupBy(x => x)
                 .Select(x => new YearsAndCount { year = x.Key })
                 .ToListAsync();
-            model.Sections = await sectionService.GetAllSectionByPerson();
+            model.Sections = await sectionService.GetAllSectionByUser();
 
             await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.TimeLine_Page);
 
@@ -99,11 +99,24 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, data = result });
         }
 
+        [HttpGet]
+        public async Task<JsonResult> LoadingRecordsForByDate(DateTime date)
+        {
+            CalendarFilterModels filter = new CalendarFilterModels { Sections = new List<int>() };
+            filter.StartDate = new DateTime(date.Year, date.Month, date.Day, 00, 00, 01);
+            filter.EndDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
+            filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
+
+            var result = await budgetRecordService.GetBudgetRecordsByFilter(filter);
+
+            return Json(new { isOk = true, data = result });
+        }
+
 
         [HttpPost]
         public async Task<JsonResult> RemoveRecord([FromBody] BudgetRecordModelView record)
         {
-            return Json(new { isOk = await budgetRecordService.RemoveRecord(record), record.DateTimeOfPayment});
+            return Json(new { isOk = await budgetRecordService.RemoveRecord(record), record.DateTimeOfPayment });
         }
 
         [HttpPost]

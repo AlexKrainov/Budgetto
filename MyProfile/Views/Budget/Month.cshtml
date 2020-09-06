@@ -33,8 +33,17 @@
 
         <div class="row">
             <div class="col-md-4">
-                <label class="form-label">Месяц</label>
-                <input type="text" class="form-control" id="budget-date" v-model="budgetDate" v-on:input="refresh(undefined)">
+                <div class="form-group col">
+                    <div class="input-group">
+                        <span class="input-group-prepend" style=" width: 50px;">
+                            <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
+                        </span>
+                        <input type="text" class="form-control text-center" id="budget-date" v-model="budgetDate" v-on:input="refresh(undefined)">
+                        <span class="input-group-append" style=" width: 50px;">
+                            <button v-on:click="changeView(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
+                        </span>
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <h2 class="font-weight-light mb-2">Server Statistics</h2>
@@ -81,8 +90,8 @@
                     }
                 </select>
                 <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать шаблон"
-                   v-bind:href="'/Template/Edit/'+template.id" >
-                    <i class="ion ion-md-create" ></i>
+                   v-bind:href="'/Template/Edit/'+template.id">
+                    <i class="ion ion-md-create"></i>
                 </a>
 
                 <div class="card-title-elements">
