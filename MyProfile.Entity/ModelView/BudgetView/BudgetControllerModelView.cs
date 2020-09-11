@@ -10,5 +10,6 @@ namespace MyProfile.Entity.ModelView.BudgetView
 		public List<TemplateViewModel_Short> Templates { get; set; } = new List<TemplateViewModel_Short>();
 		public DateTime SelectedDateTime { get; set; }
 		public int SelectedYear{ get; set; }
-	}
+        public List<int> Years { get; set; }
+    }
 }

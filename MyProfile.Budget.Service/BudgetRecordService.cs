@@ -87,17 +87,17 @@ namespace MyProfile.Budget.Service
                     dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
                     dbRecord.DateTimeEdit = now;
 
-                    repository.Update(dbRecord, true);
+                    await repository.UpdateAsync(dbRecord, true);
                     isEdit = true;
                 }
             }
             if (isEdit)
             {
-                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Record_Edit);
-            }
-            if (isCreate)
-            {
-                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Record_Create);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Edit);
+            }                                      
+            if (isCreate)                          
+            {                                      
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Create);
             }
 
             return true;
@@ -108,7 +108,7 @@ namespace MyProfile.Budget.Service
             try
             {
                 var now = DateTime.Now.ToUniversalTime();
-                repository.Create(new BudgetRecord
+                await repository.CreateAsync(new BudgetRecord
                 {
                     BudgetSectionID = budgetRecord.SectionID,
                     DateTimeCreate = now,
@@ -148,6 +148,7 @@ namespace MyProfile.Budget.Service
             }
             return false;
         }
+
         public async Task<bool> RecoveryRecord(BudgetRecordModelView record)
         {
             var currentUser = UserInfo.Current;
@@ -306,6 +307,14 @@ namespace MyProfile.Budget.Service
             return await repository
               .GetAll(expression)
               .SumAsync(x => x.Total);
+        }
+
+        public async Task<List<int>> GetAllYears()
+        {
+            return await repository.GetAll<BudgetRecord>(x => x.UserID == UserInfo.Current.ID)
+                .GroupBy(x => x.DateTimeOfPayment.Year)
+                .Select(x => x.Key)
+                .ToListAsync();
         }
 
         private async Task<Expression<Func<BudgetRecord, bool>>> getExpressionByCalendarFilter(CalendarFilterModels filter)

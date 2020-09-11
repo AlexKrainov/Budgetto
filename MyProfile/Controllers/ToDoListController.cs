@@ -48,7 +48,7 @@ namespace MyProfile.Controllers
         {
             var result = await toDoListService.CreateOrUpdateList(list);
 
-            return Json(new { isOk = result, list });
+            return Json(new { isOk = result, list = await toDoListService.GetListByID(list.ID) });
         }
 
 

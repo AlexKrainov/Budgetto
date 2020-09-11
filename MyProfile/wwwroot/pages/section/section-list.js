@@ -419,6 +419,8 @@ var SectionVue = new Vue({
                     } else {
                         toastr.error(result.text);
                     }
+                }).then(function () {
+                    RecordVue.refreshSections();
                 });
         },
         selectIcon: function (item) {
@@ -467,6 +469,9 @@ var SectionVue = new Vue({
                         AreaVue.updateSectionComponent();
                     }
                     SectionVue.isSaving = false;
+                })
+                .then(function () {
+                    RecordVue.refreshSections();
                 });
         },
         checkForm: function (e) {

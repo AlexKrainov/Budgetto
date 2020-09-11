@@ -26,7 +26,7 @@
         <div class="messages-sidebox messages-scroll col">
 
             <div class="card-body py-3">
-                <h4 class="mb-0" style="display:inline;">
+                <h4 class="mb-0 text-muted" style="display:inline;">
                     Папки
                 </h4>
                 <a href="javascript:void(0)" class="messages-sidebox-toggler text-muted text-large font-weight-light pl-4">&times;</a>
@@ -149,10 +149,10 @@
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                     <i class="ion ion-ios-save" v-show="isSaving == false"></i>
                 </button>
-                <h4 class="m-0 margin-right" v-show="list.id <= 0">
+                <h4 class="m-0 margin-right text-muted" v-show="list.id <= 0">
                     Создание нового списока
                 </h4>
-                <h4 class="m-0 margin-right" v-show="list.id > 0">
+                <h4 class="m-0 margin-right text-muted" v-show="list.id > 0">
                     Редактирование списка
                 </h4>
             </div>
@@ -174,11 +174,11 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label class="form-label">Название списка</label>
+                        <label class="form-label text-muted">Название списка</label>
                         <input type="text" class="form-control" v-model="list.title" id="listTitle">
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="form-label">Навзвание папки</label>
+                        <label class="form-label text-muted">Навзвание папки</label>
                         <select class="form-control" v-model="list.folderID">
                             <option v-bind:value="_folder.id" v-for="_folder in folders">{{ _folder.title }}</option>
                         </select>
@@ -261,17 +261,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" v-show="folder.id == undefined">
+                    <h5 class="modal-title text-muted" v-show="folder.id == undefined">
                         Содание папки
                     </h5>
-                    <h5 class="modal-title" v-show="folder.id">
+                    <h5 class="modal-title text-muted" v-show="folder.id">
                         Редактирование папки
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                 </div>
                 <div class="modal-body pt-0">
                     <div class="form-group">
-                        <label class="form-label">Название папки</label>
+                        <label class="form-label text-muted">Название папки</label>
                         <span class="text-danger">*</span>
                         <input type="text"
                                class="form-control"
@@ -282,7 +282,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Выберите иконку</label>
+                        <label class="form-label text-muted">Выберите иконку</label>
                         <br />
                         <span class="text-large mx-4 folder-icons">
                             <i v-on:click="chooseFolderIcon('ion ion-ios-albums')" class="cursor-pointer ion ion-ios-albums"></i>

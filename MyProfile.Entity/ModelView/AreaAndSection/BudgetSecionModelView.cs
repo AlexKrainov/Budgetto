@@ -31,7 +31,7 @@ namespace MyProfile.Entity.ModelView
 		public int? SectionTypeID { get; set; }
 		public string SectionTypeName { get; set; }
         public int RecordCount { get; set; }
-        public bool IsShow { get; set; }
+		public bool IsShow { get; set; } = true;
         public bool HasRecords { get; set; }
         public string CssBackground { get; set; }
     }

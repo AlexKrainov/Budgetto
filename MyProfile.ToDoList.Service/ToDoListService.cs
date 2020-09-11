@@ -143,7 +143,7 @@ namespace MyProfile.ToDoList.Service
                             IsEditToday = y.DateCreate.Date != todate && y.DateEdit.Date == todate,
                             Items = y.ToDoListItems
                                 .OrderByDescending(p => p.IsDone)
-                                .ThenBy(p => p.DateCreate)
+                                .ThenBy(p => p.DateEdit)
                                 .Select(z => new ToDoListItemModelView
                                 {
                                     DateCreate = z.DateCreate,
@@ -314,8 +314,6 @@ namespace MyProfile.ToDoList.Service
             {
                 return false;
             }
-
-            list = await GetListByID(list.ID);
 
             return true;
         }

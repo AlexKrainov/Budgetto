@@ -10,6 +10,7 @@
         v-bind:class="dataClass">
         <div class="card-section card cursor-pointer"
              v-for="section in sections"
+            v-bind:key="section.id"
              v-on:click="$emit('onchoose', section)"
              v-bind:title="section.description"
              v-show="section.isShow"
@@ -117,6 +118,6 @@
                 }
             }
             return "";
-        }
+        },
     }
 });

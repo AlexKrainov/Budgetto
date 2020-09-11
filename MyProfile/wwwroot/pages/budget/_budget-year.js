@@ -29,16 +29,30 @@
     },
     changeView: function (year) {
         let select = $("#budget-year")[0];
-        let selectedIndex = select.selectedIndex;
-        let allOptions = select.options.length;
+        //let selectedIndex = select.selectedIndex;
+        //let allOptions = select.options.length;
 
-        if (year == -1 && selectedIndex != 0) {
-            this.budgetYear = this.budgetYear * 1 + year;
-            return this.refresh("runtimeData");
+        //if (year == -1 && selectedIndex != 0) {
+        //    this.budgetYear = this.budgetYear * 1 + year;
+        //    return this.refresh("runtimeData");
+        //}
+        //if (year == 1 && ++selectedIndex < allOptions) {
+        //    this.budgetYear = this.budgetYear * 1 + year;
+        //    return this.refresh("runtimeData");
+        //}
+        if (year == -1) {
+            let val = $("#budget-year option:selected").prev().prop("selected", true).text();
+            if (val) {
+                this.budgetYear = val;
+                return this.refresh("runtimeData");
+            }
         }
-        if (year == 1 && ++selectedIndex < allOptions) {
-            this.budgetYear = this.budgetYear * 1 + year;
-            return this.refresh("runtimeData");
+        if (year == 1) {
+            let val = $("#budget-year option:selected").next().prop("selected", true).text();
+            if (val) {
+                this.budgetYear = val;
+                return this.refresh("runtimeData");
+            }
         }
     },
     //Total charts

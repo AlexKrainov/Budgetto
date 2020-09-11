@@ -501,7 +501,10 @@
             }
         },
         initTable: function () {
-            this.dataTable = $("#table").DataTable();
+            this.dataTable = $("#table").DataTable({
+                dom: 'Bfrtip',
+                buttons: ['excel']
+            });
         },
 
         //View cell

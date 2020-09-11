@@ -131,6 +131,13 @@ namespace MyProfile.Controllers
                 model.SelectedTemplateID = model.Templates[0].ID;
             }
 
+            model.Years = await budgetRecordService.GetAllYears();
+
+            if (model.Years == null || model.Years.Count == 0)
+            {
+                model.Years.Add(DateTime.Now.Year);
+            }
+
             await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BudgetYear_Page);
 
             return View(model);

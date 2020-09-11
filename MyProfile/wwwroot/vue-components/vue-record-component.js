@@ -132,7 +132,10 @@
                             <span class="custom-control-label">Show in collective budget</span>
                         </label>
                     </div>
-                    <button class="btn btn-primary" type="button" v-bind:disabled="isSaving" v-on:click="save($emit)">
+                    <button class="btn btn-primary" type="button" 
+                        v-bind:disabled="isSaving" 
+                        v-on:click="save($emit)"
+                        v-show="isShowHistory == false">
                         <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                         {{ isEditMode ? 'Редактировать': 'Добавить' }}
                     </button>

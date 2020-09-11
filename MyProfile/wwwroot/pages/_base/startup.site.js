@@ -182,6 +182,9 @@ var RecordVue = new Vue({
         },
         updateSectionComponent: function () {
             this.recordComponent.sectionComponent.load();
+        },
+        refreshSections: function () {
+            this.recordComponent.sectionComponent.load();
         }
     }
 });

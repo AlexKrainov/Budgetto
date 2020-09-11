@@ -34,11 +34,10 @@
                                 <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
                             </span>
                             <select id="budget-year" v-model="budgetYear" v-on:change="refresh" class="form-control">
-                                <option value="2016">2016</option>
-                                <option value="2017">2017</option>
-                                <option value="2018">2018</option>
-                                <option value="2019">2019</option>
-                                <option value="2020">2020</option>
+                                @foreach (var year in Model.Years)
+                                {
+                                    <option value="@year">@year</option>
+                                }
                             </select>
                             <span class="input-group-append" style=" width: 50px;">
                                 <button v-on:click="changeView(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
