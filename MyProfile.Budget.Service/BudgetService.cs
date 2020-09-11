@@ -81,7 +81,7 @@ namespace MyProfile.Budget.Service
                     budgetRecords = budgetRecordService.GetBudgetRecordsGroup(from, to, x => x.DateTimeOfPayment.Day).ToList();
                     totalCounter = DateTime.DaysInMonth(from.Year, from.Month);
 
-                    reminders = reminderService.GetRemindersByDate(from, to).ToList();
+                    reminders = reminderService.GetRemindersByDateRange(from, to).ToList();
                     break;
             }
             if (currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective)

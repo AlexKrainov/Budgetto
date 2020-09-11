@@ -111,32 +111,47 @@ namespace MyProfile.Reminder.Service
             catch (Exception ex)
             {
                 return false;
-
             }
 
             return true;
         }
 
-        public IQueryable<ReminderShortModelView> GetRemindersByDate(DateTime from, DateTime to)
+        public IQueryable<ReminderShortModelView> GetRemindersByDateRange(DateTime from, DateTime to)
         {
             var currenUserID = UserInfo.Current.ID;
+            //from = from.AddSeconds(-1);
+            //to = to.AddSeconds(1);
 
             return repository
-                .GetAll<Reminder>(x => x.UserID == currenUserID
-                    && x.IsDeleted == false
-                    && x.DateReminder != null
-                    && x.ReminderDates != null
-                    && x.ReminderDates.Any(y => y.DateReminder >= from && y.DateReminder <= to))
-                 .Select(x => new ReminderShortModelView
-                 {
-                     ReminderID = x.ID,
-                     Description = x.Description,
-                     Title = x.Title,
-                     CssIcon = x.CssIcon,
-                     DateReminder = x.ReminderDates
-                        .FirstOrDefault(y => y.DateReminder >= from && y.DateReminder <= to)
-                        .DateReminder.Date
-                 });
+                .GetAll<ReminderDate>(x => x.Reminder.UserID == currenUserID
+                && x.Reminder.IsDeleted == false
+                && x.DateReminder >= from
+                && x.DateReminder <= to)
+                .Select(x => new ReminderShortModelView
+                {
+                    CssIcon = x.Reminder.CssIcon,
+                    DateReminder = x.DateReminder,
+                    Description = x.Reminder.Description,
+                    ReminderID = x.ReminderID,
+                    Title = x.Reminder.Title
+                });
+
+            //return repository
+            //    .GetAll<Reminder>(x => x.UserID == currenUserID
+            //        && x.IsDeleted == false
+            //        && x.DateReminder != null
+            //        && x.ReminderDates != null
+            //        && x.ReminderDates.Any(y => y.DateReminder >= from && y.DateReminder <= to))
+            //     .Select(x => new ReminderShortModelView
+            //     {
+            //         ReminderID = x.ID,
+            //         Description = x.Description,
+            //         Title = x.Title,
+            //         CssIcon = x.CssIcon,
+            //         DateReminder = x.ReminderDates
+            //            .FirstOrDefault(y => y.DateReminder >= from && y.DateReminder <= to)
+            //            .DateReminder.Date
+            //     });
         }
 
         public async Task<bool> RemoveOrRecovery(ReminderEditModelView reminderEdit, bool isDelete)
@@ -195,7 +210,8 @@ namespace MyProfile.Reminder.Service
                         });
                     }
                 }
-                else if (reminderEdit.RepeatEvery == Enum.GetName(typeof(RepeatEveryType), RepeatEveryType.Week))
+                else 
+                if (reminderEdit.RepeatEvery == Enum.GetName(typeof(RepeatEveryType), RepeatEveryType.Week))
                 {
                     for (int i = 1; i < 100; i++)
                     {

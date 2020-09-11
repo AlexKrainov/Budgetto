@@ -133,13 +133,11 @@
             // }
 
             //if (this.investingData.data) {
-            this.investingChart = new Chart(document.getElementById('statistics-chart-5').getContext("2d"), {
+            this.investingChart = new Chart(document.getElementById('investmentsChart').getContext("2d"), {
                 type: 'line',
                 data: {
                     datasets: [{
-                        data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-                            15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15
-                        ],
+                        data: this.investingData.data,
                         borderWidth: 1,
                         backgroundColor: 'rgba(136, 151, 170, .2)',
                         borderColor: 'rgba(136, 151, 170, 1)',
@@ -147,7 +145,7 @@
                         pointRadius: 1,
                         lineTension: 0
                     }],
-                    labels: ['12', '465', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                    labels: this.investingData.labels
                 },
 
                 options: {

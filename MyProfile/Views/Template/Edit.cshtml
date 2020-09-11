@@ -444,7 +444,7 @@
         </div>
 
         <!-- templateBudgetSection modal -->
-        <div class="modal modal-slide fade" id="modals-slide">
+        <div class="modal modal-slide fade" id="section-modal">
             <div class="modal-dialog modal-xl">
                 <form class="modal-content">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
@@ -454,7 +454,8 @@
                                                data-search-id="searchSection"
                                                data-class="cards-big"
                                                v-bind:is-show-filter="true"
-                                               v-on:onchoose="addColumnOption_step2"></vue-section-component>
+                                               v-on:onchoose="addColumnOption_step2"
+                                               v-bind:data-selected-items="selectedSelections"></vue-section-component>
 
                     </div>
                 </form>

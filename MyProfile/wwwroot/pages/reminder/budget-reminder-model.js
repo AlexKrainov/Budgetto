@@ -58,12 +58,13 @@
             });
         },
         chooseReminderIcon: function (cssIcon) {
+            $(".reminder-icons i").removeClass("active");
+
             if (!cssIcon) {
                 return true;
             }
 
             let newCssIcon = cssIcon.replace(" ", ".");
-            $(".reminder-icons i").removeClass("active");
             $(".reminder-icons i." + newCssIcon).addClass("active");
             this.reminder.cssIcon = cssIcon;
         },
@@ -103,6 +104,7 @@
         close: function () {
             this.isShowModal = false;
             this.reminder = { isRepeat: false };
+            this.chooseReminderIcon();
         },
 
         save: function () {

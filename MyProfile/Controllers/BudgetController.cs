@@ -105,7 +105,7 @@ namespace MyProfile.Controllers
         {
             if (templateID > 0)
             {
-                DateTime start = new DateTime(month.Year, month.Month, 01, 00, 00, 01);
+                DateTime start = new DateTime(month.Year, month.Month, 01, 00, 00, 00);
                 DateTime finish = new DateTime(month.Year, month.Month, DateTime.DaysInMonth(month.Year, month.Month), 23, 59, 59);
 
                 var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.Current.ID);

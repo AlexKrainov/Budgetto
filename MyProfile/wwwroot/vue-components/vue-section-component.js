@@ -14,6 +14,7 @@
              v-bind:title="section.description"
              v-show="section.isShow"
              v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground">
+            <span class="selected-section-count">{{ checkSelected(section) }}</span>
             <div class="cards-container card-body d-flex align-items-center ">
                 <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
                 <div class="card-section-text ml-2">
@@ -47,6 +48,7 @@
             type: String,
             default: "cards-small" //   cards-small/cards-medium/cards-big
         },
+        dataSelectedItems: Array,//[{ id:9, count:1 }]
     },
     //computed: {
     //},
@@ -59,7 +61,6 @@
     },
     watch: {
         dataItems: function (newValue) {
-            console.log("watch");
             this.updateSections();
         }
     },
@@ -105,7 +106,17 @@
             } else {
                 this.sections = this.dataItems;
             }
+
             this.$forceUpdate();
+        },
+        checkSelected: function (section) {
+            if (this.dataSelectedItems && this.dataSelectedItems.length > 0) {
+                let p = this.dataSelectedItems.filter(x => x.id == section.id);
+                if (p && p.length > 0) {
+                    return p[0].count;
+                }
+            }
+            return "";
         }
     }
 });

@@ -1,6 +1,7 @@
 ﻿:root {
     --danger-color: #d9534f;
     --primary-color: #d9534f;
+    --gray-color: #8897AA;
 }
 
 
@@ -506,6 +507,10 @@ a.folder-text:hover .folder-edit-button {
     border-bottom: 3px solid var(--danger-color) !important;
     border-radius: 5px !important;
 }
+.gray-bottom-line {
+    border-bottom: 3px solid var(--gray-color) !important;
+    border-radius: 5px !important;
+}
 
 
 
@@ -550,6 +555,12 @@ a.folder-text:hover .folder-edit-button {
 }
 
 .card-section-text {
+}
+
+.selected-section-count {
+    position: absolute;
+    right: 1px;
+    top: -1px;
 }
 
 .cards-container {

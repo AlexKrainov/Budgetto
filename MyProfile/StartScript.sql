@@ -49,5 +49,6 @@ SET IDENTITY_INSERT [dbo].[SectionTypes] ON
 
 INSERT [dbo].[SectionTypes] ([ID], [Name], [CodeName]) VALUES (1, N'Доходы', N'Earnings')
 INSERT [dbo].[SectionTypes] ([ID], [Name], [CodeName]) VALUES (2, N'Расходы', N'Spendings')
+INSERT [dbo].[SectionTypes] ([ID], [Name], [CodeName]) VALUES (3, N'Инвестиции', N'Investments') 
 SET IDENTITY_INSERT [dbo].[SectionTypes] OFF
 GO

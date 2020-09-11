@@ -109,7 +109,7 @@ namespace MyProfile.Controllers
 
         #region Delete
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> RemoveArea(int id)
         {
             var tuple = await sectionService.DeleteArea(id);
@@ -117,7 +117,7 @@ namespace MyProfile.Controllers
             return Json(new { isOk = tuple.Item1, id, wasDeleted = tuple.Item2, text = tuple.Item3 });
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> RemoveSection(int id)
         {
             var tuple = await sectionService.DeleteSection(id);

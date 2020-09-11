@@ -262,7 +262,21 @@
     "name": "",
     "isShow": true
   },
-
+  {
+    "nameClass": "fas fa-water",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-hand-holding-water",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-tint",
+    "name": "",
+    "isShow": true
+  },
   {
     "nameClass": "fas fa-clinic-medical",
     "name": "",
@@ -295,7 +309,11 @@
     "name": "",
     "isShow": true
   },
-
+  {
+    "nameClass": "fas fa-file-invoice-dollar",
+    "name": "",
+    "isShow": true
+  },
   {
     "nameClass": "fas fa-piggy-bank",
     "name": "",
@@ -328,6 +346,11 @@
   },
   {
     "nameClass": "fas fa-baby",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-baby-carriage",
     "name": "",
     "isShow": true
   },
@@ -393,6 +416,11 @@
   },
   {
     "nameClass": "fas fa-ruble-sign",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-percentage",
     "name": "",
     "isShow": true
   }

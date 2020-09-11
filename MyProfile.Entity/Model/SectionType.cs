@@ -8,7 +8,8 @@ namespace MyProfile.Entity.Model
 	public enum SectionTypeEnum
 	{
 		Earnings = 1,
-		Spendings = 2
+		Spendings = 2,
+		Investments = 3
 	}
 	public class SectionType
 	{

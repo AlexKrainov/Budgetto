@@ -3,6 +3,7 @@
     data: {
         template: [],
         sections: [],
+        selectedSelections: [],
 
         counterNewColumn: -100,
         counterTemplateBudgetSections: -100,
@@ -14,11 +15,33 @@
         errorMessage: null,
         startColumnsName: "Новая колонка",
 
-        footerActions: []
+        footerActions: [],
     },
     watch: {
         "template.name": function (newValue, oldValue) {
 
+        },
+        "template.columns": function () {
+            this.selectedSelections = [];
+            let selections = [];
+
+            for (var columnsIndex = 0; columnsIndex < this.template.columns.length; columnsIndex++) {
+                for (var sectionIndex = 0; sectionIndex < this.template.columns[columnsIndex].templateBudgetSections.length; sectionIndex++) {
+                    selections.push(this.template.columns[columnsIndex].templateBudgetSections[sectionIndex].sectionID);
+                }
+            }
+
+            for (var i = 0; i < selections.length; i++) {
+                let filtered = this.selectedSelections.filter(x => x.id == selections[i]);
+                if (filtered.length == 0) {
+                    this.selectedSelections.push({ id: selections[i], count: selections.filter(x => x == selections[i]).length});
+                }
+            }
+        }
+    },
+    computed: {
+        sectionComponent: function () {
+            return this.$children[0];
         },
     },
     mounted: function () {
@@ -42,6 +65,7 @@
                 .then(function (result) {
                     if (result.isOk == true) {
                         TemplateVue.template = result.template;
+
                         $("#templateName").val(result.template.name);
                         TemplateVue.refreshDragNDrop();
                     }
@@ -114,7 +138,7 @@
         addColumnOption_step1: function (column) {
             this.column = column;
             $('.selectpicker').selectpicker("destroy").selectpicker('refresh');
-            $("#modals-slide").modal("show");
+            $("#section-modal").modal("show");
         },
         addColumnOption_step2: function (section) {
 
@@ -135,7 +159,16 @@
                 sectionID: section.id,
                 sectionName: section.name,
             });
-            $("#modals-slide").modal("hide");
+
+            //work with vue-section-component
+            let selectedSelectionsIndex = this.selectedSelections.findIndex(x => x.id == section.id);
+            if (selectedSelectionsIndex != -1) {
+                this.selectedSelections[selectedSelectionsIndex].count = this.selectedSelections[selectedSelectionsIndex].count + 1;
+            } else {
+                this.selectedSelections.push({ id: section.id, count: 1 });
+            }
+
+            $("#section-modal").modal("hide");
         },
         saveTemplate: function (saveAs) {
             let method = 'Save';
@@ -205,7 +238,17 @@
         removeSectionInColumn: function (templateBudgetSection, indexSection, indexColumn) {
 
             let column = this.template.columns[indexColumn];
-            //let section = column.templateBudgetSections[indexSection];
+
+            //work with vue-section-component
+            let section = column.templateBudgetSections[indexSection];
+            let selectedSelectionsIndex = this.selectedSelections.findIndex(x => x.id == section.sectionID);
+            if (selectedSelectionsIndex != -1) {
+                if (this.selectedSelections[selectedSelectionsIndex].count == 1) {
+                    this.selectedSelections.slice(selectedSelectionsIndex, 1);
+                } else {
+                    this.selectedSelections[selectedSelectionsIndex].count = this.selectedSelections[selectedSelectionsIndex].count - 1;
+                }
+            }
 
             column.templateBudgetSections.splice(indexSection, 1);
             column.formula = [];
@@ -219,6 +262,8 @@
                     column.formula.push({ id: section.sectionID, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
                 }
             }
+
+
             //let foundIndex = true;
             //while (foundIndex) {
 

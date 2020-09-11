@@ -95,7 +95,14 @@ namespace MyProfile.Budget.Service
 
             if (currentUser.UserSettings.Month_InvestingWidget)
             {
+                var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Investments);
+
+                investinData.data = tuple.Item1.ToArray();
+                investinData.labels = tuple.Item2.ToArray();
                 investinData.Name = "Инвестиции";
+                investinData.SectionTypeEnum = SectionTypeEnum.Investments;
+                investinData.Total = (tuple.Item1.Sum()).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+
             }
 
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investinData);
@@ -109,7 +116,7 @@ namespace MyProfile.Budget.Service
 
             TotalModelView spendingData = new TotalModelView { IsShow = currentUser.UserSettings.Month_SpendingWidget };
             TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.Month_EarningWidget };
-            TotalModelView investinData = new TotalModelView { IsShow = currentUser.UserSettings.Month_InvestingWidget };
+            TotalModelView investingData = new TotalModelView { IsShow = currentUser.UserSettings.Month_InvestingWidget };
 
             if (currentUser.UserSettings.Month_SpendingWidget)
             {
@@ -170,10 +177,34 @@ namespace MyProfile.Budget.Service
 
             if (currentUser.UserSettings.Month_InvestingWidget)
             {
-                investinData.Name = "Инвестиции";
+                var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Investments);
+
+                investingData.data = tuple.Item1.ToArray();
+                investingData.labels = tuple.Item2.ToArray();
+                investingData.Name = "Инвестиции";
+                investingData.SectionTypeEnum = SectionTypeEnum.Investments;
+                investingData.Total = (tuple.Item1[tuple.Item1.Count - 1]).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+
+                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                {
+                    if (investingData.data[10] == decimal.Zero)
+                    {
+                        investingData.Percent = 100;
+                    }
+                    else
+                    {
+                        investingData.Percent = Math.Round(((investingData.data[11] - investingData.data[10]) / investingData.data[10] * 100), 1);
+                    }
+                    investingData.IsGood = earningData.Percent > 0;
+
+                    if (investingData.Percent < 0)
+                    {
+                        investingData.Percent *= -1;
+                    }
+                }
             }
 
-            return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investinData);
+            return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investingData);
         }
 
         public Tuple<List<decimal>, List<string>> GetChartTotalByMonth(DateTime from, DateTime to, SectionTypeEnum sectionTypeEnum)

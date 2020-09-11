@@ -109,7 +109,7 @@
         },
         remove: function (area) {
             if (!area.isGlobal) {
-                sendAjax("/Section/RemoveArea?id=" + area.id, null, "DELETE")
+                sendAjax("/Section/RemoveArea?id=" + area.id, null, "POST")
                     .then(function (result) {
                         if (result.isOk && result.wasDeleted) {
                             toastr.success(result.text);
@@ -406,7 +406,7 @@ var SectionVue = new Vue({
         },
 
         remove: function (section) {
-            sendAjax("/Section/RemoveSection?id=" + section.id, null, "DELETE")
+            sendAjax("/Section/RemoveSection?id=" + section.id, null, "POST")
                 .then(function (result) {
                     if (result.isOk && result.wasDeleted) {
                         toastr.success(result.text);
@@ -462,7 +462,7 @@ var SectionVue = new Vue({
 
                             }
                         }
-                        AreaVue.$forceUpdate();//bug areaVuew doesn't update section in a view
+                        //AreaVue.$forceUpdate();//bug areaVuew doesn't update section in a view
                         $("#modal-section").modal("hide");
                         AreaVue.updateSectionComponent();
                     }

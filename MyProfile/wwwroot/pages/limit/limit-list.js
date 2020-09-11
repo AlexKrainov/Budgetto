@@ -88,7 +88,7 @@ var LimitListVue = new Vue({
             } else {
                 this.limit = { periodName: '', periodTypeID: -1, isShowOnDashboard: true };
 
-                //$("#limitSections").val(null).select2();
+                $("#limitSections").val(null).select2();
 
                 this.limit.periodTypeID = this.periodTypes[0].id;
                 this.limit.periodName = this.periodTypes[0].name;
