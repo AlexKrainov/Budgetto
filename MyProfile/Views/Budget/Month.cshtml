@@ -6,6 +6,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
     <link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" />
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
 }
 
 @section Scripts {
@@ -13,6 +14,7 @@
     <script src="~/vendor/libs/chartjs/chartjs.js"></script>
     <script src="~/vendor/libs/datatables/datatables.js"></script>
     <script src="~/vendor/libs/flatpickr/plugins/monthSelect.js"></script>
+    <script src="~/vendor/libs/select2/select2.js"></script>
 
     <script src="~/pages/budget/_budget-month.js"></script>
     <script src="~/pages/budget/budget.js"></script>
@@ -100,6 +102,12 @@
             </div>
             <div class="collapse table-responsive bg-light " id="collapseFilter">
                 <div class="float-right">
+                    <button type="button" class="btn icon-btn borderless my-2 btn-outline-primary mr-4"
+                            v-on:click="toExcel"
+                            v-bind:disabled="isGenerateExcel">
+                        <i class="far fa-file-excel" title="Экспартировать в Excel"></i>
+                    </button>
+
                     <button type="button" class="btn icon-btn borderless my-2"
                             v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-default': 'btn-outline-primary'"
                             v-on:click="pageViewSettings.isTableViewCompact = false; savePageSettings();">

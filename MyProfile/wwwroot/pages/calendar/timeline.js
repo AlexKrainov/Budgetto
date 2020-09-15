@@ -162,18 +162,11 @@ var filter = {
     },
     selectOnlyType: function (sectionTypeID) {
         $("#Sections").val(null);
-
-        let selecteSections = [];
-
-        for (var i = 0; i < vueTimeline.sections.length; i++) {
-            let section = vueTimeline.sections[i];
-
-            if (section.SectionTypeID == sectionTypeID) {
-                selecteSections.push(section.ID);
-            }
-        }
-
-        $("#Sections").val(selecteSections).trigger("change");
+        $("#Sections").val(
+            vueTimeline.sections
+                .filter(x => x.SectionTypeID == sectionTypeID)
+                .map(x => x.ID))
+            .trigger("change");
     },
 }
 

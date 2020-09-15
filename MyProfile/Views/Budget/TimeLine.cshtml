@@ -8,9 +8,6 @@
 @section Styles {
     <link href="~/vendor/libs/d3js/cal-heatmap/css/cal-heatmap.css" rel="stylesheet" />
     <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
-
-    <style>
-    </style>
 }
 
 @section Scripts {
@@ -132,9 +129,9 @@
     </div>
 </div>
 
-<div class="card mb-4 col-7 pl-0" id="timeline_records" v-cloak>
+<div class="card mb-4 col-md-7 pl-0" id="timeline_records" v-cloak>
     <ul class="list-group list-group-flush records-timeline" style=" margin-left: -5px;">
-        @Html.Partial("_Records")
+        @await Html.PartialAsync("_Records")
     </ul>
 </div>
 

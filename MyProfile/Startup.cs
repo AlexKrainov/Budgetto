@@ -71,7 +71,7 @@ namespace MyProfile
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 #if true
-            string connection = Configuration.GetConnectionString("TestConnection");//TestConnection/TestRegRuConnection
+            string connection = Configuration.GetConnectionString("TestRegRuConnection");//TestConnection/TestRegRuConnection
 #else
             string connection = Configuration.GetConnectionString("PublishConnection");
 

@@ -239,12 +239,13 @@ namespace MyProfile.Budget.Service
             return await repository.SaveAsync();
         }
 
-        public async Task<List<int>> GetCollectionSectionBySectionID(List<int> sectionIDs)
+        public async Task<List<int>> GetCollectionSectionIDsBySectionID(List<int> sectionIDs)
         {
             return await repository.GetAll<CollectiveSection>(x => sectionIDs.Contains(x.SectionID ?? 0))
              .Select(x => x.ChildSectionID ?? 0)
              .ToListAsync();
         }
+
 
         #region Deletes
         public async Task<Tuple<bool, bool, string>> DeleteArea(int areaID)

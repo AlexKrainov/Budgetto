@@ -349,7 +349,7 @@ td.show-actions span.cell-actions {
 
 @media screen and (min-width: 600px) {
     .modal-record-date-button {
-        width: 100px;
+        width: 80px;
     }
 }
 

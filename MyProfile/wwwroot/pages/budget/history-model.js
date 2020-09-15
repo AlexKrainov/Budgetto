@@ -3,8 +3,13 @@
     data: {
         records: [],
         dateTime: null,
+        dateStart: null,
+        dateEnd: null,
 
         searchText: null,
+        sections: [],
+        flatpickrStart: null,
+        flatpickrEnd: null,
     },
     watch: {
         searchText: function (newValue, oldValue) {
@@ -25,14 +30,41 @@
         }
     },
     mounted: function () {
+        $("#history-sections").select2();
+
+        //$("#historyCollapse").change(function () {
+
+        //});
     },
     methods: {
         showHistory: function (filter, dateTime) {
-            this.dateTime = dateTime;
+            this.dateTime = dateTime;//?
+            this.unselectAll();
 
             return this.loadTimeLine(filter);
         },
+        search: function () {
+            let filter = {
+                sections: $("#history-sections").val(),
+                startDate: moment(this.flatpickrStart.latestSelectedDateObj).format(),
+                endDate: moment(this.flatpickrEnd.latestSelectedDateObj).format(),
+            };
+            return this.loadTimeLine(filter);
+        },
         loadTimeLine: function (filter) {
+
+            this.dateStart = filter.startDate;
+            this.dateEnd = filter.endDate;
+
+            let dateConfig = GetFlatpickrRuConfig(moment(this.dateStart, "YYYY/MM/DD").toDate());
+            //dateConfig.minDate = this.dateEnd;
+            this.flatpickrStart = flatpickr('#dateHistoryStart', dateConfig);
+            var dateConfig2 = GetFlatpickrRuConfig(moment(this.dateEnd, "YYYY/MM/DD").toDate());
+            //dateConfig2.maxDate = this.dateStart;
+            this.flatpickrEnd = flatpickr('#dateHistoryEnd', dateConfig2);
+
+            ShowLoading('.records-timeline');
+
             return $.ajax({
                 type: "POST",
                 url: "/Budget/LoadingRecordsForTableView",
@@ -42,9 +74,24 @@
                 context: this,
                 success: function (response) {
                     this.records = response.data;
+                    this.sections = response.sections;
+                    $("#history-sections").val(this.sections
+                        .filter(x => x.selected)
+                        .map(x => x.id))
+                        .trigger("change");
+
+                    HideLoading('.records-timeline');
                     $("#modalTimeLine").modal("show");
                 }
             });
+        },
+        selectAll: function () {
+            $("#history-sections").val(this.sections
+                .map(x => x.id))
+                .trigger("change");
+        },
+        unselectAll: function () {
+            $("#history-sections").val(null).trigger("change");
         },
         closeTimeline() {
             this.clearAllStyle();

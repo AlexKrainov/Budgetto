@@ -22,6 +22,7 @@
             version: 1.0,
             isTableViewCompact: false
         },
+        isGenerateExcel: false,
 
         //total charts
         earningData: {},
@@ -501,12 +502,21 @@
             }
         },
         initTable: function () {
-            this.dataTable = $("#table").DataTable({
-                dom: 'Bfrtip',
-                buttons: ['excel']
-            });
+            this.dataTable = $("#table").DataTable();
         },
+        toExcel: function () {
+            this.isGenerateExcel = true;
+            $("#excel-table").DataTable({
+                dom: 'Bfrtip',
+                buttons: ['excelHtml5']
+            });
 
+            setTimeout(function () {
+                $(".buttons-excel").click();
+
+                BudgetVue.isGenerateExcel = false;
+            }, 100);
+        },
         //View cell
         getCellContent: function (cell, cellIndex, rowIndex) {
             if (this.periodType == PeriodTypeEnum.Month) {
@@ -603,13 +613,16 @@
             let templateColumnTypes = [2, 3, 4, 7]; // DaysForMonth = 2,MonthsForYear = 3,YearsFor10Year = 4,WeeksForMonth = 7
 
             let sections = [];
+            //let fullSections = [];
 
             if (this.template.columns[cellIndex].templateColumnType == 1) {//BudgetSection/Money
                 sections = this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID);
                 this.stylingClickedCells(event, "td");
+                //fullSections = this.template.columns[cellIndex].templateBudgetSections;
             } else if (templateColumnTypes.indexOf(this.template.columns[cellIndex].templateColumnType) >= 0) {
                 for (var i = 0; i < this.template.columns.length; i++) {
                     sections = sections.concat(this.template.columns[i].templateBudgetSections.map(x => x.sectionID));
+                    //fullSections = fullSections.concat(this.template.columns[i].templateBudgetSections);
                 }
                 this.stylingClickedCells(event, "tr");
             } else {

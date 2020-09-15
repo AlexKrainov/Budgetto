@@ -50,30 +50,43 @@ namespace MyProfile.Budget.Service
             var currentUser = UserInfo.Current;
             bool isEdit = false;
             bool isCreate = false;
+            var now = DateTime.Now.ToUniversalTime();
             budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
 
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
                 if (record.ID <= 0)// create
                 {
-                    record.IsSaved = await Create(new BudgetRecordModelView
+                    try
                     {
-                        SectionID = record.SectionID,
-                        Money = record.Money,
-                        RawData = record.Tag,
-                        DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
-                        Description = record.Description,
-                        CurrencyID = record.CurrencyID,
-                        CurrencyNominal = record.CurrencyNominal,
-                        CurrencyRate = record.CurrencyRate,
-                        IsShowForCollection = budgetRecord.IsShowInCollection
-                    });
+                        repository.Create(new BudgetRecord
+                        {
+                            BudgetSectionID = record.SectionID,
+                            DateTimeCreate = now,
+                            DateTimeEdit = now,
+                            DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
+                            Description = record.Description,
+                            IsHide = false,
+                            UserID = currentUser.ID,
+                            Total = record.Money,
+                            RawData = record.Tag,
+                            CurrencyID = record.CurrencyID,
+                            CurrencyRate = record.CurrencyRate,
+                            CurrencyNominal = record.CurrencyNominal ?? 1,
+                            IsShowForCollection = budgetRecord.IsShowInCollection,
+                        }, true);
+
+                        record.IsSaved = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        record.IsSaved = false;
+                    }
+
                     isCreate = true;
                 }
                 else
                 {//edit
-                    var now = DateTime.Now.ToUniversalTime();
-
                     var dbRecord = repository.GetByID<BudgetRecord>(record.ID);
 
                     dbRecord.BudgetSectionID = record.SectionID;
@@ -87,47 +100,17 @@ namespace MyProfile.Budget.Service
                     dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
                     dbRecord.DateTimeEdit = now;
 
-                    await repository.UpdateAsync(dbRecord, true);
+                    repository.Update(dbRecord, true);
                     isEdit = true;
                 }
             }
             if (isEdit)
             {
                 await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Edit);
-            }                                      
-            if (isCreate)                          
-            {                                      
+            }
+            if (isCreate)
+            {
                 await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Create);
-            }
-
-            return true;
-        }
-
-        public async Task<bool> Create(BudgetRecordModelView budgetRecord)
-        {
-            try
-            {
-                var now = DateTime.Now.ToUniversalTime();
-                await repository.CreateAsync(new BudgetRecord
-                {
-                    BudgetSectionID = budgetRecord.SectionID,
-                    DateTimeCreate = now,
-                    DateTimeEdit = now,
-                    DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
-                    Description = budgetRecord.Description,
-                    IsHide = budgetRecord.IsConsider,
-                    UserID = UserInfo.Current.ID,
-                    Total = budgetRecord.Money,
-                    RawData = budgetRecord.RawData,
-                    CurrencyID = budgetRecord.CurrencyID,
-                    CurrencyRate = budgetRecord.CurrencyRate,
-                    CurrencyNominal = budgetRecord.CurrencyNominal ?? 1,
-                    IsShowForCollection = budgetRecord.IsShowForCollection,
-                }, true);
-            }
-            catch (Exception ex)
-            {
-                return false;
             }
 
             return true;

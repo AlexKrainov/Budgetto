@@ -231,6 +231,10 @@
         });
         $('#modal-record').on('hide.bs.modal', function () {
             RecordVue.recordComponent.isShowHistory = false;
+            if (RecordVue.recordComponent.isEditMode) {
+                RecordVue.recordComponent.isEditMode = false;
+                RecordVue.recordComponent.tagify.removeTags();
+            }
         });
     },
     methods: {

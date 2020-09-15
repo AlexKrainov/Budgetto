@@ -188,6 +188,7 @@ function GetFlatpickrRuConfig_Month(date, minDate, maxDate) {
         defaultDate: date,
         minDate: minDate,
         maxDate: maxDate,
+        disableMobile: "true",
         plugins: [
             new monthSelectPlugin({
                 shorthand: true, //defaults to false

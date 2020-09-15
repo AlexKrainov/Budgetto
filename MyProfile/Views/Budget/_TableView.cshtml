@@ -23,8 +23,7 @@
                 v-on:mouseenter="mouseenterCell($event)"
                 v-on:mouseleave="mouseleaveCell($event)"
                 class="cell-hover pb-0"
-                v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]"
-                >
+                v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]">
             </td>
         </tr>
     </tbody>
@@ -40,3 +39,29 @@
         </tr>
     </tfoot>
 </table>
+
+<div id="excel-table-container" style="display: none;">
+    <table id="excel-table">
+        <thead>
+            <tr class="text-center">
+                <th v-for="column in template.columns">
+                    {{ column.name }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="row in rows">
+                <td v-for="cell in row">
+                    {{ cell.value }}
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td v-for="cell in footerRow">
+                    {{ cell.value }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

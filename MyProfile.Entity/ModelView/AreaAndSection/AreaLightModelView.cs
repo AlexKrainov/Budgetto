@@ -19,5 +19,6 @@ namespace MyProfile.Entity.ModelView.AreaAndSection
         public string BudgetAreaname { get; set; }
         public string CssBackground { get; set; }
         public int? SectionTypeID { get; set; }
+        public bool Selected { get; set; }
     }
 }

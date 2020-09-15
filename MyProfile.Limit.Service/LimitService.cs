@@ -210,7 +210,7 @@ namespace MyProfile.Limit.Service
 
                 if (filter.IsConsiderCollection)
                 {
-                    filter.Sections.AddRange(await sectionService.GetCollectionSectionBySectionID(filter.Sections));
+                    filter.Sections.AddRange(await sectionService.GetCollectionSectionIDsBySectionID(filter.Sections));
                 }
 
                 var totalSpended = await budgetRecordService.GetTotalSpendsForLimitByFilter(filter);
