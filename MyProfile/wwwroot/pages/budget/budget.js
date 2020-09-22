@@ -532,7 +532,7 @@
         },
 
         getCellFooterContent: function (cell, cellIndex) {
-            return this.getCellFooterActions(cellIndex) + this.getCellValue(cell);
+            return this.getCellFooterActions(cellIndex) + this.getCellValue(cell, cellIndex);
         },
         getCellActions: function (cell, cellIndex, rowIndex) {
             if (this.periodType == PeriodTypeEnum.Month) {
@@ -567,13 +567,24 @@
                 let values = cell.value.split(",");
                 let generalValue = ` data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'`;
 
-                if (values.length == 2) {
-                    return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> 
+                if (rowIndex) {
+                    if (values.length == 2) {
+                        return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> 
                                 ${values[0]}
                                 <span class="money-muted">,${values[1]}</span>
                             </span> `;
-                } else {
-                    return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
+                    } else {
+                        return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
+                    }
+                } else {//footer
+                    if (values.length == 2) {
+                        return `<span ${generalValue} onclick="BudgetVue.clickFooterCell(${cellIndex})"> 
+                                ${values[0]}
+                                <span class="money-muted">,${values[1]}</span>
+                            </span> `;
+                    } else {
+                        return `<span ${generalValue} onclick="BudgetVue.clickFooterCell(${cellIndex})"> ${cell.value}</span>`;
+                    }
                 }
             } else {
                 return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
@@ -613,16 +624,13 @@
             let templateColumnTypes = [2, 3, 4, 7]; // DaysForMonth = 2,MonthsForYear = 3,YearsFor10Year = 4,WeeksForMonth = 7
 
             let sections = [];
-            //let fullSections = [];
 
             if (this.template.columns[cellIndex].templateColumnType == 1) {//BudgetSection/Money
                 sections = this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID);
                 this.stylingClickedCells(event, "td");
-                //fullSections = this.template.columns[cellIndex].templateBudgetSections;
             } else if (templateColumnTypes.indexOf(this.template.columns[cellIndex].templateColumnType) >= 0) {
                 for (var i = 0; i < this.template.columns.length; i++) {
                     sections = sections.concat(this.template.columns[i].templateBudgetSections.map(x => x.sectionID));
-                    //fullSections = fullSections.concat(this.template.columns[i].templateBudgetSections);
                 }
                 this.stylingClickedCells(event, "tr");
             } else {
@@ -653,8 +661,8 @@
 
             } else if (this.periodType == PeriodTypeEnum.Year) {
 
-                filter.startDate = `${this.budgetYear} -01 - 01T00: 00: 01 + 00: 00`;
-                filter.endDate = `${this.budgetYear} -12 - 31T23: 59: 59 + 00: 00"`;
+                filter.startDate = `${this.budgetYear}-01-01T00:00:01+00:00`;
+                filter.endDate = `${this.budgetYear}-12-31T23:59:59+00:00"`;
             }
 
             this.stylingClickedCells(event, "td_s", cellIndex);

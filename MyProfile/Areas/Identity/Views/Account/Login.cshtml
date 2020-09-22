@@ -17,21 +17,10 @@
     <script src="~/vendor/libs/vue/dist/vue.js"></script>
     <script src="~/pages/_areas/login/login.js"></script>
 }
-
-<!--
-=================================================================
-**************************** CONTENT ****************************
--->
-
 <div class="authentication-wrapper authentication-3" id="login-vue">
     <div class="authentication-inner">
-
-        <!-- Side container -->
-        <!-- Do not display the container on extra small, small and medium screens -->
         <div class="d-none d-lg-flex col-lg-8 align-items-center ui-bg-cover ui-bg-overlay-container p-5" style="background-image: url('/img/bg/21.jpg');">
             <div class="ui-bg-overlay bg-dark opacity-50"></div>
-
-            <!-- Text -->
             <div class="w-100 text-white px-5">
                 <h1 class="display-2 font-weight-bolder mb-4">JOIN OUR<br>COMMUNITY</h1>
                 <div class="text-large font-weight-light">
@@ -42,8 +31,6 @@
         <div class="d-flex col-lg-4 align-items-center bg-white p-5">
             <div class="d-flex col-sm-7 col-md-5 col-lg-12 px-0 px-xl-4 mx-auto">
                 <div class="w-100">
-
-                    <!-- Logo -->
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="ui-w-60">
                             <div class="w-100 position-relative" style="padding-bottom: 54%">
@@ -51,14 +38,11 @@
                             </div>
                         </div>
                     </div>
-                    <!-- / Logo -->
-
                     <h4 class="text-center text-lighter font-weight-normal mt-4 mb-0" v-show="login.isShow">Авторизация</h4>
                     <h4 class="text-center text-lighter font-weight-normal mt-4 mb-0" v-show="registration.isShow">Создание аккаунта</h4>
                     <h4 class="text-center text-lighter font-weight-normal mt-4 mb-0" v-show="recoveryPassword.isShow || recoveryPassword2.isShow">Восстановление пароля</h4>
                     <h4 class="text-center text-lighter font-weight-normal mt-4 mb-0" v-show="enterCode.isShow">Ввод кода</h4>
 
-                    <!-- login -->
                     <form class="my-5 login" v-show="login.isShow">
                         <div class="form-group">
                             <label class="form-label">Почта</label>
@@ -73,7 +57,8 @@
                             </label>
                             <div class="input-group">
                                 <input type="password" class="form-control" v-model="password" tabindex="2" name="password"
-                                       v-bind:class="isValidPassword ? '' : 'is-invalid'">
+                                       v-bind:class="isValidPassword ? '' : 'is-invalid'"
+                                       v-on:keypress="kaypress">
                                 <span class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" title="Показать пароль" style="border-radius: 0px 4px 4px 0px;"
                                             v-on:click="isHiddenPassword = !isHiddenPassword">
@@ -89,7 +74,7 @@
                                 <input type="checkbox" class="custom-control-input">
                                 <span class="custom-control-label">Запомнить меня</span>
                             </label>
-                            <button class="btn btn-primary" type="button" tabindex="3"
+                            <button class="btn btn-primary" type="button" tabindex="3" id="login-btn"
                                     v-bind:disabled="isSaving"
                                     v-on:click="loginSave">
                                 <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
@@ -116,6 +101,7 @@
                             </label>
                             <div class="input-group">
                                 <input type="password" class="form-control" v-model="password" tabindex="2" name="password"
+                                       v-on:keypress="kaypress"
                                        v-bind:class="isValidPassword ? '' : 'is-invalid'">
                                 <span class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" title="Показать пароль" style="border-radius: 0px 4px 4px 0px;"
@@ -130,7 +116,7 @@
                             </small>
                             <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
                         </div>
-                        <button type="button" class="btn btn-primary btn-block mt-4"
+                        <button type="button" class="btn btn-primary btn-block mt-4" id="registraion-btn"
                                 v-bind:disabled="isSaving"
                                 v-on:click="onRegistration">
                             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
@@ -148,10 +134,11 @@
                         </p>
                         <div class="form-group">
                             <input type="text" class="form-control" v-model="email" tabindex="1"
+                                   v-on:keypress="kaypress"
                                    v-bind:class="isValidEmail ? '' : 'is-invalid'">
                             <small class="invalid-feedback">Пожалуйста, введите корректный адрес электронной почты.</small>
                         </div>
-                        <button type="button" class="btn btn-primary btn-block mt-4"
+                        <button type="button" class="btn btn-primary btn-block mt-4" id="recovery-btn"
                                 v-bind:disabled="isSaving"
                                 v-on:click="onRecoveryPassword">
                             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
@@ -172,6 +159,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <input type="password" class="form-control" v-model="password" tabindex="2" name="password"
+                                       v-on:keypress="kaypress"
                                        v-bind:class="isValidPassword ? '' : 'is-invalid'">
                                 <span class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" title="Показать пароль" style="border-radius: 0px 4px 4px 0px;"
@@ -186,7 +174,7 @@
                                 <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary btn-block mt-4"
+                        <button type="button" class="btn btn-primary btn-block mt-4" id="recovery2-btn"
                                 v-bind:disabled="isSaving"
                                 v-on:click="onSetNewPassword">
                             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
@@ -207,6 +195,7 @@
                             <div class="input-group">
                                 <input type="number" class="form-control" min="" max="9999" maxlength="4"
                                        v-model="enterCode.code"
+                                       v-on:keypress="kaypress"
                                        v-bind:class="isValidCode ? '' : 'is-invalid'">
                                 <span class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" title="Отправить повторно" style="border-radius: 0px 4px 4px 0px;"
@@ -221,15 +210,15 @@
                                 {{ enterCode.canResend ? '' : 'Отправить код повторно через : '+ enterCode.seconds}}
                             </small>
                         </div>
-                        <button class="btn btn-primary btn-block" type="button" tabindex="3"
+                        <button class="btn btn-primary btn-block" type="button" tabindex="3" id="checkCode-btn"
                                 v-bind:disabled="isSaving"
                                 v-on:click="checkCode">
                             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                             Проверить
                         </button>
                         <div class="text-center text-muted mt-4">
-                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(login.id)">Авторизоваться</a>
-                            или если нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(registration.id)">Зарегистрироваться</a>
+                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(enterCode.id, login.id)">Авторизоваться</a>
+                            или если нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(enterCode.id, registration.id)">Зарегистрироваться</a>
                         </div>
                     </form>
                     <!-- / enterCode -->

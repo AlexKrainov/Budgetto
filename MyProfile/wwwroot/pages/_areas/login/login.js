@@ -368,6 +368,28 @@
                     console.log(error);
                 }
             });
+        },
+        kaypress: function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+
+                if (this.login.isShow) {
+                    //this.loginSave();
+                    $("#login-btn").click();
+                } else if (this.registration.isShow) {
+                    $("#registraion-btn").click();
+                    //this.onRegistration();
+                } else if (this.recoveryPassword.isShow) {
+                    this.onRecoveryPassword();
+                    //$("#recovery-btn").click();
+                } else if (this.recoveryPassword2.isShow) {
+                    //this.onSetNewPassword();
+                    $("#recovery2-btn").click();
+                } else if (this.enterCode.isShow) {
+                    //this.checkCode();
+                    $("#checkCode-btn").click();
+                }
+            }
         }
     }
 });
