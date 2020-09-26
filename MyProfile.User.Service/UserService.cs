@@ -3,6 +3,7 @@ using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
 using MyProfile.File.Service;
 using MyProfile.Identity;
@@ -35,11 +36,11 @@ namespace MyProfile.User.Service
             this.passwordService = passwordService;
         }
 
-        public UserInfoModel GetUserSettings()
+        public UserInfoClientSide GetUserSettings()
         {
             var currentUser = UserInfo.Current;
 
-            return new UserInfoModel
+            return new UserInfoClientSide
             {
                 CollectiveBudgetID = currentUser.CollectiveBudgetID,
                 DateCreate = currentUser.DateCreate,
@@ -49,15 +50,24 @@ namespace MyProfile.User.Service
                 LastName = currentUser.LastName,
                 Name = currentUser.Name,
                 IsConfirmEmail = currentUser.IsConfirmEmail,
-                UserSettings = new UserSettings
+                UserSettings = new UserSettingsClientSide
                 {
-                    WebSiteTheme_CodeName = currentUser.UserSettings.WebSiteTheme_CodeName
+                    WebSiteTheme = currentUser.UserSettings.WebSiteTheme_CodeName
                 },
+                IsAvailable = currentUser.IsAvailable,
+                Payment = new PaymentClientSide
+                {
+                    DateFrom = currentUser.Payment.DateFrom,
+                    DateTo = currentUser.Payment.DateTo,
+                    Tariff = currentUser.Payment.Tariff
+                }
             };
         }
 
         public async Task<UserInfoModel> CheckAndGetUser(string email, string password = null, Guid? userID = null)
         {
+            var now = DateTime.Now.ToUniversalTime();
+
             var predicate = PredicateBuilder.True<Entity.Model.User>();
 
             if (userID != null && userID != Guid.Empty)
@@ -69,7 +79,7 @@ namespace MyProfile.User.Service
                 predicate = predicate.And(x => x.Email == email);
             }
 
-            var user = await repository.GetAll<Entity.Model.User>(predicate)
+            UserInfoModel user = await repository.GetAll<Entity.Model.User>(predicate)
                  .Select(x => new UserInfoModel
                  {
                      ID = x.ID,
@@ -90,9 +100,20 @@ namespace MyProfile.User.Service
                      //    Name = x.CollectiveBudget.Name,
                      //    Users = x.CollectiveBudget.Users.Select(y => new Entity.Model.User { ID = y.ID }).ToList()
                      //},
+
                      HashPassword = x.HashPassword,
                      SaltPassword = x.SaltPassword,
                      Currency = x.Currency,
+                     IsAvailable = x.Payment.DateFrom <= now && x.Payment.DateTo >= now,
+                     Payment = new Payment
+                     {
+                         DateFrom = x.Payment.DateFrom,
+                         DateTo = x.Payment.DateTo,
+                         ID = x.Payment.ID,
+                         IsPaid = x.Payment.IsPaid,
+                         LastDatePayment = x.Payment.LastDatePayment,
+                         Tariff = x.Payment.Tariff,
+                     },
                      UserSettings = new UserSettings
                      {
                          BudgetPages_WithCollective = x.UserSettings.BudgetPages_WithCollective,
@@ -183,6 +204,20 @@ namespace MyProfile.User.Service
                     Month_InvestingWidget = true,
                     Month_SpendingWidget = true,
                     WebSiteTheme_CodeName = WebSiteThemeEnum.Light,
+                },
+                Payment = new Payment
+                {
+                    DateFrom = now,
+                    DateTo = now.AddMonths(2),
+                    IsPaid = false,
+                    Tariff = PaymentTariffs.Free,
+                    PaymentHistories = new List<PaymentHistory> {
+                        new PaymentHistory {
+                            DateFrom = now,
+                            DateTo = now.AddMonths(2),
+                            Tariff = PaymentTariffs.Free,
+                        }
+                    }
                 },
                 CurrencyID = 1,
                 UserTypeID = (int)UserTypeEnum.User,

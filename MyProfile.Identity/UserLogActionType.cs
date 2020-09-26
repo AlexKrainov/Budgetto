@@ -84,6 +84,11 @@
         public const string ToDoListList_Delete = "ToDoListList_Delete";
         public const string ToDoListList_Recovery = "ToDoListList_Recovery";
 
+        public const string PaymentHistory_Create = "PaymentHistory_Create";
+        public const string PaymentHistory_Update = "PaymentHistory_Update";
+
+        public const string Payment_Update = "Payment_Update";
+
         public const string User_Edit = "User_Edit";
 
         

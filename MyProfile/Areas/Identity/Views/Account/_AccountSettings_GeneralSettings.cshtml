@@ -5,8 +5,8 @@
     <div class="switchers-stacked">
         <label class="switcher">
             <input type="radio" class="switcher-input" name="switchers-stacked-radio"
-                   v-bind:checked="user.userSettings.webSiteTheme_CodeName == 'light'"
-                   v-on:click="user.userSettings.webSiteTheme_CodeName = 'light'">
+                   v-bind:checked="user.userSettings.webSiteTheme == 'light'"
+                   v-on:click="user.userSettings.webSiteTheme = 'light'">
             <span class="switcher-indicator">
                 <span class="switcher-yes"></span>
                 <span class="switcher-no"></span>
@@ -16,8 +16,8 @@
 
         <label class="switcher">
             <input type="radio" class="switcher-input" name="switchers-stacked-radio"
-                   v-bind:checked="user.userSettings.webSiteTheme_CodeName == 'dark'"
-                   v-on:click="user.userSettings.webSiteTheme_CodeName = 'dark'">
+                   v-bind:checked="user.userSettings.webSiteTheme == 'dark'"
+                   v-on:click="user.userSettings.webSiteTheme = 'dark'">
             <span class="switcher-indicator">
                 <span class="switcher-yes"></span>
                 <span class="switcher-no"></span>
@@ -27,7 +27,7 @@
     </div>
 </div>
 <div class="card-footer">
-    <div class="text-right mt-3">
+    <div class="text-right">
         <button type="button" class="btn btn-primary"
                 v-on:click="saveUserSettings"
                 v-bind:disabled="isSaving">

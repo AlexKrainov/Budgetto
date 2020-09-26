@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Store";
+}
+
+@section Styles {
+
+}
+
+@section Scripts {
+
+    <script src="~/pages/store/store.js"></script>
+}
+
+<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+    <span class="pe-7s-albums display-4 text-primary mr-2"></span>
+    <span class="px-0 pb-2 pt-2">
+        Store
+    </span>
+</h4>
+
+<div id="store-vue">
+
+    <button type="button" class="btn btn-primary"
+            v-on:click="pay">
+        Pay
+    </button>
+    <button type="button" class="btn btn-success"
+            v-show="paymentHistoryID != null"
+            v-on:click="returnFromPayment">
+        Подтвердить
+    </button>
+
+    <div class="callout callout-success mt-3" v-show="textMessage">
+        <button type="button" class="close" data-dismiss="alert" v-on:click="textMessage = null">×</button>
+        {{ textMessage }}
+    </div>
+    <div class="callout callout-danger mt-3" v-show="textError">
+        <button type="button" class="close" data-dismiss="alert" v-on:click="textError = null">×</button>
+        {{ textError }}
+    </div>
+</div>

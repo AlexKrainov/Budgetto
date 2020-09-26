@@ -4,8 +4,8 @@
         this.getPageSettings();
 
         this.templateID = document.getElementById("templateID_hidden").value;
-        this.budgetDate = GetDateByFormat(Date.parse(document.getElementById("budgetDate_hidden").value), "YYYY/MM/DD");
-
+        this.budgetDate = document.getElementById("budgetDate_hidden").value;
+        
         let dateConfig = GetFlatpickrRuConfig_Month(this.budgetDate);
         this.flatpickrStart = flatpickr('#budget-date', dateConfig);
 
@@ -23,6 +23,7 @@
         this.investingData.isShow = UserInfo.UserSettings.Dashboard_Month_IsShow_InvestingChart;
 
         RecordVue.callback = this.refreshAfterChangeRecords;
+
     },
     load: function () {
         return sendAjax("/Budget/GetMonthBudget?month=" + this.budgetDate + "&templateID=" + this.templateID, null, "POST")

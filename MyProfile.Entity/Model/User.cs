@@ -42,6 +42,8 @@ namespace MyProfile.Entity.Model
         public bool IsAllowCollectiveBudget { get; set; }
         [ForeignKey("UserType")]
         public int UserTypeID { get; set; }
+        [ForeignKey("Payment")]
+        public int PaymentID { get; set; }
         [ForeignKey("Currency")]
         public int CurrencyID { get; set; }
         [ForeignKey("Resource")]
@@ -52,6 +54,7 @@ namespace MyProfile.Entity.Model
         public virtual UserType UserType { get; set; }
         public virtual Currency Currency { get; set; }
         public virtual Resource Resource { get; set; }
+        public virtual Payment Payment { get; set; }
 
         public virtual IEnumerable<BudgetArea> BudgetAreas { get; set; }
         public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }

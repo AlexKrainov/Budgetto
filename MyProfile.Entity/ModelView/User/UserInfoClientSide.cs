@@ -17,6 +17,10 @@ namespace MyProfile.Entity.ModelView.User
         public virtual UserSettingsClientSide UserSettings { get; set; }
         public virtual CurrencyClientSide Currency { get; set; }
         public string UserType { get; set; }
+        public Guid CollectiveBudgetID { get; set; }
+        public DateTime DateCreate { get; set; }
+        public bool IsAvailable { get; set; }
+        public PaymentClientSide Payment { get; set; }
     }
 
     public class UserSettingsClientSide
@@ -47,5 +51,12 @@ namespace MyProfile.Entity.ModelView.User
         public string Icon { get; set; }
         public string CodeName_CBR { get; set; }
         public int? CodeNumber_CBR { get; set; }
+    }
+
+    public class PaymentClientSide
+    {
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public string Tariff { get; set; }
     }
 }

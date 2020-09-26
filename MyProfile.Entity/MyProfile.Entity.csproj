@@ -55,6 +55,18 @@
     <Compile Remove="Migrations\20200905101224_MyProfile_32.Designer.cs" />
     <Compile Remove="Migrations\20200905102256_MyProfile_32.cs" />
     <Compile Remove="Migrations\20200905102256_MyProfile_32.Designer.cs" />
+    <Compile Remove="Migrations\20200923103515_MyProfile_032.cs" />
+    <Compile Remove="Migrations\20200923103515_MyProfile_032.Designer.cs" />
+    <Compile Remove="Migrations\20200923104927_MyProfile_033.cs" />
+    <Compile Remove="Migrations\20200923104927_MyProfile_033.Designer.cs" />
+    <Compile Remove="Migrations\20200923114342_MyProfile_033.cs" />
+    <Compile Remove="Migrations\20200923114342_MyProfile_033.Designer.cs" />
+    <Compile Remove="Migrations\20200923140734_MyProfile_033.cs" />
+    <Compile Remove="Migrations\20200923140734_MyProfile_033.Designer.cs" />
+    <Compile Remove="Migrations\20200923141014_MyProfile_033.cs" />
+    <Compile Remove="Migrations\20200923141014_MyProfile_033.Designer.cs" />
+    <Compile Remove="Migrations\20200923141707_MyProfile_033.cs" />
+    <Compile Remove="Migrations\20200923141707_MyProfile_033.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

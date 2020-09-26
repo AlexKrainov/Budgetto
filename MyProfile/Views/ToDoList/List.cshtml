@@ -203,7 +203,7 @@
                                     <span class="custom-control-label" v-bind:class="_item.isDone ? 'todolist-checked' : ''">{{ _item.text }}</span>
                                 </label>
                                 @*<span class="ui-todo-badge badge badge-outline-default font-weight-normal ml-2">58 mins left</span>*@
-                                <span class="todo-item-actions ml-4 pl-4">
+                                <span class="todo-item-actions ml-4 pl-4 float-right">
                                     <span class="ion ion-md-create link-green-hover cursor-pointer mr-2" title="Редактировать запись"
                                           v-bind:class="item != null && _item.id == item.id ? 'link-green': ''"
                                           v-on:click="editItem(_item)"></span>

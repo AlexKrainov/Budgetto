@@ -17,7 +17,8 @@ var AccountSettingsVue = new Vue({
     el: "#account-settings",
     data: {
         user: {
-            userSettings: {}
+            userSettings: {},
+            payment: {}
         },
         oldTheme: "",
         oldEmail: null,
@@ -72,7 +73,7 @@ var AccountSettingsVue = new Vue({
             return sendAjax("/Identity/Account/LoadUserSettings", null, "GET")
                 .then(function (result) {
                     AccountSettingsVue.user = result.user;
-                    AccountSettingsVue.oldTheme = result.user.userSettings.webSiteTheme_CodeName;
+                    AccountSettingsVue.oldTheme = result.user.userSettings.webSiteTheme;
                     AccountSettingsVue.oldEmail = result.user.email;
 
                     AccountSettingsVue.refreshCollectiveList();
@@ -228,14 +229,14 @@ var AccountSettingsVue = new Vue({
         saveUserSettings: function () {
             this.isSaving = true;
 
-            UserInfo.UserSettings.WebSiteTheme = this.user.userSettings.webSiteTheme_CodeName;
+            UserInfo.UserSettings.webSiteTheme = this.user.userSettings.webSiteTheme;
 
             return sendAjax("/Identity/Account/SaveUserSettings", this.user.userSettings, "POST")
                 .then(function (result) {
                     AccountSettingsVue.isSaving = false;
 
-                    if (AccountSettingsVue.oldTheme != AccountSettingsVue.user.userSettings.webSiteTheme_CodeName) {
-                        themeSettings.setStyle(AccountSettingsVue.user.userSettings.webSiteTheme_CodeName)
+                    if (AccountSettingsVue.oldTheme != AccountSettingsVue.user.userSettings.webSiteTheme) {
+                        themeSettings.setStyle(AccountSettingsVue.user.userSettings.webSiteTheme)
                         //document.location.href = document.location.href;
                     }
                 });

@@ -393,6 +393,9 @@ td.show-actions span.cell-actions {
     text-decoration: underline;
 }
 
+.text-decoration-hover:hover {
+    text-decoration: underline;
+}
 /*Reminder*/
 .reminder-icons i {
     opacity: 0.75;
@@ -428,6 +431,7 @@ td.show-actions span.cell-actions {
 html.light-style .active-item {
     background: #D6EAF8 !important;
 }
+
 html.dark-style .active-item {
     background: #1C1F24 !important;
 }
@@ -507,6 +511,7 @@ a.folder-text:hover .folder-edit-button {
     border-bottom: 3px solid var(--danger-color) !important;
     border-radius: 5px !important;
 }
+
 .gray-bottom-line {
     border-bottom: 3px solid var(--gray-color) !important;
     border-radius: 5px !important;
@@ -628,13 +633,18 @@ html.dark-style table.fixedHeader-floating {
 
 html.dark-style .list-group-item:not(.not-dark) {
     background-color: #1C1F24 !important;
-} html.dark-style .chart-list-5 .chart-list-item {
+}
+
+html.dark-style .chart-list-5 .chart-list-item {
     background-color: #32353b;
     color: white;
-} html.dark-style #colorPick {
+}
+
+html.dark-style #colorPick {
     background-color: #393a3b !important;
 }
-html.dark-style .tagify__input::before{
+
+html.dark-style .tagify__input::before {
     color: white !important;
 }
 

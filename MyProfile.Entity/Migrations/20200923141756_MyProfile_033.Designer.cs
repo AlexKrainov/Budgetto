@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200923141756_MyProfile_033")]
+    partial class MyProfile_033
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -724,10 +726,14 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("LastDatePayment");
 
-                    b.Property<string>("Tariff")
+                    b.Property<string>("Option")
                         .HasMaxLength(16);
 
+                    b.Property<Guid>("UserID");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Payments");
                 });
@@ -741,16 +747,14 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("DateFinisthToPay");
 
-                    b.Property<DateTime?>("DateFrom");
-
-                    b.Property<DateTime?>("DateTo");
+                    b.Property<DateTime?>("DatePayment");
 
                     b.Property<bool>("IsPaid");
 
-                    b.Property<int>("PaymentID");
-
-                    b.Property<string>("Tariff")
+                    b.Property<string>("Option")
                         .HasMaxLength(16);
+
+                    b.Property<int>("PaymentID");
 
                     b.HasKey("ID");
 
@@ -1195,7 +1199,7 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int>("PaymentID");
+                    b.Property<int?>("PaymentID");
 
                     b.Property<int?>("ResourceID");
 
@@ -1211,8 +1215,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasIndex("CurrencyID");
 
-                    b.HasIndex("PaymentID")
-                        .IsUnique();
+                    b.HasIndex("PaymentID");
 
                     b.HasIndex("ResourceID");
 
@@ -1653,6 +1656,14 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("ChatUserID");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Payment", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentHistory", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.Payment", "Payment")
@@ -1818,9 +1829,8 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MyProfile.Entity.Model.Payment", "Payment")
-                        .WithOne("User")
-                        .HasForeignKey("MyProfile.Entity.Model.User", "PaymentID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("PaymentID");
 
                     b.HasOne("MyProfile.Entity.Model.Resource", "Resource")
                         .WithMany()

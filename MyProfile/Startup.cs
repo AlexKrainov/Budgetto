@@ -17,6 +17,7 @@ using MyProfile.Goal.Service;
 using MyProfile.HelpCenter.Service;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
+using MyProfile.Payment.Service;
 using MyProfile.Reminder.Service;
 using MyProfile.Template.Service;
 using MyProfile.ToDoList.Service;
@@ -64,6 +65,7 @@ namespace MyProfile
             services.AddScoped<ReminderService>();
             services.AddScoped<ToDoListService>();
             services.AddScoped<HelpCenterService>();
+            services.AddScoped<PaymentService>();
 
             services.AddScoped<UserEmailService>();
             #endregion

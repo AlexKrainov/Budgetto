@@ -148,6 +148,14 @@ namespace MyProfile.Identity
                 IsConfirmEmail = currentUser.IsConfirmEmail,
                 LastName = currentUser.LastName,
                 UserType = currentUser.UserType.CodeName,
+                IsAvailable = currentUser.IsAvailable,
+                Payment = new PaymentClientSide
+                {
+                    DateFrom = currentUser.Payment.DateFrom,
+                    DateTo = currentUser.Payment.DateTo,
+                    //ID = currentUser.Payment.ID,
+                    Tariff = currentUser.Payment.Tariff
+                },
                 Currency = new CurrencyClientSide
                 {
                     ID = currentUser.Currency.ID,
@@ -266,16 +274,16 @@ namespace MyProfile.Identity
                     Icon = "lnr lnr lnr-list",
                     IsLastBeforeLine = false,
                 },
-                      new MenuItemViewModel
-                {
-                    Title = "Help center",
-                    Area ="Help",
-                    Controller = "Center",
-                    Action = "Index",
-                    Icon = "lnr lnr-question-circle",
-                    IsLastBeforeLine = true,
-                    ClassElement = "margin-top-auto",
-                }
+                //      new MenuItemViewModel
+                //{
+                //    Title = "Help center",
+                //    Area ="Help",
+                //    Controller = "Center",
+                //    Action = "Index",
+                //    Icon = "lnr lnr-question-circle",
+                //    IsLastBeforeLine = true,
+                //    ClassElement = "margin-top-auto",
+                //}
 
             };
         }
