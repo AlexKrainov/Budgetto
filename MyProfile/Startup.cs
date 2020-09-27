@@ -107,6 +107,7 @@ namespace MyProfile
                 .AddCookie(options =>
                 {
                     options.LoginPath = new PathString("/Identity/Account/Login");
+                    options.ExpireTimeSpan = System.TimeSpan.FromDays(2);
                 });
             #endregion
 

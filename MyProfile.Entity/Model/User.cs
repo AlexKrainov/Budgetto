@@ -58,7 +58,7 @@ namespace MyProfile.Entity.Model
 
         public virtual IEnumerable<BudgetArea> BudgetAreas { get; set; }
         public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }
-        public virtual IEnumerable<BudgetSection> BudgetSections { get; set; }
+        //public virtual IEnumerable<BudgetSection> BudgetSections { get; set; }
         public virtual IEnumerable<Template> Templates { get; set; }
         public virtual IEnumerable<Chart> Charts { get; set; }
         public virtual IEnumerable<MailLog> MailLogs { get; set; }
@@ -72,7 +72,7 @@ namespace MyProfile.Entity.Model
         {
             this.BudgetAreas = new HashSet<BudgetArea>();
             this.BudgetRecords = new HashSet<BudgetRecord>();
-            this.BudgetSections = new HashSet<BudgetSection>();
+            //this.BudgetSections = new HashSet<BudgetSection>();
             this.Templates = new HashSet<Template>();
             this.Charts = new HashSet<Chart>();
             this.MailLogs = new HashSet<MailLog>();

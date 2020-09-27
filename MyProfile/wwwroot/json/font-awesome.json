@@ -287,6 +287,11 @@
     "name": "",
     "isShow": true
   },
+  {
+    "nameClass": "fas fa-prescription-bottle-alt",
+    "name": "",
+    "isShow": true
+  },
 
   {
     "nameClass": "fas fa-donate",
@@ -351,6 +356,16 @@
   },
   {
     "nameClass": "fas fa-baby-carriage",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "far fa-eye",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-couch",
     "name": "",
     "isShow": true
   },

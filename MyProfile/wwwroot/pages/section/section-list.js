@@ -158,54 +158,54 @@ var SectionVue = new Vue({
         colors: [
             {
                 id: 1,
-                background: '#ffebee',
+                background: 'rgb(255, 235, 238)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             }, {
                 id: 2,
-                background: '#ffcdd2',
+                background: 'rgb(255, 205, 210)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             }, {
                 id: 3,
-                background: '#ef9a9a',
+                background: 'rgb(239, 154, 154)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 4,
-                background: '#f44336',
+                background: 'rgb(244, 67, 54)',
                 color: "#fff",
                 border: '',
                 selected: false,
             },
             {
                 id: 5,
-                background: '#fbe9e7',
+                background: 'rgb(251, 233, 231)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 6,
-                background: '#ffccbc',
+                background: 'rgb(255, 204, 188)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 7,
-                background: '#ffab91',
+                background: 'rgb(255, 171, 145)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 8,
-                background: '#ff8a65',
+                background: 'rgb(255, 138, 101)',
                 color: "#fff",
                 border: '',
                 selected: false,
@@ -215,27 +215,27 @@ var SectionVue = new Vue({
             //Yellow
             {
                 id: 9,
-                background: '#ffe0b2',
+                background: 'rgb(255, 224, 178)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             }, {
                 id: 10,
-                background: '#ffcc80',
+                background: 'rgb(255, 204, 128)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 11,
-                background: '#ffb74d',
+                background: 'rgb(255, 183, 77)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 12,
-                background: '#ffa726',
+                background: 'rgb(255, 167, 38)',
                 color: "#fff",
                 border: '',
                 selected: false,
@@ -244,28 +244,28 @@ var SectionVue = new Vue({
             //gray
             {
                 id: 13,
-                background: '#eeeeee',
+                background: 'rgb(238, 238, 238)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 14,
-                background: '#e0e0e0',
+                background: 'rgb(224, 224, 224)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 15,
-                background: '#bdbdbd',
+                background: 'rgb(189, 189, 189)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 16,
-                background: '#9e9e9e',
+                background: 'rgb(158, 158, 158)',
                 color: "#fff",
                 border: '',
                 selected: false,
@@ -275,28 +275,28 @@ var SectionVue = new Vue({
 
             {
                 id: 17,
-                background: '#b9f6ca',
+                background: 'rgb(185, 246, 202)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 18,
-                background: '#69f0ae',
+                background: 'rgb(105, 240, 174)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 19,
-                background: '#00e676',
+                background: 'rgb(0, 230, 118)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 20,
-                background: '#00c853',
+                background: 'rgb(0, 200, 83)',
                 color: "#fff",
                 border: '',
                 selected: false,
@@ -305,28 +305,28 @@ var SectionVue = new Vue({
             //blue
             {
                 id: 21,
-                background: '#e3f2fd',
+                background: 'rgb(227, 242, 253)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 22,
-                background: '#bbdefb',
+                background: 'rgb(187, 222, 251)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 23,
-                background: '#90caf9',
+                background: '#rgb(144, 202, 249)',
                 color: "rgba(24,28,33,0.8)",
                 border: '',
                 selected: false,
             },
             {
                 id: 24,
-                background: '#2196f3',
+                background: 'rgb(33, 150, 243)',
                 color: "#fff",
                 border: '',
                 selected: false,
@@ -500,9 +500,12 @@ var SectionVue = new Vue({
             if (cssBackground) {
                 let index = this.colors.findIndex(x => x.background == cssBackground);
 
-                this.colors[index].selected = true;
-                this.section.cssColor = this.colors[index].color;
-                this.section.cssBackground = this.colors[index].background;
+                if (index != -1) {
+
+                    this.colors[index].selected = true;
+                    this.section.cssColor = this.colors[index].color;
+                    this.section.cssBackground = this.colors[index].background;
+                }
 
                 $("#accordion2-2, #accordion2-1").removeClass("show");
             } else {

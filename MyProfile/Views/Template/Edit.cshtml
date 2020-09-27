@@ -107,11 +107,17 @@
                 Создать копию
             </button>
 
-            <a class="btn btn-default ml-4" v-bind:href="getLinkForView(template)" v-show="template.id != 0 && errorMessage == null">
+            <a class="btn btn-default ml-4" 
+               v-bind:href="getLinkForView(template)" 
+               v-show="template.id != 0 && errorMessage == null"
+               v-bind:disabled="isSavingTemplate"
+               v-bind:class="isSavingTemplate ? 'disabled' : ''">
                 <i class="far fa-eye pr-2" style="font-size: large;"></i>Посмотреть
             </a>
 
-            <a href="/Template/Delete/@ViewBag.TemplateID" class="btn btn-outline-danger icon-btn borderless float-right" v-show="template.id > 0">
+            <a href="/Template/Delete/@ViewBag.TemplateID" class="btn btn-outline-danger icon-btn borderless float-right" 
+               v-show="template.id > 0"
+               v-bind:class="template.id > 0 && isSavingTemplate ? 'disabled' : ''">
                 <span class="ion ion-md-trash"></span>
             </a>
         </div>

@@ -244,7 +244,7 @@
             let selectedSelectionsIndex = this.selectedSelections.findIndex(x => x.id == section.sectionID);
             if (selectedSelectionsIndex != -1) {
                 if (this.selectedSelections[selectedSelectionsIndex].count == 1) {
-                    this.selectedSelections.slice(selectedSelectionsIndex, 1);
+                    this.selectedSelections.splice(selectedSelectionsIndex, 1);
                 } else {
                     this.selectedSelections[selectedSelectionsIndex].count = this.selectedSelections[selectedSelectionsIndex].count - 1;
                 }
