@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20200930121520_MyProfile_038")]
+    partial class MyProfile_038
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -426,29 +428,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("Currencies");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.ErrorLog", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Comment");
-
-                    b.Property<DateTime>("CurrentDate");
-
-                    b.Property<string>("ErrorText");
-
-                    b.Property<Guid>("UserSessionID");
-
-                    b.Property<string>("Where");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("UserSessionID");
-
-                    b.ToTable("ErrorLogs");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.Feedback", b =>
                 {
                     b.Property<int>("ID")
@@ -628,6 +607,33 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("VisibleElementID");
 
                     b.ToTable("Limits");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Log", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment");
+
+                    b.Property<DateTime>("CurrentDateTime");
+
+                    b.Property<string>("ErrorText");
+
+                    b.Property<Guid?>("UserID");
+
+                    b.Property<int?>("UserLogID");
+
+                    b.Property<string>("Where");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.HasIndex("UserLogID");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.MailLog", b =>
@@ -1260,7 +1266,7 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Country")
                         .HasMaxLength(32);
 
-                    b.Property<DateTime>("EnterDate");
+                    b.Property<DateTime>("CurrentDateTime");
 
                     b.Property<string>("IP")
                         .HasMaxLength(64);
@@ -1278,8 +1284,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Location")
                         .HasMaxLength(64);
-
-                    b.Property<DateTime?>("LogOutDate");
 
                     b.Property<string>("OS_Name")
                         .HasMaxLength(32);
@@ -1358,7 +1362,7 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<string>("WebSiteTheme")
+                    b.Property<string>("WebSiteTheme_CodeName")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue("light");
 
@@ -1420,9 +1424,13 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("IsShow_BudgetMonth");
+                    b.Property<bool>("IsShow_BudgetMonth")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
-                    b.Property<bool>("IsShow_BudgetYear");
+                    b.Property<bool>("IsShow_BudgetYear")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.HasKey("ID");
 
@@ -1553,14 +1561,6 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("SectionID");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.ErrorLog", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.UserSession", "UserSession")
-                        .WithMany()
-                        .HasForeignKey("UserSessionID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.Feedback", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.Chat", "Chat")
@@ -1629,6 +1629,17 @@ namespace MyProfile.Entity.Migrations
                         .WithMany()
                         .HasForeignKey("VisibleElementID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Log", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.HasOne("MyProfile.Entity.Model.UserLog", "UserLog")
+                        .WithMany()
+                        .HasForeignKey("UserLogID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.MailLog", b =>

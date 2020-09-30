@@ -89,18 +89,11 @@ namespace MyProfile
             //    return f.GetService<MyProfile_DBContext>();
             //});
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
             #region Cookies settings
             services.Configure<CookiePolicyOptions>(options =>
                 {
                     options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                    options.MinimumSameSitePolicy = SameSiteMode.Strict;
                 });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

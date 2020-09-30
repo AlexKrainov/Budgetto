@@ -220,12 +220,12 @@ function ShowLoading(selector) {
         css: {
             backgroundColor: 'transparent',
             border: '0',
-            zIndex: 9999999
+            zIndex: 1081
         },
         overlayCSS: {
             backgroundColor: overlayBg,
             opacity: 0.8,
-            zIndex: 9999990
+            zIndex: 1080
         }
     });
 }

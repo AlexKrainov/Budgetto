@@ -203,7 +203,7 @@ namespace MyProfile.Controllers
             }
             catch (Exception ex)
             {
-                userLogService.CreateLog(UserInfo.Current.ID, where: "Budget.GetRateFromBank", errorText: ex.Message, comment: _link);
+                userLogService.CreateErrorLog(UserInfo.Current.ID, where: "Budget.GetRateFromBank", errorText: ex.Message, comment: _link);
             }
 
             return Json(new { isOk = true, response = text });

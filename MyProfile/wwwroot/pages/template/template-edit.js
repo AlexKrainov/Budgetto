@@ -34,7 +34,7 @@
             for (var i = 0; i < selections.length; i++) {
                 let filtered = this.selectedSelections.filter(x => x.id == selections[i]);
                 if (filtered.length == 0) {
-                    this.selectedSelections.push({ id: selections[i], count: selections.filter(x => x == selections[i]).length});
+                    this.selectedSelections.push({ id: selections[i], count: selections.filter(x => x == selections[i]).length });
                 }
             }
         }
@@ -87,12 +87,15 @@
             dragula(
                 Array.prototype.slice.call(document.querySelectorAll('.lists')),
                 {
-                    moves: function (el) {
+                    moves: function (el, source, handle, sibling) {
+                        console.log(arguments);
+                        return !el.classList.contains("ignore-dnd") || !handle.classList.contains("ignore-dnd");
+                    },
+                    accepts: function (el, target, source, sibling) {//?
+                        console.log(arguments);
                         return !el.classList.contains("ignore-dnd");
                     },
-                    accepts: function (el) {//?
-                        return !el.classList.contains("ignore-dnd");
-                    },
+                    //invalid
                 }
             ).on('dragend', function (el) {
                 let el_s = document.querySelectorAll(".list[columnid]");

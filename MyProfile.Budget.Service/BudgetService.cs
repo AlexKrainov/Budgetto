@@ -318,6 +318,7 @@ namespace MyProfile.Budget.Service
 
         private List<Cell> CalculateFooter(List<List<FooterCell>> footersData, TemplateViewModel template)
         {
+            NumberFormatInfo numberFormatInfo = new CultureInfo(UserInfo.Current.Currency.SpecificCulture, false).NumberFormat;
             var specificCulture = UserInfo.Current.Currency.SpecificCulture;
             List<Cell> footer = new List<Cell>();
             decimal v;
@@ -326,6 +327,7 @@ namespace MyProfile.Budget.Service
             {
                 List<decimal> totals = new List<decimal>();
                 Cell cell = new Cell() { IsShow = template.Columns[i].IsShow };
+                numberFormatInfo.CurrencyDecimalDigits = template.Columns[i].PlaceAfterCommon;
 
                 foreach (var footerRow in footersData)
                 {
@@ -336,23 +338,19 @@ namespace MyProfile.Budget.Service
                 {
                     case FooterActionType.Sum:
                         v = totals.Sum();
-                        v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
-                        cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
+                        cell.Value = v.ToString("C", numberFormatInfo);
                         break;
                     case FooterActionType.Avr:
                         v = totals.Average();
-                        v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
-                        cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
+                        cell.Value = v.ToString("C", numberFormatInfo);
                         break;
                     case FooterActionType.Min:
                         v = totals.Min();
-                        v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
-                        cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
+                        cell.Value = v.ToString("C", numberFormatInfo);
                         break;
                     case FooterActionType.Max:
                         v = totals.Max();
-                        v = Math.Round(v, template.Columns[i].PlaceAfterCommon);
-                        cell.Value = v.ToString("C", CultureInfo.CreateSpecificCulture(specificCulture));
+                        cell.Value = v.ToString("C", numberFormatInfo);
                         break;
                     case FooterActionType.Undefined:
                     default:

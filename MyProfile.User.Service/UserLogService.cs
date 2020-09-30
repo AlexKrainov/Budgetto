@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using System;
@@ -24,36 +25,93 @@ namespace MyProfile.User.Service
         /// <param name="UserID"></param>
         /// <param name="userSessionActionType"></param>
         /// <returns></returns>
-        public async Task<Guid> CreateSession(Guid? UserID, string userSessionActionType, string comment = null)
+        public async Task<Guid> CreateSession(UserStatViewModel personData, Guid? UserID = null)
         {
-            UserSession userSession = new UserSession();
-
+            Guid newUserSessionID = Guid.NewGuid();
             try
             {
-                userSession.IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString();
-                userSession.SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
-                ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "";
-
-                userSession.UserLogs = new List<UserLog>{
-                    new UserLog
-                    {
-                        CurrentDateTime = DateTime.Now.ToUniversalTime(),
-                        ActionCodeName = userSessionActionType,
-                        Comment = comment
-                    }
+                UserSession userSession = new UserSession
+                {
+                    ID = newUserSessionID,
+                    UserID = UserID,
+                    BrowerName = personData.browser_name,
+                    BrowserVersion = personData.browser_version,
+                    City = personData.city,
+                    Country = personData.country,
+                    EnterDate = DateTime.Now.ToUniversalTime(),
+                    IP = personData.ip ?? UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    IsPhone = personData.isMobile,
+                    //IsTablet = personData.isMobile
+                    Location = personData.location,
+                    OS_Name = personData.os_name,
+                    Os_Version = personData.os_version,
+                    ScreenSize = personData.screen_size,
+                    SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
+                              ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "",
+                    Referrer = personData.referrer,
+                    ContinentCode = personData.continent_code,
+                    ContinentName = personData.continent_name,
+                    Index = personData.index,
+                    Info = personData.info,
+                    Path = personData.path,
+                    ProviderInfo = personData.provider_info,
+                    Threat = personData.threat,
                 };
-                userSession.UserID = UserID;
-
                 await repository.CreateAsync(userSession, true);
             }
             catch (Exception ex)
             {
+                try
+                {
+                    await repository.CreateAsync(new UserSession
+                    {
+                        ID = newUserSessionID,
+                        EnterDate = DateTime.Now.ToUniversalTime(),
+                        IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
+                        SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
+                                     ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "",
+                        Comment = ex.Message
+                    }, true);
+                }
+                catch (Exception ex1)
+                {
 
+                }
             }
 
-            return userSession.ID;
+            return newUserSessionID;
+        }
+        public async Task<int> UpdateSession_UserID(Guid userSessionID, Guid UserID)
+        {
+            var userSession = await repository.GetAll<UserSession>(x => x.ID == userSessionID).FirstOrDefaultAsync();
+            userSession.UserID = UserID;
+            await repository.UpdateAsync(userSession, true);
+            return 1;
         }
 
+        public async Task<int> UserSessionLogOut(Guid userSessionID, Guid? userID)
+        {
+            try
+            {
+                var userSession = await repository.GetAll<UserSession>(x => x.ID == userSessionID).FirstOrDefaultAsync();
+                userSession.LogOutDate = DateTime.Now.ToUniversalTime();
+                return await repository.UpdateAsync(userSession, true);
+            }
+            catch (Exception ex)
+            {
+                await CreateErrorLog(userSessionID: userSessionID, where: "UserLogService.UserSessionLogOut", errorText: ex.Message);
+            }
+            return 0;
+        }
+
+
+        /// <summary>
+        /// All user actions
+        /// </summary>
+        /// <param name="userSessionID"></param>
+        /// <param name="userLogActionType"></param>
+        /// <param name="comment"></param>
+        /// <returns></returns>
         public async Task<int> CreateUserLog(Guid userSessionID, string userLogActionType, string comment = null)
         {
             UserLog userLog = new UserLog();
@@ -75,16 +133,24 @@ namespace MyProfile.User.Service
             return userLog.ID;
         }
 
-        public async Task<int> CreateLog(Guid? userID = null, int? userLogID = null, string where = null, string errorText = null, string comment = null)
+        /// <summary>
+        /// All error
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="userLogID"></param>
+        /// <param name="where"></param>
+        /// <param name="errorText"></param>
+        /// <param name="comment"></param>
+        /// <returns></returns>
+        public async Task<int> CreateErrorLog(Guid userSessionID, string where = null, string errorText = null, string comment = null)
         {
-            Log log = new Log
+            ErrorLog log = new ErrorLog
             {
-                CurrentDateTime = DateTime.Now.ToUniversalTime(),
+                CurrentDate = DateTime.Now.ToUniversalTime(),
                 Comment = comment,
                 ErrorText = errorText,
-                UserID = userID,
                 Where = where,
-                UserLogID = userLogID
+                UserSessionID = userSessionID,
             };
 
             try
@@ -108,7 +174,7 @@ namespace MyProfile.User.Service
             var today = DateTime.Now.Date;
             var ip = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString();
 
-            return await repository.GetAll<UserSession>(x => x.CurrentDateTime.Date == today
+            return await repository.GetAll<UserSession>(x => x.EnterDate.Date == today
                 && x.IP == ip)
                 .CountAsync() > 20;
         }

@@ -84,7 +84,7 @@ namespace MyProfile.Entity.Model
               .Property(b => b.Year_SpendingWidget)
               .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
-              .Property(b => b.WebSiteTheme_CodeName)
+              .Property(b => b.WebSiteTheme)
               .HasDefaultValue(WebSiteThemeEnum.Light);
             //modelBuilder.Entity<VisibleElement>()
             //    .Property(b => b.IsShow_BudgetMonth)
@@ -135,12 +135,12 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<VisibleElement>()
               .Property(b => b.IsShowOnDashboards)
               .HasDefaultValue(true);
-            modelBuilder.Entity<VisibleElement>()
-              .Property(b => b.IsShow_BudgetMonth)
-              .HasDefaultValue(true);
-            modelBuilder.Entity<VisibleElement>()
-              .Property(b => b.IsShow_BudgetYear)
-              .HasDefaultValue(true);
+            //modelBuilder.Entity<VisibleElement>()
+            //  .Property(b => b.IsShow_BudgetMonth)
+            //  .HasDefaultValue(true);
+            //modelBuilder.Entity<VisibleElement>()
+            //  .Property(b => b.IsShow_BudgetYear)
+            //  .HasDefaultValue(true);
 
             #endregion
         }
@@ -156,7 +156,7 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<UserSession> UserSessions { get; set; }
-        public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
         public virtual DbSet<UserLog> UserLogs { get; set; }
         public virtual DbSet<TemplateColumn> TemplateColumns { get; set; }
         public virtual DbSet<PeriodType> PeriodTypes { get; set; }

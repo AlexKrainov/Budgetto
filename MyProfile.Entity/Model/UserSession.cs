@@ -39,7 +39,19 @@ namespace MyProfile.Entity.Model
         public bool IsUserVisible { get; set; }
         public bool IsPhone { get; set; }
         public bool IsTablet { get; set; }
-        public DateTime CurrentDateTime { get; set; }
+        public DateTime EnterDate { get; set; }
+        public DateTime? LogOutDate { get; set; }
+        public string Referrer { get; set; }
+        [StringLength(32)]
+        public string ContinentCode { get; set; }
+        [StringLength(32)]
+        public string ContinentName { get; set; }
+        [StringLength(32)]
+        public string Index { get; set; }
+        public string Info { get; set; }
+        public string Path { get; set; }
+        public string ProviderInfo { get; set; }
+        public string Threat { get; set; }
 
         [ForeignKey("User")]
         public Guid? UserID { get; set; }
@@ -47,6 +59,7 @@ namespace MyProfile.Entity.Model
 
         public virtual User User { get; set; }
         public virtual IEnumerable<UserLog> UserLogs { get; set; }
+        
 
         public UserSession()
         {

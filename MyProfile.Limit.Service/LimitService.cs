@@ -193,7 +193,7 @@ namespace MyProfile.Limit.Service
 
             bool isThisMonth = finish.Month == DateTime.Now.Month && finish.Year == DateTime.Now.Year;
             var totalDays = 1 + (finish - start).Days;
-            var leftDays = (finish - DateTime.Now).Days;
+            var leftDays = (finish - DateTime.Now).Days + 1;
 
             for (int i = 0; i < limits.Count; i++)
             {

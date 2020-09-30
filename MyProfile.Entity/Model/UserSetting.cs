@@ -100,7 +100,7 @@ namespace MyProfile.Entity.Model
         public bool GoalPage_IsShow_Collective { get; set; }
 
 
-        public string WebSiteTheme_CodeName { get; set; }
+        public string WebSiteTheme { get; set; }
 
         public virtual User User { get; set; }
 

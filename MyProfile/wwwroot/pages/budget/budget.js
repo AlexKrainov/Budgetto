@@ -447,9 +447,11 @@
             //    "runtimeData",
             //];
             if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData") {
+                ShowLoading(".table-container");
                 this.load()
                     .then(function () {
                         BudgetVue.initTable();
+                        HideLoading(".table-container");
                     });
             }
 

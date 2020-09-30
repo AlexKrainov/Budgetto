@@ -122,7 +122,12 @@ namespace MyProfile.Identity
                 ClaimsIdentity.DefaultRoleClaimType);
 
             // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)
+                , properties: new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTime.UtcNow.AddDays(3),
+                    IsPersistent = true
+                });
         }
 
         public static async Task ReSignInAsync(UserInfoModel user)
@@ -182,7 +187,7 @@ namespace MyProfile.Identity
                     Dashboard_Year_IsShow_LimitCharts = currentUser.UserSettings.Year_LimitWidgets,
                     Dashboard_Year_IsShow_SpendingChart = currentUser.UserSettings.Year_SpendingWidget,
 
-                    WebSiteTheme = currentUser.UserSettings.WebSiteTheme_CodeName,
+                    WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
 
                 }
             };

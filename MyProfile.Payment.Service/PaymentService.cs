@@ -43,7 +43,7 @@ namespace MyProfile.Payment.Service
             }
             catch (Exception ex)
             {
-                await userLogService.CreateLog(userID: currentUser.ID, where: "PaymentService.CreatePaymentHistory", errorText: ex.Message);
+                await userLogService.CreateErrorLog(userSessionID: currentUser.UserSessionID, where: "PaymentService.CreatePaymentHistory", errorText: ex.Message);
             }
 
 
@@ -93,11 +93,11 @@ namespace MyProfile.Payment.Service
                     Tariff = paymentHistory.Payment.Tariff,
                 };
                 await UserInfo.AddOrUpdate_Authenticate(currentUser);
-                
+
             }
             catch (Exception ex)
             {
-                await userLogService.CreateLog(userID: currentUser.ID, where: "PaymentService.Paid", errorText: ex.Message);
+                await userLogService.CreateErrorLog(userSessionID: currentUser.UserSessionID, where: "PaymentService.Paid", errorText: ex.Message);
 
                 return -1;
             }

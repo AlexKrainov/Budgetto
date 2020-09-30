@@ -21,7 +21,7 @@
     @RenderSection("Styles", required: false)
 
 </head>
-<body>
+<body client-ip="@this.Context.Connection.RemoteIpAddress.ToString()">
     <div class="page-loader"><div class="bg-primary"></div></div>
 
     @RenderBody()

@@ -1,6 +1,6 @@
 ﻿Vue.component("vue-record-component", {
     template: `<div class="row" v-bind:id="id" v-bind:name="name">
-    <div class="modal  fade" id="modal-record">
+    <div class="modal modal-top fade" id="modal-record">
         <div class="modal-dialog modal-lg">
             <article class="modal-content">
                 <div class="modal-header">
@@ -340,17 +340,17 @@
                 return `(${new Intl.NumberFormat(this.currentCurrency.specificCulture, { style: 'currency', currency: this.currentCurrency.codeName }).format(tagValue)}) 
             * ${new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(this.exchangeRate)} 
             = ${new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.money)}`;
+            } else {
+                //this needs for jump from dollar back to rub
+                try {
+                    let func = compileExpression(record.tag);
+                    record.money = func("1");
+                    record.currencyRate = null;
+                    record.currencyNominal = 1;
+                    record.currencyID = this.currentCurrencyID;
+                } catch (e) { }
             }
 
-            //try {
-            //    let func = compileExpression(record.tag);
-            //    record.money = func("1");
-            //    record.currencyRate = null;
-            //    record.currencyNominal = 1;
-            //    record.currencyID = this.currentCurrencyID;
-            //} catch (e) {
-
-            //}
 
             if (record.tag == record.money) {
                 return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.money);
@@ -413,7 +413,7 @@
                                     } else {
                                         this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
                                     }
-                                    
+
                                 } catch (e) {
                                     console.log(e);
                                 }

@@ -139,7 +139,7 @@
             <div class="card-body">
                 <div class="row1">
                     <div class="col-md" v-for="(field, index) in chart.fields">
-                        <div class="card mb-3 @( currentUser.UserSettings.WebSiteTheme_CodeName == "dark" ? "bg-navbar-theme" : "background-color-lightgray") ">
+                        <div class="card mb-3 @( currentUser.UserSettings.WebSiteTheme == "dark" ? "bg-navbar-theme" : "background-color-lightgray") ">
                             <div class="card-body">
                                 <div class="form-group">
                                     <span>#{{ ++index }}</span>

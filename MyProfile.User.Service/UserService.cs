@@ -55,7 +55,7 @@ namespace MyProfile.User.Service
                 IsConfirmEmail = currentUser.IsConfirmEmail,
                 UserSettings = new UserSettingsClientSide
                 {
-                    WebSiteTheme = currentUser.UserSettings.WebSiteTheme_CodeName
+                    WebSiteTheme = currentUser.UserSettings.WebSiteTheme
                 },
                 IsAvailable = currentUser.IsAvailable,
                 Payment = new PaymentClientSide
@@ -141,7 +141,7 @@ namespace MyProfile.User.Service
                          LimitPage_Show_IsFinished = x.UserSettings.LimitPage_Show_IsFinished,
                          LimitPage_IsShow_Collective = x.UserSettings.LimitPage_IsShow_Collective,
 
-                         WebSiteTheme_CodeName = x.UserSettings.WebSiteTheme_CodeName,
+                         WebSiteTheme = x.UserSettings.WebSiteTheme,
                      }
                  })
                  .FirstOrDefaultAsync();
@@ -167,7 +167,7 @@ namespace MyProfile.User.Service
         {
             if (user != null)
             {
-                user.UserSessionID = await userLogService.CreateSession(user.ID, userActionType);
+                await userLogService.CreateUserLog(user.UserSessionID, userActionType);
 
                 await UserInfo.AddOrUpdate_Authenticate(user); // аутентификация
             }
@@ -175,14 +175,16 @@ namespace MyProfile.User.Service
         }
 
         #region Methods create/update user
-        public async Task<int> CreateUser(string email, string password)
+        public async Task<int> CreateUser(string email, string password, Guid userSessionID)
         {
             var now = DateTime.Now.ToUniversalTime();
             var passwordSalt = passwordService.GenerateSalt();
             var passwordHash = passwordService.GenerateHashSHA256(password, passwordSalt);
+            // var newUserID = Guid.NewGuid();
 
             var newUser = new Entity.Model.User
             {
+                //ID = newUserID,
                 DateCreate = now,
                 Email = email,
                 IsAllowCollectiveBudget = false,
@@ -207,7 +209,7 @@ namespace MyProfile.User.Service
                     Month_EarningWidget = true,
                     Month_InvestingWidget = true,
                     Month_SpendingWidget = true,
-                    WebSiteTheme_CodeName = WebSiteThemeEnum.Light,
+                    WebSiteTheme = WebSiteThemeEnum.Light,
                 },
                 Payment = new Payment
                 {
@@ -228,18 +230,8 @@ namespace MyProfile.User.Service
                 {
                     new ToDoListFolder
                     {
-                        Title = "Краткосрочные покупки",
+                        Title = "Покупки",
                         CssIcon = "ion ion-md-cart"
-                    },
-                    new ToDoListFolder
-                    {
-                        Title = "Среднесрочные покупки",
-                        CssIcon = "ion ion-ios-home"
-                    },
-                    new ToDoListFolder
-                    {
-                        Title = "Долгосрочные цели",
-                        CssIcon = "ion ion-md-car"
                     },
                 },
                 BudgetAreas = new List<BudgetArea> {
@@ -819,7 +811,7 @@ namespace MyProfile.User.Service
             }
             catch (Exception ex)
             {
-                await userLogService.CreateLog(newUser.ID, where: "UserSevice.CreateUser.CreateTemplate", errorText: ex.Message);
+                await userLogService.CreateErrorLog(userSessionID, where: "UserSevice.CreateUser.CreateTemplate", errorText: ex.Message);
             }
             #endregion
 
@@ -1001,7 +993,7 @@ namespace MyProfile.User.Service
             }
             catch (Exception ex)
             {
-                await userLogService.CreateLog(newUser.ID, where: "UserSevice.CreateUser.CreateTemplate", errorText: ex.Message);
+                await userLogService.CreateErrorLog(userSessionID, where: "UserSevice.CreateUser.CreateTemplate", errorText: ex.Message);
             }
             #endregion
 
@@ -1053,7 +1045,7 @@ namespace MyProfile.User.Service
             }
             catch (Exception ex)
             {
-                await userLogService.CreateLog(newUser.ID, where: "UserSevice.CreateUser.CreateChart", errorText: ex.Message);
+                await userLogService.CreateErrorLog(userSessionID, where: "UserSevice.CreateUser.CreateChart", errorText: ex.Message);
             }
             #endregion
 
@@ -1188,7 +1180,7 @@ namespace MyProfile.User.Service
             var dbUser = await repository.GetAll<Entity.Model.User>(x => x.ID == user.ID)
                 .FirstOrDefaultAsync();
 
-            user.UserSettings.WebSiteTheme_CodeName = dbUser.UserSettings.WebSiteTheme_CodeName = userSettings.WebSiteTheme_CodeName;
+            user.UserSettings.WebSiteTheme = dbUser.UserSettings.WebSiteTheme = userSettings.WebSiteTheme;
 
             await repository.UpdateAsync(dbUser, true);
             await UserInfo.AddOrUpdate_Authenticate(user);
