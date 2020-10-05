@@ -9,7 +9,6 @@ namespace MyProfile.Entity.ModelView.Limit
 		public IEnumerable<BudgetSectionModelView> Sections { get; set; } = new List<BudgetSectionModelView>();
 		public IEnumerable<BudgetSectionModelView> NewSections { get; set; } = new List<BudgetSectionModelView>();
 		public string PeriodName { get; set; }
-		public bool IsFinishLimit { get; set; }
 
         public bool IsOwner { get; set; }
         public string UserName { get; set; }

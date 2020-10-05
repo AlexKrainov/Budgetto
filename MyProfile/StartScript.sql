@@ -4,6 +4,7 @@ SET IDENTITY_INSERT [dbo].[UserTypes] ON
 
 INSERT [dbo].[UserTypes] ([ID], [CodeName]) VALUES (1, N'User')
 INSERT [dbo].[UserTypes] ([ID], [CodeName]) VALUES (2, N'Admin')
+INSERT [dbo].[UserTypes] ([ID], [CodeName]) VALUES (3, N'Tester')
 SET IDENTITY_INSERT [dbo].[UserTypes] OFF
 GO
 

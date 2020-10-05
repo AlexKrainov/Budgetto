@@ -35,7 +35,9 @@
                             <span class="input-group-prepend" style=" width: 50px;">
                                 <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
                             </span>
-                            <select id="budget-year" v-model="budgetYear" v-on:change="refresh" class="form-control">
+                            <select id="budget-year" class="form-control" 
+                                    v-model="budgetYear" 
+                                    v-on:change="refresh(undefined)">
                                 @foreach (var year in Model.Years)
                                 {
                                     <option value="@year">@year</option>
@@ -78,7 +80,7 @@
         <div class="card-body" style="padding-bottom:5px;">
             <div class="card-title with-elements">
                 <select class="form-control form-control-sm" data-style="btn-default" style="width: 300px"
-                        v-model="templateID" v-on:change="refresh">
+                        v-model="templateID" v-on:change="refresh('onlyTable')">
                     @foreach (var template in Model.Templates)
                     {
                         <option value="@template.ID">@template.Name</option>

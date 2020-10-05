@@ -249,6 +249,16 @@ var AccountSettingsVue = new Vue({
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
+
+
+        //Testing
+        generatedRecords: function () {
+            this.isSaving
+            return sendAjax("/Test/GenerateRecords", null, "GET")
+                .then(function (result) {
+                    AccountSettingsVue.isSaving = false;
+                });
+        }
     }
 });
 

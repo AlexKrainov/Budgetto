@@ -94,8 +94,11 @@ namespace MyProfile.User.Service
             try
             {
                 var userSession = await repository.GetAll<UserSession>(x => x.ID == userSessionID).FirstOrDefaultAsync();
-                userSession.LogOutDate = DateTime.Now.ToUniversalTime();
-                return await repository.UpdateAsync(userSession, true);
+                if (userSession != null)
+                {
+                    userSession.LogOutDate = DateTime.Now.ToUniversalTime();
+                    return await repository.UpdateAsync(userSession, true); 
+                }
             }
             catch (Exception ex)
             {

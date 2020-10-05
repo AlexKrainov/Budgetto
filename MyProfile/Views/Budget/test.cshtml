@@ -123,8 +123,8 @@
                     </section>
                 </div>
                 <div class="modal-footer">
-                    <a href="void:javascript(0)" v-show="showHistory == false" v-on:click="showHistory = true;">History</a>
-                    <a href="void:javascript(0)" v-show="showHistory == true" v-on:click="showHistory = false;">Add record</a>
+                    <a href="javascript:void(0)" v-show="showHistory == false" v-on:click="showHistory = true;">History</a>
+                    <a href="javascript:void(0)" v-show="showHistory == true" v-on:click="showHistory = false;">Add record</a>
                     <div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="isShowCollectionElement">
                         <label class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" v-model="isShowInCollection">

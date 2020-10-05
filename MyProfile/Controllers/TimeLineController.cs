@@ -19,11 +19,7 @@ namespace MyProfile.Controllers
         {
             TimeLineViewModel model = new TimeLineViewModel();
 
-            model.Years = await repository.GetAll<BudgetRecord>(x => x.UserID == UserInfo.Current.ID)
-                .Select(x => x.DateTimeOfPayment.Year)
-                .GroupBy(x => x)
-                .Select(x => new YearsAndCount { year = x.Key })
-                .ToListAsync();
+            model.Years = (await budgetRecordService.GetAllYears()).Select(x => new YearsAndCount { year = x }).ToList();
             model.Sections = await sectionService.GetAllSectionByUser();
 
             await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.TimeLine_Page);

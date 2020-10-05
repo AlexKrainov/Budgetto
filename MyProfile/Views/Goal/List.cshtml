@@ -67,18 +67,18 @@
                 </div>
                 <hr class="m-0">
                 <div class="card-footer p-3">
-                    <a href="void:javascript(0)" class="btn btn-primary btn-sm" v-on:click="edit(goal)" v-if="goal.isOwner">
+                    <a href="javascript:void(0)" class="btn btn-primary btn-sm" v-on:click="edit(goal)" v-if="goal.isOwner">
                         <i class="far fa-edit pr-2"></i>Редактировать
                     </a>
-                    <a href="void:javascript(0)" title="Добавить деньги" class="btn icon-btn btn-sm btn-outline-secondary"
+                    <a href="javascript:void(0)" title="Добавить деньги" class="btn icon-btn btn-sm btn-outline-secondary"
                        v-on:click="addMoney(goal)" v-show="!goal.isFinished">
                         <i class="fas fa-plus"></i>
                     </a>
-                    <a href="void:javascript(0)" title="Посмотреть историю" class="btn icon-btn btn-sm btn-outline-secondary"
+                    <a href="javascript:void(0)" title="Посмотреть историю" class="btn icon-btn btn-sm btn-outline-secondary"
                        v-on:click="edit(goal, true)">
                         <i class="fas fa-history"></i>
                     </a>
-                    <a href="void:javascript(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-if="goal.isOwner" v-on:click="remove(goal)">
+                    <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-if="goal.isOwner" v-on:click="remove(goal)">
                         <span class="ion ion-md-trash"></span>
                     </a>
                     <div class="d-inline-flex align-items-center align-middle float-right" v-if="!goal.isOwner">

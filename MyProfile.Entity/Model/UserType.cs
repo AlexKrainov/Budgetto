@@ -8,7 +8,8 @@ namespace MyProfile.Entity.Model
 	public enum UserTypeEnum
 	{
 		User = 1,
-		Admin = 2
+		Admin = 2,
+		Tester = 3,
 	}
 	public class UserType
 	{

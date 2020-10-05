@@ -43,36 +43,6 @@ namespace MyProfile.Controllers
             this.sectionService = sectionService;
             this.budgetRecordService = budgetRecordService;
             this.userLogService = userLogService;
-            //	new BudgetRecord
-            //	{
-            //		Total = 140,
-            //		BudgetSectionID = 8,
-            //		DateTimeCreate = DateTime.Now,
-            //		DateTimeEdit = DateTime.Now,
-            //		DateTimeOfPayment = new DateTime(2020,03,04),
-            //		Description = "descritioin",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D")
-            //	},
-            //}, true);
-
-            var t = repository.GetAll<BudgetRecord>().ToList();
-        }
-
-        public async Task<JsonResult> GetBudget(int templateID)
-        {
-            DateTime start = new DateTime(2020, 01, 01);
-            DateTime finish = new DateTime(2020, 01, 31);
-
-            //var template = await templateService.GetTemplateByID(x => x.ID == 3 && x.UserID == UserInfo.UserID);
-            //var budgetDataForTable = budgetService.GetBudgetDataByDays(start, finish, template);
-
-            //DateTime start = new DateTime(2020, 01, 01);
-            //DateTime finish = new DateTime(2020, 12, 31);
-
-            var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.Current.ID);
-            var budgetDataForTable = budgetService.GetBudgetData(start, finish, template);
-
-            return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
         }
 
         [HttpGet]

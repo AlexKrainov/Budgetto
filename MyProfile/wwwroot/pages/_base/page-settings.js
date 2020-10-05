@@ -49,7 +49,7 @@
                 dataType: 'json',
                 context: this,
                 success: function (response) {
-                    let actions = this.isCallActions ? this.acthions : this.partActions;
+                    let actions = this.isCallActions ? this.actions : this.partActions;
                     for (var i = 0; i < actions.length; i++) {
                         UserVue.callMethod(actions[i]);
                     }

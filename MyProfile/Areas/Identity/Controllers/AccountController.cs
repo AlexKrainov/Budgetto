@@ -49,7 +49,7 @@ namespace MyProfile.Areas.Identity.Controllers
         public async Task<IActionResult> Stat([FromBody] UserStatViewModel personData)
         {
             Guid userSessionID = await userLogService.CreateSession(personData);
-           
+
             return Json(new { isOk = true, userSessionID });
         }
 
@@ -109,7 +109,7 @@ namespace MyProfile.Areas.Identity.Controllers
             await userLogService.UserSessionLogOut(currentUser.UserSessionID, currentUser.ID);
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account", new { userSessionID = currentUser.UserSessionID });
+            return RedirectToAction("Login", "Account");//, new { userSessionID = currentUser.UserSessionID });
         }
 
 
@@ -172,7 +172,7 @@ namespace MyProfile.Areas.Identity.Controllers
             {
                 await userLogService.CreateUserLog(login.UserSessionID, UserLogActionType.RecoveryPassword_Step1, $"The user did not find (email = {login.Email})");
 
-                return Json(new { isOk = false, message = $"Не удалось найти пользователя с такой почтой. Пожалуйста зарегистрируйтесь " });
+                return Json(new { isOk = false, message = $"Не удалось найти пользователя с такой почтой. Пожалуйста, зарегистрируйтесь" });
             }
 
             var emailID = await userEmailService.RecoveryPassword(user);
@@ -186,7 +186,7 @@ namespace MyProfile.Areas.Identity.Controllers
             }
             await userLogService.CreateUserLog(login.UserSessionID, UserLogActionType.RecoveryPassword_Step1, $"Problem when send recovery password (email = {login.Email})");
 
-            return Json(new { isOk = false, message = "Извините, произошла ошибка во время восстановления пароля. Пожалуйста попробуйте позже." });
+            return Json(new { isOk = false, message = "Извините, произошла ошибка во время восстановления пароля. Пожалуйста, попробуйте позже." });
         }
         [HttpPost]
         [AllowAnonymous]
@@ -230,13 +230,13 @@ namespace MyProfile.Areas.Identity.Controllers
                 if (userID == Guid.Empty)
                 {
                     await userLogService.CreateUserLog(checkCodeModel.UserSessionID, UserLogActionType.CheckCode);
-                    return Json(new { isOk = false, message = "Неверный код. Попробуйте еще." });
+                    return Json(new { isOk = false, message = "Неверный код. Попробуйте еще раз." });
                 }
             }
             catch (Exception ex)
             {
                 await userLogService.CreateUserLog(checkCodeModel.UserSessionID, UserLogActionType.CheckCode, $"Error: {ex.Message}");
-                return Json(new { isOk = false, message = "Неверный код. Попробуйте еще." });
+                return Json(new { isOk = false, message = "Неверный код. Попробуйте еще раз." });
             }
 
             if (checkCodeModel.LastActionID == 2)//recoveryPassword

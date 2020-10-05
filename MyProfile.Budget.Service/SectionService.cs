@@ -271,12 +271,31 @@ namespace MyProfile.Budget.Service
             return new Tuple<bool, bool, string>(true, false, "Не удалось удалить!");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sectionID"></param>
+        /// <returns>
+        /// 1- isOk
+        /// 2- wasDeleted
+        /// 3- text 
+        /// </returns>
         public async Task<Tuple<bool, bool, string>> DeleteSection(int sectionID)
         {
+            string s = "";
             var currentUser = UserInfo.Current;
             var budgetSection = await repository.GetAll<BudgetSection>()
                 .Where(x => x.ID == sectionID && x.BudgetArea.UserID == currentUser.ID)
                 .FirstOrDefaultAsync();
+
+            if (budgetSection != null && budgetSection.TemplateBudgetSections != null || budgetSection.TemplateBudgetSections.Count() > 0)
+            {
+                s += "Эта категория используется в шаблонах.";
+            }
+            else if (budgetSection != null && budgetSection.SectionGroupLimits != null || budgetSection.SectionGroupLimits.Count() > 0)
+            {
+                s += " Эта категоия используется в лимитах";
+            }
 
             if (budgetSection != null && (budgetSection.BudgetRecords == null || budgetSection.BudgetRecords.Count() == 0))
             {
@@ -287,7 +306,7 @@ namespace MyProfile.Budget.Service
                 }
                 catch (Exception ex)
                 {
-                    return new Tuple<bool, bool, string>(false, false, "Не удалось удалить !");
+                    return new Tuple<bool, bool, string>(false, false, "Не удалось удалить ! " + s);
                 }
                 return new Tuple<bool, bool, string>(true, true, "Удаление прошло успешно");
             }

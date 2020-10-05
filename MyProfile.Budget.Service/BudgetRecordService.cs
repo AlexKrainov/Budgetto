@@ -296,6 +296,7 @@ namespace MyProfile.Budget.Service
         {
             return await repository.GetAll<BudgetRecord>(x => x.UserID == UserInfo.Current.ID)
                 .GroupBy(x => x.DateTimeOfPayment.Year)
+                .OrderBy(x => x.Key)
                 .Select(x => x.Key)
                 .ToListAsync();
         }

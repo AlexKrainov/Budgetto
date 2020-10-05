@@ -19,7 +19,7 @@
 }
 <div class="authentication-wrapper authentication-3" id="login-vue" data-user-session-id="@Model">
     <div class="authentication-inner">
-        <div class="d-none d-lg-flex col-lg-8 align-items-center ui-bg-cover ui-bg-overlay-container p-5" style="background-image: url('/img/bg/21.jpg');">
+        <div class="d-none d-lg-flex col-lg-8 align-items-center ui-bg-cover ui-bg-overlay-container p-5" style="background-image: url('/img/login-foto.jpg');">
             <div class="ui-bg-overlay bg-dark opacity-50"></div>
             <div class="w-100 text-white px-5">
                 <h1 class="display-2 font-weight-bolder mb-4">JOIN OUR<br>COMMUNITY</h1>
@@ -82,7 +82,7 @@
                             </button>
                         </div>
                         <div class="text-center text-muted mt-4">
-                            Если у вас еще нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(login.id,registration.id)">Зарегистрироваться</a>
+                            Еще не с нами? <a href="javascript:void(0)" v-on:click="changeView(login.id,registration.id)">Зарегистрируйтесь</a>
                         </div>
                     </form>
                     <!-- / login -->
@@ -112,7 +112,7 @@
                                 </span>
                             </div>
                             <small class="form-text text-muted">
-                                Пароль должен содержать больше 5 символов
+                                Пароль должен содержать более 5 символов
                             </small>
                             <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
                         </div>
@@ -123,19 +123,19 @@
                             Зарегистрироваться
                         </button>
                         <div class="text-center text-muted mt-4">
-                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(registration.id,login.id)">Авторизоваться</a>
+                            <a href="javascript:void(0)" v-on:click="changeView(registration.id,login.id)">Авторизуйтесь</a>, если у вас уже есть аккаунт
                         </div>
                         <div class="text-center text-muted mt-4">
-                            Нажимая на кнопку "Зарегистрироваться" даю согласие на обработку своих персональных данных согласно
+                            Нажимая на кнопку "Зарегистрироваться", вы даете согласие на обработку своих персональных данных согласно
                             <a href="#">Политике обработки персональных данных</a> данного сервиса
-                            и принимаю условия <a href="#">Пользовательского соглашения</a>
+                            и принимаете условия <a href="#">Пользовательского соглашения</a>
                         </div>
                     </form>
                     <!-- / registration -->
                     <!-- recoveryPassword -->
                     <form class="my-5" v-show="recoveryPassword.isShow">
                         <p>
-                            Введите ваш email и мы вышлем вам на почту письмо с кодом
+                            Введите ваш email и мы вышлем вам на почту письмо с кодом восстановления
                         </p>
                         <div class="form-group">
                             <input type="text" class="form-control" v-model="email" tabindex="1"
@@ -150,8 +150,9 @@
                             Отправить письмо
                         </button>
                         <div class="text-center text-muted mt-4">
-                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword.id, login.id)">Авторизоваться</a>
-                            или если нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword.id, registration.id)">Зарегистрироваться</a>
+                            <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword.id,login.id)">Авторизуйтесь</a>, если у вас уже есть аккаунт
+                            <br />
+                            Еще не с нами? <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword.id,registration.id)">Зарегистрируйтесь</a>
                         </div>
                     </form>
                     <!-- / recoveryPassword -->
@@ -183,26 +184,29 @@
                                 v-bind:disabled="isSaving"
                                 v-on:click="onSetNewPassword">
                             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
-                            Обновть пароль
+                            Обновить пароль
                         </button>
                         <div class="text-center text-muted mt-4">
-                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword2.id, login.id)">Авторизоваться</a>
-                            или если нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword2.id, registration.id)">Зарегистрироваться</a>
+                            <div class="text-center text-muted mt-4">
+                                <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword2.id,login.id)">Авторизуйтесь</a>, если у вас уже есть аккаунт
+                                <br />
+                                Еще не с нами? <a href="javascript:void(0)" v-on:click="changeView(recoveryPassword2.id,registration.id)">Зарегистрируйтесь</a>
+                            </div>
                         </div>
                     </form>
                     <!-- / recoveryPassword -->
                     <!-- enterCode -->
                     <form class="my-5" method="post" v-show="enterCode.isShow">
                         <p>
-                            Вам на почту было отправлено письмо. Пожалуйста введите <b>код </b>из письма.
-                        </p>
+                            На вашу почту было отправлено письмо с <b>кодом подтверждения</b>. Пожалуйста, введите этот код в строку ниже.
+</p>
                         <div class="form-group">
                             <div class="input-group">
                                 <input type="number" class="form-control" min="" max="9999" maxlength="4"
                                        v-model="enterCode.code"
                                        v-on:keypress="kaypress"
                                        v-bind:class="isValidCode ? '' : 'is-invalid'">
-                                <span class="input-group-append">
+                                <span class="input-group-append" title="Отправить повторно">
                                     <button class="btn btn-outline-secondary" type="button" title="Отправить повторно" style="border-radius: 0px 4px 4px 0px;"
                                             v-on:click="resend"
                                             v-bind:disabled="enterCode.canResend == false">
@@ -222,8 +226,9 @@
                             Проверить
                         </button>
                         <div class="text-center text-muted mt-4">
-                            Если у вас уже есть аккаунт <a href="javascript:void(0)" v-on:click="changeView(enterCode.id, login.id)">Авторизоваться</a>
-                            или если нет аккаунта <a href="javascript:void(0)" v-on:click="changeView(enterCode.id, registration.id)">Зарегистрироваться</a>
+                            <a href="javascript:void(0)" v-on:click="changeView(enterCode.id,login.id)">Авторизуйтесь</a>, если у вас уже есть аккаунт
+                            <br />
+                            Еще не с нами? <a href="javascript:void(0)" v-on:click="changeView(enterCode.id,registration.id)">Зарегистрируйтесь</a>
                         </div>
                     </form>
                     <!-- / enterCode -->

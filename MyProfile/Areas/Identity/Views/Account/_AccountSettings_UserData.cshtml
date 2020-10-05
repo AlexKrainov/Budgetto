@@ -58,6 +58,14 @@
     </div>
 </div>
 <div class="card-footer">
+    <div class="text-left">
+        <button class="btn btn-danger" type="button"
+                v-bind:disabled="isSaving"
+                v-on:click="generatedRecords">
+            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+            Generated records
+        </button>&nbsp;
+    </div>
     <div class="text-right">
         <button type="button" class="btn btn-primary"
                 v-on:click="saveUserInfo"

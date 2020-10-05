@@ -446,7 +446,7 @@
             //    "onlyTable",
             //    "runtimeData",
             //];
-            if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData") {
+            if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData" || typeRefresh == "all") {
                 ShowLoading(".table-container");
                 this.load()
                     .then(function () {
