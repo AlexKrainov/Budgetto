@@ -1,0 +1,15 @@
+﻿<div class="card-body">
+    <div class="mt-2">
+        <button class="btn btn-danger" type="button"
+                v-bind:disabled="isSaving"
+                v-on:click="generatedRecords">
+            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+            Генерация записей за 2 последних года
+        </button>&nbsp;
+    </div>
+</div>
+<div class="card-footer">
+    <div class="text-right">
+       
+    </div>
+</div>

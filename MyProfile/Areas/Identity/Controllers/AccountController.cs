@@ -151,7 +151,6 @@ namespace MyProfile.Areas.Identity.Controllers
 
                     user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Registration);
                     return Json(new { isOk = true, isShowCode = false, href = "/Budget/Month" });
-
                 }
                 catch (Exception ex)
                 {

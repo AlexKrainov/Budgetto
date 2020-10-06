@@ -1,6 +1,7 @@
 @{
     ViewData["Title"] = "Account settings - Pages";
     Layout = "~/Views/Shared/Layouts/_Layout1.cshtml";
+    var currentUser = MyProfile.Identity.UserInfo.Current;
 }
 
 @section Styles {
@@ -35,7 +36,12 @@
                 <a class="list-group-item list-group-item-action not-dark active" data-toggle="list" href="#account-general">Персональные данные</a>
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-settings">Общие настройки</a>
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#account-change-password">Смена пароля</a>
-                <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#collective-budget">Коллективные настройки</a>
+                @*<a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#collective-budget">Коллективные настройки</a>*@
+                @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
+                 || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+                {
+                    <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#admin-menu-budget">МЕНЮ АДМИНА</a>
+                }
             </div>
         </div>
         <div class="col-md-9">
@@ -49,9 +55,16 @@
                 <div class="tab-pane fade" id="account-change-password">
                     @await Html.PartialAsync("_AccountSettings_ChangePassword")
                 </div>
-                <div class="tab-pane fade" id="collective-budget">
+                @*<div class="tab-pane fade" id="collective-budget">
                     @await Html.PartialAsync("_AccountSettings_CollectiveBudget")
-                </div>
+                </div>*@
+                @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
+                   || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+                {
+                    <div class="tab-pane fade" id="admin-menu-budget">
+                        @await Html.PartialAsync("_AccountSettings_AdminSettings")
+                    </div>
+                }
             </div>
         </div>
     </div>
