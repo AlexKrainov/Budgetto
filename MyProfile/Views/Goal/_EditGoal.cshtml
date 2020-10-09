@@ -42,14 +42,14 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <label class="form-label">На что копим/Название цели</label>
+                                    <label class="form-label">Название цели</label>
                                     <span class="text-danger">*</span>
                                     <input type="text" class="form-control" placeholder="" v-model="goal.name" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <label class="form-label">Сколько нужно накопить ?</label>
+                                    <label class="form-label">Сколько нужно накопить?</label>
                                     <span class="text-danger">*</span>
                                     <input type="number" class="form-control" placeholder="" v-model="goal.expectationMoney" required min="0">
                                     <div class="text-muted small mt-1" v-show="goal.expectationMoney">
@@ -59,7 +59,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col mb-0">
-                                    <label class="form-label">Введите дополнительную информацию</label>
+                                    <label class="form-label">Комментарии</label>
                                     <textarea class="form-control" v-model="goal.description" placeholder=""></textarea>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                                 <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetMonth" checked>@*v-on:change="finishgoal"*@
-                                        <span class="custom-control-label">Показывать на стринице дашборда месяц</span>
+                                        <span class="custom-control-label">Показывать на странице "Бюджет на месяц"</span>
                                     </label>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
                                 <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetYear" checked>@*v-on:change="finishgoal"*@
-                                        <span class="custom-control-label">Показывать на стринице дашборда год</span>
+                                        <span class="custom-control-label">Показывать на странице "Бюджет на год"</span>
                                     </label>
                                 </div>
                             </div>
@@ -135,7 +135,7 @@
             <form class="modal-content" method="post" v-on:submit="checkAddForm">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Добавление деньги
+                        Пополнить цель
                         @*<span class="font-weight-light">Information</span>
                             <br>
                             <small class="text-muted">We need payment information to process your order.</small>*@
@@ -153,7 +153,7 @@
 
                     <div class="form-row">
                         <div class="form-group col">
-                            <label class="form-label">Сумма внесения</label>
+                            <label class="form-label">Сумма</label>
                             <span class="text-danger">*</span>
                             <input type="number" class="form-control" placeholder="1000 или -1000" v-model="record.total" required>
                             <div class="text-muted small mt-1" v-show="record.total ">

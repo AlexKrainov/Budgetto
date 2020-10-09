@@ -105,7 +105,7 @@
         <div class="card mb-3">
 
             <h6 class="card-header with-elements">
-                <div class="card-header-title">Области</div>
+                <div class="card-header-title">Папки</div>
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Поиск области" v-model="searchText">
                     <div class="input-group-append">
@@ -145,8 +145,8 @@
                         </button>
                         <div class="d-inline-flex align-items-center align-middle float-right ml-1">
                             <span class="px-1 ml-2 ml-lg-0">
-                                <span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="area.isShowOnSite"></span>
-                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="area.isShowOnSite == false"></span>
+                                @*<span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="area.isShowOnSite"></span>
+                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="area.isShowOnSite == false"></span>*@
                                 @*<span class="fas fa-users text-primary" title="Эту область выдят все" v-show="area.isShowInCollective"></span>
                                     <span class="fas fa-users-slash text-secondary" title="Эту область выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
                             </span>
@@ -204,8 +204,8 @@
                         </button>
                         <div class="d-inline-flex align-items-center align-middle float-right ml-1">
                             <span class="px-1 ml-2 ml-lg-0">
-                                <span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="section.isShowOnSite"></span>
-                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="section.isShowOnSite == false"></span>
+                                @*<span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="section.isShowOnSite"></span>
+                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="section.isShowOnSite == false"></span>*@
                                 @*<span class="fas fa-users text-primary" title="Эту категорию выдят все" v-show="section.isShowInCollective"></span>
                                     <span class="fas fa-users-slash text-secondary" title="Эту категорию выдите только вы" v-show="section.isShowInCollective == false"> </span>*@
                             </span>

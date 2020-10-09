@@ -3,7 +3,7 @@
         <form class="modal-content" method="post" v-on:submit="checkForm">
             <div class="modal-header">
                 <h5 class="modal-title" v-show="area.id == undefined">
-                    Содание области
+                    Создание области
                 </h5>
                 <h5 class="modal-title" v-show="area.id">
                     Редактирование области
@@ -25,21 +25,21 @@
                     </div>
                 </div>
                 @*<div class="form-row mt-3 ml-1">
-                    <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" v-model="area.isShowInCollective">
-                            <span class="custom-control-label">Показывать всей группе</span>
-                        </label>
-                    </div>
-                </div>*@
-                <div class="form-row mt-3 ml-1">
-                    <div class="form-group pb-0 mb-0" style=" margin-left: 0px; margin-right: auto;">
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" v-model="area.isShowOnSite">
-                            <span class="custom-control-label">Показывать везде на сайте</span>
-                        </label>
-                    </div>
-                </div>
+            <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" v-model="area.isShowInCollective">
+                    <span class="custom-control-label">Показывать всей группе</span>
+                </label>
+            </div>
+        </div>
+        <div class="form-row mt-3 ml-1">
+            <div class="form-group pb-0 mb-0" style=" margin-left: 0px; margin-right: auto;">
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" v-model="area.isShowOnSite">
+                    <span class="custom-control-label">Показывать везде на сайте</span>
+                </label>
+            </div>
+        </div>*@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

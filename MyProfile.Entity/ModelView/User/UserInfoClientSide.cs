@@ -13,6 +13,7 @@ namespace MyProfile.Entity.ModelView.User
         public string ImageLink { get; set; }
         public bool IsAllowCollectiveBudget { get; set; }
         public int CurrencyID { get; set; }
+        public string ImageBase64 { get; set; }
 
         public virtual UserSettingsClientSide UserSettings { get; set; }
         public virtual CurrencyClientSide Currency { get; set; }

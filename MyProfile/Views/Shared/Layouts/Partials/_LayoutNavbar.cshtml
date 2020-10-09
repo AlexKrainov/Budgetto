@@ -9,7 +9,7 @@
 <nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x bg-navbar-theme" id="layout-navbar">
 
     <!-- Brand demo (see wwwroot/css/demo/demo.css) -->
-    <a asp-area="" asp-controller="Dashboards" asp-action="Dashboard1" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
+    <a asp-area="" asp-controller="Bubget" asp-action="Month" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
         @*<span class="app-brand-logo demo bg-primary">
             <img src="~/img/Logo-min.svg" />
 
@@ -53,7 +53,7 @@
         <div class="navbar-nav align-items-lg-center ml-auto">
 
             <a class="nav-link cursor-pointer" onclick="RecordVue.addRecord()" title="Добавить запись">
-                <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);"></i>
+                <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
                 <span class="d-lg-none align-middle">&nbsp; Добавить запись</span>
             </a>
 

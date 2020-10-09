@@ -264,11 +264,11 @@ namespace MyProfile.Budget.Service
                 }
                 catch (Exception ex)
                 {
-                    return new Tuple<bool, bool, string>(false, false, "Не удалось удалить !");
+                    return new Tuple<bool, bool, string>(false, false, "Не удалось удалить область");
                 }
                 return new Tuple<bool, bool, string>(true, true, "Удаление прошло успешно");
             }
-            return new Tuple<bool, bool, string>(true, false, "Не удалось удалить!");
+            return new Tuple<bool, bool, string>(true, false, "Не удалось удалить область");
         }
 
         /// <summary>
@@ -306,11 +306,11 @@ namespace MyProfile.Budget.Service
                 }
                 catch (Exception ex)
                 {
-                    return new Tuple<bool, bool, string>(false, false, "Не удалось удалить ! " + s);
+                    return new Tuple<bool, bool, string>(false, false, "Не удалось удалить категорию " + s);
                 }
                 return new Tuple<bool, bool, string>(true, true, "Удаление прошло успешно");
             }
-            return new Tuple<bool, bool, string>(true, false, "Не удалось удалить!");
+            return new Tuple<bool, bool, string>(true, false, "Не удалось удалить категорию");
         }
         #endregion
     }

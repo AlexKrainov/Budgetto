@@ -30,15 +30,15 @@
     <ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
         <li class="nav-item">
             <a v-bind:class="['nav-link', activeChartPeriodTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
-               v-on:click="activeChartPeriodTypeID = -1; reloadView()">Все лимиты</a>
+               v-on:click="activeChartPeriodTypeID = -1; reloadView()">Все графики</a>
         </li>
         <li class="nav-item">
             <a v-bind:class="['nav-link', activeChartPeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
-               v-on:click="activeChartPeriodTypeID = 1; reloadView()">По дням</a>
+               v-on:click="activeChartPeriodTypeID = 1; reloadView()">По месяцам</a>
         </li>
         <li class="nav-item">
             <a v-bind:class="['nav-link', activeChartPeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
-               v-on:click="activeChartPeriodTypeID = 3; reloadView()">По месяцам</a>
+               v-on:click="activeChartPeriodTypeID = 3; reloadView()">По годам</a>
         </li>
     </ul>
     <div class="row" id="charts">

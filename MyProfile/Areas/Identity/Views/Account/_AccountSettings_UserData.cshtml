@@ -3,8 +3,9 @@
     <img v-bind:src="user.imageLink" alt="" class="d-block ui-w-80" v-else-if="!user.imageBase64">
     <div class="media-body ml-4">
         <label class="btn btn-outline-primary">
-            Обновить аватарку
-            <input type="file" class="account-settings-fileinput" v-on:change="encodeImageFileAsURL" accept="image/*">
+            Обновить фото профиля
+            <input type="file" class="account-settings-fileinput" v-on:change="encodeImageFileAsURL"
+                   accept=".jpg,.jpeg,.png">
         </label> &nbsp;
         @*<button type="button" class="btn btn-default md-btn-flat" v-on:click="user.imageBase64 = null; user.resourceID = null">Reset</button>*@
 
@@ -40,9 +41,26 @@
         <small class="invalid-feedback">Обязательное поле</small>
     </div>
     <div class="alert alert-danger mt-3" v-show="!user.isConfirmEmail">
-        Вы еще не подтвердили адрес электронной почты. Пожалуйста проверьте свою почту.<br>
+        Вы еще не подтвердили адрес электронной почты. Пожалуйста, проверьте свою почту.<br>
         <a href="javascript:void(0)" v-on:click="resendConfirmEmail"
-           v-bind:class="validEmail ? '' : 'disabled'">Отправить сообщение на почту.</a>
+           v-bind:class="validEmail ? '' : 'disabled'">Отправить код повторно</a>
+        или
+        <a href="javascript:void(0)" v-on:click="isShowCode = true"
+           v-bind:class="validEmail ? '' : 'disabled'">проверить код.</a>
+    </div>
+    <label class="form-label" v-show="isShowCode">Код из письма</label>
+    <div class="input-group" v-show="isShowCode">
+        <input type="number" class="form-control" min="" max="9999" maxlength="4"
+               v-model="code"
+               v-bind:class="isValidCode ? '' : 'is-invalid'">
+        <span class="input-group-append" title="Отправить повторно">
+            <button class="btn btn-outline-secondary" type="button" title="Проверить" style="border-radius: 0px 4px 4px 0px;"
+                    v-on:click="checkCode"
+                    v-bind:disabled="!(code != null && code.length == 4 && isSaving == false)">
+                Проверить введеный код
+            </button>
+        </span>
+        <small class="invalid-feedback">Введен неверный код.</small>
     </div>
     @*<div class="alert alert-danger mt-3" v-show="!user.isConfirmEmail && user.email != oldEmail">
             Нужно сохранить форму перед отправкой почты<br>

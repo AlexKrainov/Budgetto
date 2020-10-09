@@ -115,7 +115,7 @@
             setTimeout(function () {
 
                 let el_name = "#field_sections_" + ChartEditVue.fieldsCount;
-                $(el_name).select2({ placeholder: 'Продукты и тд' });
+                $(el_name).select2({ placeholder: 'Продукты, кафе, фастфуд' });
 
                 el_name = "#chart_color_" + ChartEditVue.fieldsCount;
                 $(el_name).colorPick({

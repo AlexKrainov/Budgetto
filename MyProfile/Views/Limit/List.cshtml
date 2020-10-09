@@ -34,11 +34,11 @@
         </li>
         <li class="nav-item">
             <a v-bind:class="['nav-link', activeLimitPeriodTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
-               v-on:click="activeLimitPeriodTypeID = 1; reloadView()">По дням</a>
+               v-on:click="activeLimitPeriodTypeID = 1; reloadView()">По месяцам</a>
         </li>
         <li class="nav-item">
             <a v-bind:class="['nav-link', activeLimitPeriodTypeID == 3 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
-               v-on:click="activeLimitPeriodTypeID = 3; reloadView()">По месяцам</a>
+               v-on:click="activeLimitPeriodTypeID = 3; reloadView()">По годам</a>
         </li>
     </ul>
     <div class="row" id="limits">
@@ -74,18 +74,18 @@
                         <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
                     </div>
                     @*<div class="col-3">
-            <div class="text-muted small display-inline">Начало</div>
-            <h6 class="mt-1">{{  getDateByFormat(limit.dateStart, 'MM.YYYY') }}</h6>
-        </div>
-        <div class="col-5">
-            <div class="text-muted small display-inline">Конец</div>
-            <span class="badge badge-outline-danger ml-1" v-show="limit.isFinished">Завершен</span>
-            <h6 class="mt-1" v-show="limit.dateEnd">{{  getDateByFormat(limit.dateEnd, 'MM.YYYY') }}</h6>
-        </div>*@
+                            <div class="text-muted small display-inline">Начало</div>
+                            <h6 class="mt-1">{{  getDateByFormat(limit.dateStart, 'MM.YYYY') }}</h6>
+                        </div>
+                        <div class="col-5">
+                            <div class="text-muted small display-inline">Конец</div>
+                            <span class="badge badge-outline-danger ml-1" v-show="limit.isFinished">Завершен</span>
+                            <h6 class="mt-1" v-show="limit.dateEnd">{{  getDateByFormat(limit.dateEnd, 'MM.YYYY') }}</h6>
+                        </div>*@
                     @*<div class="col-4">
-            <div class="text-muted small display-inline">Цель</div>
-            <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
-        </div>*@
+                            <div class="text-muted small display-inline">Цель</div>
+                            <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
+                        </div>*@
                 </div>
                 <hr class="m-0">
                 <div class="card-footer p-3">
@@ -95,17 +95,17 @@
                     @*<a href="/Budget/Month?templateID=8" title="Посмотреть" class="btn icon-btn btn-sm btn-outline-secondary">
                             <i class="far fa-eye"></i>
                         </a>*@
-                    <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" 
-                       v-if="limit.isOwner" 
+                    <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
+                       v-if="limit.isOwner"
                        v-on:click="remove(limit)">
                         <span class="ion ion-md-trash"></span>
                     </a>
                     <div class="d-inline-flex align-items-center align-middle float-right ml-1">
                         <span class="px-1 ml-2 ml-lg-0">
-                            <span class="fas fa-eye text-primary" title="Показывать на страницу дашборда" v-show="limit.isShowOnDashboard"></span>
-                            <span class="fas fa-eye-slash text-secondary" title="Скрывать на страницу дашборда" v-show="limit.isShowOnDashboard == false"></span>
-                            @*<span class="fas fa-users text-primary" title="Эту область выдят все" v-show="area.isShowInCollective"></span>
-                                <span class="fas fa-users-slash text-secondary" title="Эту область выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
+                            <span class="fas fa-eye text-primary" title="Показывать на главной странице" v-show="limit.isShowOnDashboard"></span>
+                            <span class="fas fa-eye-slash text-secondary" title="Не показывать на главной странице" v-show="limit.isShowOnDashboard == false"></span>
+                            @*<span class="fas fa-users text-primary" title="Эту папку выдят все" v-show="area.isShowInCollective"></span>
+                                <span class="fas fa-users-slash text-secondary" title="Эту папку выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
                         </span>
                     </div>
                     @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)

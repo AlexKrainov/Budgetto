@@ -529,7 +529,6 @@ namespace MyProfile.User.Service
                             new BudgetSection
                             {
                                 Name = "Стоматология",
-                                Description = "Краткосрочные покупки в магазинах",
                                 CodeName = "Dentistry",
                                 CssIcon = "fas fa-tooth",
                                 CssColor = "rgba(24,28,33,0.8)",
@@ -749,7 +748,7 @@ namespace MyProfile.User.Service
                                 },
                                 new TemplateColumn
                                 {
-                                    Name = "Прочи расходы",
+                                    Name = "Прочие расходы",
                                     Order = 2,
                                     IsShow = true,
                                     Formula = RecreationFormula,
@@ -796,7 +795,7 @@ namespace MyProfile.User.Service
                                     TemplateBudgetSections = IncomeSections.Select(x => new Entity.Model.TemplateBudgetSection{ BudgetSectionID = x.BudgetSectionID}).ToList()
                                 },
                                 new TemplateColumn {
-                                    Name = "Внебюджета",
+                                    Name = "Внебюджет",
                                     Order = 6,
                                     IsShow = true,
                                     Formula = NotBudgetFormula,
@@ -908,7 +907,7 @@ namespace MyProfile.User.Service
                                 },
                                 new TemplateColumn
                                 {
-                                    Name = "Прочи расходы",
+                                    Name = "Прочие расходы",
                                     Order = 2,
                                     IsShow = true,
                                     Formula = RecreationFormula,
@@ -955,7 +954,7 @@ namespace MyProfile.User.Service
                                     TemplateBudgetSections = IncomeSections.Select(x => new Entity.Model.TemplateBudgetSection{ BudgetSectionID = x.BudgetSectionID}).ToList()
                                 },
                                 new TemplateColumn {
-                                    Name = "Внебюджета",
+                                    Name = "Внебюджет",
                                     Order = 6,
                                     IsShow = true,
                                     Formula = NotBudgetFormula,
@@ -1115,8 +1114,8 @@ namespace MyProfile.User.Service
                 .FirstOrDefaultAsync();
             string oldEmail = new string(dbUser.Email);
 
-            dbUser.Name = user.Name = userInfoModel.Name;
-            dbUser.LastName = user.LastName = userInfoModel.LastName;
+            dbUser.Name = user.Name = userInfoModel.Name.Trim();
+            dbUser.LastName = user.LastName = userInfoModel.LastName.Trim();
             dbUser.Email = user.Email = userInfoModel.Email;
 
 

@@ -207,6 +207,28 @@ namespace Email.Service
             return Guid.Empty;
         }
 
+        public async Task<bool> CheckCode(string email, int code)
+        {
+            var mailLog = await _repository.GetAll<MailLog>(x => x.Email == email)
+                .OrderByDescending(t => t.SentDateTime)
+                .FirstOrDefaultAsync();
+
+            if (mailLog != null && mailLog.Code == code)
+            {
+                mailLog.CameDateTime = DateTime.Now.ToUniversalTime();
+
+                if ((mailLog.UserID == null || mailLog.UserID == Guid.Empty)
+                    && !string.IsNullOrEmpty(mailLog.Email))
+                {
+                    mailLog.UserID = await _repository.GetAll<User>(x => x.Email == mailLog.Email).Select(x => x.ID).FirstOrDefaultAsync();
+                }
+
+                await _repository.UpdateAsync(mailLog, true);
+                return true;
+            }
+            return false;
+        }
+
         public async Task<Guid> CancelLastEmail(Guid emailID)
         {
             var mailLog = await _repository.GetAll<MailLog>(x => x.ID == emailID).FirstOrDefaultAsync();

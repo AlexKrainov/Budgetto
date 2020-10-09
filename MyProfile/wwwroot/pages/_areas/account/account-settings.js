@@ -18,7 +18,8 @@ var AccountSettingsVue = new Vue({
     data: {
         user: {
             userSettings: {},
-            payment: {}
+            payment: {},
+            imageBase64: null
         },
         oldTheme: "",
         oldEmail: null,
@@ -33,11 +34,14 @@ var AccountSettingsVue = new Vue({
         collectiveUsers: [],
         collectiveRequests: [],
         offers: [],
+        code: null,
 
         //metadate
         isSaving: false,
         isValidPassword: true,
         isHiddenPassword: true,
+        isValidCode: true,
+        isShowCode: false,
     },
     computed: {
         validName: function () {
@@ -93,25 +97,37 @@ var AccountSettingsVue = new Vue({
             if (this.validName && this.validEmail) {
                 this.isSaving = true;
 
-                if (this.user.email != this.oldEmail) {
-                    this.user.isConfirmEmail = false;
-                }
-
-                return sendAjax("/Identity/Account/SaveUserInfo", this.user, "POST")
-                    .then(function (result) {
+                return $.ajax({
+                    type: "POST",
+                    url: "/Identity/Account/SaveUserInfo",
+                    context: this,
+                    data: JSON.stringify(this.user),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (response) {
                         if (result.isOk) {
                             $("#userImageLink").prop("src", result.user.imageLink);
                             $("#userName").text(result.user.name + " " + result.user.lastName);
 
-                            AccountSettingsVue.user = result.user;
-                            AccountSettingsVue.oldEmail = result.user.email;
-                            AccountSettingsVue.isSaving = false;
+                            if (this.user.email != this.oldEmail) {
+                                this.user.isConfirmEmail = false;
+                                this.isShowCode = true;
+                            }
+
+                            this.user = result.user;
+                            this.oldEmail = result.user.email;
+                            this.isSaving = false;
 
                         }
-                    });
-            } else {
-                console.log("not save");
+                        return
+                    },
+                    error: function (xhr, status, error) {
+                        this.isSaving = false;
+                        console.log(error);
+                    }
+                });
             }
+
         },
         encodeImageFileAsURL: function (event) {
             var file = event.target.files[0];
@@ -122,6 +138,38 @@ var AccountSettingsVue = new Vue({
                 //console.log('RESULT', reader.result)
             }
             reader.readAsDataURL(file);
+        },
+        checkCode: function () {
+            if (!(this.code && this.code.length == 4)) {
+                this.isValidCode = false;
+                return false;
+            }
+            this.isValidCode = true;
+            this.isSaving = true;
+
+            return $.ajax({
+                type: "GET",
+                url: "/Identity/Account/CheckCodeAfterChangeEmail?code=" + this.code,
+                context: this,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.isOk) {
+                        this.code = null;
+                        this.isValidCode = true;
+                        this.isShowCode = false;
+                        this.user.isConfirmEmail = true;
+                    } else {
+                        this.isValidCode = false;
+                    }
+                    this.isSaving = false;
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    this.isSaving = false;
+                    console.log(error);
+                }
+            });
         },
 
         //Change password tab

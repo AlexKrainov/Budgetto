@@ -47,7 +47,7 @@
                     </div>*@
                 <div class="form-row mt-3 " v-if="section.id">
                     <div class="form-group col mb-0">
-                        <label class="form-label">Сменить область</label>
+                        <label class="form-label">Сменить папку</label>
                         <select class="form-control" v-on:change="changeArea($event)">
                             <option v-for="area in areas" v-bind:value="area.id" v-bind:selected="area.id == section.areaID">{{ area.name }}</option>
                         </select>
@@ -66,7 +66,7 @@
                     <div class="card mb-2">
                         <div class="card-header">
                             <a class="d-flex justify-content-between text-body" data-toggle="collapse" href="#accordion2-1">
-                                Выберите подходящий цвет для категории
+                                Выбор цвета для категории
                                 <div class="picker margin-right mr-3" style="width: 50px;" v-bind:style="'background-color:' + section.cssBackground"></div>
                                 <div class="collapse-icon"></div>
                             </a>
@@ -119,14 +119,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row mt-3 ml-1">
+                @*<div class="form-row mt-3 ml-1">
                     <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
                         <label class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" v-model="section.isShowOnSite">
                             <span class="custom-control-label">Показывать везде на сайте</span>
                         </label>
                     </div>
-                </div>
+                </div>*@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

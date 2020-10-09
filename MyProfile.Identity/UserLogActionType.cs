@@ -16,6 +16,7 @@
         public const string RecoveryPassword_Step2 = "RecoveryPassword_Step2";
         public const string EnterCode = "EnterCode";
         public const string CheckCode = "CheckCode";
+        public const string CheckCodeAfterChangeEmail = "CheckCodeAfterChangeEmail";
         public const string ResendEmail = "ResendEmail";
 
         public const string BudgetMonth_Page = "BudgetMonth_Page";

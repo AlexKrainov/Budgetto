@@ -14,17 +14,11 @@
                         <div class="form-group col">
                             <div class="input-group">
                                 <span class="input-group-prepend">
-                                    <button v-on:click="addDays(-7)" class="btn btn-default modal-record-date-button" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left font-size-large" aria-hidden="true"></i></button>
-                                </span>
-                                <span class="input-group-prepend">
                                     <button v-on:click="addDays(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
                                 </span>
                                 <input type="text" class="form-control record-date" id="record-date" v-model="dateTimeOfPayment">
                                 <span class="input-group-append">
                                     <button v-on:click="addDays(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
-                                </span>
-                                <span class="input-group-append">
-                                    <button v-on:click="addDays(7)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right font-size-large" aria-hidden="true"></i></button>
                                 </span>
                             </div>
                         </div>
@@ -47,7 +41,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <small class="text-muted">Двойное нажатие для редактирования</small>
+                                <small class="text-muted">Чтобы изменить сумму, нажмите на нее два раза</small>
                             </div>
                         </div>
                         <div id="currency-container" class="form-inline mb-4" v-show="currentCurrencyID != 1">
@@ -56,7 +50,7 @@
                                        v-model="isUseBankRate"
                                        v-on:change="getRate">
                                 <div class="form-check-label">
-                                    Брать курс из цб на эту дату
+                                    Конвертировать по курсу ЦБ на текущую дату
                                 </div>
                             </label>
                             <div class="input-group text-right">
@@ -613,3 +607,10 @@
         }
     }
 });
+
+//<span class="input-group-prepend">
+//                                    <button v-on:click="addDays(-7)" class="btn btn-default modal-record-date-button" type="button" title="Минус 7 дней"><i class="fa fa-angle-double-left font-size-large" aria-hidden="true"></i></button>
+//                                </span>
+ //<span class="input-group-append">
+ //                                   <button v-on:click="addDays(7)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 7 дней"><i class="fa fa-angle-double-right font-size-large" aria-hidden="true"></i></button>
+ //                               </span>

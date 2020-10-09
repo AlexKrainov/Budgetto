@@ -9,11 +9,11 @@
     </div>
     <div class="card-body">
         <div class="form-group">
-            <label class="form-label">Название напоминания</label>
+            <label class="form-label">Название</label>
             <span class="text-danger">*</span>
             <input type="text"
                    class="form-control"
-                   placeholder="День рождение Василия"
+                   placeholder="День рождения Василия"
                    id="reminderTitle"
                    v-model="reminder.title">
             <small class="invalid-feedback">Обязательное поле</small>
@@ -63,7 +63,7 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label">Начало</label>
+            <label class="form-label">Дата</label>
             <span class="text-danger">*</span>
             <input type="text" class="form-control" id="reminderDateReminder" v-model="reminder.dateReminder">
             <small class="invalid-feedback">Обязательное поле</small>

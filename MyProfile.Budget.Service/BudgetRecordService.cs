@@ -81,27 +81,37 @@ namespace MyProfile.Budget.Service
                     catch (Exception ex)
                     {
                         record.IsSaved = false;
+
+                        await userLogService.CreateErrorLog(currentUser.UserSessionID, "BudgetRecord_Create", ex.Message);
                     }
 
                     isCreate = true;
                 }
                 else
                 {//edit
-                    var dbRecord = repository.GetByID<BudgetRecord>(record.ID);
+                    try
+                    {
+                        var dbRecord = repository.GetByID<BudgetRecord>(record.ID);
 
-                    dbRecord.BudgetSectionID = record.SectionID;
-                    dbRecord.Total = record.Money;
-                    dbRecord.RawData = record.Tag;
-                    dbRecord.DateTimeOfPayment = budgetRecord.DateTimeOfPayment;
-                    dbRecord.Description = record.Description;
-                    dbRecord.CurrencyID = record.CurrencyID;
-                    dbRecord.CurrencyNominal = record.CurrencyNominal ?? 1;
-                    dbRecord.CurrencyRate = record.CurrencyRate;
-                    dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
-                    dbRecord.DateTimeEdit = now;
+                        dbRecord.BudgetSectionID = record.SectionID;
+                        dbRecord.Total = record.Money;
+                        dbRecord.RawData = record.Tag;
+                        dbRecord.DateTimeOfPayment = budgetRecord.DateTimeOfPayment;
+                        dbRecord.Description = record.Description;
+                        dbRecord.CurrencyID = record.CurrencyID;
+                        dbRecord.CurrencyNominal = record.CurrencyNominal ?? 1;
+                        dbRecord.CurrencyRate = record.CurrencyRate;
+                        dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
+                        dbRecord.DateTimeEdit = now;
 
-                    repository.Update(dbRecord, true);
-                    isEdit = true;
+                        repository.Update(dbRecord, true);
+                        isEdit = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        record.IsSaved = false;
+                        await userLogService.CreateErrorLog(currentUser.UserSessionID, "BudgetRecord_Edit", ex.Message);
+                    }
                 }
             }
             if (isEdit)

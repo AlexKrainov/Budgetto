@@ -58,7 +58,7 @@ namespace MyProfile.Areas.Identity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
-            var user = await userService.CheckAndGetUser(login.Email, login.Password);
+            var user = await userService.CheckAndGetUser(login.Email.Trim(), login.Password.Trim());
 
             //check limit enter 20 times
             if (user != null && await userLogService.CheckLimitEnter())
@@ -119,17 +119,17 @@ namespace MyProfile.Areas.Identity.Controllers
         {
             if (!string.IsNullOrEmpty(registrationModel.Email) && !string.IsNullOrEmpty(registrationModel.Password))
             {
-                if (await repository.AnyAsync<Entity.Model.User>(x => x.Email == registrationModel.Email && x.IsDeleted == false))
+                if (await repository.AnyAsync<Entity.Model.User>(x => x.Email == registrationModel.Email.Trim() && x.IsDeleted == false))
                 {
-                    await userLogService.CreateUserLog(registrationModel.UserSessionID, UserLogActionType.TryRegistration, $"Login: {registrationModel.Email}, Password:{registrationModel.Password}, Comment= we already have user with this email");
-                    return Json(new { isOk = false, message = $"В системе уже есть пользователь с такой почтой ({ registrationModel.Email })." });
+                    await userLogService.CreateUserLog(registrationModel.UserSessionID, UserLogActionType.TryRegistration, $"Login: {registrationModel.Email.Trim()}, Password:{registrationModel.Password}, Comment= we already have user with this email");
+                    return Json(new { isOk = false, message = $"В системе уже есть пользователь с такой почтой ({ registrationModel.Email.Trim() })." });
                 }
 
                 try
                 {
-                    await userService.CreateUser(registrationModel.Email, registrationModel.Password, registrationModel.UserSessionID);
+                    await userService.CreateUser(registrationModel.Email.Trim(), registrationModel.Password.Trim(), registrationModel.UserSessionID);
 
-                    var user = await userService.CheckAndGetUser(registrationModel.Email, registrationModel.Password);
+                    var user = await userService.CheckAndGetUser(registrationModel.Email.Trim(), registrationModel.Password);
                     user.UserSessionID = registrationModel.UserSessionID;
 
                     //Maybe send another pool
@@ -165,7 +165,7 @@ namespace MyProfile.Areas.Identity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> RecoveryPassword([FromBody] LoginModel login)
         {
-            var user = await userService.CheckAndGetUser(login.Email);
+            var user = await userService.CheckAndGetUser(login.Email.Trim());
 
             if (user == null)
             {
@@ -254,6 +254,33 @@ namespace MyProfile.Areas.Identity.Controllers
             return Json(new { isOk = true, href = "/Budget/Month" });
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> CheckCodeAfterChangeEmail(int Code)
+        {
+            var currentUser = UserInfo.Current;
+
+            try
+            {
+                if (await userEmailService.CheckCode(currentUser.Email, Code))
+                {
+                    currentUser.IsConfirmEmail = await userService.SetConfirmEmail(currentUser.ID, true);
+                    await userService.AuthenticateOrUpdateUserInfo(currentUser, UserLogActionType.LoginAfterCode);
+                }
+                else
+                {
+                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.CheckCodeAfterChangeEmail);
+                    return Json(new { isOk = false, message = "Неверный код. Попробуйте еще раз." });
+                }
+            }
+            catch (Exception ex)
+            {
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.CheckCodeAfterChangeEmail, $"Error: {ex.Message}");
+                return Json(new { isOk = false, message = "Неверный код. Попробуйте еще раз." });
+            }
+
+            return Json(new { isOk = true });
+        }
 
         [HttpPost]
         [AllowAnonymous]

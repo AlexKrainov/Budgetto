@@ -70,7 +70,7 @@
         <li>
             <a href="#smartwizard-1-step-2" class="mb-3">
                 <span class="sw-number">2</span>
-                <div class="text-muted small">Добавить поля</div>
+                <div class="text-muted small">Выбор категорий</div>
                 {{ chart.fields.length == 0 ? '' : getRusName(chart.fields.length)+': ' + chart.fields.length }}
             </a>
         </li>
@@ -146,9 +146,9 @@
                                 </div>
                                 <div class="card-title with-elements">
                                     <div class="m-0 mr-2">
-                                        <label class="form-label">Введите название поля</label>
+                                        <label class="form-label">Введите название столбца/сектора</label>
                                         <span class="text-danger">*</span>
-                                        <input type="text" class="form-control" v-model="field.name" placeholder="Расходы"
+                                        <input type="text" class="form-control" v-model="field.name" placeholder="Еда"
                                                tabindex="1"
                                                v-bind:id="'field_name_' + field.id" required>
                                         <small class="invalid-feedback">Обязательное поле</small>
@@ -176,7 +176,7 @@
 
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" v-on:click="addField">Добавить поле</button>
+                <button type="button" class="btn btn-primary" v-on:click="addField">Добавить к графику</button>
             </div>
         </div>
         <div id="smartwizard-1-step-3" class="card animated fadeIn">
@@ -196,18 +196,18 @@
                     </div>
                 </div>
                 <label class="mt-2 form-label">
-                    Отображать график на:
+                    Отображать график на страницах:
                 </label>
                 <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
                     <label class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" v-model="chart.isShowBudgetMonth" checked>
-                        <span class="custom-control-label">Дашборде месяц</span>
+                        <span class="custom-control-label">Бюджет на месяц</span>
                     </label>
                 </div>
                 <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
                     <label class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" v-model="chart.isShowBudgetYear" checked>
-                        <span class="custom-control-label">Дашборде год</span>
+                        <span class="custom-control-label">Бюджет на год</span>
                     </label>
                 </div>
                 <button class="btn btn-primary" type="button"
