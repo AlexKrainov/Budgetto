@@ -55,7 +55,8 @@ namespace MyProfile.User.Service
                 IsConfirmEmail = currentUser.IsConfirmEmail,
                 UserSettings = new UserSettingsClientSide
                 {
-                    WebSiteTheme = currentUser.UserSettings.WebSiteTheme
+                    WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
+                    NewsLetter = currentUser.UserSettings.NewsLetter,
                 },
                 IsAvailable = currentUser.IsAvailable,
                 Payment = new PaymentClientSide
@@ -142,6 +143,7 @@ namespace MyProfile.User.Service
                          LimitPage_IsShow_Collective = x.UserSettings.LimitPage_IsShow_Collective,
 
                          WebSiteTheme = x.UserSettings.WebSiteTheme,
+                         NewsLetter = x.UserSettings.NewsLetter,
                      }
                  })
                  .FirstOrDefaultAsync();
@@ -1160,16 +1162,15 @@ namespace MyProfile.User.Service
                 await UserInfo.ReSignInAsync(user);
                 await userConfirmEmailService.ConfirmEmail(user);
 
-                user.IsConfirmEmail = dbUser.IsConfirmEmail = false;
+                user.IsConfirmEmail = dbUser.IsConfirmEmail = userInfoModel.IsConfirmEmail = false;
 
                 await repository.UpdateAsync(dbUser, true);
-            }
-            else
-            {
-                await UserInfo.AddOrUpdate_Authenticate(user);
+                await userLogService.CreateUserLog(user.UserSessionID, UserLogActionType.User_Change_Email);
             }
 
+            await UserInfo.AddOrUpdate_Authenticate(user);
             await userLogService.CreateUserLog(user.UserSessionID, UserLogActionType.User_Edit);
+
             return userInfoModel;
         }
 
@@ -1180,6 +1181,7 @@ namespace MyProfile.User.Service
                 .FirstOrDefaultAsync();
 
             user.UserSettings.WebSiteTheme = dbUser.UserSettings.WebSiteTheme = userSettings.WebSiteTheme;
+            user.UserSettings.NewsLetter = dbUser.UserSettings.NewsLetter = userSettings.NewsLetter;
 
             await repository.UpdateAsync(dbUser, true);
             await UserInfo.AddOrUpdate_Authenticate(user);

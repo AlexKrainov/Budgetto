@@ -17,7 +17,7 @@
 
     <script src="~/pages/budget/_budget-year.js"></script>
     <script src="~/pages/budget/budget.js"></script>
-    <script src="~/pages/budget/history-model.js"></script>
+    <script src="~/pages/budget/history-modal.js"></script>
 }
 
 <div id="budget-vue" v-cloak>
@@ -118,7 +118,7 @@
 </div>
 
 <div id="history-vue">
-    @await Html.PartialAsync("_TimeLineDialog")
+    @await Html.PartialAsync("_HistoryModal")
 </div>
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Year")
 

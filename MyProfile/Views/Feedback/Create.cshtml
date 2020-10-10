@@ -60,7 +60,7 @@
         <span class="lnr lnr-neutral display-4 text-primary mr-2"></span>
         <span class="lnr lnr-sad display-4 text-primary mr-2"></span>
         <span class="px-0 pb-2 pt-2">
-            Feedback
+            Обратная связь
         </span>
     </h4>
     <div class="card">
@@ -87,7 +87,7 @@
                             <option value="5">Очень важно и срочно</option>
                             <option value="4">Срочно</option>
                             <option value="3" selected>Средней срочности</option>
-                            <option value="2">Почти не срочности</option>
+                            <option value="2">Почти не срочно</option>
                             <option value="1">Не срочно</option>
                         </select>
                     </div>
@@ -111,8 +111,8 @@
             <div class="row">
                 <div class="col-md-8 order-2 order-md-1">
                     <div class="form-group">
-                        <label class="form-label">Описание</label>
-                        <textarea class="form-control" rows="3" placeholder="Напишите нам что нравиться, что не нравится. Что не хватает. Что нужно добавить срочно. Ошибки, недочеты."
+                        <label class="form-label">Ваш комментарий</label>
+                        <textarea class="form-control" rows="3"
                                   v-model="feedback.text"></textarea>
                     </div>
                 </div>
@@ -144,9 +144,9 @@
             <h4 class="media align-items-center font-weight-bold py-3 mb-2">
                 <span class="lnr lnr-hourglass display-4 text-primary mr-2 ml-4"></span>
                 <div class="media-body ml-3">
-                    Спасибо за обращение
+                    Спасибо за обращение!
                     <div class="text-muted text-tiny mt-1">
-                        <small class="font-weight-normal">В кратчайшие сроки мы рассмотрим ваше обращение</small>
+                        <small class="font-weight-normal">Техподдержка уже читает ваше сообщение</small>
                     </div>
                 </div>
             </h4>

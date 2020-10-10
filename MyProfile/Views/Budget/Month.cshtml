@@ -18,7 +18,7 @@
 
     <script src="~/pages/budget/_budget-month.js"></script>
     <script src="~/pages/budget/budget.js"></script>
-    <script src="~/pages/budget/history-model.js"></script>
+    <script src="~/pages/budget/history-modal.js"></script>
     <script src="~/pages/reminder/budget-reminder-model.js"></script>
 }
 
@@ -129,7 +129,7 @@
 </div>
 
 <div id="history-vue">
-    @await Html.PartialAsync("_TimeLineDialog")
+    @await Html.PartialAsync("_HistoryModal")
 </div>
 <div id="reminder-vue">
     @await Html.PartialAsync("../Reminder/_ReminderListModel.cshtml")

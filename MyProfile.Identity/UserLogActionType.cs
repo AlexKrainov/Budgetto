@@ -91,6 +91,7 @@
         public const string Payment_Update = "Payment_Update";
 
         public const string User_Edit = "User_Edit";
+        public const string User_Change_Email = "User_Change_Email";
 
         
     }

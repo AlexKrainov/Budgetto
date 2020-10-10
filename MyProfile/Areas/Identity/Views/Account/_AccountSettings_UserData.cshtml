@@ -40,7 +40,7 @@
         </div>
         <small class="invalid-feedback">Обязательное поле</small>
     </div>
-    <div class="alert alert-danger mt-3" v-show="!user.isConfirmEmail">
+    <div class="alert alert-danger mt-3" v-show="user.isConfirmEmail == false">
         Вы еще не подтвердили адрес электронной почты. Пожалуйста, проверьте свою почту.<br>
         <a href="javascript:void(0)" v-on:click="resendConfirmEmail"
            v-bind:class="validEmail ? '' : 'disabled'">Отправить код повторно</a>
@@ -57,6 +57,8 @@
             <button class="btn btn-outline-secondary" type="button" title="Проверить" style="border-radius: 0px 4px 4px 0px;"
                     v-on:click="checkCode"
                     v-bind:disabled="!(code != null && code.length == 4 && isSaving == false)">
+                <span class="spinner-border" role="status" aria-hidden="true"
+                      v-show="isSaving"></span>
                 Проверить введеный код
             </button>
         </span>

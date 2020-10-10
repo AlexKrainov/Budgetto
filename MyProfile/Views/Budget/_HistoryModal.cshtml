@@ -21,7 +21,9 @@
                                     <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
                                     <div class="with-elements">
                                         <div class="ml-md-auto pt-2">
-                                            <a data-toggle="collapse" href="#historyCollapse" class="d-block ml-3"><i class="collapse-icon"></i></a>
+                                            <a data-toggle="collapse" href="#historyCollapse" class="d-block ml-3" style="color: black">
+                                                <i class="fas fa-filter"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -29,8 +31,8 @@
                         </div>
                         <div class="collapse" id="historyCollapse">
                             @*<div class="card-title">
-                                Фильтр
-                            </div>*@
+                                    Фильтр
+                                </div>*@
                             <div class="row my-3">
                                 <div class="col-md-12">
                                     <span class="text-muted m-b block">Категории</span>
@@ -54,7 +56,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <span class="text-muted m-b block">По</span>
-                                    <input type="date" id="dateHistoryEnd" class="form-control" v-model="dateEnd"/>
+                                    <input type="date" id="dateHistoryEnd" class="form-control" v-model="dateEnd" />
                                 </div>
                             </div>
                             <div class="mt-3 float-right">
@@ -63,11 +65,21 @@
                         </div>
                     </div>
                 </section>
-              
+
                 <div class=" card pl-0">
                     <ul class="list-group list-group-flush records-timeline" style=" margin-left: -5px;">
                         @await Html.PartialAsync("_Records")
                     </ul>
+                </div>
+                <div class="card-footer mt-4" v-show="records && records.length > 0">
+                    <div class="text-right ">
+                        <label class="text-muted font-weight-normal m-0">Итого</label>
+                        <div class="text-large">
+                            <strong>
+                                {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(totalMoney) }}
+                            </strong>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
     el: "#history-vue",
     data: {
         records: [],
+        totalMoney: 0,
         dateTime: null,
         dateStart: null,
         dateEnd: null,
@@ -27,6 +28,13 @@
                     || record.money.toString().indexOf(newValue) >= 0
                     || record.rawData.indexOf(newValue) >= 0;
             }
+        },
+        records: function (newValue, oldValue) {
+            let total = 0;
+            for (var i = 0; i < this.records.length; i++) {
+                total += this.records[i].money * 1;
+            }
+            this.totalMoney = total;
         }
     },
     mounted: function () {

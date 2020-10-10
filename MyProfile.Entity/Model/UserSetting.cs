@@ -102,6 +102,11 @@ namespace MyProfile.Entity.Model
 
         public string WebSiteTheme { get; set; }
 
+        /// <summary>
+        /// send news mailing
+        /// </summary>
+        public bool NewsLetter { get; set; }
+
         public virtual User User { get; set; }
 
     }

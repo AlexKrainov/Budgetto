@@ -417,6 +417,7 @@
 
                             }
                             this.isEditMode = false;
+                            this.sectionComponent.clearSearchTextValue();
                         }
                         return result;
                     },

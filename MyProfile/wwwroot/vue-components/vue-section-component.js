@@ -1,36 +1,37 @@
 ﻿Vue.component("vue-section-component", {
     template: `
-<div v-bind:id="dataId" >
-    <input type='search'
-           class="form-control form-control-sm"
-           v-on:input="onsearch" 
-            v-model="searchText"
-            v-show="isShowFilter"/>
-    <div class="cards" v-bind:style="searchText ? '' : dataRecordsStyle"
-        v-bind:class="dataClass">
-        <div class="card-section card cursor-pointer"
-             v-for="section in sections"
-            v-bind:key="section.id"
-             v-on:click="$emit('onchoose', section)"
-             v-bind:title="section.description"
-             v-show="section.isShow"
-             v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground">
-            <span class="selected-section-count">{{ checkSelected(section) }}</span>
-            <div class="cards-container card-body d-flex align-items-center ">
-                <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
-                <div class="card-section-text ml-2">
-                    <div class="section-name">{{section.name}}</div>
-                    <div class="area-name opacity-75" style="margin-top: -5px;">
-                        {{ section.areaName }}
-                        <div class="ml-2" style="display: inline-block;" v-show="section.collectiveSections.length > 0">
-                            <i class="oi oi-layers"></i> +{{section.collectiveSections.length}}
+        <div v-bind:id="dataId" >
+            <input type='search'
+                    name="sectionSearch"
+                    v-model="searchText"
+                    class="form-control form-control-sm"
+                    v-on:input="onsearch" 
+                    v-show="isShowFilter"/>
+            <div class="cards" v-bind:style="searchText ? '' : dataRecordsStyle"
+                v-bind:class="dataClass">
+                <div class="card-section card cursor-pointer"
+                     v-for="section in sections"
+                    v-bind:key="section.id"
+                     v-on:click="$emit('onchoose', section)"
+                     v-bind:title="section.description"
+                     v-show="section.isShow"
+                     v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground">
+                    <span class="selected-section-count">{{ checkSelected(section) }}</span>
+                    <div class="cards-container card-body d-flex align-items-center ">
+                        <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
+                        <div class="card-section-text ml-2">
+                            <div class="section-name">{{section.name}}</div>
+                            <div class="area-name opacity-75" style="margin-top: -5px;">
+                                {{ section.areaName }}
+                                <div class="ml-2" style="display: inline-block;" v-show="section.collectiveSections.length > 0">
+                                    <i class="oi oi-layers"></i> +{{section.collectiveSections.length}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>`,
+        </div>`,
     props: {
         dataSearchId: String,
         dataId: String,
@@ -119,5 +120,13 @@
             }
             return "";
         },
+        clearSearchTextValue: function () {
+            this.searchText = null;
+
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isShow = true;
+            }
+
+        }
     }
 });

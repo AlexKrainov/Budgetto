@@ -85,7 +85,7 @@ var AccountSettingsVue = new Vue({
                 });
         },
         resendConfirmEmail: function () {
-            if (this.validEmail) {
+            if (this.validEmail && this.isSaving == false) {
                 this.isSaving = true;
                 return sendAjax("/Identity/Account/ResendConfirmEmail", null, "GET")
                     .then(function (result) {
@@ -104,13 +104,13 @@ var AccountSettingsVue = new Vue({
                     data: JSON.stringify(this.user),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
-                    success: function (response) {
+                    success: function (result) {
                         if (result.isOk) {
                             $("#userImageLink").prop("src", result.user.imageLink);
                             $("#userName").text(result.user.name + " " + result.user.lastName);
 
                             if (this.user.email != this.oldEmail) {
-                                this.user.isConfirmEmail = false;
+                                //this.user.isConfirmEmail = false;
                                 this.isShowCode = true;
                             }
 
@@ -278,6 +278,7 @@ var AccountSettingsVue = new Vue({
             this.isSaving = true;
 
             UserInfo.UserSettings.webSiteTheme = this.user.userSettings.webSiteTheme;
+            UserInfo.UserSettings.newsLetter = this.user.userSettings.newsLetter;
 
             return sendAjax("/Identity/Account/SaveUserSettings", this.user.userSettings, "POST")
                 .then(function (result) {
@@ -301,7 +302,7 @@ var AccountSettingsVue = new Vue({
 
         //Testing
         generatedRecords: function () {
-            this.isSaving
+            this.isSaving = true;   
             return sendAjax("/Test/GenerateRecords", null, "GET")
                 .then(function (result) {
                     AccountSettingsVue.isSaving = false;

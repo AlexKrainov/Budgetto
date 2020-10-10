@@ -103,11 +103,12 @@
                             <span class="custom-control-label"></span>
                         </label>
                     </div>
-                    <a href="javascript:void(0)" class="ion d-block text-big mr-3"
+                    <a href="javascript:void(0)" class="ion d-block text-big mr-3" 
+                       v-bind:title="_list.isFavorite ? 'Поместить в начало списка' : 'Поместить в начало списка'"
                        v-bind:class="_list.isFavorite ? 'ion-md-star text-warning' : 'ion-md-star-outline text-lighter'"
                        v-if="_list.isDeleted == false"
                        v-on:click="toggleFavorite(_list)"></a>
-                    <a href="javascript:void(0)" class="text-body mr-4"
+                    <a href="javascript:void(0)" class="text-body mr-4" 
                        v-on:click="selecteList(_list)"
                        v-if="_list.isDeleted == false">
                         {{ _list.title }}
@@ -139,11 +140,11 @@
         <div class="col" v-show="isEdit">
             <!-- Controls -->
             <div class="media flex-wrap align-items-center py-2 px-3">
-                <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Добавить новый список"
+                <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Назад"
                         v-on:click="isEdit = false">
                     <i class="ion ion-ios-undo"></i>
                 </button>
-                <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted mr-4" title="Добавить новый список"
+                <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted mr-4" title="Сохранить список"
                         v-bind:disabled="isSaving"
                         v-on:click="saveList(true)">
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
