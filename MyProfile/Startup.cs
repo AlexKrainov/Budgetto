@@ -72,10 +72,10 @@ namespace MyProfile
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-#if true
-            string connection = Configuration.GetConnectionString("TestRegRuConnection");//TestConnection/TestRegRuConnection
+#if false
+            string connection = Configuration.GetConnectionString("TestConnection");//TestConnection/TestRegRuConnection
 #else
-            string connection = Configuration.GetConnectionString("PublishConnection");
+            string connection = Configuration.GetConnectionString("TestRegRuConnection");//TestConnection/TestRegRuConnection
 
 #endif
             services.AddMemoryCache();

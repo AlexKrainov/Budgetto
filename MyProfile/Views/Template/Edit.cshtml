@@ -89,7 +89,7 @@
             <div class="form-group">
                 <label class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" v-model="template.isDefault">
-                    <span class="custom-control-label">Сделать шаблон по умолчанию</span>
+                    <span class="custom-control-label">Сделать шаблоном по умолчанию</span>
                 </label>
             </div>
             <span class="text-danger">{{ errorMessage }}</span>
@@ -110,15 +110,15 @@
                 Создать копию
             </button>
 
-            <a class="btn btn-default ml-4" 
-               v-bind:href="getLinkForView(template)" 
+            <a class="btn btn-default ml-4"
+               v-bind:href="getLinkForView(template)"
                v-show="template.id != 0 && errorMessage == null"
                v-bind:disabled="isSavingTemplate"
                v-bind:class="isSavingTemplate ? 'disabled' : ''">
                 <i class="far fa-eye pr-2" style="font-size: large;"></i>Посмотреть
             </a>
 
-            <a href="/Template/Delete/@ViewBag.TemplateID" class="btn btn-outline-danger icon-btn borderless float-right" 
+            <a href="/Template/Delete/@ViewBag.TemplateID" class="btn btn-outline-danger icon-btn borderless float-right"
                v-show="template.id > 0"
                v-bind:class="template.id > 0 && isSavingTemplate ? 'disabled' : ''">
                 <span class="ion ion-md-trash"></span>
@@ -216,15 +216,15 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div class="text-muted">Где ставить запятую</div>
                                     <div>
-                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 3" v-show="column.placeAfterCommon == 4">
+                                        @*<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 3" v-show="column.placeAfterCommon == 4">
                                             <i class="fa fa-terminal"></i>
                                             0,0000
                                         </p>
                                         <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 2" v-show="column.placeAfterCommon == 3">
                                             <i class="fa fa-terminal"></i>
                                             0,000
-                                        </p>
-                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 1" v-show="column.placeAfterCommon == 2">
+                                        </p>*@
+                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 1" v-show="column.placeAfterCommon == 0">
                                             <i class="fa fa-terminal"></i>
                                             0,00
                                         </p>
@@ -232,14 +232,14 @@
                                             <i class="fa fa-terminal"></i>
                                             0,0
                                         </p>
-                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 4" v-show="column.placeAfterCommon == 0">
+                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 2" v-show="column.placeAfterCommon == 2">
                                             <i class="fa fa-terminal"></i>
                                             0
                                         </p>
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div class="text-muted">Показывать колонку ?</div>
+                                    <div class="text-muted">Показывать колонку?</div>
                                     <div>
                                         <label class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" v-model="column.isShow">
@@ -304,7 +304,7 @@
                         <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
                             <ul class="list-group list-group-flush" style="overflow-y: unset;">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div class="text-muted">Формат отображение даты</div>
+                                    <div class="text-muted">Формат отображения даты</div>
                                     <select class="form-control" v-model="column.format">
                                         <option v-bind:value="''">Не выбрано</option>
                                         <option v-bind:value="'dd'">1,2,3</option>
@@ -313,7 +313,7 @@
                                     </select>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div class="text-muted">Показывать колонку ?</div>
+                                    <div class="text-muted">Показывать колонку?</div>
                                     <div>
                                         <label class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" v-model="column.isShow">
@@ -405,28 +405,33 @@
                 <form class="modal-content">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
                     <div class="modal-body">
+                        <nav class="navbar navbar-expand-lg bg-navbar-theme mb-4">
+                            <div class="container">
+                                <a href="javascript:void(0);" class="navbar-brand text-large line-height-1 py-3">Выберите тип колонки</a>
+                            </div>
+                        </nav>
                         <div class="row">
                             <div class="col-md cursor-pointer" v-on:click="column.templateColumnType = 1; addColumn_Complete();">
                                 <div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
                                     <div class="card-body">
-                                        <h4 class="card-title">Деньги</h4>
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                        <h4 class="card-title">Категории</h4>
+                                        <p class="card-text">В одну колонку можно добавлять неограниченное число категорий.</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md cursor-pointer" v-on:click="column.templateColumnType = 2; addColumn_Complete();" v-show="!(template.periodTypeID != 1)">
                                 <div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
                                     <div class="card-body">
-                                        <h4 class="card-title">По дням</h4>
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                        <h4 class="card-title">Дни</h4>
+                                        <p class="card-text">Нажмите, чтобы добавить колонку с днями месяца.</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md cursor-pointer" v-on:click="column.templateColumnType = 3; addColumn_Complete();" v-show="!(template.periodTypeID != 3)">
                                 <div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
                                     <div class="card-body">
-                                        <h4 class="card-title">По месяцам</h4>
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                        <h4 class="card-title">Месяцы</h4>
+                                            <p class="card-text">Нажмите, чтобы добавить колонку с месяцами.</p>
                                     </div>
                                 </div>
                             </div>

@@ -29,9 +29,10 @@
 
         @foreach (var menuItem in menuItems)
         {
-            <li class="sidenav-item@(currentPage == menuItem.Controller +"/"+ menuItem.Action ? " active" : "") @menuItem.ClassElement">
+            var choosenPage = currentPage == menuItem.Controller + "/" + menuItem.Action;
+            <li class="sidenav-item@( choosenPage ? " active" : "") @menuItem.ClassElement">
                 <a asp-area="@menuItem.Area" asp-controller="@menuItem.Controller" asp-action="@menuItem.Action" class="sidenav-link">
-                    <i class="sidenav-icon @menuItem.Icon"></i>
+                    <i class="sidenav-icon @menuItem.Icon @(choosenPage ? "text-primary" : "")"></i>
                     <div>@menuItem.Title</div>
                 </a>
             </li>

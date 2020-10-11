@@ -41,7 +41,7 @@
         $("#history-sections").select2();
 
         $('#modalTimeLine').on('hide.bs.modal', function () {
-            $("#historyCollapse").removeClass("show");s
+            $("#historyCollapse").removeClass("show");
         });
     },
     methods: {
