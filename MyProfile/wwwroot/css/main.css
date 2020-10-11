@@ -273,6 +273,10 @@ td.show-actions span.cell-actions {
     transition: all .1s linear .1s;
 }
 
+th.column-min-width {
+    min-width: 85px;
+}
+
 .add-cell-action {
     font-size: 18px;
 }

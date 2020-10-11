@@ -19,6 +19,9 @@
         <span class="px-0 pb-2 pt-2">
             Цели
         </span>
+        <a href="" title="Иформация об этой странице" target="_blank">
+            <i class="pe-7s-info d-block text-primary"></i>
+        </a>
         <span class="px-0 pb-2 ml-4">
             <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)" v-on:click="edit()">&nbsp; Добавить цель</a>
         </span>
@@ -91,7 +94,7 @@
                 </div>
             </div>
             <div class="card mb-4 custom-card-hover border-secondary" v-bind:id="'goal_' + goal.id" v-if="goal.isDeleted">
-                <div class="card-body card-body pb-0 deleted-item" >
+                <div class="card-body card-body pb-0 deleted-item">
                     <div class="d-flex justify-content-between align-items-start">
                         <a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ goal.name }}</a>
                         <span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>

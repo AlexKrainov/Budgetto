@@ -1,35 +1,38 @@
-﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4" 
-	 v-for="limitChartData in limitsChartsData" 
-	 v-show="limitChartData.isShow">
-	<div class="card ui-bordered  mb-2" v-bind:class="limitChartData.percent1 == 100 ? 'red-bottom-line' : ''">
-		@*<h6 class="card-header with-elements border-0 pr-0 pb-0" style="margin-left: -7px;">
-			<div class="card-header-title">{{ limitChartData.name }}</div>
-			<div class="card-header-elements ml-auto">
-				<div class="btn-group mr-3">
-					<button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown">
-						<i class="ion ion-ios-more"></i>
-					</button>
-					<div class="dropdown-menu dropdown-menu-right" id="new-users-dropdown-menu">
-						<a class="dropdown-item" href="javascript:void(0)">Редактировать</a>
-					</div>
-				</div>
-			</div>
-		</h6>*@
-		<div class="media align-items-center p-3">
-			@* style="padding-top: 0px !important;" *@
-				<div class="media-body small mr-3">
-					<div class="font-weight-semibold mb-3">{{ limitChartData.name }}</div>
-                    <div class="mb-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney) }}</div>
-					<div v-show="limitChartData.isThisMonth"> Примерно осталось расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
-					<div v-show="!limitChartData.isThisMonth"> Примерно было расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
-				</div>
-				<div class="d-flex align-items-center position-relative" style="height:60px;width: 60px;">
-					<div class="w-100 position-absolute" style="height:60px;top:0;">
-						<canvas v-bind:id="limitChartData.chartID"></canvas>
-					</div>
-					<div class="w-100 text-center font-weight-bold">{{ limitChartData.percent1 }}%</div>
-				</div>
-			</div>
-	</div>
+﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4"
+     v-for="limitChartData in limitsChartsData"
+     v-show="limitChartData.isShow">
+    <div class="card ui-bordered  mb-2" v-bind:class="limitChartData.percent1 == 100 ? 'red-bottom-line' : ''">
+        @*<h6 class="card-header with-elements border-0 pr-0 pb-0" style="margin-left: -7px;">
+                <div class="card-header-title">{{ limitChartData.name }}</div>
+                <div class="card-header-elements ml-auto">
+                    <div class="btn-group mr-3">
+                        <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown">
+                            <i class="ion ion-ios-more"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" id="new-users-dropdown-menu">
+                            <a class="dropdown-item" href="javascript:void(0)">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+            </h6>*@
+        <div class="media align-items-center p-3">
+            @* style="padding-top: 0px !important;" *@
+            <div class="media-body small mr-3">
+                <div class="font-weight-semibold mb-3">
+                    <i class="lnr lnr-frame-expand text-primary" style="font-size: x-large;"></i>
+                    <span>{{ limitChartData.name }}</span>
+                </div>
+                <div class="mb-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney) }}</div>
+                <div v-show="limitChartData.isThisMonth"> Примерно осталось расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
+                <div v-show="!limitChartData.isThisMonth"> Примерно было расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
+            </div>
+            <div class="d-flex align-items-center position-relative" style="height:60px;width: 60px;">
+                <div class="w-100 position-absolute" style="height:60px;top:0;">
+                    <canvas v-bind:id="limitChartData.chartID"></canvas>
+                </div>
+                <div class="w-100 text-center font-weight-bold">{{ limitChartData.percent1 }}%</div>
+            </div>
+        </div>
+    </div>
 
 </div>

@@ -1,26 +1,36 @@
 ﻿<div id="theme-settings" class="page-settings theme-bg-white" data-page="@Model">
-	<a href="javascript:void(0)" class="theme-settings-open-btn2" tabindex="-1" v-on:click="openSettings">
-		<i class="fas fa-cogs"></i>
-	</a>
-	<h5 class="p-4 m-0 line-height-1 font-weight-bolder bg-light theme-settings-header">
-		<span class="theme-settings-t-panel_header">ВИДЖЕТЫ</span> <a href="javascript:void(0)" class="theme-settings-close-btn2 font-weight-light px-4 py-2" tabindex="-1" v-on:click="closeSettings">×</a>
-	</h5>
-	<div class="theme-settings-inner pt-4">
-		@if (Model == "Budget/Month")
-		{
-			await Html.RenderPartialAsync(@"../Settings/_Budget_Month_Settings.cshtml");
-		}
-		@if (Model == "Budget/Year")
-		{
-			await Html.RenderPartialAsync(@"../Settings/_Budget_Year_Settings.cshtml");
-		}
-		@if (Model == "Goal/List")
-		{
-			await Html.RenderPartialAsync(@"../Settings/_Goal_List_Settings.cshtml");
-		}
-		 @if (Model == "Limit/List")
-		{
-			await Html.RenderPartialAsync(@"../Settings/_Limit_List_Settings.cshtml");
-		}
-	</div>
+    <a href="javascript:void(0)" class="theme-settings-open-btn2" tabindex="-1" v-on:click="openSettings">
+        <i class="fas fa-cogs"></i>
+    </a>
+    <h5 class="p-4 m-0 line-height-1 font-weight-bolder bg-light theme-settings-header">
+
+        @if (Model == "Budget/Month" || Model == "Budget/Year")
+        {
+            <span class="theme-settings-t-panel_header">ВИДЖЕТЫ</span>
+        }
+        else
+        {
+            <span class="theme-settings-t-panel_header">НАСТРОЙКИ</span>
+        }
+
+        <a href="javascript:void(0)" class="theme-settings-close-btn2 font-weight-light px-4 py-2" tabindex="-1" v-on:click="closeSettings">×</a>
+    </h5>
+    <div class="theme-settings-inner pt-4">
+        @if (Model == "Budget/Month")
+        {
+            await Html.RenderPartialAsync(@"../Settings/_Budget_Month_Settings.cshtml");
+        }
+        @if (Model == "Budget/Year")
+        {
+            await Html.RenderPartialAsync(@"../Settings/_Budget_Year_Settings.cshtml");
+        }
+        @if (Model == "Goal/List")
+        {
+            await Html.RenderPartialAsync(@"../Settings/_Goal_List_Settings.cshtml");
+        }
+        @if (Model == "Limit/List")
+        {
+            await Html.RenderPartialAsync(@"../Settings/_Limit_List_Settings.cshtml");
+        }
+    </div>
 </div>

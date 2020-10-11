@@ -504,7 +504,12 @@
             }
         },
         initTable: function () {
-            this.dataTable = $("#table").DataTable();
+            this.dataTable = $("#table").DataTable({
+                columnDefs: [
+                    { targets: '_all', className: "column-min-width" },
+
+                ]
+            });
         },
         toExcel: function () {
             this.isGenerateExcel = true;

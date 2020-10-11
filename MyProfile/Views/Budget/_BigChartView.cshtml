@@ -13,7 +13,10 @@
     </article>
     <article v-if="chartData.isBig">
         <h6 class="card-header with-elements">
-            <div class="card-header-title">{{ chartData.name }}</div>
+            <div class="card-header-title">
+                <span class="lnr lnr-pie-chart text-primary" style="font-size: x-large;"></span>
+                {{ chartData.name }}
+            </div>
             <div class="card-header-elements ml-auto">
                 <label class="text m-0">
                     <span class="text-light text-tiny font-weight-semibold align-middle">

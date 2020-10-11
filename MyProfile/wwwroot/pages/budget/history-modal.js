@@ -40,9 +40,9 @@
     mounted: function () {
         $("#history-sections").select2();
 
-        //$("#historyCollapse").change(function () {
-
-        //});
+        $('#modalTimeLine').on('hide.bs.modal', function () {
+            $("#historyCollapse").removeClass("show");s
+        });
     },
     methods: {
         showHistory: function (filter, dateTime) {

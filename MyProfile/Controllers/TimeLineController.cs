@@ -81,7 +81,7 @@ namespace MyProfile.Controllers
             }
 
             filter.StartDate = new DateTime(filter.StartDate.Year, filter.StartDate.Month, filter.StartDate.Day, 0, 0, 0);
-            filter.EndDate= new DateTime(filter.EndDate.Year, filter.EndDate.Month, filter.EndDate.Day, 23, 59, 59);
+            filter.EndDate = new DateTime(filter.EndDate.Year, filter.EndDate.Month, filter.EndDate.Day, 23, 59, 59);
 
             filter.IsConsiderCollection = currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective;
 
@@ -93,7 +93,7 @@ namespace MyProfile.Controllers
             for (int i = 0; i < sections.Count(); i++)
             {
                 sections[i].Selected = filter.Sections.Any(x => x == sections[i].ID);
-            } 
+            }
             #endregion
 
             return Json(new

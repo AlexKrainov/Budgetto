@@ -206,7 +206,17 @@
         this.tagify = new Tagify(elementMoney, {
             transformTag: this.transformTag,
             duplicates: true,
-            placeholder: "550 или 100+500 или 199.99"
+            placeholder: "550 или 100+500 или 199.99",
+            callbacks: {
+                change: function () {
+                    console.log("Change");
+                    console.log(arguments);
+                },
+                blur: function () {
+                    console.log("Blur");
+                    console.log(arguments);
+                },
+            }
         });
 
         this.tagify
@@ -237,6 +247,8 @@
             let value = item.value;
             let isCorrect = false;
 
+            //console.log("transformTag");
+            //console.log(arguments);
             //remove dublicate after edit
             if (this.records.some(x => x.tag == item.value)) {
                 return false;
@@ -268,7 +280,7 @@
                 total = Math.round(total * 100) / 100;
             }
 
-            if (!item.id) {
+            if (item.id == undefined) {
                 item.id = this.counter++;
 
                 let newRecords = {
@@ -293,6 +305,7 @@
                 let el = this.records.find(x => x.id == item.id);
                 el.money = total;
                 el.tag = item.value;
+
             }
         },
         //keydownTagify: function (event) {

@@ -368,7 +368,7 @@ var calendar = {
             data: response.dates, // Dates Array
             afterLoadData: parser, // Parser function
             highlight: ["now"], //отображаем сегодняшнее число 
-            displayLegend: true,
+            displayLegend: false,// true,
             legend: response.legend, // [5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39],
             legendColors: {
                 min: "#DAF1FF", //ffffff",
