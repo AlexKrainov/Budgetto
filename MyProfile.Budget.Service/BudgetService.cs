@@ -241,8 +241,9 @@ namespace MyProfile.Budget.Service
                         numberFormatInfo.CurrencyDecimalDigits = column.PlaceAfterCommon;
 
                         string v = 0.ToString("C", numberFormatInfo);
+                        //cell.NaturalValue = 0;
 
-                        if (column.TemplateColumnType == TemplateColumnType.BudgetSection && currentDate > dateTimeNow)
+                        if (column.TemplateColumnType == TemplateColumnType.BudgetSection && currentDate.Date > dateTimeNow.Date)
                         {
                             v = "";
                         }
@@ -266,14 +267,14 @@ namespace MyProfile.Budget.Service
 
                                 cell.Reminders.AddRange(z);
                             }
-
+                            cell.NaturalValue = dateCounter;
                         }
                         else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
                         {
                             v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
+                            cell.NaturalValue = dateCounter;
                         }
                         cell.Value = v;
-                        cell.NaturalValue = dateCounter;
 
                         cells.Add(cell.CloneObject());
                         footerCells.Add(new FooterCell

@@ -177,10 +177,10 @@ namespace MyProfile.Template.Service
         /// <param name="template"></param>
         /// <param name="isRemove">== true - remove, == false - recovery</param>
         /// <returns></returns>
-        public async Task<bool> RemoveOrRecovery(TemplateViewModel template, bool isRemove)
+        public async Task<bool> RemoveOrRecovery(int templateID, bool isRemove)
         {
             var currentUser = UserInfo.Current;
-            var db_item = await repository.GetAll<Template>(x => x.ID == template.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
+            var db_item = await repository.GetAll<Template>(x => x.ID == templateID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
             if (db_item != null)
             {
@@ -194,7 +194,7 @@ namespace MyProfile.Template.Service
                     db_item.DateDelete = null;
                 }
                 await repository.UpdateAsync(db_item, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, db_item.DateDelete != null ?  UserLogActionType.TemplateDelete : UserLogActionType.TemplateRecovery);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, db_item.DateDelete != null ? UserLogActionType.TemplateDelete : UserLogActionType.TemplateRecovery);
                 return true;
             }
             return false;
@@ -223,11 +223,12 @@ namespace MyProfile.Template.Service
 
             if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
             {
-                modelView.IsOk = false;
-                modelView.NameAlreadyExist = true;
-                modelView.ErrorMessage = "Шаблон с таким именем уже существует";
+                template.Name = template.Name + "_copy";
+                //modelView.IsOk = false;
+                //modelView.NameAlreadyExist = true;
+                //modelView.ErrorMessage = "Шаблон с таким именем уже существует";
 
-                return modelView;
+                //return modelView;
             }
 
             #endregion

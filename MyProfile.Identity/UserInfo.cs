@@ -233,24 +233,7 @@ namespace MyProfile.Identity
                     Icon = "lnr lnr-rocket",
                     IsLastBeforeLine = false,
                 },
-                new MenuItemViewModel
-                {
-                    Title = "Графики",
-                    Area ="",
-                    Controller = "Chart",
-                    Action = "List",
-                    Icon = "lnr lnr-pie-chart",
-                    IsLastBeforeLine = false,
-                },
-                new MenuItemViewModel
-                {
-                    Title = "Календарь",
-                    Area ="",
-                    Controller = "Budget",
-                    Action = "TimeLine",
-                    Icon = "lnr lnr-calendar-full",
-                    IsLastBeforeLine = false,
-                },
+               
                  new MenuItemViewModel
                 {
                     Title = "Шаблоны",
@@ -260,7 +243,15 @@ namespace MyProfile.Identity
                     Icon = "lnr lnr-layers",
                     IsLastBeforeLine = false,
                 },
-
+                  new MenuItemViewModel
+                {
+                    Title = "Графики",
+                    Area ="",
+                    Controller = "Chart",
+                    Action = "List",
+                    Icon = "lnr lnr-pie-chart",
+                    IsLastBeforeLine = true,
+                },
                   new MenuItemViewModel
                 {
                     Title = "Категории",
@@ -268,6 +259,15 @@ namespace MyProfile.Identity
                     Controller = "Section",
                     Action = "Edit",
                     Icon = "pe-7s-albums",
+                    IsLastBeforeLine = false,
+                },
+                   new MenuItemViewModel
+                {
+                    Title = "История",
+                    Area ="",
+                    Controller = "Budget",
+                    Action = "TimeLine",
+                    Icon = "lnr lnr-calendar-full",
                     IsLastBeforeLine = false,
                 },
                     new MenuItemViewModel
@@ -279,16 +279,16 @@ namespace MyProfile.Identity
                     Icon = "lnr lnr lnr-list",
                     IsLastBeforeLine = false,
                 },
-                //      new MenuItemViewModel
-                //{
-                //    Title = "Help center",
-                //    Area ="Help",
-                //    Controller = "Center",
-                //    Action = "Index",
-                //    Icon = "lnr lnr-question-circle",
-                //    IsLastBeforeLine = true,
-                //    ClassElement = "margin-top-auto",
-                //}
+                      new MenuItemViewModel
+                {
+                    Title = "Help center",
+                    Area ="Help",
+                    Controller = "Center",
+                    Action = "Index",
+                    Icon = "lnr lnr-question-circle",
+                    IsLastBeforeLine = false,
+                    ClassElement = "margin-top-auto",
+                }
 
             };
         }

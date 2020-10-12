@@ -171,9 +171,9 @@ namespace MyProfile.Entity.Repository
             return context.Set<T>();
         }
 
-        public bool Any<T>(int id) where T : class
+        public bool Any<T>(Expression<Func<T, bool>> predicate) where T : class
         {
-            return this.GetByID<T>(id) != null;
+            return GetDbSet<T>().Any(predicate);
         }
         public async Task<bool> AnyAsync<T>(int id) where T : class
         {

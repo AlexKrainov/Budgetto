@@ -42,7 +42,7 @@ namespace MyProfile.Entity.Repository
         //Task<T> GetFirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate);
         //T GetFirstOrDefault<T>(Expression<Func<T, bool>> predicate);
 
-        bool Any<T>(int id) where T : class;
+        bool Any<T>(Expression<Func<T, bool>> predicate) where T : class;
         Task<bool> AnyAsync<T>(int id) where T : class;
         Task<bool> AnyAsync<T>(Expression<Func<T, bool>> predicate) where T : class;
     }

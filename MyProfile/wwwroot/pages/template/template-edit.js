@@ -120,7 +120,7 @@
                 totalAction: 0,
                 formula: [],
                 templateBudgetSections: [],
-                placeAfterCommon: 2,
+                placeAfterCommon: 0,
                 format: '',
             };
         },

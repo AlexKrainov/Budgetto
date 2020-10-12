@@ -252,7 +252,7 @@ namespace MyProfile.Controllers
         {
             try
             {
-                await templateService.RemoveOrRecovery(template, isRemove: true);
+                await templateService.RemoveOrRecovery(template.ID, isRemove: true);
             }
             catch (Exception ex)
             {
@@ -266,7 +266,7 @@ namespace MyProfile.Controllers
         {
             try
             {
-                await templateService.RemoveOrRecovery(template, isRemove: false);
+                await templateService.RemoveOrRecovery(template.ID, isRemove: false);
             }
             catch (Exception ex)
             {
@@ -274,5 +274,21 @@ namespace MyProfile.Controllers
             }
             return Json(new { isOk = true, template });
         }
+
+        /// <summary>
+        /// Delete from /Template/Edit page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await templateService.RemoveOrRecovery(id, isRemove: true))
+            {
+                return RedirectToAction("List");
+            }
+            return RedirectToAction("Edit", id);
+        }
+
     }
 }

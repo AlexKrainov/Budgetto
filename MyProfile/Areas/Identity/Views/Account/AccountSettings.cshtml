@@ -5,6 +5,11 @@
 }
 
 @section Styles {
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
     <link rel="stylesheet" href="~/vendor/libs/select2/select2.css">
     <link rel="stylesheet" href="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css">
 
@@ -38,7 +43,7 @@
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#account-change-password">Смена пароля</a>
                 @*<a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#collective-budget">Коллективные настройки</a>*@
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
-                 || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+                || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#admin-menu-budget">МЕНЮ АДМИНА</a>
                 }
@@ -56,10 +61,10 @@
                     @await Html.PartialAsync("_AccountSettings_ChangePassword")
                 </div>
                 @*<div class="tab-pane fade" id="collective-budget">
-                    @await Html.PartialAsync("_AccountSettings_CollectiveBudget")
-                </div>*@
+                        @await Html.PartialAsync("_AccountSettings_CollectiveBudget")
+                    </div>*@
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
-                   || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+                  || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <div class="tab-pane fade" id="admin-menu-budget">
                         @await Html.PartialAsync("_AccountSettings_AdminSettings")

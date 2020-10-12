@@ -32,7 +32,16 @@
 <section id="template-columns" style="margin-bottom: 250px;" v-cloak>
     <input type="hidden" name="templateID" id="templateID" value="@ViewBag.TemplateID" />
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold mb-4">
+    <h4 class="d-flex flex-wrap w-100 font-weight-bold my-4">
+        <div class="lnr lnr-layers display-4 text-primary mr-2"></div>
+        <span class="px-0 pb-2 pt-2">
+            {{ template.id == 0 ? 'Создание шаблона' : 'Редактирование шаблона' }}
+        </span>
+        <a href="" title="Иформация об этой странице" target="_blank">
+            <i class="pe-7s-info d-block text-primary"></i>
+        </a>
+    </h4>
+    @*<div class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold mb-4">
         <div class="lnr lnr-layers display-4 text-primary mr-2"></div>
         <h4 class="col-12 col-md px-0 pt-3">
             {{ template.id == 0 ? 'Создание шаблона' : 'Редактирование шаблона' }}
@@ -40,7 +49,7 @@
         <a href="" title="Иформация об этой странице" target="_blank">
             <i class="pe-7s-info d-block text-primary"></i>
         </a>
-    </div>
+    </div>*@
 
     <div class="card mb-4">
         <div class="card-body">
@@ -217,22 +226,22 @@
                                     <div class="text-muted">Где ставить запятую</div>
                                     <div>
                                         @*<p class="cursor-pointer" v-on:click="column.placeAfterCommon = 3" v-show="column.placeAfterCommon == 4">
-                                            <i class="fa fa-terminal"></i>
-                                            0,0000
-                                        </p>
-                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 2" v-show="column.placeAfterCommon == 3">
-                                            <i class="fa fa-terminal"></i>
-                                            0,000
-                                        </p>*@
-                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 1" v-show="column.placeAfterCommon == 0">
+                                                <i class="fa fa-terminal"></i>
+                                                0,0000
+                                            </p>
+                                            <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 2" v-show="column.placeAfterCommon == 3">
+                                                <i class="fa fa-terminal"></i>
+                                                0,000
+                                            </p>*@
+                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 0" v-show="column.placeAfterCommon == 2">
                                             <i class="fa fa-terminal"></i>
                                             0,00
                                         </p>
-                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 0" v-show="column.placeAfterCommon == 1">
+                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 2" v-show="column.placeAfterCommon == 1">
                                             <i class="fa fa-terminal"></i>
                                             0,0
                                         </p>
-                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 2" v-show="column.placeAfterCommon == 2">
+                                        <p class="cursor-pointer" v-on:click="column.placeAfterCommon = 1" v-show="column.placeAfterCommon == 0">
                                             <i class="fa fa-terminal"></i>
                                             0
                                         </p>
@@ -431,7 +440,7 @@
                                 <div class="card shadow-none bg-transparent border-primary card-hover bg-primary text-white mb-3" style="border: 1px solid var(--blue) !important;">
                                     <div class="card-body">
                                         <h4 class="card-title">Месяцы</h4>
-                                            <p class="card-text">Нажмите, чтобы добавить колонку с месяцами.</p>
+                                        <p class="card-text">Нажмите, чтобы добавить колонку с месяцами.</p>
                                     </div>
                                 </div>
                             </div>
@@ -507,8 +516,8 @@
                                 <span class="is-not-using-section ml-2" title="Эта категория не используется. Добавьте ее в формулу." v-show="!isUsing(field)">!</span>
                             </li>
                         </ul>
-                        <hr />
-                        <span class="badge badge-outline-secondary formula-day-section-item cursor-pointer" v-on:click="addPeriod(5)">[ День ]</span>
+                        @*<hr />*@
+                        @*<span class="badge badge-outline-secondary formula-day-section-item cursor-pointer" v-on:click="addPeriod(5)">[ День ]</span>*@
                     </div>
                     <div class="form-group col-6">
 

@@ -504,12 +504,23 @@
             }
         },
         initTable: function () {
+            if (this.dataTable) {
+                this.dataTable.destroy();
+            }
+
             this.dataTable = $("#table").DataTable({
                 columnDefs: [
-                    { targets: '_all', className: "column-min-width" },
+                    { targets: '_all', className: "column-min-width", "orderDataType": "dom-text-numeric", type: "num" },
 
                 ]
             });
+
+            $.fn.dataTable.ext.order["dom-text-numeric"] = function (settings, col) {
+                return this.api().column(col, { order: 'index' }).nodes().map(function (td, i) {
+                    console.log($(td).find("span[data-value]").data("value"));
+                    return $(td).find("span[data-value]").data("value");
+                });
+            }
         },
         toExcel: function () {
             this.isGenerateExcel = true;
@@ -529,7 +540,8 @@
             if (this.periodType == PeriodTypeEnum.Month) {
                 return `<div class="cell-head">${this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell, cellIndex, rowIndex)}</div>
                     <div class="cell-footer mt-1">
-                        <span class="cell-reminder-icons" onclick="ReminderVue.showReminders('${cell.currentDate}')">${this.getRemindersIcons(cell)}</span>
+                        <span class="cell-reminder-icons"
+                                onclick="ReminderVue.showReminders('${cell.currentDate}')">${this.getRemindersIcons(cell)}</span>
                         <span class="cell-section-icons"></span>
                     </div>`;
             } else {
