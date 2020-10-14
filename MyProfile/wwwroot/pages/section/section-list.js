@@ -109,6 +109,7 @@
         },
         remove: function (area) {
             if (!area.isGlobal) {
+                this.isSaving = true;
                 sendAjax("/Section/RemoveArea?id=" + area.id, null, "POST")
                     .then(function (result) {
                         if (result.isOk && result.wasDeleted) {
@@ -122,6 +123,7 @@
                         } else {
                             toastr.error(result.text);
                         }
+                        AreaVue.isSaving = true;
                     });
             }
         },
@@ -406,6 +408,7 @@ var SectionVue = new Vue({
         },
 
         remove: function (section) {
+            this.isSaving = true;
             sendAjax("/Section/RemoveSection?id=" + section.id, null, "POST")
                 .then(function (result) {
                     if (result.isOk && result.wasDeleted) {
@@ -419,6 +422,7 @@ var SectionVue = new Vue({
                     } else {
                         toastr.error(result.text);
                     }
+                    SectionVue.isSaving = false;
                 }).then(function () {
                     RecordVue.refreshSections();
                 });

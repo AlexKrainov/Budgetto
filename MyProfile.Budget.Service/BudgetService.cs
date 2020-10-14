@@ -241,11 +241,12 @@ namespace MyProfile.Budget.Service
                         numberFormatInfo.CurrencyDecimalDigits = column.PlaceAfterCommon;
 
                         string v = 0.ToString("C", numberFormatInfo);
-                        //cell.NaturalValue = 0;
+                        cell.NaturalValue = 0; //For order in table
 
                         if (column.TemplateColumnType == TemplateColumnType.BudgetSection && currentDate.Date > dateTimeNow.Date)
                         {
                             v = "";
+                            cell.NaturalValue = -1;//For order in table
                         }
                         else if (column.TemplateColumnType == TemplateColumnType.DaysForMonth)
                         {

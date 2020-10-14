@@ -176,7 +176,7 @@ namespace MyProfile.Limit.Service
             List<LimitChartModelView> limitCharts = new List<LimitChartModelView>();
             var currentUser = UserInfo.Current;
             bool isShow = true;
-
+            var now = DateTime.Now;
 
             if (periodTypesEnum == PeriodTypesEnum.Month)
             {
@@ -191,9 +191,11 @@ namespace MyProfile.Limit.Service
                 x.PeriodTypeID == (int)periodTypesEnum
                 && x.VisibleElement.IsShowOnDashboards);
 
-            bool isThisMonth = finish.Month == DateTime.Now.Month && finish.Year == DateTime.Now.Year;
+            bool isThisMonth = finish.Month == now.Month && finish.Year == now.Year;
+            bool IsPastMonth = start < now && finish < now;
+            bool IsFutureMonth = start > now && finish > now;
+
             var totalDays = 1 + (finish - start).Days;
-            var leftDays = (finish - DateTime.Now).Days + 1;
 
             for (int i = 0; i < limits.Count; i++)
             {
@@ -225,21 +227,24 @@ namespace MyProfile.Limit.Service
                 {
                     if (isThisMonth)
                     {
+                        var leftDays = (finish - now).Days + 1;
                         leftMoneyInADay = leftMoneyToSpend / leftDays;
                     }
-                    else
+                    else if (IsPastMonth)
                     {
                         leftMoneyInADay = totalSpended / totalDays;
                     }
+                    else if (IsFutureMonth)
+                    {
+                        leftMoneyInADay = limit.LimitMoney / totalDays;
+                    }
+
                     if (totalSpended >= 0)
                     {
                         percent2 = Math.Round(leftMoneyToSpend / limit.LimitMoney * 100, 2);
                     }
                 }
-                else
-                {
-                    leftMoneyInADay = totalSpended / totalDays;
-                }
+
 
                 limitCharts.Add(new LimitChartModelView
                 {
@@ -251,6 +256,8 @@ namespace MyProfile.Limit.Service
                     Percent2 = percent2,
                     Percent1 = 100 - percent2,
                     IsThisMonth = isThisMonth,
+                    IsPastMonth = IsPastMonth,
+                    IsFutureMonth = IsFutureMonth,
                     IsShow = isShow,
                     //Sections
                 });

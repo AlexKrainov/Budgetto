@@ -586,7 +586,7 @@
                 let values = cell.value.split(",");
                 let generalValue = ` data-type="${cell.templateColumnType}" data-value='${cell.naturalValue}'`;
 
-                if (rowIndex) {
+                if (rowIndex >= 0) {
                     if (values.length == 2) {
                         return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> 
                                 ${values[0]}

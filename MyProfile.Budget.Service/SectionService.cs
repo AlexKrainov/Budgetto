@@ -15,6 +15,8 @@ using Newtonsoft.Json;
 using MyProfile.Entity.ModelEntitySave;
 using MyProfile.User.Service;
 using MyProfile.Entity.ModelView.AreaAndSection;
+using Common.Service;
+using MyProfile.Entity.ModelView.TemplateModelView;
 
 namespace MyProfile.Budget.Service
 {
@@ -23,12 +25,14 @@ namespace MyProfile.Budget.Service
         private IBaseRepository repository;
         private CollectionUserService collectionUserService;
         private UserLogService userLogService;
+        private CommonService commonService;
 
         public SectionService(IBaseRepository repository)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
             this.userLogService = new UserLogService(repository);
+            this.commonService = new CommonService(repository);
         }
 
 
@@ -283,6 +287,7 @@ namespace MyProfile.Budget.Service
         public async Task<Tuple<bool, bool, string>> DeleteSection(int sectionID)
         {
             string s = "";
+            bool hasTemplates = false;
             var currentUser = UserInfo.Current;
             var budgetSection = await repository.GetAll<BudgetSection>()
                 .Where(x => x.ID == sectionID && x.BudgetArea.UserID == currentUser.ID)
@@ -290,6 +295,7 @@ namespace MyProfile.Budget.Service
 
             if (budgetSection != null && budgetSection.TemplateBudgetSections != null || budgetSection.TemplateBudgetSections.Count() > 0)
             {
+                hasTemplates = true;
                 s += "Эта категория используется в шаблонах.";
             }
             else if (budgetSection != null && budgetSection.SectionGroupLimits != null || budgetSection.SectionGroupLimits.Count() > 0)
@@ -307,6 +313,29 @@ namespace MyProfile.Budget.Service
                 catch (Exception ex)
                 {
                     return new Tuple<bool, bool, string>(false, false, "Не удалось удалить категорию " + s);
+                }
+
+                //Remove section from Template.column formula
+                var templateColumns = await repository.GetAll<TemplateColumn>(x => x.Template.UserID == currentUser.ID && x.Formula.Contains($":{sectionID},"))
+                       .ToListAsync();
+                foreach (var templateColumn in templateColumns)
+                {
+                    try
+                    {
+                        templateColumn.Formula = commonService.GenerateFormulaBySections(
+                            templateColumn.TemplateBudgetSections.Select(x =>
+                            new TemplateBudgetSectionPlusViewModel
+                            {
+                                BudgetSectionID = x.BudgetSectionID,
+                                Name = x.BudgetSection.Name,
+                            })
+                            .ToList());
+                        await repository.UpdateAsync(templateColumn, true);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                 }
                 return new Tuple<bool, bool, string>(true, true, "Удаление прошло успешно");
             }

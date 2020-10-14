@@ -18,6 +18,8 @@ namespace MyProfile.Entity.ModelView.Limit
 		/// Is DateTime.Now == current view date 
 		/// </summary>
 		public bool IsThisMonth { get; set; }
+		public bool IsPastMonth { get; set; }
+		public bool IsFutureMonth { get; set; }
 		public bool IsShow { get; set; }
 	}
 }

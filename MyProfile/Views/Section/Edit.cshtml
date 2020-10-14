@@ -62,23 +62,24 @@
             border: 1px solid gray;
         }
 
-            .card-color .card {
-                border-radius: 7px;
-            }
+        .card-color .card {
+            border-radius: 7px;
+        }
 
-            .card-color-section .card-body {
-                border: 1px solid gray;
-                border-radius: 7px;
-            }
+        .card-color-section .card-body {
+            border: 1px solid gray;
+            border-radius: 7px;
+        }
 
-            .card-color-section:not(:first-child) {
-                margin-right: -4rem;
-            }
+        .card-color-section:not(:first-child) {
+            margin-right: -4rem;
+        }
 
-            .card-color-section:hover {
-                transform: translateY(-1rem);
-                z-index: 10;
-            }
+        .card-color-section:hover {
+            transform: translateY(-1rem);
+            z-index: 10;
+        }
+
         .card-color-section-selected {
             z-index: 10;
             border: 1px solid black;
@@ -142,14 +143,17 @@
                         <button class="btn btn-primary btn-sm" v-on:click="edit(area)">
                             <i class="far fa-edit pr-2"></i>Редактировать
                         </button>
-                        <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-on:click="remove(area)"
-                                v-if="area.sections == undefined || area.sections.length == 0">
-                            <span class="ion ion-md-trash"></span>
+                        <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
+                                v-on:click="remove(area)"
+                                v-if="area.sections == undefined || area.sections.length == 0"
+                                v-bind:disabled="isSaving">
+                            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                            <span class="ion ion-md-trash" v-show="isSaving == false"></span>
                         </button>
                         <div class="d-inline-flex align-items-center align-middle float-right ml-1">
                             <span class="px-1 ml-2 ml-lg-0">
                                 @*<span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="area.isShowOnSite"></span>
-                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="area.isShowOnSite == false"></span>*@
+                                    <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="area.isShowOnSite == false"></span>*@
                                 @*<span class="fas fa-users text-primary" title="Эту область выдят все" v-show="area.isShowInCollective"></span>
                                     <span class="fas fa-users-slash text-secondary" title="Эту область выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
                             </span>
@@ -202,13 +206,17 @@
                         <button class="btn btn-primary btn-sm" v-on:click="edit(section)">
                             <i class="far fa-edit pr-2"></i>Редактировать
                         </button>
-                        <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-on:click="remove(section)" v-if="section.hasRecords == false">
-                            <span class="ion ion-md-trash"></span>
+                        <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
+                                v-on:click="remove(section)"
+                                v-if="section.hasRecords == false"
+                                v-bind:disabled="isSaving">
+                            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                            <span class="ion ion-md-trash" v-show="isSaving == false"></span>
                         </button>
                         <div class="d-inline-flex align-items-center align-middle float-right ml-1">
                             <span class="px-1 ml-2 ml-lg-0">
                                 @*<span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="section.isShowOnSite"></span>
-                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="section.isShowOnSite == false"></span>*@
+                                    <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="section.isShowOnSite == false"></span>*@
                                 @*<span class="fas fa-users text-primary" title="Эту категорию выдят все" v-show="section.isShowInCollective"></span>
                                     <span class="fas fa-users-slash text-secondary" title="Эту категорию выдите только вы" v-show="section.isShowInCollective == false"> </span>*@
                             </span>

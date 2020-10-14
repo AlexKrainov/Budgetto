@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common.Service\Common.Service.csproj" />
     <ProjectReference Include="..\Email.Service\Email.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
     <ProjectReference Include="..\MyProfile.File.Service\MyProfile.File.Service.csproj" />

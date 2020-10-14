@@ -1,4 +1,5 @@
-﻿using Email.Service;
+﻿using Common.Service;
+using Email.Service;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
@@ -25,18 +26,21 @@ namespace MyProfile.User.Service
         private UserEmailService userConfirmEmailService;
         private FileWorkerService fileWorkerService;
         private PasswordService passwordService;
+        private CommonService commonService;
 
         public UserService(IBaseRepository repository,
             UserLogService userLogService,
             UserEmailService userConfirmEmailService,
             FileWorkerService fileWorkerService,
-            PasswordService passwordService)
+            PasswordService passwordService,
+            CommonService commonService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
             this.userConfirmEmailService = userConfirmEmailService;
             this.fileWorkerService = fileWorkerService;
             this.passwordService = passwordService;
+            this.commonService = commonService;
         }
 
         public UserInfoClientSide GetUserSettings()
@@ -674,39 +678,39 @@ namespace MyProfile.User.Service
                 .Where(x => x.CodeName == "Products" || x.CodeName == "Restorans" || x.CodeName == "FastFood")
                 .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                 .ToList();
-            string foodFormula = GetFormula(foodSections);
+            string foodFormula = commonService.GenerateFormulaBySections(foodSections);
 
             var RecurringPaymentsSections = budgetSections
                 .Where(x => x.CodeName == "Internet" || x.CodeName == "Communication" || x.CodeName == "ForTheApartment" || x.CodeName == "Electricity" || x.CodeName == "Beauty" || x.CodeName == "Taxes")
                 .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                 .ToList();
-            string RecurringPaymentsFormula = GetFormula(RecurringPaymentsSections);
+            string RecurringPaymentsFormula = commonService.GenerateFormulaBySections(RecurringPaymentsSections);
 
             var RecreationSections = budgetSections
                 .Where(x => x.CodeName == "Clothes" || x.CodeName == "Entertainment" || x.CodeName == "Gifts" || x.CodeName == "CommonTransport")
                 .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                 .ToList();
-            string RecreationFormula = GetFormula(RecreationSections);
+            string RecreationFormula = commonService.GenerateFormulaBySections(RecreationSections);
 
 
             var MedicineSections = budgetSections
                 .Where(x => x.CodeName == "Dentistry" || x.CodeName == "Pharmacy" || x.CodeName == "VisitDoctor")
                 .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                 .ToList();
-            string MedicineFormula = GetFormula(MedicineSections);
+            string MedicineFormula = commonService.GenerateFormulaBySections(MedicineSections);
 
             var IncomeSections = budgetSections
                 .Where(x => x.CodeName == "Dividends" || x.CodeName == "Cashback" || x.CodeName == "OtherIncome" || x.CodeName == "Salary")
                 .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                 .ToList();
-            string IncomeFormula = GetFormula(IncomeSections);
+            string IncomeFormula = commonService.GenerateFormulaBySections(IncomeSections);
 
 
             var NotBudgetSections = budgetSections
                 .Where(x => x.CodeName == "Renovation" || x.CodeName == "AllForHouse" || x.CodeName == "LargeHouseholdAppliances" || x.CodeName == "Travels")
                 .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                 .ToList();
-            string NotBudgetFormula = GetFormula(NotBudgetSections);
+            string NotBudgetFormula = commonService.GenerateFormulaBySections(NotBudgetSections);
 
             try
             {
@@ -821,51 +825,51 @@ namespace MyProfile.User.Service
                .Where(x => x.CodeName == "Products" || x.CodeName == "Restorans" || x.CodeName == "FastFood")
                .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                .ToList();
-            foodFormula = GetFormula(foodSections);
+            foodFormula = commonService.GenerateFormulaBySections(foodSections);
 
             RecurringPaymentsSections = budgetSections
                 .Where(x => x.CodeName == "Internet" || x.CodeName == "Communication" || x.CodeName == "ForTheApartment" || x.CodeName == "Electricity" || x.CodeName == "Beauty" || x.CodeName == "Taxes")
                 .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                 .ToList();
-            RecurringPaymentsFormula = GetFormula(RecurringPaymentsSections);
+            RecurringPaymentsFormula = commonService.GenerateFormulaBySections(RecurringPaymentsSections);
 
             RecreationSections = budgetSections
                .Where(x => x.CodeName == "Clothes" || x.CodeName == "Entertainment" || x.CodeName == "Gifts" || x.CodeName == "CommonTransport")
                .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                .ToList();
-            RecreationFormula = GetFormula(RecreationSections);
+            RecreationFormula = commonService.GenerateFormulaBySections(RecreationSections);
 
 
             MedicineSections = budgetSections
                .Where(x => x.CodeName == "Dentistry" || x.CodeName == "Pharmacy" || x.CodeName == "VisitDoctor")
                .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                .ToList();
-            MedicineFormula = GetFormula(MedicineSections);
+            MedicineFormula = commonService.GenerateFormulaBySections(MedicineSections);
 
             IncomeSections = budgetSections
                .Where(x => x.CodeName == "Dividends" || x.CodeName == "Cashback" || x.CodeName == "OtherIncome" || x.CodeName == "Salary")
                .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                .ToList();
-            IncomeFormula = GetFormula(IncomeSections);
+            IncomeFormula = commonService.GenerateFormulaBySections(IncomeSections);
 
 
             NotBudgetSections = budgetSections
                .Where(x => x.CodeName == "Renovation" || x.CodeName == "AllForHouse" || x.CodeName == "LargeHouseholdAppliances" || x.CodeName == "Travels")
                .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                .ToList();
-            NotBudgetFormula = GetFormula(NotBudgetSections);
+            NotBudgetFormula = commonService.GenerateFormulaBySections(NotBudgetSections);
 
             var CarSections = budgetSections
                .Where(x => x.CodeName == "CarInsurance" || x.CodeName == "Petrol" || x.CodeName == "AutoRepair")
                .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
                .ToList();
-            var CarFormula = GetFormula(CarSections);
+            var CarFormula = commonService.GenerateFormulaBySections(CarSections);
 
             var InvestSections = budgetSections
               .Where(x => x.CodeName == "Investment")
               .Select(x => new TemplateBudgetSectionPlusViewModel { BudgetSectionID = x.ID, CodeName = x.CodeName, Name = x.Name })
               .ToList();
-            var InvestFormula = GetFormula(InvestSections);
+            var InvestFormula = commonService.GenerateFormulaBySections(InvestSections);
 
             try
             {
@@ -1053,31 +1057,6 @@ namespace MyProfile.User.Service
             return 1;
         }
 
-        private string GetFormula(List<TemplateBudgetSectionPlusViewModel> foodSections)
-        {
-            List<FormulaItem> items = new List<FormulaItem>();
-
-            for (int i = 0; i < foodSections.Count; i++)
-            {
-                if (i != 0) //i % 2 != 0)
-                {
-                    items.Add(new FormulaItem
-                    {
-                        Type = FormulaFieldType.Mark,
-                        Value = "+"
-                    });
-                }
-
-                items.Add(new FormulaItem
-                {
-                    ID = foodSections[i].BudgetSectionID,
-                    Value = "[ " + foodSections[i].Name + " ]",
-                    Type = FormulaFieldType.Section
-                });
-            }
-
-            return JsonConvert.SerializeObject(items);
-        }
 
         public async Task<bool> UpdatePassword(string newPassword, Guid userID)
         {

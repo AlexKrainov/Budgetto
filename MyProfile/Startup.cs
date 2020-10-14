@@ -1,3 +1,4 @@
+using Common.Service;
 using Email.Service;
 using Email.Service.EmailEnvironment;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -68,6 +69,7 @@ namespace MyProfile
             services.AddScoped<PaymentService>();
 
             services.AddScoped<UserEmailService>();
+            services.AddScoped<CommonService>();
             #endregion
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

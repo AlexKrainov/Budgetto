@@ -376,7 +376,7 @@
                 }
 
                 let obj = {
-                    dateTimeOfPayment: this.flatpickr.latestSelectedDateObj.toLocaleDateString(),
+                    dateTimeOfPayment: moment(this.flatpickr.latestSelectedDateObj).format("YYYY-MM-DDTHH:mm:ss"),
                     isShowInCollection: this.isShowCollectionElement == false ? false : this.isShowInCollection,
                     records: this.records.filter(x => x.isCorrect)
                 };
@@ -542,7 +542,7 @@
             return;
         },
         getRateFromBank: function () {
-            let dateInFormat = this.flatpickr.latestSelectedDateObj.toLocaleDateString();
+            let dateInFormat = this.flatpickr.latestSelectedDateObj.toISOString();
             ShowLoading("#currency-container");
             return $.ajax({
                 type: "GET",
@@ -616,7 +616,7 @@
         showHistory: function (isShow) {
             this.isShowHistory = isShow;
             if (isShow) {
-                this.historyComponent.dateTimeOfPayment = this.flatpickr.latestSelectedDateObj.toLocaleDateString();
+                this.historyComponent.dateTimeOfPayment = moment(this.flatpickr.latestSelectedDateObj).format("YYYY-MM-DDTHH:mm:ss");
             }
         }
     }
