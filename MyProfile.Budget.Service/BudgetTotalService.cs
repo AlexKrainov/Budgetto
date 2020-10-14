@@ -93,7 +93,7 @@ namespace MyProfile.Budget.Service
                 //}
             }
 
-            if (currentUser.UserSettings.Month_InvestingWidget)
+            if (currentUser.UserSettings.Year_InvestingWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Investments);
 

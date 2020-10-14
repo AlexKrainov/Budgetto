@@ -82,7 +82,7 @@ namespace MyProfile.Budget.Service
                     {
                         record.IsSaved = false;
 
-                        await userLogService.CreateErrorLog(currentUser.UserSessionID, "BudgetRecord_Create", ex.Message);
+                        await userLogService.CreateErrorLog(currentUser.UserSessionID, "BudgetRecord_Create", ex);
                     }
 
                     isCreate = true;
@@ -110,7 +110,7 @@ namespace MyProfile.Budget.Service
                     catch (Exception ex)
                     {
                         record.IsSaved = false;
-                        await userLogService.CreateErrorLog(currentUser.UserSessionID, "BudgetRecord_Edit", ex.Message);
+                        await userLogService.CreateErrorLog(currentUser.UserSessionID, "BudgetRecord_Edit", ex);
                     }
                 }
             }

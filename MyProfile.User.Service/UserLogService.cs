@@ -97,12 +97,12 @@ namespace MyProfile.User.Service
                 if (userSession != null)
                 {
                     userSession.LogOutDate = DateTime.Now.ToUniversalTime();
-                    return await repository.UpdateAsync(userSession, true); 
+                    return await repository.UpdateAsync(userSession, true);
                 }
             }
             catch (Exception ex)
             {
-                await CreateErrorLog(userSessionID: userSessionID, where: "UserLogService.UserSessionLogOut", errorText: ex.Message);
+                await CreateErrorLog(userSessionID: userSessionID, where: "UserLogService.UserSessionLogOut", ex);
             }
             return 0;
         }
@@ -145,13 +145,13 @@ namespace MyProfile.User.Service
         /// <param name="errorText"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public async Task<int> CreateErrorLog(Guid userSessionID, string where = null, string errorText = null, string comment = null)
+        public async Task<int> CreateErrorLog(Guid userSessionID, string where, Exception exception, string comment = null)
         {
             ErrorLog log = new ErrorLog
             {
                 CurrentDate = DateTime.Now.ToUniversalTime(),
                 Comment = comment,
-                ErrorText = errorText,
+                ErrorText = GetExceptionMessages(exception),
                 Where = where,
                 UserSessionID = userSessionID,
             };
@@ -168,6 +168,14 @@ namespace MyProfile.User.Service
             return log.ID;
         }
 
+        private string GetExceptionMessages(Exception e, string msgs = "")
+        {
+            if (e == null) return string.Empty;
+            if (msgs == "") msgs = e.Message;
+            if (e.InnerException != null)
+                msgs += "\r\nInnerException: " + GetExceptionMessages(e.InnerException);
+            return msgs;
+        }
         /// <summary>
         /// If user trying to enter more then 20 times in a day, show him code
         /// </summary>

@@ -511,13 +511,11 @@
             this.dataTable = $("#table").DataTable({
                 columnDefs: [
                     { targets: '_all', className: "column-min-width", "orderDataType": "dom-text-numeric", type: "num" },
-
                 ]
             });
 
             $.fn.dataTable.ext.order["dom-text-numeric"] = function (settings, col) {
                 return this.api().column(col, { order: 'index' }).nodes().map(function (td, i) {
-                    console.log($(td).find("span[data-value]").data("value"));
                     return $(td).find("span[data-value]").data("value");
                 });
             }

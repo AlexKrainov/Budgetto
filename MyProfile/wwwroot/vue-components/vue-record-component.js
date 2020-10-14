@@ -209,12 +209,12 @@
             placeholder: "550 или 100+500 или 199.99",
             callbacks: {
                 change: function () {
-                    console.log("Change");
-                    console.log(arguments);
+                    //console.log("Change");
+                    //console.log(arguments);
                 },
                 blur: function () {
-                    console.log("Blur");
-                    console.log(arguments);
+                    //console.log("Blur");
+                    //console.log(arguments);
                 },
             }
         });
@@ -247,8 +247,8 @@
             let value = item.value;
             let isCorrect = false;
 
-            //console.log("transformTag");
-            //console.log(arguments);
+            console.log("transformTag");
+            console.log(arguments);
             //remove dublicate after edit
             if (this.records.some(x => x.tag == item.value)) {
                 return false;

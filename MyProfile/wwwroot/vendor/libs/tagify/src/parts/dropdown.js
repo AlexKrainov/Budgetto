@@ -6,6 +6,10 @@ export default {
         this.DOM.dropdown.content = this.DOM.dropdown.querySelector('.' + this.settings.classNames.dropdownWrapper)
     },
 
+    /**
+     * shows the suggestions select box
+     * @param {String} value [optional, filter the whitelist by this value]
+     */
     show( value ){
         var _s = this.settings,
             firstListItem,
@@ -203,6 +207,8 @@ export default {
     },
 
     position( ddHeight ){
+        if( this.settings.dropdown.position == 'manual' ) return
+
         var placeAbove, rect, top, bottom, left, width, parentsPositions,
             ddElm = this.DOM.dropdown,
             viewportHeight = document.documentElement.clientHeight,
@@ -326,14 +332,15 @@ export default {
                             return
                     case 'Tab' : {
                         // in mix-mode, treat arrowRight like Enter key, so a tag will be created
-                        if( this.settings.mode != 'mix' && !this.settings.autoComplete.rightKey && !this.state.editing ){
-                            try{
-                                let value = selectedElm ? selectedElm.textContent : this.suggestedListItems[0].value;
-                                this.input.autocomplete.set.call(this, value)
-                            }
-                            catch(err){}
-                            return false;
+                        if( this.settings.mode != 'mix' && selectedElm && !this.settings.autoComplete.rightKey && !this.state.editing ){
+                            e.preventDefault() // prevents blur so the autocomplete suggestion will not become a tag
+                            var tagifySuggestionIdx = selectedElm.getAttribute('tagifySuggestionIdx'),
+                                data = tagifySuggestionIdx ? this.suggestedListItems[+tagifySuggestionIdx] : '';
+
+                            this.input.autocomplete.set.call(this, data.value || data)
+                            return false
                         }
+                        return true
                     }
                     case 'Enter' : {
                         e.preventDefault();
@@ -431,8 +438,7 @@ export default {
         // Try to autocomplete the typed value with the currently highlighted dropdown item
         if( this.settings.autoComplete ){
             this.input.autocomplete.suggest.call(this, itemData)
-            if( this.settings.dropdown.position != 'manual' )
-                this.dropdown.position.call(this) // suggestions might alter the height of the tagify wrapper because of unkown suggested term length that could drop to the next line
+            this.dropdown.position.call(this) // suggestions might alter the height of the tagify wrapper because of unkown suggested term length that could drop to the next line
         }
     },
 
@@ -487,16 +493,14 @@ export default {
     },
 
     selectAll(){
-        // some whitelist items might have already been added as tags so when addings all of them,
-        // skip shoing already-added ones
-        var skipInvalid = this.settings.skipInvalid;
-        this.settings.skipInvalid = true;
-
-        this.addTags(this.settings.whitelist, true)
-
-        this.settings.skipInvalid = skipInvalid;
-
+        // having suggestedListItems with items messes with "normalizeTags" when wanting
+        // to add all tags
+        this.suggestedListItems.length = 0;
         this.dropdown.hide.call(this)
+
+        // some whitelist items might have already been added as tags so when addings all of them,
+        // skip adding already-added ones, so best to use "filterListItems" method over "settings.whitelist"
+        this.addTags(this.dropdown.filterListItems.call(this, ''), true)
         return this
     },
 
@@ -514,13 +518,12 @@ export default {
             searchKeys = _sd.searchKeys,
             whitelistItem,
             valueIsInWhitelist,
-            whitelistItemValueIndex,
             searchBy,
             isDuplicate,
             niddle,
             i = 0;
 
-        if( !value ){
+        if( !value || !searchKeys.length ){
             return (_s.duplicates
                 ? whitelist
                 : whitelist.filter(item => !this.isTagDuplicate( isObject(item) ? item.value : item )) // don't include tags which have already been added.
@@ -531,22 +534,21 @@ export default {
             ? ""+value
             : (""+value).toLowerCase()
 
+        function stringHasAll(s, query){
+            return query.toLowerCase().split(' ').every(q => s.includes(q.toLowerCase()))
+        }
+
         for( ; i < whitelist.length; i++ ){
             whitelistItem = whitelist[i] instanceof Object ? whitelist[i] : { value:whitelist[i] } //normalize value as an Object
 
             if( _sd.fuzzySearch ){
                 searchBy = searchKeys.reduce((values, k) => values + " " + (whitelistItem[k]||""), "").toLowerCase()
-
-                whitelistItemValueIndex = _sd.accentedSearch
-                    ? unaccent(searchBy).indexOf(unaccent(niddle))
-                    : searchBy.indexOf(niddle)
-
-                valueIsInWhitelist = whitelistItemValueIndex >= 0
+                valueIsInWhitelist = stringHasAll(_sd.accentedSearch ? unaccent(searchBy) : searchBy, niddle)
             }
 
             else {
                 valueIsInWhitelist = searchKeys.some(k => {
-                    var v = (""+whitelistItem[k]||"")
+                    var v = '' + (whitelistItem[k] || '') // if key exists, cast to type String
 
                     if( _sd.accentedSearch ){
                         v = unaccent(v)

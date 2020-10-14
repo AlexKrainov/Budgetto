@@ -96,7 +96,7 @@
         }
 
         if (ip == "::1") {
-            this.person_data = { "ip": "37.145.63.77", "city": "Moscow", "country": "Russia", "location": "55.7522, 37.6156", "index": "127718", "browser_name": "Chrome", "browser_version": 85, "os_name": "Windows", "os_version": "10", "screen_size": "1536 x 864", "referrer": "", "isMobile": false, "isLoad": false, "isShow": false, "path": "/Identity/Account/Login", "dateCreate": null, "continent_code": "EU", "continent_name": "Europe", "info": "", "provider_info": "{\"asn\":\"AS8402\",\"name\":\"PJSC \\\"Vimpelcom\\\"\",\"domain\":\"veon.com\",\"route\":\"37.144.0.0/14\",\"type\":\"isp\"}", "threat": "{\"is_tor\":false,\"is_proxy\":false,\"is_anonymous\":false,\"is_known_attacker\":false,\"is_known_abuser\":false,\"is_threat\":false,\"is_bogon\":false}" };
+            this.person_data = { "ip": "Local", "city": "Moscow", "country": "Russia", "location": "55.7522, 37.6156", "index": "111111", "browser_name": "Chrome", "browser_version": 85, "os_name": "Windows", "os_version": "10", "screen_size": "1536 x 864", "referrer": "", "isMobile": false, "isLoad": false, "isShow": false, "path": "/Identity/Account/Login", "dateCreate": null, "continent_code": "EU", "continent_name": "Europe", "info": "", "provider_info": "{\"asn\":\"AS8402\",\"name\":\"PJSC \\\"Vimpelcom\\\"\",\"domain\":\"veon.com\",\"route\":\"37.144.0.0/14\",\"type\":\"isp\"}", "threat": "{\"is_tor\":false,\"is_proxy\":false,\"is_anonymous\":false,\"is_known_attacker\":false,\"is_known_abuser\":false,\"is_threat\":false,\"is_bogon\":false}" };
             return $.ajax({
                 type: "POST",
                 url: "/Identity/Account/Stat",
@@ -116,40 +116,58 @@
             return;
 
         }
+        try {
+            $.get(`https://api.ipdata.co/${ip}?api-key=65b72cf7f83e7582fd54e2c3fad07548678dfa6e363424eb773edbd5`, function (response) {
 
-        $.get(`https://api.ipdata.co/${ip}?api-key=65b72cf7f83e7582fd54e2c3fad07548678dfa6e363424eb773edbd5`, function (response) {
+                LoginVue.person_data.ip = response.ip;
+                LoginVue.person_data.city = response.city;
+                LoginVue.person_data.country = response.country_name;
+                LoginVue.person_data.continent_code = response.continent_code;
+                LoginVue.person_data.continent_name = response.continent_name;
+                //LoginVue.person_data.hostname = response.hostname;
+                LoginVue.person_data.location = response.latitude + ", " + response.longitude;
+                LoginVue.person_data.index = response.postal;
+                LoginVue.person_data.provider_info = JSON.stringify(response.asn);
+                LoginVue.person_data.current_user_time = response.current_time;
+                LoginVue.person_data.threat = JSON.stringify(response.threat);
 
-            LoginVue.person_data.ip = response.ip;
-            LoginVue.person_data.city = response.city;
-            LoginVue.person_data.country = response.country_name;
-            LoginVue.person_data.continent_code = response.continent_code;
-            LoginVue.person_data.continent_name = response.continent_name;
-            //LoginVue.person_data.hostname = response.hostname;
-            LoginVue.person_data.location = response.latitude + ", " + response.longitude;
-            LoginVue.person_data.index = response.postal;
-            LoginVue.person_data.provider_info = JSON.stringify(response.asn);
-            LoginVue.person_data.current_user_time = response.current_time;
-            LoginVue.person_data.threat = JSON.stringify(response.threat);
+                LoginVue.get_browser_info();
+                let jscd = window.jscd;
 
-            LoginVue.get_browser_info();
-            let jscd = window.jscd;
+                LoginVue.person_data.browser_name = jscd.browser;
+                LoginVue.person_data.browser_version = jscd.browserMajorVersion;
+                LoginVue.person_data.os_name = jscd.os;
+                LoginVue.person_data.os_version = jscd.osVersion;
+                LoginVue.person_data.isMobile = jscd.mobile;
+                LoginVue.person_data.screen_size = jscd.screen;
+                LoginVue.person_data.referrer = document.referrer;
+                LoginVue.person_data.path = document.location.pathname;
 
-            LoginVue.person_data.browser_name = jscd.browser;
-            LoginVue.person_data.browser_version = jscd.browserMajorVersion;
-            LoginVue.person_data.os_name = jscd.os;
-            LoginVue.person_data.os_version = jscd.osVersion;
-            LoginVue.person_data.isMobile = jscd.mobile;
-            LoginVue.person_data.screen_size = jscd.screen;
-            LoginVue.person_data.referrer = document.referrer;
-            LoginVue.person_data.path = document.location.pathname;
-
-            return LoginVue.person_data;
-        }).then(function () {
+                return LoginVue.person_data;
+            }).then(function () {
+                return $.ajax({
+                    type: "POST",
+                    url: "/Identity/Account/Stat",
+                    context: LoginVue,
+                    data: JSON.stringify(LoginVue.person_data),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (response) {
+                        LoginVue.userSessionID = response.userSessionID;
+                        return response;
+                    },
+                    error: function (xhr, status, error) {
+                        this.isSaving = false;
+                        console.log(error);
+                    }
+                });
+            });
+        } catch (e) {
             return $.ajax({
                 type: "POST",
                 url: "/Identity/Account/Stat",
                 context: LoginVue,
-                data: JSON.stringify(LoginVue.person_data),
+                data: JSON.stringify(this.person_data),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
@@ -161,7 +179,7 @@
                     console.log(error);
                 }
             });
-        });
+        }
     },
     methods: {
         // login

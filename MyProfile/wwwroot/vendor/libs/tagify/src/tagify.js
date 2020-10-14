@@ -10,20 +10,18 @@ import events, { triggerChangeEvent } from './parts/events'
  * @param {Object} settings settings object
  */
 function Tagify( input, settings ){
+    if( !input ){
+        console.warn('Tagify: ', 'input element not found', input)
+        return this
+    }
+
     if( input.previousElementSibling && input.previousElementSibling.classList.contains('tagify') ){
         console.warn('Tagify: ', 'input element is already Tagified', input)
         return this
     }
 
-    // protection
-    if( !input ){
-        console.warn('Tagify: ', 'invalid input element ', input)
-        return this
-    }
-
     this.isFirefox = typeof InstallTrigger !== 'undefined'
     this.isIE = window.document.documentMode; // https://developer.mozilla.org/en-US/docs/Web/API/Document/compatMode#Browser_compatibility
-
 
     this.applySettings(input, settings||{})
 
@@ -209,14 +207,21 @@ Tagify.prototype = {
     build( input ){
         var DOM  = this.DOM;
 
-        DOM.originalInput = input
-        DOM.scope = this.parseTemplate('wrapper', [input, this.settings])
-        DOM.input = DOM.scope.querySelector('.' + this.settings.classNames.input)
-        input.parentNode.insertBefore(DOM.scope, input)
-
-        if( this.settings.dropdown.enabled >= 0 ){
-            this.dropdown.init.call(this)
+        if( this.settings.mixMode.integrated ){
+            DOM.originalInput = null;
+            DOM.scope = input;
+            DOM.input = input;
         }
+
+        else {
+            DOM.originalInput = input
+            DOM.scope = this.parseTemplate('wrapper', [input, this.settings])
+            DOM.input = DOM.scope.querySelector('.' + this.settings.classNames.input)
+            input.parentNode.insertBefore(DOM.scope, input)
+        }
+
+        if( this.settings.dropdown.enabled >= 0 )
+            this.dropdown.init.call(this)
     },
 
     /**
@@ -232,13 +237,24 @@ Tagify.prototype = {
      * if the original input had any values, add them as tags
      */
     loadOriginalValues( value ){
-        value = value || this.DOM.originalInput.value
+        var lastChild,
+            _s = this.settings;
+
+        value = value || (_s.mixMode.integrated
+            ? this.DOM.input.textContent
+            : this.DOM.originalInput.value)
 
         if( value ){
             this.removeAllTags()
 
-            if( this.settings.mode == 'mix' )
+            if( _s.mode == 'mix' ){
                 this.parseMixTags(value.trim())
+
+                lastChild = this.DOM.input.lastChild;
+
+                if( !lastChild || lastChild.tagName != 'BR' )
+                    this.DOM.input.insertAdjacentHTML('beforeend', '<br>')
+            }
 
             else{
                 try{
@@ -246,14 +262,14 @@ Tagify.prototype = {
                         value = JSON.parse(value)
                 }
                 catch(err){}
-                this.addTags(value).forEach(tag => tag && tag.classList.add(this.settings.classNames.tagNoAnimation))
+                this.addTags(value).forEach(tag => tag && tag.classList.add(_s.classNames.tagNoAnimation))
             }
         }
 
         else
             this.postUpdate()
 
-        this.state.lastOriginalValueReported = this.DOM.originalInput.value
+        this.state.lastOriginalValueReported = _s.mixMode.integrated ? '' : this.DOM.originalInput.value
         this.state.loadedOriginalValues = true
     },
 
@@ -356,14 +372,14 @@ Tagify.prototype = {
         }
     },
 
-    placeCaretAfterTag( node ){
+    placeCaretAfterNode( node ){
         var nextSibling = node.nextSibling,
             sel = window.getSelection(),
             range = sel.getRangeAt(0);
 
         if (sel.rangeCount) {
-            range.setStartAfter(nextSibling || node);
-            range.setEndAfter(nextSibling || node);
+            range.setStartBefore(nextSibling || node);
+            range.setEndBefore(nextSibling || node);
             sel.removeAllRanges();
             sel.addRange(range);
         }
@@ -380,6 +396,7 @@ Tagify.prototype = {
 
         tagElm.appendChild(newNode)
         tagElm.parentNode.insertBefore(newNode, tagElm.nextSibling)
+        return newNode
     },
 
     /**
@@ -392,30 +409,38 @@ Tagify.prototype = {
 
         this.dropdown.hide.call(this)
 
-        var editableElm = tagElm.querySelector('.' + this.settings.classNames.tagText),
+        var _s = this.settings;
+
+        function getEditableElm(){
+            return tagElm.querySelector('.' + _s.classNames.tagText)
+        }
+
+        var editableElm = getEditableElm(),
             tagIdx = this.getNodeIndex(tagElm),
-            tagData = tagElm.__tagifyTagData,
+            tagData = this.tagData(tagElm),
             _CB = this.events.callbacks,
             that = this,
             isValid = true,
             delayed_onEditTagBlur = function(){
-                setTimeout(_CB.onEditTagBlur.bind(that), 0, editableElm)
+                setTimeout(() => _CB.onEditTagBlur.call(that, getEditableElm()))
             }
 
         if( !editableElm ){
-            console.warn('Cannot find element in Tag template: .', this.settings.classNames.tagText);
+            console.warn('Cannot find element in Tag template: .', _s.classNames.tagText);
             return;
         }
 
         if( tagData instanceof Object && "editable" in tagData && !tagData.editable )
             return
 
-        // cache the original data, on the DOM node, before any modification ocurs, for possible revert
-        tagElm.__tagifyTagData.__originalData = extend({}, tagData)
-
-        tagElm.classList.add( this.settings.classNames.tagEditing )
-
         editableElm.setAttribute('contenteditable', true)
+        tagElm.classList.add( _s.classNames.tagEditing )
+
+        // cache the original data, on the DOM node, before any modification ocurs, for possible revert
+        this.tagData(tagElm, {
+            __originalData: extend({}, tagData),
+            __originalHTML: tagElm.innerHTML
+        })
 
         editableElm.addEventListener('focus', _CB.onEditTagFocus.bind(this, tagElm))
         editableElm.addEventListener('blur', delayed_onEditTagBlur)
@@ -432,7 +457,7 @@ Tagify.prototype = {
 
         this.trigger("edit:start", { tag:tagElm, index:tagIdx, data:tagData, isValid })
 
-        return this;
+        return this
     },
 
     editTagToggleValidity( tagElm, value ){
@@ -453,13 +478,16 @@ Tagify.prototype = {
     },
 
     onEditTagDone(tagElm, tagData){
+        this.state.editing = false;
+        tagElm = tagElm || this.state.editing.scope
         tagData = tagData || {}
 
         var eventData = { tag:tagElm, index:this.getNodeIndex(tagElm), data:tagData };
 
         this.trigger("edit:beforeUpdate", eventData)
 
-        delete tagData.__originalData;
+        delete tagData.__originalData
+        delete tagData.__originalHTML
 
         if( tagElm ){
             this.editTagToggleValidity(tagElm)
@@ -485,7 +513,7 @@ Tagify.prototype = {
 
         // if tag is invalid, make the according changes in the newly created element
         if( tagData.__isValid && tagData.__isValid != true )
-            extend( tagData, this.getInvalidTagParams(tagData, tagData.__isValid) )
+            extend( tagData, this.getInvalidTagAttrs(tagData, tagData.__isValid) )
 
         var newTag = this.createTagElem(tagData)
 
@@ -516,14 +544,14 @@ Tagify.prototype = {
         start = typeof start == 'number' ? start : !!start
         node = node || this.DOM.input;
         node = node.lastChild || node;
-        const sel = document.getSelection()
+        var sel = document.getSelection()
 
         try{
             if( sel.rangeCount >= 1 ){
                 ['Start', 'End'].forEach(pos =>
                     sel.getRangeAt(0)["set" + pos](node, start ? start : node.length)
                 )
-        }
+            }
         } catch(err){
             console.warn("Tagify: ", err)
         }
@@ -545,10 +573,8 @@ Tagify.prototype = {
         range.deleteContents()
 
         range.insertNode(injectedNode)
-        this.insertAfterTag(injectedNode)
 
-        this.DOM.input.focus()
-        this.setRangeAtStartEnd(true, injectedNode.nextSibling)
+        this.setRangeAtStartEnd(false, injectedNode)
 
         this.updateValueByDOMTags()
         this.update()
@@ -593,7 +619,7 @@ Tagify.prototype = {
                 v = [];
 
             // when a text was pasted in FF, the "this.DOM.input" element will have <br> but no newline symbols (\n), and this will
-            // result in tags no being properly created if one wishes to create a separate tag per newline.
+            // result in tags not being properly created if one wishes to create a separate tag per newline.
             clone.childNodes.forEach(n => n.nodeType==3 && v.push(n.nodeValue))
             v = v.join("\n")
 
@@ -712,7 +738,7 @@ Tagify.prototype = {
      * @param  {String/Object} v [text value / tag data object]
      * @return {Boolean}
      */
-    isTagDuplicate( value ){
+    isTagDuplicate( value, caseSensitive ){
         var duplications,
             _s = this.settings;
 
@@ -721,7 +747,7 @@ Tagify.prototype = {
             return false
 
         duplications = this.value.reduce((acc, item) =>
-            sameStr( this.trim(""+value), item.value, _s.dropdown.caseSensitive )
+            sameStr( this.trim(""+value), item.value, caseSensitive || _s.dropdown.caseSensitive )
                 ? acc+1
                 : acc
         , 0)
@@ -761,18 +787,52 @@ Tagify.prototype = {
      */
     isTagBlacklisted( v ){
         v = this.trim(v.toLowerCase());
-        return this.settings.blacklist.filter(x => v == x.toLowerCase()).length;
+        return this.settings.blacklist.filter(x => (""+x).toLowerCase() == v).length;
     },
 
     /**
      * checks if text is in the whitelist
      */
     isTagWhitelisted( v ){
+        return !!this.getWhitelistItem(v)
+        /*
         return this.settings.whitelist.some(item =>
             typeof v == 'string'
                 ? sameStr(this.trim(v), (item.value || item))
                 : sameStr(JSON.stringify(item), JSON.stringify(v))
         )
+        */
+    },
+
+    /**
+     * Returns the first whitelist item matched, by value (if match found)
+     * @param {String} value [text to match by]
+     */
+    getWhitelistItem( value, prop, whitelist ){
+        var result,
+            prop = prop || 'value',
+            _s = this.settings,
+            whitelist = whitelist || _s.whitelist,
+            _cs = _s.dropdown.caseSensitive;
+
+        whitelist.some(_wi => {
+            var _wiv = typeof _wi == 'string' ? _wi : _wi[prop],
+                isSameStr = sameStr(_wiv, value, _cs)
+
+            if( isSameStr ){
+                result = typeof _wi == 'string' ? {value:_wi} : _wi
+                return true
+            }
+        })
+
+        // first iterate the whitelist, try find maches by "value" and if that fails
+        // and a "tagTextProp" is set to be other than "value", try that also
+        if( !result && prop == 'value' && _s.tagTextProp != 'value' ){
+            // if found, adds the first which matches
+            result = this.getWhitelistItem(value, _s.tagTextProp, whitelist)
+        }
+
+        return result
     },
 
     /**
@@ -782,28 +842,30 @@ Tagify.prototype = {
      * @return {Boolean/String}  ["true" if validation has passed, String for a fail]
      */
     validateTag( tagData ){
-        var value = this.trim(tagData.value),
-            _s = this.settings;
+        var _s = this.settings,
+            // when validating a tag in edit-mode, need to take "tagTextProp" into consideration
+            prop = "value" in tagData ? "value" : _s.tagTextProp,
+            v = this.trim(tagData[prop] + "");
 
-        // check for empty value
-        if( !tagData.value.trim() )
+        // check for definitive empty value
+        if( !(tagData[prop]+"").trim() )
             return this.TEXTS.empty;
 
         // check if pattern should be used and if so, use it to test the value
-        if( _s.pattern && _s.pattern instanceof RegExp && !(_s.pattern.test(value)) )
+        if( _s.pattern && _s.pattern instanceof RegExp && !(_s.pattern.test(v)) )
             return this.TEXTS.pattern;
 
         // if duplicates are not allowed and there is a duplicate
-        if( !_s.duplicates && this.isTagDuplicate(value) )
+        if( !_s.duplicates && this.isTagDuplicate(v, this.state.editing) )
             return this.TEXTS.duplicate;
 
-        if( this.isTagBlacklisted(value) || (_s.enforceWhitelist && !this.isTagWhitelisted(value)) )
+        if( this.isTagBlacklisted(v) || (_s.enforceWhitelist && !this.isTagWhitelisted(v)) )
             return this.TEXTS.notAllowed;
 
         return true
     },
 
-    getInvalidTagParams(tagData, validation){
+    getInvalidTagAttrs(tagData, validation){
         return {
             "aria-invalid" : true,
             "class": `${tagData.class || ''} ${this.settings.classNames.tagNotAllowed}`.trim(),
@@ -817,70 +879,81 @@ Tagify.prototype = {
         return false;
     },
 
+    setReadonly( isReadonly ){
+        var _s = this.settings;
+
+        document.activeElement.blur() // exists possible edit-mode
+        _s.readonly = isReadonly
+        this.DOM.scope[(isReadonly?'set':'remove') + 'Attribute']('readonly', true)
+
+        if( _s.mode == 'mix' ){
+            this.DOM.input.contentEditable = !isReadonly
+        }
+    },
+
     /**
      * pre-proccess the tagsItems, which can be a complex tagsItems like an Array of Objects or a string comprised of multiple words
      * so each item should be iterated on and a tag created for.
      * @return {Array} [Array of Objects]
      */
     normalizeTags( tagsItems ){
-        var {whitelist, delimiters, mode} = this.settings,
+        var {whitelist, delimiters, mode, tagTextProp} = this.settings,
+            whitelistMatches = [],
             whitelistWithProps = whitelist ? whitelist[0] instanceof Object : false,
             // checks if this is a "collection", meanning an Array of Objects
             isArray = tagsItems instanceof Array,
-            temp = [],
-            mapStringToCollection = s => (s+"").split(delimiters).filter(n => n).map(v => ({ value:this.trim(v) }))
+            mapStringToCollection = s => (s+"").split(delimiters).filter(n => n).map(v => ({ [tagTextProp]:this.trim(v) }))
 
         if( typeof tagsItems == 'number' )
-            tagsItems = tagsItems.toString();
+            tagsItems = tagsItems.toString()
 
-        // if the value is a "simple" String, ex: "aaa, bbb, ccc"
+        // if the argument is a "simple" String, ex: "aaa, bbb, ccc"
         if( typeof tagsItems == 'string' ){
             if( !tagsItems.trim() ) return [];
 
             // go over each tag and add it (if there were multiple ones)
-            tagsItems = mapStringToCollection(tagsItems);
+            tagsItems = mapStringToCollection(tagsItems)
         }
 
-        // assuming Array of Strings
+        // is is an Array of Strings, convert to an Array of Objects
         else if( isArray ){
             // flatten the 2D array
             tagsItems = [].concat(...tagsItems.map(item => item.value
-                ? mapStringToCollection(item.value).map(newItem => ({...item,...newItem}))
+                ? item // mapStringToCollection(item.value).map(newItem => ({...item,...newItem}))
                 : mapStringToCollection(item)
-            ));
+            ))
         }
 
         // search if the tag exists in the whitelist as an Object (has props),
         // to be able to use its properties
         if( whitelistWithProps ){
             tagsItems.forEach(item => {
-                // the "value" prop should preferably be unique
-                var matchObj = this.getWhitelistItemByValue(item.value)
+                var whitelistMatchesValues = whitelistMatches.map(a=>a.value)
+
+                // is suggestions are show, they are already filtered, so it's better to you use them
+                // because the whitelist might include also items which have already been added
+                var filteredList = this.dropdown.filterListItems.call(this, '')
+                    // also filter out items which have already been matches in previous iterations
+                    .filter(filteredItem => !whitelistMatchesValues.includes(filteredItem.value))
+
+                var matchObj = this.getWhitelistItem(item[tagTextProp], null, filteredList)
 
                 if( matchObj && matchObj instanceof Object ){
-                    temp.push( matchObj ); // set the Array (with the found Object) as the new value
+                    whitelistMatches.push( matchObj ) // set the Array (with the found Object) as the new value
                 }
-                else if( mode != 'mix' )
-                    temp.push(item)
+                else if( mode != 'mix' ){
+                    if( item.value == undefined )
+                        item.value = item[tagTextProp]
+                    whitelistMatches.push(item)
+                }
             })
 
-            if( temp.length )
-                tagsItems = temp;
+            if( whitelistMatches.length )
+                tagsItems = whitelistMatches
         }
 
+
         return tagsItems;
-    },
-
-    /**
-     * Value must be unique
-     */
-    getWhitelistItemByValue(value){
-        var result = this.settings.whitelist.find(item =>
-            sameStr(typeof item == 'string' ? item : item.value, value, this.settings.dropdown.caseSensitive)
-        )
-
-        // normalize response
-        return typeof result == 'string' ? {value:result} : result
     },
 
     /**
@@ -889,22 +962,29 @@ Tagify.prototype = {
      * @param {String} s
      */
     parseMixTags( s ){
-        var {mixTagsInterpolator, duplicates, transformTag, enforceWhitelist} = this.settings,
+        var {mixTagsInterpolator, duplicates, transformTag, enforceWhitelist, maxTags} = this.settings,
             tagsDataSet = [];
 
         s = s.split(mixTagsInterpolator[0]).map((s1, i) => {
             var s2 = s1.split(mixTagsInterpolator[1]),
                 preInterpolated = s2[0],
+                maxTagsReached = tagsDataSet.length == maxTags,
                 tagData,
                 tagElm;
 
             try{
+                // skip numbers and go straight to the "catch" statement
+                if( preInterpolated == +preInterpolated )
+                    throw Error
                 tagData = JSON.parse(preInterpolated)
             } catch(err){
                 tagData = this.normalizeTags(preInterpolated)[0]  //{value:preInterpolated}
             }
 
-            if( s2.length > 1   &&   (!enforceWhitelist || this.isTagWhitelisted(tagData.value))   &&   !(!duplicates  && this.isTagDuplicate(tagData.value)) ){
+            if( !maxTagsReached   &&
+                s2.length > 1   &&
+                (!enforceWhitelist || this.isTagWhitelisted(tagData.value))   &&
+                !(!duplicates && this.isTagDuplicate(tagData.value)) ){
                 transformTag.call(this, tagData)
 
                 tagElm = this.createTagElem(tagData)
@@ -972,7 +1052,7 @@ Tagify.prototype = {
      * @param {Object} tagElm   Tag DOM node
      * @param {Object} tagData  Tag data
      */
-    selectTag(tagElm, tagData){
+    selectTag( tagElm, tagData ){
         if( this.settings.enforceWhitelist && !this.isTagWhitelisted(tagData.value) )
             return
 
@@ -997,8 +1077,8 @@ Tagify.prototype = {
     /**
      * add an empty "tag" element in an editable state
      */
-    addEmptyTag(){
-        var tagData = {value:""},
+    addEmptyTag( initialData ){
+        var tagData = extend({ value:"" }, initialData || {}),
             tagElm = this.createTagElem(tagData)
 
         // must be assigned ASAP, before "validateTag" method below
@@ -1045,18 +1125,20 @@ Tagify.prototype = {
 
             // shallow-clone tagData so later modifications will not apply to the source
             tagData = Object.assign({}, originalData)
-            tagData.__isValid = this.hasMaxTags() || this.validateTag(tagData);
+            tagData.__isValid = this.hasMaxTags() || this.validateTag(tagData)
 
-            _s.transformTag.call(this, tagData);
+            _s.transformTag.call(this, tagData)
 
             if( tagData.__isValid !== true ){
                 if( skipInvalid )
                     return
 
-                extend(tagElmParams, this.getInvalidTagParams(tagData, tagData.__isValid), {__preInvalidData:originalData})
+                // originalData is kept because it might be that this tag is invalid because it is a duplicate of another,
+                // and if that other tags is edited/deleted, this one should be re-validated and if is no more a duplicate - restored
+                extend(tagElmParams, this.getInvalidTagAttrs(tagData, tagData.__isValid), {__preInvalidData:originalData})
 
-                // mark, for a brief moment, the tag THIS CURRENT tag is a duplcate of
                 if( tagData.__isValid == this.TEXTS.duplicate )
+                    // mark, for a brief moment, the tag (this this one) which THIS CURRENT tag is a duplcate of
                     this.flashTag( this.getTagElmByValue(tagData.value) )
             }
             /////////////////////////////////////////////////////
@@ -1130,8 +1212,8 @@ Tagify.prototype = {
 
         // fixes a firefox bug where if the last child of the input is a tag and not a text, the input cannot get focus (by Tab key)
         !createdFromDelimiters && setTimeout(() => {
-            this.insertAfterTag(tagElm)
-            this.placeCaretAfterTag(tagElm)
+            var elm = this.insertAfterTag(tagElm) || tagElm;
+            this.placeCaretAfterNode(elm)
         }, this.isFirefox ? 100 : 0)
 
         this.state.tag = null
@@ -1159,7 +1241,7 @@ Tagify.prototype = {
      */
     createTagElem( tagData ){
         var tagElm,
-            templateData = extend({}, tagData, { value:escapeHTML(tagData.value) });
+            templateData = extend({}, tagData, { value:escapeHTML(tagData.value+"") });
 
         if( this.settings.readonly )
             tagData.readonly = true
@@ -1304,8 +1386,8 @@ Tagify.prototype = {
                     this.update() // update the original input with the current value
                 }
             }
-        )
-        .catch(reason => {})
+            )
+            .catch(reason => {})
     },
 
     removeAllTags(){
@@ -1326,7 +1408,11 @@ Tagify.prototype = {
 
     postUpdate(){
         var classNames = this.settings.classNames,
-            hasValue = this.settings.mode == 'mix' ? this.DOM.originalInput.value : this.value.length;
+            hasValue = this.settings.mode == 'mix'
+                ? this.settings.mixMode.integrated
+                    ? this.DOM.input.textContent
+                    : this.DOM.originalInput.value
+                : this.value.length;
 
         this.DOM.scope.classList.toggle(classNames.hasMaxTags,  this.value.length >= this.settings.maxTags)
         this.DOM.scope.classList.toggle(classNames.hasNoTags,  !this.value.length)
@@ -1342,14 +1428,15 @@ Tagify.prototype = {
             { withoutChangeEvent } = args || {},
             value = removeCollectionProp(this.value, ['__isValid', '__removed']);
 
-
-        inputElm.value = this.settings.mode == 'mix'
-            ? this.getMixedTagsAsString(value)
-            : value.length
-                ? this.settings.originalInputValueFormat
-                    ? this.settings.originalInputValueFormat(value)
-                    : JSON.stringify(value)
-                : ""
+        if( !this.settings.mixMode.integrated ){
+            inputElm.value = this.settings.mode == 'mix'
+                ? this.getMixedTagsAsString(value)
+                : value.length
+                    ? this.settings.originalInputValueFormat
+                        ? this.settings.originalInputValueFormat(value)
+                        : JSON.stringify(value)
+                    : ""
+        }
 
         this.postUpdate()
 

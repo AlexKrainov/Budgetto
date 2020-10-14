@@ -1,6 +1,8 @@
-import { decode, extend } from './helpers'
+import { decode, extend, minify } from './helpers'
 
 export function triggerChangeEvent(){
+    if( this.settings.mixMode.integrated ) return;
+
     var inputElm = this.DOM.originalInput,
         changed = this.state.lastOriginalValueReported !== inputElm.value,
         event = new CustomEvent("change", {bubbles: true}); // must use "CustomEvent" and not "Event" to support IE
@@ -124,7 +126,6 @@ export default {
 
                     if (selection.getRangeAt && selection.rangeCount)
                         this.state.selection.range = selection.getRangeAt(0)
-
                 }
 
                 return
@@ -152,7 +153,6 @@ export default {
                 shouldAddTags && this.addTags(text, true)
             }
 
-
             this.DOM.input.removeAttribute('style')
             this.dropdown.hide.call(this)
         },
@@ -174,7 +174,6 @@ export default {
                         this.state.actions.ArrowLeft = true
                         break
                     }
-
                     case 'Delete':
                     case 'Backspace' : {
                         if( this.state.editing ) return
@@ -199,7 +198,7 @@ export default {
                         // if( isFirefox && selection && selection.anchorOffset == 0 )
                         //     this.removeTags(selection.anchorNode.previousSibling)
 
-                        // a minimum delay is needed before the node actually gets ditached from the document (don't know why),
+                        // a minimum delay is needed before the node actually gets detached from the document (don't know why),
                         // to know exactly which tag was deleted. This is the easiest way of knowing besides using MutationObserver
                         setTimeout(() => {
                             var currentValue = decode(this.DOM.input.innerHTML);
@@ -227,7 +226,7 @@ export default {
                                 else
                                     this.trigger('remove', { tag:node, index:nodeIdx, data:tagData })
                             })
-                            .filter(n=>n)  // remove empty items in the mapped array
+                                .filter(n=>n)  // remove empty items in the mapped array
                         }, 50) // Firefox needs this higher duration for some reason or things get buggy when deleting text from the end
                         break;
                     }
@@ -327,12 +326,19 @@ export default {
                 lastTagsCount = this.value.length,
                 matchFlaggedTag,
                 matchDelimiters,
-                tagsCount = this.getTagElms().length;
+                tagsElems = this.getTagElms(),
+                remainingTagsValues = [].map.call(tagsElems, node => this.tagData(node).value);
 
-            // check if ANY tags were magically added through browser redo/undo
-            if( tagsCount > lastTagsCount ){
+            // re-add "readonly" tags which might have been removed
+            this.value.slice().forEach(item => {
+                if( item.readonly && !remainingTagsValues.includes(item.value) )
+                    this.injectAtCaret( this.createTagElem(item), window.getSelection().getRangeAt(0) )
+            })
+
+            // check if tags were magically added/removed (browser redo/undo or CTRL-A -> delete)
+            if( tagsElems.length != lastTagsCount ){
                 this.value = [].map.call(this.getTagElms(), node => node.__tagifyTagData)
-                this.update({withoutChangeEvent:true})
+                this.update({ withoutChangeEvent:true })
                 return
             }
 
@@ -434,8 +440,8 @@ export default {
         },
 
         onClickScope(e){
-            var tagElm = e.target.closest('.' + this.settings.classNames.tag),
-                _s = this.settings,
+            var _s = this.settings,
+                tagElm = e.target.closest('.' + _s.classNames.tag),
                 timeDiffFocus = +new Date() - this.state.hasFocus;
 
             if( e.target == this.DOM.scope ){
@@ -444,7 +450,7 @@ export default {
                 return
             }
 
-            else if( e.target.classList.contains(this.settings.classNames.tagX) ){
+            else if( e.target.classList.contains(_s.classNames.tagX) ){
                 this.removeTags( e.target.parentNode );
                 return
             }
@@ -452,7 +458,7 @@ export default {
             else if( tagElm ){
                 this.trigger("click", { tag:tagElm, index:this.getNodeIndex(tagElm), data:this.tagData(tagElm), originalEvent:this.cloneEvent(e) })
 
-                if( this.settings.editTags == 1 )
+                if( _s.editTags === 1 || _s.editTags.clicks === 1 )
                     this.events.callbacks.onDoubleClickScope.call(this, e)
 
                 return
@@ -479,19 +485,22 @@ export default {
                 !this.state.dropdown.visible && this.dropdown.show.call(this);
         },
 
+        // special proccess is needed for pasted content in order to "clean" it
         onPaste(e){
             var clipboardData, pastedData;
 
             e.preventDefault()
 
+            if( this.settings.readonly ) return;
+
             // Get pasted data via clipboard API
             clipboardData = e.clipboardData || window.clipboardData
             pastedData = clipboardData.getData('Text')
 
-            if( this.settings.mode == 'mix' )
-                this.injectAtCaret(pastedData, window.getSelection().getRangeAt(0))
-            else
-                this.addTags(pastedData)
+            this.injectAtCaret(pastedData, window.getSelection().getRangeAt(0))
+
+            if( this.settings.mode != 'mix' )
+                this.addTags(this.DOM.input.textContent, true)
         },
 
         onEditTagInput( editableElm, e ){
@@ -499,8 +508,8 @@ export default {
                 tagElmIdx = this.getNodeIndex(tagElm),
                 tagData = this.tagData(tagElm),
                 value = this.input.normalize.call(this, editableElm),
-                hasChanged = value != tagData.__originalData.value,
-                isValid = this.validateTag({value}); // the value could have been invalid in the first-place so make sure to re-validate it (via "addEmptyTag" method)
+                hasChanged = tagElm.innerHTML != tagElm.__tagifyTagData.__originalHTML,
+                isValid = this.validateTag({[this.settings.tagTextProp]:value}); // the value could have been invalid in the first-place so make sure to re-validate it (via "addEmptyTag" method)
 
             // if the value is same as before-editing and the tag was valid before as well, ignore the  current "isValid" result, which is false-positive
             if( !hasChanged && editableElm.originalIsValid === true )
@@ -535,8 +544,6 @@ export default {
         },
 
         onEditTagBlur( editableElm ){
-            this.state.editing = false;
-
             if( !this.state.hasFocus )
                 this.toggleFocusClass()
 
@@ -544,53 +551,73 @@ export default {
             // the "onEditTagDone" is called directly, already replacing the tag, so the argument "editableElm" node isn't in the DOM
             if( !this.DOM.scope.contains(editableElm) ) return;
 
-            var tagElm       = editableElm.closest('.' + this.settings.classNames.tag),
-                currentValue = this.input.normalize.call(this, editableElm),
-                value        = currentValue,
-                newTagData   = extend({}, this.tagData(tagElm), {value}),
-                hasChanged   = value != newTagData.__originalData.value,
-                isValid      = this.validateTag(newTagData);
+            var _s           = this.settings,
+                tagElm       = editableElm.closest('.' + _s.classNames.tag),
+                textValue    = this.input.normalize.call(this, editableElm),
+                originalData = this.tagData(tagElm).__originalData,
+                newTagData   = extend({}, originalData, {[_s.tagTextProp]:textValue}),
+                hasChanged   = tagElm.innerHTML != tagElm.__tagifyTagData.__originalHTML,
+                isValid      = this.validateTag({[_s.tagTextProp]:textValue});
 
             //  this.DOM.input.focus()
 
-            if( !currentValue ){
+            if( !textValue ){
                 this.removeTags(tagElm)
                 this.onEditTagDone(null, newTagData)
                 return
             }
 
             if( hasChanged ){
-                this.settings.transformTag.call(this, newTagData)
+                _s.transformTag.call(this, newTagData)
                 // MUST re-validate after tag transformation
-                isValid = this.validateTag(newTagData)
+                // only validate the "tagTextProp" because is the only thing that metters for validation
+                isValid = this.validateTag({[_s.tagTextProp]:newTagData[_s.tagTextProp]})
             }
             else{
                 // if nothing changed revert back to how it was before editing
-                this.onEditTagDone(tagElm, newTagData.__originalData)
+                this.onEditTagDone(tagElm, originalData)
                 return
             }
 
             if( isValid !== true ){
-                this.trigger("invalid", {data:newTagData, tag:tagElm, message:isValid})
-                return;
-            }
+                this.trigger("invalid", { data:newTagData, tag:tagElm, message:isValid })
 
-            // check if the new value is in the whiteilst, if not check if there
-            // is any pre-invalidation data, and lastly resort to fresh emptty Object
-            newTagData = this.getWhitelistItemByValue(value) || newTagData.__preInvalidData || {}
-            newTagData = Object.assign({}, newTagData, {value}) // clone it, not to mess with the whitelist
-            //transform it again
-            this.settings.transformTag.call(this, newTagData)
+                // do nothing if invalid, stay in edit-mode until corrected or reverted by presssing esc
+                if( _s.editTags.keepInvalid ) return
+
+                newTagData = originalData
+            }
+            else{
+                // check if the new value is in the whiteilst, if not check if there
+                // is any pre-invalidation data, and lastly resort to fresh emptty Object
+                newTagData = this.getWhitelistItem(textValue) || newTagData.__preInvalidData || newTagData;
+
+                // again, check if the tag is not a duplicate, because at this point it might be if
+                // "tagTextProp" setting is set to other than "value" and there was already another tag
+                // with the same "value" as in "newTagData"
+                isValid = this.validateTag(newTagData)
+
+                if( isValid !== true ){
+                    this.trigger("invalid", { data:newTagData, tag:tagElm, message:isValid })
+                    tagElm.classList.toggle(_s.classNames.tagInvalid, true)
+
+                    // do nothing if invalid, stay in edit-mode until corrected or reverted by presssing esc
+                    if( _s.editTags.keepInvalid ) return
+
+                    newTagData = originalData
+                }
+            }
 
             this.onEditTagDone(tagElm, newTagData)
         },
 
         onEditTagkeydown(e, tagElm){
             this.trigger("edit:keydown", {originalEvent:this.cloneEvent(e)})
+
             switch( e.key ){
                 case 'Esc' :
                 case 'Escape' :
-                    e.target.textContent = tagElm.__tagifyTagData.__originalData.value
+                    tagElm.innerHTML = tagElm.__tagifyTagData.__originalHTML
                 case 'Enter' :
                 case 'Tab' :
                     e.preventDefault()

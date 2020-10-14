@@ -146,7 +146,7 @@ namespace MyProfile.Areas.Identity.Controllers
                     catch (Exception ex)
                     {
                         await userLogService.CreateUserLog(registrationModel.UserSessionID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}, Error = {ex.Message}");
-                        await userLogService.CreateErrorLog(user.UserSessionID, where: "AccountController.Registration_1", errorText: ex.Message);
+                        await userLogService.CreateErrorLog(user.UserSessionID, where: "AccountController.Registration_1", ex);
                     }
 
                     user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Registration);
@@ -154,7 +154,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 }
                 catch (Exception ex)
                 {
-                    await userLogService.CreateErrorLog(registrationModel.UserSessionID, where: "AccountController.Registration_2", errorText: ex.Message);
+                    await userLogService.CreateErrorLog(registrationModel.UserSessionID, where: "AccountController.Registration_2", ex);
                     return Json(new { isOk = false, message = $"Во время создания пользователя произошла ошибка." });
                 }
             }
@@ -306,7 +306,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 catch (Exception ex)
                 {
                     errorMessage = ex.Message;
-                    await userLogService.CreateErrorLog(model.UserSessionID, where: "AccountController.RecoveryPassword2", errorText: ex.Message);
+                    await userLogService.CreateErrorLog(model.UserSessionID, where: "AccountController.RecoveryPassword2", ex);
                 }
             }
 
