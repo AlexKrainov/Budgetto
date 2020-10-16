@@ -413,4 +413,4 @@ var FormulaVue = new Vue({
     }
 });
 
-Vue.config.devtools = true;
+

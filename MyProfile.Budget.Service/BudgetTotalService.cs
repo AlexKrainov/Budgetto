@@ -45,23 +45,23 @@ namespace MyProfile.Budget.Service
                 spendingData.Total = (tuple.Item1.Sum()).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
 
-                //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
-                //{
-                //    if (spendingData.data[10] == decimal.Zero)
-                //    {
-                //        spendingData.Percent = 100;
-                //    }
-                //    else
-                //    {
-                //        spendingData.Percent = Math.Round(((spendingData.data[11] - spendingData.data[10]) / spendingData.data[10] * 100), 1);
-                //    }
-                //    spendingData.IsGood = spendingData.Percent < 0;
+                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                {
+                    if (spendingData.data[10] == decimal.Zero)
+                    {
+                        spendingData.Percent = 100;
+                    }
+                    else
+                    {
+                        spendingData.Percent = Math.Round(((spendingData.data[11] - spendingData.data[10]) / spendingData.data[10] * 100), 1);
+                    }
+                    spendingData.IsGood = spendingData.Percent < 0;
 
-                //    if (spendingData.Percent < 0)
-                //    {
-                //        spendingData.Percent *= -1;
-                //    }
-                //}
+                    if (spendingData.Percent < 0)
+                    {
+                        spendingData.Percent *= -1;
+                    }
+                }
             }
 
             if (currentUser.UserSettings.Year_EarningWidget)
@@ -74,23 +74,23 @@ namespace MyProfile.Budget.Service
                 earningData.SectionTypeEnum = SectionTypeEnum.Spendings;
                 earningData.Total = (tuple.Item1.Sum()).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
-                //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
-                //{
-                //    if (earningData.data[10] == decimal.Zero)
-                //    {
-                //        earningData.Percent = 100;
-                //    }
-                //    else
-                //    {
-                //        earningData.Percent = Math.Round(((earningData.data[11] - earningData.data[10]) / earningData.data[10] * 100), 1);
-                //    }
-                //    earningData.IsGood = earningData.Percent > 0;
+                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                {
+                    if (earningData.data[10] == decimal.Zero)
+                    {
+                        earningData.Percent = 100;
+                    }
+                    else
+                    {
+                        earningData.Percent = Math.Round(((earningData.data[11] - earningData.data[10]) / earningData.data[10] * 100), 1);
+                    }
+                    earningData.IsGood = earningData.Percent > 0;
 
-                //    if (earningData.Percent < 0)
-                //    {
-                //        earningData.Percent *= -1;
-                //    }
-                //}
+                    if (earningData.Percent < 0)
+                    {
+                        earningData.Percent *= -1;
+                    }
+                }
             }
 
             if (currentUser.UserSettings.Year_InvestingWidget)
@@ -103,6 +103,23 @@ namespace MyProfile.Budget.Service
                 investinData.SectionTypeEnum = SectionTypeEnum.Investments;
                 investinData.Total = (tuple.Item1.Sum()).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
+                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                {
+                    if (investinData.data[10] == decimal.Zero)
+                    {
+                        investinData.Percent = 100;
+                    }
+                    else
+                    {
+                        investinData.Percent = Math.Round(((investinData.data[11] - investinData.data[10]) / investinData.data[10] * 100), 1);
+                    }
+                    investinData.IsGood = investinData.Percent > 0;
+
+                    if (investinData.Percent < 0)
+                    {
+                        investinData.Percent *= -1;
+                    }
+                }
             }
 
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investinData);

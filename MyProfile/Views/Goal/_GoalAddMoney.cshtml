@@ -1,0 +1,44 @@
+﻿<div class="modal modal-top fade" id="goal-add-money">
+    <div class="modal-dialog">
+        <form class="modal-content" method="post" v-on:submit="checkAddForm">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Пополнить цель
+                    @*<span class="font-weight-light">Information</span>
+                        <br>
+                        <small class="text-muted">We need payment information to process your order.</small>*@
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label class="form-label">Дата</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" class="form-control" id="dateTimeOfPayment" v-model="record.dateTimeOfPayment" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label class="form-label">Сумма</label>
+                        <span class="text-danger">*</span>
+                        <input type="number" class="form-control" placeholder="1000 или -1000" v-model="record.total" required>
+                        <div class="text-muted small mt-1" v-show="record.total ">
+                            {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.total) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button class="btn btn-primary" type="submit"
+                        v-bind:disabled="isSaving"
+                        v-on:click="saveMoney">
+                    <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                    Сохранить
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

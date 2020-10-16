@@ -313,6 +313,9 @@
             }
             this.refrehViewTable();
         },
+        addGoalMoney: function (goal) {
+            GoalAddMoneyVue.addMoney(goal);
+        },
         //big charts
         loadBigCharts: BudgetMethods.loadBigCharts,
         initBigChartCharts: function () {
@@ -465,11 +468,19 @@
                 this.loadLimitCharts();
                 return false;
             }
+            if (typeRefresh == "onlyGoal") {
+                ShowLoading("#goal-contrainer");
+                this.loadGoalCharts().then(function () {
+                    HideLoading("#goal-contrainer");
+                });
+                return;
+            }
 
             this.loadBigCharts();
             this.loadTotalCharts();
             this.loadLimitCharts();
             this.loadGoalCharts();
+
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
             let dateOfPayment = moment(dateTimeOfPayment);
@@ -733,4 +744,4 @@
     }
 });
 
-Vue.config.devtools = true;
+

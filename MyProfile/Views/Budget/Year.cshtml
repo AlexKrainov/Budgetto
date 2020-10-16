@@ -35,8 +35,8 @@
                             <span class="input-group-prepend" style=" width: 50px;">
                                 <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
                             </span>
-                            <select id="budget-year" class="form-control" 
-                                    v-model="budgetYear" 
+                            <select id="budget-year" class="form-control"
+                                    v-model="budgetYear"
                                     v-on:change="refresh(undefined)">
                                 @foreach (var year in Model.Years)
                                 {
@@ -120,5 +120,8 @@
 <div id="history-vue">
     @await Html.PartialAsync("_HistoryModal")
 </div>
+
+@await Html.PartialAsync("../Goal/_GoalAddMoney.cshtml")
+
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Year")
 

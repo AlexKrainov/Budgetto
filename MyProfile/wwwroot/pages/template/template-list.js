@@ -88,4 +88,4 @@ var TemplateListVue = new Vue({
     }
 });
 
-Vue.config.devtools = true;
+

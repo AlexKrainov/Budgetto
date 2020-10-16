@@ -40,6 +40,15 @@ namespace MyProfile.Controllers
         {
             return Json(new { isOk = true, goals = await goalService.GetGoalListView() });
         }
+        [HttpGet]
+        public async Task<JsonResult> GetGoal(int goalID)
+        {
+            return Json(new
+            {
+                isOk = true,
+                goal = (await goalService.GetGoalListView(x => x.ID == goalID)).FirstOrDefault()
+            });
+        }
 
         [HttpPost]
         public async Task<JsonResult> Save([FromBody] GoalModelView goal)
@@ -85,7 +94,7 @@ namespace MyProfile.Controllers
             }
             List<GoalModelView> goalChartsData = await goalService.GetChartData(start, finish, periodTypesEnum);
 
-            return Json(new { goalChartsData = goalChartsData });
+            return Json(new { goalChartsData });
         }
 
         [HttpPost]

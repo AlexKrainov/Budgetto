@@ -10,6 +10,7 @@
 
     <script src="~/pages/goal/goal-list.js"></script>
     <script src="~/pages/goal/goal-edit.js"></script>
+    <script src="~/pages/goal/goal-add-money.js"></script>
 }
 
 <div id="goal-list-vue" v-cloak>
@@ -31,16 +32,22 @@
         <div class="col-sm-6 col-xl-4 pt-5 masonry-item-sizer position-absolute"></div>
         <div class=" col-sm-6 col-xl-4 masonry-item "
              v-for="goal in goals">
-            <div class="card mb-4 custom-card-hover" v-bind:class="goal.isOwner ? 'border-primary' : 'border-secondary'" v-bind:id="'goal_' + goal.id" v-if="goal.isDeleted == false">
+            <div class="card mb-4 custom-card-hover"
+                 v-bind:class="goal.isOwner ? 'border-primary' : 'border-secondary'"
+                 v-bind:id="'goal_' + goal.id"
+                 v-if="goal.isDeleted == false">
                 <div class="card-body card-body pb-0">
                     <div class="d-flex justify-content-between align-items-start">
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" v-on:click="edit(goal)" title="Редактировать" v-if="goal.isOwner">{{ goal.name }}</a>
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" title="Редактировать" v-else="!goal.isOwner">{{ goal.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" title="Редактировать"
+                           v-on:click="edit(goal)"
+                           v-if="goal.isOwner">{{ goal.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" title="Редактировать"
+                           v-else="!goal.isOwner">{{ goal.name }}</a>
                         <span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="goal.isFinished">Завершена</span>
                     </div>
-                    <div class="mt-3" v-show="goal.description">
-                        {{ goal.description }}
+                    <div class="text-muted small">
+                        &nbsp;{{ goal.description }}
                     </div>
                 </div>
                 <div class="card-body">
@@ -74,7 +81,8 @@
                         <i class="far fa-edit pr-2"></i>Редактировать
                     </a>
                     <a href="javascript:void(0)" title="Добавить деньги" class="btn icon-btn btn-sm btn-outline-secondary"
-                       v-on:click="addMoney(goal)" v-show="!goal.isFinished">
+                       v-on:click="addMoney(goal)"
+                       v-show="!goal.isFinished">
                         <i class="fas fa-plus"></i>
                     </a>
                     <a href="javascript:void(0)" title="Посмотреть историю" class="btn icon-btn btn-sm btn-outline-secondary"
@@ -100,7 +108,7 @@
                         <span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="goal.isFinished">Завершена</span>
                     </div>
-                    <div class="mt-3" v-show="goal.description">
+                    <div class="text-muted small" v-show="goal.description">
                         {{ goal.description }}
                     </div>
                 </div>
@@ -159,7 +167,7 @@
                             <i class="ion ion-ios-more"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="javascript:void(0)" v-on:click="addMoney(goal.id)">Добавить деньги</a>
+                            <a class="dropdown-item" href="javascript:void(0)" v-on:click="addMoney(goal)">Добавить деньги</a>
                             <a class="dropdown-item" href="javascript:void(0)" v-on:click="edit(goal)">Редактировать</a>
                             <a class="dropdown-item" href="javascript:void(0)">Remove</a>
                         </div>
@@ -193,6 +201,7 @@
     </div>
 </div>
 @await Html.PartialAsync("_EditGoal")
+@await Html.PartialAsync("_GoalAddMoney")
 
 
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Goal/List")

@@ -91,7 +91,7 @@ namespace MyProfile.Goal.Service
                 goal.ChartID = "chart_" + (75 + i);
 
                 goal.Percent = 100 - Math.Round((leftMoney / goal.ExpectationMoney * 100) ?? 0, 2);
-                goal.Percent2 = 100 + goal.Percent;
+                goal.Percent2 = 100 - goal.Percent;
             }
 
             return goals;

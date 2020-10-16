@@ -207,4 +207,4 @@ var LimitListVue = new Vue({
     }
 });
 
-Vue.config.devtools = true;
+

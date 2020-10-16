@@ -1,28 +1,41 @@
-﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4" v-for="goalChartData in goalChartsData" v-show="goalChartData.isShow">
+﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4" 
+     v-for="goalChartData in goalChartsData" 
+     v-show="goalChartData.isShow">
 
-	<div class="card pt-2 mb-4">
-		<div class="d-flex align-items-center position-relative mt-4" style="height:110px;">
-			<div class="w-100 position-absolute" style="height:110px;top:0;">
-				<canvas v-bind:id="goalChartData.chartID" width="444" height="110" style="display: block; width: 444px; height: 110px;"></canvas>
-			</div>
-			<div class="w-100 text-center text-large">{{ goalChartData.percent }}%</div>
-		</div>
+    <div class="card pt-2 mb-4" v-bind:class="goalChartData.percent > 100 ? 'green-line' : ''">
+        <div class="card-header-elements ml-auto">
+            <div class="btn-group mr-3">
+                <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
+                    <i class="ion ion-ios-more"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
+                    <a class="dropdown-item" href="javascript:void(0)" 
+                       v-on:click="addGoalMoney(goalChartData)">Добавить деньги</a>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-center position-relative mt-4" style="height:110px;">
+            <div class="w-100 position-absolute" style="height:110px;top:0;">
+                <canvas v-bind:id="goalChartData.chartID" width="444" height="110" style="display: block; width: 444px; height: 110px;"></canvas>
+            </div>
+            <div class="w-100 text-center text-large">{{ goalChartData.percent }}%</div>
+        </div>
         <div class="text-center pb-2 my-3">
             <span class="lnr lnr-rocket text-primary" style="font-size: x-large;"></span>
             {{ goalChartData.name }}
         </div>
-		<div class="card-footer text-center py-3">
-			<div class="row">
-				<div class="col">
-					<div class="text-muted small">Цель</div>
-					<strong class="text-big">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.expectationMoney) }}</strong>
-				</div>
-				<div class="col">
-					<div class="text-muted small">Накоплено</div>
-					<strong class="text-big">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.totalMoney) }}</strong>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="card-footer text-center py-3">
+            <div class="row">
+                <div class="col">
+                    <div class="text-muted small">Цель</div>
+                    <strong class="text-big">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.expectationMoney) }}</strong>
+                </div>
+                <div class="col">
+                    <div class="text-muted small">Накоплено</div>
+                    <strong class="text-big">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.totalMoney) }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

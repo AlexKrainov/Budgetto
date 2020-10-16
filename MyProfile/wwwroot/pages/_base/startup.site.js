@@ -183,4 +183,5 @@ var RecordVue = new Vue({
 });
 
 
+Vue.config.devtools = true;
 

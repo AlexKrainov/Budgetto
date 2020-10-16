@@ -491,4 +491,4 @@
     }
 });
 
-Vue.config.devtools = true;
+

@@ -41,4 +41,4 @@ var ArticleVue = new Vue({
     }
 });
 
-Vue.config.devtools = true;
+

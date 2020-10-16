@@ -83,4 +83,4 @@
     }
 });
 
-Vue.config.devtools = true;
+

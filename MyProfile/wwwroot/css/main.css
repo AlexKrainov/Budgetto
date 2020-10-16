@@ -505,6 +505,10 @@ a.folder-text:hover .folder-edit-button {
     margin-left: auto !important;
 }
 
+.green-line {
+    border: 1px solid var(--green) !important;
+    border-radius: 5px !important;
+}
 
 .green-bottom-line {
     border-bottom: 3px solid var(--green) !important;

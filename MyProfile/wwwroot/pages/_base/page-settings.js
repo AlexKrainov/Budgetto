@@ -123,4 +123,4 @@ window.getFunctionFromString = function (string) {
     return scope[scopeSplit[scopeSplit.length - 1]];
 }
 
-Vue.config.devtools = true;
+
