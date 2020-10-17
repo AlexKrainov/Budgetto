@@ -20,6 +20,7 @@ namespace MyProfile.Entity.ModelView.Goal
         public bool IsOwner { get; set; }
         public string UserName { get; set; }
         public string ImageLink { get; set; }
+        public decimal? LeftMoney { get; set; }
     }
 
 	public class RecordItem

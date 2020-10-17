@@ -4,116 +4,83 @@
         <div class="modal-dialog">
             <form class="modal-content" method="post" v-on:submit="checkForm">
                 <div class="modal-header pb-0 mb-0">
-                    <h5 class="modal-title" v-if="!goal.id">
-                        Цель
+                    <h5 class="modal-title">
+                        {{ goal.id ? 'Редактирование цели' : 'Создание цели'  }}
                         @*<span class="font-weight-light">Information</span>
                             <br>
                             <small class="text-muted">We need payment information to process your order.</small>*@
                     </h5>
-                    <ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;" v-else-if="goal.id">
-                        <li class="nav-item">
-                            <a class="nav-link" v-bind:class="isGanaral ? 'active': ''" data-toggle="tab" href="#general">
-                                <h6>Редактирование цели</h6>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" v-bind:class="!isGanaral ? 'active': ''" data-toggle="tab" href="#history">
-                                <h6>
-                                    История пополнений
-                                </h6>
-                            </a>
-                        </li>
-                    </ul>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body">
-                    <div class="tab-content">
-                        <div id="general" class=" tab-pane" v-bind:class="isGanaral ? 'active': ''">
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <label class="form-label">Начало</label>
-                                    <span class="text-danger">*</span>
-                                    <input type="text" class="form-control" id="date-start" v-model="goal.dateStart" required>
-                                </div>
-                                <div class="form-group col">
-                                    <label class="form-label">Окончание</label>
-                                    <input type="text" class="form-control" id="date-end" v-model="goal.dateEnd">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <label class="form-label">Название цели</label>
-                                    <span class="text-danger">*</span>
-                                    <input type="text" class="form-control" placeholder="" v-model="goal.name" required>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <label class="form-label">Сколько нужно накопить?</label>
-                                    <span class="text-danger">*</span>
-                                    <input type="number" class="form-control" placeholder="" v-model="goal.expectationMoney" required min="0">
-                                    <div class="text-muted small mt-1" v-show="goal.expectationMoney">
-                                        {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col mb-0">
-                                    <label class="form-label">Комментарии</label>
-                                    <textarea class="form-control" v-model="goal.description" placeholder=""></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row mt-3">
-                                <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                                    <label class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetMonth" checked>@*v-on:change="finishgoal"*@
-                                        <span class="custom-control-label">Показывать на странице "Бюджет на месяц"</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                                    <label class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetYear" checked>@*v-on:change="finishgoal"*@
-                                        <span class="custom-control-label">Показывать на странице "Бюджет на год"</span>
-                                    </label>
-                                </div>
-                            </div>
-                            @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)
-                            {
-                                <div class="form-row">
-                                    <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" v-model="goal.isShowInCollective" checked>@*v-on:change="finishgoal"*@
-                                            <span class="custom-control-label">Показывать всем</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            }
-
-                            <div class="form-row" v-show="goal.id">
-                                <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                                    <label class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" v-model="goal.isFinished">@*v-on:change="finishgoal"*@
-                                        <span class="custom-control-label">Завершить цель</span>
-                                    </label>
-                                </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="form-label">Начало</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="form-control" id="date-start" v-model="goal.dateStart" required>
+                        </div>
+                        <div class="form-group col">
+                            <label class="form-label">Окончание</label>
+                            <input type="text" class="form-control" id="date-end" v-model="goal.dateEnd">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="form-label">Название цели</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="form-control" placeholder="" v-model="goal.name" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="form-label">Сколько нужно накопить?</label>
+                            <span class="text-danger">*</span>
+                            <input type="number" class="form-control" placeholder="" v-model="goal.expectationMoney" required min="0">
+                            <div class="text-muted small mt-1" v-show="goal.expectationMoney">
+                                {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }}
                             </div>
                         </div>
-                        <div id="history" class=" tab-pane " v-bind:class="!isGanaral ? 'active': ''">
-                            <div class="media pb-1 mb-3" v-for="record in goal.records" v-show="record.isShow">
-                                <img v-bind:src="record.imageLink" class="d-block ui-w-40 rounded-circle" alt>
-                                <div class="media-body ml-3">
-                                    <div class="mb-1">
-                                        <strong class="font-weight-semibold">{{ record.userName }}</strong> &nbsp;
-                                        <small class="text-muted">{{ getDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }}</small>
-                                    </div>
-                                    <h6 class="text-body">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.total) }}</h6>
-                                </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col mb-0">
+                            <label class="form-label">Комментарии</label>
+                            <textarea class="form-control" v-model="goal.description" placeholder=""></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row mt-3">
+                        <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetMonth" checked>@*v-on:change="finishgoal"*@
+                                <span class="custom-control-label">Показывать на странице "Бюджет на месяц"</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="goal.isShow_BudgetYear" checked>@*v-on:change="finishgoal"*@
+                                <span class="custom-control-label">Показывать на странице "Бюджет на год"</span>
+                            </label>
+                        </div>
+                    </div>
+                    @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)
+                    {
+                        <div class="form-row">
+                            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="goal.isShowInCollective" checked>@*v-on:change="finishgoal"*@
+                                    <span class="custom-control-label">Показывать всем</span>
+                                </label>
                             </div>
-                            <a href="javascript:void(0)" class="card-footer text-body text-center small font-weight-semibold" style="display: block;"
-                               v-show="isShowButtonHistoryItems"
-                               v-on:click="showHistory(5)">Показать еще {{ this.goal.records && this.goal.records.filter(x => x.isShow == false).length < 5 ? this.goal.records.filter(x => x.isShow == false).length : 5 }}</a>
+                        </div>
+                    }
+
+                    <div class="form-row" v-show="goal.id">
+                        <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="goal.isFinished">@*v-on:change="finishgoal"*@
+                                <span class="custom-control-label">Завершить цель</span>
+                            </label>
                         </div>
                     </div>
                 </div>

@@ -8,9 +8,6 @@
 
         record: {},
         isSaving: false,
-        showHistoryItems: 0,
-        isShowButtonHistoryItems: true,
-        isGanaral: true,
     },
     watch: {},
     mounted: function () {
@@ -19,12 +16,10 @@
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
-        edit: function (goal, isHistory) {
-            this.showHistoryItems = 0;
-            this.isGanaral = !(isHistory == true);
+        edit: function (goal) {
             if (goal) {
                 this.goal = { ...goal };
-                this.showHistory(10);
+                
             } else {
                 this.goal.dateStart = GetDateByFormat(moment(), "YYYY/MM/DD");
             }
@@ -74,17 +69,7 @@
                     GoalEditVue.isSaving = false;
                 });
         },
-        showHistory: function (count) {
-            this.showHistoryItems += count;
-
-            for (var i = 0; i < this.goal.records.length; i++) {
-                if (this.showHistoryItems == i) {
-                    return;
-                }
-                this.goal.records[i].isShow = true;
-            }
-            this.isShowButtonHistoryItems = false;
-        },
+      
         checkForm: function (e) {
             let isOk = true;
 

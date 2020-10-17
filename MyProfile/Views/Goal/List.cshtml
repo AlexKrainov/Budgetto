@@ -52,11 +52,13 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center small">
-                        <div class="font-weight-bold">{{ goal.percent }}%</div>
-                        <div class="text-muted">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.totalMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }} </div>
+                        <div class="font-weight-bold">{{ goal.percent }}% ({{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.totalMoney) }})</div>
+                        <div class="text-muted">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.leftMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }} </div>
                     </div>
                     <div class="progress mt-1" style="height: 3px;">
-                        <div class="progress-bar" v-bind:style="'width: '+ goal.percent +'%;'"></div>
+                        <div class="progress-bar" 
+                             v-bind:class="goal.percent >= 100 ? 'bg-success': 'bg-warning'"
+                             v-bind:style="'width: '+ goal.percent +'%;'"></div>
                     </div>
                 </div>
                 <hr class="m-0">
@@ -80,9 +82,9 @@
                     <a href="javascript:void(0)" class="btn btn-primary btn-sm" v-on:click="edit(goal)" v-if="goal.isOwner">
                         <i class="far fa-edit pr-2"></i>Редактировать
                     </a>
+                    @*v-show="!goal.isFinished"*@
                     <a href="javascript:void(0)" title="Добавить деньги" class="btn icon-btn btn-sm btn-outline-secondary"
-                       v-on:click="addMoney(goal)"
-                       v-show="!goal.isFinished">
+                       v-on:click="addMoney(goal)">
                         <i class="fas fa-plus"></i>
                     </a>
                     <a href="javascript:void(0)" title="Посмотреть историю" class="btn icon-btn btn-sm btn-outline-secondary"
@@ -114,11 +116,13 @@
                 </div>
                 <div class="card-body deleted-item">
                     <div class="d-flex justify-content-between align-items-center small">
-                        <div class="font-weight-bold">{{ goal.percent }}%</div>
+                        <div class="font-weight-bold">{{ goal.percent }}% ({{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.totalMoney) }} )</div>
                         <div class="text-muted">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.totalMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }} </div>
                     </div>
                     <div class="progress mt-1" style="height: 3px;">
-                        <div class="progress-bar" v-bind:style="'width: '+ goal.percent +'%;'"></div>
+                        <div class="progress-bar"
+                             v-bind:class="goal.percent >= 100 ? 'bg-success': 'bg-warning'"
+                             v-bind:style="'width: '+ goal.percent +'%;'"></div>
                     </div>
                 </div>
                 <hr class="m-0">

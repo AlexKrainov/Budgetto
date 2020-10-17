@@ -251,7 +251,7 @@
         },
         //Goal charts
         loadGoalCharts: BudgetMethods.loadGoalCharts,
-        initGoalCharts: function () {
+        OLD_initGoalCharts: function () {
             for (var i = 0; i < this.goalChartsData.length; i++) {
                 let goalChartData = this.goalChartsData[i];
 
@@ -305,7 +305,7 @@
             }
             setTimeout(this.resizeGoalCharts, 10);
         },
-        resizeGoalCharts: function () {
+        OLD_resizeGoalCharts: function () {
             for (var i = 0; i < this.goalCharts.length; i++) {
                 if (this.goalCharts[i]) {
                     this.goalCharts[i].resize();
@@ -506,7 +506,7 @@
         resizeAll: function () {
             this.resizeTotalCharts();
             this.resizeLimitCharts();
-            this.resizeGoalCharts();
+            //this.resizeGoalCharts();
             this.resizeBigCharts();
         },
         refrehViewTable: function () {

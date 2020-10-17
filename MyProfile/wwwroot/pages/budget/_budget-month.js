@@ -104,7 +104,7 @@
 
                 this.goalChartsData = response.goalChartsData;
 
-                setTimeout(this.initGoalCharts, 10);
+                //setTimeout(this.initGoalCharts, 10);
             }
         });
     },

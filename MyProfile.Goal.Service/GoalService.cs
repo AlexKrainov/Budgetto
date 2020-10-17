@@ -92,6 +92,7 @@ namespace MyProfile.Goal.Service
 
                 goal.Percent = 100 - Math.Round((leftMoney / goal.ExpectationMoney * 100) ?? 0, 2);
                 goal.Percent2 = 100 - goal.Percent;
+                goal.LeftMoney = leftMoney < 0 ? 0 : leftMoney;
             }
 
             return goals;

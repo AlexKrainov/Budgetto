@@ -2,31 +2,60 @@
     <div class="modal-dialog">
         <form class="modal-content" method="post" v-on:submit="checkAddForm">
             <div class="modal-header">
-                <h5 class="modal-title">
-                    Пополнить цель
-                    @*<span class="font-weight-light">Information</span>
-                        <br>
-                        <small class="text-muted">We need payment information to process your order.</small>*@
-                </h5>
+                <ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+                    <li class="nav-item">
+                        <a class="nav-link" v-bind:class="isGanaral ? 'active': ''" data-toggle="tab" href="#general">
+                            <h6> Пополнить цель</h6>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" v-bind:class="!isGanaral ? 'active': ''" data-toggle="tab" href="#history">
+                            <h6>
+                                История пополнений
+                            </h6>
+                        </a>
+                    </li>
+                </ul>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
             </div>
             <div class="modal-body">
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label class="form-label">Дата</label>
-                        <span class="text-danger">*</span>
-                        <input type="text" class="form-control" id="dateTimeOfPayment" v-model="record.dateTimeOfPayment" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label class="form-label">Сумма</label>
-                        <span class="text-danger">*</span>
-                        <input type="number" class="form-control" placeholder="1000 или -1000" v-model="record.total" required>
-                        <div class="text-muted small mt-1" v-show="record.total ">
-                            {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.total) }}
+                <div class="tab-content">
+                    <div id="general" class=" tab-pane" v-bind:class="isGanaral ? 'active': ''">
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label class="form-label">Дата</label>
+                                <span class="text-danger">*</span>
+                                <input type="text" class="form-control" id="dateTimeOfPayment" v-model="record.dateTimeOfPayment" required>
+                            </div>
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label class="form-label">Сумма</label>
+                                <span class="text-danger">*</span>
+                                <input type="number" class="form-control" placeholder="1000 или -1000" v-model="record.total" required>
+                                <div class="text-muted small mt-1" v-show="record.total ">
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.total) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="history" class=" tab-pane " v-bind:class="!isGanaral ? 'active': ''">
+                        <div class="media pb-1 mb-3" 
+                             v-for="record in goal.records" 
+                             v-show="record.isShow">
+                            <img v-bind:src="record.imageLink" class="d-block ui-w-40 rounded-circle" alt>
+                            <div class="media-body ml-3">
+                                <div class="mb-1">
+                                    <strong class="font-weight-semibold">{{ record.userName }}</strong> &nbsp;
+                                    <small class="text-muted">{{ getDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }}</small>
+                                </div>
+                                <h6 class="text-body">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.total) }}</h6>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" class="card-footer text-body text-center small font-weight-semibold" style="display: block;"
+                           v-show="isShowButtonHistoryItems"
+                           v-on:click="showHistory(5)">Показать еще {{ this.goal.records && this.goal.records.filter(x => x.isShow == false).length < 5 ? this.goal.records.filter(x => x.isShow == false).length : 5 }}</a>
                     </div>
                 </div>
             </div>
