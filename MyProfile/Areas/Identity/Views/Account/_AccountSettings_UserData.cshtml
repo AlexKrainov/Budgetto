@@ -22,6 +22,7 @@
                v-model="user.name"
                v-bind:class="validName ? '' : 'is-invalid'">
         <small class="invalid-feedback">Обязательное поле</small>
+        <div class="text-light small mt-1"> Имя должно содержать больше 2 символов</div>
     </div>
     <div class="form-group">
         <label class="form-label">Фамилия</label>

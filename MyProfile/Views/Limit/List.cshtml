@@ -53,8 +53,8 @@
                  v-bind:id="'limit_' + limit.id" v-if="limit.isDeleted == false">
                 <div class="card-body card-body pb-0">
                     <div class="d-flex justify-content-between align-items-start">
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" v-on:click="edit(limit)" title="Редактировать" v-if="limit.isOwner">{{ limit.name }}</a>
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" title="Редактировать" v-else="!limit.isOwner">{{ limit.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200" v-on:click="edit(limit)" title="Редактировать" v-if="limit.isOwner">{{ limit.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200" title="Редактировать" v-else="!limit.isOwner">{{ limit.name }}</a>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="limit.periodTypeID == 1">{{ limit.periodName }}</span>
                         <span class="badge badge-info align-text-bottom ml-1" v-show="limit.periodTypeID == 3">{{ limit.periodName }}</span>
                     </div>
@@ -72,7 +72,7 @@
                 </div>
                 <hr class="m-0">
                 <div class="card-body pb-2 pt-1 row">
-                    <div class="col-4">
+                    <div class="col-12">
                         <div class="text-muted small display-inline">Цель</div>
                         <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
                     </div>
@@ -126,7 +126,7 @@
             <div class="card mb-4 custom-card-hover border-secondary" v-bind:id="'limit_' + limit.id" v-else-if="limit.isDeleted">
                 <div class="card-body card-body pb-0 deleted-item">
                     <div class="d-flex justify-content-between align-items-start ">
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold ">{{ limit.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200 ">{{ limit.name }}</a>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="limit.periodTypeID == 1">{{ limit.periodName }}</span>
                         <span class="badge badge-info align-text-bottom ml-1" v-show="limit.periodTypeID == 3">{{ limit.periodName }}</span>
                     </div>

@@ -38,10 +38,10 @@
                  v-if="goal.isDeleted == false">
                 <div class="card-body card-body pb-0">
                     <div class="d-flex justify-content-between align-items-start">
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" title="Редактировать"
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200" title="Редактировать"
                            v-on:click="edit(goal)"
                            v-if="goal.isOwner">{{ goal.name }}</a>
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" title="Редактировать"
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200" title="Редактировать"
                            v-else="!goal.isOwner">{{ goal.name }}</a>
                         <span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="goal.isFinished">Завершена</span>
@@ -63,15 +63,15 @@
                 </div>
                 <hr class="m-0">
                 <div class="card-body pb-2 pt-1 row">
-                    <div class="col-4">
+                    <div class="col-5 p-0 pl-2">
                         <div class="text-muted small display-inline">Цель</div>
                         <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }}</h6>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 p-0">
                         <div class="text-muted small display-inline">Начало</div>
                         <h6 class="mt-1">{{  getDateByFormat(goal.dateStart, 'DD.MM.YYYY') }}</h6>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3 p-0">
                         <div class="text-muted small display-inline">Окончание</div>
                         @*<span class="badge badge-outline-danger ml-1" v-show="goal.isFinished">Завершен</span>*@
                         <h6 class="mt-1" v-show="goal.dateEnd">{{  getDateByFormat(goal.dateEnd, 'DD.MM.YYYY') }}</h6>
@@ -106,7 +106,7 @@
             <div class="card mb-4 custom-card-hover border-secondary" v-bind:id="'goal_' + goal.id" v-if="goal.isDeleted">
                 <div class="card-body card-body pb-0 deleted-item">
                     <div class="d-flex justify-content-between align-items-start">
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ goal.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200">{{ goal.name }}</a>
                         <span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="goal.isFinished">Завершена</span>
                     </div>
@@ -127,15 +127,15 @@
                 </div>
                 <hr class="m-0">
                 <div class="card-body pb-2 pt-1 row deleted-item">
-                    <div class="col-4">
+                    <div class="col-5 p-0 pl-2">
                         <div class="text-muted small display-inline">Цель</div>
                         <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }}</h6>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 p-0">
                         <div class="text-muted small display-inline">Начало</div>
                         <h6 class="mt-1">{{  getDateByFormat(goal.dateStart, 'DD.MM.YYYY') }}</h6>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3 p-0">
                         <div class="text-muted small display-inline">Окончание</div>
                         @*<span class="badge badge-outline-danger ml-1" v-show="goal.isFinished">Завершен</span>*@
                         <h6 class="mt-1" v-show="goal.dateEnd">{{  getDateByFormat(goal.dateEnd, 'DD.MM.YYYY') }}</h6>
@@ -157,7 +157,7 @@
             <div class="card-body pb-0">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ goal.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200">{{ goal.name }}</a>
                         <span class="badge badge-warning align-text-bottom ml-1" v-show="!goal.isFinished">В процессе</span>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="goal.isFinished">Закончен</span>
                         @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)

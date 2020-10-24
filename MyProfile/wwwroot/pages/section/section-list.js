@@ -349,8 +349,8 @@ var SectionVue = new Vue({
                 newValue = newValue.toLocaleLowerCase();
             }
 
-            for (var i = 0; i < this.areas.length; i++) {
-                this.areas[i].isShow_Filtered = this.sections[i].name.toLocaleLowerCase().indexOf(newValue) >= 0
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isShow_Filtered = this.sections[i].name.toLocaleLowerCase().indexOf(newValue) >= 0
                     || (this.sections[i].description && this.sections[i].description.toLocaleLowerCase().indexOf(newValue) >= 0);
             }
         }

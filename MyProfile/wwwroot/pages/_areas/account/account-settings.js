@@ -42,10 +42,11 @@ var AccountSettingsVue = new Vue({
         isHiddenPassword: true,
         isValidCode: true,
         isShowCode: false,
+        isShowSuccessChangedPassword: false,
     },
     computed: {
         validName: function () {
-            return this.user.name && this.user.name.length > 2;
+            return this.user.name && this.user.name.length >= 2;
         },
         validEmail: function () {
             return this.user.email && this.user.email.indexOf("@") > 0 && this.user.email.indexOf(".") > 0;
@@ -177,12 +178,14 @@ var AccountSettingsVue = new Vue({
             if (this.validPassword) {
                 this.isValidPassword = true;
                 this.isSaving = true;
+                this.isShowSuccessChangedPassword = false;
 
                 return sendAjax("/Identity/Account/ChangePassword", this.newPassword, "POST")
                     .then(function (result) {
                         if (result.isOk) {
                             AccountSettingsVue.newPassword = null;
                             AccountSettingsVue.isSaving = false;
+                            AccountSettingsVue.isShowSuccessChangedPassword = true;
                         }
                     });
             } else {
