@@ -16,5 +16,6 @@ namespace MyProfile.Entity.ModelView.Chart
 		public string Decription { get; set; }
 		public bool IsShow { get; set; }
         public bool IsBig { get; set; }
+        public int ID { get; set; }
     }
 }

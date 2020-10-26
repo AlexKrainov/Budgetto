@@ -4,6 +4,10 @@
          v-bind:id="'bigChart_'+chartData.chartID">
     <article v-if="chartData.isBig == false">
         <div class="card pt-2 mb-4">
+            <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать график" style=" position: absolute; right: 10px;"
+               v-bind:href="'/Chart/Edit/' + chartData.id ">
+                <i class="ion ion-md-create"></i>
+            </a>
             <div class="d-flex align-items-center position-relative mt-4" v-bind:style="'height:' + bigChartHeight + 'px;'">
                 <div class="w-100 position-absolute" style="height:310px;top:0;">
                     <canvas v-bind:id="chartData.chartID"></canvas>
@@ -18,18 +22,10 @@
                 {{ chartData.name }}
             </div>
             <div class="card-header-elements ml-auto">
-                <label class="text m-0">
-                    <span class="text-light text-tiny font-weight-semibold align-middle">
-                        SHOW STATS
-                    </span>
-                    <span class="switcher switcher-sm d-inline-block align-middle mr-0 ml-2">
-                        <input type="checkbox" class="switcher-input" checked="">
-                        <span class="switcher-indicator">
-                            <span class="switcher-yes"></span>
-                            <span class="switcher-no"></span>
-                        </span>
-                    </span>
-                </label>
+                <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать график"
+                   v-bind:href="'/Chart/Edit/' + chartData.id ">
+                    <i class="ion ion-md-create"></i>
+                </a>
             </div>
         </h6>
         <div class="row no-gutters row-bordered">

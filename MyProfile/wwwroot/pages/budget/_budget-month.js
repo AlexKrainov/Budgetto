@@ -32,7 +32,6 @@
                     BudgetVue.rows = result.rows;
                     BudgetVue.footerRow = result.footerRow;
                     BudgetVue.template = result.template;
-
                 }
             });
         $.fn.dataTable.SearchPanes.defaults = false;
@@ -126,9 +125,9 @@
             context: this,
             success: function (response) {
 
-                if (!UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts) {
-                    return false;
-                }
+                //if (!UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts) {
+                //    return false;
+                //}
 
                 this.bigChartsData = response.bigChartsData;
 
@@ -136,7 +135,7 @@
                     HideLoading('#bigChart_' + this.bigChartsData[i].chartID);
                 }
 
-                setTimeout(this.initBigChartCharts, 10);
+                setTimeout(this.initBigChartCharts, 100);
             }
         });
     },

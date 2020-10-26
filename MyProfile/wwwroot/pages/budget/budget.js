@@ -451,10 +451,15 @@
             //];
             if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData" || typeRefresh == "all") {
                 ShowLoading(".table-container");
+
+                if (this.dataTable) {
+                    this.dataTable.destroy();
+                }
+
                 this.load()
                     .then(function () {
-                        BudgetVue.initTable();
                         HideLoading(".table-container");
+                        BudgetVue.initTable();
                     });
             }
 
@@ -515,13 +520,14 @@
             }
         },
         initTable: function () {
-            if (this.dataTable) {
-                this.dataTable.destroy();
-            }
-
             this.dataTable = $("#table").DataTable({
                 columnDefs: [
-                    { targets: '_all', className: "column-min-width", "orderDataType": "dom-text-numeric", type: "num" },
+                    {
+                        targets: '_all',
+                        className: "column-min-width",
+                        "orderDataType": "dom-text-numeric",
+                        type: "num"
+                    },
                 ]
             });
 
@@ -529,7 +535,7 @@
                 return this.api().column(col, { order: 'index' }).nodes().map(function (td, i) {
                     return $(td).find("span[data-value]").data("value");
                 });
-            }
+            };
         },
         toExcel: function () {
             this.isGenerateExcel = true;

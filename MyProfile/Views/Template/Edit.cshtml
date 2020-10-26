@@ -70,7 +70,7 @@
                             @foreach (MyProfile.Entity.Model.PeriodType periodType in ViewBag.PeriodTypes)
                             {
                                 <a class="dropdown-item"
-                                   v-on:click="template.periodTypeID = @periodType.ID; template.periodName = '@periodType.Name'">@periodType.Name</a>
+                                   v-on:click="template.periodTypeID = @periodType.ID; template.periodName = '@periodType.Name'; changeType();">@periodType.Name</a>
                             }
                         </div>
                     </div>

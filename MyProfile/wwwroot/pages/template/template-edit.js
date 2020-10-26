@@ -1,7 +1,7 @@
 ﻿var TemplateVue = new Vue({
     el: "#template-columns",
     data: {
-        template: [],
+        template: {},
         sections: [],
         selectedSelections: [],
 
@@ -172,6 +172,9 @@
             }
 
             $("#section-modal").modal("hide");
+        },
+        changeType: function () {
+            this.template.columns = [];
         },
         saveTemplate: function (saveAs) {
             let method = 'Save';

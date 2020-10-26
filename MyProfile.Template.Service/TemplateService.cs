@@ -203,7 +203,7 @@ namespace MyProfile.Template.Service
         public async Task<List<TemplateViewModel_Short>> GetNameTemplates(Expression<Func<Template, bool>> predicate)
         {
             return await repository.GetAll<Template>(predicate)
-                        .OrderBy(x => x.LastSeenDate)
+                        .OrderBy(x => x.Name)
                         .Select(x => new TemplateViewModel_Short
                         {
                             ID = x.ID,

@@ -51,7 +51,10 @@ namespace MyProfile.Controllers
             BudgetControllerModelView model = new BudgetControllerModelView();
             model.SelectedDateTime = month != null ? new DateTime(DateTime.Now.Year, month ?? 1, 1) : new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             model.SelectedTemplateID = templateID ?? -1;
-            model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.Current.ID && x.PeriodTypeID == (int)PeriodTypesEnum.Month);
+            model.Templates = await templateService.GetNameTemplates(x =>
+                x.UserID == UserInfo.Current.ID
+                && x.PeriodTypeID == (int)PeriodTypesEnum.Month
+                && x.IsDeleted != true);
 
             if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
             {
@@ -95,10 +98,21 @@ namespace MyProfile.Controllers
             BudgetControllerModelView model = new BudgetControllerModelView();
             model.SelectedYear = year ?? DateTime.Now.Year;
             model.SelectedTemplateID = templateID ?? -1;
-            model.Templates = await templateService.GetNameTemplates(x => x.UserID == UserInfo.Current.ID && x.PeriodTypeID == (int)PeriodTypesEnum.Year);
+            model.Templates = await templateService.GetNameTemplates(x =>
+               x.UserID == UserInfo.Current.ID
+               && x.PeriodTypeID == (int)PeriodTypesEnum.Year
+               && x.IsDeleted != true);
+
             if (model.SelectedTemplateID == -1 && model.Templates.Count() > 0)
             {
-                model.SelectedTemplateID = model.Templates[0].ID;
+                if (model.Templates.Any(x => x.IsDefault))
+                {
+                    model.SelectedTemplateID = model.Templates.FirstOrDefault(x => x.IsDefault).ID;
+                }
+                else
+                {
+                    model.SelectedTemplateID = model.Templates[0].ID;
+                }
             }
 
             model.Years = await budgetRecordService.GetAllYears();

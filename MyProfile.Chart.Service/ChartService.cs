@@ -201,6 +201,7 @@ namespace MyProfile.Chart.Service
 
                 ChartViewModel chartViewModel = new ChartViewModel
                 {
+                    ID = chart.ID,
                     ChartID = "bigChart_" + chart.ID,
                     Name = chart.Name,
                     Decription = chart.Description,

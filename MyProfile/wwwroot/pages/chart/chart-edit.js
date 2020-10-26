@@ -3,7 +3,9 @@
     data: {
         chart: {
             chartTypeName: '',
-            fields: []
+            fields: [],
+            isShowBudgetMonth: true,
+            isShowBudgetYear: true
         },
         //metadata
         sections: [],
@@ -209,6 +211,30 @@
             let indexField = this.chart.fields.findIndex(x => x.id == field.id);
             this.chart.fields.splice(indexField, 1);
         },
+        selectAll: function (fieldID) {
+            let name = this.getSelectName(fieldID);
+            $(name + " option").prop("selected", true);
+            $(name).trigger("change");
+        },
+        unselectAll: function (fieldID) {
+            let name = this.getSelectName(fieldID);
+            $(name).val(null).trigger("change");
+        },
+        selectOnlyType: function (fieldID, sectionTypeID) {
+            let name = this.getSelectName(fieldID);
+
+            $(name).val(null);
+            $(name).val(
+                this.sections
+                    .filter(x => x.sectionTypeID == sectionTypeID)
+                    .map(x => x.id))
+                .trigger("change");
+        },
+        getSelectName: function (fieldID) {
+            return '#field_sections_' + fieldID;
+        },
+
+
         getRusName: function (num) {
             return GetRusName(num, ['Поле', 'Поля', 'Полей']);
         }
