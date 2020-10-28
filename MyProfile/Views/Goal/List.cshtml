@@ -56,7 +56,7 @@
                         <div class="text-muted">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.leftMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }} </div>
                     </div>
                     <div class="progress mt-1" style="height: 3px;">
-                        <div class="progress-bar" 
+                        <div class="progress-bar"
                              v-bind:class="goal.percent >= 100 ? 'bg-success': 'bg-warning'"
                              v-bind:style="'width: '+ goal.percent +'%;'"></div>
                     </div>
@@ -84,14 +84,16 @@
                     </a>
                     @*v-show="!goal.isFinished"*@
                     <a href="javascript:void(0)" title="Добавить деньги" class="btn icon-btn btn-sm btn-outline-secondary"
-                       v-on:click="addMoney(goal)">
+                       v-on:click="addMoney(goal, false)">
                         <i class="fas fa-plus"></i>
                     </a>
                     <a href="javascript:void(0)" title="Посмотреть историю" class="btn icon-btn btn-sm btn-outline-secondary"
-                       v-on:click="edit(goal, true)">
+                       v-on:click="addMoney(goal, true)">
                         <i class="fas fa-history"></i>
                     </a>
-                    <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-if="goal.isOwner" v-on:click="remove(goal)">
+                    <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
+                       v-if="goal.isOwner"
+                       v-on:click="remove(goal)">
                         <span class="ion ion-md-trash"></span>
                     </a>
                     <div class="d-inline-flex align-items-center align-middle float-right" v-if="!goal.isOwner">
@@ -171,7 +173,7 @@
                             <i class="ion ion-ios-more"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="javascript:void(0)" v-on:click="addMoney(goal)">Добавить деньги</a>
+                            <a class="dropdown-item" href="javascript:void(0)" v-on:click="addMoney(goal, false)">Добавить деньги</a>
                             <a class="dropdown-item" href="javascript:void(0)" v-on:click="edit(goal)">Редактировать</a>
                             <a class="dropdown-item" href="javascript:void(0)">Remove</a>
                         </div>

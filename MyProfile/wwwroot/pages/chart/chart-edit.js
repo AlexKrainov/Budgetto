@@ -142,6 +142,11 @@
             ShowLoading("#big-chart-edit-vue");
             this.isSaving = true;
 
+            let href = document.getElementById("big-chart-edit-vue").attributes["data-href"].value;
+            if (href && href != "") {
+                this.chart.href = document.getElementById("big-chart-edit-vue").attributes["data-href"].value;
+            }
+
             try {
                 //for (var i = 0; i < this.chart.fields.length; i++) {
                 //    let el_name = "#field_sections_" + this.chart.fields[i].id;

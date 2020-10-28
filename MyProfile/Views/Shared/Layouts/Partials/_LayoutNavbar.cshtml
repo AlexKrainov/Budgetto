@@ -52,8 +52,12 @@
 
         <div class="navbar-nav align-items-lg-center ml-auto">
 
-            <a class="nav-link cursor-pointer" onclick="RecordVue.addRecord()" title="Добавить запись">
+            <a id="addRecord" class="nav-link cursor-pointer" onclick="RecordVue.addRecord();" title="Добавить запись">
                 <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
+                <span class="d-lg-none align-middle">&nbsp; Добавить запись</span>
+            </a>
+            <a id="shepherd-example" class="nav-link cursor-pointer" href="javascript:void(0)" title="Добавить запись">
+                <i class="ion ion-md-settings navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
                 <span class="d-lg-none align-middle">&nbsp; Добавить запись</span>
             </a>
 

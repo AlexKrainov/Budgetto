@@ -37,10 +37,10 @@ namespace MyProfile.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, string href)
         {
             await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BigChartEdit_Page);
-            return View(id);
+            return View(new ChartEditViewModel { ID = id, href = href });
         }
 
 
@@ -55,19 +55,19 @@ namespace MyProfile.Controllers
             {
                 return Json(new { isOk = false, ex.Message });
             }
-            return Json(new { isOk = true, chart, href = "/Chart/List" });
+            return Json(new { isOk = true, chart, href = chart.href ?? "/Chart/List" });
         }
 
         [HttpGet]
         public async Task<IActionResult> LoadChart(int id)
         {
-            var chart = await chartService.GetChartListView(x => x.ID == id );
+            var chart = await chartService.GetChartListView(x => x.ID == id);
 
             return Json(new { chart = chart.FirstOrDefault() });
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadCharts(DateTime? date,int year, PeriodTypesEnum periodType)
+        public async Task<IActionResult> LoadCharts(DateTime? date, int year, PeriodTypesEnum periodType)
         {
             DateTime start, finish;
 

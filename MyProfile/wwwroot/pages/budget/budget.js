@@ -536,6 +536,8 @@
                     return $(td).find("span[data-value]").data("value");
                 });
             };
+
+            $('[data-toggle="tooltip"]').tooltip('update');
         },
         toExcel: function () {
             this.isGenerateExcel = true;
@@ -573,7 +575,7 @@
                 if (cell.templateColumnType == 2) {//Days
                     return `
                     <span class="float-left cell-actions">
-                        <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModel('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')" title="Добавить запись" ></i>
+                        <i class="ion ion-md-add add-cell-action" onclick="RecordVue.showModal('${cell.currentDate}', 'BudgetVue.refreshAfterChangeRecords')" title="Добавить запись" ></i>
                         <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)" title="Посмотреть историю"></i>
                         <i class="remind-cell-action">+<i class="fas fa-bell" onclick="ReminderVue.addReminders('${cell.currentDate}')" title="Добавить напоминание"></i></i>
                     </span>`;
@@ -623,6 +625,17 @@
             } else {
                 return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
             }
+        },
+        getTitle: function (column) {
+            if (column.templateColumnType == 1) {// sections
+                let li_s = "";
+                for (var i = 0; i < column.templateBudgetSections.length; i++) {
+                    li_s += `<li>${column.templateBudgetSections[i].sectionName}</li>`;
+                }
+
+                return "<ul class='my-1 pl-3'>" + li_s + "</ul>";
+            }
+            return "";
         },
         getRemindersIcons: function (cell) {
             if (cell.templateColumnType == 2) {//Type days

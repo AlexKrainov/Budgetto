@@ -84,9 +84,10 @@
             }
             return isOk;
         },
-        addMoney: function (goal) {
-            GoalAddMoneyVue.addMoney(goal);
-        }
+        addMoney: function (goal, isHistory) {
+
+            GoalAddMoneyVue.addMoney(goal, isHistory);
+        },
     }
 });
 

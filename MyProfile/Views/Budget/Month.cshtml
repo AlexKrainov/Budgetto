@@ -47,14 +47,14 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <h2 class="font-weight-light mb-2">Server Statistics</h2>
-                <div class="badge badge-success font-weight-bold">RUNNING</div>
+                <h2 class="font-weight-light mb-2">Сегодня: <b>@DateTime.Now.ToString("dd.MM.yyyy")</b></h2>
+                @*<div class="badge badge-success font-weight-bold"></div>*@
             </div>
             <div class="col-md-4">
-                <button class="btn btn-lg btn-default" id="test">
+                @*<button class="btn btn-lg btn-default" id="test">
                     <i class="ion ion-md-power text-danger"></i>&nbsp;
                     Shut Down
-                </button>
+                </button>*@
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@
         @await Html.PartialAsync("_GoalsView")
     </div>
     <div class="row">
-        @await Html.PartialAsync("_BigChartView")
+        @await Html.PartialAsync("_BigChartView", "/Budget/Month")
     </div>
     <div class="card table-container">
         <div class="card-body" style="padding-bottom:5px;">

@@ -21,6 +21,7 @@ namespace MyProfile.Entity.ModelView.Chart
 		public DateTime LastDateEdit { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsBig { get; set; }
+        public string href { get; set; }
     }
 
 	public class ChartFieldItem

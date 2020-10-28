@@ -5,7 +5,7 @@
     <article v-if="chartData.isBig == false">
         <div class="card pt-2 mb-4">
             <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать график" style=" position: absolute; right: 10px;"
-               v-bind:href="'/Chart/Edit/' + chartData.id ">
+               v-bind:href="'/Chart/Edit/' + chartData.id +'?href=@Model'">
                 <i class="ion ion-md-create"></i>
             </a>
             <div class="d-flex align-items-center position-relative mt-4" v-bind:style="'height:' + bigChartHeight + 'px;'">

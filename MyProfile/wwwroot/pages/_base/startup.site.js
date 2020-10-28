@@ -115,12 +115,12 @@ $(document).ready(function () {
         window.layoutHelpers.toggleCollapsed();
     }
 
-    //try {
-    //    window.layoutHelpers.setCollapsed(
-    //        localStorage.getItem('layoutCollapsed') === 'true',
-    //        false
-    //    );
-    //} catch (e) { }
+    try {
+        window.layoutHelpers.setCollapsed(
+            localStorage.getItem('layoutCollapsed') === 'true',
+            false
+        );
+    } catch (e) { }
     
     // Initialize sidenav
     $('#layout-sidenav').each(function () {
@@ -162,13 +162,13 @@ var RecordVue = new Vue({
     methods: {
         addRecord: function myfunction() {
             if (RecordVue.callback) {
-                return this.recordComponent.showModel(undefined, RecordVue.callback);
+                return this.recordComponent.showModal(undefined, RecordVue.callback);
             } else {
-                return this.recordComponent.showModel();
+                return this.recordComponent.showModal();
             }
         },
-        showModel: function (dateTime, callback) {
-            return this.recordComponent.showModel(dateTime, callback);
+        showModal: function (dateTime, callback) {
+            return this.recordComponent.showModal(dateTime, callback);
         },
         editByElement: function (record, callback, args) {
             return this.recordComponent.editByElement(record, callback, args);

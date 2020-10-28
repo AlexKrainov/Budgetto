@@ -84,7 +84,7 @@
 
         //Events
         afterSave: Event,
-        //showModel: Event,
+        //showModal: Event,
     },
     data: function () {
         return {

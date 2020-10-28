@@ -37,11 +37,11 @@
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
-        addMoney: function (goal) {
-            GoalEditVue.addMoney(goal);
+        addMoney: function (goal, isHistory) {
+            GoalEditVue.addMoney(goal, isHistory);
         },
-        edit: function (goal, isHistory) {
-            GoalEditVue.edit(goal, isHistory);
+        edit: function (goal) {
+            GoalEditVue.edit(goal);
         },
         reloadView: function () {
             setTimeout(function () {

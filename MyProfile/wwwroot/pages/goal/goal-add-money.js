@@ -14,14 +14,14 @@
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
-        addMoney: function (goal) {
+        addMoney: function (goal, isHistory) {
             this.record = {
                 goalID: goal.id,
                 dateTimeOfPayment: GetDateByFormat(moment(), "YYYY/MM/DD"),
             };
 
             this.showHistoryItems = 0;
-            this.isGanaral = true;
+            this.isGanaral = isHistory == true ? false : true;
             this.goal = goal;
             this.showHistory(10);
 

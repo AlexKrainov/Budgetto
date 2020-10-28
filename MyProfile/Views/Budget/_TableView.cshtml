@@ -8,11 +8,12 @@
        data-b-info="false">
     <thead>
         <tr class="text-center">
-            <th
+            <th data-toggle="tooltip" data-html="true"
                 v-for="(column, columnIndex) in template.columns"
                 v-html="column.name"
                 v-show="column.isShow"
-                v-bind:class="column.styleForTableView"></th>
+                v-bind:class="column.styleForTableView"
+                v-bind:title="getTitle(column)"></th>
         </tr>
     </thead>
     <tbody>

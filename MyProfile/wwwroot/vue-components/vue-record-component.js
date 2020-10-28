@@ -27,7 +27,7 @@
 
                         <div class="form-row">
                             <div class="form-group col">
-                                <div class="input-group">
+                                <div class="input-group input-money">
                                     <input type="text" class="form-control" id="money">
                                     <div class="input-group-prepend">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ currentCurrency.icon }}</button>
@@ -126,14 +126,14 @@
                             <span class="custom-control-label">Show in collective budget</span>
                         </label>
                     </div>
-                    <button class="btn btn-primary" type="button" 
+                    <button class="btn btn-primary button-add-record" type="button" 
                         v-bind:disabled="isSaving" 
                         v-on:click="save($emit)"
                         v-show="isShowHistory == false">
                         <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                         {{ isEditMode ? 'Редактировать': 'Добавить' }}
                     </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-default button-close-record" data-dismiss="modal">Закрыть</button>
                 </div>
             </article>
         </div>
@@ -146,7 +146,7 @@
 
         //Events
         afterSave: Event,
-        //showModel: Event,
+        //showModal: Event,
     },
     data: function () {
         return {
@@ -335,6 +335,16 @@
                 }
                 let tagValue;
                 try {
+                    ////bug with 015
+                    //let value = record.tag;
+
+                    //if (value && value[0] == "0") {
+                    //    try {
+                    //        value = value * 1;
+                    //    } catch (e) {
+                    //        item.value = value;
+                    //    }
+                    //}
                     record.money = CurrencyCalculateExpression(record.tag, this.exchangeRate);
 
                     func = compileExpression(record.tag);
@@ -350,7 +360,18 @@
             } else {
                 //this needs for jump from dollar back to rub
                 try {
-                    let func = compileExpression(record.tag);
+                    //bug with 015
+                    let value = record.tag;
+
+                    if (value && value[0] == "0") {
+                        try {
+                            value = value * 1;
+                        } catch (e) {
+                            item.value = value;
+                        }
+                    }
+
+                    let func = compileExpression(value);
                     record.money = func("1");
                     record.currencyRate = null;
                     record.currencyNominal = 1;
@@ -598,7 +619,7 @@
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
-        showModel: function (dateTime, callback, args) {
+        showModal: function (dateTime, callback, args) {
             if (dateTime) {
                 this.flatpickr.setDate(dateTime);
             } else {

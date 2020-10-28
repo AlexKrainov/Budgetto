@@ -115,12 +115,12 @@ $(function () {
 
     // #region button up, event click
 
-    $(".go_to_up").click(function (event) {
-        $("html, body").animate({
-            scrollTop: 0
-        }, "slow");
-        event.preventDefault();
-    })
+    //$(".go_to_up").click(function (event) {
+    //    $("html, body").animate({
+    //        scrollTop: 0
+    //    }, "slow");
+    //    event.preventDefault();
+    //})
 
     // #endregion
 
@@ -194,9 +194,10 @@ var timeline = {
         vueTimeline.records = [];
         vueTimeline.currentDate = "";
         this.up_element("_", "_");
-        this.loading_records().then(function () {
-            timeline.scroll_event();
-        });
+        this.loading_records();
+        //    .then(function () {
+        //    timeline.scroll_event();
+        //});
     },
     before_loading: function () {
         timeline.toggleSpinner(true);
@@ -224,7 +225,7 @@ var timeline = {
     },
     end_loading: function () {
         timeline.isLoading = true;
-        timeline.scroll_event_destroy();
+        //timeline.scroll_event_destroy();
         timeline.toggleSpinner(false);
     },
     draw_records: function (response) {
@@ -235,7 +236,7 @@ var timeline = {
             if (response.isEnd == true) {
                 timeline.end_loading();
             } else {
-                timeline.scroll_event();
+               // timeline.scroll_event();
             }
             timeline.after_loading(false);
         }, 400);

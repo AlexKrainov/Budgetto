@@ -119,12 +119,25 @@
         },
         add: function () {
             $("#modalTimeLine").modal("hide");
-            return RecordVue.showModel(this.dateTime, 'BudgetVue.refreshAfterChangeRecords');
+
+            //setTimeout becase bug with focus
+            setTimeout(
+                RecordVue.showModal,
+                750,
+                this.dateTime,
+                'BudgetVue.refreshAfterChangeRecords'
+            );
         },
         edit: function (record) {
-            RecordVue.editByElement(record, BudgetVue.refreshAfterChangeRecords);
-
             $("#modalTimeLine").modal("hide");
+
+            //setTimeout becase bug with focus
+            setTimeout(
+                RecordVue.editByElement,
+                750,
+                record,
+                BudgetVue.refreshAfterChangeRecords
+            );
         },
         remove: function (record) {
             ShowLoading('#record_' + record.id);

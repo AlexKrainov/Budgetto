@@ -1,4 +1,5 @@
-﻿
+﻿@model MyProfile.Entity.ModelView.Chart.ChartEditViewModel
+
 @{
     ViewData["Title"] = "Edit";
     var currentUser = MyProfile.Identity.UserInfo.Current;
@@ -43,7 +44,7 @@
 }
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
     <span class="lnr lnr-pie-chart display-4 text-primary mr-2"></span>
-    @if (Model == null)
+    @if (Model.ID == null)
     {
         <span class="px-0 pb-2 pt-2">
             Создание графика
@@ -61,7 +62,7 @@
 </h4>
 <hr class="container-m-nx border-light mt-0 mb-5">
 
-<div id="big-chart-edit-vue" class="smartwizard" data-chart-id="@Model">
+<div id="big-chart-edit-vue" class="smartwizard" data-chart-id="@Model.ID" data-href="@Model.href">
     <ul>
         <li>
             <a href="#smartwizard-1-step-1" class="mb-3">

@@ -68,7 +68,7 @@ namespace MyProfile.Controllers
         {
             var result = await budgetRecordService.GetBudgetRecordsByFilter(filter);
 
-            return Json(new { isOk = true, data = result, take = result.Count, isEnd = result.Count < 10 });
+            return Json(new { isOk = true, data = result, take = result.Count, isEnd = true });
         }
 
         [HttpPost]
