@@ -13,7 +13,7 @@ namespace MyProfile.Entity.Repository
 {
     public class BaseRepository : IBaseRepository
     {
-        private MyProfile_DBContext context;
+        public MyProfile_DBContext context;
         public BaseRepository(MyProfile_DBContext context)
         {
             this.context = context;
@@ -140,6 +140,10 @@ namespace MyProfile.Entity.Repository
         {
             return await context.SaveChangesAsync();
         }
+
+        public void ResetContextState() => context.ChangeTracker.Entries()
+            .Where(e => e.Entity != null && e.State == EntityState.Added).ToList()
+            .ForEach(e => e.State = EntityState.Detached);
 
         public IQueryable<T> SearchFor<T>(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) where T : class
         {

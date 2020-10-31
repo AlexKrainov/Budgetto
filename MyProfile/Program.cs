@@ -28,7 +28,10 @@ namespace MyProfile
             try
             {
                 Log.Information("Starting web host");
-                CreateWebHostBuilder(args).Build().Run();
+
+                CreateWebHostBuilder(args)
+                    .Build()
+                    .Run();
             }
             catch (Exception ex)
             {

@@ -45,5 +45,12 @@ namespace MyProfile.Entity.Repository
         bool Any<T>(Expression<Func<T, bool>> predicate) where T : class;
         Task<bool> AnyAsync<T>(int id) where T : class;
         Task<bool> AnyAsync<T>(Expression<Func<T, bool>> predicate) where T : class;
+
+        /// <summary>
+        /// Remove all save change state
+        /// Problem: I am logging the exceptions to the database.Till now everything works fine but problem is that when the DbConext.SaveChanges in try block throws an exception, cannot log the exception to the database as DbConext.SaveChanges in catch block also throws the same exception.
+        /// https://stackoverflow.com/questions/48880719/log-dbcontext-savechanges-exception-to-the-database-in-entity-framework-entity-f
+        /// </summary>
+        void ResetContextState();
     }
 }

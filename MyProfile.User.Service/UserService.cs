@@ -816,7 +816,7 @@ namespace MyProfile.User.Service
             }
             catch (Exception ex)
             {
-                await userLogService.CreateErrorLog(userSessionID, where: "UserSevice.CreateUser.CreateTemplate", ex);
+                await userLogService.CreateErrorLogAsync(userSessionID, where: "UserSevice.CreateUser.CreateTemplate", ex);
             }
             #endregion
 
@@ -998,7 +998,7 @@ namespace MyProfile.User.Service
             }
             catch (Exception ex)
             {
-                await userLogService.CreateErrorLog(userSessionID, where: "UserSevice.CreateUser.CreateTemplate", ex);
+                await userLogService.CreateErrorLogAsync(userSessionID, where: "UserSevice.CreateUser.CreateTemplate", ex);
             }
             #endregion
 
@@ -1050,7 +1050,7 @@ namespace MyProfile.User.Service
             }
             catch (Exception ex)
             {
-                await userLogService.CreateErrorLog(userSessionID, where: "UserSevice.CreateUser.CreateChart", ex);
+                await userLogService.CreateErrorLogAsync(userSessionID, where: "UserSevice.CreateUser.CreateChart", ex);
             }
             #endregion
 

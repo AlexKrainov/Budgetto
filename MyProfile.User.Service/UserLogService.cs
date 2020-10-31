@@ -102,7 +102,7 @@ namespace MyProfile.User.Service
             }
             catch (Exception ex)
             {
-                await CreateErrorLog(userSessionID: userSessionID, where: "UserLogService.UserSessionLogOut", ex);
+                await CreateErrorLogAsync(userSessionID: userSessionID, where: "UserLogService.UserSessionLogOut", ex);
             }
             return 0;
         }
@@ -115,7 +115,7 @@ namespace MyProfile.User.Service
         /// <param name="userLogActionType"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public async Task<int> CreateUserLog(Guid userSessionID, string userLogActionType, string comment = null)
+        public async Task<int> CreateUserLog(Guid userSessionID, string userLogActionType, string comment = null, List<int> errorLogIDs = null)
         {
             UserLog userLog = new UserLog();
 
@@ -133,6 +133,25 @@ namespace MyProfile.User.Service
 
             }
 
+            try
+            {
+                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID != 0)
+                {
+                    foreach (var errorLogID in errorLogIDs)
+                    {
+                        await repository.CreateAsync<UserErrorLog>(new UserErrorLog
+                        {
+                            UserLogID = userLog.ID,
+                            ErrorLogID = errorLogID
+                        });
+                    }
+                    await repository.SaveAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
             return userLog.ID;
         }
 
@@ -145,8 +164,10 @@ namespace MyProfile.User.Service
         /// <param name="errorText"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public async Task<int> CreateErrorLog(Guid userSessionID, string where, Exception exception, string comment = null)
+        public async Task<int> CreateErrorLogAsync(Guid userSessionID, string where, Exception exception, string comment = null, List<int> userLogIDs = null)
         {
+            repository.ResetContextState();
+
             ErrorLog log = new ErrorLog
             {
                 CurrentDate = DateTime.Now.ToUniversalTime(),
@@ -163,6 +184,25 @@ namespace MyProfile.User.Service
             catch (Exception ex)
             {
 
+            }
+
+            try
+            {
+                if (userLogIDs != null && userLogIDs.Count > 0 && log.ID != 0)
+                {
+                    foreach (var userLogID in userLogIDs)
+                    {
+                        await repository.CreateAsync<UserErrorLog>(new UserErrorLog
+                        {
+                            UserLogID = userLogID,
+                            ErrorLogID = log.ID
+                        });
+                    }
+                    await repository.SaveAsync();
+                }
+            }
+            catch (Exception ex)
+            {
             }
 
             return log.ID;

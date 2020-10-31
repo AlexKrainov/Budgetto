@@ -51,7 +51,10 @@ namespace MyProfile.Budget.Service
             bool isEdit = false;
             bool isCreate = false;
             var now = DateTime.Now.ToUniversalTime();
+            List<int> errorLogCreateIDs = new List<int>();
+            List<int> errorLogEditIDs = new List<int>();
             budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
+
 
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
@@ -59,7 +62,13 @@ namespace MyProfile.Budget.Service
                 {
                     try
                     {
-                        repository.Create(new BudgetRecord
+                        if (record.SectionID <= 0)
+                        {
+                            errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Create", new Exception(), "SectionID == 0"));
+                        }
+                        else
+                        {
+                            await repository.CreateAsync(new BudgetRecord
                         {
                             BudgetSectionID = record.SectionID,
                             DateTimeCreate = now,
@@ -77,12 +86,13 @@ namespace MyProfile.Budget.Service
                         }, true);
 
                         record.IsSaved = true;
+                        }
                     }
                     catch (Exception ex)
                     {
                         record.IsSaved = false;
 
-                        await userLogService.CreateErrorLog(currentUser.UserSessionID, "BudgetRecord_Create", ex);
+                        errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Create", ex));
                     }
 
                     isCreate = true;
@@ -91,36 +101,43 @@ namespace MyProfile.Budget.Service
                 {//edit
                     try
                     {
-                        var dbRecord = repository.GetByID<BudgetRecord>(record.ID);
+                        if (record.SectionID <= 0)
+                        {
+                            errorLogEditIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Edit", new Exception(), "SectionID == 0"));
+                        }
+                        else
+                        {
+                            var dbRecord = repository.GetByID<BudgetRecord>(record.ID);
 
-                        dbRecord.BudgetSectionID = record.SectionID;
-                        dbRecord.Total = record.Money;
-                        dbRecord.RawData = record.Tag;
-                        dbRecord.DateTimeOfPayment = budgetRecord.DateTimeOfPayment;
-                        dbRecord.Description = record.Description;
-                        dbRecord.CurrencyID = record.CurrencyID;
-                        dbRecord.CurrencyNominal = record.CurrencyNominal ?? 1;
-                        dbRecord.CurrencyRate = record.CurrencyRate;
-                        dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
-                        dbRecord.DateTimeEdit = now;
+                            dbRecord.BudgetSectionID = record.SectionID;
+                            dbRecord.Total = record.Money;
+                            dbRecord.RawData = record.Tag;
+                            dbRecord.DateTimeOfPayment = budgetRecord.DateTimeOfPayment;
+                            dbRecord.Description = record.Description;
+                            dbRecord.CurrencyID = record.CurrencyID;
+                            dbRecord.CurrencyNominal = record.CurrencyNominal ?? 1;
+                            dbRecord.CurrencyRate = record.CurrencyRate;
+                            dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
+                            dbRecord.DateTimeEdit = now;
 
-                        repository.Update(dbRecord, true);
-                        isEdit = true;
+                            await repository.UpdateAsync(dbRecord, true);
+                        }
                     }
                     catch (Exception ex)
                     {
                         record.IsSaved = false;
-                        await userLogService.CreateErrorLog(currentUser.UserSessionID, "BudgetRecord_Edit", ex);
+                        errorLogEditIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Edit", ex));
                     }
+                    isEdit = true;
                 }
             }
             if (isEdit)
             {
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Edit);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Edit, errorLogIDs: errorLogEditIDs);
             }
             if (isCreate)
             {
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Create);
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Create, errorLogIDs: errorLogCreateIDs);
             }
 
             return true;

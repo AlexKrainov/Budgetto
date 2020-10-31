@@ -336,18 +336,18 @@
                 let tagValue;
                 try {
                     ////bug with 015
-                    //let value = record.tag;
+                    let value = record.tag;
 
-                    //if (value && value[0] == "0") {
-                    //    try {
-                    //        value = value * 1;
-                    //    } catch (e) {
-                    //        item.value = value;
-                    //    }
-                    //}
-                    record.money = CurrencyCalculateExpression(record.tag, this.exchangeRate);
+                    if (value && value[0] == "0") {
+                        try {
+                            value = value * 1;
+                        } catch (e) {
+                            item.value = value;
+                        }
+                    }
+                    record.money = CurrencyCalculateExpression(value, this.exchangeRate);
 
-                    func = compileExpression(record.tag);
+                    let func = compileExpression(value.toString());
                     tagValue = func("1");
 
                 } catch (e) {

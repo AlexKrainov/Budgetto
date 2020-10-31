@@ -187,7 +187,7 @@ namespace MyProfile.Controllers
             }
             catch (Exception ex)
             {
-                await userLogService.CreateErrorLog(UserInfo.Current.UserSessionID, where: "Budget.GetRateFromBank", ex, comment: _link);
+                await userLogService.CreateErrorLogAsync(UserInfo.Current.UserSessionID, where: "Budget.GetRateFromBank", ex, comment: _link);
             }
 
             return Json(new { isOk = true, response = text });

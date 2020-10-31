@@ -41,7 +41,7 @@ namespace MyProfile.Controllers
 		[HttpPost]
 		public async Task<IActionResult> SaveRecords([FromBody]RecordsModelView budgetRecord)
 		{
-			budgetRecordService.CreateOrUpdate(budgetRecord);
+			await budgetRecordService.CreateOrUpdate(budgetRecord);
 			return Json(new { isOk = true, budgetRecord });
 		}
 		

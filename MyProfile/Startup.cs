@@ -41,35 +41,35 @@ namespace MyProfile
         {
             #region Repositories
 
-            services.AddTransient<IBaseRepository, BaseRepository>();
-            services.AddTransient<BaseRepository>();
+            services.AddScoped<IBaseRepository, BaseRepository>();
+            services.AddScoped<BaseRepository>();
 
             #endregion
 
             #region Services
-            services.AddScoped<TemplateService>();
-            services.AddScoped<BudgetService>();
-            services.AddScoped<BudgetRecordService>();
-            services.AddScoped<BudgetTotalService>();
-            services.AddScoped<DictionariesService>();
-            services.AddScoped<SectionService>();
-            services.AddScoped<UserLogService>();
-            services.AddScoped<CollectionUserService>();
-            services.AddScoped<LimitService>();
-            services.AddScoped<GoalService>();
-            services.AddScoped<ChartService>();
-            services.AddScoped<UserService>();
-            services.AddScoped<FileWorkerService>();
-            services.AddScoped<PasswordService>();
-            services.AddScoped<ChatService>();
-            services.AddScoped<FeedbackService>();
-            services.AddScoped<ReminderService>();
-            services.AddScoped<ToDoListService>();
-            services.AddScoped<HelpCenterService>();
-            services.AddScoped<PaymentService>();
-
-            services.AddScoped<UserEmailService>();
-            services.AddScoped<CommonService>();
+            services.AddTransient<TemplateService>();
+            services.AddTransient<BudgetService>();
+            services.AddTransient<BudgetRecordService>();
+            services.AddTransient<BudgetTotalService>();
+            services.AddTransient<DictionariesService>();
+            services.AddTransient<SectionService>();
+            services.AddTransient<UserLogService>();
+            services.AddTransient<CollectionUserService>();
+            services.AddTransient<LimitService>();
+            services.AddTransient<GoalService>();
+            services.AddTransient<ChartService>();
+            services.AddTransient<UserService>();
+            services.AddTransient<FileWorkerService>();
+            services.AddTransient<PasswordService>();
+            services.AddTransient<ChatService>();
+            services.AddTransient<FeedbackService>();
+            services.AddTransient<ReminderService>();
+            services.AddTransient<ToDoListService>();
+            services.AddTransient<HelpCenterService>();
+            services.AddTransient<PaymentService>();
+            
+            services.AddTransient<UserEmailService>();
+            services.AddTransient<CommonService>();
             #endregion
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

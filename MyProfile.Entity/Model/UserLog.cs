@@ -21,6 +21,12 @@ namespace MyProfile.Entity.Model
 
 
         public virtual UserSession UserSession { get; set; }
+        public virtual IEnumerable<UserErrorLog> UserErrorLogs { get; set; }
 
+
+        public UserLog()
+        {
+            this.UserErrorLogs = new HashSet<UserErrorLog>();
+        }
     }
 }
