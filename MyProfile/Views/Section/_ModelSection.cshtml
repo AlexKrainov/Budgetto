@@ -10,7 +10,7 @@
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
             </div>
-            <div class="btn-group m-4">
+            <div class="btn-group m-4 section-type">
                 <label class="btn" v-bind:class="section.sectionTypeID == 2 ? 'btn-danger' : 'btn-default'"
                        v-on:click="changeSectionType(2)">
                     Расходы
@@ -29,7 +29,7 @@
                     <div class="form-group col">
                         <label class="form-label">Введите название категории</label>
                         <span class="text-danger">*</span>
-                        <input type="text" class="form-control" placeholder="Продукты, книги ..." v-model="section.name">
+                        <input id="section-name" type="text" class="form-control" placeholder="Продукты, книги ..." v-model="section.name">
                     </div>
                 </div>
 
@@ -63,9 +63,9 @@
                     </div>*@
 
                 <div id="accordion2" class="mt-4">
-                    <div class="card mb-2">
+                    <div class="card mb-2 choose-color">
                         <div class="card-header">
-                            <a class="d-flex justify-content-between text-body" data-toggle="collapse" href="#accordion2-1">
+                            <a class="d-flex justify-content-between text-body " data-toggle="collapse" href="#accordion2-1">
                                 Выбор цвета для категории
                                 <div class="picker margin-right mr-3" style="width: 50px;" v-bind:style="'background-color:' + section.cssBackground"></div>
                                 <div class="collapse-icon"></div>
@@ -96,9 +96,9 @@
                         </div>
                     </div>
 
-                    <div class="card mb-2">
+                    <div class="card mb-2 choose-icons">
                         <div class="card-header">
-                            <a class="collapsed d-flex justify-content-between text-body" data-toggle="collapse" href="#accordion2-2">
+                            <a class="collapsed d-flex justify-content-between text-body " data-toggle="collapse" href="#accordion2-2">
                                 Выбор иконки
                                 <i class="margin-right" v-bind:class="section.cssIcon" aria-hidden="true" style="font-size:large; margin-right: 2.2rem !important;"></i>
                                 <div class="collapse-icon"></div>
@@ -120,17 +120,17 @@
                     </div>
                 </div>
                 @*<div class="form-row mt-3 ml-1">
-                    <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" v-model="section.isShowOnSite">
-                            <span class="custom-control-label">Показывать везде на сайте</span>
-                        </label>
-                    </div>
-                </div>*@
+                        <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="section.isShowOnSite">
+                                <span class="custom-control-label">Показывать везде на сайте</span>
+                            </label>
+                        </div>
+                    </div>*@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button class="btn btn-primary" type="submit"
+                <button id="save-sections" class="btn btn-primary" type="submit"
                         v-bind:disabled="isSaving"
                         v-on:click="save">
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>

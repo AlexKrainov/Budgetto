@@ -43,6 +43,7 @@ namespace MyProfile.Entity.ModelView.User
         public bool Dashboard_Year_IsShow_SpendingChart { get; set; }
         public string WebSiteTheme { get; set; }
         public bool NewsLetter { get; set; }
+        public bool IsShowHints { get; set; }
     }
     public class CurrencyClientSide 
     {

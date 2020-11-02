@@ -61,6 +61,7 @@ namespace MyProfile.User.Service
                 {
                     WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
                     NewsLetter = currentUser.UserSettings.NewsLetter,
+                    IsShowHints = currentUser.UserSettings.IsShowHints,
                 },
                 IsAvailable = currentUser.IsAvailable,
                 Payment = new PaymentClientSide
@@ -148,6 +149,7 @@ namespace MyProfile.User.Service
 
                          WebSiteTheme = x.UserSettings.WebSiteTheme,
                          NewsLetter = x.UserSettings.NewsLetter,
+                         IsShowHints = x.UserSettings.IsShowHints,
                      }
                  })
                  .FirstOrDefaultAsync();
@@ -1161,6 +1163,7 @@ namespace MyProfile.User.Service
 
             user.UserSettings.WebSiteTheme = dbUser.UserSettings.WebSiteTheme = userSettings.WebSiteTheme;
             user.UserSettings.NewsLetter = dbUser.UserSettings.NewsLetter = userSettings.NewsLetter;
+            user.UserSettings.IsShowHints = dbUser.UserSettings.IsShowHints = userSettings.IsShowHints;
 
             await repository.UpdateAsync(dbUser, true);
             await UserInfo.AddOrUpdate_Authenticate(user);

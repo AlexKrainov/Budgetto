@@ -128,7 +128,7 @@
                     <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
                         <div>
                             <strong>{{ area.name }}</strong> &nbsp;
-                            <a href="javascript:void(0)" class="small" v-on:click="selectArea(area.id)">Показать категории</a><br>
+                            <a href="javascript:void(0)" class="small show-sections" v-on:click="selectArea(area.id)">Показать категории</a><br>
                             <small class="text-muted">{{ area.description }}</small>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                 <div class="input-group" v-show="areaID != null">
                     <input type="text" class="form-control" placeholder="Поиск категори" v-model="searchText">
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" v-on:click="create">Добавить</button>
+                        <button id="add-section" type="button" class="btn btn-primary" v-on:click="create">Добавить</button>
                     </div>
                 </div>
             </h6>

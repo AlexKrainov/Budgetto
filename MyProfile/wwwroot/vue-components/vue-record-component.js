@@ -247,8 +247,8 @@
             let value = item.value;
             let isCorrect = false;
 
-            console.log("transformTag");
-            console.log(arguments);
+            //console.log("transformTag");
+            //console.log(arguments);
             //remove dublicate after edit
             if (this.records.some(x => x.tag == item.value)) {
                 return false;
@@ -371,7 +371,7 @@
                         }
                     }
 
-                    let func = compileExpression(value);
+                    let func = compileExpression(value.toString());
                     record.money = func("1");
                     record.currencyRate = null;
                     record.currencyNominal = 1;

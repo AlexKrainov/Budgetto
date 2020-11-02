@@ -50,9 +50,10 @@
     <link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css">
     <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.css">
     <link rel="stylesheet" href="~/vendor/libs/spinkit/spinkit.css" />
-
-    <link href="~/vendor/libs/shepherd/shepherd.css" rel="stylesheet" />
-
+    @if (currentUser.UserSettings.IsShowHints)
+    {
+        <link href="~/vendor/libs/shepherd/shepherd.css" rel="stylesheet" />
+    }
     <!--Record-->
     <link href="~/css/main.css" rel="stylesheet" />
 
@@ -130,8 +131,6 @@
     <script src="~/vendor/libs/flatpickr/l10n/ru.js"></script>
     <script src="~/vendor/libs/toastr/toastr.js"></script>
 
-    <script src="~/vendor/libs/shepherd/shepherd.js"></script>
-
     <!-- Record -->
     <script src="~/vue-components/vue-section-component.js"></script>
     <script src="~/vue-components/vue-record-history-component.js"></script>
@@ -142,7 +141,25 @@
     <script src="~/pages/_base/global.functions.site.js"></script>
     <script src="~/pages/_base/startup.site.js"></script>
 
-    <script src="~/pages/_tour/test_tour.js"></script>
+    @if (currentUser.UserSettings.IsShowHints)
+    {
+        <script src="~/vendor/libs/shepherd/shepherd.js"></script>
+
+        if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+        {
+            <script src="~/pages/_tour/budget-tour.js"></script>
+            <script src="~/pages/_tour/add-record-tour.js"></script>
+        }
+        if (this.Context.Request.Path == "/Section/Edit")
+        {
+            <script src="~/pages/_tour/section-tour.js"></script>
+            <script src="~/pages/_tour/add-section-tour.js"></script>
+        }
+        if (this.Context.Request.Path == "/Template/Edit")
+        {
+            <script src="~/pages/_tour/template-edit-tour.js"></script>
+        }
+    }
 
     @RenderSection("Scripts", required: false)
     <script>
@@ -151,9 +168,6 @@
             script.src = "../pages/_base/page-settings.js";
             document.head.appendChild(script);
         }
-
-
-
     </script>
     @*<script src="~/js/base/user.js"></script>*@
 </body>

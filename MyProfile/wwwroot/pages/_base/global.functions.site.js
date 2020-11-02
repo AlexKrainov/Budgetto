@@ -192,7 +192,7 @@ function GetFlatpickrRuConfig_Month(date, minDate, maxDate) {
         plugins: [
             new monthSelectPlugin({
                 shorthand: true, //defaults to false
-                dateFormat: "yy/m/d", //defaults to "F Y"
+                dateFormat: "Y/m/d", //defaults to "F Y"
                 altFormat: "F Y", //defaults to "F Y"
                 theme: "light" // defaults to "light"
             })

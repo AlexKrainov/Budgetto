@@ -89,6 +89,9 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.NewsLetter)
               .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.IsShowHints)
+              .HasDefaultValue(true);
             //modelBuilder.Entity<VisibleElement>()
             //    .Property(b => b.IsShow_BudgetMonth)
             //    .HasDefaultValue(true);

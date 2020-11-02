@@ -2,6 +2,7 @@
 
 @{
     var currentUser = MyProfile.Identity.UserInfo.Current;
+    var hintsPages = new List<string> { "/", "/Budget/Month", "/Section/Edit", "/Template/Edit" };
 }
 
 <!-- Layout navbar -->
@@ -11,10 +12,10 @@
     <!-- Brand demo (see wwwroot/css/demo/demo.css) -->
     <a asp-area="" asp-controller="Bubget" asp-action="Month" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
         @*<span class="app-brand-logo demo bg-primary">
-            <img src="~/img/Logo-min.svg" />
+                <img src="~/img/Logo-min.svg" />
 
-        </span>
-        <span class="app-brand-text demo font-weight-normal ml-2">Appwork</span>*@
+            </span>
+            <span class="app-brand-text demo font-weight-normal ml-2">Appwork</span>*@
         <img src="~/img/Logo-min.png" style="width: 180px;" />
     </a>
 
@@ -56,10 +57,50 @@
                 <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
                 <span class="d-lg-none align-middle">&nbsp; Добавить запись</span>
             </a>
-            <a id="shepherd-example" class="nav-link cursor-pointer" href="javascript:void(0)" title="Добавить запись">
-                <i class="ion ion-md-settings navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
-                <span class="d-lg-none align-middle">&nbsp; Добавить запись</span>
-            </a>
+            @if (currentUser.UserSettings.IsShowHints && hintsPages.Contains(this.Context.Request.Path))
+            {
+                <div class="navbar-user nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown">
+                        <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
+                    </a>
+                    @if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+                    {
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="javascript:void(0)" class="dropdown-item" id="hint-add-record">
+                                <i class="ion ion-md-add text-success  text-large"></i> &nbsp; Как добавить запись
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="javascript:void(0)" class="dropdown-item" id="hint-show-page">
+                                <i class="ion ion-ios-fitness text-dark  text-large"></i> &nbsp; Тур по странице
+                            </a>
+                        </div>
+                    }
+                    @if (this.Context.Request.Path == "/Section/Edit")
+                    {
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="javascript:void(0)" class="dropdown-item" id="hint-add-section">
+                                <i class="sidenav-icon pe-7s-albums text-success  text-large"></i> &nbsp; Как добавить категорию
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="javascript:void(0)" class="dropdown-item" id="hint-show-page">
+                                <i class="ion ion-ios-fitness text-dark  text-large"></i> &nbsp; Тур по странице
+                            </a>
+                        </div>
+                    }
+                    @if (this.Context.Request.Path == "/Template/Edit")
+                    {
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="javascript:void(0)" class="dropdown-item" id="hint-show-page">
+                                <i class="ion ion-ios-fitness text-dark  text-large"></i> &nbsp; Тур по странице
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            @*<a id="shepherd-example" class="nav-link cursor-pointer" href="javascript:void(0)" title="Добавить запись">
+                    <i class="ion ion-md-settings navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
+                    <span class="d-lg-none align-middle">&nbsp; Добавить запись</span>
+                </a>*@
 
 
             @*<div class="navbar-notifications nav-item dropdown mr-lg-3">
@@ -192,10 +233,10 @@
                     @*<a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-person text-lightest"></i> &nbsp; My profile</a>
                         <a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-mail text-lightest"></i> &nbsp; Messages</a>*@
                     @*@if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin)
-                    {
-                        <a asp-area="Identity" asp-controller="Admin" asp-action="Index" class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i> &nbsp; Админка</a>
-                        <div class="dropdown-divider"></div>
-                    }*@
+                        {
+                            <a asp-area="Identity" asp-controller="Admin" asp-action="Index" class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i> &nbsp; Админка</a>
+                            <div class="dropdown-divider"></div>
+                        }*@
                     <a asp-area="Identity" asp-controller="Account" asp-action="AccountSettings" class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i> &nbsp; Настройки аккаунта</a>
                     <div class="dropdown-divider"></div>
                     <a asp-area="Identity" asp-controller="Account" asp-action="Logout" class="dropdown-item"><i class="ion ion-ios-log-out text-danger"></i> &nbsp; Выход</a>

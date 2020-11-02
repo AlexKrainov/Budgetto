@@ -188,7 +188,7 @@ namespace MyProfile.Identity
                     Dashboard_Year_IsShow_SpendingChart = currentUser.UserSettings.Year_SpendingWidget,
 
                     WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
-
+                    IsShowHints = currentUser.UserSettings.IsShowHints,
                 }
             };
         }

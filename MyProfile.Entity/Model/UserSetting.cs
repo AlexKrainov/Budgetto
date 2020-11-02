@@ -107,6 +107,12 @@ namespace MyProfile.Entity.Model
         /// </summary>
         public bool NewsLetter { get; set; }
 
+        /// <summary>
+        /// Show hints on pages
+        /// </summary>
+        public bool IsShowHints { get; set; }
+
+
         public virtual User User { get; set; }
 
     }

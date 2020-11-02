@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-sm-3 col-md-4 col-lg-3 col-xl-3 pl-3 pt-4">
                     <div class="dropdown">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                        <button  type="button" class="btn btn-success btn-sm dropdown-toggle "
                                 data-toggle="dropdown"
                                 v-text="template.periodName"
                                 v-bind:disabled="template.columns && template.columns.length > 0"></button>
@@ -105,7 +105,9 @@
         </div>
 
         <div class="card-footer">
-            <button type="button" class="btn btn-primary" v-on:click="saveTemplate(false)" v-bind:disabled="isSavingTemplate">
+            <button type="button" class="btn btn-primary" 
+                    v-on:click="saveTemplate(false)"
+                    v-bind:disabled="isSavingTemplate || template.periodTypeID == 0">
                 <span class="spinner-border" role="status" aria-hidden="true" v-show="isSavingTemplate"></span>
                 <i class="ion ion-ios-save pr-2" v-show="!isSavingTemplate" style="font-size: large;"></i>
                 Сохранить

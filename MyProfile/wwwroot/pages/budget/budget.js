@@ -537,7 +537,7 @@
                 });
             };
 
-            $('[data-toggle="tooltip"]').tooltip('update');
+            $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
         },
         toExcel: function () {
             this.isGenerateExcel = true;
