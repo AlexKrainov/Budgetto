@@ -7,8 +7,8 @@ $(function () {
         var isRtl = $('html').attr('dir') === 'rtl';
 
         AddSectionTour.addStep({
-            title: 'Title of first step',
-            text: '<p>Content of first step</p><p><strong>Second</strong> line</p>',
+            title: 'Выбор папки',
+            text: 'Для создании категории нажмите "показать категории".',
             attachTo: { element: '.show-sections', on: 'left' },
             buttons: [{
                 action: AddSectionTour.cancel,
@@ -17,15 +17,15 @@ $(function () {
             }]
         });
         AddSectionTour.addStep({
-            title: 'Title of second step',
-            text: 'Content of second step',
+            title: 'Кнопка "Добавить"',
+            text: 'Нажмите кнопку "Добавить"',
             attachTo: { element: '#add-section', on: 'bottom' },
             buttons: []
         });
         AddSectionTour.addStep({
-            title: 'Title of third step',
-            text: 'Content of third step',
-            attachTo: { element: '.section-type', on: 'bottom' },
+            title: 'Тип категории',
+            text: 'Для начала выберите тип категории. Это могут быть раходы, доходы или инвестиции.',
+            attachTo: { element: '.section-types', on: 'bottom' },
             buttons: [{
                 action: AddSectionTour.next,
                 classes: nextButtonClass,
@@ -33,8 +33,8 @@ $(function () {
             }]
         });
         AddSectionTour.addStep({
-            title: 'Title of fourth step',
-            text: 'Content of fourth step',
+            title: 'Название',
+            text: 'Введите название категории.',
             attachTo: { element: '#section-name', on: 'bottom' },
             buttons: [{
                 action: AddSectionTour.next,
@@ -43,8 +43,8 @@ $(function () {
             }]
         });
         AddSectionTour.addStep({
-            title: 'Title of fourth step',
-            text: 'Content of fourth step',
+            title: 'Цвет',
+            text: 'Нажмите на стрелку справа для выбора цвета категории.',
             attachTo: { element: '.choose-color', on: 'top' },
             buttons: [{
                 action: AddSectionTour.next,
@@ -53,8 +53,8 @@ $(function () {
             }]
         });
         AddSectionTour.addStep({
-            title: 'Title of fourth step',
-            text: 'Content of fourth step',
+            title: 'Иконка',
+            text: 'Выберите иконку.',
             attachTo: { element: '.choose-icons', on: 'top' },
             buttons: [{
                 action: AddSectionTour.next,
@@ -63,8 +63,8 @@ $(function () {
             }]
         });
         AddSectionTour.addStep({
-            title: 'Title of fourth step',
-            text: 'Content of fourth step',
+            title: 'Сохранение',
+            text: 'Нажмите кнопку сохранить',
             attachTo: { element: '#save-sections', on: 'top' },
             buttons: [{
                 action: AddSectionTour.next,

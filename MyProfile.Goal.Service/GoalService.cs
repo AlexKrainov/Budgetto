@@ -108,7 +108,23 @@ namespace MyProfile.Goal.Service
                 Total = record.Total,
                 UserID = UserInfo.Current.ID
             };
-            return await repository.CreateAsync(goalRecord, true);
+            await repository.CreateAsync(goalRecord, true);
+
+            #region Check status
+
+            var goal = await repository.GetAll<Goal>(x => x.ID == record.GoalID 
+            && x.IsFinished == false
+            && x.GoalRecords.Sum(y => y.Total) >= x.ExpectationMoney).FirstOrDefaultAsync();
+
+            if (goal != null )
+            {
+                goal.IsFinished = true;
+                await repository.UpdateAsync(goal, true);
+            }
+
+            #endregion
+
+            return 1;
         }
 
         public async Task<GoalModelView> UpdateOrCreate(GoalModelView goal)

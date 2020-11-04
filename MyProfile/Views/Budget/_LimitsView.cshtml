@@ -18,9 +18,9 @@
         <div class="media align-items-center p-3">
             @* style="padding-top: 0px !important;" *@
             <div class="media-body small mr-3">
-                <i class="lnr lnr-frame-expand text-primary float-left" style="font-size: x-large;"></i>
-                <div class="font-weight-semibold mb-3" style="margin-top: 3px; margin-left: 32px;">
-                    <span>{{ limitChartData.name }}</span>
+                <div class="mb-3 d-inline-flex  align-items-center">
+                    <i class="lnr lnr-frame-expand text-primary float-left" style="font-size: x-large;"></i>
+                    <strong class="pl-2">{{ limitChartData.name }}</strong>
                 </div>
                 <div class="mb-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney) }}</div>
                 <div v-show="limitChartData.isThisMonth"> Примерно осталось расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>

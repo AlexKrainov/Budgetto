@@ -7,8 +7,9 @@ $(function () {
         var isRtl = $('html').attr('dir') === 'rtl';
 
         SectionTour.addStep({
-            title: 'First',
-            text: '<p>Для удоства категории разбиты на папки</p>',
+            title: 'Папка',
+            text: `Для удобства вы можете группировать категории по папкам. Все папки расположены слева.
+            Здесь вы можете создавать, редактировать и удалять папки`,
             attachTo: { element: '.area-item', on: 'right' },
             buttons: [{
                 action: SectionTour.cancel,
@@ -21,8 +22,8 @@ $(function () {
             }]
         });
         SectionTour.addStep({
-            title: 'Second',
-            text: 'Content of second step',
+            title: 'Категории',
+            text: 'Категорий может быть неограниченное количество',
             attachTo: { element: '.cards-medium', on: 'right' },
             buttons: [{
                 action: SectionTour.back,
@@ -35,15 +36,15 @@ $(function () {
             }]
         });
         SectionTour.addStep({
-            title: 'Third',
-            text: 'Content of third step',
+            title: 'Показать категории',
+            text: 'Чтобы посмотреть все категории в этой папке, нажмите на кнопку "Показать категории"',
             attachTo: { element: '.show-sections', on: 'right' },
             buttons: []
         });
         SectionTour.addStep({
-            title: 'Fourth step',
-            text: 'Content of fourth step',
-            attachTo: { element: '#section-vue .card-body', on: 'top' },
+            title: 'Категории',
+            text: 'Категории, которые входят в выбранную папку, расположены справа. Здесь вы можете создавать, редактировать и удалять категории',
+            attachTo: { element: '#section-vue .card-body', on: 'left' },
             buttons: [{
                 action: SectionTour.next,
                 classes: nextButtonClass,

@@ -67,7 +67,7 @@ namespace MyProfile.Budget.Service
                             AreaName = y.BudgetArea.Name,
                             Owner = x.User.Name,
                             CanEdit = x.UserID == userID,
-                            HasRecords = y.BudgetRecords.Any(),
+                            HasRecords = y.BudgetRecords.Any(q => q.IsDeleted != true),
                             IsShow_Filtered = true,
                             IsShow = true,
                             //CollectiveSections = y.CollectiveSections
@@ -303,10 +303,15 @@ namespace MyProfile.Budget.Service
                 s += " Эта категоия используется в лимитах";
             }
 
-            if (budgetSection != null && (budgetSection.BudgetRecords == null || budgetSection.BudgetRecords.Count() == 0))
+            if (budgetSection != null &&
+                (budgetSection.BudgetRecords == null || budgetSection.BudgetRecords.Count() == 0 || budgetSection.BudgetRecords.Count(x => x.IsDeleted == false) == 0))
             {
                 try
                 {
+                    if (budgetSection.BudgetRecords.Count(x => x.IsDeleted == true) > 0)
+                    {
+                        await repository.DeleteRangeAsync(budgetSection.BudgetRecords, true);
+                    }
                     await repository.DeleteAsync(budgetSection, true);
                     await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Section_Delete);
                 }

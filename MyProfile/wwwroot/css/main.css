@@ -409,11 +409,23 @@ th.column-min-width {
     transition: all .08s linear .05s;
 }
 
-    .reminder-icons i:hover,
-    .reminder-icons i.active {
-        opacity: 1;
-        color: var(--orange);
+.reminder-icons div {
+    width: 60px;
+    height: 60px;
+    display: inline;
+    background-color: #F0F0F0;
+    color: black;
+}
+
+    .reminder-icons div:hover {
+        border-color: var(--orange); /* #808080;*/
     }
+
+.reminder-icons i:hover,
+.reminder-icons i.active {
+    opacity: 1;
+    color: var(--orange);
+}
 
 .reminder-icon {
     font-size: 50px;
@@ -574,6 +586,12 @@ a.folder-text:hover .folder-edit-button {
     position: absolute;
     right: 1px;
     top: -1px;
+}
+
+.section-type {
+    position: absolute;
+    right: 20px;
+    top: 15px;
 }
 
 .cards-container {

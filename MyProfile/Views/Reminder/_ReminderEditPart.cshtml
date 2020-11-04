@@ -23,41 +23,35 @@
             <label class="form-label">Выберите иконку</label>
             <span class="text-danger">*</span>
             <br />
-            <span class="text-large mx-4 reminder-icons">
-                <i v-on:click="chooseReminderIcon('pe-7s-car')" class="cursor-pointer pe-7s-car"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-plane')" class="cursor-pointer pe-7s-plane "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-call')" class="cursor-pointer pe-7s-call "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-phone')" class="cursor-pointer pe-7s-phone "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-light')" class="cursor-pointer pe-7s-light "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-home')" class="cursor-pointer pe-7s-home "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-culture')" class="cursor-pointer pe-7s-culture"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-cart')" class="cursor-pointer pe-7s-cart "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-world')" class="cursor-pointer pe-7s-world"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-study')" class="cursor-pointer pe-7s-study"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-shopbag')" class="cursor-pointer pe-7s-shopbag "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-gift')" class="cursor-pointer pe-7s-gift "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-alarm')" class="cursor-pointer pe-7s-alarm "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-chat')" class="cursor-pointer pe-7s-chat "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-bell')" class="cursor-pointer pe-7s-bell "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-alarm')" class="cursor-pointer pe-7s-alarm "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-gym')" class="cursor-pointer pe-7s-gym "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-credit')" class="cursor-pointer pe-7s-credit"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-cash')" class="cursor-pointer pe-7s-cash"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-wallet')" class="cursor-pointer pe-7s-wallet"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-safe')" class="cursor-pointer pe-7s-safe"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-piggy')" class="cursor-pointer pe-7s-piggy"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-mail')" class="cursor-pointer pe-7s-mail "></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-mail-open')" class="cursor-pointer pe-7s-mail-open"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-mail-open-file')" class="cursor-pointer pe-7s-mail-open-file"></i>
-                <i v-on:click="chooseReminderIcon('pe-7s-coffee')" class="cursor-pointer pe-7s-coffee"></i>
-                <i v-on:click="chooseReminderIcon('lnr lnr-heart')" class="cursor-pointer lnr lnr-heart"></i>
-                <i v-on:click="chooseReminderIcon('lnr lnr-heart-pulse')" class="cursor-pointer lnr lnr-heart-pulse"></i>
-                @*<i v-on:click="chooseReminderIcon('fas fa-user-md')" class="cursor-pointer fas fa-user-md"></i>
-                <i v-on:click="chooseReminderIcon('fas fa-user-nurse')" class="cursor-pointer fas fa-user-nurse"></i>
-                <i v-on:click="chooseReminderIcon('fas fa-briefcase-medical')" class="cursor-pointer fas fa-briefcase-medical"></i>
-                <i v-on:click="chooseReminderIcon('fas fa-clinic-medical')" class="cursor-pointer fas fa-clinic-medical"></i>
-                <i v-on:click="chooseReminderIcon('fas fa-hand-holding-medical')" class="cursor-pointer fas fa-hand-holding-medical"></i>*@
-            </span>
+            <div class="icons-container reminder-icons">
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-car')" class="cursor-pointer pe-7s-car"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-plane')" class="cursor-pointer pe-7s-plane "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-call')" class="cursor-pointer pe-7s-call "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-phone')" class="cursor-pointer pe-7s-phone "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-light')" class="cursor-pointer pe-7s-light "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-home')" class="cursor-pointer pe-7s-home "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-culture')" class="cursor-pointer pe-7s-culture"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-cart')" class="cursor-pointer pe-7s-cart "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-world')" class="cursor-pointer pe-7s-world"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-study')" class="cursor-pointer pe-7s-study"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-shopbag')" class="cursor-pointer pe-7s-shopbag "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-gift')" class="cursor-pointer pe-7s-gift "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-alarm')" class="cursor-pointer pe-7s-alarm "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-chat')" class="cursor-pointer pe-7s-chat "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-bell')" class="cursor-pointer pe-7s-bell "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-gym')" class="cursor-pointer pe-7s-gym "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-credit')" class="cursor-pointer pe-7s-credit"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-cash')" class="cursor-pointer pe-7s-cash"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-wallet')" class="cursor-pointer pe-7s-wallet"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-safe')" class="cursor-pointer pe-7s-safe"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-piggy')" class="cursor-pointer pe-7s-piggy"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-mail')" class="cursor-pointer pe-7s-mail "></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-mail-open')" class="cursor-pointer pe-7s-mail-open"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-mail-open-file')" class="cursor-pointer pe-7s-mail-open-file"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('pe-7s-coffee')" class="cursor-pointer pe-7s-coffee"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('lnr lnr-heart')" class="cursor-pointer lnr lnr-heart"></i></div>
+                <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseReminderIcon('lnr lnr-heart-pulse')" class="cursor-pointer lnr lnr-heart-pulse"></i></div>
+            </div>
             <br />
             <small class="invalid-feedback" id="reminderIcons">Обязательное поле</small>
         </div>
