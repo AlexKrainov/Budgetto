@@ -44,6 +44,7 @@ namespace MyProfile.Entity.ModelView.User
         public string WebSiteTheme { get; set; }
         public bool NewsLetter { get; set; }
         public bool IsShowHints { get; set; }
+        public bool IsShowFirstEnterHint { get; set; }
     }
     public class CurrencyClientSide 
     {

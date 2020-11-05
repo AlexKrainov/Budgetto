@@ -12,6 +12,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.User.Service;
 using Newtonsoft.Json;
 
 namespace MyProfile.Areas.Identity.Controllers
@@ -19,10 +20,13 @@ namespace MyProfile.Areas.Identity.Controllers
     public class UserSettingsController : Controller
     {
         private IBaseRepository repository;
+        private UserLogService userLogService;
 
-        public UserSettingsController(IBaseRepository repository)
+        public UserSettingsController(IBaseRepository repository,
+            UserLogService userLogService)
         {
             this.repository = repository;
+            this.userLogService = userLogService;
         }
 
         [HttpPost]
@@ -74,6 +78,21 @@ namespace MyProfile.Areas.Identity.Controllers
             await UserInfo.AddOrUpdate_Authenticate(user);
 
             await repository.UpdateAsync(dbUserSettings, true);
+
+            return Json(new { isOk = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> NotShowEnterHint()
+        {
+            var user = UserInfo.Current;
+            var dbUserSettings = await repository.GetAll<UserSettings>(x => x.ID == user.ID).FirstOrDefaultAsync();
+
+            user.UserSettings.IsShowFirstEnterHint = dbUserSettings.IsShowFirstEnterHint = false;
+
+            await UserInfo.AddOrUpdate_Authenticate(user);
+            await repository.UpdateAsync(dbUserSettings, true);
+            await userLogService.CreateUserLog(user.UserSessionID, UserLogActionType.User_NotShowEnterHint);
 
             return Json(new { isOk = true });
         }

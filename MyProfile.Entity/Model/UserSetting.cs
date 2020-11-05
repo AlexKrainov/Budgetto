@@ -111,7 +111,7 @@ namespace MyProfile.Entity.Model
         /// Show hints on pages
         /// </summary>
         public bool IsShowHints { get; set; }
-       // public bool IsShowFirstEnterHints { get; set; }
+        public bool IsShowFirstEnterHint { get; set; }
 
         public virtual User User { get; set; }
 

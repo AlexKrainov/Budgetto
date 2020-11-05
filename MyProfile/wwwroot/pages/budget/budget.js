@@ -632,7 +632,7 @@
                 for (var i = 0; i < column.templateBudgetSections.length; i++) {
                     li_s += `<li>${column.templateBudgetSections[i].sectionName}</li>`;
                 }
-
+                console.log(li_s);
                 return "<ul class='my-1 pl-3'>" + li_s + "</ul>";
             }
             return "";

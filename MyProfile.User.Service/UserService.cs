@@ -62,6 +62,7 @@ namespace MyProfile.User.Service
                     WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
                     NewsLetter = currentUser.UserSettings.NewsLetter,
                     IsShowHints = currentUser.UserSettings.IsShowHints,
+                    IsShowFirstEnterHint = currentUser.UserSettings.IsShowFirstEnterHint,
                 },
                 IsAvailable = currentUser.IsAvailable,
                 Payment = new PaymentClientSide
@@ -150,6 +151,7 @@ namespace MyProfile.User.Service
                          WebSiteTheme = x.UserSettings.WebSiteTheme,
                          NewsLetter = x.UserSettings.NewsLetter,
                          IsShowHints = x.UserSettings.IsShowHints,
+                         IsShowFirstEnterHint = x.UserSettings.IsShowFirstEnterHint,
                      }
                  })
                  .FirstOrDefaultAsync();
@@ -247,7 +249,7 @@ namespace MyProfile.User.Service
                     {
                         IsShowOnSite = true,
                         IsShowInCollective = true,
-                        Name = "Краткосрочные покупки",
+                        Name = "Краткосрочные расходы",
                         CodeName = "ShortTermPurchases",
                         Description = null,
                         BudgetSectinos = new List<BudgetSection>
@@ -255,7 +257,6 @@ namespace MyProfile.User.Service
                             new BudgetSection
                             {
                                 Name = "Продукты",
-                                Description = "Краткосрочные покупки в магазинах",
                                 CodeName = "Products",
                                 CssIcon = "fas fa-shopping-cart",
                                 CssColor = "rgba(24,28,33,0.8)",

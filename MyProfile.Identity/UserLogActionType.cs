@@ -92,6 +92,7 @@
 
         public const string User_Edit = "User_Edit";
         public const string User_Change_Email = "User_Change_Email";
+        public const string User_NotShowFirstHint = "User_NotShowFirstHint";
 
         
     }

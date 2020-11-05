@@ -6,20 +6,49 @@ $(function () {
         var nextButtonClass = 'btn btn-sm btn-primary';
         var isRtl = $('html').attr('dir') === 'rtl';
 
+        if (UserInfo.UserSettings.IsShowFirstEnterHint) {
+            BudgetTour.addStep({
+                title: 'Здравствуйте!',
+                text: `<p>Добро пожаловать в Budgetto.</p> 
+<p>Так как вы впервые используете программу, предлагаем вам пройти ознакомительный тур. Он состоит из 7 шагов - это быстро! </p>
+<p>Нажмите кнопку "Далее", чтобы начать работу.</p>`,
+                //attachTo: { element: '.navbar-user', on: 'left' },
+                buttons: [{
+                    action: NotShowEnterHint,
+                    classes: 'btn btn-sm btn-secondary float-left',
+                    text: 'Больше не показывать'
+                }, {
+                    action: BudgetTour.cancel,
+                    classes: backButtonClass,
+                    text: 'Закрыть'
+                }, {
+                    action: BudgetTour.next,
+                    classes: nextButtonClass,
+                    text: 'Далее'
+                }]
+            });
+        }
+
+        let buttons = [];
+        if (UserInfo.UserSettings.IsShowFirstEnterHint == false) {
+            buttons.push({
+                action: BudgetTour.cancel,
+                classes: backButtonClass,
+                text: 'Закрыть'
+            });
+        }
+        buttons.push({
+            action: BudgetTour.next,
+            classes: nextButtonClass,
+            text: 'Далее'
+        });
+
         BudgetTour.addStep({
             title: 'Выбор месяца',
             text: `<p>По умоланию отображается текущий месяц. 
 Вы можете выбрать нужный месяц с помощью стрелок справа и слева от названия месяца.</p>`,
             attachTo: { element: '.budget-date', on: 'left' },
-            buttons: [{
-                action: BudgetTour.cancel,
-                classes: backButtonClass,
-                text: 'Выход'
-            }, {
-                action: BudgetTour.next,
-                classes: nextButtonClass,
-                text: 'Далее'
-            }]
+            buttons: buttons
         });
         BudgetTour.addStep({
             title: 'Виджеты доходов, расходов и инвестиций',
@@ -101,7 +130,7 @@ $(function () {
                 classes: backButtonClass,
                 text: 'Назад'
             }, {
-                action: BudgetTour.next,
+                action: UserInfo.UserSettings.IsShowFirstEnterHint ? NotShowEnterHint : BudgetTour.cancel,
                 classes: nextButtonClass,
                 text: 'Завершить'
             }]
@@ -122,8 +151,28 @@ $(function () {
         useModalOverlay: true
     });
 
+    if (UserInfo.UserSettings.IsShowFirstEnterHint) {
+        setupTour(BudgetTour).start();
+    }
+
     $("#hint-show-page").click(function () {
         setupTour(BudgetTour).start();
     });
 
 });
+
+function NotShowEnterHint() {
+    return $.ajax({
+        type: "GET",
+        url: "/UserSettings/NotShowEnterHint",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (response) {
+            UserInfo.UserSettings.IsShowFirstEnterHint = false;
+            BudgetTour.cancel
+            return response;
+        },
+        error: function (xhr, status, error) {
+        }
+    });
+}

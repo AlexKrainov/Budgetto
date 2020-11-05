@@ -189,6 +189,7 @@ namespace MyProfile.Identity
 
                     WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
                     IsShowHints = currentUser.UserSettings.IsShowHints,
+                    IsShowFirstEnterHint = currentUser.UserSettings.IsShowFirstEnterHint,
                 }
             };
         }
