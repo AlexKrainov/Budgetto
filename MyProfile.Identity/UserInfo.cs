@@ -145,6 +145,7 @@ namespace MyProfile.Identity
             var currentUser = UserInfo.Current;
             return new UserInfoClientSide
             {
+                ID =currentUser.ID,
                 CurrencyID = currentUser.Currency.ID,
                 Email = currentUser.Email,
                 Name = currentUser.Name,

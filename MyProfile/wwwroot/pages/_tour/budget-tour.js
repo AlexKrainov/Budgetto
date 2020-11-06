@@ -169,7 +169,7 @@ function NotShowEnterHint() {
         dataType: 'json',
         success: function (response) {
             UserInfo.UserSettings.IsShowFirstEnterHint = false;
-            BudgetTour.cancel
+            BudgetTour.cancel();
             return response;
         },
         error: function (xhr, status, error) {

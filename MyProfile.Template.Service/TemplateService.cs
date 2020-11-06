@@ -215,20 +215,23 @@ namespace MyProfile.Template.Service
                         .ToListAsync();
         }
 
-        public async Task<TemplateErrorModelView> SaveTemplate(TemplateViewModel template)
+        public async Task<TemplateErrorModelView> SaveTemplate(TemplateViewModel template, bool saveAs)
         {
             TemplateErrorModelView modelView = new TemplateErrorModelView { Template = template };
             var currentUser = UserInfo.Current;
+            var now = DateTime.Now.ToUniversalTime();
             #region Check name
 
             if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
             {
-                template.Name = template.Name + "_copy";
-                //modelView.IsOk = false;
-                //modelView.NameAlreadyExist = true;
-                //modelView.ErrorMessage = "Шаблон с таким именем уже существует";
-
-                //return modelView;
+                if (saveAs)
+                {
+                    template.Name = template.Name + "_copy";
+                }
+                else
+                {
+                    template.Name = template.Name + "_(2)";
+                }
             }
 
             #endregion
@@ -239,10 +242,10 @@ namespace MyProfile.Template.Service
                     Template templateDB = new Template();
                     templateDB.UserID = currentUser.ID;
                     templateDB.PeriodTypeID = template.PeriodTypeID;
-                    templateDB.DateCreate = templateDB.DateEdit = DateTime.MinValue == template.DateCreate ? DateTime.Now : template.DateCreate;
+                    templateDB.DateCreate = templateDB.DateEdit = DateTime.MinValue == template.DateCreate ? now : template.DateCreate;
                     templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;
                     templateDB.MaxRowInAPage = 30;
-                    templateDB.Name = template.Name ?? "Шаблон";
+                    templateDB.Name = template.Name ?? "Шаблон_" + now.ToShortDateString();
                     templateDB.Description = template.Description;
                     templateDB.IsDefault = template.IsDefault;
 
@@ -292,7 +295,7 @@ namespace MyProfile.Template.Service
                     templateDB.DateEdit = DateTime.Now;
                     templateDB.IsCountCollectiveBudget = template.IsCountCollectiveBudget == true;
                     templateDB.MaxRowInAPage = 30;
-                    templateDB.Name = template.Name ?? "Шаблон";
+                    templateDB.Name = template.Name ?? "Шаблон_" + now.ToShortDateString();
                     templateDB.Description = template.Description;
                     templateDB.IsDefault = template.IsDefault;
 

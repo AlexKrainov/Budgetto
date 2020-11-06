@@ -5,7 +5,7 @@
 
         this.templateID = document.getElementById("templateID_hidden").value;
         this.budgetDate = document.getElementById("budgetDate_hidden").value;
-        
+
         let dateConfig = GetFlatpickrRuConfig_Month(this.budgetDate);
         this.flatpickrStart = flatpickr('#budget-date', dateConfig);
 
@@ -26,6 +26,7 @@
 
     },
     load: function () {
+        
         return sendAjax("/Budget/GetMonthBudget?month=" + this.budgetDate + "&templateID=" + this.templateID, null, "POST")
             .then(function (result) {
                 if (result.isOk == true) {

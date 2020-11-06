@@ -354,7 +354,6 @@
                             tooltips: {
                                 callbacks: {
                                     label: function (tooltipItem, data) {
-                                        console.log(arguments);
                                         return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value);
                                     }
                                 }
@@ -537,7 +536,10 @@
                 });
             };
 
-            $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
+            //cannot get in time because of vue.js
+            setTimeout(function () {
+                $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
+            }, 500);
         },
         toExcel: function () {
             this.isGenerateExcel = true;
@@ -627,12 +629,13 @@
             }
         },
         getTitle: function (column) {
+
             if (column.templateColumnType == 1) {// sections
                 let li_s = "";
                 for (var i = 0; i < column.templateBudgetSections.length; i++) {
                     li_s += `<li>${column.templateBudgetSections[i].sectionName}</li>`;
                 }
-                console.log(li_s);
+
                 return "<ul class='my-1 pl-3'>" + li_s + "</ul>";
             }
             return "";
@@ -730,10 +733,8 @@
         //after clicked a row, a cell or a footer cell
         clearAllStyle() {
             let el_s = [...document.getElementsByClassName("table-primary")];
-            console.log(el_s);
             for (var i = 0; i < el_s.length; i++) {
                 el_s[i].classList.remove("table-primary");
-                console.log(i);
             }
         },
         // page and table settings

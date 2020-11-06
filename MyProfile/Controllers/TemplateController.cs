@@ -224,7 +224,7 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<IActionResult> Save([FromBody] TemplateViewModel template)
         {
-            var templateResult = await templateService.SaveTemplate(template);
+            var templateResult = await templateService.SaveTemplate(template, false);
 
             return Json(templateResult);
         }
@@ -235,7 +235,7 @@ namespace MyProfile.Controllers
             var tmpTemplateID = template.ID;
             template.ID = 0;
 
-            var templateResult = await templateService.SaveTemplate(template);
+            var templateResult = await templateService.SaveTemplate(template, true);
 
             if (templateResult.IsOk == false)
             {

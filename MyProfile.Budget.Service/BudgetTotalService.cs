@@ -24,8 +24,7 @@ namespace MyProfile.Budget.Service
             this.budgetRecordService = new BudgetRecordService(repository);
         }
 
-
-        public async Task<Tuple<TotalModelView, TotalModelView, TotalModelView>> GetDataByYear(int year)
+        public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByYear(int year)
         {
             DateTime from = new DateTime(year, 1, 1, 0, 0, 0);
             DateTime to = new DateTime(year, 12, 31, 23, 59, 59);
@@ -38,94 +37,104 @@ namespace MyProfile.Budget.Service
             if (currentUser.UserSettings.Year_SpendingWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Spendings);
+
+                var thisYear = tuple.Item1.Sum();
+                var lastYear = GetChartTotalByMonth(from.AddYears(-1), to.AddYears(-1), SectionTypeEnum.Spendings).Item1.Sum();
+
                 spendingData.data = tuple.Item1.ToArray();
                 spendingData.labels = tuple.Item2.ToArray();
                 spendingData.Name = "Расходы";
                 spendingData.SectionTypeEnum = SectionTypeEnum.Spendings;
-                spendingData.Total = (tuple.Item1.Sum()).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                spendingData.Total = (thisYear).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
 
-                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                //{
+                if (lastYear == decimal.Zero)
                 {
-                    if (spendingData.data[10] == decimal.Zero)
-                    {
-                        spendingData.Percent = 100;
-                    }
-                    else
-                    {
-                        spendingData.Percent = Math.Round(((spendingData.data[11] - spendingData.data[10]) / spendingData.data[10] * 100), 1);
-                    }
-                    spendingData.IsGood = spendingData.Percent < 0;
-
-                    if (spendingData.Percent < 0)
-                    {
-                        spendingData.Percent *= -1;
-                    }
+                    spendingData.Percent = 100;
                 }
+                else
+                {
+                    spendingData.Percent = Math.Round(((thisYear - lastYear) / lastYear * 100), 1);
+                }
+                spendingData.IsGood = spendingData.Percent < 0;
+
+                if (spendingData.Percent < 0)
+                {
+                    spendingData.Percent *= -1;
+                }
+                //}
             }
 
             if (currentUser.UserSettings.Year_EarningWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Earnings);
 
+                var thisYear = tuple.Item1.Sum();
+                var lastYear = GetChartTotalByMonth(from.AddYears(-1), to.AddYears(-1), SectionTypeEnum.Earnings).Item1.Sum();
+
                 earningData.data = tuple.Item1.ToArray();
                 earningData.labels = tuple.Item2.ToArray();
                 earningData.Name = "Доходы";
                 earningData.SectionTypeEnum = SectionTypeEnum.Spendings;
-                earningData.Total = (tuple.Item1.Sum()).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                earningData.Total = thisYear.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
-                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                // if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                // {
+                if (lastYear == decimal.Zero)
                 {
-                    if (earningData.data[10] == decimal.Zero)
-                    {
-                        earningData.Percent = 100;
-                    }
-                    else
-                    {
-                        earningData.Percent = Math.Round(((earningData.data[11] - earningData.data[10]) / earningData.data[10] * 100), 1);
-                    }
-                    earningData.IsGood = earningData.Percent > 0;
-
-                    if (earningData.Percent < 0)
-                    {
-                        earningData.Percent *= -1;
-                    }
+                    earningData.Percent = 100;
                 }
+                else
+                {
+                    earningData.Percent = Math.Round(((thisYear - lastYear) / lastYear * 100), 1);
+                }
+                earningData.IsGood = earningData.Percent > 0;
+
+                if (earningData.Percent < 0)
+                {
+                    earningData.Percent *= -1;
+                }
+                // }
             }
 
             if (currentUser.UserSettings.Year_InvestingWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Investments);
 
+                var thisYear = tuple.Item1.Sum();
+                var lastYear = GetChartTotalByMonth(from.AddYears(-1), to.AddYears(-1), SectionTypeEnum.Investments).Item1.Sum();
+
                 investinData.data = tuple.Item1.ToArray();
                 investinData.labels = tuple.Item2.ToArray();
                 investinData.Name = "Инвестиции";
                 investinData.SectionTypeEnum = SectionTypeEnum.Investments;
-                investinData.Total = (tuple.Item1.Sum()).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                investinData.Total = (thisYear).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
-                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                //{
+                if (lastYear == decimal.Zero)
                 {
-                    if (investinData.data[10] == decimal.Zero)
-                    {
-                        investinData.Percent = 100;
-                    }
-                    else
-                    {
-                        investinData.Percent = Math.Round(((investinData.data[11] - investinData.data[10]) / investinData.data[10] * 100), 1);
-                    }
-                    investinData.IsGood = investinData.Percent > 0;
-
-                    if (investinData.Percent < 0)
-                    {
-                        investinData.Percent *= -1;
-                    }
+                    investinData.Percent = 100;
                 }
+                else
+                {
+                    investinData.Percent = Math.Round(((thisYear - lastYear) / lastYear * 100), 1);
+                }
+                investinData.IsGood = investinData.Percent > 0;
+
+                if (investinData.Percent < 0)
+                {
+                    investinData.Percent *= -1;
+                }
+                // }
             }
 
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investinData);
         }
 
-        public async Task<Tuple<TotalModelView, TotalModelView, TotalModelView>> GetDataByMonth(DateTime to)
+        public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByMonth(DateTime to)
         {
             DateTime from = to.AddMonths(-11);
             to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month));

@@ -88,11 +88,9 @@
                 Array.prototype.slice.call(document.querySelectorAll('.lists')),
                 {
                     moves: function (el, source, handle, sibling) {
-                        console.log(arguments);
                         return !el.classList.contains("ignore-dnd") || !handle.classList.contains("ignore-dnd");
                     },
                     accepts: function (el, target, source, sibling) {//?
-                        console.log(arguments);
                         return !el.classList.contains("ignore-dnd");
                     },
                     //invalid
@@ -197,7 +195,7 @@
                 });
         },
         change: function (event) {
-            console.log(event);
+
         },
         openFormula: function (columnID) {
             //FormulaVue.el.tagsinput("destroy");
@@ -268,21 +266,6 @@
                     column.formula.push({ id: section.sectionID, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
                 }
             }
-
-
-            //let foundIndex = true;
-            //while (foundIndex) {
-
-            //    let formulaIndex = column.formula.findIndex(x => x.id == section.sectionID);
-            //    if (formulaIndex >= 0) {
-            //        if (formulaIndex == 0) {
-            //            //ToDo
-            //        }
-            //        column.formula.slice(formulaIndex, 1);
-            //    } else {
-            //        foundIndex = false;
-            //    }
-            //}
         },
         getLinkForView: function (template) {
             return GetLinkForView(template);
@@ -327,7 +310,6 @@ var FormulaVue = new Vue({
             var tag = event.item;
 
             let index = FormulaVue.formula.findIndex(x => x == tag);
-            console.log(index);
             if (index >= 0) {
                 FormulaVue.formula.splice(index, 1);
 
@@ -346,7 +328,6 @@ var FormulaVue = new Vue({
 
         removeLast: function () {
             //let lastItem = this.formula.pop();
-            //console.log(lastItem);
 
             this.el.tagsinput("remove", this.formula.pop());
         },

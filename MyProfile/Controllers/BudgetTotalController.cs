@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
-using MyProfile.Entity.Model;
-using MyProfile.Entity.ModelView;
-using MyProfile.Entity.ModelView.BudgetView;
-using MyProfile.Entity.ModelView.TotalBudgetView;
 using MyProfile.Entity.Repository;
-using MyProfile.Identity;
-using MyProfile.Template.Service;
+using System;
+using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {
@@ -29,17 +19,17 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadByMonth(DateTime to)
+        public IActionResult LoadByMonth(DateTime to)
         {
-            var values = await budgetTotalService.GetDataByMonth(to);
+            var values = budgetTotalService.GetDataByMonth(to);
 
             return Json(new { SpendingData = values.Item1, EarningData = values.Item2, InvestingData = values.Item3 });
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadByYear(int year)
+        public IActionResult LoadByYear(int year)
         {
-            var values = await budgetTotalService.GetDataByYear(year);
+            var values = budgetTotalService.GetDataByYear(year);
 
             return Json(new { SpendingData = values.Item1, EarningData = values.Item2, InvestingData = values.Item3 });
         }

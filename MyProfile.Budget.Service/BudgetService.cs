@@ -155,22 +155,29 @@ namespace MyProfile.Budget.Service
 
                             try
                             {
-                                total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand , (comma)
-                                total = Math.Round(total, column.PlaceAfterCommon);
-                                //total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
-
-
-                                numberFormatInfo.CurrencyDecimalDigits = column.PlaceAfterCommon;
-
-                                cell.Value = total.ToString("C", numberFormatInfo);
-                                cell.NaturalValue = total;
-
-                                cells.Add(cell.CloneObject());
-                                footerCells.Add(new FooterCell
+                                if (!string.IsNullOrEmpty(expression))
                                 {
-                                    Value = total.ToString("C", numberFormatInfo),
-                                    NaturalValue = total
-                                });
+                                    total = interpreter.Eval<decimal>(expression.Replace(",", "."));//becase the Interpreter doesn't understand , (comma)
+                                    total = Math.Round(total, column.PlaceAfterCommon);
+                                    //total = CSharpScript.EvaluateAsync<decimal>(expression).Result;
+
+
+                                    numberFormatInfo.CurrencyDecimalDigits = column.PlaceAfterCommon;
+
+                                    cell.Value = total.ToString("C", numberFormatInfo);
+                                    cell.NaturalValue = total;
+
+                                    cells.Add(cell.CloneObject());
+                                    footerCells.Add(new FooterCell
+                                    {
+                                        Value = total.ToString("C", numberFormatInfo),
+                                        NaturalValue = total
+                                    }); 
+                                }else
+                                {
+                                    cells.Add(new Cell { Value = "", NaturalValue = -1 });
+                                    footerCells.Add(new FooterCell());
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -274,6 +281,11 @@ namespace MyProfile.Budget.Service
                         {
                             v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
                             cell.NaturalValue = dateCounter;
+                        }
+                        else if (column.TemplateColumnType == TemplateColumnType.BudgetSection && column.Formula.Count() == 0)
+                        {
+                            v = "";
+                            cell.NaturalValue = -1;
                         }
                         cell.Value = v;
 

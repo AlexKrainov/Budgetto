@@ -14,7 +14,7 @@ $(function () {
             buttons: [{
                 action: SectionTour.cancel,
                 classes: backButtonClass,
-                text: 'Выход'
+                text: 'Завершить'
             }, {
                 action: SectionTour.next,
                 classes: nextButtonClass,
@@ -46,54 +46,11 @@ $(function () {
             text: 'Категории, которые входят в выбранную папку, расположены справа. Здесь вы можете создавать, редактировать и удалять категории',
             attachTo: { element: '#section-vue .card-body', on: 'left' },
             buttons: [{
-                action: SectionTour.next,
+                action: SectionTour.cancel,
                 classes: nextButtonClass,
                 text: 'Завершить'
             }]
         });
-        //SectionTour.addStep({
-        //    title: 'Fiftith',
-        //    text: 'Content of fourth step',
-        //    attachTo: { element: 'a[href="/Section/Edit"]', on: 'right' },
-        //    buttons: [{
-        //        action: SectionTour.back,
-        //        classes: backButtonClass,
-        //        text: 'Назад'
-        //    }, {
-        //        action: SectionTour.next,
-        //        classes: nextButtonClass,
-        //        text: 'Далее'
-        //    }]
-        //});
-        //SectionTour.addStep({
-        //    title: 'Sixinth',
-        //    text: 'Content of fourth step',
-        //    attachTo: { element: 'a[href="/Template/List"]', on: 'right' },
-        //    buttons: [{
-        //        action: SectionTour.back,
-        //        classes: backButtonClass,
-        //        text: 'Назад'
-        //    }, {
-        //        action: SectionTour.next,
-        //        classes: nextButtonClass,
-        //        text: 'Далее'
-        //    }]
-        //});
-        //SectionTour.addStep({
-        //    title: 'Seventith',
-        //    text: 'Content of fourth step',
-        //    attachTo: { element: '.theme-settings-open-btn2 i', on: 'left' },
-        //    buttons: [{
-        //        action: SectionTour.back,
-        //        classes: backButtonClass,
-        //        text: 'Назад'
-        //    }, {
-        //        action: SectionTour.next,
-        //        classes: nextButtonClass,
-        //        text: 'Завершить'
-        //    }]
-        //});
-
         return SectionTour;
     }
 
@@ -107,6 +64,10 @@ $(function () {
             }
         },
         useModalOverlay: true
+    });
+
+    SectionTour.on('cancel', () => {
+        $($(".show-sections")[0]).off();
     });
 
     $("#hint-show-page").click(function () {

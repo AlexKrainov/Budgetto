@@ -49,7 +49,7 @@ $(function () {
                     TemplateTour.next();
 
                     $("#add-column").click(function () {
-                        setTimeout(TemplateTour.next, 500);
+                        setTimeout(TemplateTour.next, 700);
                         $("#add-column").off();
 
                         $("#template-sections").click(function () {
@@ -100,11 +100,7 @@ $(function () {
             title: 'Выбор категории',
             text: 'Выберите категорию которая будет отображаться во второй колонке в таблице.',
             attachTo: { element: '.cards-big', on: 'top' },
-            buttons: [{
-                action: TemplateTour.next,
-                classes: nextButtonClass,
-                text: 'Далее'
-            }]
+            buttons: []
         });
         TemplateTour.addStep({
             title: 'Вторая колонки',
@@ -120,21 +116,13 @@ $(function () {
             title: 'Добавление категорий',
             text: 'Вы можете добавить сколько угодно категорий в колонку, по умолчанию все категории в колонке будут складываться.',
             attachTo: { element: '.add-section', on: 'top' },
-            buttons: [{
-                action: TemplateTour.next,
-                classes: nextButtonClass,
-                text: 'Далее'
-            }]
+            buttons: []
         });
         TemplateTour.addStep({
             title: 'Выберите категорию',
             text: 'Выберите дополнительную категорию.',
             attachTo: { element: '.cards-big', on: 'left' },
-            buttons: [{
-                action: TemplateTour.next,
-                classes: nextButtonClass,
-                text: 'Далее'
-            }]
+            buttons: []
         });
         TemplateTour.addStep({
             title: 'Колонка с категориями',
@@ -151,12 +139,12 @@ $(function () {
             text: 'После сохранения шаблона вы сможете увидеть его на странице "Бюджета на месяц", выбрав его из списка.',
             attachTo: { element: '.save-template', on: 'bottom' },
             buttons: [{
-                action: TemplateTour.next,
+                action: TemplateTour.cancel,
                 classes: nextButtonClass,
-                text: 'Выход'
+                text: 'Завершить'
             }]
         });
-        
+
         return TemplateTour;
     }
 
@@ -172,6 +160,20 @@ $(function () {
         useModalOverlay: true
     });
 
+    TemplateTour.on('cancel', () => {
+        $(".template-types button").off();
+        $(".template-types .dropdown-item").off();
+        $("#add-column").off();
+        $("#template-days").off();
+
+        $("#add-column").off();
+        $("#template-sections").off();
+        $(".cards-big .card-section").off();
+        $(".add-section").off();
+        $(".cards-big .card-section").off();
+        $(".save-template").off();
+    });
+
     $("#hint-show-page").click(function () {
         setupTour(TemplateTour).start();
 
@@ -184,11 +186,11 @@ $(function () {
                 $(".template-types .dropdown-item").off();
 
                 $("#add-column").click(function () {
-                    setTimeout(TemplateTour.next, 400);
+                    setTimeout(TemplateTour.next, 600);
                     $("#add-column").off();
 
                     $("#template-days").click(function () {
-                        setTimeout(TemplateTour.next, 400);
+                        setTimeout(TemplateTour.next, 600);
                         $("#template-days").off();
 
                     });

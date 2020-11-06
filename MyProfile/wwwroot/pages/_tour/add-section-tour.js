@@ -11,9 +11,12 @@ $(function () {
             text: 'Для создании категории нажмите "показать категории".',
             attachTo: { element: '.show-sections', on: 'left' },
             buttons: [{
-                action: AddSectionTour.cancel,
+                action() {
+                    AddSectionTour.cancel();
+                    $($(".show-sections")[0]).off();
+                },
                 classes: backButtonClass,
-                text: 'Exit'
+                text: 'Завершить'
             }]
         });
         AddSectionTour.addStep({
@@ -29,7 +32,7 @@ $(function () {
             buttons: [{
                 action: AddSectionTour.next,
                 classes: nextButtonClass,
-                text: 'Next'
+                text: 'Далее'
             }]
         });
         AddSectionTour.addStep({
@@ -39,7 +42,7 @@ $(function () {
             buttons: [{
                 action: AddSectionTour.next,
                 classes: nextButtonClass,
-                text: 'Next'
+                text: 'Далее'
             }]
         });
         AddSectionTour.addStep({
@@ -49,7 +52,7 @@ $(function () {
             buttons: [{
                 action: AddSectionTour.next,
                 classes: nextButtonClass,
-                text: 'Next'
+                text: 'Далее'
             }]
         });
         AddSectionTour.addStep({
@@ -59,7 +62,7 @@ $(function () {
             buttons: [{
                 action: AddSectionTour.next,
                 classes: nextButtonClass,
-                text: 'Next'
+                text: 'Далее'
             }]
         });
         AddSectionTour.addStep({
@@ -67,12 +70,12 @@ $(function () {
             text: 'Нажмите кнопку сохранить',
             attachTo: { element: '#save-sections', on: 'top' },
             buttons: [{
-                action: AddSectionTour.next,
+                action: AddSectionTour.cancel,
                 classes: nextButtonClass,
-                text: 'Done'
+                text: 'Завершить'
             }]
         });
-        
+
         return AddSectionTour;
     }
 
@@ -86,6 +89,11 @@ $(function () {
             }
         },
         useModalOverlay: true
+    });
+
+    AddSectionTour.on('cancel', () => {
+        $($(".show-sections")[0]).off();
+        $("#add-section").off();
     });
 
     $("#hint-add-section").click(function () {

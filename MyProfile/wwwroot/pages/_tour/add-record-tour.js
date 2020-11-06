@@ -39,9 +39,9 @@ $(function () {
             text: 'Нажимая кнопку добавить, вы сохраняйте все внесенные суммы в соответствующих категориях.',
             attachTo: { element: '.button-add-record', on: 'top' },
             buttons: [{
-                action: AddRecordTour.next,
+                action: AddRecordTour.cancel,
                 classes: nextButtonClass,
-                text: 'Спасибо, все понятно!'
+                text: 'Завершить'
             }]
         });
 
@@ -58,6 +58,12 @@ $(function () {
             }
         },
         useModalOverlay: true
+    });
+
+    AddRecordTour.on('cancel', () => {
+        $("#addRecord").off();
+        $(".input-money").off();
+        $(".cards-small").off();
     });
 
     $("#hint-add-record").click(function () {

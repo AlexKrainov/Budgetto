@@ -22,6 +22,7 @@ namespace MyProfile.Entity.ModelView.User
         public DateTime DateCreate { get; set; }
         public bool IsAvailable { get; set; }
         public PaymentClientSide Payment { get; set; }
+        public Guid ID { get; set; }
     }
 
     public class UserSettingsClientSide
