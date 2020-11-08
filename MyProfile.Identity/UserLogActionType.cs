@@ -57,6 +57,7 @@
         public const string TemplateEdit = "TemplateEdit";
         public const string TemplateDelete = "TemplateDelete";
         public const string TemplateRecovery = "TemplateRecovery";
+        public const string TemplateColumnOrder = "TemplateColumnOrder";
 
         public const string Area_Create = "Area_Create";
         public const string Area_Edit = "Area_Edit";

@@ -8,6 +8,7 @@
         templateID: null,
 
         template: {},
+        columnOrderQueue: 0, //save last reorder column
         rows: [],
         footerRow: [],
 
@@ -453,6 +454,7 @@
 
                 if (this.dataTable) {
                     this.dataTable.destroy();
+                    $('[data-toggle="tooltip"]').tooltip('dispose');
                 }
 
                 this.load()
@@ -527,7 +529,48 @@
                         "orderDataType": "dom-text-numeric",
                         type: "num"
                     },
-                ]
+                ],
+                colReorder: {
+                    realtime: false
+                }
+            });
+            this.dataTable.on('column-reorder', function (e, settings, details) {
+                BudgetVue.columnOrderQueue += 1;
+
+                setTimeout(function () {
+                    if (BudgetVue.columnOrderQueue == 1) {
+                        console.log(details.mapping);
+                        console.log(BudgetVue.dataTable.colReorder.order());
+                        BudgetVue.columnOrderQueue = 0;
+
+                        let oldOrder = [];
+                        let newOrder = BudgetVue.dataTable.colReorder.order();
+
+                        $("#table th").each(function (index) {
+                            oldOrder.push($(this).data("column-order"));
+                            $(this).data("column-order", newOrder[index]);
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Budget/TemplateChangeColumns",
+                            contentType: "application/json",
+                            data: JSON.stringify({
+                                newColumnsOrder: newOrder,
+                                oldColumnsOrder: oldOrder,
+                                templateID: BudgetVue.template.id
+                            }),
+                            dataType: 'json',
+                            success: function (response) {
+
+
+                            }
+                        });
+                    } else {
+                        BudgetVue.columnOrderQueue -= 1;
+                    }
+                }, 2500);
+
             });
 
             $.fn.dataTable.ext.order["dom-text-numeric"] = function (settings, col) {
@@ -538,8 +581,8 @@
 
             //cannot get in time because of vue.js
             setTimeout(function () {
-                $('[data-toggle="tooltip"]').tooltip('dispose').tooltip();
-            }, 500);
+                $('[data-toggle="tooltip"]').tooltip();
+            }, 1000);
         },
         toExcel: function () {
             this.isGenerateExcel = true;
@@ -635,7 +678,7 @@
                 for (var i = 0; i < column.templateBudgetSections.length; i++) {
                     li_s += `<li>${column.templateBudgetSections[i].sectionName}</li>`;
                 }
-
+                //     console.log(this.template.id + ")" + li_s);
                 return "<ul class='my-1 pl-3'>" + li_s + "</ul>";
             }
             return "";

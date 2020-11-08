@@ -13,6 +13,7 @@ using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.BudgetView;
+using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Template.Service;
@@ -193,5 +194,14 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, response = text });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> TemplateChangeColumns([FromBody] TemplateColumnOrder templateColumnOrder)
+        {
+            await templateService.ChangeColumnOrder(templateColumnOrder);
+
+
+            return Json(new { isOk = true });
+        }
+        
     }
 }

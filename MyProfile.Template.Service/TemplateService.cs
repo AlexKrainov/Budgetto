@@ -71,6 +71,7 @@ namespace MyProfile.Template.Service
                                         })
                                         .ToList()
                                 })
+                                .OrderBy(y => y.Order)
                                 .ToList()
                         })
                         .FirstOrDefaultAsync();
@@ -169,6 +170,30 @@ namespace MyProfile.Template.Service
                                 .ToList()
                         })
                         .ToListAsync();
+        }
+
+        public async Task ChangeColumnOrder(TemplateColumnOrder templateColumnOrder)
+        {
+            var currentUser = UserInfo.Current;
+            var templateColumns = await repository.GetAll<Template>(x => x.ID == templateColumnOrder.TemplateID && x.UserID == currentUser.ID)
+                .SelectMany(x => x.TemplateColumns)
+                .OrderBy(x => x.Order)
+                .ToListAsync();
+
+            if (templateColumns != null)
+            {
+                for (int i = 0; i < templateColumnOrder.NewColumnsOrder.Count; i++)
+                {
+                    templateColumns.FirstOrDefault(x => x.Order == templateColumnOrder.NewColumnsOrder[i]).Order = i;
+                }
+                //for (int i = 0; i < templateColumns.Count; i++)
+                //{
+                //    templateColumns[i].Order = templateColumnOrder.ColumnsOrder[i];
+                //}
+
+                await repository.SaveAsync();
+                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.TemplateColumnOrder);
+            }
         }
 
         /// <summary>

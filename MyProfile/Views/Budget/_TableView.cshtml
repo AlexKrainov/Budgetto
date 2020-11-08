@@ -13,7 +13,8 @@
                 v-html="column.name"
                 v-show="column.isShow"
                 v-bind:class="column.styleForTableView"
-                v-bind:title="getTitle(column)"></th>
+                v-bind:title="getTitle(column, template.id)"
+                v-bind:data-column-order="column.order"></th>
         </tr>
     </thead>
     <tbody>

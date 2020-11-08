@@ -194,6 +194,12 @@
                     TemplateVue.isSavingTemplate = false;
                 });
         },
+        saveAndGoToView: function () {
+            this.saveTemplate()
+                .then(function () {
+                    window.document.location.href = GetLinkForView(TemplateVue.template);
+                });
+        },
         change: function (event) {
 
         },
@@ -266,9 +272,6 @@
                     column.formula.push({ id: section.sectionID, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
                 }
             }
-        },
-        getLinkForView: function (template) {
-            return GetLinkForView(template);
         },
 
     }

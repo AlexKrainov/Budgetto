@@ -26,7 +26,6 @@
 
     },
     load: function () {
-        
         return sendAjax("/Budget/GetMonthBudget?month=" + this.budgetDate + "&templateID=" + this.templateID, null, "POST")
             .then(function (result) {
                 if (result.isOk == true) {
