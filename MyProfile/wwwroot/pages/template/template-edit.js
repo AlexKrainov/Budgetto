@@ -175,6 +175,10 @@
             this.template.columns = [];
         },
         saveTemplate: function (saveAs) {
+            if (this.validTemplate() == false) {
+                return false;
+            }
+
             let method = 'Save';
             if (saveAs == true) {
                 method = 'SaveAs';
@@ -193,6 +197,27 @@
                     }
                     TemplateVue.isSavingTemplate = false;
                 });
+        },
+        validTemplate: function () {
+            let isOk = true;
+
+            let str = this.template.name;
+            str = str.replaceAll(" ", "");
+            if (!this.template.name || str.length == 0) {
+                isOk = false;
+                $("#template-name").addClass("is-invalid");
+            } else {
+                $("#template-name").removeClass("is-invalid");
+            }
+
+            if (this.template.columns.length == 0) {
+                isOk = false;
+                this.errorMessage = "Шаблон должен содержать хотя бы одну колонку.";
+            } else {
+                this.errorMessage = null;
+            }
+
+            return isOk;
         },
         saveAndGoToView: function () {
             this.saveTemplate()

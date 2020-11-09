@@ -543,12 +543,15 @@
                         console.log(BudgetVue.dataTable.colReorder.order());
                         BudgetVue.columnOrderQueue = 0;
 
-                        let oldOrder = [];
-                        let newOrder = BudgetVue.dataTable.colReorder.order();
+                        let order = [];
 
                         $("#table th").each(function (index) {
-                            oldOrder.push($(this).data("column-order"));
-                            $(this).data("column-order", newOrder[index]);
+                            let el = $(this);
+                            order.push({
+                                id: el.data("column-id"),
+                                newOrder: el.data("column-index"),
+                                oldOrder: el.data("column-order"),
+                            });
                         });
 
                         $.ajax({
@@ -556,8 +559,7 @@
                             url: "/Budget/TemplateChangeColumns",
                             contentType: "application/json",
                             data: JSON.stringify({
-                                newColumnsOrder: newOrder,
-                                oldColumnsOrder: oldOrder,
+                                listOrder: order,
                                 templateID: BudgetVue.template.id
                             }),
                             dataType: 'json',
@@ -569,7 +571,7 @@
                     } else {
                         BudgetVue.columnOrderQueue -= 1;
                     }
-                }, 2500);
+                }, 1500);
 
             });
 

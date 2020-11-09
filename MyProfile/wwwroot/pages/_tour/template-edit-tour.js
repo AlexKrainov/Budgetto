@@ -14,7 +14,7 @@ $(function () {
         });
         TemplateTour.addStep({
             title: 'Выбор типа шаблона',
-            text: 'Выберите страницу для отображения шаблона, например "Бюджет на месяц"',
+            text: 'Выберите страницу для отображения шаблона, например "Финансы на месяц"',
             attachTo: { element: '.template-types .dropdown-menu', on: 'right' },
             buttons: []
         });

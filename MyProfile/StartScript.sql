@@ -39,9 +39,9 @@ GO
 
 SET IDENTITY_INSERT [dbo].[PeriodTypes] ON 
 
-INSERT [dbo].[PeriodTypes] ([ID], [Name], [CodeName], [IsUsing]) VALUES (1, N'Бюджет на месяц', N'Days', 0)
+INSERT [dbo].[PeriodTypes] ([ID], [Name], [CodeName], [IsUsing]) VALUES (1, N'Финансы на месяц', N'Days', 1)
 INSERT [dbo].[PeriodTypes] ([ID], [Name], [CodeName], [IsUsing]) VALUES (2, N'Weeks for month', N'Week', 0)
-INSERT [dbo].[PeriodTypes] ([ID], [Name], [CodeName], [IsUsing]) VALUES (3, N'Бюджет на год', N'Month', 0)
+INSERT [dbo].[PeriodTypes] ([ID], [Name], [CodeName], [IsUsing]) VALUES (3, N'Финансы на год', N'Month', 1)
 INSERT [dbo].[PeriodTypes] ([ID], [Name], [CodeName], [IsUsing]) VALUES (4, N'Years for 10 Year', N'10_Year', 0)
 SET IDENTITY_INSERT [dbo].[PeriodTypes] OFF
 GO

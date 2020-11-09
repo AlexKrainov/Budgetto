@@ -201,7 +201,7 @@ namespace MyProfile.Identity
             {
                 new MenuItemViewModel
                 {
-                    Title = "Бюджет на месяц",
+                    Title = "Финансы на месяц",
                     Area ="",
                     Controller = "Budget",
                     Action = "Month",
@@ -210,7 +210,7 @@ namespace MyProfile.Identity
                 },
                 new MenuItemViewModel
                 {
-                    Title = "Бюджет на год",
+                    Title = "Финансы на год",
                     Area ="",
                     Controller = "Budget",
                     Action = "Year",

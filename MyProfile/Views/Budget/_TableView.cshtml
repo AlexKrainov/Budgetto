@@ -14,7 +14,8 @@
                 v-show="column.isShow"
                 v-bind:class="column.styleForTableView"
                 v-bind:title="getTitle(column, template.id)"
-                v-bind:data-column-order="column.order"></th>
+                v-bind:data-column-order="column.order"
+                v-bind:data-column-id="column.id"></th>
         </tr>
     </thead>
     <tbody>

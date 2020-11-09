@@ -75,7 +75,7 @@
 
     <div class="alert alert-success alert-dismissible fade show" v-for="offer in offers">
         <img v-bind:src="offer.ownerImageLink" class="ui-w-40 rounded-circle" alt="">
-        Пользователь <b> {{ offer.ownerName }} {{ offer.ownerLastName }} </b> хочет вести свами общий бюджет
+        Пользователь <b> {{ offer.ownerName }} {{ offer.ownerLastName }} </b> хочет вести свами общий финансы
         <button type="button" class="btn btn-sm btn-success" v-on:click="offerAction(offer.offerID, true)">Да</button>
         <button type="button" class="btn btn-sm btn-warning" v-on:click="offerAction(offer.offerID, false)">Нет</button>
         <div class="clearfix">

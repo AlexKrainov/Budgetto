@@ -182,9 +182,10 @@ namespace MyProfile.Template.Service
 
             if (templateColumns != null)
             {
-                for (int i = 0; i < templateColumnOrder.NewColumnsOrder.Count; i++)
+                for (int i = 0; i < templateColumnOrder.ListOrder.Count; i++)
                 {
-                    templateColumns.FirstOrDefault(x => x.Order == templateColumnOrder.NewColumnsOrder[i]).Order = i;
+                    var z = templateColumns.FirstOrDefault(x => x.ID == templateColumnOrder.ListOrder[i].ID);
+                    templateColumns.FirstOrDefault(x => x.ID == templateColumnOrder.ListOrder[i].ID).Order = i;
                 }
                 //for (int i = 0; i < templateColumns.Count; i++)
                 //{
