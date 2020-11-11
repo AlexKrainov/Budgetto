@@ -1,0 +1,62 @@
+﻿@{bool hideToggle = ViewData["LayoutNavbarHideToggle"] != null && ViewData["LayoutNavbarHideToggle"].ToString() == "True";}
+
+@{
+    var currentUser = MyProfile.Identity.UserInfo.Current;
+    var hintsPages = new List<string> { "/", "/Budget/Month", "/Section/Edit", "/Template/Edit" };
+}
+
+<!-- Layout navbar -->
+@*layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x @(currentUser.UserSettings.WebSiteTheme_CodeName == "dark" ? "bg-navbar-theme" : "bg-white")*@
+<nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x bg-navbar-theme" id="layout-navbar">
+
+    <!-- Brand demo (see wwwroot/css/demo/demo.css) -->
+    <a asp-area="" asp-controller="Bubget" asp-action="Month" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
+        @*<span class="app-brand-logo demo bg-primary">
+                <img src="~/img/Logo-min.svg" />
+
+            </span>
+            <span class="app-brand-text demo font-weight-normal ml-2">Appwork</span>*@
+        <img src="~/img/Logo-min.png" style="width: 180px;" />
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#layout-navbar-collapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse collapse" id="layout-navbar-collapse">
+        <!-- Divider -->
+        <hr class="d-lg-none w-100 my-2">
+
+        <!--<div class="navbar-nav align-items-lg-center">-->
+        <!-- Search -->
+        <!--<label class="nav-item navbar-text navbar-search-box p-0 active">
+                <i class="ion ion-ios-search navbar-icon align-middle"></i>
+                <span class="navbar-search-input pl-2">
+                    <input type="text" class="form-control navbar-text mx-2" placeholder="Search..." style="width:200px">
+                </span>
+            </label>
+        </div>-->
+
+        <div class="navbar-nav align-items-lg-center ml-auto">
+
+
+            <!-- Divider -->
+            <div class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">|</div>
+
+            <div class="navbar-user nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                    <span class="d-inline-flex flex-lg-row-reverse align-items-center align-middle">
+                        <img src="@currentUser.ImageLink" alt="User image" class="d-block ui-w-30 rounded-circle" id="userImageLink" style=" max-height: 24px;">
+                        <span class="px-1 mr-lg-2 ml-2 ml-lg-0 user-name" id="userName">@currentUser.Name @currentUser.LastName</span>
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a asp-area="Identity" asp-controller="Account" asp-action="Logout" class="dropdown-item">
+                        <i class="ion ion-ios-log-out text-danger"></i> &nbsp; Выйти
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- / Layout navbar -->

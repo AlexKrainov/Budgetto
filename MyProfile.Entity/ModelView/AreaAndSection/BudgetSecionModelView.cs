@@ -34,5 +34,7 @@ namespace MyProfile.Entity.ModelView
 		public bool IsShow { get; set; } = true;
         public bool HasRecords { get; set; }
         public string CssBackground { get; set; }
+        public string CodeName { get; set; }
+		public bool IsSelected { get; set; } = true;
     }
 }

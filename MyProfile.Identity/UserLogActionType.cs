@@ -95,6 +95,10 @@
         public const string User_Change_Email = "User_Change_Email";
         public const string User_NotShowEnterHint = "User_NotShowFirstHint";
 
-        
+        public const string Constructor_Step1_UserInfo = "Constructor_Step1_UserInfo";
+        public const string Constructor_Step2_Sections = "Constructor_Step2_Sections";
+        public const string Constructor_Step3_Template = "Constructor_Step3_Template";
+        public const string Constructor_Step4_Limits = "Constructor_Step4_Limits";
+        public const string Constructor_Step5_Goals = "Constructor_Step5_Goals";
     }
 }

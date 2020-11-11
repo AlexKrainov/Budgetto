@@ -11,11 +11,12 @@
                 v-bind:class="dataClass">
                 <div class="card-section card cursor-pointer"
                      v-for="section in sections"
-                    v-bind:key="section.id"
-                     v-on:click="$emit('onchoose', section)"
+                     v-bind:key="section.id"
+                     v-on:click="onSelect(section)"
                      v-bind:title="section.description"
                      v-show="section.isShow"
-                     v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground">
+                     v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground"
+                     v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section' ]">
                     <span class="selected-section-count">{{ checkSelected(section) }}</span>
                     <div class="cards-container card-body d-flex align-items-center ">
                         <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
@@ -23,7 +24,8 @@
                             <div class="section-name">{{section.name}}</div>
                             <div class="area-name opacity-75" style="margin-top: -5px;">
                                 {{ section.areaName }}
-                                <div class="ml-2" style="display: inline-block;" v-show="section.collectiveSections.length > 0">
+                                <div class="ml-2" style="display: inline-block;" 
+                                    v-show="section.collectiveSections && section.collectiveSections.length > 0">
                                     <i class="oi oi-layers"></i> +{{section.collectiveSections.length}}
                                 </div>
                             </div>
@@ -51,6 +53,10 @@
             default: "cards-small" //   cards-small/cards-medium/cards-big
         },
         dataSelectedItems: Array,//[{ id:9, count:1 }]
+        dataIsSelection: {
+            type: Boolean,
+            default: false
+        }
     },
     //computed: {
     //},
@@ -65,7 +71,7 @@
         dataItems: function (newValue) {
             this.updateSections();
         }
-    },
+    },   
     mounted: function () {
         new PerfectScrollbar(document.getElementsByClassName('cards')[0]);
 
@@ -127,6 +133,21 @@
                 this.sections[i].isShow = true;
             }
 
+        },
+        onSelect: function (section) {
+            if (this.dataIsSelection) {
+                section.isSelected = !section.isSelected;
+
+            }
+            this.$emit('onchoose', section);
+        },
+        selectAllSections: function () {
+            for (var i = 0; i < this.sections.length; i++) {
+                if (this.sections[i].isSelected == false) {
+                    this.onSelect(this.sections[i]);
+                }
+                //this.sections[i].isSelected = true;
+            }
         }
     }
 });

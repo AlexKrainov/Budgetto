@@ -157,182 +157,7 @@ var SectionVue = new Vue({
         isSaving: false,
 
         //https://materializecss.com/color.html
-        colors: [
-            {
-                id: 1,
-                background: 'rgb(255, 235, 238)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            }, {
-                id: 2,
-                background: 'rgb(255, 205, 210)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            }, {
-                id: 3,
-                background: 'rgb(239, 154, 154)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 4,
-                background: 'rgb(244, 67, 54)',
-                color: "#fff",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 5,
-                background: 'rgb(251, 233, 231)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 6,
-                background: 'rgb(255, 204, 188)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 7,
-                background: 'rgb(255, 171, 145)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 8,
-                background: 'rgb(255, 138, 101)',
-                color: "#fff",
-                border: '',
-                selected: false,
-            },
-
-
-            //Yellow
-            {
-                id: 9,
-                background: 'rgb(255, 224, 178)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            }, {
-                id: 10,
-                background: 'rgb(255, 204, 128)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 11,
-                background: 'rgb(255, 183, 77)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 12,
-                background: 'rgb(255, 167, 38)',
-                color: "#fff",
-                border: '',
-                selected: false,
-            },
-
-            //gray
-            {
-                id: 13,
-                background: 'rgb(238, 238, 238)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 14,
-                background: 'rgb(224, 224, 224)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 15,
-                background: 'rgb(189, 189, 189)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 16,
-                background: 'rgb(158, 158, 158)',
-                color: "#fff",
-                border: '',
-                selected: false,
-            },
-
-            //green
-
-            {
-                id: 17,
-                background: 'rgb(185, 246, 202)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 18,
-                background: 'rgb(105, 240, 174)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 19,
-                background: 'rgb(0, 230, 118)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 20,
-                background: 'rgb(0, 200, 83)',
-                color: "#fff",
-                border: '',
-                selected: false,
-            },
-
-            //blue
-            {
-                id: 21,
-                background: 'rgb(227, 242, 253)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 22,
-                background: 'rgb(187, 222, 251)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 23,
-                background: '#rgb(144, 202, 249)',
-                color: "rgba(24,28,33,0.8)",
-                border: '',
-                selected: false,
-            },
-            {
-                id: 24,
-                background: 'rgb(33, 150, 243)',
-                color: "#fff",
-                border: '',
-                selected: false,
-            }],
+        colors: [],
     },
     watch: {
         searchIcon: function (newValue, oldValue) {
@@ -356,10 +181,13 @@ var SectionVue = new Vue({
         }
     },
     mounted: function () {
-        $.getJSON("/json/font-awesome.json", function () { })
-            .done(function (json) {
-                SectionVue.icons = json;
-            });
+        $.getJSON("/json/font-awesome.json", function (json) {
+            SectionVue.icons = json;
+        });
+        $.getJSON("/json/colors-section.json", function (json) {
+            SectionVue.colors = json;
+        });
+
     },
     methods: {
         create: function () {
@@ -407,7 +235,7 @@ var SectionVue = new Vue({
             $("#modal-section").modal("show");
         },
 
-        remove: function (section) {
+        removeSection: function (section) {
             this.isSaving = true;
             sendAjax("/Section/RemoveSection?id=" + section.id, null, "POST")
                 .then(function (result) {
@@ -432,7 +260,7 @@ var SectionVue = new Vue({
             //this.searchIcon = '';
             $("#accordion2-2, #accordion2-1").removeClass("show");
         },
-        save: function () {
+        saveSection: function () {
             if (this.checkForm() == false) {
                 return false;
             }
@@ -494,7 +322,7 @@ var SectionVue = new Vue({
             this.section.areaName = event.target.selectedOptions[0].text;
         },
         changeSectionType: function (val) {
-            this.section.sectionTypeID = (val == this.section.sectionTypeID ? null : val);
+            this.section.sectionTypeID = val;// (val == this.section.sectionTypeID ? null : val);
         },
         chooseColor: function (cssBackground) {
             for (var i = 0; i < this.colors.length; i++) {

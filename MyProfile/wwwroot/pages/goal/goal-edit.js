@@ -40,7 +40,7 @@
             //find goal by id 
             $("#modal-goal").modal("show");
         },
-        save: function () {
+        saveGoal: function () {
             if (this.checkForm() == false) {
                 return false;
             }
@@ -75,9 +75,15 @@
 
             if (!(this.goal.name && this.goal.name.length > 0)) {
                 isOk = false;
+                $("#goal-name").addClass("is-valid");
+            } else {
+                $("#goal-name").removeClass("is-valid");
             }
             if (!(this.goal.expectationMoney && (this.goal.expectationMoney > 0 || this.goal.expectationMoney.length > 0))) {
                 isOk = false;
+                $("#goal-expectationMoney").addClass("is-valid");
+            } else {
+                $("#goal-expectationMoney").removeClass("is-valid");
             }
             if (isOk == false && e) {
                 e.preventDefault();

@@ -1,0 +1,326 @@
+﻿@*@model MyProfile.Entity.ModelView.Chart.ChartEditViewModel*@
+
+@{
+    ViewData["Title"] = "Edit";
+    var currentUser = MyProfile.Identity.UserInfo.Current;
+    Layout = "~/Views/Shared/Layouts/_LayoutStart.cshtml";
+}
+
+@section Styles {
+    <link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/vendor/libs/smartwizard/smartwizard.css">
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
+    <link href="~/css/sections-list.css" rel="stylesheet" />
+    <link href="~/css/template.css" rel="stylesheet" />
+}
+@section Scripts {
+    <!-- Dependencies -->
+    <script src="~/vendor/libs/smartwizard/smartwizard.js"></script>
+    <script src="~/vendor/libs/select2/select2.js"></script>
+
+    <script src="~/pages/start/start-index.js"></script>
+}
+<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-3">
+    <span class="lnr lnr-pie-chart display-4 text-primary mr-2"></span>
+    <span class="px-0 pb-2 pt-2">
+        Constructor
+    </span>
+    <a href="" title="Иформация об этой странице" target="_blank">
+        <i class="pe-7s-info d-block text-primary"></i>
+    </a>
+</h4>
+<hr class="container-m-nx border-light mt-0 mb-5">
+
+<div id="start-vue" class="smartwizard">
+    <ul>
+        <li>
+            <a href="#smartwizard-1-step-1" class="mb-3">
+                <span class="sw-number">1</span>
+                <div class="text-muted small">Информация о себе</div>
+            </a>
+        </li>
+        <li>
+            <a href="#smartwizard-1-step-2" class="mb-3">
+                <span class="sw-number">2</span>
+                <div class="text-muted small">Выбор категорий</div>
+            </a>
+        </li>
+        <li>
+            <a href="#smartwizard-1-step-3" class="mb-3">
+                <span class="sw-number">3</span>
+                <div class="text-muted small">Добавление шаблона</div>
+            </a>
+        </li>
+        <li>
+            <a href="#smartwizard-1-step-4" class="mb-3">
+                <span class="sw-number">4</span>
+                <div class="text-muted small">Добавление лимитов</div>
+            </a>
+        </li>
+        <li>
+            <a href="#smartwizard-1-step-5" class="mb-3">
+                <span class="sw-number">5</span>
+                <div class="text-muted small">Добавление целей</div>
+            </a>
+        </li>
+        <li>
+            <a href="#smartwizard-1-step-6" class="mb-3">
+                <span class="sw-number">6</span>
+                <div class="text-muted small">Завершение</div>
+            </a>
+        </li>
+    </ul>
+    <div class="mb-3">
+        <div id="smartwizard-1-step-1" class="card animated fadeIn">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label class="form-label">Ваше имя</label>
+                        <span class="text-danger">*</span>
+                        <input type="text" class="form-control" v-model="userInfo.name" id="userInfoName">
+                        <small class="invalid-feedback">Обязательное поле</small>
+                        <div class="text-light small mt-1"> Имя должно содержать больше 2 символов</div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <small class="invalid-feedback" id="validChooseChartType">Выберите тип графика</small>
+                </div>
+            </div>
+        </div>
+        <div id="smartwizard-1-step-2" class="card animated fadeIn" style="display: none;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <vue-section-component data-class="cards-medium"
+                                               data-records-style="margin-left: 15px;"
+                                               v-bind:is-show-filter="false"
+                                               v-bind:data-is-selection="true"
+                                               v-bind:data-items="sectionSource"
+                                               v-on:onchoose="onChooseSection"></vue-section-component>
+                        <a href="javascript:void(0)" class="small show-sections float-right" v-on:click="selectAllSections">Выбрать все категории</a>
+                        <br />
+                        <span v-show="userSectionSource && userSectionSource.length > 0">Мои категорий</span>
+                        <vue-section-component data-class="cards-medium"
+                                               data-records-style="margin-left: 15px;"
+                                               v-bind:is-show-filter="false"
+                                               v-bind:data-items="userSectionSource"
+                                               v-on:onchoose="onEditSection"></vue-section-component>
+                        <br>
+                        <button class="btn btn-primary ml-3" v-on:click="addSection">
+                            <i class="ion ion-md-add  pr-2"></i>Добавить свою категрию
+                        </button>
+                        <br />
+                        <span class="text-danger float-right">{{ errorMessage }}</span>
+                    </div>
+                    <div class="col-6">
+                        <div class="card ui-bordered mt-3 area-item custom-card-hover"
+                             v-for="area in areas">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
+                                <strong>{{ area.name }}</strong> &nbsp;
+                            </div>
+                            <vue-section-component data-class="cards-medium"
+                                                   data-records-style="margin-left: 15px;"
+                                                   v-bind:data-id="'areaid_'+area.id"
+                                                   v-bind:is-show-filter="false"
+                                                   v-bind:data-items="area.sections"></vue-section-component>
+                        </div>
+                    </div>
+                </div>
+                @await Html.PartialAsync("~/Views/Section/_ModelSection.cshtml")
+            </div>
+        </div>
+        <div id="smartwizard-1-step-3" class="card animated fadeIn">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <vue-section-component data-class="cards-medium"
+                                               data-records-style="margin-left: 15px;"
+                                               v-bind:is-show-filter="false"
+                                               v-bind:data-items="sections"
+                                               v-on:onchoose="templateOnSelectedSection"></vue-section-component>
+                        <br />
+                        <article class="card ui p-3">
+                            <div class="lists">
+                                <div class="list"
+                                     v-for="(templateColumn, indexColumn) in template.columns"
+                                     v-show="templateColumn.isShow"
+                                     v-bind:columnid="templateColumn.id"
+                                     v-on:click="selectColumn(templateColumn)">
+                                    <div class="card mb-3" v-bind:class="templateColumn.id == column.id ? 'border-primary' : 'opacity-column' ">
+                                        <h6 class="card-header text-center"> Колонка № {{ indexColumn + 1 }}</h6>
+                                        <a class="text-lighter text-bigteam-actions ignore-dnd" href="javascript:void(0)" title="Удалить колонку" style=" position: absolute; right: 15px; top: 15px;"
+                                           v-on:click="template.columns.splice(indexColumn, 1)">
+                                            <span class="ion ion-md-trash"></span>
+                                        </a>
+                                        <div class="tab-content">
+                                            <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active">
+                                                <div class="d-flex justify-content-between align-items-start ignore-dnd">
+                                                    <input type="text" class="form-control ignore-dnd" placeholder="Название колонки" v-model="templateColumn.name">
+                                                </div>
+                                                <hr class="m-0 mt-3" />
+                                                <div class="kanban-box px-2 pt-2">
+                                                    <div class="ui-bordered p-2 mb-2 badge-default" v-for="(templateBudgetSection, indexSection) in templateColumn.templateBudgetSections">
+                                                        <div class="kanban-board-actions btn-group float-right ml-2">
+                                                            <span class="ion ion-ios-close cursor-pointer remove-section-item"
+                                                                  v-on:click="removeSectionInColumn(templateBudgetSection, indexSection, indexColumn)"></span>
+                                                        </div>
+                                                        {{ templateBudgetSection.sectionName }}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button id="add-column" type="button" class="btn btn-outline-secondary"
+                                            v-on:click="addColumn">
+                                        Добавить колонку
+                                    </button>
+                                </div>
+                            </div>
+
+                        </article>
+                    </div>
+                    <div class="col-6">
+                        <table class="table table-bordered dataTable table-hover">
+                            <thead>
+                                <tr>
+                                    <th data-toggle="popover" v-bind:title="index == 0 ? '' : 'Категории'" data-placement="top"
+                                        v-bind:data-content="getTitleCell(templateColumn)"
+                                        v-for="(templateColumn, index) in  template.columns">{{ templateColumn.name }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="val in ['01','02', '03', '...']">
+                                    <td v-for="(templateColumns ,index) in  template.columns">
+                                        {{ index == 0 ? val : '' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span class="text-danger">{{ errorMessage }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="smartwizard-1-step-4" class="card animated fadeIn">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-outline-secondary"
+                                v-on:click="editLimit(null)">
+                            Добавить лимит
+                        </button>
+                        @await Html.PartialAsync("~/Views/Limit/_EditLimit.cshtml")
+                        <span class="text-danger">{{ errorMessage }}</span>
+                    </div>
+                    <div class="col-6">
+                        <div class="row" id="limits">
+                            <div class=" col-12"
+                                 v-for="limit in limits">
+                                <div class="card mb-4 custom-card-hover border-primary"
+                                     v-bind:id="'limit_' + limit.id">
+                                    <div class="card-body card-body pb-0">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200" v-on:click="editLimit(limit)">{{ limit.name }}</a>
+                                            <span class="badge badge-success align-text-bottom ml-1" v-show="limit.periodTypeID == 1">{{ limit.periodName }}</span>
+                                            <span class="badge badge-info align-text-bottom ml-1" v-show="limit.periodTypeID == 3">{{ limit.periodName }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="text-muted small mb-2">Категории</div>
+                                        <div class="d-flex flex-wrap">
+                                            <vue-section-component data-class="cards-medium"
+                                                                   v-bind:is-show-filter="false"
+                                                                   v-bind:data-items="limit.sections"></vue-section-component>
+                                        </div>
+                                    </div>
+                                    <hr class="m-0">
+                                    <div class="card-body pb-2 pt-1 row">
+                                        <div class="col-12">
+                                            <div class="text-muted small display-inline">Цель</div>
+                                            <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
+                                        </div>
+                                    </div>
+                                    <hr class="m-0">
+                                    <div class="card-footer p-3">
+                                        <button class="btn btn-primary btn-sm" v-on:click="editLimit(limit)">
+                                            <i class="far fa-edit pr-2"></i>Редактировать
+                                        </button>
+                                        <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
+                                           v-on:click="removeLimit(limit)">
+                                            <span class="ion ion-md-trash"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="smartwizard-1-step-5" class="card animated fadeIn">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-outline-secondary"
+                                v-on:click="editGoal(null)">
+                            Добавить цель
+                        </button>
+                        @await Html.PartialAsync("~/Views/Goal/_EditGoal.cshtml")
+                        <span class="text-danger">{{ errorMessage }}</span>
+                    </div>
+                    <div class="col-6">
+                        <div class="row" id="goals">
+                            <div class=" col-12"
+                                 v-for="goal in goals">
+                                <div class="card mb-4 custom-card-hover border-primary"
+                                     v-bind:id="'goal_' + goal.id">
+                                    <div class="card-body card-body pb-0">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200" title="Редактировать"
+                                               v-on:click="edit(goal)">{{ goal.name }}</a>
+                                        </div>
+                                    </div>
+                                    <hr class="m-0">
+                                    <div class="card-body pb-2 pt-1 row">
+                                        <div class="col-5 p-0 pl-2">
+                                            <div class="text-muted small display-inline">Цель</div>
+                                            <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goal.expectationMoney) }}</h6>
+                                        </div>
+                                        <div class="col-4 p-0">
+                                            <div class="text-muted small display-inline">Начало</div>
+                                            <h6 class="mt-1">{{  getDateByFormat(goal.dateStart, 'DD.MM.YYYY') }}</h6>
+                                        </div>
+                                        <div class="col-3 p-0">
+                                            <div class="text-muted small display-inline">Окончание</div>
+                                            @*<span class="badge badge-outline-danger ml-1" v-show="goal.isFinished">Завершен</span>*@
+                                            <h6 class="mt-1" v-show="goal.dateEnd">{{  getDateByFormat(goal.dateEnd, 'DD.MM.YYYY') }}</h6>
+                                        </div>
+                                    </div>
+                                    <hr class="m-0">
+                                    <div class="card-footer p-3">
+                                        <a href="javascript:void(0)" class="btn btn-primary btn-sm" v-on:click="editGoal(goal)">
+                                            <i class="far fa-edit pr-2"></i>Редактировать
+                                        </a>
+                                        <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
+                                           v-on:click="removeGoal(goal)">
+                                            <span class="ion ion-md-trash"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="smartwizard-1-step-6" class="card animated fadeIn">
+            <div class="card-body">
+                Thank you :)
+            </div>
+        </div>
+    </div>
+</div>

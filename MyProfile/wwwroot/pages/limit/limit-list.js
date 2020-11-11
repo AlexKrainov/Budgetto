@@ -103,7 +103,7 @@ var LimitListVue = new Vue({
             //find limit by id 
             $("#modal-limit").modal("show");
         },
-        save: function () {
+        saveLimit: function () {
             this.limit.newSections = $("#limitSections").select2("val").map(function (x) { return { id: x } });
 
             if (this.checkForm() == false) {
@@ -137,21 +137,28 @@ var LimitListVue = new Vue({
         checkForm: function (e) {
             let isOk = true;
             if (this.limit.newSections.length == 0) {
-                //$("#limitSections").addClass("is-invalid");
-                //$("#limitSections").next().addClass("is-invalid");
+                $("#limitSections").addClass("is-invalid");
+                $("#limitSections").next().addClass("is-invalid");
                 isOk = false;
             }
-            //else {
-            //    $("#limitSections").removeClass("is-invalid");
-            //    $("#limitSections").next().removeClass("is-invalid");
-            //}
+            else {
+                $("#limitSections").removeClass("is-invalid");
+                $("#limitSections").next().removeClass("is-invalid");
+            }
 
             if (!(this.limit.name && this.limit.name.length > 0)) {
+                $("#limit-name").addClass("is-invalid");
                 isOk = false;
+            } else {
+                $("#limit-name").removeClass("is-invalid");
             }
             if (!(this.limit.limitMoney && (this.limit.limitMoney > 0 || this.limit.limitMoney.length > 0))) {
                 isOk = false;
+                $("[name=limitMoney]").addClass("is-invalid");
+            } else {
+                $("[name=limitMoney]").removeClass("is-invalid");
             }
+
             if (isOk == false && e) {
                 e.preventDefault();
             }

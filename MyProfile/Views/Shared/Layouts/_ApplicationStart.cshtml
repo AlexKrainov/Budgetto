@@ -1,0 +1,145 @@
+﻿@{
+    var currentUser = MyProfile.Identity.UserInfo.GetUserInfoModelForClient();
+}
+<!DOCTYPE html>
+
+<!--<html lang="ru" class="layout-navbar-fixed mdl-js layout-fixed @(currentUser.UserSettings.WebSiteTheme == "dark" ? "dark-style": "light-style")" dir="ltr">-->
+@*<html lang="ru" class="default-style layout-navbar-fixed mdl-js layout-fixed" dir="ltr">*@
+<html lang="ru" class="light-style layout-sidenav-100vh layout-expanded layout-fixed layout-navbar-fixed" dir="ltr">
+<head>
+    <title>Budgetto: @ViewData["Title"]</title>
+
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico">
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet">
+
+    <!-- Icon fonts -->
+    <link rel="stylesheet" href="~/vendor/fonts/fontawesome.css">
+    <link rel="stylesheet" href="~/vendor/fonts/ionicons.css">
+    <link rel="stylesheet" href="~/vendor/fonts/linearicons.css">
+    <link rel="stylesheet" href="~/vendor/fonts/open-iconic.css">
+    <link rel="stylesheet" href="~/vendor/fonts/pe-icon-7-stroke.css">
+
+    <!-- Core stylesheets -->
+    @*@if (currentUser.UserSettings.WebSiteTheme == "dark")
+        {
+            <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap-dark.css" class="theme-settings-bootstrap-css">
+            <link rel="stylesheet" href="~/vendor/css/rtl/appwork-dark.css" class="theme-settings-appwork-css">
+            <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate-dark.css" class="theme-settings-theme-css">
+            <link rel="stylesheet" href="~/vendor/css/rtl/colors-dark.css" class="theme-settings-colors-css">
+        }
+        else
+        {*@
+    <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap.css" class="theme-settings-bootstrap-css">
+    <link rel="stylesheet" href="~/vendor/css/rtl/appwork.css" class="theme-settings-appwork-css">
+    <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate.css" class="theme-settings-theme-css">
+    <link rel="stylesheet" href="~/vendor/css/rtl/colors.css" class="theme-settings-colors-css">
+    @* }*@
+
+    <link rel="stylesheet" href="~/vendor/css/rtl/uikit.css">
+    <link rel="stylesheet" href="~/css/demo.css">
+    <link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css">
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.css">
+    <link rel="stylesheet" href="~/vendor/libs/spinkit/spinkit.css" />
+    @if (currentUser.UserSettings.IsShowHints)
+    {
+        <link href="~/vendor/libs/shepherd/shepherd.css" rel="stylesheet" />
+    }
+    <!--Record-->
+    <link href="~/css/main.css" rel="stylesheet" />
+
+    <!-- Load polyfills -->
+    <script src="~/vendor/js/polyfills.js"></script>
+    <script>document['documentMode'] === 10 && document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.~locale.en"><\/script>')</script>
+
+    <script src="~/vendor/js/material-ripple.js"></script>
+    <script src="~/vendor/js/layout-helpers.js"></script>
+
+    <!-- Theme settings -->
+    <!-- This file MUST be included after core stylesheets and layout-helpers.js in the <head> section -->
+    <script src="~/vendor/js/theme-settings.js"></script>
+    <script>
+		window.themeSettings = new ThemeSettings({
+			cssFilenamePattern: '%name%.css',
+			cssPath: '/vendor/css/rtl/',
+            themesPath: '/vendor/css/rtl/',
+            @if (currentUser.UserSettings.WebSiteTheme == "dark")
+            {
+                @Html.Raw("styles: ['dark','dark-style'],")
+            }
+        });
+
+
+        var UserInfo = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(currentUser, Newtonsoft.Json.Formatting.None))');
+
+        if (window.layoutHelpers.isNavbarFixed() == false) {
+            window.layoutHelpers.setNavbarFixed(true);
+        }
+        if (window.layoutHelpers.isFixed() == false) {
+            window.layoutHelpers.setFixed(true);
+        }
+        //if (window.themeSettings.isLightStyle() && ) {
+
+        //}
+
+    </script>
+
+    <!-- Core scripts -->
+    <script src="~/vendor/js/pace.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Libs -->
+    <link rel="stylesheet" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">
+
+    @RenderSection("Styles", required: false)
+
+    <link rel="stylesheet" href="~/vendor/libs/tagify/dist/tagify.css" />
+
+</head>
+<body>
+    <div class="page-loader"><div class="bg-primary"></div></div>
+
+    @RenderBody()
+    <div id="record-container" style="float:inherit">
+        <vue-record-component id="test3" name="test3"></vue-record-component>
+    </div>
+
+    <!-- Core scripts -->
+    <script src="~/vendor/libs/popper/popper.js"></script>
+    <script src="~/vendor/js/bootstrap.js"></script>
+    <script src="~/vendor/js/sidenav.js"></script>
+    <script src="~/vendor/libs/block-ui/block-ui.js"></script>
+
+    <script src="~/vendor/libs/vue/dist/vue.js"></script>
+    <script src="~/vendor/libs/moment/moment.js"></script>
+
+    <!-- Scripts -->
+    <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="~/vendor/libs/flatpickr/l10n/ru.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.js"></script>
+
+    <!-- Record -->
+    <script src="~/vue-components/vue-section-component.js"></script>
+
+    <script src="~/pages/_base/global.functions.site.js"></script>
+    @*<script src="~/pages/_base/startup.site.js"></script>*@
+
+    @if (currentUser.UserSettings.IsShowHints)
+    {
+        <script src="~/vendor/libs/shepherd/shepherd.js"></script>
+    }
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

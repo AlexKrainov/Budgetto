@@ -1,0 +1,21 @@
+@{
+    Layout = "Layouts/_ApplicationStart";
+}
+
+@section Styles { @RenderSection("Styles", required: false) }
+@section Scripts { @RenderSection("Scripts", required: false) }
+
+<div class="layout-wrapper layout-1">
+    <div class="layout-inner">
+        @await Html.PartialAsync("Layouts/Partials/_LayoutNavbarStart")
+        <div class="layout-container" style="padding-left: 0px;">
+            <div class="layout-content">
+                <div class="container-fluid flex-grow-1 container-p-y">
+                    @RenderBody()
+                </div>
+                @await Html.PartialAsync("Layouts/Partials/_LayoutFooter")
+            </div>
+        </div>
+    </div>
+    <div class="layout-overlay layout-sidenav-toggle"></div>
+</div>

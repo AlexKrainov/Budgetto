@@ -25,25 +25,31 @@
     }
 
     <!-- Links -->
-    <ul class="sidenav-inner@(!isHorizontal ? " py-1" : "")">
+<ul class="sidenav-inner@(!isHorizontal ? " py-1" : "")">
 
-        @foreach (var menuItem in menuItems)
+    @foreach (var menuItem in menuItems)
+    {
+        var choosenPage = currentPage == menuItem.Controller + "/" + menuItem.Action;
+        <li class="sidenav-item@( choosenPage ? " active" : "") @menuItem.ClassElement">
+            <a asp-area="@menuItem.Area" asp-controller="@menuItem.Controller" asp-action="@menuItem.Action" class="sidenav-link">
+                <i class="sidenav-icon @menuItem.Icon @(choosenPage ? "text-primary" : "")"></i>
+                <div>@menuItem.Title</div>
+            </a>
+        </li>
+        if (menuItem.IsLastBeforeLine)
         {
-            var choosenPage = currentPage == menuItem.Controller + "/" + menuItem.Action;
-            <li class="sidenav-item@( choosenPage ? " active" : "") @menuItem.ClassElement">
-                <a asp-area="@menuItem.Area" asp-controller="@menuItem.Controller" asp-action="@menuItem.Action" class="sidenav-link">
-                    <i class="sidenav-icon @menuItem.Icon @(choosenPage ? "text-primary" : "")"></i>
-                    <div>@menuItem.Title</div>
-                </a>
-            </li>
-            if (menuItem.IsLastBeforeLine)
-            {
-                <li class="sidenav-divider mb-1"></li>
-            }
+            <li class="sidenav-divider mb-1"></li>
         }
-        @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
+    }
+    <li class="sidenav-item @( currentPage == "Start/Index" ? " active" : "") ">
+        <a asp-area="" asp-controller="Start" asp-action="Index" class="sidenav-link">
+            <i class="sidenav-icon @(currentPage == "Start/Index" ? "text-primary" : "")"></i>
+            <div>Start</div>
+        </a>
+    </li>
+    @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
 
 
-    </ul>
+</ul>
 </div>
 <!-- / Layout sidenav -->

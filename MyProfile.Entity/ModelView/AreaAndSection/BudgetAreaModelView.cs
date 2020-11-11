@@ -23,5 +23,6 @@ namespace MyProfile.Entity.ModelView
 		public bool IsUpdated { get; set; } = false;
 
 		public IEnumerable<BudgetSectionModelView> Sections { get; set; } = new List<BudgetSectionModelView>();
+        public string CodeName { get; set; }
     }
 }

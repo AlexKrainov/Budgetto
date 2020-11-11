@@ -112,6 +112,7 @@ namespace MyProfile.Entity.Model
         /// </summary>
         public bool IsShowHints { get; set; }
         public bool IsShowFirstEnterHint { get; set; }
+        public bool IsShowConstructor { get; set; }
 
         public virtual User User { get; set; }
 

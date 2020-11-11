@@ -579,6 +579,14 @@ a.folder-text:hover .folder-edit-button {
     font-size: small;
 }
 
+.not-selected-section {
+    opacity: 0.4;
+}
+
+.selected-section {
+    opacity: 1;
+}
+
 .card-section-text {
 }
 

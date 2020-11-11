@@ -106,3 +106,7 @@ span[data-role="remove"] {
     color: white;
     font-size: .894rem;
 }
+
+.opacity-column {
+    opacity: 0.4;
+}

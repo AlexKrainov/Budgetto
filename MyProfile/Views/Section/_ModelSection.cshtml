@@ -33,26 +33,22 @@
                     </div>
                 </div>
 
-                <div class="form-row">
+                <div id="section-description" class="form-row">
                     <div class="form-group col mb-0">
                         <label class="form-label">Введите описание категории </label>
                         <textarea class="form-control" v-model="section.description" placeholder=""></textarea>
                     </div>
                 </div>
-                @*<div class="form-row mt-3">
+                <span id="choose-area">
+                    <div class="form-row mt-3 " v-if="section.id">
                         <div class="form-group col mb-0">
-                            <label class="form-label">Выберите подходящий цвет для категории</label>
-                            <div class="picker" id="cssColor"></div>
+                            <label class="form-label">Сменить папку</label>
+                            <select class="form-control" v-on:change="changeArea($event)">
+                                <option v-for="area in areas" v-bind:value="area.id" v-bind:selected="area.id == section.areaID">{{ area.name }}</option>
+                            </select>
                         </div>
-                    </div>*@
-                <div class="form-row mt-3 " v-if="section.id">
-                    <div class="form-group col mb-0">
-                        <label class="form-label">Сменить папку</label>
-                        <select class="form-control" v-on:change="changeArea($event)">
-                            <option v-for="area in areas" v-bind:value="area.id" v-bind:selected="area.id == section.areaID">{{ area.name }}</option>
-                        </select>
                     </div>
-                </div>
+                </span>
                 @*<div class="form-row mt-3 ml-1">
                         <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
                             <label class="custom-control custom-checkbox">
@@ -61,31 +57,35 @@
                             </label>
                         </div>
                     </div>*@
+                <div id="accordion2">
+                    <div class="form-row mt-3 ">
+                        <div class="form-group col mb-0">
+                            <label class="form-label"> Выбор цвета для категории</label>
+                            <div class="card mb-2 choose-color">
+                                <div class="card-header">
+                                    <a class="d-flex justify-content-between text-body " data-toggle="collapse" href="#accordion2-1">
 
-                <div id="accordion2" class="mt-4">
-                    <div class="card mb-2 choose-color">
-                        <div class="card-header">
-                            <a class="d-flex justify-content-between text-body " data-toggle="collapse" href="#accordion2-1">
-                                Выбор цвета для категории
-                                <div class="picker margin-right mr-3" style="width: 50px;" v-bind:style="'background-color:' + section.cssBackground"></div>
-                                <div class="collapse-icon"></div>
-                            </a>
-                        </div>
+                                        <div class="picker margin-right mr-3" style="width: 50px;" v-bind:style="'background-color:' + section.cssBackground"></div>
+                                        <div class="collapse-icon"></div>
+                                    </a>
+                                </div>
 
-                        <div id="accordion2-1" class="collapse" data-parent="#accordion2">
-                            <div class="card-colors">
-                                <div class="card-color-section cursor-pointer" v-for="(_color, index ) in colors"
-                                     v-bind:data-id="_color.id"
-                                     v-on:click="chooseColor(_color.background)"
-                                     v-bind:class="_color.selected ? 'card-color-section-selected': ''">
-                                    <div class="card border-0 text-body" v-bind:style="'background-color:' + _color.background">
-                                        <div class="card-body d-flex  align-items-center p-2" v-bind:style="'color:'+_color.color">
-                                            <i class="text-xlarge opacity-75 fas fa-shopping-cart"></i>
-                                            <div class="ml-2">
-                                                <div>За квартиру</div> <div class="small opacity-75" style="margin-top: -5px;">
-                                                    Основные раходы
-                                                    <div class="ml-2" style="display: none;">
-                                                        <i class="oi oi-layers"></i> +0
+                                <div id="accordion2-1" class="collapse" data-parent="#accordion2">
+                                    <div class="card-colors">
+                                        <div class="card-color-section cursor-pointer" v-for="(_color, index ) in colors"
+                                             v-bind:data-id="_color.id"
+                                             v-on:click="chooseColor(_color.background)"
+                                             v-bind:class="_color.selected ? 'card-color-section-selected': ''">
+                                            <div class="card border-0 text-body" v-bind:style="'background-color:' + _color.background">
+                                                <div class="card-body d-flex  align-items-center p-2" v-bind:style="'color:'+_color.color">
+                                                    <i class="text-xlarge opacity-75 fas fa-shopping-cart"></i>
+                                                    <div class="ml-2">
+                                                        <div>За квартиру</div> <div class="small opacity-75" style="margin-top: -5px;">
+                                                            Основные раходы
+                                                            <div class="ml-2" style="display: none;">
+                                                                <i class="oi oi-layers"></i> +0
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -95,29 +95,34 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-row mt-3 ">
+                        <div class="form-group col mb-0">
+                            <label class="form-label">Выбор иконки</label>
+                            <div class="card mb-2 choose-icons">
+                                <div class="card-header">
+                                    <a class="collapsed d-flex justify-content-between text-body " data-toggle="collapse" href="#accordion2-2">
 
-                    <div class="card mb-2 choose-icons">
-                        <div class="card-header">
-                            <a class="collapsed d-flex justify-content-between text-body " data-toggle="collapse" href="#accordion2-2">
-                                Выбор иконки
-                                <i class="margin-right" v-bind:class="section.cssIcon" aria-hidden="true" style="font-size:large; margin-right: 2.2rem !important;"></i>
-                                <div class="collapse-icon"></div>
-                            </a>
-                        </div>
-                        <div id="accordion2-2" class="collapse" data-parent="#accordion2">
-                            <div class="form-row mt-2" id="cssIcon">
-                                <div class="form-group row m-2 reminder-icons">
-                                    <br />
-                                    <div class="card d-inline-flex justify-content-center align-items-center m-1"
-                                         v-for="icon in icons"
-                                         v-show="icon.isShow"
-                                         v-on:click="selectIcon(icon)">
-                                        <i v-bind:class="icon.nameClass" class=" cursor-pointer" aria-hidden="true"></i> @*{{ icon.name }}*@
+                                        <i class="margin-right" v-bind:class="section.cssIcon" aria-hidden="true" style="font-size:large; margin-right: 2.2rem !important;"></i>
+                                        <div class="collapse-icon"></div>
+                                    </a>
+                                </div>
+                                <div id="accordion2-2" class="collapse" data-parent="#accordion2">
+                                    <div class="form-row mt-2" id="cssIcon">
+                                        <div class="form-group row m-2 reminder-icons">
+                                            <br />
+                                            <div class="card d-inline-flex justify-content-center align-items-center m-1"
+                                                 v-for="icon in icons"
+                                                 v-show="icon.isShow"
+                                                 v-on:click="selectIcon(icon)">
+                                                <i v-bind:class="icon.nameClass" class=" cursor-pointer" aria-hidden="true"></i> @*{{ icon.name }}*@
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 @*<div class="form-row mt-3 ml-1">
                         <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
@@ -129,10 +134,13 @@
                     </div>*@
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" style=" position: absolute; left: 22px;"
+                        v-if="section.hasRecords == false"
+                        v-on:click="removeSection(section)">Удалить</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button id="save-sections" class="btn btn-primary" type="submit"
+                <button id="save-sections" class="btn btn-primary" type="button"
                         v-bind:disabled="isSaving"
-                        v-on:click="save">
+                        v-on:click="saveSection">
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                     Сохранить
                 </button>
