@@ -36,8 +36,8 @@
             <div>
                 <div class="text-muted small">Инвестиции</div>
                 <strong class="text-large font-weight-normal">{{ investingData.total }}</strong>
-                <sup v-show="investingData.percent != 0 && !investingData.isGood" class="text-danger small">+ {{ investingData.percent }}%</sup>
-                <sup v-show="investingData.percent != 0 && investingData.isGood" class="text-success small">- {{ investingData.percent }}%</sup>
+                <sup v-show="investingData.percent != 0 && !investingData.isGood" class="text-danger small">- {{ investingData.percent }}%</sup>
+                <sup v-show="investingData.percent != 0 && investingData.isGood" class="text-success small">+ {{ investingData.percent }}%</sup>
             </div>
 			<div class="w-50">
 				<div style="height: 70px;">

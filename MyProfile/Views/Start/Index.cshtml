@@ -20,53 +20,56 @@
 
     <script src="~/pages/start/start-index.js"></script>
 }
-<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-3">
-    <span class="lnr lnr-pie-chart display-4 text-primary mr-2"></span>
-    <span class="px-0 pb-2 pt-2">
-        Constructor
+<h4 class="d-flex flex-wrap w-100 font-weight-bold mb-3">
+    <span class="ion ion-md-settings display-4 text-primary mr-2"></span>
+    <span class="py-2" style=" margin-top: -3px;">
+        Настройка рабочей области
     </span>
-    <a href="" title="Иформация об этой странице" target="_blank">
-        <i class="pe-7s-info d-block text-primary"></i>
-    </a>
 </h4>
 <hr class="container-m-nx border-light mt-0 mb-5">
 
-<div id="start-vue" class="smartwizard">
+<div id="start-vue" class="smartwizard" v-cloak>
     <ul>
         <li>
             <a href="#smartwizard-1-step-1" class="mb-3">
-                <span class="sw-number">1</span>
-                <div class="text-muted small">Информация о себе</div>
+                <span class="sw-icon ion ion-ios-person" style=" font-size: 22px;"></span>
+                <div class="text-muted small">Шаг 1</div>
+                Информация о себе
             </a>
         </li>
         <li>
             <a href="#smartwizard-1-step-2" class="mb-3">
-                <span class="sw-number">2</span>
-                <div class="text-muted small">Выбор категорий</div>
+                <span class="sw-icon pe-7s-albums" style=" font-size: 22px;"></span>
+                <div class="text-muted small">Шаг 2</div>
+                Выбор категорий
             </a>
         </li>
         <li>
             <a href="#smartwizard-1-step-3" class="mb-3">
-                <span class="sw-number">3</span>
-                <div class="text-muted small">Добавление шаблона</div>
+                <span class="sw-icon lnr lnr-layers" style=" font-size: 22px;"></span>
+                <div class="text-muted small">Шаг 3</div>
+                Добавление шаблона
             </a>
         </li>
         <li>
             <a href="#smartwizard-1-step-4" class="mb-3">
-                <span class="sw-number">4</span>
-                <div class="text-muted small">Добавление лимитов</div>
+                <span class="sw-icon lnr lnr-frame-expand" style=" font-size: 22px;"></span>
+                <div class="text-muted small">Шаг 4</div>
+                Добавление лимитов
             </a>
         </li>
         <li>
             <a href="#smartwizard-1-step-5" class="mb-3">
-                <span class="sw-number">5</span>
-                <div class="text-muted small">Добавление целей</div>
+                <span class="sw-icon lnr lnr-rocket" style="padding-left: 2px;font-size: 22px;"></span>
+                <div class="text-muted small">Шаг 5</div>
+                Добавление целей
             </a>
         </li>
         <li>
             <a href="#smartwizard-1-step-6" class="mb-3">
-                <span class="sw-number">6</span>
-                <div class="text-muted small">Завершение</div>
+                <span class="sw-icon ion ion-md-trophy" style=" font-size: 22px;"></span>
+                <div class="text-muted small">Шаг 6</div>
+                Завершение
             </a>
         </li>
     </ul>
@@ -74,7 +77,7 @@
         <div id="smartwizard-1-step-1" class="card animated fadeIn">
             <div class="card-body">
                 <div class="form-row">
-                    <div class="form-group col">
+                    <div class="form-group col-4">
                         <label class="form-label">Ваше имя</label>
                         <span class="text-danger">*</span>
                         <input type="text" class="form-control" v-model="userInfo.name" id="userInfoName">
@@ -92,15 +95,19 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <vue-section-component data-class="cards-medium"
-                                               data-records-style="margin-left: 15px;"
-                                               v-bind:is-show-filter="false"
-                                               v-bind:data-is-selection="true"
-                                               v-bind:data-items="sectionSource"
-                                               v-on:onchoose="onChooseSection"></vue-section-component>
-                        <a href="javascript:void(0)" class="small show-sections float-right" v-on:click="selectAllSections">Выбрать все категории</a>
+                        <strong class="ml-3">Выберите категории, по которым вы ведете учет финансов:</strong>
+
+                        <div class="mt-4">
+                            <vue-section-component data-class="cards-medium"
+                                                   data-records-style="margin-left: 15px;"
+                                                   v-bind:is-show-filter="false"
+                                                   v-bind:data-is-selection="true"
+                                                   v-bind:data-items="sectionSource"
+                                                   v-on:onchoose="onChooseSection"></vue-section-component>
+                            <a href="javascript:void(0)" class="small show-sections ml-3" v-on:click="selectAllSections">Выбрать все категории</a>
+                        </div>
                         <br />
-                        <span v-show="userSectionSource && userSectionSource.length > 0">Мои категорий</span>
+                        <strong class="ml-3" v-show="userSectionSource && userSectionSource.length > 0">Мои категорий</strong>
                         <vue-section-component data-class="cards-medium"
                                                data-records-style="margin-left: 15px;"
                                                v-bind:is-show-filter="false"
@@ -114,6 +121,7 @@
                         <span class="text-danger float-right">{{ errorMessage }}</span>
                     </div>
                     <div class="col-6">
+                        <strong class="ml-3">Для вашего удобства категории распределяются по папкам:</strong>
                         <div class="card ui-bordered mt-3 area-item custom-card-hover"
                              v-for="area in areas">
                             <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
@@ -134,13 +142,18 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <vue-section-component data-class="cards-medium"
-                                               data-records-style="margin-left: 15px;"
-                                               v-bind:is-show-filter="false"
-                                               v-bind:data-items="sections"
-                                               v-on:onchoose="templateOnSelectedSection"></vue-section-component>
+                        <strong class="ml-3">Ведение финансов осуществляется в формате таблицы.</strong>
                         <br />
-                        <article class="card ui p-3">
+                        <strong class="ml-3"> Нажмите "Добавить колонку" и выберите подходящие категории (от одной до всех):</strong>
+                        <div class="mt-4">
+                            <vue-section-component data-class="cards-medium"
+                                                   data-records-style="margin-left: 15px;"
+                                                   v-bind:is-show-filter="false"
+                                                   v-bind:data-items="sections"
+                                                   v-on:onchoose="templateOnSelectedSection"></vue-section-component>
+                        </div>
+                        <br />
+                        <article class="card ui p-3 ml-3">
                             <div class="lists">
                                 <div class="list"
                                      v-for="(templateColumn, indexColumn) in template.columns"
@@ -184,7 +197,8 @@
                         </article>
                     </div>
                     <div class="col-6">
-                        <table class="table table-bordered dataTable table-hover">
+                        <strong class="ml-3">Ваша таблица сейчас выглядит так:</strong>
+                        <table class="table table-bordered dataTable table-hover mt-4">
                             <thead>
                                 <tr>
                                     <th data-toggle="popover" v-bind:title="index == 0 ? '' : 'Категории'" data-placement="top"
@@ -195,11 +209,15 @@
                             <tbody>
                                 <tr v-for="val in ['01','02', '03', '...']">
                                     <td v-for="(templateColumns ,index) in  template.columns">
-                                        {{ index == 0 ? val : '' }}
+                                        {{ index == 0 ? val : '0 ₽' }}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        <small class="text-muted">
+                            Вы всегда можете поменять наполнение колонок в разделе "Шаблоны"
+                        </small>
+                        <br />
                         <span class="text-danger">{{ errorMessage }}</span>
                     </div>
                 </div>
@@ -209,7 +227,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <button type="button" class="btn btn-outline-secondary"
+                        <strong class="">Лимиты позволяют контролировать траты по выбранным категориям.</strong>
+                        <br />
+                        <button type="button" class="btn btn-outline-secondary mt-4"
                                 v-on:click="editLimit(null)">
                             Добавить лимит
                         </button>
@@ -217,7 +237,9 @@
                         <span class="text-danger">{{ errorMessage }}</span>
                     </div>
                     <div class="col-6">
-                        <div class="row" id="limits">
+                        <strong v-show="limits.length > 0">Ваши лимиты:</strong>
+                        <br />
+                        <div class="row mt-4" id="limits">
                             <div class=" col-12"
                                  v-for="limit in limits">
                                 <div class="card mb-4 custom-card-hover border-primary"
@@ -257,6 +279,7 @@
                                 </div>
                             </div>
                         </div>
+                        <small class="text-muted">Вы всегда можете добавить лимиты в разделе "Лимиты"</small>
                     </div>
                 </div>
             </div>
@@ -265,7 +288,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <button type="button" class="btn btn-outline-secondary"
+                        <strong class="">Создавайте цели и отслеживайте их достижение.</strong>
+                        <br />
+                        <button type="button" class="btn btn-outline-secondary mt-4"
                                 v-on:click="editGoal(null)">
                             Добавить цель
                         </button>
@@ -273,7 +298,9 @@
                         <span class="text-danger">{{ errorMessage }}</span>
                     </div>
                     <div class="col-6">
-                        <div class="row" id="goals">
+                        <strong v-show="goals.length > 0">Ваши текущие цели: </strong>
+                        <br />
+                        <div class="row mt-4" id="goals">
                             <div class=" col-12"
                                  v-for="goal in goals">
                                 <div class="card mb-4 custom-card-hover border-primary"
@@ -313,14 +340,23 @@
                                 </div>
                             </div>
                         </div>
+                        <small class="text-muted">Вы всегда можете добавить цели в разделе "Цели"</small>
                     </div>
                 </div>
             </div>
         </div>
         <div id="smartwizard-1-step-6" class="card animated fadeIn">
             <div class="card-body">
-                Thank you :)
+                <i class="ion ion-md-trophy d-block display-4 text-primary text-center" style=" font-size: 6rem; font-weight: 300; line-height: 1.1;"></i>
+                <h2 class="text-center"> Ура! Всё готово к работе.</h2>
+                <h2 class="text-center">Ваш бесплатный период начинается сегодня.</h2>
             </div>
         </div>
     </div>
+    <a id="button-skip" href="javascript:void(0)" class="small mr-4"
+       v-show="isShowButtonSkip"
+       v-on:click="skip">Пропустить</a>
+    <button id="button-finish" class="btn btn-primary" type="button" style="display: none;" v-on:click="finish">
+        Перейти в рабочую область
+    </button>
 </div>

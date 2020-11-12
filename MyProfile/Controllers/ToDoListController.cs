@@ -21,7 +21,7 @@ namespace MyProfile.Controllers
 
         public async Task<IActionResult> List()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.ToDoLists_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.ToDoLists_Page);
 
             return View();
         }

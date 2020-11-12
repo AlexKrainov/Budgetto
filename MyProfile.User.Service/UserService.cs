@@ -178,7 +178,7 @@ namespace MyProfile.User.Service
         {
             if (user != null)
             {
-                await userLogService.CreateUserLog(user.UserSessionID, userActionType);
+                await userLogService.CreateUserLogAsync(user.UserSessionID, userActionType);
 
                 await UserInfo.AddOrUpdate_Authenticate(user); // аутентификация
             }
@@ -666,7 +666,7 @@ namespace MyProfile.User.Service
 
 
 
-        public async Task<UserInfoModel> UpdateUser(UserInfoModel userInfoModel)
+        public async Task<UserInfoModel> UpdateUser(UserInfoModel userInfoModel, bool userSettingsSave = false)
         {
             var user = UserInfo.Current;
             var dbUser = await repository.GetAll<Entity.Model.User>(x => x.ID == user.ID)
@@ -710,6 +710,11 @@ namespace MyProfile.User.Service
                 userInfoModel.ImageBase64 = null;
             }
 
+            if (userSettingsSave)
+            {
+                dbUser.UserSettings.IsShowConstructor = userInfoModel.UserSettings.IsShowConstructor;
+            }
+
             await repository.UpdateAsync(dbUser, true);
 
             //Check if we have alredy the new email ???
@@ -722,11 +727,11 @@ namespace MyProfile.User.Service
                 user.IsConfirmEmail = dbUser.IsConfirmEmail = userInfoModel.IsConfirmEmail = false;
 
                 await repository.UpdateAsync(dbUser, true);
-                await userLogService.CreateUserLog(user.UserSessionID, UserLogActionType.User_Change_Email);
+                await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_Change_Email);
             }
 
             await UserInfo.AddOrUpdate_Authenticate(user);
-            await userLogService.CreateUserLog(user.UserSessionID, UserLogActionType.User_Edit);
+            await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_Edit);
 
             return userInfoModel;
         }

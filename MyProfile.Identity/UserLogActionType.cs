@@ -100,5 +100,10 @@
         public const string Constructor_Step3_Template = "Constructor_Step3_Template";
         public const string Constructor_Step4_Limits = "Constructor_Step4_Limits";
         public const string Constructor_Step5_Goals = "Constructor_Step5_Goals";
+        public const string Constructor_Step6_Finish = "Constructor_Step6_Finish";
+
+
+        public const string ADMIN_GenerateRecords = "ADMIN_GenerateRecords";
+        public const string ADMIN_ClearAccount = "ADMIN_ClearAccount";
     }
 }

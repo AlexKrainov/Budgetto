@@ -115,7 +115,7 @@ namespace MyProfile.User.Service
         /// <param name="userLogActionType"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public async Task<int> CreateUserLog(Guid userSessionID, string userLogActionType, string comment = null, List<int> errorLogIDs = null)
+        public async Task<int> CreateUserLogAsync(Guid userSessionID, string userLogActionType, string comment = null, List<int> errorLogIDs = null)
         {
             UserLog userLog = new UserLog();
 
@@ -146,6 +146,45 @@ namespace MyProfile.User.Service
                         });
                     }
                     await repository.SaveAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return userLog.ID;
+        }
+        public int CreateUserLog(Guid userSessionID, string userLogActionType, string comment = null, List<int> errorLogIDs = null)
+        {
+            UserLog userLog = new UserLog();
+
+            try
+            {
+                userLog.CurrentDateTime = DateTime.Now.ToUniversalTime();
+                userLog.ActionCodeName = userLogActionType;
+                userLog.UserSessionID = userSessionID;
+                userLog.Comment = comment;
+
+                repository.Create(userLog, true);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            try
+            {
+                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID != 0)
+                {
+                    foreach (var errorLogID in errorLogIDs)
+                    {
+                        repository.Create<UserErrorLog>(new UserErrorLog
+                        {
+                            UserLogID = userLog.ID,
+                            ErrorLogID = errorLogID
+                        });
+                    }
+                    repository.Save();
                 }
             }
             catch (Exception ex)
@@ -199,6 +238,49 @@ namespace MyProfile.User.Service
                         });
                     }
                     await repository.SaveAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return log.ID;
+        }
+        public int CreateErrorLog(Guid userSessionID, string where, Exception exception, string comment = null, List<int> userLogIDs = null)
+        {
+            repository.ResetContextState();
+
+            ErrorLog log = new ErrorLog
+            {
+                CurrentDate = DateTime.Now.ToUniversalTime(),
+                Comment = comment,
+                ErrorText = GetExceptionMessages(exception),
+                Where = where,
+                UserSessionID = userSessionID,
+            };
+
+            try
+            {
+                repository.Create(log, true);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            try
+            {
+                if (userLogIDs != null && userLogIDs.Count > 0 && log.ID != 0)
+                {
+                    foreach (var userLogID in userLogIDs)
+                    {
+                        repository.Create<UserErrorLog>(new UserErrorLog
+                        {
+                            UserLogID = userLogID,
+                            ErrorLogID = log.ID
+                        });
+                    }
+                    repository.Save();
                 }
             }
             catch (Exception ex)

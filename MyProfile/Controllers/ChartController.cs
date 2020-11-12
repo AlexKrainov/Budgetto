@@ -25,7 +25,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BigCharts_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.BigCharts_Page);
             return View();
         }
 
@@ -39,7 +39,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id, string href)
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BigChartEdit_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.BigChartEdit_Page);
             return View(new ChartEditViewModel { ID = id, href = href });
         }
 

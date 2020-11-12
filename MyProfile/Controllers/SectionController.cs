@@ -30,7 +30,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Section_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Section_Page);
             return View();
         }
 

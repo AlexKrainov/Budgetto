@@ -7,15 +7,23 @@ using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
     public class TestController : Controller
     {
         private IBaseRepository repository;
-        public TestController(IBaseRepository repository)
+        private UserLogService userLogService;
+        private UserService userService;
+
+        public TestController(IBaseRepository repository,
+            UserLogService userLogService,
+            UserService userService)
         {
             this.repository = repository;
+            this.userLogService = userLogService;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> GenerateRecords()
@@ -143,6 +151,44 @@ namespace MyProfile.Controllers
             {
 
             }
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ADMIN_GenerateRecords);
+            return Json(new { isOk = true });
+        }
+
+        public IActionResult ClearAccountForConstructor()
+        {
+            var currentUser = UserInfo.Current;
+            List<int> errorLogCreateIDs = new List<int>();
+
+            try
+            {
+                var userSettings = repository.GetAll<MyProfile.Entity.Model.UserSettings>(x => x.ID == currentUser.ID).FirstOrDefault();
+                userSettings.IsShowConstructor = true;
+                repository.Update(userSettings);
+
+                var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID).ToList();
+                repository.DeleteRange(goals);
+
+                var limits = repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.UserID == currentUser.ID).ToList();
+                repository.DeleteRange(limits, true);
+
+                var templates = repository.GetAll<MyProfile.Entity.Model.Template>(x => x.UserID == currentUser.ID).ToList();
+                repository.DeleteRange(templates, true);
+
+                var sections = repository.GetAll<MyProfile.Entity.Model.BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID 
+                && x.BudgetRecords.Count() == 0).ToList();
+                repository.DeleteRange(sections, true);
+
+                var areas = repository.GetAll<MyProfile.Entity.Model.BudgetArea>(x => x.UserID == currentUser.ID
+                && x.BudgetSectinos.Count() == 0).ToList();
+                repository.DeleteRange(areas, true);
+            }
+            catch (Exception ex)
+            {
+                errorLogCreateIDs.Add(userLogService.CreateErrorLog(currentUser.UserSessionID, "ADMIN_ClearAccountForConstructor", ex));
+            }
+
+            userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ADMIN_ClearAccount);
 
             return Json(new { isOk = true });
         }

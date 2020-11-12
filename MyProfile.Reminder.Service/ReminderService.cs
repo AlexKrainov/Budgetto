@@ -84,7 +84,7 @@ namespace MyProfile.Reminder.Service
                     reminder.ReminderDates = reminderDates;
 
                     await repository.UpdateAsync(reminder, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Reminder_Edit);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Edit);
                 }
                 else
                 {
@@ -102,7 +102,7 @@ namespace MyProfile.Reminder.Service
                     reminder.ReminderDates = reminderDates;
 
                     await repository.CreateAsync(reminder, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Reminder_Create);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Create);
 
                     reminderEdit.ID = reminder.ID;
 
@@ -169,7 +169,7 @@ namespace MyProfile.Reminder.Service
             try
             {
                 await repository.UpdateAsync(reminder, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Reminder_Delete);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Delete);
 
             }
             catch (Exception ex)

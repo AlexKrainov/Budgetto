@@ -32,7 +32,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Goal_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Goal_Page);
             return View();
         }
 

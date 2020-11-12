@@ -193,7 +193,7 @@ namespace MyProfile.Template.Service
                 //}
 
                 await repository.SaveAsync();
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.TemplateColumnOrder);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.TemplateColumnOrder);
             }
         }
 
@@ -220,7 +220,7 @@ namespace MyProfile.Template.Service
                     db_item.DateDelete = null;
                 }
                 await repository.UpdateAsync(db_item, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, db_item.DateDelete != null ? UserLogActionType.TemplateDelete : UserLogActionType.TemplateRecovery);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, db_item.DateDelete != null ? UserLogActionType.TemplateDelete : UserLogActionType.TemplateRecovery);
                 return true;
             }
             return false;
@@ -246,6 +246,9 @@ namespace MyProfile.Template.Service
             TemplateErrorModelView modelView = new TemplateErrorModelView { Template = template };
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
+            bool isEdit = false;
+            List<int> errorLogCreateIDs = new List<int>();
+
             #region Check name
 
             if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
@@ -304,10 +307,12 @@ namespace MyProfile.Template.Service
                     }
                     template.ID = templateDB.ID;
 
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.TemplateCreate);
+
                 }
                 else
                 {
+                    isEdit = true;
+
                     var templateBudgetSections = repository.GetAll<Entity.Model.TemplateBudgetSection>(x => x.TemplateColumn.TemplateID == template.ID);
                     repository.DeleteRange(templateBudgetSections, true);
 
@@ -352,13 +357,24 @@ namespace MyProfile.Template.Service
                             }, true);
                         }
                     }
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.TemplateEdit);
+
                 }
             }
             catch (Exception ex)
             {
                 modelView.IsOk = false;
                 modelView.ErrorMessage = "Произошла ошибка во время сохранения.";
+
+                errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "TemplateService_SaveTemplate", ex));
+            }
+
+            if (isEdit)
+            {
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.TemplateEdit, errorLogIDs: errorLogCreateIDs);
+            }
+            else
+            {
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.TemplateCreate, errorLogIDs: errorLogCreateIDs);
             }
 
             await setDefaultTemplates(template);

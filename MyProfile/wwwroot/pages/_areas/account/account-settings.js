@@ -305,11 +305,33 @@ var AccountSettingsVue = new Vue({
 
         //Testing
         generatedRecords: function () {
-            this.isSaving = true;   
-            return sendAjax("/Test/GenerateRecords", null, "GET")
-                .then(function (result) {
-                    AccountSettingsVue.isSaving = false;
+            if (confirm("Вы уверены, что хотите сгенерировать данные ?")) {
+                this.isSaving = true;
+                return sendAjax("/Test/GenerateRecords", null, "GET")
+                    .then(function (result) {
+                        AccountSettingsVue.isSaving = false;
+                    });
+            }
+        },
+        clearAccount: function () {
+            if (confirm("Вы уверены, что хотите обнулить аккаунт ?")) {
+                this.isSaving = true;
+                return $.ajax({
+                    type: "GET",
+                    url: "/Test/ClearAccountForConstructor",
+                    context: this,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (response) {
+                        this.isSaving = false;
+                        return response;
+                    },
+                    error: function (xhr, status, error) {
+                        this.isSaving = false;
+                        console.log(error);
+                    }
                 });
+            }
         }
     }
 });

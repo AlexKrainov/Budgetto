@@ -203,6 +203,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<HelpArticleUserView> HelpArticleUserViews { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PaymentHistory> PaymentHistories { get; set; }
+        public virtual DbSet<PromoCode> PromoCodes { get; set; }
+        public virtual DbSet<PromoCodeHistory> PromoCodeHistories { get; set; }
         public virtual DbSet<UserErrorLog> UserErrorLogs { get; set; }
 
     }

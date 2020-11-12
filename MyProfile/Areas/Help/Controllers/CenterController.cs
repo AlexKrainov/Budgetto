@@ -24,7 +24,7 @@ namespace MyProfile.Areas.Help.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.HelpCenter_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.HelpCenter_Page);
 
             return View();
         }

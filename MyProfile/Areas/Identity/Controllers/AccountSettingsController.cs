@@ -12,7 +12,7 @@ namespace MyProfile.Areas.Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> AccountSettings()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.AccountSetting_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.AccountSetting_Page);
 
             return View();
         }

@@ -24,7 +24,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<IActionResult> LoadReminders(DateTime currentDate)
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Reminder_Part);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Reminder_Part);
 
             return Json(new { IsOk = true, data = await reminderService.GetRimindersByDate(currentDate) });
         }

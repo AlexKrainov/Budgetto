@@ -22,7 +22,7 @@ namespace MyProfile.Controllers
             model.Years = (await budgetRecordService.GetAllYears()).Select(x => new YearsAndCount { year = x }).ToList();
             model.Sections = await sectionService.GetAllSectionByUser();
 
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.TimeLine_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.TimeLine_Page);
 
             return View(model);
         }

@@ -97,7 +97,7 @@ namespace MyProfile.Chat.Service
 
                 await repository.CreateAsync(chat, true);
 
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Feedback_Create);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Feedback_Create);
 
                 //userEmailSender.SendFeedback(chat);
             }

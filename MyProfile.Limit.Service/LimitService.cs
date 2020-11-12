@@ -52,7 +52,7 @@ namespace MyProfile.Limit.Service
                 dbLimit.VisibleElement.IsShowOnDashboards = limit.IsShowOnDashboard;
 
                 await repository.UpdateAsync(dbLimit, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Limit_Edit);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Edit);
             }
             else
             {
@@ -62,7 +62,7 @@ namespace MyProfile.Limit.Service
                     IsShowInCollective = limit.IsShowInCollective,
                 };
                 await repository.CreateAsync(limit, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Limit_Create);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Create);
             }
 
             return await repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.ID == limit.ID)
@@ -112,7 +112,7 @@ namespace MyProfile.Limit.Service
                 db_limit.IsDeleted = isRemove;
                 //db_limit.date = DateTime.Now.ToUniversalTime();
                 await repository.UpdateAsync(db_limit, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Limit_Delete);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Delete);
                 return true;
             }
             return false;

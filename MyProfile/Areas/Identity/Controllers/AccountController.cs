@@ -63,7 +63,7 @@ namespace MyProfile.Areas.Identity.Controllers
             //check limit enter 20 times
             if (user != null && await userLogService.CheckLimitEnter())
             {
-                await userLogService.CreateUserLog(login.UserSessionID, UserLogActionType.LimitLogin);
+                await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.LimitLogin);
 
                 var emailID = await userEmailService.LoginConfirmation(user);
 
@@ -86,7 +86,11 @@ namespace MyProfile.Areas.Identity.Controllers
                 //    Expires = DateTime.Now.AddMonths(3)
                 //});
 
-                if (Url.IsLocalUrl(login.ReturnUrl))
+                if (user.UserSettings.IsShowConstructor)
+                {
+                    return Json(new { isOk = true, href = "/Start/Index" });
+                }
+                else if (Url.IsLocalUrl(login.ReturnUrl))
                 {
                     return Json(new { isOk = true, href = login.ReturnUrl });
                 }
@@ -96,7 +100,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 }
             }
 
-            await userLogService.CreateUserLog(login.UserSessionID, UserLogActionType.TryLogin);
+            await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.TryLogin);
 
             return Json(new { isOk = false, textError = "Неверная почта и(или) пароль." });
 
@@ -105,7 +109,7 @@ namespace MyProfile.Areas.Identity.Controllers
         public async Task<IActionResult> Logout()
         {
             var currentUser = UserInfo.Current;
-            await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Logout);
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Logout);
             await userLogService.UserSessionLogOut(currentUser.UserSessionID, currentUser.ID);
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -121,7 +125,7 @@ namespace MyProfile.Areas.Identity.Controllers
             {
                 if (await repository.AnyAsync<Entity.Model.User>(x => x.Email == registrationModel.Email.Trim() && x.IsDeleted == false))
                 {
-                    await userLogService.CreateUserLog(registrationModel.UserSessionID, UserLogActionType.TryRegistration, $"Login: {registrationModel.Email.Trim()}, Password:{registrationModel.Password}, Comment= we already have user with this email");
+                    await userLogService.CreateUserLogAsync(registrationModel.UserSessionID, UserLogActionType.TryRegistration, $"Login: {registrationModel.Email.Trim()}, Password:{registrationModel.Password}, Comment= we already have user with this email");
                     return Json(new { isOk = false, message = $"В системе уже есть пользователь с такой почтой ({ registrationModel.Email.Trim() })." });
                 }
 
@@ -135,7 +139,7 @@ namespace MyProfile.Areas.Identity.Controllers
                     //Maybe send another pool
                     try
                     {
-                        await userLogService.CreateUserLog(registrationModel.UserSessionID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}");
+                        await userLogService.CreateUserLogAsync(registrationModel.UserSessionID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}");
 
                         var emailID = await userEmailService.ConfirmEmail(user);
                         if (emailID != Guid.Empty)
@@ -145,12 +149,12 @@ namespace MyProfile.Areas.Identity.Controllers
                     }
                     catch (Exception ex)
                     {
-                        await userLogService.CreateUserLog(registrationModel.UserSessionID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}, Error = {ex.Message}");
+                        await userLogService.CreateUserLogAsync(registrationModel.UserSessionID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}, Error = {ex.Message}");
                         await userLogService.CreateErrorLogAsync(user.UserSessionID, where: "AccountController.Registration_1", ex);
                     }
 
                     user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Registration);
-                    return Json(new { isOk = true, isShowCode = false, href = "/Budget/Month" });
+                    return Json(new { isOk = true, isShowCode = false, href = "/Start/Index" });
                 }
                 catch (Exception ex)
                 {
@@ -169,7 +173,7 @@ namespace MyProfile.Areas.Identity.Controllers
 
             if (user == null)
             {
-                await userLogService.CreateUserLog(login.UserSessionID, UserLogActionType.RecoveryPassword_Step1, $"The user did not find (email = {login.Email})");
+                await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.RecoveryPassword_Step1, $"The user did not find (email = {login.Email})");
 
                 return Json(new { isOk = false, message = $"Не удалось найти пользователя с такой почтой. Пожалуйста, зарегистрируйтесь" });
             }
@@ -179,11 +183,11 @@ namespace MyProfile.Areas.Identity.Controllers
 
             if (emailID != Guid.Empty)
             {
-                await userLogService.CreateUserLog(login.UserSessionID, UserLogActionType.RecoveryPassword_Step1);
+                await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.RecoveryPassword_Step1);
 
                 return Json(new { isOk = true, emailID });
             }
-            await userLogService.CreateUserLog(login.UserSessionID, UserLogActionType.RecoveryPassword_Step1, $"Problem when send recovery password (email = {login.Email})");
+            await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.RecoveryPassword_Step1, $"Problem when send recovery password (email = {login.Email})");
 
             return Json(new { isOk = false, message = "Извините, произошла ошибка во время восстановления пароля. Пожалуйста, попробуйте позже." });
         }
@@ -210,12 +214,17 @@ namespace MyProfile.Areas.Identity.Controllers
                     emailID = await userEmailService.RecoveryPassword(user, true);
                 }
 
-                await userLogService.CreateUserLog(model.UserSessionID, UserLogActionType.ResendEmail);
+                await userLogService.CreateUserLogAsync(model.UserSessionID, UserLogActionType.ResendEmail);
 
                 return Json(new { isOk = true, emailID, message = "Сообщение отправлено повторно" });
             }
 
-            return Json(new { isOk = false, message = "Не удалось отправить сообщение повторно. Попробуйте позже.", href = "/Budget/Month" });
+            string href = "/Budget/Month";
+            if (UserInfo.Current.UserSettings.IsShowConstructor)
+            {
+                href = "/Start/Index";
+            }
+            return Json(new { isOk = false, message = "Не удалось отправить сообщение повторно. Попробуйте позже.", href });
         }
         [HttpPost]
         [AllowAnonymous]
@@ -228,19 +237,19 @@ namespace MyProfile.Areas.Identity.Controllers
 
                 if (userID == Guid.Empty)
                 {
-                    await userLogService.CreateUserLog(checkCodeModel.UserSessionID, UserLogActionType.CheckCode);
+                    await userLogService.CreateUserLogAsync(checkCodeModel.UserSessionID, UserLogActionType.CheckCode);
                     return Json(new { isOk = false, message = "Неверный код. Попробуйте еще раз." });
                 }
             }
             catch (Exception ex)
             {
-                await userLogService.CreateUserLog(checkCodeModel.UserSessionID, UserLogActionType.CheckCode, $"Error: {ex.Message}");
+                await userLogService.CreateUserLogAsync(checkCodeModel.UserSessionID, UserLogActionType.CheckCode, $"Error: {ex.Message}");
                 return Json(new { isOk = false, message = "Неверный код. Попробуйте еще раз." });
             }
 
             if (checkCodeModel.LastActionID == 2)//recoveryPassword
             {
-                await userLogService.CreateUserLog(checkCodeModel.UserSessionID, UserLogActionType.CheckCode, $"The user can recovery password");
+                await userLogService.CreateUserLogAsync(checkCodeModel.UserSessionID, UserLogActionType.CheckCode, $"The user can recovery password");
 
                 return Json(new { isOk = true, canChangePassword = true, userID });
             }
@@ -251,7 +260,13 @@ namespace MyProfile.Areas.Identity.Controllers
 
             await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.LoginAfterCode);
 
-            return Json(new { isOk = true, href = "/Budget/Month" });
+            string href = "/Budget/Month";
+            if (user.UserSettings.IsShowConstructor)
+            {
+                href = "/Start/Index";
+            }
+
+            return Json(new { isOk = true, href });
         }
 
 
@@ -269,13 +284,13 @@ namespace MyProfile.Areas.Identity.Controllers
                 }
                 else
                 {
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.CheckCodeAfterChangeEmail);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.CheckCodeAfterChangeEmail);
                     return Json(new { isOk = false, message = "Неверный код. Попробуйте еще раз." });
                 }
             }
             catch (Exception ex)
             {
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.CheckCodeAfterChangeEmail, $"Error: {ex.Message}");
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.CheckCodeAfterChangeEmail, $"Error: {ex.Message}");
                 return Json(new { isOk = false, message = "Неверный код. Попробуйте еще раз." });
             }
 
@@ -301,7 +316,13 @@ namespace MyProfile.Areas.Identity.Controllers
 
                     await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.LoginAfterResetPassword);
 
-                    return Json(new { isOk = true, href = "/Budget/Month" });
+                    string href = "/Budget/Month";
+                    if (user.UserSettings.IsShowConstructor)
+                    {
+                        href = "/Start/Index";
+                    }
+
+                    return Json(new { isOk = true, href });
                 }
                 catch (Exception ex)
                 {
@@ -310,7 +331,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 }
             }
 
-            await userLogService.CreateUserLog(model.UserSessionID, UserLogActionType.LoginAfterResetPassword, $"Error = {errorMessage}");
+            await userLogService.CreateUserLogAsync(model.UserSessionID, UserLogActionType.LoginAfterResetPassword, $"Error = {errorMessage}");
 
             return Json(new { isOk = false, message = "Не удалось обновить пароль. Ошибка сервера.", errorMessage });
         }

@@ -32,7 +32,7 @@ namespace MyProfile.Controllers
         {
             if (UserInfo.Current != null)
             {
-                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Error404_Page);
+                await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Error404_Page);
             }
             return View();
         }
@@ -41,7 +41,7 @@ namespace MyProfile.Controllers
         {
             if (UserInfo.Current != null)
             {
-                await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Error500_Page);
+                await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Error500_Page);
             }
             return View();
         }

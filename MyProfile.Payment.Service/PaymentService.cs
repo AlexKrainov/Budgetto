@@ -39,7 +39,7 @@ namespace MyProfile.Payment.Service
             try
             {
                 await repository.CreateAsync(payment, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.PaymentHistory_Create);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.PaymentHistory_Create);
             }
             catch (Exception ex)
             {
@@ -79,8 +79,8 @@ namespace MyProfile.Payment.Service
                 }
 
                 await repository.UpdateAsync(paymentHistory, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.PaymentHistory_Update);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Payment_Update);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.PaymentHistory_Update);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Payment_Update);
 
                 currentUser.IsAvailable = paymentHistory.Payment.DateFrom <= now && paymentHistory.Payment.DateTo >= now;
                 currentUser.Payment = new Payment

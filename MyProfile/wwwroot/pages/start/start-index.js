@@ -38,7 +38,7 @@
         isSaving: false,
         errorMessage: null,
         counter: -999,
-        elWizard: {},
+        isShowButtonSkip: false,
     },
     watch: {
     },
@@ -48,44 +48,35 @@
         },
     },
     mounted: function () {
-        this.elWizard = $('#start-vue').smartWizard({
+        let elWizard = $('#start-vue').smartWizard({
             autoAdjustHeight: false,
             backButtonSupport: false,
             useURLhash: false,
             showStepURLhash: false,
             lang: { // Language variables for button
                 next: 'Вперед',
-
             },
             toolbarSettings: {
                 toolbarPosition: 'bottom', // none, top, bottom, both
                 toolbarButtonPosition: 'center', // left, right, center
                 showNextButton: true, // show/hide a Next button
                 showPreviousButton: false, // show/hide a Previous button
-                toolbarExtraButtons: [
-                    $('<button type="button"></button>')
-                        .text('Пропустить')
-                        .addClass('btn btn-info')
-                        .attr("v-on:click", "skip"),
-                    $('<button type="button"></button>')
-                        .text('Завершить')
-                        .addClass('btn btn-info')
-                        .attr("v-on:click", 'finish')
-                ] // Extra buttons to show on toolbar, array of jQuery input/buttons elements
             },
         });
-        this.elWizard.on("leaveStep", function (e, anchorObject, stepIndex, stepDirection) {
+
+        elWizard.on("leaveStep", function (e, anchorObject, stepIndex, stepDirection) {
             if (stepDirection == "backward") {
                 return false;
             }
 
             let canGo = true;
             StartVue.errorMessage = null;
+            StartVue.isShowButtonSkip = false;
 
             if (stepIndex == 0 && stepDirection == "forward") {
 
                 //UserInfo
-                if (StartVue.userInfo.name && StartVue.userInfo.name.length >= 2) {
+                if (StartVue.checkUserForm()) {
                     $("#userInfoName").removeClass("is-invalid");
                     canGo = true;
                     StartVue.saveUserInfo();
@@ -96,6 +87,7 @@
             }
 
             if (stepIndex == 1 && stepDirection == "forward") {//stepIndex == 1
+                
                 canGo = false;
 
                 //Checking for any selected sections
@@ -109,16 +101,17 @@
                     StartVue.saveSections();
                     StartVue.startStep3();
                 } else {
-                    StartVue.errorMessage = "Нужно выбрать хоты бы одну категорию.";
+                    StartVue.errorMessage = "Нужно выбрать хотя бы одну категорию.";
                 }
             }
 
             if (stepIndex == 2 && stepDirection == "forward") {//stepIndex == 2
-                canGo = false;
 
-                if (StartVue.template.columns.length >= 2) {
+                if (StartVue.validTemplate()) {
                     StartVue.saveTemplate();
-                    canGo = true;
+                    StartVue.isShowButtonSkip = true;
+                } else {
+                    canGo = false;
                 }
             }
 
@@ -126,24 +119,32 @@
 
                 if (StartVue.limits.length > 0) {
                     StartVue.saveLimits();
-                    canGo = true;
                 }
+                StartVue.isShowButtonSkip = true;
             }
 
             if (stepIndex == 4 && stepDirection == "forward") {//stepIndex == 4
 
                 if (StartVue.goals.length > 0) {
                     StartVue.saveGoals();
-                    canGo = true;
                 }
+                StartVue.showStep5();
             }
 
-            if (stepIndex == 5 && stepDirection == "forward") {//stepIndex == 4
+            if (stepIndex == 5 && stepDirection == "forward") {
                 canGo = false;
+                console.log("finish");
             }
 
             return canGo;
         });
+
+        setTimeout(function () {
+            $(".sw-btn-next").parent().removeClass("btn-group").addClass("d-inline-flex align-items-center");
+            $(".sw-btn-next").removeClass("btn-secondary").addClass("btn-primary").before($("#button-skip"));
+            $(".sw-btn-next").after($("#button-finish"));
+            
+        }, 100);
 
         //todo set timeline
         this.loadSections();
@@ -159,16 +160,31 @@
     },
     methods: {
         skip: function () {
-            this.elWizard("next");
+            if ($('#start-vue').smartWizard("getStepIndex") == 4) {
+                this.showStep5();
+            }
+            $('#start-vue').smartWizard("next");
+        },
+        showStep5: function () {
+            this.isShowButtonSkip = false;//bug
+            $("#button-skip").hide();
+            $(".sw-btn-next").hide(); //.removeClass("btn-secondary disabled").addClass("btn-primary").val("Завершить");
+            $("#button-finish").show();
         },
         finish: function () {
-            this.elWizard("next");
+            StartVue.isSaving = true;
+            return sendAjax("/Start/Finish", "GET")
+                .then(function (result) {
+                    if (result.isOk == true) {
+                        document.location.href = "/Budget/Month";
+                    }
+                    StartVue.isSaving = false;
+                });
         },
 
         //1
         saveUserInfo: function () {
             this.isSaving = true;
-            $("#userName").val(this.userInfo.name);
 
             return $.ajax({
                 type: "POST",
@@ -182,6 +198,7 @@
                         this.isSaving = false;
                         this.userInfo = result.user;
                         UserInfo = result.user;
+                        $("#userName").html(this.userInfo.name);
                     }
                     return true;
                 },
@@ -191,6 +208,23 @@
                 }
             });
         },
+        checkUserForm: function () {
+            let isOk = true;
+
+            let str = this.userInfo.name;
+            str = str ? str.replaceAll(" ", "") : "";
+
+            if (str.length == 0) {
+                $("#userInfoName").addClass("is-invalid");
+                isOk = false;
+            } else {
+                $("#userInfoName").removeClass("is-invalid");
+                isOk = true;
+            }
+
+            return isOk;
+        },
+
 
         //2
         loadSections: function () {
@@ -338,7 +372,7 @@
             //this.searchIcon = '';
             $("#accordion2-2, #accordion2-1").removeClass("show");
         },
-        checkForm: function (e) {
+        checkSectionForm: function (e) {
             let isOk = true;
 
             if (!(this.section.name && this.section.name.length > 0)) {
@@ -375,6 +409,7 @@
         },
         saveSections: function () {
             this.isSaving = true;
+            ShowLoading("#smartwizard-1-step-3");
 
             return $.ajax({
                 type: "POST",
@@ -388,11 +423,13 @@
                         this.isSaving = false;
                         this.sections = result.sections;
                     }
+                    HideLoading("#smartwizard-1-step-3");
                     return true;
                 },
                 error: function (xhr, status, error) {
                     this.isSaving = false;
                     console.log(error);
+                    HideLoading("#smartwizard-1-step-3");
                 }
             });
         },
@@ -438,7 +475,7 @@
             if (this.template.columns
                 && this.template.columns.length > 1
                 && this.template.columns[this.template.columns.length - 1].templateBudgetSections.length == 0) {
-                this.errorMessage = "Колонка должна создержать хоты бы одну категорию.";
+                this.errorMessage = "Колонка должна содержать хотя бы одну категорию.";
                 return false;
             } else {
                 this.errorMessage = "";
@@ -454,6 +491,7 @@
                 templateBudgetSections: [],
                 placeAfterCommon: 0,
                 format: '',
+                templateColumnType: TemplateColumnTypeEnum.BudgetSection
             };
             this.template.columns.push(this.column);
 
@@ -484,7 +522,7 @@
 
                 this.column.templateBudgetSections.push({
                     id: this.counter++,
-                    counter: section.id,
+                    sectionID: section.id,
                     sectionName: section.name,
                 });
 
@@ -523,10 +561,9 @@
             }
         },
         saveTemplate: function () {
-            if (this.validTemplate() == false) {
-                return false;
-            }
             this.isSaving = true;
+            $('[data-toggle="popover"]').popover('hide');
+
             return sendAjax("/Start/SaveTemplate", this.template, "POST")
                 .then(function (result) {
                     if (result.isOk == true) {
@@ -534,15 +571,14 @@
                         StartVue.errorMessage = null;
                     }
                     StartVue.isSaving = false;
-                    $('[data-toggle="popover"]').popover('hide');
                 });
         },
         validTemplate: function () {
             let isOk = true;
 
-            if (this.template.columns.length == 0) {
+            if (this.template.columns.length < 2) {
                 isOk = false;
-                this.errorMessage = "Шаблон должен содержать хотя бы одну колонку.";
+                this.errorMessage = "Шаблон должен содержать хотя бы 2 колонки.";
             } else {
                 this.errorMessage = null;
             }

@@ -7,6 +7,15 @@
             Генерация записей за 2 последних года
         </button>&nbsp;
     </div>
+    <div class="mt-2">
+        <button class="btn btn-secondary" type="button"
+                v-bind:disabled="isSaving"
+                v-on:click="clearAccount">
+            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+            Обнуление записей для конструктора
+        </button>&nbsp;
+        <div class="text-danger small mt-1">Удаление данных (категории (у которых нет записей), шаблоны, лимиты, цели). При следующем входу будет доступен конструктор.</div>
+    </div>
 </div>
 <div class="card-footer">
     <div class="text-right">

@@ -21,7 +21,7 @@ namespace MyProfile.Controllers
 
         public async Task<IActionResult> Create()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Feedback_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Feedback_Page);
 
             return View();
         }

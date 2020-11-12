@@ -202,8 +202,8 @@
             let isOk = true;
 
             let str = this.template.name;
-            str = str.replaceAll(" ", "");
-            if (!this.template.name || str.length == 0) {
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
                 isOk = false;
                 $("#template-name").addClass("is-invalid");
             } else {

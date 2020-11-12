@@ -4,6 +4,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.Goal;
 using MyProfile.Entity.ModelView.Limit;
+using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Goal.Service;
 using MyProfile.Identity;
@@ -48,7 +49,32 @@ namespace MyProfile.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var currentUser = UserInfo.Current;
+            if (currentUser.UserSettings.IsShowConstructor)
+            {
+                var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID).ToList();
+                repository.DeleteRange(goals);
+
+                var limits = repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.UserID == currentUser.ID).ToList();
+                repository.DeleteRange(limits, true);
+
+                var templates = repository.GetAll<MyProfile.Entity.Model.Template>(x => x.UserID == currentUser.ID).ToList();
+                repository.DeleteRange(templates, true);
+
+                var sections = repository.GetAll<MyProfile.Entity.Model.BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID
+                && x.BudgetRecords.Count() == 0).ToList();
+                repository.DeleteRange(sections, true);
+
+                var areas = repository.GetAll<MyProfile.Entity.Model.BudgetArea>(x => x.UserID == currentUser.ID
+                && x.BudgetSectinos.Count() == 0).ToList();
+                repository.DeleteRange(areas, true);
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Month", "Budget");
+            }
         }
 
         [HttpPost]
@@ -58,7 +84,7 @@ namespace MyProfile.Controllers
             currentUser.Name = userInfo.Name;
 
             await userService.UpdateUser(currentUser);
-            await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Constructor_Step1_UserInfo);
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step1_UserInfo);
 
             return Json(new { isOk = true, user = UserInfo.GetUserInfoModelForClient() });
         }
@@ -130,7 +156,7 @@ namespace MyProfile.Controllers
                 errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "Start_SaveSections", ex));
             }
 
-            await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Constructor_Step2_Sections, errorLogIDs: errorLogCreateIDs);
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step2_Sections, errorLogIDs: errorLogCreateIDs);
 
             return Json(new { isOk = true, sections = await sectionService.GetAllSectionForRecords() });
         }
@@ -140,18 +166,22 @@ namespace MyProfile.Controllers
         {
             var currentUser = UserInfo.Current;
             List<int> errorLogCreateIDs = new List<int>();
+            TemplateErrorModelView templateResult = new TemplateErrorModelView();
 
             try
             {
                 template.PeriodTypeID = (int)PeriodTypesEnum.Month;
                 template.Name = "Шаблон на месяц";
+                template.IsShow = true;
+                template.IsDefault = true;
 
                 for (int i = 0; i < template.Columns.Count(); i++)
                 {
                     template.Columns[i].Order = i;
+                    template.Columns[i].IsShow = true;
                 }
 
-                var templateResult = await templateService.SaveTemplate(template, false);
+                templateResult = await templateService.SaveTemplate(template, false);
 
                 template.ID = 0;
                 template.Name = "Шаблон на год";
@@ -172,9 +202,9 @@ namespace MyProfile.Controllers
                 errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "Start_SaveTemplate", ex));
             }
 
-            await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Constructor_Step3_Template, errorLogIDs: errorLogCreateIDs);
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step3_Template, errorLogIDs: errorLogCreateIDs);
 
-            return Json(new { isOk = true, sections = await sectionService.GetAllSectionForRecords() });
+            return Json(templateResult);
         }
 
         [HttpPost]
@@ -197,7 +227,7 @@ namespace MyProfile.Controllers
                 errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "Start_SaveLimits", ex));
             }
 
-            await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Constructor_Step4_Limits, errorLogIDs: errorLogCreateIDs);
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step4_Limits, errorLogIDs: errorLogCreateIDs);
 
             return Json(new { isOk = true, sections = await sectionService.GetAllSectionForRecords() });
         }
@@ -222,9 +252,30 @@ namespace MyProfile.Controllers
                 errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "Start_SaveGoals", ex));
             }
 
-            await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Constructor_Step5_Goals, errorLogIDs: errorLogCreateIDs);
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step5_Goals, errorLogIDs: errorLogCreateIDs);
 
             return Json(new { isOk = true, sections = await sectionService.GetAllSectionForRecords() });
+        }
+
+        public async Task<IActionResult> Finish()
+        {
+            var currentUser = UserInfo.Current;
+            List<int> errorLogCreateIDs = new List<int>();
+
+            try
+            {
+                currentUser.UserSettings.IsShowConstructor = false;
+
+                await userService.UpdateUser(currentUser, userSettingsSave: true);
+            }
+            catch (System.Exception ex)
+            {
+                errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "Start_Finish", ex));
+            }
+
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step6_Finish, errorLogIDs: errorLogCreateIDs);
+
+            return Json(new { isOk = true });
         }
 
         [HttpGet]
@@ -740,9 +791,9 @@ namespace MyProfile.Controllers
                 },
             };
 
-            var userSections = await sectionService.GetAllSectionForRecords();
+            //var userSections = await sectionService.GetAllSectionForRecords();
 
-            return Json(new { isOk = true, sections, userSections });
+            return Json(new { isOk = true, sections });
         }
     }
 }

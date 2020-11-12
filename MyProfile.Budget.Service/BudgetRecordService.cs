@@ -133,11 +133,11 @@ namespace MyProfile.Budget.Service
             }
             if (isEdit)
             {
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Edit, errorLogIDs: errorLogEditIDs);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Edit, errorLogIDs: errorLogEditIDs);
             }
             if (isCreate)
             {
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Create, errorLogIDs: errorLogCreateIDs);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Create, errorLogIDs: errorLogCreateIDs);
             }
 
             return true;
@@ -153,7 +153,7 @@ namespace MyProfile.Budget.Service
                 db_record.IsDeleted = true;
                 db_record.DateTimeDelete = DateTime.Now.ToUniversalTime();
                 await repository.UpdateAsync(db_record, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Delete);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Delete);
                 return true;
             }
             return false;
@@ -169,7 +169,7 @@ namespace MyProfile.Budget.Service
                 db_record.IsDeleted = false;
                 db_record.DateTimeDelete = null;
                 await repository.UpdateAsync(db_record, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Record_Recovery);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Recovery);
                 return true;
             }
             return false;

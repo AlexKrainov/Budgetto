@@ -65,7 +65,7 @@ namespace MyProfile.Controllers
                 }
             }
 
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BudgetMonth_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.BudgetMonth_Page);
 
             return View(model);
         }
@@ -119,7 +119,7 @@ namespace MyProfile.Controllers
                 model.Years.Add(DateTime.Now.Year);
             }
 
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BudgetYear_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.BudgetYear_Page);
 
             return View(model);
         }

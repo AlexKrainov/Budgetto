@@ -83,7 +83,7 @@ namespace MyProfile.Controllers
             //				new BudgetSection
             //	{
             //		BudgetAreaID = budgetArea1.ID,
-            //		Name = "Регулярные платежы",
+            //		Name = "Регулярные платежи",
             //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
             //	},
             //};
@@ -183,7 +183,7 @@ namespace MyProfile.Controllers
 
         public async Task<IActionResult> List()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Templates_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Templates_Page);
             return View();
         }
 
@@ -200,7 +200,7 @@ namespace MyProfile.Controllers
                 .Where(x => x.ID == (int)PeriodTypesEnum.Month || x.ID == (int)PeriodTypesEnum.Year)
                 .ToList();
 
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.TemplateEdit_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.TemplateEdit_Page);
             return View();
         }
 

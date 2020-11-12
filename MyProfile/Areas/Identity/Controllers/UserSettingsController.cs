@@ -92,7 +92,7 @@ namespace MyProfile.Areas.Identity.Controllers
 
             await UserInfo.AddOrUpdate_Authenticate(user);
             await repository.UpdateAsync(dbUserSettings, true);
-            await userLogService.CreateUserLog(user.UserSessionID, UserLogActionType.User_NotShowEnterHint);
+            await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_NotShowEnterHint);
 
             return Json(new { isOk = true });
         }

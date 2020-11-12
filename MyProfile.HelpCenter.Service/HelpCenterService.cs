@@ -91,7 +91,7 @@ namespace MyProfile.HelpCenter.Service
                     HelpArticleID = id,
 
                 }, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.HelpCenter_Article_Page);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.HelpCenter_Article_Page);
 
             }
             catch (Exception ex)

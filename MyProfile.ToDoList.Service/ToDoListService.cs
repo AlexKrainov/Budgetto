@@ -94,7 +94,7 @@ namespace MyProfile.ToDoList.Service
                         await repository.DeleteAsync<VisibleElement>(visibleElementID);
                     }
                     await repository.SaveAsync();
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Delete);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Delete);
                 }
             }
             catch (Exception ex)
@@ -172,7 +172,7 @@ namespace MyProfile.ToDoList.Service
                         UserID = currentUser.ID,
                     };
                     await repository.CreateAsync(folderDB, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Create);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Create);
                     folder.ID = folderDB.ID;
 
                 }
@@ -184,7 +184,7 @@ namespace MyProfile.ToDoList.Service
                     folderDB.CssIcon = folder.CssIcon;
 
                     await repository.UpdateAsync(folderDB, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Edit);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Edit);
                 }
             }
             catch (Exception ex)
@@ -243,7 +243,7 @@ namespace MyProfile.ToDoList.Service
                     };
 
                     await repository.CreateAsync(toDoList, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListList_Create);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ToDoListList_Create);
 
                     list.ID = toDoList.ID;
                 }
@@ -307,7 +307,7 @@ namespace MyProfile.ToDoList.Service
                     todoList.ToDoListItems = items;
 
                     await repository.UpdateAsync(todoList, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListList_Edit);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ToDoListList_Edit);
                 }
             }
             catch (Exception ex)
@@ -358,7 +358,7 @@ namespace MyProfile.ToDoList.Service
                     listDB.DateEdit = now;
 
                     await repository.UpdateAsync(listDB, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListList_Recovery);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ToDoListList_Recovery);
                 }
                 else
                 {
@@ -394,7 +394,7 @@ namespace MyProfile.ToDoList.Service
                 {
                     listIDs[i].IsDeleted = true;
                 }
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.ToDoListList_Delete);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ToDoListList_Delete);
             }
             catch (Exception ex)
             {

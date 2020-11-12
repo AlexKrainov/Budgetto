@@ -162,12 +162,12 @@ namespace MyProfile.Budget.Service
             if (budgetArea.ID > 0)
             {
                 await repository.UpdateAsync(budgetArea, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Edit);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Edit);
             }
             else
             {
                 await repository.CreateAsync(budgetArea, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Create);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Create);
             }
 
             area.ID = budgetArea.ID;
@@ -194,12 +194,12 @@ namespace MyProfile.Budget.Service
             if (budgetSection.ID > 0)
             {
                 await repository.UpdateAsync(budgetSection, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Section_Edit);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Section_Edit);
             }
             else
             {
                 await repository.CreateAsync(budgetSection, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Section_Create);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Section_Create);
             }
 
             await SaveIncludedSection(section.ID, section.CollectiveSections.Select(x => x.ID).ToList());
@@ -264,7 +264,7 @@ namespace MyProfile.Budget.Service
                 try
                 {
                     await repository.DeleteAsync(budgetArea, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Delete);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Delete);
                 }
                 catch (Exception ex)
                 {
@@ -313,7 +313,7 @@ namespace MyProfile.Budget.Service
                         await repository.DeleteRangeAsync(budgetSection.BudgetRecords, true);
                     }
                     await repository.DeleteAsync(budgetSection, true);
-                    await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Section_Delete);
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Section_Delete);
                 }
                 catch (Exception ex)
                 {

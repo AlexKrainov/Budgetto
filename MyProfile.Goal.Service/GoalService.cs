@@ -141,7 +141,7 @@ namespace MyProfile.Goal.Service
                 };
 
                 await repository.CreateAsync(goal, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Goal_Create);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Goal_Create);
             }
             else
             {
@@ -156,7 +156,7 @@ namespace MyProfile.Goal.Service
                 dbGoal.VisibleElement.IsShow_BudgetYear = goal.IsShow_BudgetYear;
 
                 await repository.UpdateAsync(dbGoal, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Goal_Edit);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Goal_Edit);
             }
 
             return await repository.GetAll<Goal>(x => x.ID == goal.ID)
@@ -234,7 +234,7 @@ namespace MyProfile.Goal.Service
                 db_item.IsDeleted = isRemove;
                 //db_item. = DateTime.Now.ToUniversalTime();
                 await repository.UpdateAsync(db_item, true);
-                await userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Goal_Delete);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Goal_Delete);
                 return true;
             }
             return false;

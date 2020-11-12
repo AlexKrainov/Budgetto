@@ -34,7 +34,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            await userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.Limit_Page);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Limit_Page);
 
             return View();
         }
