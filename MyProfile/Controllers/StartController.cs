@@ -52,21 +52,21 @@ namespace MyProfile.Controllers
             var currentUser = UserInfo.Current;
             if (currentUser.UserSettings.IsShowConstructor)
             {
-                var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID).ToList();
+                var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(goals);
 
-                var limits = repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.UserID == currentUser.ID).ToList();
+                var limits = repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(limits, true);
 
-                var templates = repository.GetAll<MyProfile.Entity.Model.Template>(x => x.UserID == currentUser.ID).ToList();
+                var templates = repository.GetAll<MyProfile.Entity.Model.Template>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(templates, true);
 
                 var sections = repository.GetAll<MyProfile.Entity.Model.BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID
-                && x.BudgetRecords.Count() == 0).ToList();
+                && x.BudgetRecords.Count() == 0 && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(sections, true);
 
                 var areas = repository.GetAll<MyProfile.Entity.Model.BudgetArea>(x => x.UserID == currentUser.ID
-                && x.BudgetSectinos.Count() == 0).ToList();
+                && x.BudgetSectinos.Count() == 0 && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(areas, true);
 
                 return View();
@@ -117,6 +117,7 @@ namespace MyProfile.Controllers
                             IsShowOnSite = true,
                             Name = section.Name,
                             SectionTypeID = section.SectionTypeID,
+                            IsCreatedByConstructor = true,
                         });
                     }
 
@@ -129,6 +130,7 @@ namespace MyProfile.Controllers
                         IsShowInCollective = true,
                         UserID = currentUser.ID,
                         BudgetSectinos = budgetSections,
+                        IsCreatedByConstructor = true
                     });
                 }
 
@@ -174,6 +176,7 @@ namespace MyProfile.Controllers
                 template.Name = "Шаблон на месяц";
                 template.IsShow = true;
                 template.IsDefault = true;
+                template.IsCountCollectiveBudget = true;
 
                 for (int i = 0; i < template.Columns.Count(); i++)
                 {
@@ -218,6 +221,7 @@ namespace MyProfile.Controllers
                 foreach (var limit in limits)
                 {
                     limit.ID = limit.ID < 0 ? 0 : limit.ID;
+                    limit.IsCreatedByConstructor = true;
 
                     await limitService.UpdateOrCreate(limit);
                 }
@@ -243,6 +247,7 @@ namespace MyProfile.Controllers
                 foreach (var goal in goals)
                 {
                     goal.ID = goal.ID < 0 ? 0 : goal.ID;
+                    goal.IsCreatedByConstructor = true;
 
                     await goalService.UpdateOrCreate(goal);
                 }

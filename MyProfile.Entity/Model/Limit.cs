@@ -17,6 +17,10 @@ namespace MyProfile.Entity.Model
 		public decimal LimitMoney { get; set; }
         public bool IsFinished { get; set; }
         public bool IsDeleted { get; set; }
+		/// <summary>
+		/// Created by constructor after registration
+		/// </summary>
+		public bool IsCreatedByConstructor { get; set; }
 
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }

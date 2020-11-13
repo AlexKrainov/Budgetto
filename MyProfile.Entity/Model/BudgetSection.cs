@@ -33,6 +33,10 @@ namespace MyProfile.Entity.Model
         /// Can see only owner
         /// </summary>
         public bool IsShowInCollective { get; set; }
+        /// <summary>
+        /// Created by constructor after registration
+        /// </summary>
+        public bool IsCreatedByConstructor { get; set; }
 
         [ForeignKey("BudgetArea")]
         public int BudgetAreaID { get; set; }

@@ -166,21 +166,21 @@ namespace MyProfile.Controllers
                 userSettings.IsShowConstructor = true;
                 repository.Update(userSettings);
 
-                var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID).ToList();
+                var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(goals);
 
-                var limits = repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.UserID == currentUser.ID).ToList();
+                var limits = repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(limits, true);
 
-                var templates = repository.GetAll<MyProfile.Entity.Model.Template>(x => x.UserID == currentUser.ID).ToList();
+                var templates = repository.GetAll<MyProfile.Entity.Model.Template>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(templates, true);
 
-                var sections = repository.GetAll<MyProfile.Entity.Model.BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID 
-                && x.BudgetRecords.Count() == 0).ToList();
+                var sections = repository.GetAll<MyProfile.Entity.Model.BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID
+                && x.BudgetRecords.Count() == 0 && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(sections, true);
 
                 var areas = repository.GetAll<MyProfile.Entity.Model.BudgetArea>(x => x.UserID == currentUser.ID
-                && x.BudgetSectinos.Count() == 0).ToList();
+                && x.BudgetSectinos.Count() == 0 && x.IsCreatedByConstructor).ToList();
                 repository.DeleteRange(areas, true);
             }
             catch (Exception ex)

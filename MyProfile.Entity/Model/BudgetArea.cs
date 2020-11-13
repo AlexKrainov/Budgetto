@@ -25,6 +25,10 @@ namespace MyProfile.Entity.Model
 		/// Can see only owner or all budget group
 		/// </summary>
 		public bool IsShowInCollective { get; set; }
+		/// <summary>
+		/// Created by constructor after registration
+		/// </summary>
+		public bool IsCreatedByConstructor { get; set; }
 
 		[ForeignKey("User")]
 		public Guid? UserID { get; set; }

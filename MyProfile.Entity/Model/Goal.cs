@@ -19,6 +19,10 @@ namespace MyProfile.Entity.Model
 		public DateTime? DateEnd { get; set; }
 		public bool IsFinished { get; set; }
 		public bool IsDeleted { get; set; }
+		/// <summary>
+		/// Created by constructor after registration
+		/// </summary>
+		public bool IsCreatedByConstructor { get; set; }
 
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }

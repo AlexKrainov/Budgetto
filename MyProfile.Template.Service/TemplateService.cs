@@ -47,7 +47,7 @@ namespace MyProfile.Template.Service
                             PeriodName = x.PeriodType.Name,
                             PeriodTypeID = x.PeriodTypeID,
                             IsDefault = x.IsDefault,
-
+                            IsCreatedByConstructor = x.IsCreatedByConstructor,
                             Columns = x.TemplateColumns
                                 .Select(y => new Column
                                 {
@@ -146,6 +146,7 @@ namespace MyProfile.Template.Service
                             PeriodTypeID = x.PeriodTypeID,
                             IsShow = true,
                             IsDefault = x.IsDefault,
+                            IsCreatedByConstructor= x.IsCreatedByConstructor,
                             Columns = x.TemplateColumns
                                 .Select(y => new Column
                                 {
@@ -277,6 +278,7 @@ namespace MyProfile.Template.Service
                     templateDB.Name = template.Name ?? "Шаблон_" + now.ToShortDateString();
                     templateDB.Description = template.Description;
                     templateDB.IsDefault = template.IsDefault;
+                    templateDB.IsCreatedByConstructor = template.IsCreatedByConstructor;
 
                     repository.Create(templateDB, true);
 

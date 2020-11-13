@@ -37,8 +37,12 @@ namespace MyProfile.Entity.Model
 		/// Default template in PeriodType
 		/// </summary>
 		public bool IsDefault { get; set; }
-		
-		
+		/// <summary>
+		/// Created by constructor after registration
+		/// </summary>
+		public bool IsCreatedByConstructor { get; set; }
+
+
 
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }

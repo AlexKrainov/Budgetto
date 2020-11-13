@@ -21,6 +21,7 @@ namespace MyProfile.Entity.ModelView
         public string Description { get; set; }
         public bool IsDefault { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsCreatedByConstructor { get; set; }
     }
 
     public class TemplateViewModel_Short
