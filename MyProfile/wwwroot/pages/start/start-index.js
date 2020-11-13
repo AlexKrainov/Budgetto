@@ -3,7 +3,7 @@
     data: {
         //1 
         userInfo: {
-            name: "Alexey",
+            name: null,
         },
 
         //2
@@ -87,7 +87,7 @@
             }
 
             if (stepIndex == 1 && stepDirection == "forward") {//stepIndex == 1
-                
+
                 canGo = false;
 
                 //Checking for any selected sections
@@ -143,7 +143,7 @@
             $(".sw-btn-next").parent().removeClass("btn-group").addClass("d-inline-flex align-items-center");
             $(".sw-btn-next").removeClass("btn-secondary").addClass("btn-primary").before($("#button-skip"));
             $(".sw-btn-next").after($("#button-finish"));
-            
+
         }, 100);
 
         //todo set timeline
@@ -327,45 +327,73 @@
             }
         },
         saveSection: function () {
-            let index = this.userSectionSource.findIndex(x => x.id == this.section.id);
+            if (this.validSection()) {
 
-            if (this.section.sectionTypeID == 1) {
-                this.section.areaID = 1;
-                this.section.areaName = "Доходы";
-            } else if (this.section.sectionTypeID == 2) {
-                this.section.areaID = 0;
-                this.section.areaName = "Расходы";
-            } else if (this.section.sectionTypeID == 3) {
-                this.section.areaID = 2;
-                this.section.areaName = "Инвестиции";
-            }
-            this.section.hasRecords = false; //we're making removable section
 
-            if (index == -1) {//create
-                this.userSectionSource.push(this.section);
-            } else {//update
-                this.userSectionSource[index].sectionTypeID = this.section.sectionTypeID;
-                this.userSectionSource[index].name = this.section.name;
-                this.userSectionSource[index].cssBackground = this.section.cssBackground;
-                this.userSectionSource[index].cssColor = this.section.cssColor;
-                this.userSectionSource[index].cssIcon = this.section.cssIcon;
-                this.userSectionSource[index].areaID = this.section.areaID;
-                this.userSectionSource[index].areaName = this.section.areaName;
-                //= { ...this.section };
+                let index = this.userSectionSource.findIndex(x => x.id == this.section.id);
 
-                for (var i = 0; i < this.areas.length; i++) {
-                    index = this.areas[i].sections.findIndex(x => x.id == this.section.id);
+                if (this.section.sectionTypeID == 1) {
+                    this.section.areaID = 1;
+                    this.section.areaName = "Доходы";
+                } else if (this.section.sectionTypeID == 2) {
+                    this.section.areaID = 0;
+                    this.section.areaName = "Расходы";
+                } else if (this.section.sectionTypeID == 3) {
+                    this.section.areaID = 2;
+                    this.section.areaName = "Инвестиции";
+                }
+                this.section.hasRecords = false; //we're making removable section
 
-                    if (index >= 0) {
-                        this.areas[i].sections.splice(index, 1);
-                        continue;
+                if (index == -1) {//create
+                    this.userSectionSource.push(this.section);
+                } else {//update
+                    this.userSectionSource[index].sectionTypeID = this.section.sectionTypeID;
+                    this.userSectionSource[index].name = this.section.name;
+                    this.userSectionSource[index].cssBackground = this.section.cssBackground;
+                    this.userSectionSource[index].cssColor = this.section.cssColor;
+                    this.userSectionSource[index].cssIcon = this.section.cssIcon;
+                    this.userSectionSource[index].areaID = this.section.areaID;
+                    this.userSectionSource[index].areaName = this.section.areaName;
+                    //= { ...this.section };
+
+                    for (var i = 0; i < this.areas.length; i++) {
+                        index = this.areas[i].sections.findIndex(x => x.id == this.section.id);
+
+                        if (index >= 0) {
+                            this.areas[i].sections.splice(index, 1);
+                            continue;
+                        }
                     }
                 }
-            }
-            this.areas[this.section.areaID].sections.push(this.section);
+                this.areas[this.section.areaID].sections.push(this.section);
 
-            $("#modal-section").modal("hide");
-            this.section = {};
+                $("#modal-section").modal("hide");
+                this.section = {};
+            }
+        },
+        validSection: function (e) {
+            let isOk = true;
+
+            if (!(this.section.name && this.section.name.length > 0)) {
+                isOk = false;
+                $("#section-name").addClass("is-invalid");
+            } else {
+                $("#section-name").removeClass("is-invalid");
+            }
+
+            let str = this.section.name;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                isOk = false;
+                $("#section-name").addClass("is-invalid");
+            } else {
+                $("#section-name").removeClass("is-invalid");
+            }
+
+            if (isOk == false && e) {
+                e.preventDefault();
+            }
+            return isOk;
         },
         selectIcon: function (item) {
             this.section.cssIcon = item.nameClass;
@@ -575,12 +603,23 @@
         },
         validTemplate: function () {
             let isOk = true;
+            this.errorMessage = null;
 
             if (this.template.columns.length < 2) {
                 isOk = false;
                 this.errorMessage = "Шаблон должен содержать хотя бы 2 колонки.";
-            } else {
-                this.errorMessage = null;
+            }
+
+            if (this.template.columns.length > 0
+                && this.template.columns.findIndex(x => x.templateColumnType == TemplateColumnTypeEnum.BudgetSection && x.templateBudgetSections.length == 0) > -1) {
+                isOk = false;
+                this.errorMessage = "Шаблон должен содержать колонки хотя бы с одной категорией.";
+            }
+
+            if (this.template.columns.length > 0
+                && this.template.columns.findIndex(x => x.name.length == 0) > -1) {
+                isOk = false;
+                this.errorMessage = "Название у колонок обязательно.";
             }
 
             return isOk;
@@ -632,7 +671,12 @@
             if (index == -1) {
                 this.limits.push(this.limit);
             } else {
-                this.limits[index] = this.limit;
+                this.limits[index].name = this.limit.name;
+                this.limits[index].periodTypeID = this.limit.periodTypeID;
+                this.limits[index].periodName = this.limit.periodName;
+                this.limits[index].newSections = this.limit.newSections;
+                this.limits[index].sections = this.limit.sections;
+                this.limits[index].limitMoney = this.limit.limitMoney;
             }
             $("#modal-limit").modal("hide");
         },
@@ -692,6 +736,8 @@
             } else {
                 this.goal = { id: this.counter++ };
                 this.goal.dateStart = GetDateByFormat(moment(), "YYYY/MM/DD");
+                this.goal.isShow_BudgetMonth = true;
+                this.goal.isShow_BudgetYear = true;
             }
 
             let startConfig = GetFlatpickrRuConfig(this.goal.dateStart);
@@ -727,7 +773,12 @@
             if (index == -1) {
                 this.goals.push(this.goal);
             } else {
-                this.goals[index] = this.goal;
+                this.goals[index].name = this.goal.name;
+                this.goals[index].dateStart = this.goal.dateStart;
+                this.goals[index].dateEnd = this.goal.dateEnd;
+                this.goals[index].expectationMoney = this.goal.expectationMoney;
+                this.goals[index].isShow_BudgetMonth = this.goal.isShow_BudgetMonth;
+                this.goals[index].isShow_BudgetYear = this.goal.isShow_BudgetYear;
             }
             $("#modal-goal").modal("hide");
         },

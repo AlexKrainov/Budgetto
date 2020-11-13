@@ -23,6 +23,7 @@ namespace MyProfile.Entity.ModelView.User
         public bool IsAvailable { get; set; }
         public PaymentClientSide Payment { get; set; }
         public Guid ID { get; set; }
+        public Guid UserSessionID { get; set; }
     }
 
     public class UserSettingsClientSide

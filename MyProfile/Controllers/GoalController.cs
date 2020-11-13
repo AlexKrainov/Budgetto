@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Goal;
@@ -15,6 +16,7 @@ using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class GoalController : Controller
     {
         private IBaseRepository repository;

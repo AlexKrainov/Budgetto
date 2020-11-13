@@ -43,6 +43,7 @@ var AccountSettingsVue = new Vue({
         isValidCode: true,
         isShowCode: false,
         isShowSuccessChangedPassword: false,
+        errorMessage: null
     },
     computed: {
         validName: function () {
@@ -50,11 +51,6 @@ var AccountSettingsVue = new Vue({
         },
         validEmail: function () {
             return this.user.email && this.user.email.indexOf("@") > 0 && this.user.email.indexOf(".") > 0;
-        },
-        validPassword: function () {
-            return (this.newPassword != null
-                && this.newPassword != ""
-                && this.newPassword.length >= 5);
         },
         validCollectiveUserSearch: function () {
             return this.collectiveUserSearch.indexOf("@") > 0 && this.collectiveUserSearch.indexOf(".") > 0
@@ -175,7 +171,7 @@ var AccountSettingsVue = new Vue({
 
         //Change password tab
         saveNewPassword: function () {
-            if (this.validPassword) {
+            if (this.validPassword()) {
                 this.isValidPassword = true;
                 this.isSaving = true;
                 this.isShowSuccessChangedPassword = false;
@@ -192,6 +188,34 @@ var AccountSettingsVue = new Vue({
                 console.log("not save");
                 this.isValidPassword = false;
             }
+        },
+        validPassword: function () {
+            let isOk = true;
+
+            if (this.newPassword == null || this.newPassword == "") {
+                isOk = false;
+                this.errorMessage = "Пароль не может быть пустым.";
+                return isOk;
+            } else {
+                this.errorMessage = null;
+            }
+
+            if (this.newPassword.length < 5) {
+                isOk = false;
+                this.errorMessage = "Пароль должен содержать не менее 5 символов.";
+                return isOk;
+            } else {
+                this.errorMessage = null;
+            }
+
+            if (this.newPassword.indexOf(' ') >= 0) {
+                isOk = false;
+                this.errorMessage = "Пароль не должен содержать пробелов.";
+            } else {
+                this.errorMessage = null;
+            }
+
+            return isOk;
         },
 
         //Collective budget tab
@@ -295,14 +319,6 @@ var AccountSettingsVue = new Vue({
         },
 
 
-
-
-
-        getDateByFormat: function (date, format) {
-            return GetDateByFormat(date, format);
-        },
-
-
         //Testing
         generatedRecords: function () {
             if (confirm("Вы уверены, что хотите сгенерировать данные ?")) {
@@ -332,7 +348,13 @@ var AccountSettingsVue = new Vue({
                     }
                 });
             }
-        }
+        },
+
+
+
+        getDateByFormat: function (date, format) {
+            return GetDateByFormat(date, format);
+        },
     }
 });
 

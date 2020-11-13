@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Repository;
 using System;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public partial class BudgetTotalController : Controller
     {
         private IBaseRepository repository;

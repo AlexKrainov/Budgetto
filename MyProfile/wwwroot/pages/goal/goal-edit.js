@@ -19,8 +19,9 @@
         edit: function (goal) {
             if (goal) {
                 this.goal = { ...goal };
-                
+
             } else {
+                this.goal = {};
                 this.goal.dateStart = GetDateByFormat(moment(), "YYYY/MM/DD");
             }
 
@@ -69,21 +70,38 @@
                     GoalEditVue.isSaving = false;
                 });
         },
-      
+
         checkForm: function (e) {
             let isOk = true;
 
+            if (!(this.goal.dateStart && this.goal.dateStart.length > 0)) {
+                isOk = false;
+                $("#date-start").next().addClass("is-invalid");
+            } else {
+                $("#date-start").next().removeClass("is-invalid");
+            }
+
             if (!(this.goal.name && this.goal.name.length > 0)) {
                 isOk = false;
-                $("#goal-name").addClass("is-valid");
+                $("#goal-name").addClass("is-invalid");
             } else {
-                $("#goal-name").removeClass("is-valid");
+                $("#goal-name").removeClass("is-invalid");
             }
+
+            let str = this.goal.name;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                isOk = false;
+                $("#goal-name").addClass("is-invalid");
+            } else {
+                $("#goal-name").removeClass("is-invalid");
+            }
+
             if (!(this.goal.expectationMoney && (this.goal.expectationMoney > 0 || this.goal.expectationMoney.length > 0))) {
                 isOk = false;
-                $("#goal-expectationMoney").addClass("is-valid");
+                $("#goal-expectationMoney").addClass("is-invalid");
             } else {
-                $("#goal-expectationMoney").removeClass("is-valid");
+                $("#goal-expectationMoney").removeClass("is-invalid");
             }
             if (isOk == false && e) {
                 e.preventDefault();

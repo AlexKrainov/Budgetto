@@ -3,10 +3,10 @@
         <form class="modal-content" method="post" v-on:submit="checkForm">
             <div class="modal-header">
                 <h5 class="modal-title" v-show="area.id == undefined">
-                    Создание области
+                    Создание папки
                 </h5>
                 <h5 class="modal-title" v-show="area.id">
-                    Редактирование области
+                    Редактирование папки
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
             </div>
@@ -15,12 +15,14 @@
                     <div class="form-group col">
                         <label class="form-label">Введите название</label>
                         <span class="text-danger">*</span>
-                        <input type="text" class="form-control" placeholder="Регулярные траты, ремонт в ванной ..." v-model="area.name" required>
+                        <input id="area-name" type="text" class="form-control" placeholder="Регулярные траты, ремонт в ванной ..." 
+                               v-model="area.name" required>
+                        <small class="invalid-feedback">Обязательное поле</small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col mb-0">
-                        <label class="form-label">Введите описание области</label>
+                        <label class="form-label">Введите описание папки</label>
                         <textarea class="form-control" v-model="area.description" placeholder="Описание"></textarea>
                     </div>
                 </div>

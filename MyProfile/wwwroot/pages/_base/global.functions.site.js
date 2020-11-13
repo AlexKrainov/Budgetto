@@ -303,3 +303,38 @@ jQuery.fn.scrollCenterORI = function (elem, speed) {
     }, speed == undefined ? 1000 : speed);
     return this;
 };
+
+function GetCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function CheckAuthenticated() {
+    let val = { uid: UserInfo.ID, usid: UserInfo.UserSessionID, ue: UserInfo.Email };
+    return $.ajax({
+        type: "POST",
+        url: "/Settings/CheckAuthenticated",
+        data: JSON.stringify(val),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (response) {
+            document.CheckAuthorization = false;
+            return response;
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function onTabFocus() {
+    if (document.CheckAuthorization) {
+        CheckAuthenticated();
+    }
+}
+function onTabBlur() {
+    if (document.CheckAuthorization) {
+        CheckAuthenticated();
+    }
+}

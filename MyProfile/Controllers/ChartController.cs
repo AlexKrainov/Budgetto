@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Chart.Service;
 using MyProfile.Entity.Model;
@@ -11,6 +12,7 @@ using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class ChartController : Controller
     {
         private ChartService chartService;

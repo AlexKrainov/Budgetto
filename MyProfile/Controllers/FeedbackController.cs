@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyProfile.Chat.Service;
 using MyProfile.Entity.ModelView.Feedback;
 using MyProfile.Identity;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class FeedbackController : Controller
     {
         private UserLogService userLogService;

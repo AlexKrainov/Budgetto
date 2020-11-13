@@ -152,6 +152,16 @@ var LimitListVue = new Vue({
             } else {
                 $("#limit-name").removeClass("is-invalid");
             }
+
+            let str = this.limit.name;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                isOk = false;
+                $("#limit-name").addClass("is-invalid");
+            } else {
+                $("#limit-name").removeClass("is-invalid");
+            }
+
             if (!(this.limit.limitMoney && (this.limit.limitMoney > 0 || this.limit.limitMoney.length > 0))) {
                 isOk = false;
                 $("[name=limitMoney]").addClass("is-invalid");

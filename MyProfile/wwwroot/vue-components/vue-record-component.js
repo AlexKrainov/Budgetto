@@ -127,7 +127,7 @@
                         </label>
                     </div>
                     <button class="btn btn-primary button-add-record" type="button" 
-                        v-bind:disabled="isSaving" 
+                        v-bind:disabled="isSaving || records.length == 0" 
                         v-on:click="save($emit)"
                         v-show="isShowHistory == false">
                         <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>

@@ -673,8 +673,8 @@ namespace MyProfile.User.Service
                 .FirstOrDefaultAsync();
             string oldEmail = new string(dbUser.Email);
 
-            dbUser.Name = user.Name = userInfoModel.Name.Trim();
-            dbUser.LastName = user.LastName = userInfoModel.LastName.Trim();
+            dbUser.Name = user.Name = userInfoModel.Name?.Trim();
+            dbUser.LastName = user.LastName = userInfoModel.LastName?.Trim();
             dbUser.Email = user.Email = userInfoModel.Email;
 
 

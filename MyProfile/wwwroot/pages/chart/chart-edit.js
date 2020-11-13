@@ -23,6 +23,10 @@
                 next: 'Вперед',
                 previous: 'Назад'
             },
+            toolbarSettings: {
+                toolbarPosition: 'bottom', // none, top, bottom, both
+                toolbarButtonPosition: 'center', // left, right, center
+            },
         });
         elWizard.on("leaveStep", function (e, anchorObject, stepIndex, stepDirection) {
             let canGo = true;
@@ -179,7 +183,9 @@
                 //validate name
                 let selector = "#field_name_" + field.id;
                 let $elName = $(selector);
-                if (!(field.name && field.name.length > 0)) {
+                let str = field.name;
+                str = str ? str.replaceAll(" ", "") : "";
+                if (!str || str.length == 0) {
                     canGo = false;
                     $elName.addClass("is-invalid");
                 } else {
@@ -208,6 +214,15 @@
             } else {
                 canGo = false;
                 $("#chartName").addClass("is-invalid");
+            }
+
+            let str = this.chart.name;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                canGo = false;
+                $("#chartName").addClass("is-invalid");
+            } else {
+                $("#chartName").removeClass("is-invalid");
             }
 
             return canGo;

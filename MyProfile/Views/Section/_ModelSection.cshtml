@@ -30,6 +30,7 @@
                         <label class="form-label">Введите название категории</label>
                         <span class="text-danger">*</span>
                         <input id="section-name" type="text" class="form-control" placeholder="Продукты, книги ..." v-model="section.name">
+                        <small class="invalid-feedback">Обязательное поле</small>
                     </div>
                 </div>
 
@@ -134,7 +135,7 @@
                     </div>*@
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" style=" position: absolute; left: 22px;"
+                <button type="button" class="btn btn-outline-danger remove-section-btn" style=" position: absolute; left: 22px;"
                         v-if="section.hasRecords == false"
                         v-on:click="removeSection(section)">Удалить</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

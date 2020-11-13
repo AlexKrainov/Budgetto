@@ -70,10 +70,18 @@
 
             if (!(this.record.dateTimeOfPayment && this.record.dateTimeOfPayment.length > 0)) {
                 isOk = false;
+                $("#dateTimeOfPayment").next().addClass("is-invalid");
+            } else {
+                $("#dateTimeOfPayment").next().removeClass("is-invalid");
             }
+
             if (!(this.record.total && (this.record.total > 0 || this.record.total.length > 0))) {
                 isOk = false;
+                $("#record-total").addClass("is-invalid");
+            } else {
+                $("#record-total").removeClass("is-invalid");
             }
+
             if (isOk == false && e) {
                 e.preventDefault();
             }

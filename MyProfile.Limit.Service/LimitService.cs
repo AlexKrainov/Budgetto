@@ -223,27 +223,27 @@ namespace MyProfile.Limit.Service
 
                 var leftMoneyToSpend = limit.LimitMoney - totalSpended;
 
-                if (leftMoneyToSpend > 0)
+                //if (leftMoneyToSpend > 0)
+                //{
+                if (isThisMonth)
                 {
-                    if (isThisMonth)
-                    {
-                        var leftDays = (finish - now).Days + 1;
-                        leftMoneyInADay = leftMoneyToSpend / leftDays;
-                    }
-                    else if (IsPastMonth)
-                    {
-                        leftMoneyInADay = totalSpended / totalDays;
-                    }
-                    else if (IsFutureMonth)
-                    {
-                        leftMoneyInADay = limit.LimitMoney / totalDays;
-                    }
-
-                    if (totalSpended >= 0)
-                    {
-                        percent2 = Math.Round(leftMoneyToSpend / limit.LimitMoney * 100, 2);
-                    }
+                    var leftDays = (finish - now).Days + 1;
+                    leftMoneyInADay = leftMoneyToSpend / leftDays;
                 }
+                else if (IsPastMonth)
+                {
+                    leftMoneyInADay = totalSpended / totalDays;
+                }
+                else if (IsFutureMonth)
+                {
+                    leftMoneyInADay = limit.LimitMoney / totalDays;
+                }
+
+                if (totalSpended >= 0)
+                {
+                    percent2 = Math.Round(leftMoneyToSpend / limit.LimitMoney * 100, 2);
+                }
+                // }
 
 
                 limitCharts.Add(new LimitChartModelView

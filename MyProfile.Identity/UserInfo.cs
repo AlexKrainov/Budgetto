@@ -16,7 +16,6 @@ namespace MyProfile.Identity
     {
 
         public static readonly string USER_INFO = "UserInfo";
-        public static readonly string LAST_USER_LOG_ID = "LastUserLogID";
         public static Microsoft.AspNetCore.Http.HttpContext HttpContext => _accessor.HttpContext;
 
         /// <summary>
@@ -48,45 +47,6 @@ namespace MyProfile.Identity
                 return null;
             }
         }
-
-        ///// <summary>
-        ///// Authorized user, if user not authorized than return NULL.
-        ///// </summary>
-        //public static int LastUserLogID
-        //{
-        //    get
-        //    {
-        //        if (_accessor.HttpContext == null)
-        //        {
-        //            return 0;
-        //        }
-        //        Claim claim = _accessor.HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType);
-
-        //        try
-        //        {
-        //            if (claim != null && claim.Properties[LAST_USER_LOG_ID] != null)
-        //            {
-        //                var info = claim.Properties[LAST_USER_LOG_ID];
-        //                return int.Parse(info);
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Log.Error(ex, "ERROR, when try to get user!");
-        //        }
-        //        return 0;
-        //    }
-        //    set
-        //    {
-        //        var claim = HttpContext.User.FindFirst(x => x.Value == Current.Email);
-
-        //        if (claim != null)
-        //        {
-        //            claim.Properties.Remove(LAST_USER_LOG_ID);
-        //            claim.Properties.Add(LAST_USER_LOG_ID, value.ToString());
-        //        }
-        //    }
-        //}
 
         private static IHttpContextAccessor _accessor;
 
@@ -146,6 +106,7 @@ namespace MyProfile.Identity
             return new UserInfoClientSide
             {
                 ID =currentUser.ID,
+                UserSessionID = currentUser.UserSessionID,
                 CurrencyID = currentUser.Currency.ID,
                 Email = currentUser.Email,
                 Name = currentUser.Name,

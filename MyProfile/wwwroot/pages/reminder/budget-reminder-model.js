@@ -157,6 +157,15 @@
                 $("#reminderTitle").addClass("is-invalid")
             }
 
+            let str = this.reminder.title;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                isOk = false;
+                $("#reminderTitle").addClass("is-invalid");
+            } else {
+                $("#reminderTitle").removeClass("is-invalid");
+            }
+
             if (!(this.reminder.cssIcon && this.reminder.cssIcon.length > 0)) {
                 isOk = false;
                 $("#reminderIcons").css("display", "block");

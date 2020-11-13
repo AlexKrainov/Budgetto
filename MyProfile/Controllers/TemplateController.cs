@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DynamicExpresso;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Template.Service;
 using MyProfile.User.Service;
-using TemplateBudgetSection = MyProfile.Entity.Model.TemplateBudgetSection;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class TemplateController : Controller
     {
         private IBaseRepository repository;

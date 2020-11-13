@@ -94,6 +94,7 @@
         public const string User_Edit = "User_Edit";
         public const string User_Change_Email = "User_Change_Email";
         public const string User_NotShowEnterHint = "User_NotShowFirstHint";
+        public const string User_AutoAuthorization = "User_AutoAuthorization";
 
         public const string Constructor_Step1_UserInfo = "Constructor_Step1_UserInfo";
         public const string Constructor_Step2_Sections = "Constructor_Step2_Sections";
@@ -101,7 +102,6 @@
         public const string Constructor_Step4_Limits = "Constructor_Step4_Limits";
         public const string Constructor_Step5_Goals = "Constructor_Step5_Goals";
         public const string Constructor_Step6_Finish = "Constructor_Step6_Finish";
-
 
         public const string ADMIN_GenerateRecords = "ADMIN_GenerateRecords";
         public const string ADMIN_ClearAccount = "ADMIN_ClearAccount";

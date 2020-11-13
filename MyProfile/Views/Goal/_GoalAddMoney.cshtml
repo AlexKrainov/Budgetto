@@ -1,15 +1,17 @@
 ﻿<div class="modal modal-top fade" id="goal-add-money">
     <div class="modal-dialog">
-        <form class="modal-content" method="post" v-on:submit="checkAddForm">
+        <form class="modal-content" method="post">
             <div class="modal-header">
                 <ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
                     <li class="nav-item">
-                        <a class="nav-link" v-bind:class="isGanaral ? 'active': ''" data-toggle="tab" href="#general">
+                        <a class="nav-link" v-bind:class="isGanaral ? 'active': ''" data-toggle="tab" href="#general"
+                           v-on:click="isGanaral = true">
                             <h6> Пополнить цель</h6>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" v-bind:class="!isGanaral ? 'active': ''" data-toggle="tab" href="#history">
+                        <a class="nav-link" v-bind:class="!isGanaral ? 'active': ''" data-toggle="tab" href="#history"
+                           v-on:click="isGanaral = false">
                             <h6>
                                 История пополнений
                             </h6>
@@ -26,6 +28,7 @@
                                 <label class="form-label">Дата</label>
                                 <span class="text-danger">*</span>
                                 <input type="text" class="form-control" id="dateTimeOfPayment" v-model="record.dateTimeOfPayment" required>
+                                <small class="invalid-feedback">Обязательное поле</small>
                             </div>
                         </div>
 
@@ -33,10 +36,11 @@
                             <div class="form-group col">
                                 <label class="form-label">Сумма</label>
                                 <span class="text-danger">*</span>
-                                <input type="number" class="form-control" placeholder="1000 или -1000" v-model="record.total" required>
+                                <input id="record-total" type="number" class="form-control" placeholder="1000 или -1000" v-model="record.total" required>
                                 <div class="text-muted small mt-1" v-show="record.total ">
                                     {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.total) }}
                                 </div>
+                                <small class="invalid-feedback">Обязательное поле</small>
                             </div>
                         </div>
                     </div>
@@ -44,7 +48,7 @@
                         <div class="media pb-1 mb-3" 
                              v-for="record in goal.records" 
                              v-show="record.isShow">
-                            <img v-bind:src="record.imageLink" class="d-block ui-w-40 rounded-circle" alt>
+                            <img v-bind:src="record.imageLink" class="d-block ui-w-40 rounded-circle" alt="img">
                             <div class="media-body ml-3">
                                 <div class="mb-1">
                                     <strong class="font-weight-semibold">{{ record.userName }}</strong> &nbsp;
@@ -61,8 +65,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button class="btn btn-primary" type="submit"
+                <button class="btn btn-primary" type="button"
                         v-bind:disabled="isSaving"
+                        v-show="isGanaral"
                         v-on:click="saveMoney">
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                     Сохранить

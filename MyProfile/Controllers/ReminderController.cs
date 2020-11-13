@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Identity;
@@ -10,6 +11,7 @@ using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class ReminderController : Controller
     {
         private ReminderService reminderService;

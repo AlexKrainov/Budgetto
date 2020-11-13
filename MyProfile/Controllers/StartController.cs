@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
@@ -17,11 +18,11 @@ using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class StartController : Controller
     {
         private IBaseRepository repository;
         private TemplateService templateService;
-        private BudgetService budgetService;
         private SectionService sectionService;
         private UserService userService;
         private UserLogService userLogService;
@@ -30,7 +31,6 @@ namespace MyProfile.Controllers
 
         public StartController(IBaseRepository repository,
             UserService userService,
-            BudgetService budgetService,
             TemplateService templateService,
             LimitService limitService,
             GoalService goalService,
@@ -39,7 +39,6 @@ namespace MyProfile.Controllers
         {
             this.repository = repository;
             this.templateService = templateService;
-            this.budgetService = budgetService;
             this.sectionService = sectionService;
             this.userService = userService;
             this.userLogService = userLogService;
@@ -176,7 +175,7 @@ namespace MyProfile.Controllers
                 template.Name = "Шаблон на месяц";
                 template.IsShow = true;
                 template.IsDefault = true;
-                template.IsCountCollectiveBudget = true;
+                template.IsCreatedByConstructor = true;
 
                 for (int i = 0; i < template.Columns.Count(); i++)
                 {

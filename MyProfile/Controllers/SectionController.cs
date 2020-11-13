@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Budget.Service;
@@ -14,6 +15,7 @@ using Newtonsoft.Json;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class SectionController : Controller
     {
         private IBaseRepository repository;

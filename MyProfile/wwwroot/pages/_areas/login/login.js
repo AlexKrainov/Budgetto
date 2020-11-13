@@ -66,11 +66,6 @@
         },
     },
     computed: {
-        passwordValid: function () {
-            return (this.password != null
-                && this.password != ""
-                && this.password.length >= 5);
-        },
         emailValid: function () {
             return this.email && this.email.indexOf("@") > 0 && this.email.indexOf(".") > 0;
         }
@@ -222,11 +217,8 @@
         checkForm: function (e) {
             let isOk = true;
 
-            this.isValidPassword = this.passwordValid
-
-            if (!this.isValidPassword) {
-                isOk = false;
-            }
+            this.isValidPassword = this.validPassword();
+            isOk = this.isValidPassword;
 
             this.isValidEmail = this.emailValid;
 
@@ -238,6 +230,35 @@
             }
             return isOk;
         },
+        validPassword: function () {
+            let isOk = true;
+
+            if (this.password == null || this.password == "") {
+                isOk = false;
+                this.textError = "Пароль не может быть пустым.";
+                return isOk;
+            } else {
+                this.textError = null;
+            }
+
+            if (this.password.length < 5) {
+                isOk = false;
+                this.textError = "Пароль должен содержать не менее 5 символов.";
+                return isOk;
+            } else {
+                this.textError = null;
+            }
+
+            if (this.password.indexOf(' ') >= 0) {
+                isOk = false;
+                this.textError = "Пароль не должен содержать пробелов.";
+            } else {
+                this.textError = null;
+            }
+
+            return isOk;
+        },
+
         onRegistration: function () {
             if (this.checkForm() == false) {
                 return false;
@@ -309,7 +330,7 @@
             });
         },
         onSetNewPassword: function () {
-            if (this.passwordValid == false) {
+            if (this.passwordValid() == false) {
                 this.isValidPassword = false;
                 return false;
             }

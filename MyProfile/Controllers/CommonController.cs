@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Repository;
 using MyProfile.LittleDictionaries.Service;
 using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class CommonController : Controller
     {
         private IBaseRepository repository;

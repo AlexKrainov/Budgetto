@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.ModelView.ToDoList;
 using MyProfile.Identity;
 using MyProfile.ToDoList.Service;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class ToDoListController : Controller
     {
         private ToDoListService toDoListService;

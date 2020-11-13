@@ -52,8 +52,10 @@
 
             SectionVue.areas = this.areas.map(function (x) { return { name: x.name, id: x.id } });
 
-            if (sectionID) {
+            if (sectionID > 0) {
                 SectionVue.edit(area.sections.filter(x => x.id == sectionID)[0]);
+            } else if (sectionID == -1) {
+                SectionVue.create();
             }
         },
         create: function () {
@@ -102,6 +104,16 @@
             if (!(this.area.name && this.area.name.length > 0)) {
                 isOk = false;
             }
+
+            let str = this.area.name;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                isOk = false;
+                $("#area-name").addClass("is-invalid");
+            } else {
+                $("#area-name").removeClass("is-invalid");
+            }
+
             if (isOk == false && e) {
                 e.preventDefault();
             }
@@ -187,7 +199,7 @@ var SectionVue = new Vue({
         $.getJSON("/json/colors-section.json", function (json) {
             SectionVue.colors = json;
         });
-
+        $(".remove-section-btn").remove();
     },
     methods: {
         create: function () {
@@ -311,7 +323,20 @@ var SectionVue = new Vue({
 
             if (!(this.section.name && this.section.name.length > 0)) {
                 isOk = false;
+                $("#section-name").addClass("is-invalid");
+            } else {
+                $("#section-name").removeClass("is-invalid");
             }
+
+            let str = this.section.name;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                isOk = false;
+                $("#section-name").addClass("is-invalid");
+            } else {
+                $("#section-name").removeClass("is-invalid");
+            }
+
             if (isOk == false && e) {
                 e.preventDefault();
             }

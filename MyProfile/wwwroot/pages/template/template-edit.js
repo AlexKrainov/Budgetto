@@ -200,6 +200,7 @@
         },
         validTemplate: function () {
             let isOk = true;
+            this.errorMessage = null;
 
             let str = this.template.name;
             str = str ? str.replaceAll(" ", "") : "";
@@ -213,9 +214,19 @@
             if (this.template.columns.length == 0) {
                 isOk = false;
                 this.errorMessage = "Шаблон должен содержать хотя бы одну колонку.";
-            } else {
-                this.errorMessage = null;
-            }
+            } 
+
+            if (this.template.columns.length > 0
+                && this.template.columns.findIndex(x => x.templateColumnType == TemplateColumnTypeEnum.BudgetSection && x.templateBudgetSections.length == 0) > -1) {
+                isOk = false;
+                this.errorMessage = "Шаблон должен содержать колонки хотя бы с одной категорией.";
+            } 
+
+            if (this.template.columns.length > 0
+                && this.template.columns.findIndex(x => x.name.length == 0) > -1) {
+                isOk = false;
+                this.errorMessage = "Название у колонок обязательно.";
+            } 
 
             return isOk;
         },
