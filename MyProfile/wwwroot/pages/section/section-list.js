@@ -199,7 +199,6 @@ var SectionVue = new Vue({
         $.getJSON("/json/colors-section.json", function (json) {
             SectionVue.colors = json;
         });
-        $(".remove-section-btn").remove();
     },
     methods: {
         create: function () {
@@ -212,6 +211,7 @@ var SectionVue = new Vue({
                 sectionTypeID: null,
                 hasRecords: false,
                 cssIcon: null,
+                canRemove: false
             };
             this.chooseColor();
             $("#accordion2-2, #accordion2-1").removeClass("show");
@@ -243,7 +243,6 @@ var SectionVue = new Vue({
             //        //}
             //    }
             //});
-
             $("#modal-section").modal("show");
         },
 

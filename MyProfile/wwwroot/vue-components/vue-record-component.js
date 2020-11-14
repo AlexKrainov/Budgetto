@@ -118,7 +118,9 @@
                     </section>
                 </div>
                 <div class="modal-footer">
-                    <a href="javascript:void(0)" v-show="isShowHistory == false" v-on:click="showHistory(true)">История</a>
+                    <a href="javascript:void(0)" style="position: absolute;left: 21px;" 
+                        v-show="isShowHistory == false" 
+                        v-on:click="showHistory(true)" >История</a>
                     <a href="javascript:void(0)" v-show="isShowHistory == true" v-on:click="showHistory(false)">Добавить запись</a>
                     <div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="isShowCollectionElement">
                         <label class="custom-control custom-checkbox">

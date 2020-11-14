@@ -95,6 +95,7 @@
         public const string User_Change_Email = "User_Change_Email";
         public const string User_NotShowEnterHint = "User_NotShowFirstHint";
         public const string User_AutoAuthorization = "User_AutoAuthorization";
+        public const string User_LeaveSite = "User_LeaveSite";
 
         public const string Constructor_Step1_UserInfo = "Constructor_Step1_UserInfo";
         public const string Constructor_Step2_Sections = "Constructor_Step2_Sections";

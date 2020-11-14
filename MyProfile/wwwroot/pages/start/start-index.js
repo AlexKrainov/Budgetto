@@ -293,6 +293,7 @@
                 isUpdated: false,
                 sectionTypeName: "Расходы",
                 cssColor: '',
+                canRemove: true,
             };
             this.chooseColor();
             $("#accordion2-2, #accordion2-1").removeClass("show");

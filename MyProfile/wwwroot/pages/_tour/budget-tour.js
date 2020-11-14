@@ -10,7 +10,7 @@ $(function () {
             BudgetTour.addStep({
                 title: 'Здравствуйте!',
                 text: `<p>Добро пожаловать в Budgetto.</p> 
-<p>Так как вы впервые используете программу, предлагаем вам пройти ознакомительный тур. Он состоит из 7 шагов - это быстро! </p>
+<p>Так как вы впервые используете программу, предлагаем вам пройти ознакомительный тур. Он состоит из 8 шагов - это быстро! </p>
 <p>Нажмите кнопку "Далее", чтобы начать работу.</p>`,
                 //attachTo: { element: '.navbar-user', on: 'left' },
                 buttons: [{
@@ -122,9 +122,37 @@ $(function () {
             }]
         });
         BudgetTour.addStep({
+            title: 'Добавление записей.',
+            text: `Учет финансов начинается с добавления записей в таблицу. Чтобы добавить запись, нажмите "+"`,
+            attachTo: { element: '#addRecord', on: 'bottom' },
+            buttons: [{
+                action: BudgetTour.back,
+                classes: backButtonClass,
+                text: 'Назад'
+            }, {
+                action: BudgetTour.next,
+                classes: nextButtonClass,
+                text: 'Далее'
+            }]
+        });
+        BudgetTour.addStep({
             title: 'Настройки страницы',
             text: `Возможность показывать и скрывать виджеты на этой странице.`,
             attachTo: { element: '.theme-settings-open-btn2 i', on: 'left' },
+            buttons: [{
+                action: BudgetTour.back,
+                classes: backButtonClass,
+                text: 'Назад'
+            }, {
+                action: BudgetTour.next,
+                classes: nextButtonClass,
+                text: 'Далее'
+            }]
+        });
+        BudgetTour.addStep({
+            title: 'Окончание тура',
+            text: `Здорово! Вы ознакомились с базовыми функциями программы. Посмотреть этот тур и другие вы можете, нажав на сивол "?" в правом верхнем углу экрана.`,
+            //attachTo: { element: '.theme-settings-open-btn2 i', on: 'left' },
             buttons: [{
                 action: BudgetTour.back,
                 classes: backButtonClass,

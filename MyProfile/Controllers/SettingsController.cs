@@ -12,17 +12,34 @@ namespace MyProfile.Controllers
     {
         private IBaseRepository repository;
         private UserService userService;
+        private UserLogService userLogService;
 
         public SettingsController(IBaseRepository repository,
-            UserService userService)
+            UserService userService,
+            UserLogService userLogService)
         {
             this.repository = repository;
             this.userService = userService;
+            this.userLogService = userLogService;
         }
 
         public IActionResult Settings()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LeaveSite(Guid UserSessionID)
+        {
+            try
+            {
+                await userLogService.CreateUserLogAsync(UserSessionID, UserLogActionType.User_LeaveSite);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json(new { isOk = true });
         }
 
         [HttpPost]

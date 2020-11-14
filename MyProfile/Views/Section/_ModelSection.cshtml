@@ -135,16 +135,18 @@
                     </div>*@
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger remove-section-btn" style=" position: absolute; left: 22px;"
-                        v-if="section.hasRecords == false"
-                        v-on:click="removeSection(section)">Удалить</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-outline-danger" style="position: absolute; left: 22px;"
+                        v-show="section.canRemove"
+                        v-on:click="removeSection(section)">
+                    Удалить
+                </button>
                 <button id="save-sections" class="btn btn-primary" type="button"
                         v-bind:disabled="isSaving"
                         v-on:click="saveSection">
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                     Сохранить
                 </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </form>
     </div>

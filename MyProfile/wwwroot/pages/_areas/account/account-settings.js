@@ -329,12 +329,12 @@ var AccountSettingsVue = new Vue({
                     });
             }
         },
-        clearAccount: function () {
+        setFlagConstructor: function () {
             if (confirm("Вы уверены, что хотите обнулить аккаунт ?")) {
                 this.isSaving = true;
                 return $.ajax({
                     type: "GET",
-                    url: "/Test/ClearAccountForConstructor",
+                    url: "/Test/SetFlagConstructor",
                     context: this,
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',

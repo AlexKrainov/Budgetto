@@ -36,13 +36,21 @@
         $.fn.dataTable.ext.type.order['day-pre'] = tableOrder;
     }
 
+    //#region auth
     document.CheckAuthorization = false;
     setInterval(function () {
         document.CheckAuthorization = true;
-    }, 900000); //15 mins
+    }, 300000); //5 mins
 
     $(window).focus(onTabFocus);
     $(window).blur(onTabBlur);
+    //$(window).bind("beforeunload", onCloseWindow);
+    $(window).on("unload", onCloseWindow);
+    document.onkeydown = onKeyListener;
+    document.onkeypress = onKeyListener
+    document.onkeyup = onKeyListener;
+    //#endregion
+
 });
 
 var RecordVue = new Vue({

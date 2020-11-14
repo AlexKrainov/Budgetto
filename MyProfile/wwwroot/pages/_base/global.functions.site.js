@@ -338,3 +338,22 @@ function onTabBlur() {
         CheckAuthenticated();
     }
 }
+
+function onKeyListener(e) {
+    e = e || window.event;
+
+    if (e.keyCode == 116) {
+        console.log("f5 pressed");
+    } else {
+        console.log("Window closed");
+    }
+}
+
+function onCloseWindow() {
+    return $.ajax({
+        type: "GET",
+        url: "/Settings/LeaveSite?UserSessionID=" + UserInfo.UserSessionID,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    });
+}

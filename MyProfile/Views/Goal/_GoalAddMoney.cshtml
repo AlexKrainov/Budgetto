@@ -64,7 +64,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <button class="btn btn-primary" type="button"
                         v-bind:disabled="isSaving"
                         v-show="isGanaral"
@@ -72,6 +71,7 @@
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                     Сохранить
                 </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </form>
     </div>

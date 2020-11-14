@@ -15,7 +15,7 @@
                     <div class="form-group col">
                         <label class="form-label">Введите название</label>
                         <span class="text-danger">*</span>
-                        <input id="area-name" type="text" class="form-control" placeholder="Регулярные траты, ремонт в ванной ..." 
+                        <input id="area-name" type="text" class="form-control" placeholder="Регулярные траты, ремонт в ванной ..."
                                v-model="area.name" required>
                         <small class="invalid-feedback">Обязательное поле</small>
                     </div>
@@ -27,30 +27,30 @@
                     </div>
                 </div>
                 @*<div class="form-row mt-3 ml-1">
-            <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" v-model="area.isShowInCollective">
-                    <span class="custom-control-label">Показывать всей группе</span>
-                </label>
-            </div>
-        </div>
-        <div class="form-row mt-3 ml-1">
-            <div class="form-group pb-0 mb-0" style=" margin-left: 0px; margin-right: auto;">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" v-model="area.isShowOnSite">
-                    <span class="custom-control-label">Показывать везде на сайте</span>
-                </label>
-            </div>
-        </div>*@
+                        <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="area.isShowInCollective">
+                                <span class="custom-control-label">Показывать всей группе</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-row mt-3 ml-1">
+                        <div class="form-group pb-0 mb-0" style=" margin-left: 0px; margin-right: auto;">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="area.isShowOnSite">
+                                <span class="custom-control-label">Показывать везде на сайте</span>
+                            </label>
+                        </div>
+                    </div>*@
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <button class="btn btn-primary" type="submit"
                         v-bind:disabled="isSaving"
                         v-on:click="save">
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                     Сохранить
                 </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </form>
     </div>

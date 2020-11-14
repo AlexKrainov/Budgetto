@@ -95,7 +95,7 @@ namespace MyProfile
             services.Configure<CookiePolicyOptions>(options =>
                 {
                     options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.Strict;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
                 });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

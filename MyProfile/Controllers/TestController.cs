@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
@@ -11,6 +12,7 @@ using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
+    [Authorize]
     public class TestController : Controller
     {
         private IBaseRepository repository;
@@ -155,7 +157,8 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true });
         }
 
-        public IActionResult ClearAccountForConstructor()
+        [HttpGet]
+        public IActionResult SetFlagConstructor()
         {
             var currentUser = UserInfo.Current;
             List<int> errorLogCreateIDs = new List<int>();
@@ -164,24 +167,24 @@ namespace MyProfile.Controllers
             {
                 var userSettings = repository.GetAll<MyProfile.Entity.Model.UserSettings>(x => x.ID == currentUser.ID).FirstOrDefault();
                 userSettings.IsShowConstructor = true;
-                repository.Update(userSettings);
+                repository.Update(userSettings, true);
 
-                var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
-                repository.DeleteRange(goals);
+                //var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
+                //repository.DeleteRange(goals);
 
-                var limits = repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
-                repository.DeleteRange(limits, true);
+                //var limits = repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
+                //repository.DeleteRange(limits, true);
 
-                var templates = repository.GetAll<MyProfile.Entity.Model.Template>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
-                repository.DeleteRange(templates, true);
+                //var templates = repository.GetAll<MyProfile.Entity.Model.Template>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
+                //repository.DeleteRange(templates, true);
 
-                var sections = repository.GetAll<MyProfile.Entity.Model.BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID
-                && x.BudgetRecords.Count() == 0 && x.IsCreatedByConstructor).ToList();
-                repository.DeleteRange(sections, true);
+                //var sections = repository.GetAll<MyProfile.Entity.Model.BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID
+                //&& x.BudgetRecords.Count() == 0 && x.IsCreatedByConstructor).ToList();
+                //repository.DeleteRange(sections, true);
 
-                var areas = repository.GetAll<MyProfile.Entity.Model.BudgetArea>(x => x.UserID == currentUser.ID
-                && x.BudgetSectinos.Count() == 0 && x.IsCreatedByConstructor).ToList();
-                repository.DeleteRange(areas, true);
+                //var areas = repository.GetAll<MyProfile.Entity.Model.BudgetArea>(x => x.UserID == currentUser.ID
+                //&& x.BudgetSectinos.Count() == 0 && x.IsCreatedByConstructor).ToList();
+                //repository.DeleteRange(areas, true);
             }
             catch (Exception ex)
             {

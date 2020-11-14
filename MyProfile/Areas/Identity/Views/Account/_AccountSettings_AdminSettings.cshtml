@@ -10,15 +10,15 @@
     <div class="mt-2">
         <button class="btn btn-secondary" type="button"
                 v-bind:disabled="isSaving"
-                v-on:click="clearAccount">
+                v-on:click="setFlagConstructor">
             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
-            Обнуление записей для конструктора
+            Сделать флаг конструктора - активным
         </button>&nbsp;
-        <div class="text-danger small mt-1">Удаление данных (категории (у которых нет записей), шаблоны, лимиты, цели все что было создано в конструкторе). При следующем входу будет доступен конструктор.</div>
+        <div class="text-danger small mt-1">При следующем входе на сайт будет доступен конструктор.</div>
     </div>
 </div>
 <div class="card-footer">
-    <div class="text-right">
+    <div class="text-left">
        
     </div>
 </div>
