@@ -113,6 +113,16 @@
         <vue-record-component id="test3" name="test3"></vue-record-component>
     </div>
 
+    @if (currentUser.UserSettings.IsShowCookie)
+    {
+        <div id="cookie-model" class="callout callout-secondary" style="width: 500px;position: fixed;left: 50px;bottom: 53px;z-index: 3000;">
+            <button type="button" class="close" data-dismiss="alert" onclick="$('#cookie-model').remove();">×</button>
+            <p>На сайте <b>budgetto.ru</b> используются файлы cookie</p>
+            <p>Оставаясь на сайте вы принимаете <a href="javascript:void(0)" class="callout-link">Пользовательского соглашения</a>.</p>
+            <p><button class="btn btn-primary mr-1" onclick="ShowCookieOff()">Подтвердить</button></p>
+        </div>
+    }
+
     <!-- Core scripts -->
     <script src="~/vendor/libs/popper/popper.js"></script>
     <script src="~/vendor/js/bootstrap.js"></script>

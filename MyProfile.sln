@@ -44,7 +44,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProfile.Payment.Service",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Service", "Common.Service\Common.Service.csproj", "{95A496F8-E378-42AA-9F79-51FBF59D2E4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProfile.Api", "MyProfile.Api\MyProfile.Api.csproj", "{36B152A3-0891-4749-8DB2-2268C8B1000D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProfile.API", "MyProfile.Api\MyProfile.API.csproj", "{36B152A3-0891-4749-8DB2-2268C8B1000D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevPortfolioSite", "..\DevPortfolio\DevPortfolio\DevPortfolioSite.csproj", "{6362B0C8-5A57-4190-94BD-7F07BCE81908}"
 EndProject

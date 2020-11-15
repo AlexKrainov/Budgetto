@@ -53,6 +53,7 @@
             backButtonSupport: false,
             useURLhash: false,
             showStepURLhash: false,
+            keyNavigation: false,
             lang: { // Language variables for button
                 next: 'Вперед',
             },
@@ -61,6 +62,9 @@
                 toolbarButtonPosition: 'center', // left, right, center
                 showNextButton: true, // show/hide a Next button
                 showPreviousButton: false, // show/hide a Previous button
+            },
+            keyboardSettings: {
+                keyNavigation: false, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
             },
         });
 
@@ -135,6 +139,8 @@
                 canGo = false;
                 console.log("finish");
             }
+
+            $(".modal-backdrop").remove();
 
             return canGo;
         });

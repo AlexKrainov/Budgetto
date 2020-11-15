@@ -95,7 +95,10 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.IsShowFirstEnterHint)
               .HasDefaultValue(true);
-            
+            modelBuilder.Entity<UserSettings>()
+             .Property(b => b.IsShowCookie)
+             .HasDefaultValue(true);
+
             //modelBuilder.Entity<VisibleElement>()
             //    .Property(b => b.IsShow_BudgetMonth)
             //    .HasDefaultValue(true);

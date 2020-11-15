@@ -48,6 +48,7 @@ namespace MyProfile.Entity.ModelView.User
         public bool IsShowHints { get; set; }
         public bool IsShowFirstEnterHint { get; set; }
         public bool IsShowConstructor { get; set; }
+        public bool IsShowCookie { get; set; }
     }
     public class CurrencyClientSide 
     {

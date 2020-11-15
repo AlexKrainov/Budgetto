@@ -1,8 +1,5 @@
 ﻿@{bool isHorizontal = ViewData["LayoutSidenavHorizontal"] != null && ViewData["LayoutSidenavHorizontal"].ToString() == "True";}
 @{string currentPage = ViewContext.RouteData.Values["Controller"].ToString() + "/" + ViewContext.RouteData.Values["Action"].ToString();}
-@{
-    List<MyProfile.Entity.ModelView.MenuItemViewModel> menuItems = MyProfile.Identity.UserInfo.GetMenuItems();
-}
 
 <div id="layout-sidenav"
      class="layout-sidenav sidenav sidenav-vertical bg-sidenav-theme">
@@ -22,22 +19,57 @@
         <div class="sidenav-divider mt-0"></div>
     }
 
+    <!-- Links -->
     <ul class="sidenav-inner@(!isHorizontal ? " py-1" : "")">
 
-        @foreach (var menuItem in menuItems)
-        {
-            var choosenPage = currentPage == menuItem.Controller + "/" + menuItem.Action;
-            <li class="sidenav-item@( choosenPage ? " active" : "") @menuItem.ClassElement">
-                <a asp-area="@menuItem.Area" asp-controller="@menuItem.Controller" asp-action="@menuItem.Action" class="sidenav-link">
-                    <i class="sidenav-icon @menuItem.Icon @(choosenPage ? "text-primary" : "")"></i>
-                    <div>@menuItem.Title</div>
-                </a>
-            </li>
-            if (menuItem.IsLastBeforeLine)
-            {
-                <li class="sidenav-divider mb-1"></li>
-            }
-        }
+        <li class="sidenav-item@(currentPage == "Budget/Month" ? " active" : "")">
+            <a asp-area="" asp-controller="Budget" asp-action="Month" class="sidenav-link">
+                <i class="sidenav-icon pe-7s-display1"></i>
+                <div>Финансы на месяц</div>
+            </a>
+        </li>
+        <li class="sidenav-item@(currentPage == "Budget/Year" ? " active" : "")">
+            <a asp-area="" asp-controller="Budget" asp-action="Year" class="sidenav-link">
+                <i class="sidenav-icon pe-7s-display1"></i>
+                <div>Финансы на год</div>
+            </a>
+        </li>
+
+        <li class="sidenav-divider mb-1"></li>
+        @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
+
+        <li class="sidenav-item@(currentPage == "Limit/List" ? " active" : "")">
+            <a asp-area="" asp-controller="Limit" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-frame-expand"></i><div>Лимиты</div></a>
+        </li>
+
+        <li class="sidenav-item@(currentPage == "Goal/List" ? " active" : "")">
+            <a asp-area="" asp-controller="Goal" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-rocket"></i><div>Цели</div></a>
+        </li>
+
+        <li class="sidenav-item@(currentPage == "Chart/List" ? " active" : "")">
+            <a asp-area="" asp-controller="Chart" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-pie-chart"></i><div>Графики</div></a>
+        </li>
+
+        <li class="sidenav-item@(currentPage == "Budget/TimeLine" ? " active" : "")">
+            <a asp-area="" asp-controller="Budget" asp-action="TimeLine" class="sidenav-link"><i class="sidenav-icon lnr lnr-calendar-full"></i><div>Календарь</div></a>
+        </li>
+
+        <li class="sidenav-divider mb-1"></li>
+        @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
+
+        <li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")">
+            <a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-layers"></i><div>Шаблоны</div></a>
+        </li>
+        <li class="sidenav-item@(currentPage == "Section/Edit" ? " active" : "")">
+            <a asp-area="" asp-controller="Section" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon pe-7s-albums"></i><div>Категории</div></a>
+        </li>
+
+        <li class="sidenav-item margin-top-auto @(currentPage == "Help/Center/Index" ? " active" : "")">
+            <a asp-area="Help" asp-controller="Center" asp-action="Index" class="sidenav-link"><i class="sidenav-icon lnr lnr-layers"></i><div>Help center</div></a>
+        </li>
+        @*<li class="sidenav-item@(currentPage == "ToDoList/List" ? " active" : "")">
+                <a asp-area="" asp-controller="ToDoList" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr lnr-list"></i><div>Списки</div></a>
+            </li>*@
         @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
     </ul>
 </div>

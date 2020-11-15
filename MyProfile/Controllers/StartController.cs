@@ -181,6 +181,7 @@ namespace MyProfile.Controllers
                 {
                     template.Columns[i].Order = i;
                     template.Columns[i].IsShow = true;
+                    template.Columns[i].TotalAction = FooterActionType.Sum;
                 }
 
                 templateResult = await templateService.SaveTemplate(template, false);
@@ -283,7 +284,7 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadSections()
+        public IActionResult LoadSections()
         {
             var sections = new List<BudgetSectionModelView>
             {

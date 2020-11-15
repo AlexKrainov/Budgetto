@@ -357,3 +357,19 @@ function onCloseWindow() {
         dataType: 'json'
     });
 }
+
+function ShowCookieOff() {
+    $("#cookie-model").remove();
+    return $.ajax({
+        type: "GET",
+        url: "/UserSettings/ShowCookieOff",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (response) {
+            UserInfo.UserSettings.IsShowCookie = false;
+            return response;
+        },
+        error: function (xhr, status, error) {
+        }
+    });
+}

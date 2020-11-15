@@ -3,7 +3,7 @@
         <form class="modal-content" method="post">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    {{ limit.id ? 'Редактирование лимита' : 'Создание лимита'  }}
+                    {{ limit.id && limit.id > 0 ? 'Редактирование лимита' : 'Создание лимита'  }}
                     <div class="dropdown ml-4" style="display:inline;">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">{{ limit.periodName }}</button>
                         <div class="dropdown-menu">

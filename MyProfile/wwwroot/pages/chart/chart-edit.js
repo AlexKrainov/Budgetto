@@ -15,6 +15,7 @@
     watch: {},
     mounted: function () {
         let elWizard = $('#big-chart-edit-vue').smartWizard({
+            keyNavigation: false,
             autoAdjustHeight: false,
             backButtonSupport: false,
             useURLhash: false,
@@ -26,6 +27,9 @@
             toolbarSettings: {
                 toolbarPosition: 'bottom', // none, top, bottom, both
                 toolbarButtonPosition: 'center', // left, right, center
+            },
+            keyboardSettings: {
+                keyNavigation: false, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
             },
         });
         elWizard.on("leaveStep", function (e, anchorObject, stepIndex, stepDirection) {

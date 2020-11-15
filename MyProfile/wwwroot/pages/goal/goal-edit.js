@@ -21,7 +21,7 @@
                 this.goal = { ...goal };
 
             } else {
-                this.goal = {};
+                this.goal = { isShow_BudgetMonth: true, isShow_BudgetYear: true };
                 this.goal.dateStart = GetDateByFormat(moment(), "YYYY/MM/DD");
             }
 

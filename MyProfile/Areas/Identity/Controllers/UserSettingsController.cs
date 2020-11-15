@@ -92,7 +92,22 @@ namespace MyProfile.Areas.Identity.Controllers
 
             await UserInfo.AddOrUpdate_Authenticate(user);
             await repository.UpdateAsync(dbUserSettings, true);
-            await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_NotShowEnterHint);
+            await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_EnterHintOff);
+
+            return Json(new { isOk = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowCookieOff()
+        {
+            var user = UserInfo.Current;
+            var dbUserSettings = await repository.GetAll<UserSettings>(x => x.ID == user.ID).FirstOrDefaultAsync();
+
+            user.UserSettings.IsShowCookie = dbUserSettings.IsShowCookie = false;
+
+            await UserInfo.AddOrUpdate_Authenticate(user);
+            await repository.UpdateAsync(dbUserSettings, true);
+            await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_CookieOff);
 
             return Json(new { isOk = true });
         }

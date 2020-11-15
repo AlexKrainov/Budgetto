@@ -153,6 +153,7 @@ namespace MyProfile.Identity
                     IsShowHints = currentUser.UserSettings.IsShowHints,
                     IsShowFirstEnterHint = currentUser.UserSettings.IsShowFirstEnterHint,
                     IsShowConstructor = currentUser.UserSettings.IsShowConstructor,
+                    IsShowCookie = currentUser.UserSettings.IsShowCookie,
                 }
             };
         }

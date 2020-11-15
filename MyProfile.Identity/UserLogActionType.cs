@@ -93,7 +93,8 @@
 
         public const string User_Edit = "User_Edit";
         public const string User_Change_Email = "User_Change_Email";
-        public const string User_NotShowEnterHint = "User_NotShowFirstHint";
+        public const string User_EnterHintOff = "User_EnterHintOff";
+        public const string User_CookieOff = "User_CookieOff";
         public const string User_AutoAuthorization = "User_AutoAuthorization";
         public const string User_LeaveSite = "User_LeaveSite";
 
