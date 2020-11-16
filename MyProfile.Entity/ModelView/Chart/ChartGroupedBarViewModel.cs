@@ -13,5 +13,7 @@ namespace MyProfile.Entity.ModelView.Chart
         public decimal MaxValue { get; set; }
         public decimal AvgValue { get; set; }
         public decimal TotalValue { get; set; }
+        public double BarPercentage { get; set; } = 0.5;
+        public double BarThickness { get; set; } = 6;
     }
 }

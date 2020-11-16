@@ -115,10 +115,14 @@
 
     @if (currentUser.UserSettings.IsShowCookie)
     {
-        <div id="cookie-model" class="callout callout-secondary" style="width: 500px;position: fixed;left: 50px;bottom: 53px;z-index: 3000;">
+        <div id="cookie-model" class="callout callout-secondary" style="width: 800px; position: fixed; right: 32px; bottom: 80px; z-index: 3000; box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.5);">
             <button type="button" class="close" data-dismiss="alert" onclick="$('#cookie-model').remove();">×</button>
-            <p>На сайте <b>budgetto.ru</b> используются файлы cookie</p>
-            <p>Оставаясь на сайте вы принимаете <a href="javascript:void(0)" class="callout-link">Пользовательского соглашения</a>.</p>
+            <p>
+                Мы используем cookie. Это позволяет нам делать сайт быстрее и лучше. Продолжая пользоваться сайтом, вы соглашаетесь с
+                <a href="~/documents/cookie_policy.pdf" target="_blank" class="callout-link">Политикой использования файлов cookie</a>, 
+                <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="callout-link">Политикой обработки персональных данных</a> и
+                <a href="~/documents/terms_of_use.pdf" target="_blank" class="callout-link">Пользовательским соглашением</a>.
+            </p>
             <p><button class="btn btn-primary mr-1" onclick="ShowCookieOff()">Подтвердить</button></p>
         </div>
     }

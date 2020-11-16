@@ -10,6 +10,7 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -338,7 +339,8 @@ namespace MyProfile.Areas.Identity.Controllers
 
         public IActionResult PersonalData()
         {
-            return View();
+            var stream = new FileStream("../wwwroot/documents/policy_of_cookie.pdf", FileMode.Open);
+            return new FileStreamResult(stream, "application/pdf");
         }
         public IActionResult Agreement()
         {

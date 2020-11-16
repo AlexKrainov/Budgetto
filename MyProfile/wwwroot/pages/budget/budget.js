@@ -323,6 +323,7 @@
             for (var i = 0; i < this.bigChartsData.length; i++) {
                 let bigChartData = this.bigChartsData[i];
                 let options = null;
+                let fontColor = themeSettings.isDarkStyle() ? '#fff' : '#aaa';
 
                 if (this.bigCharts[i]) {
                     this.bigCharts[i].destroy();
@@ -333,13 +334,13 @@
                     case "bar":
                         options = {
                             title: {
-                                display: bigChartData.chartTypesEnum == 2,
+                                display: false,// bigChartData.chartTypesEnum == 2,
                                 text: bigChartData.name,
                             },
                             scales: {
                                 xAxes: [{
                                     ticks: {
-                                        fontColor: themeSettings.isDarkStyle() ? '#fff' : '#aaa'
+                                        fontColor: fontColor
                                     }
                                 }],
                                 yAxes: [{
@@ -348,7 +349,8 @@
                                         callback: function (value, index, values) {
                                             return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value)
                                         },
-                                        fontColor: themeSettings.isDarkStyle() ? '#fff' : '#aaa'
+                                        fontColor: fontColor,
+                                        beginAtZero: true
                                     },
                                 }]
                             },
@@ -359,9 +361,9 @@
                                     }
                                 }
                             },
-                            legend: themeSettings.isDarkStyle() ? {
-                                labels: { fontColor: '#fff' }
-                            } : {},
+                            //legend: themeSettings.isDarkStyle() ? {
+                            //    labels: {  fontColor: '#fff' }
+                            //} : {},
                             responsive: false,
                             maintainAspectRatio: false
                         };
@@ -370,27 +372,9 @@
                     case "pie":
                         options = {
                             title: {
-                                display: true,
+                                display: false,// true,
                                 text: bigChartData.name,
                             },
-                            //scales: {
-                            //    xAxes: [{
-                            //        gridLines: {
-                            //            display: false
-                            //        },
-                            //        ticks: {
-                            //            fontColor: themeSettings.isDarkStyle() ? '#fff' : '#aaa'
-                            //        }
-                            //    }],
-                            //    yAxes: [{
-                            //        gridLines: {
-                            //            display: false
-                            //        },
-                            //        ticks: {
-                            //            fontColor: themeSettings.isDarkStyle() ? '#fff' : '#aaa',
-                            //        }
-                            //    }]
-                            //},
                             tooltips: {
                                 callbacks: {
                                     label: function (tooltipItem, data) {
@@ -407,6 +391,7 @@
                                     }
                                 }
                             },
+
                         };
                         break;
                     default:
@@ -415,8 +400,8 @@
                 this.bigCharts[i] = new Chart(document.getElementById(bigChartData.chartID), {
                     type: bigChartData.chartTypeCodeName,
                     data: {
+                        labels: bigChartData.labels,
                         datasets: bigChartData.dataSets,
-                        labels: bigChartData.labels
                     },
                     options: options
                 });

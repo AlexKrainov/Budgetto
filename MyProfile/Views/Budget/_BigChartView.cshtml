@@ -1,21 +1,8 @@
 ﻿<section v-for="chartData in bigChartsData"
-         v-bind:class="chartData.isBig ? 'card mb-4 col-12' : 'col-sm-6 col-md-6 col-lg-6 col-xl-6'"
+         v-bind:class="chartData.isBig ? 'card mb-4 col-12' : 'card col-sm-6 col-md-6 col-lg-6 col-xl-6'"
          v-show="chartData.isShow"
          v-bind:id="'bigChart_'+chartData.chartID">
-    <article v-if="chartData.isBig == false">
-        <div class="card pt-2 mb-4">
-            <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать график" style=" position: absolute; right: 10px;"
-               v-bind:href="'/Chart/Edit/' + chartData.id +'?href=@Model'">
-                <i class="ion ion-md-create"></i>
-            </a>
-            <div class="d-flex align-items-center position-relative mt-4" v-bind:style="'height:' + bigChartHeight + 'px;'">
-                <div class="w-100 position-absolute" style="height:310px;top:0;">
-                    <canvas v-bind:id="chartData.chartID"></canvas>
-                </div>
-            </div>
-        </div>
-    </article>
-    <article v-if="chartData.isBig">
+    <article>
         <h6 class="card-header with-elements">
             <div class="card-header-title">
                 <span class="lnr lnr-pie-chart text-primary" style="font-size: x-large;"></span>
@@ -28,7 +15,16 @@
                 </a>
             </div>
         </h6>
-        <div class="row no-gutters row-bordered">
+        @*is not big chart*@
+        <div v-if="chartData.isBig == false" class="pt-2">
+            <div class="d-flex align-items-center position-relative" v-bind:style="'height:' + bigChartHeight + 'px;'">
+                <div class="w-100 position-absolute" style="height:310px;top:0;">
+                    <canvas v-bind:id="chartData.chartID"></canvas>
+                </div>
+            </div>
+        </div>
+        @*is big chart*@
+        <div v-if="chartData.isBig" class="row no-gutters row-bordered">
             <div class="col-md-8 col-lg-12 col-xl-8">
                 <div class="card-body pt-0">
                     <div style="height: 240px;">
@@ -40,19 +36,19 @@
             <div class="col-md-4 col-lg-12 col-xl-4">
                 <div class="card-body">
                     @*<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-default md-btn-flat">
-                                <input type="radio" name="btn-radio" checked> Total
-                            </label>
-                            <label class="btn btn-default md-btn-flat">
-                                <input type="radio" name="btn-radio"> Avg
-                            </label>
-                            <label class="btn btn-default md-btn-flat">
-                                <input type="radio" name="btn-radio"> Min
-                            </label>
-                            <label class="btn btn-default md-btn-flat active">
-                                <input type="radio" name="btn-radio"> Max
-                            </label>
-                        </div>*@
+                        <label class="btn btn-default md-btn-flat">
+                            <input type="radio" name="btn-radio" checked> Total
+                        </label>
+                        <label class="btn btn-default md-btn-flat">
+                            <input type="radio" name="btn-radio"> Avg
+                        </label>
+                        <label class="btn btn-default md-btn-flat">
+                            <input type="radio" name="btn-radio"> Min
+                        </label>
+                        <label class="btn btn-default md-btn-flat active">
+                            <input type="radio" name="btn-radio"> Max
+                        </label>
+                    </div>*@
                     <div class="row" v-for="dataSet in chartData.dataSets">
                         <div class="col-6 col-xl-5 text-muted mb-3">{{ dataSet.label }}</div>
                         <div class="col-6 col-xl-7 mb-3">
