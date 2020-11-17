@@ -44,6 +44,7 @@ namespace MyProfile.Entity.ModelView
         public string CssIcon { get; set; }
         public string CssBackground { get; set; }
         public string CssColor { get; set; }
+        public int? SectionTypeID { get; set; }
     }
 
     /// <summary>

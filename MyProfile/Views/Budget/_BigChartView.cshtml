@@ -1,18 +1,24 @@
-﻿<section v-for="chartData in bigChartsData"
-         v-bind:class="chartData.isBig ? 'card mb-4 col-12' : 'card col-sm-6 col-md-6 col-lg-6 col-xl-6'"
+﻿<section class="card custom-card-hover" v-for="chartData in bigChartsData"
+         v-bind:class="chartData.isBig ? 'mb-4 col-12' : 'col-sm-6 col-md-6 col-lg-6 col-xl-6'"
          v-show="chartData.isShow"
          v-bind:id="'bigChart_'+chartData.chartID">
     <article>
         <h6 class="card-header with-elements">
-            <div class="card-header-title">
+            <div class="card-header-title d-inline-flex align-items-center">
                 <span class="lnr lnr-pie-chart text-primary" style="font-size: x-large;"></span>
-                {{ chartData.name }}
+                <strong class="pl-2">{{ chartData.name }}</strong>
             </div>
-            <div class="card-header-elements ml-auto">
-                <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать график"
-                   v-bind:href="'/Chart/Edit/' + chartData.id ">
-                    <i class="ion ion-md-create"></i>
-                </a>
+            <div class="card-header-elements ml-auto float-right" style="margin-top: -20px; margin-right: -31px;">
+                <div class="btn-group mr-3">
+                    <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow mt-3"
+                            data-toggle="dropdown" aria-expanded="false">
+                        <i class="ion ion-ios-more"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
+                        <a class="dropdown-item"
+                           v-bind:href="'/Chart/Edit/' + chartData.id ">Редактировать график</a>
+                    </div>
+                </div>
             </div>
         </h6>
         @*is not big chart*@
@@ -36,19 +42,19 @@
             <div class="col-md-4 col-lg-12 col-xl-4">
                 <div class="card-body">
                     @*<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-default md-btn-flat">
-                            <input type="radio" name="btn-radio" checked> Total
-                        </label>
-                        <label class="btn btn-default md-btn-flat">
-                            <input type="radio" name="btn-radio"> Avg
-                        </label>
-                        <label class="btn btn-default md-btn-flat">
-                            <input type="radio" name="btn-radio"> Min
-                        </label>
-                        <label class="btn btn-default md-btn-flat active">
-                            <input type="radio" name="btn-radio"> Max
-                        </label>
-                    </div>*@
+                            <label class="btn btn-default md-btn-flat">
+                                <input type="radio" name="btn-radio" checked> Total
+                            </label>
+                            <label class="btn btn-default md-btn-flat">
+                                <input type="radio" name="btn-radio"> Avg
+                            </label>
+                            <label class="btn btn-default md-btn-flat">
+                                <input type="radio" name="btn-radio"> Min
+                            </label>
+                            <label class="btn btn-default md-btn-flat active">
+                                <input type="radio" name="btn-radio"> Max
+                            </label>
+                        </div>*@
                     <div class="row" v-for="dataSet in chartData.dataSets">
                         <div class="col-6 col-xl-5 text-muted mb-3">{{ dataSet.label }}</div>
                         <div class="col-6 col-xl-7 mb-3">

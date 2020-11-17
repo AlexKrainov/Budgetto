@@ -71,7 +71,7 @@
                 <hr class="m-0">
                 <div class="card-body pb-2 pt-1 row">
                     <div class="col-12">
-                        <div class="text-muted small display-inline">Цель</div>
+                        <div class="text-muted small display-inline">Сумма лемита</div>
                         <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
                     </div>
                     @*<div class="col-3">
@@ -84,7 +84,7 @@
                             <h6 class="mt-1" v-show="limit.dateEnd">{{  getDateByFormat(limit.dateEnd, 'MM.YYYY') }}</h6>
                         </div>*@
                     @*<div class="col-4">
-                            <div class="text-muted small display-inline">Цель</div>
+                            <div class="text-muted small display-inline">Сумма лемита</div>
                             <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
                         </div>*@
                 </div>
@@ -143,7 +143,7 @@
                 <hr class="m-0">
                 <div class="card-body pb-2 pt-1 row deleted-item">
                     <div class="col-4">
-                        <div class="text-muted small display-inline">Цель</div>
+                        <div class="text-muted small display-inline">Сумма лемита</div>
                         <h6 class="mt-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limit.limitMoney) }}</h6>
                     </div>
                     <div class="col-3">

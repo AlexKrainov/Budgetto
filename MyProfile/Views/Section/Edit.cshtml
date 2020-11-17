@@ -34,7 +34,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Поиск папки" v-model="searchText">
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" v-on:click="create">Добавить</button>
+                        <button type="button" class="btn btn-primary" v-on:click="create">Создать папку</button>
                     </div>
                 </div>
             </h6>
@@ -62,7 +62,7 @@
                     <hr class="m-0">
                     <div class="p-3">
                         <button class="btn btn-primary btn-sm" v-on:click="edit(area)">
-                            <i class="far fa-edit pr-2"></i>Редактировать
+                            <i class="far fa-edit pr-2"></i>Редактировать папку
                         </button>
                         <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
                                 v-on:click="remove(area)"
@@ -104,9 +104,9 @@
                     Категории {{areaName ? ' для "'+  areaName + '"' : '' }}
                 </div>
                 <div class="input-group" v-show="areaID != null">
-                    <input type="text" class="form-control" placeholder="Поиск категори" v-model="searchText">
+                    <input type="text" class="form-control" placeholder="Поиск категории" v-model="searchText">
                     <div class="input-group-append">
-                        <button id="add-section" type="button" class="btn btn-primary" v-on:click="create">Добавить</button>
+                        <button id="add-section" type="button" class="btn btn-primary" v-on:click="create">Создать категорию</button>
                     </div>
                 </div>
             </h6>

@@ -153,6 +153,7 @@
         }, 100);
 
         //todo set timeline
+        this.loadUserInfo();
         this.loadSections();
         // this.ONLY_FOR_TEST();
 
@@ -189,6 +190,28 @@
         },
 
         //1
+        loadUserInfo: function () {
+            this.isSaving = true;
+
+            return $.ajax({
+                type: "GET",
+                url: "/Start/LoadUserInfo",
+                context: this,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.isOk) {
+                        this.isSaving = false;
+                        this.userInfo.name = result.userInfo.name;
+                    }
+                    return true;
+                },
+                error: function (xhr, status, error) {
+                    this.isSaving = false;
+                    console.log(error);
+                }
+            });
+        },
         saveUserInfo: function () {
             this.isSaving = true;
 
@@ -705,6 +728,16 @@
             } else {
                 $("#limit-name").removeClass("is-invalid");
             }
+
+            let str = this.limit.name;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                isOk = false;
+                $("#limit-name").addClass("is-invalid");
+            } else {
+                $("#limit-name").removeClass("is-invalid");
+            }
+
             if (!(this.limit.limitMoney && (this.limit.limitMoney > 0 || this.limit.limitMoney.length > 0))) {
                 isOk = false;
                 $("[name=limitMoney]").addClass("is-invalid");
@@ -798,6 +831,17 @@
             } else {
                 $("#goal-name").removeClass("is-invalid");
             }
+
+
+            let str = this.goal.name;
+            str = str ? str.replaceAll(" ", "") : "";
+            if (str.length == 0) {
+                isOk = false;
+                $("#goal-name").addClass("is-invalid");
+            } else {
+                $("#goal-name").removeClass("is-invalid");
+            }
+
             if (!(this.goal.expectationMoney && (this.goal.expectationMoney > 0 || this.goal.expectationMoney.length > 0))) {
                 isOk = false;
                 $("#goal-expectationMoney").addClass("is-invalid");

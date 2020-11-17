@@ -146,7 +146,7 @@ namespace MyProfile.Template.Service
                             PeriodTypeID = x.PeriodTypeID,
                             IsShow = true,
                             IsDefault = x.IsDefault,
-                            IsCreatedByConstructor= x.IsCreatedByConstructor,
+                            IsCreatedByConstructor = x.IsCreatedByConstructor,
                             Columns = x.TemplateColumns
                                 .Select(y => new Column
                                 {
@@ -261,6 +261,19 @@ namespace MyProfile.Template.Service
                 else
                 {
                     template.Name = template.Name + "_(2)";
+
+                    if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
+                    {
+                        template.Name = template.Name + "_(3)";
+                        if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
+                        {
+                            template.Name = template.Name + "_(4)";
+                            if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
+                            {
+                                template.Name = template.Name + "_(5)";
+                            }
+                        }
+                    }
                 }
             }
 

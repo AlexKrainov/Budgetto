@@ -20,8 +20,8 @@ $(function () {
             }]
         });
         AddSectionTour.addStep({
-            title: 'Кнопка "Добавить"',
-            text: 'Нажмите кнопку "Добавить"',
+            title: 'Кнопка "Создать категорию"',
+            text: 'Нажмите кнопку "Создать категорию"',
             attachTo: { element: '#add-section', on: 'bottom' },
             buttons: []
         });

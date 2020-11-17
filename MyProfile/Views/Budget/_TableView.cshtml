@@ -1,6 +1,7 @@
-﻿<table class="table table-bordered dataTable table-hover"
+﻿       
+<table id="table"
+       class="table table-bordered dataTable table-hover"
        v-bind:class="pageViewSettings.isTableViewCompact ? 'compact' : ''"
-       id="table"
        data-searching="false"
        data-paging="false"
        data-fixed-header="true"
@@ -27,7 +28,7 @@
                 v-on:mouseenter="mouseenterCell($event)"
                 v-on:mouseleave="mouseleaveCell($event)"
                 class="cell-hover pb-0"
-                v-bind:class="[template.columns[cellIndex].styleForTableView, cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]">
+                v-bind:class="[template.columns && template.columns.length > 0 ? template.columns[cellIndex].styleForTableView : '', cell.isWeekend || cell.isHoliday ? 'table-active' : '' ]">
             </td>
         </tr>
     </tbody>
@@ -44,7 +45,8 @@
     </tfoot>
 </table>
 
-<div id="excel-table-container" style="display: none;">
+<div id="excel-table-container" style="display: none;"
+     data-paging="false">
     <table id="excel-table">
         <thead>
             <tr class="text-center">
@@ -56,7 +58,7 @@
         <tbody>
             <tr v-for="row in rows">
                 <td v-for="cell in row">
-                    {{ cell.value }}
+                    {{ cell.value }}    
                 </td>
             </tr>
         </tbody>

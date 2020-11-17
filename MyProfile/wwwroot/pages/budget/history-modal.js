@@ -2,7 +2,9 @@
     el: "#history-vue",
     data: {
         records: [],
-        totalMoney: 0,
+        spendingTotalMoney: 0,
+        spendingErningMoney: 0,
+        spendingInvestingMoney: 0,
         dateTime: null,
         dateStart: null,
         dateEnd: null,
@@ -29,12 +31,25 @@
                     || record.rawData.indexOf(newValue) >= 0;
             }
         },
-        records: function (newValue, oldValue) {
-            let total = 0;
-            for (var i = 0; i < this.records.length; i++) {
-                total += this.records[i].money * 1;
-            }
-            this.totalMoney = total;
+        records: {
+            handler: function (newValue, oldValue) {
+                this.spendingTotalMoney = 0;
+                this.spendingErningMoney = 0;
+                this.spendingInvestingMoney = 0;
+
+                for (var i = 0; i < this.records.length; i++) {
+                    if (this.records[i].isDeleted == false) {
+                        if (this.records[i].sectionTypeID == 1) { //Earnings
+                            this.spendingErningMoney += this.records[i].money * 1;
+                        } else if (this.records[i].sectionTypeID == 2) { //Spendings
+                            this.spendingTotalMoney += this.records[i].money * 1;
+                        } else if (this.records[i].sectionTypeID == 3) { //Investments
+                            this.spendingInvestingMoney += this.records[i].money * 1;
+                        }
+                    }
+                }
+            },
+            deep: true
         }
     },
     mounted: function () {
@@ -152,7 +167,23 @@
                 success: function (response) {
                     record.isDeleted = response.isOk;
                     HideLoading('#record_' + record.id);
-                    BudgetVue.refreshAfterChangeRecords()
+                    BudgetVue.refreshAfterChangeRecords(response.dateTimeOfPayment)
+                }
+            });
+        },
+        recovery: function (record) {
+            ShowLoading('#record_' + record.id);
+            return $.ajax({
+                type: "POST",
+                url: "/Budget/RecoveryRecord",
+                data: JSON.stringify(record),
+                context: record,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    record.isDeleted = !response.isOk;
+                    HideLoading('#record_' + record.id);
+
                     //calendar.after_loading(response);
                 }
             });

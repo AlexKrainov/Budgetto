@@ -104,7 +104,16 @@ var AccountSettingsVue = new Vue({
                     success: function (result) {
                         if (result.isOk) {
                             $("#userImageLink").prop("src", result.user.imageLink);
-                            $("#userName").text(result.user.name + " " + result.user.lastName);
+                            let userName = result.user.email;
+
+                            if (result.user.name) {
+                                userName = result.user.name;
+                                if (result.user.lastName) {
+                                    userName += " " + result.user.lastName;
+                                }
+                            }
+                            
+                            $("#userName").text(userName);
 
                             if (this.user.email != this.oldEmail) {
                                 //this.user.isConfirmEmail = false;
@@ -116,7 +125,7 @@ var AccountSettingsVue = new Vue({
                             this.isSaving = false;
 
                         }
-                        return
+                        return true;
                     },
                     error: function (xhr, status, error) {
                         this.isSaving = false;

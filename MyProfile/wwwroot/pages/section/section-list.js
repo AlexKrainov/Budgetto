@@ -135,7 +135,7 @@
                         } else {
                             toastr.error(result.text);
                         }
-                        AreaVue.isSaving = true;
+                        AreaVue.isSaving = false;
                     });
             }
         },

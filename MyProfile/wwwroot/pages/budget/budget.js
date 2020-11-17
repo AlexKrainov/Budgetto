@@ -18,7 +18,9 @@
         records: [],
 
         //table
+        tableAjax: null,
         dataTable: null,
+        excelDataTable: null,
         pageViewSettings: {
             version: 1.0,
             isTableViewCompact: false
@@ -26,24 +28,26 @@
         isGenerateExcel: false,
 
         //total charts
+        totalChartsAjax: null,
         earningData: {},
         earningChart: undefined,
-
         spendingData: {},
         spendingChart: undefined,
-
         investingData: {},
         investingChart: undefined,
 
         //limit charts
+        limitsAjax: null,
         limitsChartsData: [],
         limitsCharts: [],
 
         //Goal charts
+        goalsAjax: null,
         goalChartsData: [],
         goalCharts: [],
 
         //Big charts
+        bigChartsAjax: null,
         bigChartsData: [],
         bigCharts: [],
         bigChartHeight: 310,
@@ -185,7 +189,7 @@
             if (this.investingChart) {
                 this.investingChart.resize();
             }
-            this.refrehViewTable();
+            this.refrehHeaderTable();
         },
         //Limit charts
         loadLimitCharts: BudgetMethods.loadLimitCharts,
@@ -248,7 +252,7 @@
                     this.limitsCharts[i].resize();
                 }
             }
-            this.refrehViewTable();
+            this.refrehHeaderTable();
         },
         //Goal charts
         loadGoalCharts: BudgetMethods.loadGoalCharts,
@@ -312,7 +316,7 @@
                     this.goalCharts[i].resize();
                 }
             }
-            this.refrehViewTable();
+            this.refrehHeaderTable();
         },
         addGoalMoney: function (goal) {
             GoalAddMoneyVue.addMoney(goal);
@@ -335,7 +339,7 @@
                         options = {
                             title: {
                                 display: false,// bigChartData.chartTypesEnum == 2,
-                                text: bigChartData.name,
+                                //text: bigChartData.name,
                             },
                             scales: {
                                 xAxes: [{
@@ -361,9 +365,10 @@
                                     }
                                 }
                             },
-                            //legend: themeSettings.isDarkStyle() ? {
-                            //    labels: {  fontColor: '#fff' }
-                            //} : {},
+                            legend: {
+                                display: bigChartData.chartTypesEnum == 1,
+                                fontColor: fontColor
+                            },
                             responsive: false,
                             maintainAspectRatio: false
                         };
@@ -391,7 +396,7 @@
                                     }
                                 }
                             },
-
+                            //legend: {},
                         };
                         break;
                     default:
@@ -422,11 +427,11 @@
             if (chartSize < 300) {
                 this.bigChartHeight = 310;
             } else if (chartSize >= 300 && chartSize <= 450) {
-                this.bigChartHeight = 410;
+                this.bigChartHeight = 370;
             } else if (chartSize > 450) {
                 this.bigChartHeight = 600;
             }
-            this.refrehViewTable();
+            this.refrehHeaderTable();
         },
         //resize and refresh
         refresh: function (typeRefresh) {
@@ -436,11 +441,6 @@
             //];
             if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData" || typeRefresh == "all") {
                 ShowLoading(".table-container");
-
-                if (this.dataTable) {
-                    this.dataTable.destroy();
-                    $('[data-toggle="tooltip"]').tooltip('dispose');
-                }
 
                 this.load()
                     .then(function () {
@@ -491,7 +491,6 @@
                 }
             }
 
-
             return false;
         },
         resizeAll: function () {
@@ -500,7 +499,7 @@
             //this.resizeGoalCharts();
             this.resizeBigCharts();
         },
-        refrehViewTable: function () {
+        refrehHeaderTable: function () {
             if (this.dataTable && this.dataTable.fixedHeader) {
                 this.dataTable.fixedHeader.adjust()
             }
@@ -524,8 +523,6 @@
 
                 setTimeout(function () {
                     if (BudgetVue.columnOrderQueue == 1) {
-                        console.log(details.mapping);
-                        console.log(BudgetVue.dataTable.colReorder.order());
                         BudgetVue.columnOrderQueue = 0;
 
                         let order = [];
@@ -573,16 +570,23 @@
         },
         toExcel: function () {
             this.isGenerateExcel = true;
-            $("#excel-table").DataTable({
+
+            BudgetVue.excelDataTable = $("#excel-table").DataTable({
                 dom: 'Bfrtip',
-                buttons: ['excelHtml5']
+                buttons: ['excelHtml5'],
+                retrieve: true
             });
 
             setTimeout(function () {
                 $(".buttons-excel").click();
 
                 BudgetVue.isGenerateExcel = false;
+
+                setTimeout(function () {
+                    BudgetVue.excelDataTable.destroy();
+                }, 2000);
             }, 100);
+
         },
         //View cell
         getCellContent: function (cell, cellIndex, rowIndex) {

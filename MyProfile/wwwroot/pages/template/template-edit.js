@@ -174,7 +174,7 @@
         changeType: function () {
             this.template.columns = [];
         },
-        saveTemplate: function (saveAs) {
+        saveTemplate: function (saveAs, saveAndGoToView) {
             if (this.validTemplate() == false) {
                 return false;
             }
@@ -184,19 +184,36 @@
                 method = 'SaveAs';
             }
             this.isSavingTemplate = true;
-            return sendAjax("/Template/" + method, this.template, "POST")
-                .then(function (result) {
+            
+            return $.ajax({
+                type: "POST",
+                url: "/Template/" + method,
+                context: this,
+                data: JSON.stringify(this.template),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
                     if (result.isOk == true) {
-                        TemplateVue.template = result.template;
-                        TemplateVue.errorMessage = null;
+                        this.template = result.template;
+                        this.errorMessage = null;
+
+                        if (this.saveAndGoToView) {
+                            window.document.location.href = GetLinkForView(this.template);
+                        }
                     } else {
                         if (result.nameAlreadyExist) {
                             //Show message
-                            TemplateVue.errorMessage = result.errorMessage;
+                            this.errorMessage = result.errorMessage;
                         }
                     }
-                    TemplateVue.isSavingTemplate = false;
-                });
+                    this.isSavingTemplate = false;
+                    return true;
+                },
+                error: function (xhr, status, error) {
+                    this.isSaving = false;
+                    console.log(error);
+                }
+            });
         },
         validTemplate: function () {
             let isOk = true;
@@ -231,10 +248,7 @@
             return isOk;
         },
         saveAndGoToView: function () {
-            this.saveTemplate()
-                .then(function () {
-                    window.document.location.href = GetLinkForView(TemplateVue.template);
-                });
+            this.saveTemplate(false, true);
         },
         change: function (event) {
 

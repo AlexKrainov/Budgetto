@@ -15,17 +15,38 @@
         RecordVue.callback = this.refreshAfterChangeRecords;
     },
     load: function () {
-        return sendAjax("/Budget/GetYearBudget?year=" + this.budgetYear + "&templateID=" + this.templateID, null, "POST")
-            .then(function (result) {
+
+        if (this.tableAjax && (this.tableAjax.readyState == 1 || this.tableAjax.readyState == 3)) { // OPENED & LOADING
+            this.tableAjax.abort();
+        } else {
+            if (this.dataTable) {
+                this.template.columns = [];//fixed bugs with change title for columns and export excel after change template
+                this.dataTable.destroy();
+                $('[data-toggle="tooltip"]').tooltip('dispose');
+            }
+        }
+
+        this.tableAjax = $.ajax({
+            type: "POST",
+            url: "/Budget/GetYearBudget?year=" + this.budgetYear + "&templateID=" + this.templateID,
+            context: this,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (result) {
                 if (result.isOk == true) {
-                    BudgetVue.rows = result.rows;
-                    BudgetVue.footerRow = result.footerRow;
-                    BudgetVue.template = result.template;
-
+                    this.rows = result.rows;
+                    this.footerRow = result.footerRow;
+                    this.template = result.template;
                 }
-            });
+                return true;
+            },
+            error: function (xhr, status, error) {
+                this.isSaving = false;
+                console.log(error);
+            }
+        });
 
-        $.fn.dataTable.SearchPanes.defaults = false;
+        return this.tableAjax;
     },
     changeView: function (year) {
         if (year == -1) {
@@ -45,12 +66,17 @@
     },
     //Total charts
     loadTotalCharts: function () {
-        if (!(UserInfo.UserSettings.Dashboard_Year_IsShow_InvestingChart
-            || UserInfo.UserSettings.Dashboard_Year_IsShow_SpendingChart
-            || UserInfo.UserSettings.Dashboard_Year_IsShow_EarningChart)) {
-            return false;
+        //if (!(UserInfo.UserSettings.Dashboard_Year_IsShow_InvestingChart
+        //    || UserInfo.UserSettings.Dashboard_Year_IsShow_SpendingChart
+        //    || UserInfo.UserSettings.Dashboard_Year_IsShow_EarningChart)) {
+        //    return false;
+        //}
+
+        if (this.totalChartsAjax && (this.totalChartsAjax.readyState == 1 || this.totalChartsAjax.readyState == 3)) { // OPENED & LOADING
+            this.totalChartsAjax.abort();
         }
-        return $.ajax({
+
+        this.totalChartsAjax = $.ajax({
             type: "GET",
             url: "/BudgetTotal/LoadByYear?year=" + this.budgetYear,
             contentType: "application/json",
@@ -64,13 +90,19 @@
                 this.initTotalCharts();
             }
         });
+        return this.totalChartsAjax;
     },
     //Limit charts
     loadLimitCharts: function () {
-        if (!UserInfo.UserSettings.Dashboard_Year_IsShow_LimitCharts) {
-            return false;
+        //if (!UserInfo.UserSettings.Dashboard_Year_IsShow_LimitCharts) {
+        //    return false;
+        //}
+
+        if (this.limitsAjax && (this.limitsAjax.readyState == 1 || this.limitsAjax.readyState == 3)) { // OPENED & LOADING
+            this.limitsAjax.abort();
         }
-        return $.ajax({
+
+        this.limitsAjax = $.ajax({
             type: "GET",
             url: "/Limit/LoadCharts?year=" + this.budgetYear + "&periodTypesEnum=3",
             contentType: "application/json",
@@ -83,14 +115,19 @@
                 setTimeout(this.initLimitCharts, 10);
             }
         });
+        return this.limitsAjax;
     },
     //Goal charts
     loadGoalCharts: function () {
-        if (!UserInfo.UserSettings.Dashboard_Year_IsShow_GoalCharts) {
-            return false;
+        //if (!UserInfo.UserSettings.Dashboard_Year_IsShow_GoalCharts) {
+        //    return false;
+        //}
+
+        if (this.goalsAjax && (this.goalsAjax.readyState == 1 || this.goalsAjax.readyState == 3)) { // OPENED & LOADING
+            this.goalsAjax.abort();
         }
 
-        return $.ajax({
+        this.goalsAjax =  $.ajax({
             type: "GET",
             url: `/Goal/LoadCharts?year=${this.budgetYear}&periodTypesEnum=3`,
             contentType: "application/json",
@@ -100,21 +137,26 @@
 
                 this.goalChartsData = response.goalChartsData;
 
-              //  setTimeout(this.initGoalCharts, 10);
+                //  setTimeout(this.initGoalCharts, 10);
             }
         });
+        return this.goalsAjax;
     },
     //big charts
     loadBigCharts: function () {
-        if (!UserInfo.UserSettings.Dashboard_Year_IsShow_BigCharts) {
-            return false;
+        //if (!UserInfo.UserSettings.Dashboard_Year_IsShow_BigCharts) {
+        //    return false;
+        //}
+
+        if (this.bigChartsAjax && (this.bigChartsAjax.readyState == 1 || this.bigChartsAjax.readyState == 3)) { // OPENED & LOADING
+            this.bigChartsAjax.abort();
         }
 
         for (var i = 0; i < this.bigChartsData.length; i++) {
             ShowLoading('#bigChart_' + this.bigChartsData[i].chartID);
         }
 
-        return $.ajax({
+        this.bigChartsAjax =  $.ajax({
             type: "GET",
             url: "/Chart/LoadCharts?year=" + this.budgetYear + "&periodType=3",
             contentType: "application/json",
@@ -131,6 +173,8 @@
                 setTimeout(this.initBigChartCharts, 10);
             }
         });
+
+        return this.bigChartsAjax;
     },
 };
 

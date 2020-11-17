@@ -8,8 +8,8 @@
                         <div class="row">
                             <div class="col-md-4 pt-2">
                                 <h4 class="pt-3 pb-3 display-inline">История</h4>
-                                <a href="" title="Иформация об этой странице" target="_blank" 
-                                   style="display: inline-block;" 
+                                <a href="" title="Иформация об этой странице" target="_blank"
+                                   style="display: inline-block;"
                                    class="pr-4">
                                     <i class="pe-7s-info d-block text-primary"></i>
                                 </a>
@@ -77,12 +77,30 @@
                     </ul>
                 </div>
                 <div class="card-footer mt-4" v-show="records && records.length > 0">
-                    <div class="text-right ">
-                        <label class="text-muted font-weight-normal m-0">Итого</label>
-                        <div class="text-large">
-                            <strong>
-                                {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(totalMoney) }}
-                            </strong>
+                    <div class="text-right">
+                        <div style="display:inline-block" v-show="spendingInvestingMoney != 0">
+                            <label class="text-muted font-weight-normal m-0">Итого инвстиций</label>
+                            <div class="text-large">
+                                <strong>
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingInvestingMoney) }}
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="mx-4" style="display:inline-block" v-show="spendingErningMoney != 0">
+                            <label class="text-muted font-weight-normal m-0">Итого доходов</label>
+                            <div class="text-large">
+                                <strong>
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingErningMoney) }}
+                                </strong>
+                            </div>
+                        </div>
+                        <div style="display:inline-block" v-show="spendingTotalMoney != 0">
+                            <label class="text-muted font-weight-normal m-0">Итого расходов</label>
+                            <div class="text-large">
+                                <strong>
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingTotalMoney) }}
+                                </strong>
+                            </div>
                         </div>
                     </div>
                 </div>

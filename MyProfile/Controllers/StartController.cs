@@ -76,6 +76,13 @@ namespace MyProfile.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> LoadUserInfo()
+        {
+            var currentUser = UserInfo.Current;
+
+            return Json(new { isOk = true, userInfo = new { name = currentUser.Name } });
+        }
         [HttpPost]
         public async Task<IActionResult> SaveUserInfo([FromBody] UserInfoModel userInfo)
         {

@@ -26,15 +26,37 @@
 
     },
     load: function () {
-        return sendAjax("/Budget/GetMonthBudget?month=" + this.budgetDate + "&templateID=" + this.templateID, null, "POST")
-            .then(function (result) {
+        if (this.tableAjax && (this.tableAjax.readyState == 1 || this.tableAjax.readyState == 3)) { // OPENED & LOADING
+            this.tableAjax.abort();
+        } else {
+            if (this.dataTable) {
+                this.dataTable.destroy();
+                this.template.columns = [];//fixed bugs with change title for columns and export excel after change template
+                $('[data-toggle="tooltip"]').tooltip('dispose');
+            }
+        }
+
+        this.tableAjax = $.ajax({
+            type: "POST",
+            url: "/Budget/GetMonthBudget?month=" + this.budgetDate + "&templateID=" + this.templateID,
+            context: this,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (result) {
                 if (result.isOk == true) {
-                    BudgetVue.rows = result.rows;
-                    BudgetVue.footerRow = result.footerRow;
-                    BudgetVue.template = result.template;
+                    this.rows = result.rows;
+                    this.footerRow = result.footerRow;
+                    this.template = result.template;
                 }
-            });
-        $.fn.dataTable.SearchPanes.defaults = false;
+                return true;
+            },
+            error: function (xhr, status, error) {
+                this.isSaving = false;
+                console.log(error);
+            }
+        });
+
+        return this.tableAjax;
     },
     changeView: function (months) {
         var result = new Date(this.flatpickrStart.latestSelectedDateObj);
@@ -50,7 +72,12 @@
             || UserInfo.UserSettings.Dashboard_Month_IsShow_EarningChart)) {
             return false;
         }
-        return $.ajax({
+
+        if (this.totalChartsAjax && (this.totalChartsAjax.readyState == 1 || this.totalChartsAjax.readyState == 3)) { // OPENED & LOADING
+            this.totalChartsAjax.abort();
+        }
+
+        this.totalChartsAjax =  $.ajax({
             type: "GET",
             url: "/BudgetTotal/LoadByMonth?to=" + this.budgetDate,
             contentType: "application/json",
@@ -64,13 +91,19 @@
                 this.initTotalCharts();
             }
         });
+        return this.totalChartsAjax;
     },
     //Limit charts
     loadLimitCharts: function () {
         if (!UserInfo.UserSettings.Dashboard_Month_IsShow_LimitCharts) {
             return false;
         }
-        return $.ajax({
+
+        if (this.limitsAjax && (this.limitsAjax.readyState == 1 || this.limitsAjax.readyState == 3)) { // OPENED & LOADING
+            this.limitsAjax.abort();
+        }
+
+        this.limitsAjax =  $.ajax({
             type: "GET",
             url: "/Limit/LoadCharts?date=" + this.budgetDate + "&periodTypesEnum=1",
             contentType: "application/json",
@@ -83,6 +116,8 @@
                 setTimeout(this.initLimitCharts, 10);
             }
         });
+
+        return this.limitsAjax;
     },
     //Goal charts
     loadGoalCharts: function () {
@@ -90,7 +125,11 @@
             return false;
         }
 
-        return $.ajax({
+        if (this.goalsAjax && (this.goalsAjax.readyState == 1 || this.goalsAjax.readyState == 3)) { // OPENED & LOADING
+            this.goalsAjax.abort();
+        }
+
+        this.goalsAjax =  $.ajax({
             type: "GET",
             url: `/Goal/LoadCharts?date=${this.budgetDate}&periodTypesEnum=1`,
             contentType: "application/json",
@@ -106,6 +145,7 @@
                 //setTimeout(this.initGoalCharts, 10);
             }
         });
+        return this.goalsAjax;
     },
     //big charts
     loadBigCharts: function () {
@@ -113,11 +153,15 @@
             return false;
         }
 
+        if (this.bigChartsAjax && (this.bigChartsAjax.readyState == 1 || this.bigChartsAjax.readyState == 3)) { // OPENED & LOADING
+            this.bigChartsAjax.abort();
+        }
+
         for (var i = 0; i < this.bigChartsData.length; i++) {
             ShowLoading('#bigChart_' + this.bigChartsData[i].chartID);
         }
 
-        return $.ajax({
+        this.bigChartsAjax = $.ajax({
             type: "GET",
             url: "/Chart/LoadCharts?date=" + this.budgetDate + "&periodType=1",
             contentType: "application/json",
@@ -138,5 +182,7 @@
                 setTimeout(this.initBigChartCharts, 100);
             }
         });
+
+        return this.bigChartsAjax;
     },
 };
