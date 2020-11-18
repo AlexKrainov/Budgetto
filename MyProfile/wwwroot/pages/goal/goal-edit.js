@@ -18,8 +18,7 @@
         },
         edit: function (goal) {
             if (goal) {
-                this.goal = { ...goal };
-
+                this.goal = JSCopyObject(goal);// { ...goal };
             } else {
                 this.goal = { isShow_BudgetMonth: true, isShow_BudgetYear: true };
                 this.goal.dateStart = GetDateByFormat(moment(), "YYYY/MM/DD");
@@ -97,12 +96,13 @@
                 $("#goal-name").removeClass("is-invalid");
             }
 
-            if (!(this.goal.expectationMoney && (this.goal.expectationMoney > 0 || this.goal.expectationMoney.length > 0))) {
+            if (this.goal.expectationMoney && this.goal.expectationMoney > 0) {
+                $("#goal-expectationMoney").removeClass("is-invalid");
+            } else {
                 isOk = false;
                 $("#goal-expectationMoney").addClass("is-invalid");
-            } else {
-                $("#goal-expectationMoney").removeClass("is-invalid");
             }
+
             if (isOk == false && e) {
                 e.preventDefault();
             }

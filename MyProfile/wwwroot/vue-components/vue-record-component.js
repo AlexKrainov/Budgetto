@@ -116,6 +116,7 @@
                         <vue-record-history-component>
                         </vue-record-history-component>
                     </section>
+                    <label class="text-danger" v-show="isAvailable == false">У вас истек пробный период. <u><a href="/Store/Index" class="text-danger">Продлить</a></u></label>
                 </div>
                 <div class="modal-footer">
                     <a href="javascript:void(0)" style="position: absolute;left: 21px;" 
@@ -129,7 +130,7 @@
                         </label>
                     </div>
                     <button class="btn btn-primary button-add-record" type="button" 
-                        v-bind:disabled="isSaving || records.length == 0" 
+                        v-bind:disabled="isAvailable == false || isSaving || records.length == 0" 
                         v-on:click="save($emit)"
                         v-show="isShowHistory == false">
                         <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
@@ -179,6 +180,7 @@
             isErrorSelectSection: false,
             after_save_callback: Event,
             after_save_callback_args: undefined,
+            isAvailable: UserInfo.IsAvailable,
         }
     },
     computed: {
@@ -356,7 +358,8 @@
 
                 }
 
-                return `(${new Intl.NumberFormat(this.currentCurrency.specificCulture, { style: 'currency', currency: this.currentCurrency.codeName }).format(tagValue)}) 
+                return `(${new Intl.NumberFormat(this.currentCurrency.specificCulture, { style: 'currency', currency: this.currentCurrency.codeName })
+                    .format(tagValue)}) 
             * ${new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(this.exchangeRate)} 
             = ${new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(record.money)}`;
             } else {
@@ -392,7 +395,7 @@
             //{ { record.tag != record.money ? '= ' + getMoney(record.money) " " + currentCurrencyIcon : '' } }
         },
         save: function (emit) {
-            if (this.records && this.records.length > 0 && this.records.some(x => x.isCorrect)) {
+            if (this.isAvailable && this.records && this.records.length > 0 && this.records.some(x => x.isCorrect)) {
 
                 if (this.checkValidBeforeSave() == false) {
                     return false;
@@ -454,6 +457,8 @@
                             }
                             this.isEditMode = false;
                             this.sectionComponent.clearSearchTextValue();
+                        } else {
+                            this.isSaving = false;
                         }
                         return result;
                     },

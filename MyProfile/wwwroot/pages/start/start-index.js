@@ -332,7 +332,7 @@
         },
         onEditSection: function (section) {
             console.log(section.sectionTypeID);
-            this.section = { ...section };
+            this.section = JSCopyObject(section);
 
             this.chooseColor(this.section.cssBackground);
             //this.changeSectionType(this.section.sectionTypeID);
@@ -377,6 +377,7 @@
                 if (index == -1) {//create
                     this.userSectionSource.push(this.section);
                 } else {//update
+                    //JSCopyObject(goal);
                     this.userSectionSource[index].sectionTypeID = this.section.sectionTypeID;
                     this.userSectionSource[index].name = this.section.name;
                     this.userSectionSource[index].cssBackground = this.section.cssBackground;
@@ -384,7 +385,7 @@
                     this.userSectionSource[index].cssIcon = this.section.cssIcon;
                     this.userSectionSource[index].areaID = this.section.areaID;
                     this.userSectionSource[index].areaName = this.section.areaName;
-                    //= { ...this.section };
+
 
                     for (var i = 0; i < this.areas.length; i++) {
                         index = this.areas[i].sections.findIndex(x => x.id == this.section.id);
@@ -662,7 +663,7 @@
             }
 
             if (limit) {
-                this.limit = { ...limit };
+                this.limit = JSCopyObject(limit);
             } else {
                 this.limit = { id: this.counter++, periodName: '', periodTypeID: -1, isShowOnDashboard: true };
 
@@ -738,11 +739,11 @@
                 $("#limit-name").removeClass("is-invalid");
             }
 
-            if (!(this.limit.limitMoney && (this.limit.limitMoney > 0 || this.limit.limitMoney.length > 0))) {
+            if (this.limit.limitMoney && this.limit.limitMoney > 0) {
+                $("[name=limitMoney]").removeClass("is-invalid");
+            } else {
                 isOk = false;
                 $("[name=limitMoney]").addClass("is-invalid");
-            } else {
-                $("[name=limitMoney]").removeClass("is-invalid");
             }
 
             if (isOk == false && e) {
@@ -772,7 +773,7 @@
         //5
         editGoal: function (goal) {
             if (goal) {
-                this.goal = { ...goal };
+                this.goal = JSCopyObject(goal);
             } else {
                 this.goal = { id: this.counter++ };
                 this.goal.dateStart = GetDateByFormat(moment(), "YYYY/MM/DD");
@@ -842,12 +843,13 @@
                 $("#goal-name").removeClass("is-invalid");
             }
 
-            if (!(this.goal.expectationMoney && (this.goal.expectationMoney > 0 || this.goal.expectationMoney.length > 0))) {
+            if (this.goal.expectationMoney && this.goal.expectationMoney > 0) {
+                $("#goal-expectationMoney").removeClass("is-invalid");
+            } else {
                 isOk = false;
                 $("#goal-expectationMoney").addClass("is-invalid");
-            } else {
-                $("#goal-expectationMoney").removeClass("is-invalid");
             }
+
             if (isOk == false && e) {
                 e.preventDefault();
             }

@@ -264,13 +264,13 @@ namespace MyProfile.Template.Service
 
                     if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
                     {
-                        template.Name = template.Name + "_(3)";
+                        template.Name = template.Name.Replace("_(2)", "_(3)");
                         if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
                         {
-                            template.Name = template.Name + "_(4)";
+                            template.Name = template.Name.Replace("_(3)", "_(4)");
                             if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
                             {
-                                template.Name = template.Name + "_(5)";
+                                template.Name = template.Name.Replace("_(4)", "_(5)");
                             }
                         }
                     }

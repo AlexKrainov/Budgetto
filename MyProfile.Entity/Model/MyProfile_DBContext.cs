@@ -209,6 +209,7 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<PromoCode> PromoCodes { get; set; }
         public virtual DbSet<PromoCodeHistory> PromoCodeHistories { get; set; }
         public virtual DbSet<UserErrorLog> UserErrorLogs { get; set; }
+        public virtual DbSet<IPSetting> IPSettings { get; set; }
 
     }
 }

@@ -1,15 +1,22 @@
 ﻿@model MyProfile.Entity.ModelView.Chart.ChartEditViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    @if (Model.ID == null)
+    {
+        ViewData["Title"] = "Создание графика";
+    }
+    else
+    {
+        ViewData["Title"] = "Редактирование графика";
+    }
     var currentUser = MyProfile.Identity.UserInfo.Current;
 }
 
 @section Styles {
-    <link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/vendor/libs/smartwizard/smartwizard.css">
-    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
-    <link href="~/css/big-chart.css" rel="stylesheet" />
+    <link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/smartwizard/smartwizard.css">
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/big-chart.css" rel="stylesheet" asp-append-version="true" />
     <style>
         .picker {
             border-radius: 5px;
@@ -35,12 +42,12 @@
 
 @section Scripts {
     <!-- Dependencies -->
-    <script src="~/vendor/libs/smartwizard/smartwizard.js"></script>
-    @*<script src="~/vendor/libs/validate/validate.js"></script>*@
-    <script src="~/vendor/libs/colorPick-custom/colorPick.js"></script>
-    <script src="~/vendor/libs/select2/select2.js"></script>
+    <script src="~/vendor/libs/smartwizard/smartwizard.js" asp-append-version="true"></script>
+    @*<script src="~/vendor/libs/validate/validate.js" asp-append-version="true"></script>*@
+    <script src="~/vendor/libs/colorPick-custom/colorPick.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
 
-    <script src="~/pages/chart/chart-edit.js"></script>
+    <script src="~/pages/chart/chart-edit.js" asp-append-version="true"></script>
 }
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
     <span class="lnr lnr-pie-chart display-4 text-primary mr-2"></span>
@@ -157,7 +164,7 @@
                                                v-bind:id="'field_name_' + field.id" required>
                                         <small class="invalid-feedback">Обязательное поле</small>
                                     </div>
-                                    <div class="picker" v-bind:id="'chart_color_' + field.id" style="margin-top: 20px;"></div>
+                                    <div class="picker" v-bind:id="'chart_color_' + field.id" style="margin-top: 24px;"></div>
                                     <div class="card-title-elements ml-md-auto">
                                         <a href="javascript:void(0)" class="btn btn-outline-danger icon-btn borderless float-right"
                                            v-on:click="removeField(field)">

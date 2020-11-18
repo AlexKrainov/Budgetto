@@ -192,8 +192,10 @@
                 if (!str || str.length == 0) {
                     canGo = false;
                     $elName.addClass("is-invalid");
+                    $("#chart_color_" + field.id).css("margin-top", "0px");
                 } else {
                     $elName.removeClass("is-invalid");
+                    $("#chart_color_" + field.id).css("margin-top", "24px");
                 }
 
                 //validate sections

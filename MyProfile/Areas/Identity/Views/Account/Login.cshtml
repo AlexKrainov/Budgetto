@@ -5,8 +5,8 @@
 
 @section Styles {
     <!-- Page -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="~/vendor/css/pages/authentication.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" asp-append-version="true"></script>
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/pages/authentication.css">
     <style>
         .error {
             border: 1px solid var(--red) !important;
@@ -14,8 +14,8 @@
     </style>
 }
 @section Scripts {
-    <script src="~/vendor/libs/vue/dist/vue.js"></script>
-    <script src="~/pages/_areas/login/login.js"></script>
+    <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
+    <script src="~/pages/_areas/login/login.js" asp-append-version="true"></script>
 }
 <div class="authentication-wrapper authentication-3" id="login-vue" data-user-session-id="@Model" v-cloak>
     <div class="authentication-inner">

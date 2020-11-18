@@ -84,7 +84,7 @@ var LimitListVue = new Vue({
             }
 
             if (limit) {
-                this.limit = { ...limit };
+                this.limit = JSCopyObject(limit);
             } else {
                 this.limit = { periodName: '', periodTypeID: -1, isShowOnDashboard: true };
 
@@ -162,11 +162,11 @@ var LimitListVue = new Vue({
                 $("#limit-name").removeClass("is-invalid");
             }
 
-            if (!(this.limit.limitMoney && (this.limit.limitMoney > 0 || this.limit.limitMoney.length > 0))) {
+            if (this.limit.limitMoney && this.limit.limitMoney > 0) {
+                $("[name=limitMoney]").removeClass("is-invalid");
+            } else {
                 isOk = false;
                 $("[name=limitMoney]").addClass("is-invalid");
-            } else {
-                $("[name=limitMoney]").removeClass("is-invalid");
             }
 
             if (isOk == false && e) {

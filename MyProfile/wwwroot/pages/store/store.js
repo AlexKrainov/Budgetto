@@ -27,7 +27,7 @@
                 success: function (response) {
                     if (response.isOk) {
                         this.paymentHistoryID = response.paymentHistoryID;
-                        this.textMessage = "Оплата пршла успешно";
+                        this.textMessage = "Оплата прошла успешно";
                     } else {
                         this.textError = "Извините, оплата не прошла";
                     }

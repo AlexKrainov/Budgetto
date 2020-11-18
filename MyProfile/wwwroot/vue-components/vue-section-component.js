@@ -9,14 +9,14 @@
                     v-show="isShowFilter"/>
             <div class="cards" v-bind:style="searchText ? '' : dataRecordsStyle"
                 v-bind:class="dataClass">
-                <div class="card-section card cursor-pointer"
+                <div class="card-section card"
                      v-for="section in sections"
                      v-bind:key="section.id"
                      v-on:click="onSelect(section)"
                      v-bind:title="section.description"
                      v-show="section.isShow"
                      v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground"
-                     v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section' ]">
+                     v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section', isShowFilter ? 'cursor-pointer' : '' ]">
                     <span class="selected-section-count">{{ checkSelected(section) }}</span>
                     <div class="cards-container card-body d-flex align-items-center ">
                         <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>

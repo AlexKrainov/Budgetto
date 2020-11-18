@@ -1,22 +1,22 @@
 ﻿@model MyProfile.Entity.ModelView.TimeLineViewModel
 @using Newtonsoft.Json
 @{
-    ViewData["Title"] = "Courses v2 - Pages";
+    ViewData["Title"] = "Календарь";
     var UserInfo = MyProfile.Identity.UserInfo.Current;
 }
 
 @section Styles {
-    <link href="~/vendor/libs/d3js/cal-heatmap/css/cal-heatmap.css" rel="stylesheet" />
-    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
+    <link href="~/vendor/libs/d3js/cal-heatmap/css/cal-heatmap.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts {
-    <script src="~/vendor/libs/select2/select2.js"></script>
-    <script src="~/vendor/libs/d3js/js/d3.v3.min.js"></script>
-    <script src="~/vendor/libs/d3js/cal-heatmap/js/cal-heatmap.min.js"></script>
-    <script src="~/vendor/libs/jquery-serialize-object/jquery.serialize-object.min.js"></script>
+    <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/d3js/js/d3.v3.min.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/d3js/cal-heatmap/js/cal-heatmap.min.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/jquery-serialize-object/jquery.serialize-object.min.js" asp-append-version="true"></script>
 
-    <script src="~/pages/calendar/timeline.js"></script>
+    <script src="~/pages/calendar/timeline.js" asp-append-version="true"></script>
 }
 
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">

@@ -177,25 +177,56 @@ namespace MyProfile.Limit.Service
             var currentUser = UserInfo.Current;
             bool isShow = true;
             var now = DateTime.Now;
-
-            if (periodTypesEnum == PeriodTypesEnum.Month)
-            {
-                isShow = currentUser.UserSettings.Month_LimitWidgets;
-            }
-            else if (periodTypesEnum == PeriodTypesEnum.Year)
-            {
-                isShow = currentUser.UserSettings.Year_LimitWidgets;
-            }
-
+            int totalDays = 0;
+            string text = "";
+            bool isThis = false;
+            bool isPast = start < now && finish < now;// month/year
+            bool isFuture = start > now && finish > now;// month/year
             var limits = await GetLimitListView(x =>
                 x.PeriodTypeID == (int)periodTypesEnum
                 && x.VisibleElement.IsShowOnDashboards);
 
-            bool isThisMonth = finish.Month == now.Month && finish.Year == now.Year;
-            bool IsPastMonth = start < now && finish < now;
-            bool IsFutureMonth = start > now && finish > now;
+            if (periodTypesEnum == PeriodTypesEnum.Month)
+            {
+                isShow = currentUser.UserSettings.Month_LimitWidgets;
+                totalDays = 1 + (finish - start).Days;
 
-            var totalDays = 1 + (finish - start).Days;
+                isThis = finish.Month == now.Month && finish.Year == now.Year;// month/year
+
+                if (isThis)
+                {
+                    text = "Примерно осталось расходов в день:";
+                }
+                else if (isPast)
+                {
+                    text = "Примерно было расходов в день:";
+                }
+                else
+                {
+                    text = "Примерно возможных расходов в день:";
+                }
+            }
+            else if (periodTypesEnum == PeriodTypesEnum.Year)
+            {
+                isShow = currentUser.UserSettings.Year_LimitWidgets;
+                totalDays = 12;
+
+                isThis = finish.Year == now.Year;// month/year
+
+                if (isThis)
+                {
+                    text = "Примерно осталось расходов в месяц:";
+                    totalDays = finish.Month - now.Month + 1;
+                }
+                else if (isPast)
+                {
+                    text = "Примерно было расходов в месяц:";
+                }
+                else
+                {
+                    text = "Примерно возможных расходов в месяц:";
+                }
+            }
 
             for (int i = 0; i < limits.Count; i++)
             {
@@ -223,28 +254,37 @@ namespace MyProfile.Limit.Service
 
                 var leftMoneyToSpend = limit.LimitMoney - totalSpended;
 
-                //if (leftMoneyToSpend > 0)
-                //{
-                if (isThisMonth)
+                if (isThis && leftMoneyToSpend < 0)
                 {
-                    var leftDays = (finish - now).Days + 1;
-                    leftMoneyInADay = leftMoneyToSpend / leftDays;
+                    text = "Вы превысили лимит на";
+                    leftMoneyInADay = leftMoneyToSpend * -1;
                 }
-                else if (IsPastMonth)
+                else if (isThis)
+                {
+                    if (periodTypesEnum == PeriodTypesEnum.Month)
+                    {
+                        var leftDays = (finish - now).Days + 1;
+                        leftMoneyInADay = leftMoneyToSpend / leftDays;
+                    }
+                    else if (periodTypesEnum == PeriodTypesEnum.Year)
+                    {
+                        leftMoneyInADay = leftMoneyToSpend / totalDays;
+                    }
+                }
+                else if (isPast)
                 {
                     leftMoneyInADay = totalSpended / totalDays;
                 }
-                else if (IsFutureMonth)
+                else
                 {
                     leftMoneyInADay = limit.LimitMoney / totalDays;
                 }
+
 
                 if (totalSpended >= 0)
                 {
                     percent2 = Math.Round(leftMoneyToSpend / limit.LimitMoney * 100, 2);
                 }
-                // }
-
 
                 limitCharts.Add(new LimitChartModelView
                 {
@@ -255,10 +295,12 @@ namespace MyProfile.Limit.Service
                     LeftMoneyInADay = leftMoneyInADay,
                     Percent2 = percent2,
                     Percent1 = 100 - percent2,
-                    IsThisMonth = isThisMonth,
-                    IsPastMonth = IsPastMonth,
-                    IsFutureMonth = IsFutureMonth,
+                    IsThis = isThis,
+                    IsPast = isPast,
+                    IsFuture = isFuture,
                     IsShow = isShow,
+                    PeriodTypeID = (int)periodTypesEnum,
+                    Text = text
                     //Sections
                 });
             }

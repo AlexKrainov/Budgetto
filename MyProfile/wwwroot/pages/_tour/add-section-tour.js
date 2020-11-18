@@ -11,7 +11,7 @@ $(function () {
             text: 'Для создании категории нажмите "показать категории".',
             attachTo: { element: '.show-sections', on: 'left' },
             buttons: [{
-                action() {
+                action: function () {
                     AddSectionTour.cancel();
                     $($(".show-sections")[0]).off();
                 },

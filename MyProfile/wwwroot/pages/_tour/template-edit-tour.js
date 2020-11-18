@@ -45,7 +45,7 @@ $(function () {
             text: 'В первой колонке будут отображаться дни месяца. В "настройках колонки" можно задать формат даты.',
             attachTo: { element: '.lists .list', on: 'top' },
             buttons: [{
-                action() {
+                action: function () {
                     TemplateTour.next();
 
                     $("#add-column").click(function () {

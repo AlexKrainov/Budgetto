@@ -81,6 +81,51 @@ namespace MyProfile.User.Service
 
             return newUserSessionID;
         }
+
+        /// <summary>
+        /// Check ip for DDoS attacks 
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="userSessionActionType"></param>
+        /// <returns></returns>
+        public async Task<bool> CreateAndCheckIP()
+        {
+            try
+            {
+                string IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString();
+                string SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
+                                              ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "";
+                DateTime now = DateTime.Now.ToUniversalTime();
+
+                var ipSetting = await repository.GetAll<IPSetting>(x => x.IP == IP).FirstOrDefaultAsync();
+                if (ipSetting == null)
+                {
+                    await repository.CreateAsync(new IPSetting
+                    {
+                        IP = IP,
+                        SessionID = SessionID,
+                        CreateDate = now,
+                        LastVisit = now,
+                        IsBlock = false,
+                    }, true);
+                }
+                else
+                {
+                    ipSetting.LastVisit = now;
+                    ipSetting.SessionID = SessionID;
+
+                    await repository.UpdateAsync(ipSetting, true);
+
+                    return ipSetting.IsBlock == false;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return true;
+        }
+
         public async Task<int> UpdateSession_UserID(Guid userSessionID, Guid UserID)
         {
             var userSession = await repository.GetAll<UserSession>(x => x.ID == userSessionID).FirstOrDefaultAsync();

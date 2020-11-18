@@ -340,13 +340,14 @@ function onTabBlur() {
 }
 
 function onKeyListener(e) {
-    e = e || window.event;
+    //console.log("click");
+    //e = e || window.event;
 
-    if (e.keyCode == 116) {
-        console.log("f5 pressed");
-    } else {
-        console.log("Window closed");
-    }
+    //if (e.keyCode == 116) {
+    //    console.log("f5 pressed");
+    //} else {
+    //    console.log("Window closed");
+    //}
 }
 
 function onCloseWindow() {
@@ -372,4 +373,8 @@ function ShowCookieOff() {
         error: function (xhr, status, error) {
         }
     });
+}
+
+function JSCopyObject(src) {
+    return Object.assign({}, src);
 }

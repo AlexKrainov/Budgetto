@@ -2,7 +2,7 @@
 
 <html lang="ru" class="default-style layout-navbar-fixed mdl-js" dir="ltr">
 <head>
-    <title>@ViewData["Title"] - Asp.Net Core Demo</title>
+    <title>Budgetto - управление финансами</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="UTF-8" />
@@ -17,11 +17,11 @@
         }
     </style>
     <!-- Core stylesheets -->
-    <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap.css" class="theme-settings-bootstrap-css">
-    <link rel="stylesheet" href="~/vendor/css/rtl/appwork.css" class="theme-settings-appwork-css">
-    <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate.css" class="theme-settings-theme-css">
-    <link rel="stylesheet" href="~/vendor/css/rtl/uikit.css">
-    <link rel="stylesheet" href="~/vendor/fonts/fontawesome.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/bootstrap.css" class="theme-settings-bootstrap-css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/appwork.css" class="theme-settings-appwork-css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/theme-corporate.css" class="theme-settings-theme-css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/uikit.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/fonts/fontawesome.css">
 
     @RenderSection("Styles", required: false)
 
@@ -33,7 +33,7 @@
 
     @RenderSection("Scripts", required: false)
 
-    @*<script src="~/vendor/js/bootstrap.js"></script>*@
+    @*<script src="~/vendor/js/bootstrap.js" asp-append-version="true"></script>*@
 
 </body>
 </html>

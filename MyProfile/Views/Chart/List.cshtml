@@ -8,9 +8,9 @@
 }
 
 @section Scripts {
-    <script src="~/vendor/libs/masonry/masonry.js"></script>
+    <script src="~/vendor/libs/masonry/masonry.js" asp-append-version="true"></script>
 
-    <script src="~/pages/chart/chart-list.js"></script>
+    <script src="~/pages/chart/chart-list.js" asp-append-version="true"></script>
 }
 @*https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/*@
 @*https://localhost:44394/Pages/EducationCoursesV1*@
@@ -51,7 +51,7 @@
              v-show="activeChartPeriodTypeID == -1 ? true : chart.isShowBudgetMonth && activeChartPeriodTypeID == 1 || chart.isShowBudgetYear && activeChartPeriodTypeID == 3">
             <div class="card mb-4 custom-card-hover border-primary" v-if="chart.isDeleted == false" v-bind:id="'chart_' + chart.id">
                 <div class="w-100">
-                    <a href="javascript:void(0)" class="card-img-top d-block ui-rect-60 ui-bg-cover chart" v-bind:class="'card-chart_'+chart.chartTypeID">
+                    <div class="card-img-top d-block ui-rect-60 ui-bg-cover chart" v-bind:class="'card-chart_'+chart.chartTypeID">
                         <div class="d-flex justify-content-between align-items-end ui-rect-content p-3">
                             <div class="flex-shrink-1">
                                 <span class="badge badge-primary">{{ chart.chartTypeName }}</span>
@@ -64,7 +64,7 @@
                                 <span v-show="chart.isShowBudgetYear" class="badge badge-success">Год</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
                 <hr class="m-0">
                 <div class="card-body">
@@ -86,7 +86,7 @@
             </div>
             <div class="card mb-4 custom-card-hover border-secondary" v-else-if="chart.isDeleted" v-bind:id="'chart_' + chart.id">
                 <div class="w-100 deleted-item">
-                    <a href="javascript:void(0)" class="card-img-top d-block ui-rect-60 ui-bg-cover chart" v-bind:class="'card-chart_'+chart.chartTypeID">
+                    <div class="card-img-top d-block ui-rect-60 ui-bg-cover chart" v-bind:class="'card-chart_'+chart.chartTypeID">
                         <div class="d-flex justify-content-between align-items-end ui-rect-content p-3">
                             <div class="flex-shrink-1">
                                 <span class="badge badge-primary">{{ chart.chartTypeName }}</span>
@@ -99,7 +99,7 @@
                                 <span v-show="chart.isShowBudgetYear" class="badge badge-success">Год</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
                 <hr class="m-0">
                 <div class="card-body deleted-item">

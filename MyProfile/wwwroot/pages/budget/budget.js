@@ -753,7 +753,7 @@
 
             return HistoryVue.showHistory(filter)
         },
-        stylingClickedCells(event, type, cellIndex) {
+        stylingClickedCells: function (event, type, cellIndex) {
             this.clearAllStyle();
 
             if (type == "td") {
@@ -765,7 +765,7 @@
             }
         },
         //after clicked a row, a cell or a footer cell
-        clearAllStyle() {
+        clearAllStyle: function () {
             let el_s = [...document.getElementsByClassName("table-primary")];
             for (var i = 0; i < el_s.length; i++) {
                 el_s[i].classList.remove("table-primary");

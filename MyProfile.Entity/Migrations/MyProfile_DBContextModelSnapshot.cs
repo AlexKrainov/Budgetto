@@ -603,6 +603,29 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("HelpArticleUserViews");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.IPSetting", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("IP")
+                        .HasMaxLength(64);
+
+                    b.Property<bool>("IsBlock");
+
+                    b.Property<DateTime>("LastVisit");
+
+                    b.Property<string>("SessionID")
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("IPSettings");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
                 {
                     b.Property<int>("ID")

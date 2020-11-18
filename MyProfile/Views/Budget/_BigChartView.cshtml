@@ -1,5 +1,5 @@
 ﻿<section class="card custom-card-hover" v-for="chartData in bigChartsData"
-         v-bind:class="chartData.isBig ? 'mb-4 col-12' : 'col-sm-6 col-md-6 col-lg-6 col-xl-6'"
+         v-bind:class="chartData.isBig ? 'mt-4 col-12' : 'col-6 p-2'"
          v-show="chartData.isShow"
          v-bind:id="'bigChart_'+chartData.chartID">
     <article>
@@ -16,7 +16,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
                         <a class="dropdown-item"
-                           v-bind:href="'/Chart/Edit/' + chartData.id ">Редактировать график</a>
+                           v-bind:href="'/Chart/Edit/' + chartData.id +'?href=@Model' ">Редактировать график</a>
                     </div>
                 </div>
             </div>
@@ -24,9 +24,7 @@
         @*is not big chart*@
         <div v-if="chartData.isBig == false" class="pt-2">
             <div class="d-flex align-items-center position-relative" v-bind:style="'height:' + bigChartHeight + 'px;'">
-                <div class="w-100 position-absolute" style="height:310px;top:0;">
-                    <canvas v-bind:id="chartData.chartID"></canvas>
-                </div>
+                <canvas v-bind:id="chartData.chartID"></canvas>
             </div>
         </div>
         @*is big chart*@

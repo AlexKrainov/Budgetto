@@ -1,24 +1,24 @@
 ﻿@model MyProfile.Entity.ModelView.BudgetView.BudgetControllerModelView
 @{
-    ViewData["Title"] = "DataTables - Tables";
+    ViewData["Title"] = "Финансы на год";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/vendor/libs/datatables/datatables.css">
-    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" />
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/datatables/datatables.css">
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts {
     <!-- Dependencies -->
 
-    <script src="~/vendor/libs/chartjs/chartjs.js"></script>
-    <script src="~/vendor/libs/datatables/datatables.js"></script>
-    <script src="~/vendor/libs/select2/select2.js"></script>
+    <script src="~/vendor/libs/chartjs/chartjs.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/datatables/datatables.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
 
-    <script src="~/pages/budget/_budget-year.js"></script>
-    <script src="~/pages/budget/budget.js"></script>
-    <script src="~/pages/budget/history-modal.js"></script>
-    <script src="~/pages/goal/goal-add-money.js"></script>
+    <script src="~/pages/budget/_budget-year.js" asp-append-version="true"></script>
+    <script src="~/pages/budget/budget.js" asp-append-version="true"></script>
+    <script src="~/pages/budget/history-modal.js" asp-append-version="true"></script>
+    <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
 }
 
 <div id="budget-vue" v-cloak>
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <h2 class="font-weight-light mb-2">Сегодня: @DateTime.Now.ToString("dd.MM.yyyy")</h2>
+                <h2 class="font-weight-light mb-2">Сегодня: <b>@DateTime.Now.ToString("dd.MM.yyyy")</b></h2>
                 @*<div class="badge badge-success font-weight-bold">RUNNING</div>*@
             </div>
             <div class="col-md-4">
@@ -74,10 +74,10 @@
     <div class="row" id="goal-contrainer">
         @await Html.PartialAsync("_GoalsView")
     </div>
-    <div class="row pb-2" style=" padding-left: 12px; padding-right: 12px;">
+    <div class="row">
         @await Html.PartialAsync("_BigChartView", "/Budget/Year")
     </div>
-    <div class="card table-container">
+    <div class="card table-container mt-2">
         <div class="card-body" style="padding-bottom:5px;">
             <div class="card-title with-elements">
                 <select class="form-control form-control-sm" data-style="btn-default" style="width: 300px"

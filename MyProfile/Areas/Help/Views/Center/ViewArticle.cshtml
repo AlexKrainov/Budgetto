@@ -7,12 +7,12 @@
 
 
 @section Styles {
-    <link href="~/vendor/css/blog.css" rel="stylesheet" />
+    <link href="~/vendor/css/blog.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts {
 
-    <script src="~/pages/_areas/help_center/article.js"></script>
+    <script src="~/pages/_areas/help_center/article.js" asp-append-version="true"></script>
 }
 
 <div class="container" id="help-article" data-article-id="@Model.ID" v-cloak>

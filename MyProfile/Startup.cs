@@ -78,6 +78,10 @@ namespace MyProfile
             string connection = Configuration.GetConnectionString("TestConnection");
 #else
             string connection = Configuration.GetConnectionString("TestRegRuConnection");
+#endif
+
+#if false
+            string connection = Configuration.GetConnectionString("PROD_Connection");
 
 #endif
             services.AddMemoryCache();

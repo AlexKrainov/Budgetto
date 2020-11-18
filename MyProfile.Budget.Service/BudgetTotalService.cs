@@ -45,7 +45,7 @@ namespace MyProfile.Budget.Service
                 spendingData.labels = tuple.Item2.ToArray();
                 spendingData.Name = "Расходы";
                 spendingData.SectionTypeEnum = SectionTypeEnum.Spendings;
-                spendingData.Total = (thisYear).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                spendingData.Total = (thisYear).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
 
                 //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
@@ -78,7 +78,7 @@ namespace MyProfile.Budget.Service
                 earningData.labels = tuple.Item2.ToArray();
                 earningData.Name = "Доходы";
                 earningData.SectionTypeEnum = SectionTypeEnum.Spendings;
-                earningData.Total = thisYear.ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                earningData.Total = thisYear.ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
                 // if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 // {
@@ -110,7 +110,7 @@ namespace MyProfile.Budget.Service
                 investinData.labels = tuple.Item2.ToArray();
                 investinData.Name = "Инвестиции";
                 investinData.SectionTypeEnum = SectionTypeEnum.Investments;
-                investinData.Total = (thisYear).ToString("C", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                investinData.Total = (thisYear).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
                 //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 //{

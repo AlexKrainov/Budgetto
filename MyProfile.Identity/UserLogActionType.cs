@@ -71,6 +71,7 @@
         public const string Record_Edit = "Record_Edit";
         public const string Record_Delete = "Record_Delete";
         public const string Record_Recovery = "Record_Recovery";
+        public const string Record_IsNotAvailibleUser = "Record_IsNotAvailibleUser";
 
         public const string Feedback_Create = "Feedback_Create";
 

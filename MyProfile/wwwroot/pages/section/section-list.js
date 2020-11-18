@@ -70,7 +70,7 @@
             $("#modal-area").modal("show");
         },
         edit: function (area) {
-            this.area = { ...area };
+            this.area = JSCopyObject(area);
 
             $("#modal-area").modal("show");
         },
@@ -220,7 +220,7 @@ var SectionVue = new Vue({
             $("#modal-section").modal("show");
         },
         edit: function (section) {
-            this.section = { ...section };
+            this.section = JSCopyObject(section);
 
             $("#collectiveSections").select2();
 

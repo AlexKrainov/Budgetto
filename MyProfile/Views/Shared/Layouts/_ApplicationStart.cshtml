@@ -20,53 +20,53 @@
             display: none;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet" asp-append-version="true">
 
     <!-- Icon fonts -->
-    <link rel="stylesheet" href="~/vendor/fonts/fontawesome.css">
-    <link rel="stylesheet" href="~/vendor/fonts/ionicons.css">
-    <link rel="stylesheet" href="~/vendor/fonts/linearicons.css">
-    <link rel="stylesheet" href="~/vendor/fonts/open-iconic.css">
-    <link rel="stylesheet" href="~/vendor/fonts/pe-icon-7-stroke.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/fonts/fontawesome.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/fonts/ionicons.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/fonts/linearicons.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/fonts/open-iconic.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/fonts/pe-icon-7-stroke.css">
 
     <!-- Core stylesheets -->
     @*@if (currentUser.UserSettings.WebSiteTheme == "dark")
         {
-            <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap-dark.css" class="theme-settings-bootstrap-css">
-            <link rel="stylesheet" href="~/vendor/css/rtl/appwork-dark.css" class="theme-settings-appwork-css">
-            <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate-dark.css" class="theme-settings-theme-css">
-            <link rel="stylesheet" href="~/vendor/css/rtl/colors-dark.css" class="theme-settings-colors-css">
+            <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/bootstrap-dark.css" class="theme-settings-bootstrap-css">
+            <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/appwork-dark.css" class="theme-settings-appwork-css">
+            <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/theme-corporate-dark.css" class="theme-settings-theme-css">
+            <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/colors-dark.css" class="theme-settings-colors-css">
         }
         else
         {*@
-    <link rel="stylesheet" href="~/vendor/css/rtl/bootstrap.css" class="theme-settings-bootstrap-css">
-    <link rel="stylesheet" href="~/vendor/css/rtl/appwork.css" class="theme-settings-appwork-css">
-    <link rel="stylesheet" href="~/vendor/css/rtl/theme-corporate.css" class="theme-settings-theme-css">
-    <link rel="stylesheet" href="~/vendor/css/rtl/colors.css" class="theme-settings-colors-css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/bootstrap.css" class="theme-settings-bootstrap-css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/appwork.css" class="theme-settings-appwork-css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/theme-corporate.css" class="theme-settings-theme-css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/colors.css" class="theme-settings-colors-css">
     @* }*@
 
-    <link rel="stylesheet" href="~/vendor/css/rtl/uikit.css">
-    <link rel="stylesheet" href="~/css/demo.css">
-    <link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css">
-    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.css">
-    <link rel="stylesheet" href="~/vendor/libs/spinkit/spinkit.css" />
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/uikit.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/css/demo.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/flatpickr/flatpickr.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/toastr/toastr.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/spinkit/spinkit.css" />
     @if (currentUser.UserSettings.IsShowHints)
     {
-        <link href="~/vendor/libs/shepherd/shepherd.css" rel="stylesheet" />
+        <link href="~/vendor/libs/shepherd/shepherd.css" rel="stylesheet" asp-append-version="true" />
     }
     <!--Record-->
-    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/main.css" rel="stylesheet" asp-append-version="true" />
 
     <!-- Load polyfills -->
-    <script src="~/vendor/js/polyfills.js"></script>
+    <script src="~/vendor/js/polyfills.js" asp-append-version="true"></script>
     <script>document['documentMode'] === 10 && document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.~locale.en"><\/script>')</script>
 
-    <script src="~/vendor/js/material-ripple.js"></script>
-    <script src="~/vendor/js/layout-helpers.js"></script>
+    <script src="~/vendor/js/material-ripple.js" asp-append-version="true"></script>
+    <script src="~/vendor/js/layout-helpers.js" asp-append-version="true"></script>
 
     <!-- Theme settings -->
     <!-- This file MUST be included after core stylesheets and layout-helpers.js in the <head> section -->
-    <script src="~/vendor/js/theme-settings.js"></script>
+    <script src="~/vendor/js/theme-settings.js" asp-append-version="true"></script>
     <script>
 		window.themeSettings = new ThemeSettings({
 			cssFilenamePattern: '%name%.css',
@@ -94,15 +94,15 @@
     </script>
 
     <!-- Core scripts -->
-    <script src="~/vendor/js/pace.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="~/vendor/js/pace.js" asp-append-version="true"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" asp-append-version="true"></script>
 
     <!-- Libs -->
-    <link rel="stylesheet" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">
 
     @RenderSection("Styles", required: false)
 
-    <link rel="stylesheet" href="~/vendor/libs/tagify/dist/tagify.css" />
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/tagify/dist/tagify.css" />
 
 </head>
 <body>
@@ -114,29 +114,29 @@
     </div>
 
     <!-- Core scripts -->
-    <script src="~/vendor/libs/popper/popper.js"></script>
-    <script src="~/vendor/js/bootstrap.js"></script>
-    <script src="~/vendor/js/sidenav.js"></script>
-    <script src="~/vendor/libs/block-ui/block-ui.js"></script>
+    <script src="~/vendor/libs/popper/popper.js" asp-append-version="true"></script>
+    <script src="~/vendor/js/bootstrap.js" asp-append-version="true"></script>
+    <script src="~/vendor/js/sidenav.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/block-ui/block-ui.js" asp-append-version="true"></script>
 
-    <script src="~/vendor/libs/vue/dist/vue.js"></script>
-    <script src="~/vendor/libs/moment/moment.js"></script>
+    <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/moment/moment.js" asp-append-version="true"></script>
 
     <!-- Scripts -->
-    <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
-    <script src="~/vendor/libs/flatpickr/l10n/ru.js"></script>
-    <script src="~/vendor/libs/toastr/toastr.js"></script>
+    <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/flatpickr/flatpickr.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/flatpickr/l10n/ru.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/toastr/toastr.js" asp-append-version="true"></script>
 
     <!-- Record -->
-    <script src="~/vue-components/vue-section-component.js"></script>
+    <script src="~/vue-components/vue-section-component.js" asp-append-version="true"></script>
 
-    <script src="~/pages/_base/global.functions.site.js"></script>
-    @*<script src="~/pages/_base/startup.site.js"></script>*@
+    <script src="~/pages/_base/global.functions.site.js" asp-append-version="true"></script>
+    @*<script src="~/pages/_base/startup.site.js" asp-append-version="true"></script>*@
 
     @if (currentUser.UserSettings.IsShowHints)
     {
-        <script src="~/vendor/libs/shepherd/shepherd.js"></script>
+        <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
     }
 
     @RenderSection("Scripts", required: false)

@@ -51,6 +51,13 @@
     document.onkeyup = onKeyListener;
     //#endregion
 
+
+    $(document).click(function (event) {
+        //Close .page-settings when click outside the model
+        if ($(event.target).closest(".page-settings").length == 0) {
+            $(".page-settings").removeClass("theme-settings-open");
+        }
+    });
 });
 
 var RecordVue = new Vue({

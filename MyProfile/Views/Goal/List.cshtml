@@ -1,16 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Project list - Pages";
+    ViewData["Title"] = "Цели";
 }
 
 @section Styles {
 }
 
 @section Scripts {
-    <script src="~/vendor/libs/masonry/masonry.js"></script>
+    <script src="~/vendor/libs/masonry/masonry.js" asp-append-version="true"></script>
 
-    <script src="~/pages/goal/goal-list.js"></script>
-    <script src="~/pages/goal/goal-edit.js"></script>
-    <script src="~/pages/goal/goal-add-money.js"></script>
+    <script src="~/pages/goal/goal-list.js" asp-append-version="true"></script>
+    <script src="~/pages/goal/goal-edit.js" asp-append-version="true"></script>
+    <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
 }
 
 <div id="goal-list-vue" v-cloak>
@@ -83,7 +83,7 @@
                         <i class="far fa-edit pr-2"></i>Редактировать
                     </a>
                     @*v-show="!goal.isFinished"*@
-                    <a href="javascript:void(0)" title="Добавить деньги" class="btn icon-btn btn-sm btn-outline-secondary"
+                    <a href="javascript:void(0)" title="Внести деньги" class="btn icon-btn btn-sm btn-outline-secondary"
                        v-on:click="addMoney(goal, false)">
                         <i class="fas fa-plus"></i>
                     </a>
@@ -173,7 +173,7 @@
                             <i class="ion ion-ios-more"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="javascript:void(0)" v-on:click="addMoney(goal, false)">Добавить деньги</a>
+                            <a class="dropdown-item" href="javascript:void(0)" v-on:click="addMoney(goal, false)">Внести деньги</a>
                             <a class="dropdown-item" href="javascript:void(0)" v-on:click="edit(goal)">Редактировать</a>
                             <a class="dropdown-item" href="javascript:void(0)">Remove</a>
                         </div>

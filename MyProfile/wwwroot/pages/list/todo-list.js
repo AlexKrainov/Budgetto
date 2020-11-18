@@ -84,12 +84,12 @@
                 });
         },
         selecteFolder: function (folder) {
-            this.folder = { ...folder };
+            this.folder = JSCopyObject(folder);
             this.isEdit = false;
         },
         //List
         selecteList: function (list) {
-            this.list = { ...list };
+            this.list = JSCopyObject(list);
             this.isEdit = true;
         },
 
@@ -317,7 +317,7 @@
             if (isEdit) {
                 let index = this.folders.findIndex(x => x.id == folderID);
                 if (index != -1) {
-                    this.folder = { ... this.folders[index] };
+                    this.folder = JSCopyObject(this.folders[index]);
                     this.chooseFolderIcon(this.folder.cssIcon);
                     $("#modal-folder").modal("show");
                     return true;

@@ -69,7 +69,7 @@
             this.reminder.cssIcon = cssIcon;
         },
 
-        closeTimeline() {
+        closeTimeline: function() {
             this.clearAllStyle();
         },
 
@@ -87,7 +87,7 @@
 
             if (reminder) {
                 this.isNew = false;
-                this.reminder = { ...reminder };
+                this.reminder = JSCopyObject(reminder);
 
                 let config = GetFlatpickrRuConfig(this.reminder.dateReminder);
                 this.flatpickrReminder = flatpickr('#reminderDateReminder', config);

@@ -178,7 +178,7 @@ var timeline = {
         timeline.init();
         //calendar.calHeatMap.destroy();
     },
-    calendar_day_click_after_change_record(dateTimeOfPayment) {
+    calendar_day_click_after_change_record: function(dateTimeOfPayment) {
         dateTimeOfPayment = moment(dateTimeOfPayment);
         timeline.calendar_day_click(dateTimeOfPayment.date(), dateTimeOfPayment.get("months"), dateTimeOfPayment.get("year"));
         calendar.before_loading($("button[data-year=" + moment().get("year") + "]"), moment().get("year"));

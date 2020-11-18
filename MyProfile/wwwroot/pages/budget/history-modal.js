@@ -116,7 +116,7 @@
         unselectAll: function () {
             $("#history-sections").val(null).trigger("change");
         },
-        closeTimeline() {
+        closeTimeline: function() {
             this.clearAllStyle();
         },
         getCurrencyValue: function (record) {

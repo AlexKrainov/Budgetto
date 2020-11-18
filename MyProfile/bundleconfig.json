@@ -1,0 +1,188 @@
+[
+  {
+    "outputFileName": "wwwroot/pages/_areas/account/account-settings.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_areas/account/account-settings.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_areas/help_center/article.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_areas/help_center/article.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_areas/login/login.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_areas/login/login.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_base/global.functions.site.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_base/global.functions.site.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_base/page-settings.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_base/page-settings.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_base/startup.site.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_base/startup.site.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_tour/add-record-tour.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_tour/add-record-tour.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_tour/add-section-tour.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_tour/add-section-tour.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_tour/budget-tour.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_tour/budget-tour.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_tour/section-tour.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_tour/section-tour.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_tour/template-edit-tour.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_tour/template-edit-tour.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/budget/_budget-month.min.js",
+    "inputFiles": [
+      "wwwroot/pages/budget/_budget-month.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/budget/_budget-year.min.js",
+    "inputFiles": [
+      "wwwroot/pages/budget/_budget-year.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/budget/budget.min.js",
+    "inputFiles": [
+      "wwwroot/pages/budget/budget.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/budget/history-modal.min.js",
+    "inputFiles": [
+      "wwwroot/pages/budget/history-modal.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/calendar/timeline.min.js",
+    "inputFiles": [
+      "wwwroot/pages/calendar/timeline.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/chart/chart-edit.min.js",
+    "inputFiles": [
+      "wwwroot/pages/chart/chart-edit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/chart/chart-list.min.js",
+    "inputFiles": [
+      "wwwroot/pages/chart/chart-list.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/feedback/feedback.min.js",
+    "inputFiles": [
+      "wwwroot/pages/feedback/feedback.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/goal/goal-add-money.min.js",
+    "inputFiles": [
+      "wwwroot/pages/goal/goal-add-money.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/goal/goal-edit.min.js",
+    "inputFiles": [
+      "wwwroot/pages/goal/goal-edit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/goal/goal-list.min.js",
+    "inputFiles": [
+      "wwwroot/pages/goal/goal-list.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/limit/limit-list.min.js",
+    "inputFiles": [
+      "wwwroot/pages/limit/limit-list.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/reminder/budget-reminder-model.min.js",
+    "inputFiles": [
+      "wwwroot/pages/reminder/budget-reminder-model.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/template/template-list.min.js",
+    "inputFiles": [
+      "wwwroot/pages/template/template-list.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/template/template-edit.min.js",
+    "inputFiles": [
+      "wwwroot/pages/template/template-edit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/vue-components/vue-record-component.min.js",
+    "inputFiles": [
+      "wwwroot/vue-components/vue-record-component.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/vue-components/vue-record-history-component.min.js",
+    "inputFiles": [
+      "wwwroot/vue-components/vue-record-history-component.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/vue-components/vue-section-component.min.js",
+    "inputFiles": [
+      "wwwroot/vue-components/vue-section-component.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/store/store.min.js",
+    "inputFiles": [
+      "wwwroot/pages/store/store.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/vendor/libs/flatpickr/plugins/monthSelect.min.js",
+    "inputFiles": [
+      "wwwroot/vendor/libs/flatpickr/plugins/monthSelect.js"
+    ]
+  }
+]

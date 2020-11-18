@@ -58,6 +58,12 @@ namespace MyProfile.Budget.Service
 
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
+                if (currentUser.IsAvailable == false)
+                {
+                    record.IsSaved = false;
+                    continue;
+                }
+
                 if (record.ID <= 0)// create
                 {
                     try
@@ -69,23 +75,23 @@ namespace MyProfile.Budget.Service
                         else
                         {
                             await repository.CreateAsync(new BudgetRecord
-                        {
-                            BudgetSectionID = record.SectionID,
-                            DateTimeCreate = now,
-                            DateTimeEdit = now,
-                            DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
-                            Description = record.Description,
-                            IsHide = false,
-                            UserID = currentUser.ID,
-                            Total = record.Money,
-                            RawData = record.Tag,
-                            CurrencyID = record.CurrencyID,
-                            CurrencyRate = record.CurrencyRate,
-                            CurrencyNominal = record.CurrencyNominal ?? 1,
-                            IsShowForCollection = budgetRecord.IsShowInCollection,
-                        }, true);
+                            {
+                                BudgetSectionID = record.SectionID,
+                                DateTimeCreate = now,
+                                DateTimeEdit = now,
+                                DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
+                                Description = record.Description,
+                                IsHide = false,
+                                UserID = currentUser.ID,
+                                Total = record.Money,
+                                RawData = record.Tag,
+                                CurrencyID = record.CurrencyID,
+                                CurrencyRate = record.CurrencyRate,
+                                CurrencyNominal = record.CurrencyNominal ?? 1,
+                                IsShowForCollection = budgetRecord.IsShowInCollection,
+                            }, true);
 
-                        record.IsSaved = true;
+                            record.IsSaved = true;
                         }
                     }
                     catch (Exception ex)
@@ -138,6 +144,10 @@ namespace MyProfile.Budget.Service
             if (isCreate)
             {
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Create, errorLogIDs: errorLogCreateIDs);
+            }
+            if (currentUser.IsAvailable == false)
+            {
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_IsNotAvailibleUser, errorLogIDs: errorLogCreateIDs);
             }
 
             return true;

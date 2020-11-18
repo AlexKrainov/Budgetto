@@ -41,9 +41,16 @@ namespace MyProfile.Areas.Identity.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login(Guid? userSessionID)
+        public async Task<IActionResult> Login(Guid? userSessionID)
         {
-            return View(userSessionID);
+            if (await userLogService.CreateAndCheckIP())
+            {
+                return View(userSessionID);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
         [HttpPost]
         [AllowAnonymous]
@@ -337,15 +344,6 @@ namespace MyProfile.Areas.Identity.Controllers
             return Json(new { isOk = false, message = "Не удалось обновить пароль. Ошибка сервера.", errorMessage });
         }
 
-        public IActionResult PersonalData()
-        {
-            var stream = new FileStream("../wwwroot/documents/policy_of_cookie.pdf", FileMode.Open);
-            return new FileStreamResult(stream, "application/pdf");
-        }
-        public IActionResult Agreement()
-        {
-            return View();
-        }
     }
     public class LoginModel
     {

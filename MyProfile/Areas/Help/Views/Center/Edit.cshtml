@@ -3,11 +3,11 @@
     ViewData["Title"] = "Edit";
 }
 @section Styles {
-    <link href="~/vendor/libs/ckeditor4/contents.css" rel="stylesheet" />
+    <link href="~/vendor/libs/ckeditor4/contents.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts {
-    <script src="~/vendor/libs/ckeditor4/ckeditor.js"></script>
+    <script src="~/vendor/libs/ckeditor4/ckeditor.js" asp-append-version="true"></script>
     <script>
         CKEDITOR.editorConfig = function (config) {
             config.toolbarGroups = [

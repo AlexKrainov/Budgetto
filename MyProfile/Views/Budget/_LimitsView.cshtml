@@ -24,20 +24,18 @@
                 </div>
                 <div class="card-header-elements ml-auto float-right" style="margin-top: -20px; margin-right: -31px;">
                     <div class="btn-group mr-3">
-                        <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" 
+                        <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
                                 data-toggle="dropdown" aria-expanded="false" style="position: absolute; right: -70px; top: 5px;">
                             <i class="ion ion-ios-more"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
                             @*<a class="dropdown-item" href="javascript:void(0)"
-                               v-on:click="addGoalMoney(goalChartData)">Добавить деньги</a>*@
+                                v-on:click="addGoalMoney(goalChartData)">Внести деньги</a>*@
                         </div>
                     </div>
                 </div>
                 <div class="mb-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney) }}</div>
-                <div v-show="limitChartData.isThisMonth"> Примерно осталось расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
-                <div v-show="limitChartData.isPastMonth"> Примерно было расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
-                <div v-show="limitChartData.isFutureMonth"> Примерно расходов в день: {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
+                <div>{{ limitChartData.text }} {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay) }}</div>
             </div>
             <div class="d-flex align-items-center position-relative" style="height:60px;width: 60px;">
                 <div class="w-100 position-absolute" style="height:60px;top:0;">

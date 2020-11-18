@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
+using MyProfile.Identity;
 
 namespace MyProfile.Controllers
 {
@@ -44,7 +45,7 @@ namespace MyProfile.Controllers
 		public async Task<IActionResult> SaveRecords([FromBody]RecordsModelView budgetRecord)
 		{
 			await budgetRecordService.CreateOrUpdate(budgetRecord);
-			return Json(new { isOk = true, budgetRecord });
+			return Json(new { isOk = UserInfo.Current.IsAvailable, budgetRecord });
 		}
 		
 	}
