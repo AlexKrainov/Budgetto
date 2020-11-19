@@ -350,6 +350,7 @@ function onKeyListener(e) {
     //}
 }
 
+//async/await
 function onCloseWindow() {
     return $.ajax({
         type: "GET",
@@ -368,6 +369,20 @@ function ShowCookieOff() {
         dataType: 'json',
         success: function (response) {
             UserInfo.UserSettings.IsShowCookie = false;
+            return response;
+        },
+        error: function (xhr, status, error) {
+        }
+    });
+}
+
+function ShowDocument(name) {
+    return $.ajax({
+        type: "GET",
+        url: "/UserSettings/ShowDocument?name=" + name,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (response) {
             return response;
         },
         error: function (xhr, status, error) {

@@ -74,7 +74,7 @@ namespace MyProfile
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-#if false
+#if true
             string connection = Configuration.GetConnectionString("TestConnection");
 #else
             string connection = Configuration.GetConnectionString("TestRegRuConnection");
@@ -96,11 +96,11 @@ namespace MyProfile
             //});
 
             #region Cookies settings
-            services.Configure<CookiePolicyOptions>(options =>
-                {
-                    options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
-                });
+            //services.Configure<CookiePolicyOptions>(options =>
+            //    {
+            //        options.CheckConsentNeeded = context => true;
+            //        options.MinimumSameSitePolicy = SameSiteMode.None;
+            //    });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

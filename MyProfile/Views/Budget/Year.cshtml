@@ -9,16 +9,28 @@
 }
 
 @section Scripts {
-    <!-- Dependencies -->
-
     <script src="~/vendor/libs/chartjs/chartjs.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/datatables/datatables.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
 
-    <script src="~/pages/budget/_budget-year.js" asp-append-version="true"></script>
-    <script src="~/pages/budget/budget.js" asp-append-version="true"></script>
-    <script src="~/pages/budget/history-modal.js" asp-append-version="true"></script>
-    <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/vendor/libs/flatpickr/plugins/monthSelect.js" asp-append-version="true"></script>
+
+        <script src="~/pages/budget/_budget-year.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/budget.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/history-modal.js" asp-append-version="true"></script>
+        <script src="~/pages/reminder/budget-reminder-model.js" asp-append-version="true"></script>
+        <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/vendor/libs/flatpickr/plugins/monthSelect.min.js" asp-append-version="true"></script>
+
+        <script src="~/pages/budget/_budget-year.min.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/budget.min.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/history-modal.min.js" asp-append-version="true"></script>
+        <script src="~/pages/reminder/budget-reminder-model.min.js" asp-append-version="true"></script>
+        <script src="~/pages/goal/goal-add-money.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 <div id="budget-vue" v-cloak>

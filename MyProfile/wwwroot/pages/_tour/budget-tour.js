@@ -1,6 +1,10 @@
 ﻿var BudgetTour;
 
 $(function () {
+
+    if (window.layoutHelpers.isSmallScreen()) {
+        return;
+    }
     function setupTour(BudgetTour) {
         var backButtonClass = 'btn btn-sm btn-secondary md-btn-flat';
         var nextButtonClass = 'btn btn-sm btn-primary';
@@ -52,7 +56,7 @@ $(function () {
         });
         BudgetTour.addStep({
             title: 'Виджеты доходов, расходов и инвестиций',
-            text: `В этих виджетах учитываются все ваши внесенные данные за выбранный месяц.`,
+            text: `В этих виджетах отображаются все ваши внесенные данные за выбранный месяц.`,
             attachTo: { element: '.total-view', on: 'bottom' },
             buttons: [{
                 action: BudgetTour.back,
@@ -190,14 +194,14 @@ $(function () {
 });
 
 function NotShowEnterHint() {
+    UserInfo.UserSettings.IsShowFirstEnterHint = false;
+    BudgetTour.cancel();
     return $.ajax({
         type: "GET",
         url: "/UserSettings/NotShowEnterHint",
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (response) {
-            UserInfo.UserSettings.IsShowFirstEnterHint = false;
-            BudgetTour.cancel();
             return response;
         },
         error: function (xhr, status, error) {

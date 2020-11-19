@@ -5,6 +5,7 @@
         public const string Login = "Login";
         public const string LoginAfterCode = "LoginAfterCode";
         public const string LoginAfterResetPassword = "LoginAfterResetPassword";
+        public const string Login_AutoAuthorization = "Login_AutoAuthorization";
         public const string TryLogin = "TryLogin";
         public const string LimitLogin = "LimitLogin";
 
@@ -98,6 +99,10 @@
         public const string User_CookieOff = "User_CookieOff";
         public const string User_AutoAuthorization = "User_AutoAuthorization";
         public const string User_LeaveSite = "User_LeaveSite";
+
+        public const string Document_CookiePolicy = "Document_CookiePolicy";
+        public const string Document_PersonalDataProcessingPolicy = "Document_PersonalDataProcessingPolicy";
+        public const string Document_TermsOfUse = "Document_TermsOfUse";
 
         public const string Constructor_Step1_UserInfo = "Constructor_Step1_UserInfo";
         public const string Constructor_Step2_Sections = "Constructor_Step2_Sections";

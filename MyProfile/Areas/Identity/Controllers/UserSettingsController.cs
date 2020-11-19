@@ -111,5 +111,44 @@ namespace MyProfile.Areas.Identity.Controllers
 
             return Json(new { isOk = true });
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ShowDocument(string name)
+        {
+            var user = UserInfo.Current;
+            var userLogActionType = string.Empty;
+
+            if (name != null)
+            {
+                switch (name)
+                {
+                    case "cookie_policy":
+                        userLogActionType = UserLogActionType.Document_CookiePolicy;
+                        break;
+                    case "personal_data_processing_policy":
+                        userLogActionType = UserLogActionType.Document_PersonalDataProcessingPolicy;
+                        break;
+                    case "terms_of_use":
+                        userLogActionType = UserLogActionType.Document_TermsOfUse;
+                        break;
+                    default:
+                        userLogActionType = "documents_";
+                        break;
+                }
+            }
+
+            try
+            {
+                Guid userSessionID = user?.UserSessionID ?? Guid.Parse(Request.Cookies[UserInfo.USER_SESSION_ID].ToString());
+
+                await userLogService.CreateUserLogAsync(userSessionID, userLogActionType);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json(new { isOk = true });
+        }
     }
 }

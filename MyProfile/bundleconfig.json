@@ -156,18 +156,6 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/vue-components/vue-record-component.min.js",
-    "inputFiles": [
-      "wwwroot/vue-components/vue-record-component.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/vue-components/vue-record-history-component.min.js",
-    "inputFiles": [
-      "wwwroot/vue-components/vue-record-history-component.js"
-    ]
-  },
-  {
     "outputFileName": "wwwroot/vue-components/vue-section-component.min.js",
     "inputFiles": [
       "wwwroot/vue-components/vue-section-component.js"
@@ -183,6 +171,12 @@
     "outputFileName": "wwwroot/vendor/libs/flatpickr/plugins/monthSelect.min.js",
     "inputFiles": [
       "wwwroot/vendor/libs/flatpickr/plugins/monthSelect.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/section/section-list.min.js",
+    "inputFiles": [
+      "wwwroot/pages/section/section-list.js"
     ]
   }
 ]

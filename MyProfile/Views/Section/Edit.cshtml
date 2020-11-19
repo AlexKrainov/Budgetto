@@ -9,11 +9,14 @@
 }
 
 @section Scripts {
-    @*<script src="~/vendor/libs/colorPick-custom/colorPick.js" asp-append-version="true"></script>*@
-    <script src="~/pages/section/section-list.js" asp-append-version="true"></script>
-
-    @*<script src="~/vue-components/vue-select2-component.js" asp-append-version="true"></script>*@
     <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
+
+    <environment names="Development">
+        <script src="~/pages/section/section-list.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/section/section-list.min.js" asp-append-version="true"></script>
+    </environment>
 }
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
     <span class="pe-7s-albums display-4 text-primary mr-2"></span>
@@ -60,7 +63,7 @@
                                            v-bind:data-items="area.sections"
                                            v-on:onchoose="onChooseSection"></vue-section-component>
                     <hr class="m-0">
-                    <div class="p-3">
+                    <div class="p-3 inline-spacing ">
                         <button class="btn btn-primary btn-sm" v-on:click="edit(area)">
                             <i class="far fa-edit pr-2"></i>Редактировать папку
                         </button>
@@ -129,7 +132,7 @@
                         <small class="text-muted">{{ section.description }}</small>
                     </div>
                     <hr class="m-0">
-                    <div class="p-3">
+                    <div class="p-3 inline-spacing ">
                         <button class="btn btn-primary btn-sm" v-on:click="edit(section)">
                             <i class="far fa-edit pr-2"></i>Редактировать
                         </button>

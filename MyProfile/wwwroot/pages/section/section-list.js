@@ -141,8 +141,8 @@
         },
         updateSectionComponent: function () {
             for (var i = 0; i < this.$children.length; i++) {
-                let areaID = this.$children[i].dataId.replace("areaid_", "");
 
+                var areaID = this.$children[i].dataId.replace("areaid_", "");
                 let areaIndex = this.areas.findIndex(x => x.id == areaID);
                 let childrenIndex = this.$children[i].updateSections(this.areas[areaIndex].sections);
             }

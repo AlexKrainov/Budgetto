@@ -41,10 +41,45 @@ namespace MyProfile.Areas.Identity.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(Guid? userSessionID)
+        public async Task<IActionResult> Login(string ReturnUrl)//Guid? userSessionID)
         {
             if (await userLogService.CreateAndCheckIP())
             {
+                DateTime nowMinus7Day = DateTime.Now.AddDays(-7);
+                //AutoAuthorization by UserSessionID and UserID
+                if (Request.Cookies.ContainsKey(UserInfo.USER_SESSION_ID)
+                    && Request.Cookies.ContainsKey(UserInfo.USER_ID)
+                    && Guid.TryParse(Request.Cookies[UserInfo.USER_SESSION_ID].ToString(), out Guid usID)
+                    && Guid.TryParse(Request.Cookies[UserInfo.USER_ID].ToString(), out Guid uID)
+                    && await repository.AnyAsync<UserSession>(x => x.ID == usID && x.UserID == uID && x.LogOutDate == null && x.EnterDate >= nowMinus7Day))
+                {
+                    var user = await userService.CheckAndGetUser(email: null, userID: uID);
+
+                    if (user != null)
+                    {
+                        if (await userLogService.IsBedLimitEnter() == false)
+                        {
+                            user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Login_AutoAuthorization);
+
+                            if (user.UserSettings.IsShowConstructor)
+                            {
+                                return RedirectToAction("Index", "Start");
+                            }
+                            else if (Url.IsLocalUrl(ReturnUrl))
+                            {
+                                return Redirect(ReturnUrl);
+                            }
+                            else
+                            {
+                                return RedirectToAction("Month", "Budget");
+                            }
+                        }
+                    }
+                }
+                Response.Cookies.Delete(UserInfo.USER_ID);
+                Response.Cookies.Delete(UserInfo.USER_SESSION_ID);
+
+                Guid userSessionID = await userLogService.CreateSession();
                 return View(userSessionID);
             }
             else
@@ -56,7 +91,8 @@ namespace MyProfile.Areas.Identity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Stat([FromBody] UserStatViewModel personData)
         {
-            Guid userSessionID = await userLogService.CreateSession(personData);
+            Guid userSessionID = await userLogService.UpdateSession(personData);
+            Response.Cookies.Append(UserInfo.USER_SESSION_ID, userSessionID.ToString());
 
             return Json(new { isOk = true, userSessionID });
         }
@@ -69,7 +105,7 @@ namespace MyProfile.Areas.Identity.Controllers
             var user = await userService.CheckAndGetUser(login.Email.Trim(), login.Password.Trim());
 
             //check limit enter 20 times
-            if (user != null && await userLogService.CheckLimitEnter())
+            if (user != null && await userLogService.IsBedLimitEnter())
             {
                 await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.LimitLogin);
 
@@ -87,12 +123,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Login);
                 await userLogService.UpdateSession_UserID(user.UserSessionID, user.ID);
 
-                //Doesn't work
-                Response.Cookies.Append("userSessionID", user.UserSessionID.ToString());
-                //, new Microsoft.AspNetCore.Http.CookieOptions
-                //{
-                //    Expires = DateTime.Now.AddMonths(3)
-                //});
+                Response.Cookies.Append(UserInfo.USER_ID, user.ID.ToString());
 
                 if (user.UserSettings.IsShowConstructor)
                 {
@@ -111,14 +142,14 @@ namespace MyProfile.Areas.Identity.Controllers
             await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.TryLogin);
 
             return Json(new { isOk = false, textError = "Неверная почта и(или) пароль." });
-
         }
+
 
         public async Task<IActionResult> Logout()
         {
             var currentUser = UserInfo.Current;
-            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Logout);
             await userLogService.UserSessionLogOut(currentUser.UserSessionID, currentUser.ID);
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Logout);
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");//, new { userSessionID = currentUser.UserSessionID });

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Headers;
+using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
@@ -17,69 +19,6 @@ namespace MyProfile.User.Service
         public UserLogService(IBaseRepository repository)
         {
             this.repository = repository;
-        }
-
-        /// <summary>
-        /// Login/Registration/ Forgot password/ Enter code/ LogOut
-        /// </summary>
-        /// <param name="UserID"></param>
-        /// <param name="userSessionActionType"></param>
-        /// <returns></returns>
-        public async Task<Guid> CreateSession(UserStatViewModel personData, Guid? UserID = null)
-        {
-            Guid newUserSessionID = Guid.NewGuid();
-            try
-            {
-                UserSession userSession = new UserSession
-                {
-                    ID = newUserSessionID,
-                    UserID = UserID,
-                    BrowerName = personData.browser_name,
-                    BrowserVersion = personData.browser_version,
-                    City = personData.city,
-                    Country = personData.country,
-                    EnterDate = DateTime.Now.ToUniversalTime(),
-                    IP = personData.ip ?? UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
-                    IsPhone = personData.isMobile,
-                    //IsTablet = personData.isMobile
-                    Location = personData.location,
-                    OS_Name = personData.os_name,
-                    Os_Version = personData.os_version,
-                    ScreenSize = personData.screen_size,
-                    SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
-                              ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "",
-                    Referrer = personData.referrer,
-                    ContinentCode = personData.continent_code,
-                    ContinentName = personData.continent_name,
-                    Index = personData.index,
-                    Info = personData.info,
-                    Path = personData.path,
-                    ProviderInfo = personData.provider_info,
-                    Threat = personData.threat,
-                };
-                await repository.CreateAsync(userSession, true);
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    await repository.CreateAsync(new UserSession
-                    {
-                        ID = newUserSessionID,
-                        EnterDate = DateTime.Now.ToUniversalTime(),
-                        IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
-                        SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
-                                     ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "",
-                        Comment = ex.Message
-                    }, true);
-                }
-                catch (Exception ex1)
-                {
-
-                }
-            }
-
-            return newUserSessionID;
         }
 
         /// <summary>
@@ -107,12 +46,14 @@ namespace MyProfile.User.Service
                         CreateDate = now,
                         LastVisit = now,
                         IsBlock = false,
+                        Counter = 0,
                     }, true);
                 }
                 else
                 {
                     ipSetting.LastVisit = now;
                     ipSetting.SessionID = SessionID;
+                    ipSetting.Counter += ipSetting.Counter;
 
                     await repository.UpdateAsync(ipSetting, true);
 
@@ -126,6 +67,117 @@ namespace MyProfile.User.Service
             return true;
         }
 
+        /// <summary>
+        /// Login/Registration/ Forgot password/ Enter code/ LogOut
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="userSessionActionType"></param>
+        /// <returns></returns>
+        public async Task<Guid> CreateSession()
+        {
+            Guid newUserSessionID = Guid.NewGuid();
+
+            try
+            {
+                RequestHeaders header = UserInfo.HttpContext.Request.GetTypedHeaders();
+                await repository.CreateAsync(new UserSession
+                {
+                    ID = newUserSessionID,
+                    EnterDate = DateTime.Now.ToUniversalTime(),
+                    IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    SessionID = !string.IsNullOrEmpty(header.Headers["X-Original-For"]) ? header.Headers["X-Original-For"].ToString() : "",
+                    Referrer = header.Referer?.AbsoluteUri,
+
+                }, true);
+            }
+            catch (Exception ex1)
+            {
+
+            }
+
+            return newUserSessionID;
+        }
+
+        /// <summary>
+        /// Login/Registration/ Forgot password/ Enter code/ LogOut
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="userSessionActionType"></param>
+        /// <returns></returns>
+        public async Task<Guid> UpdateSession(UserStatViewModel personData, Guid? UserID = null)
+        {
+            Guid userSessionID = Guid.NewGuid();
+            try
+            {
+                bool isCreate = true;
+                RequestHeaders header = UserInfo.HttpContext.Request.GetTypedHeaders();
+
+                if (personData.userSessionID != Guid.Empty)
+                {
+                    userSessionID = personData.userSessionID;
+                    isCreate = false;
+                }
+
+                UserSession userSession = new UserSession
+                {
+                    ID = userSessionID,
+                    UserID = UserID,
+                    BrowerName = personData.browser_name,
+                    BrowserVersion = personData.browser_version,
+                    City = personData.city,
+                    Country = personData.country,
+                    IsPhone = personData.isMobile,
+                    //IsTablet = personData.isMobile
+                    Location = personData.location,
+                    OS_Name = personData.os_name,
+                    Os_Version = personData.os_version,
+                    ScreenSize = personData.screen_size,
+                    ContinentCode = personData.continent_code,
+                    ContinentName = personData.continent_name,
+                    Index = personData.index,
+                    Info = personData.info,
+                    Path = personData.path,
+                    ProviderInfo = personData.provider_info,
+                    Threat = personData.threat,
+
+                    SessionID = !string.IsNullOrEmpty(header.Headers["X-Original-For"]) ? header.Headers["X-Original-For"].ToString() : "",
+                    Referrer = personData.referrer,
+                    EnterDate = DateTime.Now.ToUniversalTime(),
+                    IP = personData.ip ?? UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
+                };
+
+                if (isCreate)
+                {
+                    await repository.CreateAsync(userSession, true);
+                }
+                else
+                {
+                    await repository.UpdateAsync(userSession, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    await repository.CreateAsync(new UserSession
+                    {
+                        ID = userSessionID,
+                        EnterDate = DateTime.Now.ToUniversalTime(),
+                        IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
+                        SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
+                                     ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "",
+                        Comment = ex.Message
+                    }, true);
+                }
+                catch (Exception ex1)
+                {
+
+                }
+            }
+
+            return userSessionID;
+        }
+
         public async Task<int> UpdateSession_UserID(Guid userSessionID, Guid UserID)
         {
             var userSession = await repository.GetAll<UserSession>(x => x.ID == userSessionID).FirstOrDefaultAsync();
@@ -134,15 +186,27 @@ namespace MyProfile.User.Service
             return 1;
         }
 
-        public async Task<int> UserSessionLogOut(Guid userSessionID, Guid? userID)
+        public async Task<int> UserSessionLogOut(Guid userSessionID, Guid userID)
         {
             try
             {
+                var now = DateTime.Now.ToUniversalTime();
+
                 var userSession = await repository.GetAll<UserSession>(x => x.ID == userSessionID).FirstOrDefaultAsync();
                 if (userSession != null)
                 {
-                    userSession.LogOutDate = DateTime.Now.ToUniversalTime();
+                    userSession.LogOutDate = now;
                     return await repository.UpdateAsync(userSession, true);
+                }
+                else
+                {
+                    var userSessions = await repository.GetAll<UserSession>(x => x.UserID == userID && x.LogOutDate == null).ToListAsync();
+
+                    foreach (var _userSession in userSessions)
+                    {
+                        _userSession.LogOutDate = now;
+                    }
+                    await repository.SaveAsync();
                 }
             }
             catch (Exception ex)
@@ -347,7 +411,7 @@ namespace MyProfile.User.Service
         /// If user trying to enter more then 20 times in a day, show him code
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> CheckLimitEnter()
+        public async Task<bool> IsBedLimitEnter()
         {
             var today = DateTime.Now.Date;
             var ip = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString();

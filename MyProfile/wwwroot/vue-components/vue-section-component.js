@@ -37,7 +37,10 @@
     props: {
         dataSearchId: String,
         dataId: String,
-        name: String,
+        name: {
+            type: String,
+            default: "section-component"
+        },
         onchoose: Event,
         isShowFilter: {
             type: Boolean,
@@ -71,7 +74,7 @@
         dataItems: function (newValue) {
             this.updateSections();
         }
-    },   
+    },
     mounted: function () {
         new PerfectScrollbar(document.getElementsByClassName('cards')[0]);
 

@@ -18,8 +18,8 @@ namespace MyProfile.Entity.Repository
         Task<int> UpdateAsync<T>(T entity, bool isSave = false) where T : class;
 
 
-        void CreateOrUpdate<T>(T entity, bool isSave = false) where T : class;
-        Task<int> CreateOrUpdateAsync<T>(T entity, bool isSave = false) where T : class;
+        //void CreateOrUpdate<T>(T entity, bool isSave = false) where T : class;
+        //Task<int> CreateOrUpdateAsync<T>(T entity, bool isSave = false) where T : class;
 
         void Delete<T>(int id, bool isSave = false) where T : class;
         void Delete<T>(T entity, bool isSave = false) where T : class;

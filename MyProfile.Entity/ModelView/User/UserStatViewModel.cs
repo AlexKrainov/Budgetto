@@ -1,4 +1,6 @@
-﻿namespace MyProfile.Entity.ModelView.User
+﻿using System;
+
+namespace MyProfile.Entity.ModelView.User
 {
     public class UserStatViewModel
     {
@@ -23,6 +25,6 @@
         public string referrer;
         public string screen_size;
         public string threat;
-
+        public Guid userSessionID;
     }
 }

@@ -41,13 +41,17 @@
 }
 
 @section Scripts {
-    <!-- Dependencies -->
     <script src="~/vendor/libs/smartwizard/smartwizard.js" asp-append-version="true"></script>
-    @*<script src="~/vendor/libs/validate/validate.js" asp-append-version="true"></script>*@
-    <script src="~/vendor/libs/colorPick-custom/colorPick.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
 
-    <script src="~/pages/chart/chart-edit.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/vendor/libs/colorPick-custom/colorPick.js" asp-append-version="true"></script>
+        <script src="~/pages/chart/chart-edit.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/vendor/libs/colorPick-custom/colorPick.min.js" asp-append-version="true"></script>
+        <script src="~/pages/chart/chart-edit.min.js" asp-append-version="true"></script>
+    </environment>
 }
 <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
     <span class="lnr lnr-pie-chart display-4 text-primary mr-2"></span>

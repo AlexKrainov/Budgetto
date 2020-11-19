@@ -79,6 +79,7 @@
         edit: function (reminder) {
             this.isShowModal = true;
 
+            this.reminder.id = -1;
             this.reminder.title = null;
             this.reminder.description = null;
             this.reminder.cssIcon = null;

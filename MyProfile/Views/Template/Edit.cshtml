@@ -59,7 +59,8 @@
                         <small class="invalid-feedback">Обязательное поле</small>
                     </div>
                 </div>
-                <div class="col-sm-3 col-md-4 col-lg-3 col-xl-3 pl-3 pt-4">
+                <div class="col-sm-3 col-md-4 col-lg-3 col-xl-3 pl-3">
+                    <label class="form-label">Тип шаблона</label>
                     <div class="dropdown template-types">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle "
                                 data-toggle="dropdown"
@@ -103,7 +104,7 @@
             <span class="text-danger">{{ errorMessage }}</span>
         </div>
 
-        <div class="card-footer">
+        <div class="card-footer inline-spacing">
             <button type="button" class="btn btn-primary save-template"
                     v-on:click="saveTemplate(false)"
                     v-bind:disabled="isSavingTemplate || template.periodTypeID == 0">
@@ -120,7 +121,7 @@
                 Создать копию
             </button>
 
-            <button type="button" class="btn btn-outline-primary ml-4"
+            <button type="button" class="btn btn-outline-primary"
                     v-on:click="saveAndGoToView"
                     v-show="template.id != 0"
                     v-bind:disabled="isSavingTemplate"

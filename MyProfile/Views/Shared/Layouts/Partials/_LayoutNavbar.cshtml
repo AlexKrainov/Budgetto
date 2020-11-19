@@ -59,7 +59,7 @@
             </a>
             @if (currentUser.UserSettings.IsShowHints && hintsPages.Contains(this.Context.Request.Path))
             {
-                <div class="navbar-user nav-item dropdown">
+                <div id="help-container" class="navbar-user nav-item dropdown">
                     <a class="nav-link dropdown-toggle1" href="javascript:void(0)" data-toggle="dropdown">
                         <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
                     </a>

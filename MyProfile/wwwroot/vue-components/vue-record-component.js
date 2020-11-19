@@ -63,9 +63,9 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-12 col-sm-12 col-md-6">
                                 <div class="row records" v-for="record in records" v-show="record.isCorrect">
-                                    <div class="col-6 mb-3 record-item">
+                                    <div class="col-6 col-sm-6 col-md-6 mb-3 record-item">
                                         <a href="javascript:void(0)"
                                            class="a-hover font-weight-bold font-size-large"
                                            v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'"
@@ -78,7 +78,7 @@
                                             <span v-on:click="descriptionRecord = record">+ <i class="far fa-comment"></i></span>
                                         </span>
                                     </div>
-                                    <div class="col-6 mb-3 text-right">
+                                    <div class="col-6 col-sm-6 col-md-6 mb-3 text-right">
                                         <span class="text-muted">{{ record.sectionName }} </span>
                                         <span class="fa fa-trash remove-section-icon cursor-pointer ml-1"
                                               v-on:click="record.sectionID = -1; record.sectionName = '';"
@@ -88,7 +88,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group col-6">
+                            <div class="form-group col-12 col-sm-12 col-md-6">
                                 <vue-section-component data-search-id="searchSection"
                                                        data-records-style="height: 200px; overflow-x: overlay;"
                                                        data-class="cards-small"
@@ -116,7 +116,9 @@
                         <vue-record-history-component>
                         </vue-record-history-component>
                     </section>
-                    <label class="text-danger" v-show="isAvailable == false">У вас истек пробный период. <u><a href="/Store/Index" class="text-danger">Продлить</a></u></label>
+                    <div class="callout callout-danger" v-show="isAvailable == false">
+                        У вас истек пробный период. <u><a href="/Store/Index" class="text-danger">Продлить</a></u>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a href="javascript:void(0)" style="position: absolute;left: 21px;" 
@@ -195,9 +197,13 @@
 
         let flatpickrConfig = GetFlatpickrRuConfig();
         flatpickrConfig.onChange = function (selectedDates, dateStr, instance) {
-            if (RecordVue.recordComponent.isShowHistory) {
-                RecordVue.recordComponent.historyComponent.dateTimeOfPayment =
-                    RecordVue.recordComponent.flatpickr.latestSelectedDateObj.toLocaleDateString();
+            let recordComponent = RecordVue.recordComponent;
+            if (recordComponent.isShowHistory) {
+                recordComponent.historyComponent.dateTimeOfPayment =
+                    recordComponent.flatpickr.latestSelectedDateObj.toLocaleDateString();
+            }
+            if (recordComponent.currentCurrencyID != UserInfo.CurrencyID) {
+                recordComponent.changeCurrency(recordComponent.currencyInfos.find(x => x.id == recordComponent.currentCurrencyID))
             }
         };
         this.flatpickr = flatpickr('#record-date', flatpickrConfig);

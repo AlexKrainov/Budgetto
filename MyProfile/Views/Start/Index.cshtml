@@ -77,7 +77,7 @@
         <div id="smartwizard-1-step-1" class="card animated fadeIn">
             <div class="card-body">
                 <div class="form-row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-sm-12 col-md-4">
                         <label class="form-label">Ваше имя</label>
                         <span class="text-danger">*</span>
                         <input type="text" class="form-control" v-model="userInfo.name" id="userInfoName">
@@ -94,7 +94,7 @@
         <div id="smartwizard-1-step-2" class="card animated fadeIn" style="display: none;">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12 col-sm-12 col-md-6">
                         <strong class="ml-3">Выберите категории, по которым вы ведете учет финансов:</strong>
 
                         <div class="mt-4">
@@ -120,7 +120,7 @@
                         <br />
                         <span class="text-danger float-right">{{ errorMessage }}</span>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-sm-12 col-md-6">
                         <strong class="ml-3">Для вашего удобства категории распределяются по папкам:</strong>
                         <div class="card ui-bordered mt-3 area-item custom-card-hover"
                              v-for="area in areas">
@@ -141,7 +141,7 @@
         <div id="smartwizard-1-step-3" class="card animated fadeIn">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12 col-sm-12 col-md-6">
                         <strong class="ml-3">Ведение финансов осуществляется в формате таблицы.</strong>
                         <br />
                         <strong class="ml-3"> Нажмите "Добавить колонку" и выберите подходящие категории (от одной до всех):</strong>
@@ -196,7 +196,7 @@
 
                         </article>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-sm-12 col-md-6">
                         <strong class="ml-3">Ваша таблица сейчас выглядит так:</strong>
                         <table class="table table-bordered dataTable table-hover mt-4">
                             <thead>
@@ -226,7 +226,7 @@
         <div id="smartwizard-1-step-4" class="card animated fadeIn">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12 col-sm-12 col-md-6">
                         <strong class="">Лимиты позволяют контролировать траты по выбранным категориям.</strong>
                         <br />
                         <button type="button" class="btn btn-outline-secondary mt-4"
@@ -236,7 +236,7 @@
                         @await Html.PartialAsync("~/Views/Limit/_EditLimit.cshtml")
                         <span class="text-danger">{{ errorMessage }}</span>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-sm-12 col-md-6">
                         <strong v-show="limits.length > 0">Ваши лимиты:</strong>
                         <br />
                         <div class="row mt-4" id="limits">
@@ -287,7 +287,7 @@
         <div id="smartwizard-1-step-5" class="card animated fadeIn">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12 col-sm-12 col-md-6">
                         <strong class="">Создавайте цели и отслеживайте их достижение.</strong>
                         <br />
                         <button type="button" class="btn btn-outline-secondary mt-4"
@@ -297,7 +297,7 @@
                         @await Html.PartialAsync("~/Views/Goal/_EditGoal.cshtml")
                         <span class="text-danger">{{ errorMessage }}</span>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-sm-12 col-md-6">
                         <strong v-show="goals.length > 0">Ваши текущие цели: </strong>
                         <br />
                         <div class="row mt-4" id="goals">

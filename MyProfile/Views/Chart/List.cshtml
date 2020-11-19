@@ -10,7 +10,12 @@
 @section Scripts {
     <script src="~/vendor/libs/masonry/masonry.js" asp-append-version="true"></script>
 
-    <script src="~/pages/chart/chart-list.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/pages/chart/chart-list.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/chart/chart-list.min.js" asp-append-version="true"></script>
+    </environment>
 }
 @*https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/*@
 @*https://localhost:44394/Pages/EducationCoursesV1*@

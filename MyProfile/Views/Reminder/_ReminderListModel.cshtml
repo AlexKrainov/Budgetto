@@ -8,7 +8,7 @@
 
                         <a href="javascript:void(0);" class="navbar-brand text-large line-height-1 py-3">Напоминания</a>
 
-                        <a class="nav-link cursor-pointer" v-on:click="edit()">
+                        <a class="nav-link cursor-pointer" v-on:click="edit()" v-show="isNew == false || reminder.id == undefined ">
                             <i class="ion ion-md-add navbar-icon align-middle" style="color:var(--success);"></i>
                             <span class="d-lg-none align-middle">&nbsp; Добавить новое уведомление на эту дату</span>
                         </a>

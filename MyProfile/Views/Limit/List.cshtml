@@ -10,7 +10,12 @@
     <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/masonry/masonry.js" asp-append-version="true"></script>
 
-    <script src="~/pages/limit/limit-list.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/pages/limit/limit-list.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/limit/limit-list.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 <section id="limit-list-vue" v-cloak>
@@ -49,10 +54,12 @@
              v-bind:class="limit.isShow && (activeLimitPeriodTypeID == -1 || limit.periodTypeID == activeLimitPeriodTypeID) ? '' : 'd-none'">
             <div class="card mb-4 custom-card-hover" v-bind:class="limit.isOwner ? 'border-primary' : 'border-secondary'"
                  v-bind:id="'limit_' + limit.id" v-if="limit.isDeleted == false">
-                <div class="card-body card-body pb-0">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200" v-on:click="edit(limit)" title="Редактировать" v-if="limit.isOwner">{{ limit.name }}</a>
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200" title="Редактировать" v-else="!limit.isOwner">{{ limit.name }}</a>
+                <div class="card-body d-flex justify-content-between align-items-start pb-0">
+                    <div style="max-width: 63%">
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" v-on:click="edit(limit)" title="Редактировать" v-if="limit.isOwner">{{ limit.name }}</a>
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold" title="Редактировать" v-else="!limit.isOwner">{{ limit.name }}</a>
+                    </div>
+                    <div class="btn-group project-actions">
                         <span class="badge badge-success align-text-bottom ml-1" v-show="limit.periodTypeID == 1">{{ limit.periodName }}</span>
                         <span class="badge badge-info align-text-bottom ml-1" v-show="limit.periodTypeID == 3">{{ limit.periodName }}</span>
                     </div>
@@ -123,8 +130,8 @@
             </div>
             <div class="card mb-4 custom-card-hover border-secondary" v-bind:id="'limit_' + limit.id" v-else-if="limit.isDeleted">
                 <div class="card-body card-body pb-0 deleted-item">
-                    <div class="d-flex justify-content-between align-items-start ">
-                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold max-width-200 ">{{ limit.name }}</a>
+                    <div class="d-flex justify-content-between align-items-start " style="max-width: 63%">
+                        <a href="javascript:void(0)" class="text-body text-big font-weight-semibold ">{{ limit.name }}</a>
                         <span class="badge badge-success align-text-bottom ml-1" v-show="limit.periodTypeID == 1">{{ limit.periodName }}</span>
                         <span class="badge badge-info align-text-bottom ml-1" v-show="limit.periodTypeID == 3">{{ limit.periodName }}</span>
                     </div>

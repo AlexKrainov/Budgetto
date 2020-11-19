@@ -1,6 +1,9 @@
 ﻿var SectionTour;
 
 $(function () {
+    if (window.layoutHelpers.isSmallScreen()) {
+        return;
+    }
     function setupTour(SectionTour) {
         var backButtonClass = 'btn btn-sm btn-secondary md-btn-flat';
         var nextButtonClass = 'btn btn-sm btn-primary';

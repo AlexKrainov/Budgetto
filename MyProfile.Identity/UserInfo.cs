@@ -16,6 +16,8 @@ namespace MyProfile.Identity
     {
 
         public static readonly string USER_INFO = "UserInfo";
+        public static readonly string USER_SESSION_ID = "telefunken";
+        public static readonly string USER_ID = "sumsung";
         public static Microsoft.AspNetCore.Http.HttpContext HttpContext => _accessor.HttpContext;
 
         /// <summary>

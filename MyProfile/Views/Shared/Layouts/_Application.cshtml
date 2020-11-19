@@ -7,7 +7,7 @@
 @*<html lang="ru" class="default-style layout-navbar-fixed mdl-js layout-fixed" dir="ltr">*@
 <html lang="ru" class="light-style layout-sidenav-100vh layout-expanded layout-fixed layout-navbar-fixed" dir="ltr">
 <head>
-    <title>Budgetto: @ViewData["Title"]</title>
+    <title>Budgetto.org : @ViewData["Title"]</title>
 
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
@@ -120,65 +120,92 @@
 
     @if (currentUser.UserSettings.IsShowCookie)
     {
-        <div id="cookie-model" class="callout callout-secondary" style="width: 800px; position: fixed; right: 32px; bottom: 80px; z-index: 3000; box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.5);">
+        <div id="cookie-model" class="callout callout-secondary" style="max-width: 800px; position: fixed; right: 32px; bottom: 10px; z-index: 3000; box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.5);">
             <button type="button" class="close" data-dismiss="alert" onclick="$('#cookie-model').remove();">×</button>
             <p>
                 Мы используем cookie. Это позволяет нам делать сайт быстрее и лучше. Продолжая пользоваться сайтом, вы соглашаетесь с
-                <a href="~/documents/cookie_policy.pdf" target="_blank" class="callout-link">Политикой использования файлов cookie</a>,
-                <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="callout-link">Политикой обработки персональных данных</a> и
-                <a href="~/documents/terms_of_use.pdf" target="_blank" class="callout-link">Пользовательским соглашением</a>.
+                <a href="~/documents/cookie_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('cookie_policy')">Политикой использования файлов cookie</a>,
+                <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('personal_data_processing_policy')">Политикой обработки персональных данных</a> и
+                <a href="~/documents/terms_of_use.pdf" target="_blank" class="callout-link" onclick="ShowDocument('terms_of_use')">Пользовательским соглашением</a>.
             </p>
             <p><button class="btn btn-primary mr-1" onclick="ShowCookieOff()">Подтвердить</button></p>
         </div>
     }
+
 
     <!-- Core scripts -->
     <script src="~/vendor/libs/popper/popper.js" asp-append-version="true"></script>
     <script src="~/vendor/js/bootstrap.js" asp-append-version="true"></script>
     <script src="~/vendor/js/sidenav.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/block-ui/block-ui.js" asp-append-version="true"></script>
-
-    <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
-    @*<script src="~/vendor/libs/vue/dist/vue.global.js" asp-append-version="true"></script>
-        <script src="~/vendor/libs/vue/dist/vue.global.prod.js" asp-append-version="true"></script>*@
     <script src="~/vendor/libs/moment/moment.js" asp-append-version="true"></script>
-
-
-    <!-- Scripts -->
     <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/flatpickr/flatpickr.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/flatpickr/l10n/ru.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/toastr/toastr.js" asp-append-version="true"></script>
-
-    <!-- Record -->
-    <script src="~/vue-components/vue-section-component.js" asp-append-version="true"></script>
-    <script src="~/vue-components/vue-record-history-component.js" asp-append-version="true"></script>
-    <script src="~/vue-components/vue-record-component.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/tagify/dist/tagify.min.js" asp-append-version="true"></script>
-    <script src="~/vendor/libs/filtrex/src/filtrex.js" asp-append-version="true"></script>
 
-    <script src="~/pages/_base/global.functions.site.js" asp-append-version="true"></script>
-    <script src="~/pages/_base/startup.site.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
+        <!-- Record -->
+        <script src="~/vue-components/vue-section-component.js" asp-append-version="true"></script>
+        <script src="~/vue-components/vue-record-history-component.js" asp-append-version="true"></script>
+        <script src="~/vue-components/vue-record-component.js" asp-append-version="true"></script>
+        <script src="~/vendor/libs/filtrex/src/filtrex.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/global.functions.site.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/startup.site.js" asp-append-version="true"></script>
 
-    @if (currentUser.UserSettings.IsShowHints)
-    {
-        <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
+        @if (currentUser.UserSettings.IsShowHints)
+        {
+            <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
 
-        if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
-        {
-            <script src="~/pages/_tour/budget-tour.js" asp-append-version="true"></script>
-            <script src="~/pages/_tour/add-record-tour.js" asp-append-version="true"></script>
+            if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+            {
+                <script src="~/pages/_tour/budget-tour.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/add-record-tour.js" asp-append-version="true"></script>
+            }
+            if (this.Context.Request.Path == "/Section/Edit")
+            {
+                <script src="~/pages/_tour/section-tour.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/add-section-tour.js" asp-append-version="true"></script>
+            }
+            if (this.Context.Request.Path == "/Template/Edit")
+            {
+                <script src="~/pages/_tour/template-edit-tour.js" asp-append-version="true"></script>
+            }
         }
-        if (this.Context.Request.Path == "/Section/Edit")
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/vendor/libs/vue/dist/vue.min.js" asp-append-version="true"></script>
+        <!-- Record -->
+        <script src="~/vue-components/vue-section-component.min.js" asp-append-version="true"></script>
+        <script src="~/vue-components/vue-record-history-component.js" asp-append-version="true"></script>
+        <script src="~/vue-components/vue-record-component.js" asp-append-version="true"></script>
+        <script src="~/vendor/libs/filtrex/src/filtrex.js" asp-append-version="true"></script>
+
+        <script src="~/pages/_base/global.functions.site.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/startup.site.min.js" asp-append-version="true"></script>
+
+        @if (currentUser.UserSettings.IsShowHints)
         {
-            <script src="~/pages/_tour/section-tour.js" asp-append-version="true"></script>
-            <script src="~/pages/_tour/add-section-tour.js" asp-append-version="true"></script>
+            <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
+
+            if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+            {
+                <script src="~/pages/_tour/budget-tour.min.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/add-record-tour.min.js" asp-append-version="true"></script>
+            }
+            if (this.Context.Request.Path == "/Section/Edit")
+            {
+                <script src="~/pages/_tour/section-tour.min.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/add-section-tour.min.js" asp-append-version="true"></script>
+            }
+            if (this.Context.Request.Path == "/Template/Edit")
+            {
+                <script src="~/pages/_tour/template-edit-tour.min.js" asp-append-version="true"></script>
+            }
         }
-        if (this.Context.Request.Path == "/Template/Edit")
-        {
-            <script src="~/pages/_tour/template-edit-tour.js" asp-append-version="true"></script>
-        }
-    }
+    </environment>
 
     @RenderSection("Scripts", required: false)
     <script>

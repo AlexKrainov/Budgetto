@@ -118,26 +118,26 @@
     <script src="~/vendor/js/bootstrap.js" asp-append-version="true"></script>
     <script src="~/vendor/js/sidenav.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/block-ui/block-ui.js" asp-append-version="true"></script>
-
-    <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/moment/moment.js" asp-append-version="true"></script>
-
-    <!-- Scripts -->
     <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/flatpickr/flatpickr.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/flatpickr/l10n/ru.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/toastr/toastr.js" asp-append-version="true"></script>
 
-    <!-- Record -->
-    <script src="~/vue-components/vue-section-component.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/global.functions.site.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/startup.site.js" asp-append-version="true"></script>
+        <script src="~/vue-components/vue-section-component.js" asp-append-version="true"></script>
 
-    <script src="~/pages/_base/global.functions.site.js" asp-append-version="true"></script>
-    @*<script src="~/pages/_base/startup.site.js" asp-append-version="true"></script>*@
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/vendor/libs/vue/dist/vue.min.js" asp-append-version="true"></script>
+        <script src="~/vue-components/vue-section-component.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/global.functions.site.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/startup.site.min.js" asp-append-version="true"></script>
 
-    @if (currentUser.UserSettings.IsShowHints)
-    {
-        <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
-    }
+    </environment>
 
     @RenderSection("Scripts", required: false)
 </body>

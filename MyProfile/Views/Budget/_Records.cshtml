@@ -35,10 +35,14 @@
                 </div>
                 <div class="collapse" v-bind:id="'collapse_info_' + record.id">
                     <span class="badge badge-outline-default text-muted" v-show="record.isConsider" title="Семеный"><i class="fas fa-users"></i></span>
+                    <br />
                     <span class="badge badge-outline-default text-muted"><i class="ion ion-md-time text-primary"></i>  Создан: {{ GetDateByFormat(record.dateTimeCreate, 'DD.MM.YYYY') }}</span>
+                    <br />
                     <span class="badge badge-outline-default text-muted"><i class="ion ion-md-time text-primary"></i>  Отредактирован: {{ GetDateByFormat(record.dateTimeEdit, 'DD.MM.YYYY') }}</span>
+                    <br />
                     <span class="badge badge-outline-default text-muted">
-                        <i class="ion ion-md-create text-primary"></i>  Внесенная сумма: {{ record.rawData }}</span>
+                        <i class="ion ion-md-create text-primary"></i>  Внесенная сумма: {{ record.rawData }}
+                    </span>
                 </div>
 
             </div>

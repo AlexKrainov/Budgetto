@@ -440,13 +440,16 @@
             //    "runtimeData",
             //];
             if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData" || typeRefresh == "all") {
-                ShowLoading(".table-container");
 
-                this.load()
-                    .then(function () {
-                        HideLoading(".table-container");
-                        BudgetVue.initTable();
-                    });
+                if (this.templateID != "-1") {
+                    ShowLoading(".table-container");
+
+                    this.load()
+                        .then(function () {
+                            HideLoading(".table-container");
+                            BudgetVue.initTable();
+                        });
+                }
             }
 
             if (typeRefresh == 'onlyTable') {
@@ -650,12 +653,12 @@
                     }
                 } else {//footer
                     if (values.length == 2) {
-                        return `<span ${generalValue} onclick="BudgetVue.clickFooterCell(${cellIndex})"> 
+                        return `<span ${generalValue} onclick="BudgetVue.clickFooterCell(${cellIndex})" class="font-weight-semibold"> 
                                 ${values[0]}
                                 <span class="money-muted">,${values[1]}</span>
                             </span> `;
                     } else {
-                        return `<span ${generalValue} onclick="BudgetVue.clickFooterCell(${cellIndex})"> ${cell.value}</span>`;
+                        return `<span ${generalValue} onclick="BudgetVue.clickFooterCell(${cellIndex})" class="font-weight-semibold"> ${cell.value}</span>`;
                     }
                 }
             } else {

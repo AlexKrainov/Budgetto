@@ -21,5 +21,6 @@ namespace MyProfile.Entity.Model
         public bool IsBlock { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime LastVisit { get; set; }
+        public int Counter { get; set; }
     }
 }

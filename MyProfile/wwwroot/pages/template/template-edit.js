@@ -184,6 +184,7 @@
                 method = 'SaveAs';
             }
             this.isSavingTemplate = true;
+            this._saveAndGoToView = saveAndGoToView;
             
             return $.ajax({
                 type: "POST",
@@ -197,7 +198,7 @@
                         this.template = result.template;
                         this.errorMessage = null;
 
-                        if (this.saveAndGoToView) {
+                        if (this._saveAndGoToView) {
                             window.document.location.href = GetLinkForView(this.template);
                         }
                     } else {

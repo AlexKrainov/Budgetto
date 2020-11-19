@@ -252,7 +252,7 @@ namespace MyProfile.Template.Service
 
             #region Check name
 
-            if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
+            if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID && x.IsDeleted == false))
             {
                 if (saveAs)
                 {
@@ -262,13 +262,13 @@ namespace MyProfile.Template.Service
                 {
                     template.Name = template.Name + "_(2)";
 
-                    if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
+                    if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID && x.IsDeleted == false))
                     {
                         template.Name = template.Name.Replace("_(2)", "_(3)");
-                        if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
+                        if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID && x.IsDeleted == false))
                         {
                             template.Name = template.Name.Replace("_(3)", "_(4)");
-                            if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID))
+                            if (await repository.AnyAsync<Template>(x => x.UserID == currentUser.ID && x.Name == template.Name && x.ID != template.ID && x.IsDeleted == false))
                             {
                                 template.Name = template.Name.Replace("_(4)", "_(5)");
                             }

@@ -100,17 +100,17 @@ namespace MyProfile.Entity.Repository
         }
 
 
-        [Obsolete("Not implemented")]
-        public void CreateOrUpdate<T>(T entity, bool isSave = false) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        //[Obsolete("Not implemented")]
+        //public void CreateOrUpdate<T>(T entity, bool isSave = false) where T : class
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        [Obsolete("Not implemented")]
-        public Task<int> CreateOrUpdateAsync<T>(T entity, bool isSave = false) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        //[Obsolete("Not implemented")]
+        //public Task<int> CreateOrUpdateAsync<T>(T entity, bool isSave = false) where T : class
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void Delete<T>(int id, bool isSave = false) where T : class
         {

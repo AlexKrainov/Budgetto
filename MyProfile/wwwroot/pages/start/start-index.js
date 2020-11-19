@@ -164,6 +164,7 @@
             StartVue.colors = json;
         });
         $("#section-description, #choose-area, #show-on-the-main-page, #limit-comment, #goal-comment, #gaol-is-finish").hide();
+        $(".layout-sidenav-toggle").remove();
     },
     methods: {
         skip: function () {

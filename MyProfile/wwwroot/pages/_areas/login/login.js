@@ -85,13 +85,11 @@
         let ip = $('body').attr('client-ip');
 
         this.userSessionID = $("#login-vue").data("user-session-id");
-
-        if (this.userSessionID) {
-            return;
-        }
+        this.person_data.userSessionID = this.userSessionID;
+        this.person_data.referrer = document.referrer;
 
         if (ip == "::1") {
-            this.person_data = { "ip": "Local", "city": "Moscow", "country": "Russia", "location": "55.7522, 37.6156", "index": "111111", "browser_name": "Chrome", "browser_version": 85, "os_name": "Windows", "os_version": "10", "screen_size": "1536 x 864", "referrer": "", "isMobile": false, "isLoad": false, "isShow": false, "path": "/Identity/Account/Login", "dateCreate": null, "continent_code": "EU", "continent_name": "Europe", "info": "", "provider_info": "{\"asn\":\"AS8402\",\"name\":\"PJSC \\\"Vimpelcom\\\"\",\"domain\":\"veon.com\",\"route\":\"37.144.0.0/14\",\"type\":\"isp\"}", "threat": "{\"is_tor\":false,\"is_proxy\":false,\"is_anonymous\":false,\"is_known_attacker\":false,\"is_known_abuser\":false,\"is_threat\":false,\"is_bogon\":false}" };
+            this.person_data = { "userSessionID": this.userSessionID, "ip": "Local", "city": "Moscow", "country": "Russia", "location": "55.7522, 37.6156", "index": "111111", "browser_name": "Chrome", "browser_version": 85, "os_name": "Windows", "os_version": "10", "screen_size": "1536 x 864", "referrer": "", "isMobile": false, "isLoad": false, "isShow": false, "path": "/Identity/Account/Login", "dateCreate": null, "continent_code": "EU", "continent_name": "Europe", "info": "", "provider_info": "{\"asn\":\"AS8402\",\"name\":\"PJSC \\\"Vimpelcom\\\"\",\"domain\":\"veon.com\",\"route\":\"37.144.0.0/14\",\"type\":\"isp\"}", "threat": "{\"is_tor\":false,\"is_proxy\":false,\"is_anonymous\":false,\"is_known_attacker\":false,\"is_known_abuser\":false,\"is_threat\":false,\"is_bogon\":false}" };
             return $.ajax({
                 type: "POST",
                 url: "/Identity/Account/Stat",
@@ -104,7 +102,6 @@
                     return response;
                 },
                 error: function (xhr, status, error) {
-                    this.isSaving = false;
                     console.log(error);
                 }
             });
@@ -114,6 +111,8 @@
         try {
             $.get(`https://api.ipdata.co/${ip}?api-key=65b72cf7f83e7582fd54e2c3fad07548678dfa6e363424eb773edbd5`, function (response) {
 
+
+                LoginVue.person_data.userSessionID = LoginVue.userSessionID;
                 LoginVue.person_data.ip = response.ip;
                 LoginVue.person_data.city = response.city;
                 LoginVue.person_data.country = response.country_name;
@@ -209,6 +208,7 @@
                 },
                 error: function (xhr, status, error) {
                     this.isSaving = false;
+                    this.textError = "Ошибка авторизации. Пожалуйста, попробуйте еще раз.";
                     console.log(error);
                 }
             });
@@ -330,7 +330,7 @@
             });
         },
         onSetNewPassword: function () {
-            if (this.passwordValid() == false) {
+            if (this.validPassword() == false) {
                 this.isValidPassword = false;
                 return false;
             }

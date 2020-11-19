@@ -8,9 +8,16 @@
 @section Scripts {
     <script src="~/vendor/libs/masonry/masonry.js" asp-append-version="true"></script>
 
-    <script src="~/pages/goal/goal-list.js" asp-append-version="true"></script>
-    <script src="~/pages/goal/goal-edit.js" asp-append-version="true"></script>
-    <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/pages/goal/goal-list.js" asp-append-version="true"></script>
+        <script src="~/pages/goal/goal-edit.js" asp-append-version="true"></script>
+        <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/goal/goal-list.min.js" asp-append-version="true"></script>
+        <script src="~/pages/goal/goal-edit.min.js" asp-append-version="true"></script>
+        <script src="~/pages/goal/goal-add-money.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 <div id="goal-list-vue" v-cloak>
