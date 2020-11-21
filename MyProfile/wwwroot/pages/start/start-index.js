@@ -295,7 +295,7 @@
             if (section.isSelected) {
                 this.areas[section.areaID].sections.push(section);
             } else {
-                this.areas[section.areaID].sections.splice(this.areas[section.areaID].sections.indexOf(x => x.id == section.id), 1);
+                this.areas[section.areaID].sections.splice(this.areas[section.areaID].sections.findIndex(x => x.id == section.id), 1);
             }
         },
         selectAllSections: function () {
@@ -317,7 +317,7 @@
                 cssIcon: null,
                 isSelected: true,
                 canEdit: false,
-                codeName: "test",
+                codeName: null,
                 collectiveSections: [],
                 description: null,
                 isUpdated: false,
@@ -579,7 +579,6 @@
                     this.column.name = section.name;
                 }
 
-
                 this.column.templateBudgetSections.push({
                     id: this.counter++,
                     sectionID: section.id,
@@ -614,9 +613,9 @@
                 let section = this.column.templateBudgetSections[i];
                 if (this.column.formula.length > 0) {
                     this.column.formula.push({ id: null, value: "+", type: FormulaFieldTypeEnum.Mark });
-                    this.column.formula.push({ id: section.counter, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
+                    this.column.formula.push({ id: section.sectionID, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
                 } else {
-                    this.column.formula.push({ id: section.counter, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
+                    this.column.formula.push({ id: section.sectionID, value: `[ ${section.sectionName} ]`, type: FormulaFieldTypeEnum.Section });
                 }
             }
         },

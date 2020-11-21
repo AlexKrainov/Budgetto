@@ -620,9 +620,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime>("LastVisit");
 
-                    b.Property<string>("SessionID")
-                        .HasMaxLength(32);
-
                     b.HasKey("ID");
 
                     b.ToTable("IPSettings");
@@ -1384,8 +1381,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsTablet");
 
-                    b.Property<bool>("IsUserVisible");
-
                     b.Property<string>("Location")
                         .HasMaxLength(64);
 
@@ -1394,15 +1389,7 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("OS_Name")
                         .HasMaxLength(32);
 
-                    b.Property<string>("ObjectID")
-                        .HasMaxLength(40);
-
                     b.Property<string>("Os_Version")
-                        .HasMaxLength(16);
-
-                    b.Property<string>("Path");
-
-                    b.Property<string>("PostCode")
                         .HasMaxLength(16);
 
                     b.Property<string>("ProviderInfo");
@@ -1411,9 +1398,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("ScreenSize")
                         .HasMaxLength(16);
-
-                    b.Property<string>("SessionID")
-                        .HasMaxLength(32);
 
                     b.Property<string>("Threat");
 

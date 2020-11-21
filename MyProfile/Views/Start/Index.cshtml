@@ -95,7 +95,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong class="ml-3">Выберите категории, по которым вы ведете учет финансов:</strong>
+                        <label class="ml-3">
+                            <strong>Выберите категории, по которым вы ведете учет финансов:</strong>
+                        </label>
 
                         <div class="mt-4">
                             <vue-section-component data-class="cards-medium"
@@ -107,7 +109,9 @@
                             <a href="javascript:void(0)" class="small show-sections ml-3" v-on:click="selectAllSections">Выбрать все категории</a>
                         </div>
                         <br />
-                        <strong class="ml-3" v-show="userSectionSource && userSectionSource.length > 0">Мои категорий</strong>
+                        <label class="ml-3">
+                            <strong v-show="userSectionSource && userSectionSource.length > 0">Мои категорий</strong>
+                        </label>
                         <vue-section-component data-class="cards-medium"
                                                data-records-style="margin-left: 15px;"
                                                v-bind:is-show-filter="false"
@@ -121,7 +125,9 @@
                         <span class="text-danger float-right">{{ errorMessage }}</span>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong class="ml-3">Для вашего удобства категории распределяются по папкам:</strong>
+                        <label class="ml-3">
+                            <strong>Для вашего удобства категории распределяются по папкам:</strong>
+                        </label>
                         <div class="card ui-bordered mt-3 area-item custom-card-hover"
                              v-for="area in areas">
                             <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
@@ -142,9 +148,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong class="ml-3">Ведение финансов осуществляется в формате таблицы.</strong>
+                        <label class="ml-3">
+                            <strong>Ведение финансов осуществляется в формате таблицы.</strong>
+                        </label>
                         <br />
-                        <strong class="ml-3"> Нажмите "Добавить колонку" и выберите подходящие категории (от одной до всех):</strong>
+                        <label class="ml-3">
+                            <strong> Нажмите "Добавить колонку" и выберите подходящие категории (от одной до всех):</strong>
+                        </label>
                         <div class="mt-4">
                             <vue-section-component data-class="cards-medium"
                                                    data-records-style="margin-left: 15px;"
@@ -187,7 +197,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button id="add-column" type="button" class="btn btn-outline-secondary"
+                                    <button id="add-column" type="button" class="btn btn-primary"
                                             v-on:click="addColumn">
                                         Добавить колонку
                                     </button>
@@ -197,7 +207,9 @@
                         </article>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong class="ml-3">Ваша таблица сейчас выглядит так:</strong>
+                        <label class="ml-3">
+                            <strong>Ваша таблица сейчас выглядит так:</strong>
+                        </label>
                         <table class="table table-bordered dataTable table-hover mt-4">
                             <thead>
                                 <tr>
@@ -227,9 +239,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong class="">Лимиты позволяют контролировать траты по выбранным категориям.</strong>
+                        <strong>Лимиты позволяют контролировать траты по выбранным категориям.</strong>
                         <br />
-                        <button type="button" class="btn btn-outline-secondary mt-4"
+                        <button type="button" class="btn btn-primary mt-4"
                                 v-on:click="editLimit(null)">
                             Добавить лимит
                         </button>
@@ -290,7 +302,7 @@
                     <div class="col-12 col-sm-12 col-md-6">
                         <strong class="">Создавайте цели и отслеживайте их достижение.</strong>
                         <br />
-                        <button type="button" class="btn btn-outline-secondary mt-4"
+                        <button type="button" class="btn btn-primary mt-4"
                                 v-on:click="editGoal(null)">
                             Добавить цель
                         </button>
@@ -357,7 +369,7 @@
     <a id="button-skip" href="javascript:void(0)" class="small mr-4"
        v-show="isShowButtonSkip"
        v-on:click="skip">Пропустить</a>
-    <button id="button-finish" class="btn btn-primary" type="button" style="display: none;" 
+    <button id="button-finish" class="btn btn-primary" type="button" style="display: none;"
             v-on:click="finish"
             v-bind:disabled="isSaving">
         Перейти в рабочую область

@@ -49,7 +49,7 @@ $(function () {
 
         BudgetTour.addStep({
             title: 'Выбор месяца',
-            text: `<p>По умоланию отображается текущий месяц. 
+            text: `<p>по умолчанию отображается текущий месяц. 
 Вы можете выбрать нужный месяц с помощью стрелок справа и слева от названия месяца.</p>`,
             attachTo: { element: '.budget-date', on: 'left' },
             buttons: buttons
@@ -70,7 +70,7 @@ $(function () {
         });
         BudgetTour.addStep({
             title: 'Выбор шаблона',
-            text: `Выбранный шаблон отображется в таблице. Вы можете создавать несколько шаблонов.`,
+            text: `Выбранный шаблон отображается в таблице. Вы можете создавать несколько шаблонов.`,
             attachTo: { element: '#templates', on: 'right' },
             buttons: [{
                 action: BudgetTour.back,
@@ -99,7 +99,7 @@ $(function () {
         });
         BudgetTour.addStep({
             title: 'Категории',
-            text: `Здесь можно создвать, редактировать, удалять и группировать категории по папкам.`,
+            text: `Здесь можно создавать, редактировать, удалять и группировать категории по папкам.`,
             attachTo: { element: 'a[href="/Section/Edit"]', on: 'right' },
             buttons: [{
                 action: BudgetTour.back,
@@ -126,7 +126,7 @@ $(function () {
             }]
         });
         BudgetTour.addStep({
-            title: 'Добавление записей.',
+            title: 'Добавление записей',
             text: `Учет финансов начинается с добавления записей в таблицу. Чтобы добавить запись, нажмите "+"`,
             attachTo: { element: '#addRecord', on: 'bottom' },
             buttons: [{

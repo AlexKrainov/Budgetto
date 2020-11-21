@@ -32,7 +32,7 @@ namespace MyProfile.Controllers
         {
             var currentUser = UserInfo.Current;
             DateTime now = DateTime.Now;
-            DateTime nowMinus2years = new DateTime(now.AddYears(-2).Year, 1, 1);
+            DateTime nowMinus2years = new DateTime(now.AddYears(-2).Year, 1, 1, 13, 00, 00);
             var allDays = (now - nowMinus2years).TotalDays;
             var sectionSpending = await repository
                 .GetAll<BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID && x.SectionTypeID == (int)SectionTypeEnum.Spendings)

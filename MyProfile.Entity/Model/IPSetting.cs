@@ -16,8 +16,6 @@ namespace MyProfile.Entity.Model
         public int ID { get; set; }
         [StringLength(64)]
         public string IP { get; set; }
-        [StringLength(32)]
-        public string SessionID { get; set; }
         public bool IsBlock { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime LastVisit { get; set; }

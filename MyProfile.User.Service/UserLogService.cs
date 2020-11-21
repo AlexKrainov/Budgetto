@@ -32,8 +32,6 @@ namespace MyProfile.User.Service
             try
             {
                 string IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString();
-                string SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
-                                              ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "";
                 DateTime now = DateTime.Now.ToUniversalTime();
 
                 var ipSetting = await repository.GetAll<IPSetting>(x => x.IP == IP).FirstOrDefaultAsync();
@@ -42,18 +40,16 @@ namespace MyProfile.User.Service
                     await repository.CreateAsync(new IPSetting
                     {
                         IP = IP,
-                        SessionID = SessionID,
                         CreateDate = now,
                         LastVisit = now,
                         IsBlock = false,
-                        Counter = 0,
+                        Counter = 1,
                     }, true);
                 }
                 else
                 {
                     ipSetting.LastVisit = now;
-                    ipSetting.SessionID = SessionID;
-                    ipSetting.Counter += ipSetting.Counter;
+                    ipSetting.Counter = ipSetting.Counter + 1;
 
                     await repository.UpdateAsync(ipSetting, true);
 
@@ -85,7 +81,6 @@ namespace MyProfile.User.Service
                     ID = newUserSessionID,
                     EnterDate = DateTime.Now.ToUniversalTime(),
                     IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
-                    SessionID = !string.IsNullOrEmpty(header.Headers["X-Original-For"]) ? header.Headers["X-Original-For"].ToString() : "",
                     Referrer = header.Referer?.AbsoluteUri,
 
                 }, true);
@@ -136,11 +131,9 @@ namespace MyProfile.User.Service
                     ContinentName = personData.continent_name,
                     Index = personData.index,
                     Info = personData.info,
-                    Path = personData.path,
                     ProviderInfo = personData.provider_info,
                     Threat = personData.threat,
 
-                    SessionID = !string.IsNullOrEmpty(header.Headers["X-Original-For"]) ? header.Headers["X-Original-For"].ToString() : "",
                     Referrer = personData.referrer,
                     EnterDate = DateTime.Now.ToUniversalTime(),
                     IP = personData.ip ?? UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
@@ -164,8 +157,6 @@ namespace MyProfile.User.Service
                         ID = userSessionID,
                         EnterDate = DateTime.Now.ToUniversalTime(),
                         IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
-                        SessionID = !string.IsNullOrEmpty(UserInfo.HttpContext.Request.Headers["X-Original-For"])
-                                     ? UserInfo.HttpContext.Request.Headers["X-Original-For"].ToString() : "",
                         Comment = ex.Message
                     }, true);
                 }

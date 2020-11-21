@@ -8,9 +8,9 @@
 
                         <a href="javascript:void(0);" class="navbar-brand text-large line-height-1 py-3">Напоминания</a>
 
-                        <a class="nav-link cursor-pointer" v-on:click="edit()" v-show="isNew == false || reminder.id == undefined ">
+                        <a class="nav-link cursor-pointer" v-on:click="edit()" v-show="isNew == false || reminder.id == undefined "
+                           title="Добавить новое уведомление на эту дату">
                             <i class="ion ion-md-add navbar-icon align-middle" style="color:var(--success);"></i>
-                            <span class="d-lg-none align-middle">&nbsp; Добавить новое уведомление на эту дату</span>
                         </a>
 
                         {{ GetDateByFormat(dateTime, 'DD.MM.YYYY') }}
@@ -27,11 +27,11 @@
                     </div>
                 </nav>
 
-                @Html.Partial("../Reminder/_ReminderEditPart.cshtml")
+                @await Html.PartialAsync("../Reminder/_ReminderEditPart.cshtml")
 
                 <div class=" card pl-0">
                     <ul class="list-group list-group-flush" style=" margin-left: -5px;">
-                        @Html.Partial("../Reminder/_Reminders.cshtml")
+                        @await Html.PartialAsync("../Reminder/_Reminders.cshtml")
                     </ul>
                 </div>
             </div>

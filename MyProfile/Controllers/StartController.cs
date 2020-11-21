@@ -787,7 +787,7 @@ namespace MyProfile.Controllers
                 {
                     ID = 28,
                     Name = "Вклады",
-                    CodeName = "deposit",
+                    CodeName = "Deposit",
                     CssIcon = "fas fa-donate",
                     CssColor = "rgb(255, 255, 255)",
                     CssBackground = "rgb(158, 158, 158)",

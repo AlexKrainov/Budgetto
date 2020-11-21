@@ -55,11 +55,10 @@
 
             <a id="addRecord" class="nav-link cursor-pointer" onclick="RecordVue.addRecord();" title="Добавить запись">
                 <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
-                <span class="d-lg-none align-middle">&nbsp; Добавить запись</span>
             </a>
             @if (currentUser.UserSettings.IsShowHints && hintsPages.Contains(this.Context.Request.Path))
             {
-                <div id="help-container" class="navbar-user nav-item dropdown">
+                <div id="help-container" class="navbar-user dropdown">
                     <a class="nav-link dropdown-toggle1" href="javascript:void(0)" data-toggle="dropdown">
                         <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
                     </a>

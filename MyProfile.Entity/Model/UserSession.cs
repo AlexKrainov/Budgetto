@@ -19,8 +19,6 @@ namespace MyProfile.Entity.Model
         public string Country { get; set; }
         [StringLength(64)]
         public string Location { get; set; }
-        [StringLength(16)]
-        public string PostCode { get; set; }
         [StringLength(32)]
         public string BrowerName { get; set; }
         [StringLength(16)]
@@ -32,11 +30,6 @@ namespace MyProfile.Entity.Model
         [StringLength(16)]
         public string ScreenSize { get; set; }
         public string Comment { get; set; }
-        [StringLength(32)]
-        public string SessionID { get; set; }
-        [StringLength(40)]
-        public string ObjectID { get; set; }
-        public bool IsUserVisible { get; set; }
         public bool IsPhone { get; set; }
         public bool IsTablet { get; set; }
         public DateTime EnterDate { get; set; }
@@ -49,7 +42,6 @@ namespace MyProfile.Entity.Model
         [StringLength(32)]
         public string Index { get; set; }
         public string Info { get; set; }
-        public string Path { get; set; }
         public string ProviderInfo { get; set; }
         public string Threat { get; set; }
 

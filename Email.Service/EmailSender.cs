@@ -43,7 +43,7 @@ namespace Email.Service
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     client.CheckCertificateRevocation = true;
                    
-                    await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, false);
+                    await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, true);
 
                     // Note: only needed if the SMTP server requires authentication
                     await client.AuthenticateAsync(_emailSettings.Sender, _emailSettings.Password);

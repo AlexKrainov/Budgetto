@@ -137,8 +137,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-danger" style="position: absolute; left: 22px;"
                         v-show="section.canRemove"
-                        v-on:click="removeSection(section)">
-                    Удалить
+                        v-on:click="removeSection(section)"
+                        title="Удалить категорию">
+                    <span class="ion ion-md-trash"></span>
                 </button>
                 <button id="save-sections" class="btn btn-primary" type="button"
                         v-bind:disabled="isSaving"

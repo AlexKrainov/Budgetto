@@ -16,7 +16,7 @@
                      v-bind:title="section.description"
                      v-show="section.isShow"
                      v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground"
-                     v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section', isShowFilter ? 'cursor-pointer' : '' ]">
+                     v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section', dataSectionClasses ]">
                     <span class="selected-section-count">{{ checkSelected(section) }}</span>
                     <div class="cards-container card-body d-flex align-items-center ">
                         <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
@@ -59,7 +59,11 @@
         dataIsSelection: {
             type: Boolean,
             default: false
-        }
+        },
+        dataSectionClasses: {
+            type: String,
+            default: "cursor-pointer"
+        },
     },
     //computed: {
     //},
