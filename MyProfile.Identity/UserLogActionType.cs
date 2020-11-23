@@ -113,5 +113,8 @@
 
         public const string ADMIN_GenerateRecords = "ADMIN_GenerateRecords";
         public const string ADMIN_ClearAccount = "ADMIN_ClearAccount";
+
+        public const string LandingPage_Enter = "LandingPage_Enter";
+        public const string LandingPage_MovedToAppBudgetto = "LandingPage_MovedToAppBudgetto";
     }
 }

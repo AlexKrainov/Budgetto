@@ -60,13 +60,17 @@
 
 <article id="feedback-vue">
 
-    <h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+    <h4 class="d-flex flex-wrap w-100 font-weight-bold">
         <span class="lnr lnr-smile display-4 text-primary mr-2"></span>
         <span class="lnr lnr-neutral display-4 text-primary mr-2"></span>
         <span class="lnr lnr-sad display-4 text-primary mr-2"></span>
         <span class="px-0 pb-2 pt-2">
             Обратная связь
         </span>
+        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="right"
+           title="На этой странце напишите нам все, что вы думаете о программе, важи предложения, если нашли недочеты с радостью все обсудим.">
+            <i class="pe-7s-info d-block text-primary"></i>
+        </a>
     </h4>
     <div class="card">
 
@@ -137,14 +141,14 @@
                 </div>
                 <div class="text-light small mt-1">@*Максимальный размер ...*@ Формат изображений png, jpg</div>
             </div>
-            <div class="card-footer">
-                <button class="btn btn-primary" type="button"
-                        v-bind:disabled="isSaving"
-                        v-on:click="save">
-                    <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
-                    Сохранить
-                </button>
-            </div>
+        </div>
+        <div class="card-footer"  v-show="viewOne">
+            <button class="btn btn-primary" type="button"
+                    v-bind:disabled="isSaving"
+                    v-on:click="save">
+                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                Сохранить
+            </button>
         </div>
         <div v-show="!viewOne">
             <h4 class="media align-items-center font-weight-bold py-3 mb-2">

@@ -1,12 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Регистрация аккаунта";
     Layout = "LayoutBlank";
 }
 
 @section Styles {
     <!-- Page -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" asp-append-version="true"></script>
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/pages/authentication.css">
+    <link href="~/vendor/libs/animate-css/animate.css" asp-append-version="true" rel="stylesheet" />
     <style>
         .error {
             border: 1px solid var(--red) !important;
@@ -14,20 +13,34 @@
     </style>
 }
 @section Scripts {
-        <script src="~/vendor/libs/vue/dist/vue.min.js" asp-append-version="true"></script>
-        <script src="~/pages/_areas/login/login.min.js" asp-append-version="true"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/lettering/lettering.min.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/textillate/textillate.min.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/vue/dist/vue.min.js" asp-append-version="true"></script>
+    <script>
+        var UserSessionID = '@Model';
+    </script>
+    <script src="~/pages/_areas/login/login.min.js" asp-append-version="true"></script>
 }
 
-<div class="authentication-wrapper authentication-3" id="login-vue" data-user-session-id="@Model" v-cloak>
+<div class="authentication-wrapper authentication-3" id="login-vue" v-cloak style="overflow-x: hidden;">
     <div class="authentication-inner">
         @*<img src="~/img/b1.jpg" />*@
         <div class="d-none d-lg-flex col-lg-8 align-items-center ui-bg-cover ui-bg-overlay-container p-5"
              style="background-image: url('/img/background/b2-min.jpg');">
             <div class="ui-bg-overlay bg-dark opacity-50"></div>
             <div class="w-100 text-white px-5">
-                <h1 class="display-2 font-weight-bolder mb-4">JOIN OUR<br>COMMUNITY</h1>
-                <div class="text-large font-weight-light">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula ex eu gravida faucibus. Suspendisse viverra pharetra purus. Proin fringilla ac lorem at sagittis. Proin tincidunt dui et nunc ultricies dignissim.
+                <h2 class="display-3 font-weight-bolder mb-4">КОНТРОЛИРУЙ СВОИ ФИНАНСЫ</h2>
+                <div class="text-large font-weight-light ">
+                    <h2 class="tlt">
+                        <ul class="texts">
+                            <li data-out-effect="fadeOut" data-out-shuffle="true">Знаешь, сколько тратишь в месяц?</li>
+                            <li data-in-effect="fadeIn">Знаешь, сколько смог бы сэкономить на фастфуде?</li>
+                            <li data-in-effect="fadeIn">Знаешь, сколько тратишь на машину в год?</li>
+                            <li data-in-effect="fadeIn">Знаешь, сколько тратишь на одежду?</li>
+                            <li data-in-effect="fadeIn">Учёт бюджета с помощью таблиц</li>
+                        </ul>
+                    </h2>
                 </div>
             </div>
         </div>

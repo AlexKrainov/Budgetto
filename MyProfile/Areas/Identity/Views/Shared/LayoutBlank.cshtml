@@ -26,13 +26,15 @@
     @RenderSection("Styles", required: false)
 
 </head>
-<body client-ip="@this.Context.Connection.RemoteIpAddress.ToString()">
+<body>
     <div class="page-loader"><div class="bg-primary"></div></div>
 
     @RenderBody()
 
+    <script>
+        var ip = "@this.Context.Connection.RemoteIpAddress.ToString()";
+    </script>
     @RenderSection("Scripts", required: false)
     <script src="~/pages/_base/global.functions.site.min.js"></script>
-
 </body>
 </html>

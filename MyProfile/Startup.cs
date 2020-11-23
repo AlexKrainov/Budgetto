@@ -67,7 +67,7 @@ namespace MyProfile
             services.AddTransient<ToDoListService>();
             services.AddTransient<HelpCenterService>();
             services.AddTransient<PaymentService>();
-            
+
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();
             #endregion
@@ -75,15 +75,12 @@ namespace MyProfile
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 #if true
-            string connection = Configuration.GetConnectionString("TestConnection");
-#else
+            //string connection = Configuration.GetConnectionString("TestConnection");
             string connection = Configuration.GetConnectionString("TestRegRuConnection");
+#else
+            //string connection = Configuration.GetConnectionString("PROD_Connection");
 #endif
 
-#if false
-            string connection = Configuration.GetConnectionString("PROD_Connection");
-
-#endif
             services.AddMemoryCache();
 
             services.AddDbContext<MyProfile_DBContext>(options =>
@@ -96,11 +93,11 @@ namespace MyProfile
             //});
 
             #region Cookies settings
-            //services.Configure<CookiePolicyOptions>(options =>
-            //    {
-            //        options.CheckConsentNeeded = context => true;
-            //        options.MinimumSameSitePolicy = SameSiteMode.None;
-            //    });
+            services.Configure<CookiePolicyOptions>(options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

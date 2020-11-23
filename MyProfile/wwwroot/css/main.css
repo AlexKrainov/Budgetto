@@ -203,11 +203,18 @@ a.disabled {
     font-size: 50px;
 }
 
+    .record-icon + div {
+        padding-left: 70px;
+    }
+
 @media screen and (max-width: 600px) {
     .record-icon {
         font-size: 35px;
         padding-right: 8px;
     }
+        .record-icon + div {
+            padding-left: 52px;
+        }
 }
 
 .records .record-item-actions {

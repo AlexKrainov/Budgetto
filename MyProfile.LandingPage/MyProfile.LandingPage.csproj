@@ -1,0 +1,146 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>42180646-636c-4f4c-be5b-bade9b36af8d</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\.travis.yml" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\example\colorize.js" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\example\highlight.js" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\example\plot.js" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\LICENSE" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\Makefile" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\README.md" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\src\filtrex.js" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\test\arithmetics.js" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\test\misc.js" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\test\objects.js" />
+    <Content Remove="wwwroot\vendor\libs\filtrex\test\security.js" />
+    <Content Remove="wwwroot\vendor\libs\tagify\.gitattributes" />
+    <Content Remove="wwwroot\vendor\libs\tagify\dist\jQuery.tagify.min.js" />
+    <Content Remove="wwwroot\vendor\libs\tagify\dist\react.tagify.js" />
+    <Content Remove="wwwroot\vendor\libs\tagify\dist\tagify.min.js" />
+    <Content Remove="wwwroot\vendor\libs\tagify\dist\tagify.polyfills.min.js" />
+    <Content Remove="wwwroot\vendor\libs\tagify\dist\tagify.vue" />
+    <Content Remove="wwwroot\vendor\libs\tagify\LICENSE" />
+    <Content Remove="wwwroot\vendor\libs\tagify\README.md" />
+    <Content Remove="wwwroot\vendor\libs\tagify\src\tagify.js" />
+    <Content Remove="wwwroot\vendor\libs\tagify\src\tagify.polyfills.js" />
+    <Content Remove="wwwroot\vendor\libs\tagify\src\tagify.scss" />
+    <Content Remove="wwwroot\vendor\libs\vue\README.md" />
+    <Content Remove="wwwroot\vendor\libs\vue\types\index.d.ts" />
+    <Content Remove="wwwroot\vendor\libs\vue\types\options.d.ts" />
+    <Content Remove="wwwroot\vendor\libs\vue\types\plugin.d.ts" />
+    <Content Remove="wwwroot\vendor\libs\vue\types\umd.d.ts" />
+    <Content Remove="wwwroot\vendor\libs\vue\types\vnode.d.ts" />
+    <Content Remove="wwwroot\vendor\libs\vue\types\vue.d.ts" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+    <None Include="wwwroot\vendor\libs\filtrex\.travis.yml" />
+    <None Include="wwwroot\vendor\libs\filtrex\example\colorize.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\example\highlight.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\example\plot.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\LICENSE" />
+    <None Include="wwwroot\vendor\libs\filtrex\Makefile" />
+    <None Include="wwwroot\vendor\libs\filtrex\README.md" />
+    <None Include="wwwroot\vendor\libs\filtrex\src\filtrex.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\test\arithmetics.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\test\misc.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\test\objects.js" />
+    <None Include="wwwroot\vendor\libs\filtrex\test\security.js" />
+    <None Include="wwwroot\vendor\libs\tagify\.gitattributes" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\jQuery.tagify.min.js" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\react.tagify.js" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\tagify.min.js" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\tagify.polyfills.min.js" />
+    <None Include="wwwroot\vendor\libs\tagify\dist\tagify.vue" />
+    <None Include="wwwroot\vendor\libs\tagify\LICENSE" />
+    <None Include="wwwroot\vendor\libs\tagify\README.md" />
+    <None Include="wwwroot\vendor\libs\tagify\src\tagify.js" />
+    <None Include="wwwroot\vendor\libs\tagify\src\tagify.polyfills.js" />
+    <None Include="wwwroot\vendor\libs\tagify\src\tagify.scss" />
+    <None Include="wwwroot\vendor\libs\vue\README.md" />
+    <None Include="wwwroot\vendor\vendor\fonts\ionicons\ionicons.svg" />
+    <None Include="wwwroot\vendor\vendor\fonts\ionicons\ionicons.woff2" />
+    <None Include="wwwroot\vendor\vendor\fonts\linearicons\Linearicons-Free.svg" />
+    <None Include="wwwroot\vendor\vendor\fonts\linearicons\Linearicons-Free.woff2" />
+    <None Include="wwwroot\vendor\vendor\js\bootstrap.js" />
+    <None Include="wwwroot\vendor\vendor\js\layout-helpers.js" />
+    <None Include="wwwroot\vendor\vendor\js\material-ripple.js" />
+    <None Include="wwwroot\vendor\vendor\js\mega-dropdown.js" />
+    <None Include="wwwroot\vendor\vendor\js\pace.js" />
+    <None Include="wwwroot\vendor\vendor\js\polyfills.js" />
+    <None Include="wwwroot\vendor\vendor\js\theme-settings.js" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\gallery-fullscreen.js" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\gallery-indicator.js" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\gallery-video.js" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\gallery-vimeo.js" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\gallery-youtube.js" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\gallery.js" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\img\error.svg" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\img\play-pause.svg" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\img\video-play.svg" />
+    <None Include="wwwroot\vendor\vendor\libs\blueimp-gallery\jquery.gallery.js" />
+    <None Include="wwwroot\vendor\vendor\libs\masonry\masonry.js" />
+    <None Include="wwwroot\vendor\vendor\libs\nouislider\nouislider.js" />
+    <None Include="wwwroot\vendor\vendor\libs\numeral\numeral.js" />
+    <None Include="wwwroot\vendor\vendor\libs\plyr\plyr.js" />
+    <None Include="wwwroot\vendor\vendor\libs\popper\popper.js" />
+    <None Include="wwwroot\vendor\vendor\libs\smartwizard\smartwizard.js" />
+    <None Include="wwwroot\vendor\vendor\libs\swiper\swiper.js" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Email.Service\Email.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Budget.Service\MyProfile.Budget.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Chart.Service\MyProfile.Chart.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Chat.Service\MyProfile.Chat.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
+    <ProjectReference Include="..\MyProfile.Goal.Service\MyProfile.Goal.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.HelpCenter.Service\MyProfile.HelpCenter.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
+    <ProjectReference Include="..\MyProfile.Limit.Service\MyProfile.Limit.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.LittleDictionaries.Service\MyProfile.LittleDictionaries.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Payment.Service\MyProfile.Payment.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Template.Service\MyProfile.Template.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.ToDoList.Service\MyProfile.ToDoList.Service.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\vendor\libs\vue\types\index.d.ts" />
+    <TypeScriptCompile Include="wwwroot\vendor\libs\vue\types\options.d.ts" />
+    <TypeScriptCompile Include="wwwroot\vendor\libs\vue\types\plugin.d.ts" />
+    <TypeScriptCompile Include="wwwroot\vendor\libs\vue\types\umd.d.ts" />
+    <TypeScriptCompile Include="wwwroot\vendor\libs\vue\types\vnode.d.ts" />
+    <TypeScriptCompile Include="wwwroot\vendor\libs\vue\types\vue.d.ts" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="wwwroot\favicon.ico">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

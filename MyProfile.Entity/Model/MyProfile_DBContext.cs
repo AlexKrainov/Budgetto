@@ -155,6 +155,14 @@ namespace MyProfile.Entity.Model
             //  .Property(b => b.IsShow_BudgetYear)
             //  .HasDefaultValue(true);
 
+
+            modelBuilder.Entity<HelpMenu>()
+             .Property(b => b.IsVisible)
+             .HasDefaultValue(true);
+
+            modelBuilder.Entity<HelpArticle>()
+             .Property(b => b.IsVisible)
+             .HasDefaultValue(true);
             #endregion
         }
 
@@ -210,6 +218,7 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<PromoCodeHistory> PromoCodeHistories { get; set; }
         public virtual DbSet<UserErrorLog> UserErrorLogs { get; set; }
         public virtual DbSet<IPSetting> IPSettings { get; set; }
+        public virtual DbSet<HelpMenu> HelpMenus { get; set; }
 
     }
 }

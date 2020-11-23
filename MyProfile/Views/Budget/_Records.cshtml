@@ -3,36 +3,47 @@
     v-bind:id="'record_'+record.id"
     v-show="record.isShowForFilter"
     v-bind:style="'border-left-color: '+record.cssBackground+' !important;'">
-    <div class="media flex-wrap" v-if="record.isDeleted == false">
-        <div class="">
-            @*<img v-bind:src="record.imageLink" alt="User image" class="d-block ui-w-50 rounded-circle" v-bind:title="record.userName">*@
-            <i class="record-icon" v-bind:class="record.cssIcon"></i>
+    <div v-if="record.isDeleted == false">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-12">
+                <i class="record-icon position-absolute" v-bind:class="record.cssIcon"></i>
+                <div>
+                    <h5 class="mb-0">
+                        {{ record.areaName }} > {{ record.sectionName }}
+                    </h5>
+                    <span class="text-muted small pt-1">
+                        <i class="ion ion-md-time text-primary"></i>
+                        <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-12 text-right">
+                <h5>
+                    <a href="javascript:void(0)" class="font-weight-semibold ml-3" v-on:click="edit(record)" v-if="record.isOwner">
+                        {{ getCurrencyValue(record) }}
+                    </a>
+                    <i class="fas fa-edit pl-2 edit-record cursor-pointer" v-on:click="edit(record)" v-if="record.isOwner"></i>
+                    <i class="fas fa-trash pl-2 edit-record text-danger cursor-pointer" v-on:click="remove(record)" v-if="record.isOwner"></i>
+                </h5>
+            </div>
         </div>
-        <div class="media-body ml-sm-4">
-            <h5 class="mb-2">
-                <i class="fas fa-trash pl-2 edit-record float-right text-danger cursor-pointer" v-on:click="remove(record)" v-if="record.isOwner"></i>
-                <a href="javascript:void(0)" class="float-right font-weight-semibold ml-3" v-on:click="edit(record)" v-if="record.isOwner">
-                    {{ getCurrencyValue(record) }}
-                    <i class="fas fa-edit pl-2 edit-record"></i>
-                </a>
-                <div href="javascript:void(0)" class="float-right font-weight-semibold ml-3" v-else-if="!record.isOwner">
-                    {{ getCurrencyValue(record) }}
-                </div>
-                <div class="text-body">
-                    {{ record.areaName }} > {{ record.sectionName }}
-                </div>
-                <div class="text-muted small pt-1">
-                    <i class="ion ion-md-time text-primary"></i>
-                    <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
-                </div>
-            </h5>
-            <div>{{ record.description }}</div>
-            <div class="mt-2">
+        <div class="row">
+            <div class="col-md-1 col-1">
+
+            </div>
+            <div class="col-md-10 col-9">
+                {{ record.description }}
+            </div>
+            <div class="col-md-1 col-2">
                 <div class="card-title with-elements">
                     <div class="card-title-elements ml-md-auto">
                         <a data-toggle="collapse" v-bind:href="'#collapse_info_' + record.id" class="d-block ml-3"><i class="collapse-icon"></i></a>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-12">
                 <div class="collapse" v-bind:id="'collapse_info_' + record.id">
                     <span class="badge badge-outline-default text-muted" v-show="record.isConsider" title="Семеный"><i class="fas fa-users"></i></span>
                     <br />
@@ -44,26 +55,28 @@
                         <i class="ion ion-md-create text-primary"></i>  Внесенная сумма: {{ record.rawData }}
                     </span>
                 </div>
-
             </div>
         </div>
     </div>
-    <div class="media flex-wrap" v-else-if="record.isDeleted">
-        <div class="media-body ml-sm-4">
-            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" v-on:click="recovery(record)"></i>
-            <h5 class="mb-2 pr-4">
-                <div href="javascript:void(0)" class="float-right font-weight-semibold ml-3 deleted-item">
-                    {{ getCurrencyValue(record) }}
-                </div>
-                <div class="text-body deleted-item">
+    <div v-else-if="record.isDeleted">
+        <div class="row">
+            <div class="col-md-5 col-sm-9 col-12">
+                <h5 class="mb-0">
                     {{ record.areaName }} > {{ record.sectionName }}
-                </div>
-                <div class="text-muted small pt-1 deleted-item">
+                </h5>
+                <span class="text-muted small pt-1">
                     <i class="ion ion-md-time text-primary"></i>
                     <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
-                </div>
-            </h5>
-            <div class="deleted-item">{{ record.description }}</div>
+                </span>
+            </div>
+            <div class="col-md-6 col-sm-12 col-12 text-right">
+                <h5>
+                    <a href="javascript:void(0)" class="font-weight-semibold ml-3" v-on:click="edit(record)" v-if="record.isOwner">
+                        {{ getCurrencyValue(record) }}
+                    </a>
+                    <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" v-on:click="recovery(record)"></i>
+                </h5>
+            </div>
         </div>
     </div>
 </li>

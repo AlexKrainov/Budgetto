@@ -40,7 +40,7 @@ namespace MyProfile.Controllers
 
             //BudgetArea budgetArea1 = new BudgetArea()
             //{
-            //	Name = "Основные раходы",
+            //	Name = "Основные расходы",
             //	UserID = UserInfo.UserID
             //};
             //repository.Create(budgetArea1, true);
@@ -88,7 +88,7 @@ namespace MyProfile.Controllers
 
             //BudgetArea budgetArea2 = new BudgetArea()
             //{
-            //	Name = "Прочие раходы",
+            //	Name = "Прочие расходы",
             //	UserID = UserInfo.UserID
             //};
             //repository.Create(budgetArea2, true);

@@ -26,5 +26,6 @@ namespace MyProfile.Entity.ModelView.User
         public string screen_size;
         public string threat;
         public Guid userSessionID;
+        public bool isLandingPage;
     }
 }

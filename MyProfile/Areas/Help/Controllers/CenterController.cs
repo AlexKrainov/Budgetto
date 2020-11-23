@@ -33,6 +33,10 @@ namespace MyProfile.Areas.Help.Controllers
         {
             return View();
         }
+        public IActionResult LimitAdd()
+        {
+            return View();
+        }
 
         public async Task<IActionResult> Load(int id)
         {

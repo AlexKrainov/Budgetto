@@ -10,7 +10,7 @@
         @await Html.PartialAsync("Layouts/Partials/_LayoutNavbarStart")
         <div class="layout-container" style="padding-left: 0px;">
             <div class="layout-content">
-                <div class="container-fluid flex-grow-1 container-p-y">
+                <div class="container-fluid flex-grow-1 container-p-y" style="height: 100%; overflow-y: scroll;">
                     @RenderBody()
                 </div>
                 @await Html.PartialAsync("Layouts/Partials/_LayoutFooter")

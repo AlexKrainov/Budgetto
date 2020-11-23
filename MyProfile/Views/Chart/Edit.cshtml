@@ -53,7 +53,7 @@
         <script src="~/pages/chart/chart-edit.min.js" asp-append-version="true"></script>
     </environment>
 }
-<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+<h4 class="d-flex flex-wrap w-100 font-weight-bold">
     <span class="lnr lnr-pie-chart display-4 text-primary mr-2"></span>
     @if (Model.ID == null)
     {
@@ -67,7 +67,9 @@
             Редактирование графика
         </span>
     }
-    <a href="" title="Иформация об этой странице" target="_blank">
+    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
+       title="На этой странице вы можете создавать или редактировать график/диаграмму. 
+       График нужен, чтобы, например, отслеживать динамику ваших расходов и доходов по категориям.">
         <i class="pe-7s-info d-block text-primary"></i>
     </a>
 </h4>

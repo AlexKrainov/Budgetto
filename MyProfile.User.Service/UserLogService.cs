@@ -69,7 +69,7 @@ namespace MyProfile.User.Service
         /// <param name="UserID"></param>
         /// <param name="userSessionActionType"></param>
         /// <returns></returns>
-        public async Task<Guid> CreateSession()
+        public async Task<Guid> CreateSession(bool isLandingPage = false)
         {
             Guid newUserSessionID = Guid.NewGuid();
 
@@ -82,6 +82,7 @@ namespace MyProfile.User.Service
                     EnterDate = DateTime.Now.ToUniversalTime(),
                     IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
                     Referrer = header.Referer?.AbsoluteUri,
+                    IsLandingPage = isLandingPage,
 
                 }, true);
             }
@@ -137,6 +138,7 @@ namespace MyProfile.User.Service
                     Referrer = personData.referrer,
                     EnterDate = DateTime.Now.ToUniversalTime(),
                     IP = personData.ip ?? UserInfo.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    IsLandingPage = personData.isLandingPage,
                 };
 
                 if (isCreate)

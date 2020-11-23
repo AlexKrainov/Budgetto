@@ -21,6 +21,7 @@ namespace MyProfile.HelpCenter.Service
             this.repository = repository;
             userLogService = new UserLogService(repository);
         }
+        //1	Test Article	1	Test Article	2020-08-31 11:00:48.4699363	2020-08-31 11:00:48.4699363	~/Areas/Help/Views/Articles/TestArticle.cshtml	NULL	Test Article
 
         public async Task<ArticleModelView> GetFullArticleByID(int id)
         {
@@ -31,10 +32,10 @@ namespace MyProfile.HelpCenter.Service
                      ID = x.ID,
                      Link = x.Link,
                      Title = x.Title,
-                     AreaName = x.AreaName,
+                    // AreaName = x.AreaName,
                      DateCreate = x.DateCreate,
                      DateEdit = x.DateEdit,
-                     Description = x.Description,
+                     //Description = x.Description,
                      UserName = x.User != null ? x.User.Name + " " + x.User.LastName : null,
                      ImageLink = x.User != null ? x.User.ImageLink : null,
                      Views = x.HelpArticleUserViews.Count
@@ -105,7 +106,7 @@ namespace MyProfile.HelpCenter.Service
                      ID = x.ID,
                      Link = x.Link,
                      Title = x.Title,
-                     AreaName = x.AreaName,
+                     //AreaName = x.AreaName,
                      DateCreate = x.DateCreate,
                      DateEdit = x.DateEdit,
                      //Description = x.Description,

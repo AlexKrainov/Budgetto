@@ -31,7 +31,7 @@ $(function () {
         });
         AddSectionTour.addStep({
             title: 'Тип категории',
-            text: 'Для начала выберите тип категории. Это могут быть раходы, доходы или инвестиции.',
+            text: 'Для начала выберите тип категории. Это могут быть расходы, доходы или инвестиции.',
             attachTo: { element: '.section-types', on: 'bottom' },
             buttons: [{
                 action: AddSectionTour.next,

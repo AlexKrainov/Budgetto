@@ -4,5 +4,9 @@
     {
         Users,
         Feedback,
+        /// <summary>
+        /// For help center
+        /// </summary>
+        Help,
     };
 }

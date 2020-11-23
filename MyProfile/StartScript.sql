@@ -53,3 +53,18 @@ INSERT [dbo].[SectionTypes] ([ID], [Name], [CodeName]) VALUES (2, N'Расход
 INSERT [dbo].[SectionTypes] ([ID], [Name], [CodeName]) VALUES (3, N'Инвестиции', N'Investments') 
 SET IDENTITY_INSERT [dbo].[SectionTypes] OFF
 GO
+
+
+
+SET IDENTITY_INSERT [dbo].[HelpMenus] ON 
+INSERT INTO [HelpMenus] ([Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES ('Лимиты' ,'lnr lnr-frame-expand' ,1 ,0)
+
+SET IDENTITY_INSERT [dbo].[HelpMenus] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[HelpMenus] ON 
+INSERT INTO HelpArticles ([Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES ('Создание лимита' ,'2020-11-24 21:40:32.8652966', '2020-11-23 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/LimitAdd.cshtml' ,3, 'Создание лимита')
+
+SET IDENTITY_INSERT [dbo].[HelpMenus] OFF
+GO

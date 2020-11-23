@@ -63,6 +63,8 @@
     if (window.layoutHelpers.isSmallScreen()) {
         $("#help-container").remove();
     }
+
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 if (document.location.href.indexOf("Start/Index") == -1) {

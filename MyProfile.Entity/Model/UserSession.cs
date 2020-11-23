@@ -32,6 +32,7 @@ namespace MyProfile.Entity.Model
         public string Comment { get; set; }
         public bool IsPhone { get; set; }
         public bool IsTablet { get; set; }
+        public bool IsLandingPage { get; set; }
         public DateTime EnterDate { get; set; }
         public DateTime? LogOutDate { get; set; }
         public string Referrer { get; set; }
@@ -51,7 +52,7 @@ namespace MyProfile.Entity.Model
 
         public virtual User User { get; set; }
         public virtual IEnumerable<UserLog> UserLogs { get; set; }
-        
+
 
         public UserSession()
         {

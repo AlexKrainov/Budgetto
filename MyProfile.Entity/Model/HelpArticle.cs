@@ -13,15 +13,9 @@ namespace MyProfile.Entity.Model
         [Required]
         [MaxLength(512)]
         public string Title { get; set; }
-        /// <summary>
-        /// Name of area in menu like (Limits or Goals) 
-        /// </summary>
-        [Required]
-        [MaxLength(64)]
-        public string AreaName { get; set; }
         public bool IsVisible { get; set; } = true;
         [Required]
-        public string Description { get; set; }
+        public string KeyWords { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime DateEdit { get; set; }
         [Required]
@@ -30,8 +24,11 @@ namespace MyProfile.Entity.Model
 
         [ForeignKey("User")]
         public Guid? OwnerID { get; set; }
+        [ForeignKey("HelpMenu")]
+        public int HelpMenuID { get; set; }
 
         public virtual User User { get; set; }
+        public virtual HelpMenu HelpMenu { get; set; }
 
         public virtual ICollection<HelpArticleUserView> HelpArticleUserViews { get; set; }
 

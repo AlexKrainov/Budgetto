@@ -39,13 +39,20 @@ namespace MyProfile.Areas.Identity.Controllers
             this.collectionUserService = collectionUserService;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ReturnUrl"></param>
+        /// <param name="id">UserSessionID</param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string ReturnUrl)//Guid? userSessionID)
+        public async Task<IActionResult> Login(string ReturnUrl, Guid? id)//Guid? userSessionID)
         {
             if (await userLogService.CreateAndCheckIP())
             {
                 DateTime nowMinus7Day = DateTime.Now.AddDays(-7);
+
                 //AutoAuthorization by UserSessionID and UserID
                 if (Request.Cookies.ContainsKey(UserInfo.USER_SESSION_ID)
                     && Request.Cookies.ContainsKey(UserInfo.USER_ID)
@@ -79,8 +86,16 @@ namespace MyProfile.Areas.Identity.Controllers
                 Response.Cookies.Delete(UserInfo.USER_ID);
                 Response.Cookies.Delete(UserInfo.USER_SESSION_ID);
 
-                Guid userSessionID = await userLogService.CreateSession();
-                return View(userSessionID);
+                if (id == null || id == Guid.Empty)
+                {
+                    Guid userSessionID = await userLogService.CreateSession();
+
+                    return View(userSessionID);
+                }
+                else
+                {
+                    return View(id);
+                }
             }
             else
             {
@@ -124,6 +139,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 await userLogService.UpdateSession_UserID(user.UserSessionID, user.ID);
 
                 Response.Cookies.Append(UserInfo.USER_ID, user.ID.ToString());
+                Response.Cookies.Append(UserInfo.USER_SESSION_ID, user.UserSessionID.ToString());
 
                 if (user.UserSettings.IsShowConstructor)
                 {

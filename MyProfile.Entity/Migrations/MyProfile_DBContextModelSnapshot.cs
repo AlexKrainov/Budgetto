@@ -552,18 +552,18 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AreaName")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<DateTime>("DateCreate");
 
                     b.Property<DateTime>("DateEdit");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                    b.Property<int>("HelpMenuID");
 
-                    b.Property<bool>("IsVisible");
+                    b.Property<bool>("IsVisible")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("KeyWords")
+                        .IsRequired();
 
                     b.Property<string>("Link")
                         .IsRequired()
@@ -576,6 +576,8 @@ namespace MyProfile.Entity.Migrations
                         .HasMaxLength(512);
 
                     b.HasKey("ID");
+
+                    b.HasIndex("HelpMenuID");
 
                     b.HasIndex("OwnerID");
 
@@ -601,6 +603,31 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("HelpArticleUserViews");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.HelpMenu", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.Property<bool>("IsVisible")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("Order");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("HelpMenus");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.IPSetting", b =>
@@ -1377,6 +1404,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Info");
 
+                    b.Property<bool>("IsLandingPage");
+
                     b.Property<bool>("IsPhone");
 
                     b.Property<bool>("IsTablet");
@@ -1708,6 +1737,11 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.HelpArticle", b =>
                 {
+                    b.HasOne("MyProfile.Entity.Model.HelpMenu", "HelpMenu")
+                        .WithMany("HelpArticles")
+                        .HasForeignKey("HelpMenuID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("OwnerID");

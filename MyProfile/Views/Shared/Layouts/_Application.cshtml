@@ -80,6 +80,9 @@
             @if (currentUser.UserSettings.WebSiteTheme == "dark")
             {
                 @Html.Raw("styles: ['dark','dark-style'],")
+            }else
+            {
+                @Html.Raw("styles: ['light','light-style'],")
             }
         });
 

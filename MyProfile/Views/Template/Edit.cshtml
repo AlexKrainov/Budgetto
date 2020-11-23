@@ -29,25 +29,17 @@
 <section id="template-columns" style="margin-bottom: 250px;" v-cloak>
     <input type="hidden" name="templateID" id="templateID" value="@ViewBag.TemplateID" />
 
-    <h4 class="d-flex flex-wrap w-100 font-weight-bold my-4">
+    <h4 class="d-flex flex-wrap w-100 font-weight-bold">
         <div class="lnr lnr-layers display-4 text-primary mr-2"></div>
         <span class="px-0 pb-2 pt-2">
             {{ template.id == 0 ? 'Создание шаблона' : 'Редактирование шаблона' }}
         </span>
-        <a href="" title="Иформация об этой странице" target="_blank">
+        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
+           title="На этой странице вы можете создавать/редактировать шаблон, по которому будет строиться таблица на страницах 'Финансы на месяц' и 'Финансы на год'.
+           Колонки можно перемещать, над категориями в колонках можно совершать действия (* \ + -), а в настройках колонки менять вид итоговой суммы и видимость на главной странице. ">
             <i class="pe-7s-info d-block text-primary"></i>
         </a>
     </h4>
-    @*<div class="d-flex flex-wrap justify-content-between align-items-center w-100 font-weight-bold mb-4">
-            <div class="lnr lnr-layers display-4 text-primary mr-2"></div>
-            <h4 class="col-12 col-md px-0 pt-3">
-                {{ template.id == 0 ? 'Создание шаблона' : 'Редактирование шаблона' }}
-            </h4>
-            <a href="" title="Иформация об этой странице" target="_blank">
-                <i class="pe-7s-info d-block text-primary"></i>
-            </a>
-        </div>*@
-
     <div class="card mb-4">
         <div class="card-body">
             <div class="row no-gutters">
@@ -69,8 +61,8 @@
                         <div class="dropdown-menu">
                             @foreach (MyProfile.Entity.Model.PeriodType periodType in ViewBag.PeriodTypes)
                             {
-                                <a class="dropdown-item"
-                                   v-on:click="template.periodTypeID = @periodType.ID; template.periodName = '@periodType.Name'; changeType();">@periodType.Name</a>
+                            <a class="dropdown-item"
+                               v-on:click="template.periodTypeID = @periodType.ID; template.periodName = '@periodType.Name'; changeType();">@periodType.Name</a>
                             }
                         </div>
                     </div>
@@ -177,7 +169,7 @@
                             </div>
 
                             <hr class="m-0" />
-                            <div class="kanban-box px-2 pt-2">
+                            <div class="px-2 pt-2">
                                 <div class="ui-bordered p-2 mb-2 badge-default" v-for="(templateBudgetSection, indexSection) in column.templateBudgetSections">
                                     <div class="kanban-board-actions btn-group float-right ml-2">
                                         <span class="ion ion-ios-close cursor-pointer remove-section-item"
@@ -189,6 +181,8 @@
                             </div>
                             <div class="card-footer text-center py-2 add-section">
                                 <a href="javascript:void(0)" v-on:click="addColumnOption_step1(column)"><i class="ion ion-md-add"></i>&nbsp; Добавить категорию</a>
+                                <i class="kanban-box ion ion-ios-move float-right text-large" style="position: absolute;right: 13px; cursor:all-scroll"
+                                   title="Изменить положение колонки"></i>
                             </div>
                         </div>
                         <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
@@ -298,11 +292,13 @@
                             </div>
 
                             <hr class="m-0" />
-                            <div class="kanban-box px-2 pt-2">
+                            <div class=" px-2 pt-2">
                                 <div class="ui-bordered p-2 mb-2 badge-secondary">
                                     Дни
                                 </div>
                             </div>
+                            <i class="kanban-box ion ion-ios-move float-right text-large pb-2 pr-2" style="cursor: all-scroll"
+                               title="Изменить положение колонки"></i>
                         </div>
                         <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
                             <ul class="list-group list-group-flush" style="overflow-y: unset;">
@@ -359,11 +355,13 @@
                             </div>
 
                             <hr class="m-0" />
-                            <div class="kanban-box px-2 pt-2">
+                            <div class="px-2 pt-2">
                                 <div class="ui-bordered p-2 mb-2 badge-secondary">
                                     Месяц
                                 </div>
                             </div>
+                            <i class="kanban-box ion ion-ios-move float-right text-large pb-2 pr-2" style="cursor: all-scroll"
+                               title="Изменить положение колонки"></i>
                         </div>
                         <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
 

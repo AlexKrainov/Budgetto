@@ -64,6 +64,15 @@
             continent_name: "",
             info: "",
         },
+        title: "",
+        titles: [
+            "Знаешь, сколько тратишь в месяц?",
+            "Знаешь, сколько смог бы сэкономить на фастфуде?",
+            "Знаешь, сколько тратишь на машину в год?",
+            "Знаешь, сколько тратишь на одежду?",
+            "Учёт бюджета с помощью таблиц"
+        ],
+        titleID: 0,
     },
     computed: {
         emailValid: function () {
@@ -80,13 +89,47 @@
         }
     },
     mounted: function () {
+
+        $('.tlt').textillate({
+            // enable looping
+            loop: true,
+            // sets the minimum display time for each text before it is replaced
+            minDisplayTime: 3000,
+            // sets the initial delay before starting the animation
+            // (note that depending on the in effect you may need to manually apply
+            // visibility: hidden to the element before running this plugin)
+            initialDelay: 500,
+            // set whether or not to automatically start animating
+            autoStart: true,
+            // in animation settings
+            in: {
+                // set the effect name
+                effect: 'fadeInLeftBig',
+                // set the delay factor applied to each consecutive character
+                delayScale: 1.5,
+                // set the delay between each character
+                delay: 25,
+                //sync: true,
+            },
+            out: {
+                effect: 'fadeOutRightBig',
+                delayScale: 1.5,
+                delay: 25,
+                //sync: true,
+                callback: function () { }
+            },
+            // set the type of token to animate (available types: 'char' and 'word')
+            type: 'word'
+        });
+
         this.changeView(this.login.id);
-
-        let ip = $('body').attr('client-ip');
-
-        this.userSessionID = $("#login-vue").data("user-session-id");
+        this.userSessionID = UserSessionID;
         this.person_data.userSessionID = this.userSessionID;
         this.person_data.referrer = document.referrer;
+
+        if (UserSessionID && document.location.href.includes("id=") && document.location.href.includes("isLandingPage=true")) {
+            return;
+        }
 
         if (ip == "::1") {
             this.person_data = { "userSessionID": this.userSessionID, "ip": "Local", "city": "Moscow", "country": "Russia", "location": "55.7522, 37.6156", "index": "111111", "browser_name": "Chrome", "browser_version": 85, "os_name": "Windows", "os_version": "10", "screen_size": "1536 x 864", "referrer": "", "isMobile": false, "isLoad": false, "isShow": false, "path": "/Identity/Account/Login", "dateCreate": null, "continent_code": "EU", "continent_name": "Europe", "info": "", "provider_info": "{\"asn\":\"AS8402\",\"name\":\"PJSC \\\"Vimpelcom\\\"\",\"domain\":\"veon.com\",\"route\":\"37.144.0.0/14\",\"type\":\"isp\"}", "threat": "{\"is_tor\":false,\"is_proxy\":false,\"is_anonymous\":false,\"is_known_attacker\":false,\"is_known_abuser\":false,\"is_threat\":false,\"is_bogon\":false}" };

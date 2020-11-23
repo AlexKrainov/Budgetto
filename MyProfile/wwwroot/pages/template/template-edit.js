@@ -87,12 +87,15 @@
             dragula(
                 Array.prototype.slice.call(document.querySelectorAll('.lists')),
                 {
-                    moves: function (el, source, handle, sibling) {
-                        return !el.classList.contains("ignore-dnd") || !handle.classList.contains("ignore-dnd");
+                    moves: function (el, container, handle) {
+                        return handle.classList.contains('kanban-box');
                     },
-                    accepts: function (el, target, source, sibling) {//?
-                        return !el.classList.contains("ignore-dnd");
-                    },
+                    //moves: function (el, source, handle, sibling) {
+                    //    return !el.classList.contains("ignore-dnd") || !handle.classList.contains("ignore-dnd");
+                    //},
+                    //accepts: function (el, target, source, sibling) {//?
+                    //    return !el.classList.contains("ignore-dnd");
+                    //},
                     //invalid
                 }
             ).on('dragend', function (el) {
@@ -104,6 +107,7 @@
                         TemplateVue.template.columns.find(x => x.id == columnID).order = i;
                     }
                 }
+                $(".list+.ignore-dnd").insertAfter(".lists .list:last");
             });
         },
         addColumn: function () {

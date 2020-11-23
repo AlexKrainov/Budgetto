@@ -18,12 +18,14 @@
         <script src="~/pages/section/section-list.min.js" asp-append-version="true"></script>
     </environment>
 }
-<h4 class="d-flex flex-wrap w-100 font-weight-bold pt-2 mb-4">
+<h4 class="d-flex flex-wrap w-100 font-weight-bold">
     <span class="pe-7s-albums display-4 text-primary mr-2"></span>
     <span class="px-0 pb-2 pt-2">
         Категории
     </span>
-    <a href="" title="Иформация об этой странице" target="_blank">
+    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="right" 
+       title="На этой странице вы можете создавать категории трат и объединять их в папки для вашего удобства.
+Если вы хотите создать новую папку, введите её название в поисковой строке и нажмите «Создать папку».">
         <i class="pe-7s-info d-block text-primary"></i>
     </a>
 </h4>
@@ -67,10 +69,10 @@
                         <button class="btn btn-primary btn-sm" v-on:click="edit(area)">
                             <i class="far fa-edit pr-2"></i>Редактировать папку
                         </button>
-                        <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
+                        <button class="btn icon-btn btn-sm btn-outline-secondary"
                                 v-on:click="remove(area)"
-                                v-if="area.sections == undefined || area.sections.length == 0"
-                                v-bind:disabled="isSaving">
+                                v-bind:disabled="isSaving || !(area.sections == undefined || area.sections.length == 0)"
+                                v-bind:title="area.sections == undefined || area.sections.length == 0 ? 'Удалить' : 'Чтобы удалить папку, удалите или перенесите все категории'">
                             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                             <span class="ion ion-md-trash" v-show="isSaving == false"></span>
                         </button>
@@ -136,10 +138,10 @@
                         <button class="btn btn-primary btn-sm" v-on:click="edit(section)">
                             <i class="far fa-edit pr-2"></i>Редактировать
                         </button>
-                        <button title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary"
+                        <button class="btn icon-btn btn-sm btn-outline-secondary"
                                 v-on:click="removeSection(section)"
-                                v-if="section.hasRecords == false"
-                                v-bind:disabled="isSaving">
+                                v-bind:disabled="isSaving || section.hasRecords"
+                                v-bind:title="section.hasRecords ? 'У этой категории имеются записи.' : 'Удалить'">
                             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                             <span class="ion ion-md-trash" v-show="isSaving == false"></span>
                         </button>
