@@ -32,7 +32,7 @@ namespace MyProfile.HelpCenter.Service
                      ID = x.ID,
                      Link = x.Link,
                      Title = x.Title,
-                    // AreaName = x.AreaName,
+                     // AreaName = x.AreaName,
                      DateCreate = x.DateCreate,
                      DateEdit = x.DateEdit,
                      //Description = x.Description,
@@ -41,6 +41,28 @@ namespace MyProfile.HelpCenter.Service
                      Views = x.HelpArticleUserViews.Count
                  })
                  .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<MenuModelView>> GetMenus()
+        {
+            return await repository.GetAll<HelpMenu>(x => x.IsVisible)
+                 .OrderBy(x => x.Order)
+                 .Select(x => new MenuModelView
+                 {
+                     ID = x.ID,
+                     Icon = x.Icon,
+                     Title = x.Title,
+                     Articles = x.HelpArticles
+                        .Where(y => y.IsVisible)
+                        .Select(y => new MenuArticleModelView
+                        {
+                            ID = y.ID,
+                            Title = y.Title,
+                            KeyWords = y.KeyWords,
+                            Link = y.Link
+                        })
+                 })
+                 .ToListAsync();
         }
 
         public async Task<List<ArticleModelView>> GetRelatedArticlesByID(int id)

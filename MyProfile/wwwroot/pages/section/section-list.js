@@ -80,23 +80,30 @@
             }
 
             this.isSaving = true;
-            return sendAjax("/Section/SaveArea", this.area, "POST")
-                .then(function (result) {
+            return $.ajax({
+                type: "POST",
+                url: "/Section/SaveArea",
+                data: JSON.stringify(this.area),
+                context: this,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (result) {
                     if (result.isOk) {
-                        AreaVue.area = result.area;
-                        let index = AreaVue.areas.findIndex(x => x.id == result.area.id);
+                        this.area = result.area;
+                        let index = this.areas.findIndex(x => x.id == result.area.id);
                         if (index == -1) {
-                            AreaVue.areas.push(result.area);
+                            this.areas.push(result.area);
                         } else {
-                            AreaVue.areas[index] = result.area;
+                            this.areas[index] = result.area;
                         }
                         if (SectionVue.areaID == result.area.id) {
                             SectionVue.areaName = result.area.name;
                         }
                         $("#modal-area").modal("hide");
-                        AreaVue.isSaving = false;
+                        this.isSaving = false;
                     }
-                });
+                }
+            });
         },
         checkForm: function (e) {
             let isOk = true;

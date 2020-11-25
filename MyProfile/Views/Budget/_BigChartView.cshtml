@@ -56,7 +56,7 @@
                     <div class="row" v-for="dataSet in chartData.dataSets">
                         <div class="col-6 col-xl-5 text-muted mb-3">{{ dataSet.label }}</div>
                         <div class="col-6 col-xl-7 mb-3">
-                            <span class="text-big">{{ getCurrencyValue(dataSet.totalValue) }}</span>
+                            <span class="text-big">{{ getCurrencyValue(dataSet.totalValue).replace(/\D00(?=\D*$)/, '') }}</span>
                             @*<sup class="text-success">+12%</sup>*@
                         </div>
                     </div>

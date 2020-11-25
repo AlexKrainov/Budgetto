@@ -23,7 +23,7 @@
     <span class="px-0 pb-2 pt-2">
         Категории
     </span>
-    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="right" 
+    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
        title="На этой странице вы можете создавать категории трат и объединять их в папки для вашего удобства.
 Если вы хотите создать новую папку, введите её название в поисковой строке и нажмите «Создать папку».">
         <i class="pe-7s-info d-block text-primary"></i>
@@ -66,10 +66,10 @@
                                            v-on:onchoose="onChooseSection"></vue-section-component>
                     <hr class="m-0">
                     <div class="p-3 inline-spacing ">
-                        <button class="btn btn-primary btn-sm" v-on:click="edit(area)">
+                        <button class="btn btn-primary btn-sm mr-0" v-on:click="edit(area)">
                             <i class="far fa-edit pr-2"></i>Редактировать папку
                         </button>
-                        <button class="btn icon-btn btn-sm btn-outline-secondary"
+                        <button class="btn icon-btn btn-sm btn-outline-secondary" data-toggle="tooltip" data-placement="bottom"
                                 v-on:click="remove(area)"
                                 v-bind:disabled="isSaving || !(area.sections == undefined || area.sections.length == 0)"
                                 v-bind:title="area.sections == undefined || area.sections.length == 0 ? 'Удалить' : 'Чтобы удалить папку, удалите или перенесите все категории'">
@@ -135,13 +135,13 @@
                     </div>
                     <hr class="m-0">
                     <div class="p-3 inline-spacing ">
-                        <button class="btn btn-primary btn-sm" v-on:click="edit(section)">
+                        <button class="btn btn-primary btn-sm mr-0" v-on:click="edit(section)">
                             <i class="far fa-edit pr-2"></i>Редактировать
                         </button>
-                        <button class="btn icon-btn btn-sm btn-outline-secondary"
+                        <button class="btn icon-btn btn-sm btn-outline-secondary" data-toggle="tooltip" data-placement="bottom"
                                 v-on:click="removeSection(section)"
                                 v-bind:disabled="isSaving || section.hasRecords"
-                                v-bind:title="section.hasRecords ? 'У этой категории имеются записи.' : 'Удалить'">
+                                v-bind:title="section.hasRecords ? 'Вы не можете удалить категорию, так как у нее имеются записи.' : 'Удалить'">
                             <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                             <span class="ion ion-md-trash" v-show="isSaving == false"></span>
                         </button>

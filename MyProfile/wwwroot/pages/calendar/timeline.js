@@ -387,7 +387,8 @@ var calendar = {
             },
             itemName: itemName,
             onClick: calendar.day_click,
-            onComplete: calendar.onComplete
+            onComplete: calendar.onComplete,
+            domainLabelFormat: calendar.domainLabelFormat,
         });
     },
     day_click: function (date, count) {
@@ -398,6 +399,9 @@ var calendar = {
         timeline.calendar_day_click(m.get("date"), m.get("month"), m.get("year"));
     },
     onComplete: function () {
+    },
+    domainLabelFormat: function (date) {
+        return moment(date).format("MMMM");
     },
     getAllDatesInYear: function (year) {
         let dates = [];

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using MyProfile.Budget.Service;
 using MyProfile.Chart.Service;
 using MyProfile.Chat.Service;
+using MyProfile.Code;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.File.Service;
@@ -93,11 +94,11 @@ namespace MyProfile
             //});
 
             #region Cookies settings
-            services.Configure<CookiePolicyOptions>(options =>
-                {
-                    options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
-                });
+            //services.Configure<CookiePolicyOptions>(options =>
+            //    {
+            //        options.CheckConsentNeeded = context => true;
+            //        options.MinimumSameSitePolicy = SameSiteMode.None;
+            //    });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -113,6 +114,8 @@ namespace MyProfile
 
             services.AddSingleton<IEmailSender, EmailSender>();
             #endregion
+
+            services.Configure<ProjectConfig>(Configuration.GetSection("ProjectConfig"));// In controller is using like IOptions<ProjectConfig> config
 
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
         }

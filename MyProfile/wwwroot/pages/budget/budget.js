@@ -351,7 +351,7 @@
                                     ticks: {
                                         // Include a dollar sign in the ticks
                                         callback: function (value, index, values) {
-                                            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value)
+                                            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value).replace(/\D00(?=\D*$)/, '')
                                         },
                                         fontColor: fontColor,
                                         beginAtZero: true
@@ -361,7 +361,7 @@
                             tooltips: {
                                 callbacks: {
                                     label: function (tooltipItem, data) {
-                                        return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value);
+                                        return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value).replace(/\D00(?=\D*$)/, '');
                                     }
                                 }
                             },
@@ -392,7 +392,7 @@
                                             console.log(e);
                                         }
 
-                                        return `${label}: ${new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money)}`;
+                                        return `${label}: ${new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money).replace(/\D00(?=\D*$)/, '')}`;
                                     }
                                 }
                             },

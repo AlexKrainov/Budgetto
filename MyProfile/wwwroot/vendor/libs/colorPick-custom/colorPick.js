@@ -1,4 +1,4 @@
-/*!
+﻿/*!
 *
 * ColorPick jQuery plugin
 * https://github.com/philzet/ColorPick.js
@@ -46,8 +46,8 @@
     //https://encycolorpedia.com/2ecc71
     $.fn.colorPick.defaults = {
         'initialColor': '#3498db',
-        'paletteLabel': 'Default palette:',
-        'allowRecent': true,
+        'paletteLabel': 'Выбор цвета:',
+        'allowRecent': false,
         'recentMax': 5,
         'allowCustomColor': false,
         'palette': [
@@ -151,7 +151,7 @@
                 $("#colorPick").append('<input type="text" style="margin-top:5px" class="customColorHash" />');
             }
             if ($.fn.colorPick.defaults.allowRecent === true) {
-                $("#colorPick").append('<span style="margin-top:5px">Recent:</span>');
+                $("#colorPick").append('<span style="margin-top:5px">:</span>');
                 if (JSON.parse(localStorage.getItem("colorPickRecentItems")) == null || JSON.parse(localStorage.getItem("colorPickRecentItems")) == []) {
                     $("#colorPick").append('<div class="colorPickButton colorPickDummy"></div>');
                 } else {

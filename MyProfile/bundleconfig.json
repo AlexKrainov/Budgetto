@@ -178,5 +178,35 @@
     "inputFiles": [
       "wwwroot/pages/section/section-list.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_areas/help_center/help-center.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_areas/help_center/help-center.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/vendor/libs/colorPick-custom/colorPick.min.js",
+    "inputFiles": [
+      "wwwroot/vendor/libs/colorPick-custom/colorPick.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/vendor/libs/moment/Locale/ru.min.js",
+    "inputFiles": [
+      "wwwroot/vendor/libs/moment/Locale/ru.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/main.min.css",
+    "inputFiles": [
+      "wwwroot/css/main.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/demo.min.css",
+    "inputFiles": [
+      "wwwroot/css/demo.css"
+    ]
   }
 ]

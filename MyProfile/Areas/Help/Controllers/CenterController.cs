@@ -38,6 +38,16 @@ namespace MyProfile.Areas.Help.Controllers
             return View();
         }
 
+        public async Task<IActionResult> LoadMenu()
+        {
+            var menus = await helpCenterService.GetMenus();
+            return Json(new
+            {
+                isOk = true,
+                menus
+            });
+        }
+
         public async Task<IActionResult> Load(int id)
         {
             return Json(new

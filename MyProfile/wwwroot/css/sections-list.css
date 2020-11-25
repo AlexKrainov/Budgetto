@@ -62,9 +62,9 @@
     border-radius: 7px;
 }
 
-.card-color-section:not(:first-child) {
+/*.card-color-section:not(:first-child) {
     margin-right: -4rem;
-}
+}*/
 
 .card-color-section:hover {
     transform: translateY(-1rem);

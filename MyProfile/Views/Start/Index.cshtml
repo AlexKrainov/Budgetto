@@ -28,7 +28,7 @@
 </h4>
 <hr class="container-m-nx border-light mt-0 mb-5">
 
-<div id="start-vue" class="smartwizard" v-cloak style="height: 100%;">
+<div id="start-vue" class="smartwizard" v-cloak>
     <ul>
         <li>
             <a href="#smartwizard-1-step-1" class="mb-3">
@@ -78,6 +78,9 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group col-12 col-sm-12 col-md-4">
+                        <h4 class="">
+                            <strong>Давайте знакомиться!</strong>
+                        </h4>
                         <label class="form-label">Ваше имя</label>
                         <span class="text-danger">*</span>
                         <input type="text" class="form-control" v-model="userInfo.name" id="userInfoName">
@@ -95,9 +98,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6">
-                        <label class="ml-3">
-                            <strong>Выберите категории, по которым вы ведете учет финансов:</strong>
-                        </label>
+                        <h4 class="ml-3 mb-1">Категории</h4>
+                        <h5 class="text-muted small ml-3">
+                            Выберите категории, по которым вы ведете учет финансов или добавьте свои:
+                        </h5>
 
                         <div class="mt-4">
                             <vue-section-component data-class="cards-medium"
@@ -109,9 +113,9 @@
                             <a href="javascript:void(0)" class="small show-sections ml-3" v-on:click="selectAllSections">Выбрать все категории</a>
                         </div>
                         <br />
-                        <label class="ml-3">
-                            <strong v-show="userSectionSource && userSectionSource.length > 0">Мои категорий</strong>
-                        </label>
+                        <h4 class="ml-3" v-show="userSectionSource && userSectionSource.length > 0">
+                            Мои категории
+                        </h4>
                         <vue-section-component data-class="cards-medium"
                                                data-records-style="margin-left: 15px;"
                                                v-bind:is-show-filter="false"
@@ -119,15 +123,23 @@
                                                v-on:onchoose="onEditSection"></vue-section-component>
                         <br>
                         <button class="btn btn-primary ml-3" v-on:click="addSection">
-                            <i class="ion ion-md-add  pr-2"></i>Добавить свою категрию
+                            <i class="ion ion-md-add  pr-2"></i>Добавить свою категорию
                         </button>
                         <br />
-                        <span class="text-danger float-right">{{ errorMessage }}</span>
+                        <div class="callout callout-danger mt-3" v-show="errorMessage">
+                            <button type="button" class="close" data-dismiss="alert" v-on:click="errorMessage = null">×</button>
+                            {{ errorMessage }}
+                        </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6">
-                        <label class="ml-3">
-                            <strong>Для вашего удобства категории распределяются по папкам:</strong>
-                        </label>
+                        <h4 class="mb-1">Папки</h4>
+                        <h5 class="text-muted small mb-0">
+                            Для вашего удобства категории распределяются по папкам "Расходы", "Доходы" и "Инвестиции".
+                        </h5>
+                        <h5 class="text-muted small">
+                            В дальнйшем вы сможете добавлять/изменять и удалять папки:
+                        </h5>
+                        
                         <div class="card ui-bordered mt-3 area-item custom-card-hover"
                              v-for="area in areas">
                             <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
@@ -136,6 +148,7 @@
                             <vue-section-component data-class="cards-medium"
                                                    data-records-style="margin-left: 15px;"
                                                    v-bind:data-id="'areaid_'+area.id"
+                                                   data-section-classes=""
                                                    v-bind:is-show-filter="false"
                                                    v-bind:data-items="area.sections"></vue-section-component>
                         </div>
@@ -148,13 +161,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6">
-                        <label class="ml-3">
-                            <strong>Ведение финансов осуществляется в формате таблицы.</strong>
-                        </label>
-                        <br />
-                        <label class="ml-3">
-                            <strong> Нажмите "Добавить колонку" и выберите подходящие категории (от одной до всех):</strong>
-                        </label>
+                        <h4 class="ml-3 mb-1">Ваши категории</h4>
+                        <h5 class="text-muted small ml-3 mb-1">
+                            Ведение финансов осуществляется в формате таблицы.
+                        </h5>
+                        <h5 class="text-muted small ml-3">
+                            Нажмите "Добавить колонку" и выберите подходящие категории (от одной до всех):
+                        </h5>
                         <div class="mt-4">
                             <vue-section-component data-class="cards-medium"
                                                    data-records-style="margin-left: 15px;"
@@ -207,9 +220,10 @@
                         </article>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6">
-                        <label class="ml-3">
-                            <strong>Ваша таблица сейчас выглядит так:</strong>
-                        </label>
+                        <h4 class="mb-1">Ваша таблица</h4>
+                        <h5 class="text-muted small mb-1">
+                            Ваша таблица сейчас выглядит так:
+                        </h5>
                         <table class="table table-bordered dataTable table-hover mt-4">
                             <thead>
                                 <tr>
@@ -230,7 +244,10 @@
                             Вы всегда можете поменять наполнение колонок в разделе "Шаблоны"
                         </small>
                         <br />
-                        <span class="text-danger">{{ errorMessage }}</span>
+                        <div class="callout callout-danger mt-3" v-show="errorMessage">
+                            <button type="button" class="close" data-dismiss="alert" v-on:click="errorMessage = null">×</button>
+                            {{ errorMessage }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -239,18 +256,24 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong>Лимиты позволяют контролировать траты по выбранным категориям.</strong>
+                        <h4 class="ml-3 mb-1">Создание лимитов</h4>
+                        <h5 class="text-muted small ml-3 mb-1">
+                            Лимиты позволяют контролировать траты по выбранным категориям.
+                        </h5>
                         <br />
-                        <button type="button" class="btn btn-primary mt-4"
+                        <button type="button" class="btn btn-primary mt-4 ml-3 "
                                 v-on:click="editLimit(null)">
                             Добавить лимит
                         </button>
                         @await Html.PartialAsync("~/Views/Limit/_EditLimit.cshtml")
-                        <span class="text-danger">{{ errorMessage }}</span>
+                        <div class="callout callout-danger mt-3" v-show="errorMessage">
+                            <button type="button" class="close" data-dismiss="alert" v-on:click="errorMessage = null">×</button>
+                            {{ errorMessage }}
+                        </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong v-show="limits.length > 0">Ваши лимиты:</strong>
-                        <br />
+                        <h4 class=" mb-1" v-show="limits.length > 0">Ваши лимиты:</h4>
+                        @*<strong v-show="limits.length > 0">Ваши лимиты:</strong>*@
                         <div class="row mt-4" id="limits">
                             <div class=" col-12"
                                  v-for="limit in limits">
@@ -291,7 +314,7 @@
                                 </div>
                             </div>
                         </div>
-                        <small class="text-muted">Вы всегда можете добавить лимиты в разделе "Лимиты"</small>
+                        <small class="text-muted">*Вы всегда можете добавить, изменить и удалить лимиты в разделе "Лимиты"</small>
                     </div>
                 </div>
             </div>
@@ -300,18 +323,25 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong class="">Создавайте цели и отслеживайте их достижение.</strong>
+                        <h4 class=" mb-1" v-show="limits.length > 0">Ваши цели:</h4>
+                        <h5 class="text-muted small mb-1">
+                            Создавайте цели и отслеживайте их достижение.
+                        </h5>
                         <br />
                         <button type="button" class="btn btn-primary mt-4"
                                 v-on:click="editGoal(null)">
                             Добавить цель
                         </button>
                         @await Html.PartialAsync("~/Views/Goal/_EditGoal.cshtml")
-                        <span class="text-danger">{{ errorMessage }}</span>
+                        <div class="callout callout-danger mt-3" v-show="errorMessage">
+                            <button type="button" class="close" data-dismiss="alert" v-on:click="errorMessage = null">×</button>
+                            {{ errorMessage }}
+                        </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6">
-                        <strong v-show="goals.length > 0">Ваши текущие цели: </strong>
-                        <br />
+                        <h4 class=" mb-1" v-show="goals.length > 0">
+                            Ваши текущие цели:
+                        </h4>
                         <div class="row mt-4" id="goals">
                             <div class=" col-12"
                                  v-for="goal in goals">
@@ -352,7 +382,7 @@
                                 </div>
                             </div>
                         </div>
-                        <small class="text-muted">Вы всегда можете добавить цели в разделе "Цели"</small>
+                        <small class="text-muted">Вы всегда можете добавить, изменить или удалить цели в разделе "Цели"</small>
                     </div>
                 </div>
             </div>

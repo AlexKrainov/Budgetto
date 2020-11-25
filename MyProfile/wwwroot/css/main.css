@@ -212,6 +212,7 @@ a.disabled {
         font-size: 35px;
         padding-right: 8px;
     }
+
         .record-icon + div {
             padding-left: 52px;
         }
@@ -720,4 +721,9 @@ html.dark-style .tagify__input::before {
     max-width: 200px;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.dark-style select option {
+    background-color: #32353b;
+    color: white !important;
 }

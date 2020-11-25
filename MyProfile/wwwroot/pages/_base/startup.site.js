@@ -5,6 +5,7 @@
     if (window.layoutHelpers.isSmallScreen()) {
         window.layoutHelpers.setCollapsed(true, false);
         localStorage.setItem('layoutCollapsed', "true");
+        $("#start-vue").css("height", "100%");
     }
 
     try {

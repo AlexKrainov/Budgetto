@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MyProfile.Budget.Service;
+using MyProfile.Code;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.ModelView.TemplateModelView;
@@ -26,6 +28,7 @@ namespace MyProfile.Controllers
         private SectionService sectionService;
         private BudgetRecordService budgetRecordService;
         private UserLogService userLogService;
+        //private IOptions<ProjectConfig> config;
 
         public BudgetController(IBaseRepository repository,
             BudgetService budgetService,
@@ -33,6 +36,7 @@ namespace MyProfile.Controllers
             SectionService sectionService,
             BudgetRecordService budgetRecordService,
             UserLogService userLogService)
+        //,IOptions<ProjectConfig> config)
         {
             this.repository = repository;
             this.templateService = templateService;
@@ -40,6 +44,7 @@ namespace MyProfile.Controllers
             this.sectionService = sectionService;
             this.budgetRecordService = budgetRecordService;
             this.userLogService = userLogService;
+            //this.config = config;
         }
 
         [HttpGet]
@@ -198,6 +203,6 @@ namespace MyProfile.Controllers
 
             return Json(new { isOk = true });
         }
-        
+
     }
 }

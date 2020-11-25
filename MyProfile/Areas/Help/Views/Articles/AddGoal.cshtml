@@ -1,0 +1,57 @@
+﻿<div class="blog-article-content font-secondary">
+    <p class="mb-4">
+        <b>Цель</b> позволяет отслеживать свои накопления по интересующим вас направлениям.
+        Отслеживать прогресс по целям можно на страницах "Цели", "Финансы на месяц" и "Финансы на год"
+    </p>
+    <p class="mb-4">
+        <h4><strong>Как создать цель?</strong></h4>
+    </p>
+    <ol>
+        <li>Перейдите на страницу <a href="https://localhost:44394/Goal/List" target="_blank">Цели</a></li>
+        <li>
+            Нажмите кнопку <b>"Добавить цель"</b><br />
+            <img src="~/resources/help/4/goal_1.png" alt="" class="img-fluid">
+        </li>
+        <li>
+            Заполните <b>обязательные поля</b>
+            <br />
+            <img src="~/resources/help/4/goal_2.png" alt="" class="img-fluid">
+        </li>
+        <li>
+            Выберите, на какой странице следует отображать цель.
+            <br />
+            Нажмите кнопку <b>Сохранить</b>
+            <br />
+            <img src="~/resources/help/4/goal_3.png" alt="" class="img-fluid">
+        </li>
+        <li>
+            Готово.
+            <br />
+            На странице "Цели" через кнопку <a href="javascript:void(0)" class="btn icon-btn btn-sm btn-outline-secondary" title="Добавить сумму"><i class="fas fa-plus"></i></a>
+            можно пополнить "кошелёк" цели. В карточке также можно следить за прогрессом по цели.
+            <br />
+            Через кнопку <a href="javascript:void(0)" title="История" class="btn icon-btn btn-sm btn-outline-secondary"
+                            v-on:click="addMoney(goal, true)">
+                <i class="fas fa-history"></i>
+            </a> можно посмотреть историю совершённых операций по цели.
+            <br />
+            Цель может иметь 2 статуса: <span class="badge badge-warning align-text-bottom ml-1">В процессе</span> или
+            <span class="badge badge-success align-text-bottom ml-1">Завершена</span>
+            <img src="~/resources/help/4/goal_4.png" alt="" class="img-fluid">
+        </li>
+        <li>
+            В боковом меню
+            <img src="~/resources/help/4/goal_5.png" alt="" class="img-fluid">
+            вы можете скрывать или показывать завершенные цели
+            <img src="~/resources/help/4/goal_6.png" alt="" class="img-fluid">
+        </li>
+        <li>
+            При переходе на страницу <a href="https://localhost:44394/Budget/Month" target="_blank">Финансы на месяц</a> 
+            в виджетах вы видите только что созданную цель.
+            <br />
+            <img src="~/resources/help/4/goal_8.png" alt="" class="img-fluid">
+            <br />
+            В данном случае <b>0 ₽</b> - уже отложенная сумма. <b>3 000 000 ₽</b> - финальная цель по накоплениям.
+        </li>
+    </ol>
+</div>

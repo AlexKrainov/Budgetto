@@ -64,7 +64,7 @@
             <div class="d-flex justify-content-between align-items-center small">
                 <div class="font-weight-bold">{{ goalChartData.percent }}%</div>
                 <div class="text-muted">
-                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.totalMoney) }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.expectationMoney) }}
+                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.totalMoney).replace(/\D00(?=\D*$)/, '') }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.expectationMoney).replace(/\D00(?=\D*$)/, '') }}
                 </div>
             </div>
             <div class="progress mt-1" style="height: 3px;">

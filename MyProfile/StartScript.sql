@@ -10,12 +10,12 @@ GO
 
 SET IDENTITY_INSERT [dbo].[ChartTypes] ON 
 
-INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (1, N'Линейная диаграмма', N'line', 1, 1)
-INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (2, N'Столбчатая диаграмма', N'bar', 1, 0)
+INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (1, N'Линейный график', N'line', 1, 1)
+INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (2, N'Столбчатый график', N'bar', 1, 0)
 INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (3, N'Круговая диаграмма', N'pie', 1, 0)
 INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (4, N'Кольцевая диаграмма', N'doughnut', 1, 0)
-INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (5, N'Линейная диаграмма', N'bubble', 1, 0)
-INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (6, N'Столбчатая диаграмма', N'bar', 1, 1)
+INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (5, N'Линейный график', N'bubble', 1, 0)
+INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (6, N'Столбчатый график', N'bar', 1, 1)
 SET IDENTITY_INSERT [dbo].[ChartTypes] OFF
 GO
 
@@ -56,15 +56,24 @@ GO
 
 
 
-SET IDENTITY_INSERT [dbo].[HelpMenus] ON 
-INSERT INTO [HelpMenus] ([Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES ('Лимиты' ,'lnr lnr-frame-expand' ,1 ,0)
+SET IDENTITY_INSERT [HelpMenus] ON 
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (2, 'Финансы на месяц/год' ,'pe-7s-display1' ,1 ,0)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (3, 'Лимиты' ,'lnr lnr-frame-expand' ,1 ,1)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (4, 'Цели' ,'lnr lnr-rocket' ,1 ,2)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (5, 'Графики' ,'lnr lnr-pie-chart' ,1 ,3)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (6, 'Шаблоны' ,'lnr lnr-layers' ,1 ,4)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (7, 'Категории и папки' ,'pe-7s-albums' ,1 ,5)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (8, 'Календарь' ,'lnr lnr-calendar-full' ,1 ,6)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (9, 'Общие вопросы' ,'lnr lnr-question-circle' ,1 ,7)
+SET IDENTITY_INSERT [HelpMenus] OFF
 
-SET IDENTITY_INSERT [dbo].[HelpMenus] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[HelpMenus] ON 
-INSERT INTO HelpArticles ([Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
-VALUES ('Создание лимита' ,'2020-11-24 21:40:32.8652966', '2020-11-23 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/LimitAdd.cshtml' ,3, 'Создание лимита')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (4, 'Создание лимита' ,'2020-11-24 21:40:32.8652966', '2020-11-23 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddLimit.cshtml' ,3, 'создание лимита; лимит')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (5, 'Создание цели' ,'2020-11-25 21:40:32.8652966', '2020-11-25 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddGoal.cshtml' ,4, 'создание цели; цель; цели')
 
 SET IDENTITY_INSERT [dbo].[HelpMenus] OFF
 GO
