@@ -46,6 +46,7 @@
                 <div class="col-sm-3 col-md-4 col-lg-4 col-xl-4 pr-3">
                     <div class="form-group">
                         <label class="form-label">Название шаблона</label>
+                        <span class="text-danger">*</span>
                         <input id="template-name" type="text" class="form-control" required placeholder="Название шаблона"
                                v-model="template.name">
                         <small class="invalid-feedback">Обязательное поле</small>
@@ -53,6 +54,7 @@
                 </div>
                 <div class="col-sm-3 col-md-4 col-lg-3 col-xl-3 mb-3">
                     <label class="form-label">Тип шаблона</label>
+                    <span class="text-danger">*</span>
                     <div class="dropdown template-types">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle "
                                 data-toggle="dropdown"
@@ -61,8 +63,8 @@
                         <div class="dropdown-menu">
                             @foreach (MyProfile.Entity.Model.PeriodType periodType in ViewBag.PeriodTypes)
                             {
-                            <a class="dropdown-item"
-                               v-on:click="template.periodTypeID = @periodType.ID; template.periodName = '@periodType.Name'; changeType();">@periodType.Name</a>
+                                <a class="dropdown-item"
+                                   v-on:click="template.periodTypeID = @periodType.ID; template.periodName = '@periodType.Name'; changeType();">@periodType.Name</a>
                             }
                         </div>
                     </div>
@@ -487,7 +489,7 @@
         <form class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Formula
+                    Операции с категориями
                     @*<span class="font-weight-light">Information</span>
                         <br>
                         <small class="text-muted">We need payment information to process your order.</small>*@
@@ -555,8 +557,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <button type="button" class="btn btn-primary" v-on:click="save">Сохранить</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </form>
     </div>

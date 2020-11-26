@@ -21,6 +21,11 @@ namespace MyProfile.Entity.Model
         [Required]
         [MaxLength(512)]
         public string Link { get; set; }
+        /// <summary>
+        /// [1,2,3]
+        /// </summary>
+        [MaxLength(256)]
+        public string RelatedArticleIDs { get; set; }
 
         [ForeignKey("User")]
         public Guid? OwnerID { get; set; }

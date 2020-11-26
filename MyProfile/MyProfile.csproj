@@ -106,6 +106,7 @@
     <Folder Include="wwwroot\img\chart\" />
     <Folder Include="wwwroot\img\logo\" />
     <Folder Include="wwwroot\resources\feedback\" />
+    <Folder Include="wwwroot\resources\help\3\" />
     <Folder Include="wwwroot\resources\users\" />
     <Folder Include="wwwroot\video\" />
   </ItemGroup>

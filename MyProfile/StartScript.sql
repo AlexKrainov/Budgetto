@@ -69,11 +69,17 @@ SET IDENTITY_INSERT [HelpMenus] OFF
 
 GO
 
-SET IDENTITY_INSERT [dbo].[HelpMenus] ON 
+SET IDENTITY_INSERT [HelpArticles] ON 
 INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
-VALUES (4, 'Создание лимита' ,'2020-11-24 21:40:32.8652966', '2020-11-23 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddLimit.cshtml' ,3, 'создание лимита; лимит')
+VALUES (1, 'Создание лимита' ,'2020-11-24 21:40:32.8652966', '2020-11-23 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddLimit.cshtml' ,3, 'создание лимита; лимит')
 INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
-VALUES (5, 'Создание цели' ,'2020-11-25 21:40:32.8652966', '2020-11-25 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddGoal.cshtml' ,4, 'создание цели; цель; цели')
+VALUES (2, 'Создание цели' ,'2020-11-25 21:40:32.8652966', '2020-11-25 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddGoal.cshtml' ,4, 'создание цели; цель; цели')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (3, 'Создание шаблона' ,'2020-11-26 21:40:32.8652966', '2020-11-26 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddTemplate.cshtml' ,6, 'создание шаблона; шаблоны; шаблон')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (4, 'Создание графика' ,'2020-11-26 21:40:32.8652966', '2020-11-26 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddChart.cshtml' ,5, 'создание графика; графики; график; диаграммы; диаграмма')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (5, 'Создание папки' ,'2020-11-26 21:40:32.8652966', '2020-11-26 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddFolder.cshtml' ,7, 'создание папка; папки; папка; ')
 
-SET IDENTITY_INSERT [dbo].[HelpMenus] OFF
+SET IDENTITY_INSERT [HelpArticles] OFF
 GO
