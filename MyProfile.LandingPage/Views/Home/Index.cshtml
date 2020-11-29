@@ -22,224 +22,342 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 }
 <!-- Header -->
-<div class="jumbotron ui-hero ui-mh-100vh ui-bg-cover" style="background-image: url('img/pages/landing-1-bg.png');">
-    <div class="container-fluid pr-lg-5 pl-xl-5">
-        <div class="row no-gutters justify-content-center w-100 pt-3">
+<div class="swiper-container" id="landing-slider-parallax">
+    <!-- Parallax background element -->
+    <div class="landing-slider-parallax-bg" style="background-image:url(img/pages/landing-1-bg.png)" data-swiper-parallax="-23%"></div>
+    <div class="swiper-wrapper">
 
-            <div class="col-lg-7 col-xl-6 text-lg-left text-center my-5 mr-xl-5">
-                <h1 class="display-3 font-secondary text-dark font-weight-semibold mb-4">
-                    Everything you need to reach awesomeness
-                </h1>
-                <p class="lead text-muted pb-3">
-                    Lorem ipsum dolor sit amet, ius virtute suscipit te. Ius prima euismod consequat eu, cu quo alii scriptorem. Oratio aperiam per et, per euismod nominati forensibus cu.
-                </p>
-                <button type="button" class="landing-btn btn btn-lg rounded-pill btn-primary mt-2" v-on:click="goToAppBudgetto">
-                    <span class="ion ion-logo-apple"></span>&nbsp; Go to Budgetto.org
-                </button>
+        <div class="swiper-slide jumbotron ui-hero ui-mh-100vh bg-transparent overflow-hidden">
+            <div class="container-fluid justify-content-center px-lg-5">
+                <div class="row justify-content-center w-100 pt-3">
+
+                    <div class="col-lg-7 col-xl-6 text-lg-left text-center my-5" data-swiper-parallax="-50%">
+                        <h1 class="display-3 font-secondary text-dark font-weight-semibold mb-4">
+                            Контролируй свои финансы
+                        </h1>
+                        <p class="lead text-muted pb-3">
+                            Привычный учет финансов в таблице
+                        </p>
+                        <div class="mt-2">
+                            <a href="javascript:void(0)" class="landing-btn btn btn-lg rounded-pill btn-primary"
+                               v-on:click="goToAppBudgetto('FirstViewButton')">Попробовать</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 text-center pl-lg-5" data-swiper-parallax="100%" data-swiper-parallax-opacity="0">
+                        <div class="ui-presentation-right ui-device macbook float-left rounded">
+                            <img class="device-img" src="img/devices/macbook-gold.png" alt>
+                            <div class="device-content">
+                                <img src="~/img/Main_4.PNG" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-
-            <div class="col-lg-5 text-center pl-lg-5 pl-xl-2 my-5">
-                <img class="w-100" src="img/pages/landing-1-img.png" alt style="max-width: 550px">
-            </div>
-
         </div>
+
+        <div class="swiper-slide jumbotron ui-hero bg-transparent py-0 m-0">
+            <div class="d-flex flex-column w-100 ui-mh-100vh">
+
+                <div class="container d-flex justify-content-center align-items-center flex-grow-1">
+                    <div class="row flex-basis-100 pt-5 mt-4 mt-sm-5">
+
+                        <div class="col-lg-8 text-center py-5 mx-auto">
+                            <h1 class="display-3 font-secondary text-dark font-weight-semibold mb-4" data-swiper-parallax-y="100">
+                                Всё на одной странице
+                            </h1>
+                            <p class="lead text-muted pb-3" data-swiper-parallax-y="0">
+                                Настраивайте главную страницу под себя.
+                            </p>
+                            <div class="mt-2" data-swiper-parallax-y="-100">
+                                <a href="javascript:void(0)" class="landing-btn btn btn-lg rounded-pill btn-primary"
+                                   v-on:click="goToAppBudgetto('SecondViewButton')">Попробовать</a>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="flex-grow-0 mx-3">
+                    <div class="ui-window w-100 rounded-top mx-auto" style="max-width:800px;max-height:250px;" data-swiper-parallax="0" data-swiper-parallax-opacity="0" data-swiper-parallax-duration="1500">
+                        <div class="window-content">
+                            <img src="~/img/Main_5.PNG" alt>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div id="landing-slider-next" class="swiper-button-next custom-icon">
+        <i class="lnr lnr-chevron-right text-primary"></i>
+    </div>
+    <div id="landing-slider-prev" class="swiper-button-prev custom-icon">
+        <i class="lnr lnr-chevron-left text-primary"></i>
     </div>
 </div>
 <!-- / Header -->
-
-<div class="theme-bg-white">
-
-    <!-- Block -->
-    <div class="landing-block pb-5">
-        <div class="container px-3">
-
-            <div class="col-md-10 col-lg-8 col-xl-7 text-center p-0 mx-auto">
-                <div class="display-3 text-primary mb-4">
-                    <i class="lnr lnr-rocket"></i>
-                </div>
-                <h1 class="display-4 font-secondary font-weight-semibold mb-5">
-                    Ultimate Tool for Professionals
-                </h1>
-                <div class="text-muted">
-                    Lorem ipsum dolor sit amet, ad eam consul vituperata. Cum assum inimicus an, his ne liber aeterno debitis. Te his iudico tollit efficiendi. Eu harum volumus pri, oporteat probatus disputationi id his. Mei in vidit mollis mediocrem, cum ad suas democritum,
-                    ea eos e ligendi nominati volutpat.
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <!-- / Block -->
-
-    <div class="landing-separator-stripes my-4"></div>
-
-    <!-- Block -->
-    <div class="landing-block pt-5">
-        <div class="container px-3">
-            <div class="row justify-content-between align-items-center">
-
-                <div class="col-lg-5 col-xl-4 text-lg-left text-center mx-auto">
-                    <div class="text-lighter text-tiny font-weight-bold mb-3">INTRODUCING</div>
-                    <h1 class="display-4 font-secondary font-weight-semibold mb-4">Unlimited Possibilities</h1>
-                    <p class="text-muted">
-                        Lorem ipsum dolor sit amet, ad eam consul vituperata. Cum assum inimicus an, his ne liber aeterno debitis. Te his iudico tollit efficiendi.
-                    </p>
-                </div>
-
-                <div class="col-lg-7 col-xl-7 mt-5 mt-lg-0">
-                    <div id="landing-video" data-plyr-provider="youtube" data-plyr-embed-id="bTqVqk7FSmY" class="w-100"></div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- / Block -->
-
-</div>
-
-<!-- Block -->
-<div id="features" class="landing-block">
-    <div class="container px-3">
-
+<div class="jumbotron bg-lighter py-5 m-0">
+    <div class="row align-items-center">
         <div class="col-md-10 col-lg-8 col-xl-7 text-center p-0 mx-auto">
-            <div class="text-lighter text-tiny font-weight-bold mb-3">FEATURES</div>
-            <h1 class="display-4 font-secondary font-weight-semibold mb-4">
-                Everything That You Need in One App
+            <div class="display-3 text-primary mb-4">
+                <i class="lnr lnr-laptop"></i>
+            </div>
+            <h1 class="display-4 font-secondary font-weight-semibold mb-5">
+                Как работает сервис
             </h1>
-            <div class="lead text-muted mb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed interdum lorem, non hendrerit lectus. Suspendisse ultricies lobortis vulputate.
-            </div>
         </div>
-
-        <hr class="landing-separator border-light mx-auto">
-
-        <div class="row text-center">
-            <div class="col-md-4 mt-5">
-                <div class="display-4 text-primary mx-auto mb-4">
-                    <span class="lnr lnr-star"></span>
-                </div>
-                <h5>Dapibus ac facilisis in</h5>
-                <div class="text-muted small">
-                    Lorem ipsum dolor sit amet, ius virtute suscipit te. Ius prima euismod consequat eu, cu quo alii scriptorem
-                </div>
-            </div>
-            <div class="col-md-4 mt-5">
-                <div class="display-4 text-primary mx-auto mb-4">
-                    <span class="lnr lnr-picture"></span>
-                </div>
-                <h5>Cras justo odio</h5>
-                <div class="text-muted small">
-                    Etiam vivendo eu sea, purto ponderum mediocritatem at pro. Ex tantas invenire dissentiunt mea.
-                </div>
-            </div>
-            <div class="col-md-4 mt-5">
-                <div class="display-4 text-primary mx-auto mb-4">
-                    <span class="lnr lnr-calendar-full"></span>
-                </div>
-                <h5>Porta ac consectetur ac</h5>
-                <div class="text-muted small">
-                    Iuvaret deleniti vulputate nec ne, id vix lucilius legendos deseruisse, harum honestatis cum te.
-                </div>
-            </div>
-            <div class="col-md-4 mt-5">
-                <div class="display-4 text-primary mx-auto mb-4">
-                    <span class="lnr lnr-camera"></span>
-                </div>
-                <h5>Nullam lobortis</h5>
-                <div class="text-muted small">
-                    Praesent massa quam, luctus et efficitur congue, aliquam quis quam. In tellus quam, ornare et consectetur ut, ullamcorper vitae nunc.
-                </div>
-            </div>
-            <div class="col-md-4 mt-5">
-                <div class="display-4 text-primary mx-auto mb-4">
-                    <span class="lnr lnr-pie-chart"></span>
-                </div>
-                <h5>Quisque dictum magna</h5>
-                <div class="text-muted small">
-                    Curabitur rutrum eleifend urna, sit amet iaculis metus consequat at. Pellentesque id accumsan leo.
-                </div>
-            </div>
-            <div class="col-md-4 mt-5">
-                <div class="display-4 text-primary mx-auto mb-4">
-                    <span class="lnr lnr-layers"></span>
-                </div>
-                <h5>Suspendisse facilisis laoreet</h5>
-                <div class="text-muted small">
-                    Curabitur tristique in elit in fermentum. Sed pellentesque ullamcorper risus pellentesque finibus.
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center mt-5">
-            <button type="button" class="landing-btn btn btn-primary btn-lg">LEARN MORE</button>
-        </div>
-
     </div>
 </div>
-<!-- / Block -->
-<!-- Block -->
-<div class="landing-block bg-lighter overflow-hidden">
-    <div class="container">
-        <div class="row justify-content-between align-items-center">
 
-            <div class="col-lg-5 col-xl-5">
-                <div class="ui-presentation-right ui-window float-right rounded">
-                    <div class="window-content">
-                        <img src="img/uikit/app.png" alt>
+<div class="overflow-hidden my-5 py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 col-xl-5">
+                <div class="ui-presentation-left ui-device macbook float-right">
+                    <img class="device-img" src="/img/devices/macbook-silver.png" alt>
+                    <div class="device-content">
+                        <img src="~/img/Section.PNG" />
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-6 col-xl-5 text-lg-left text-center mx-auto mt-5 mt-lg-0">
-                <h5 class="mb-2">Vim ut tation philosophia</h5>
-                <div class="text-muted small">
-                    Vim ut tation philosophia. Qui et modo abhorreant, populo timeam disputando ut vel.
-                </div>
-
-                <h5 class="mt-5 mb-2">Qui et modo abhorreant</h5>
-                <div class="text-muted small">
-                    Cu soleat possit sit. Vocent iisque omnesque eos id. Id sed natum debet graeco, pro te possim scripta vituperata.
-                </div>
-
-                <h5 class="mt-5 mb-2">Ad vim duis aperiri intellegat</h5>
-                <div class="text-muted small">
-                    Pro rebum nominavi an. His et enim justo dicunt. Agam mnesarchum concludaturque per ea, sea an dicam dolores repudiare.
-                </div>
+            <div class="col-lg-6 text-lg-left text-center mx-auto mt-5 mt-lg-0">
+                <h1 class="display-4 font-secondary font-weight-semibold mb-5">Создавайте собственные категории или выбирайте из уже существующих</h1>
+                <p class="ui-company-text text-muted my-5">
+                    Группируйте категории по папкам (например, доходы, еда, ремонт, путешествия).
+                </p>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat"
+                   v-on:click="goToAppBudgetto('SectionViewButton')">Попробовать →</a>
             </div>
 
         </div>
     </div>
 </div>
-<!-- / Block -->
 <!-- Block -->
-<div id="screenshots" class="landing-block theme-bg-white">
+<div class="overflow-hidden bg-lighter my-5 py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-xl-5 text-lg-left text-center mx-auto">
+                <h1 class="display-4 font-secondary font-weight-semibold mb-5">Добавляйте одну или несколько записей сразу</h1>
+                <p class="ui-company-text text-muted my-5">
+                    Не хотите долго заполнять все ваши расходы  или доходы за день? Вводите суммы, выбирайте нужные категории и все готово
+                    Быстрый ввод данных о доходах и расходах - добавляйте все суммы сразу или клавишу "Enter"
+                </p>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('RecordsViewButton')">Попробовать →</a>
+            </div>
+
+            <div class="col-lg-6 col-xl-5">
+                <div class="ui-presentation-right ui-device macbook float-left">
+                    <img class="device-img" src="/img/devices/macbook-gold.png" alt>
+                    <div class="device-content">
+                        <img src="~/img/Records.PNG" />
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<!-- Block -->
+
+<div class="overflow-hidden my-5 py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 col-xl-5">
+                <div class="ui-presentation-left ui-device macbook float-right">
+                    <img class="device-img" src="/img/devices/macbook-silver.png" alt>
+                    <div class="device-content">
+                        <img src="~/img/Table.PNG" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-lg-left text-center mx-auto mt-5 mt-lg-0">
+                <h1 class="display-4 font-secondary font-weight-semibold mb-5">
+                    Все ваши финансы в одной таблице
+                </h1>
+                <p class="ui-company-text text-muted my-5">
+                    Создавайте шаблоны из категорий и работайте с таблицей.
+                </p>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('TableViewButton')">Попробовать →</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Block -->
+
+<div class="overflow-hidden bg-lighter my-5 py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-xl-5 text-lg-left text-center mx-auto">
+                <h1 class="display-4 font-secondary font-weight-semibold mb-5">Ставьте себе лимиты на категории</h1>
+                <p class="ui-company-text text-muted my-5">
+                    Много тратите на шопинг или еду? Создавайте лимит, выбирайте по каким категориям следить и контролируйте  себя.
+                </p>
+
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('LimitViewButton')">Попробовать →</a>
+            </div>
+
+            <div class="col-lg-6 col-xl-5">
+                <div class="ui-presentation-right ui-device macbook float-left">
+                    <img class="device-img" src="/img/devices/macbook-gold.png" alt>
+                    <div class="device-content">
+                        <img src="~/img/Limits.PNG" />
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<!-- Block -->
+
+<div class="overflow-hidden my-5 py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 col-xl-5">
+                <div class="ui-presentation-left ui-device macbook float-right">
+                    <img class="device-img" src="/img/devices/macbook-silver.png" alt>
+                    <div class="device-content">
+                        <img src="~/img/goals.PNG" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-lg-left text-center mx-auto mt-5 mt-lg-0">
+                <h1 class="display-4 font-secondary font-weight-semibold mb-5">
+                    Ставьте цели и следите за их достижением
+                </h1>
+                <p class="ui-company-text text-muted my-5">
+                    Хотите новый телефон или новый автмобиль? Цели помогут вам на них накопить.
+                </p>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('GoalsViewButton')">Попробовать →</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Block -->
+
+<div class="overflow-hidden bg-lighter my-5 py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-xl-5 text-lg-left text-center mx-auto">
+                <h1 class="display-4 font-secondary font-weight-semibold mb-5">
+                    Создавайте графики по категориям
+                </h1>
+                <p class="ui-company-text text-muted my-5">
+                    Легко создавайте графики и отслеживайте состояние финансов в динамике.
+                </p>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('ChartViewButton')">Попробовать →</a>
+            </div>
+
+            <div class="col-lg-6 col-xl-5">
+                <div class="ui-presentation-right ui-device macbook float-left">
+                    <img class="device-img" src="/img/devices/macbook-gold.png" alt>
+                    <div class="device-content">
+                        <img src="~/img/Chart.PNG" />
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<!-- Block -->
+<div class="overflow-hidden my-5 py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 col-xl-5">
+                <div class="ui-presentation-left ui-device macbook float-right">
+                    <img class="device-img" src="/img/devices/macbook-silver.png" alt>
+                    <div class="device-content">
+                        <img src="~/img/Reminder.PNG" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-lg-left text-center mx-auto mt-5 mt-lg-0">
+                <h1 class="display-4 font-secondary font-weight-semibold mb-5">
+                    Система напоминаний
+                </h1>
+                <p class="ui-company-text text-muted my-5">
+                    Часто забываете оплатить телефон, интернет или ЖКХ? Создавайте себе однократные или повторяющиеся напоминания.
+                </p>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('ReminderViewButton')">Попробовать →</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Block -->
+<div class="overflow-hidden my-5 py-5">
+    <div class="container">
+
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-xl-5 text-lg-left text-center mx-auto">
+                <h1 class="display-4 font-secondary font-weight-semibold mb-5">
+                    Все на одной странице
+                </h1>
+                <p class="ui-company-text text-muted my-5">
+                    Настраивайте главную страницу под себя . ?Динамическая  страница лично под вас
+                </p>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat"
+                   v-on:click="goToAppBudgetto('OneForAllViewButton')">Попробовать →</a>
+            </div>
+
+            <div class="col-lg-6 col-xl-5">
+                <div class="ui-presentation-right ui-device macbook float-left">
+                    <img class="device-img" src="/img/devices/macbook-gold.png" alt>
+                    <div class="device-content">
+                        <img src="~/img/Month.PNG" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Block -->
+
+<div id="screenshots" class="landing-block bg-lighter ">
     <div class="container px-3">
-        <div class="text-center text-lighter text-tiny font-weight-bold mb-3">SCREENSHOTS</div>
         <h1 class="display-4 font-secondary text-center font-weight-semibold">
-            Discover The App
+            Ваш Budgetto может выглядеть так:
         </h1>
     </div>
     <hr class="landing-separator border-primary mx-auto mt-5 mb-4">
 
     <div class="app-preview-slider-wrapper">
-        <div class="app-preview-slider swiper-container" id="landing-preview-slider">
+        <div class="app-preview-slider swiper-container" id="landing-preview-slider" style="width: 60%">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <img src="img/pages/app-1.png" alt="" class="img-fluid cursor-pointer">
+                    <img src="img/1.png" alt="" class="img-fluid cursor-pointer">
                 </div>
                 <div class="swiper-slide">
-                    <img src="img/pages/app-2.jpg" alt="" class="img-fluid cursor-pointer">
+                    <img src="img/2.png" alt="" class="img-fluid cursor-pointer">
                 </div>
                 <div class="swiper-slide">
-                    <img src="img/pages/app-3.jpg" alt="" class="img-fluid cursor-pointer">
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/pages/app-4.png" alt="" class="img-fluid cursor-pointer">
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/pages/app-5.png" alt="" class="img-fluid cursor-pointer">
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/pages/app-6.png" alt="" class="img-fluid cursor-pointer">
+                    <img src="img/3.png" alt="" class="img-fluid cursor-pointer">
                 </div>
             </div>
             <div class="swiper-pagination"></div>
@@ -248,174 +366,11 @@
 </div>
 <!-- / Block -->
 <!-- Block -->
-<div class="landing-block container px-3">
-
-    <div class="text-center text-lighter text-tiny font-weight-bold mb-3">INSIGHTS</div>
-    <h1 class="display-4 font-secondary text-center font-weight-semibold">
-        How It Works
-    </h1>
-
-    <hr class="landing-separator border-success mx-auto mt-5 mb-4">
-
-    <div class="row text-center">
-        <div class="col-md-4 my-4">
-            <div class="text-success mx-auto mb-4">
-                <span class="ui-icon font-weight-bolder">
-                    <i class="ion ion-md-aperture"></i>
-                </span>
-            </div>
-            <h5>Dapibus ac facilisis in</h5>
-            <div class="text-muted small">
-                Lorem ipsum dolor sit amet, ius virtute suscipit te. Ius prima euismod consequat eu, cu quo alii scriptorem
-            </div>
-        </div>
-        <div class="col-md-4 my-4">
-            <div class="text-success mx-auto mb-4">
-                <span class="ui-icon font-weight-bolder">
-                    <i class="ion ion-md-brush"></i>
-                </span>
-            </div>
-            <h5>Cras justo odio</h5>
-            <div class="text-muted small">
-                Etiam vivendo eu sea, purto ponderum mediocritatem at pro. Ex tantas invenire dissentiunt mea.
-            </div>
-        </div>
-        <div class="col-md-4 my-4">
-            <div class="text-success mx-auto mb-4">
-                <span class="ui-icon font-weight-bolder">
-                    <i class="ion ion-md-cloud-upload"></i>
-                </span>
-            </div>
-            <h5>Porta ac consectetur ac</h5>
-            <div class="text-muted small">
-                Iuvaret deleniti vulputate nec ne, id vix lucilius legendos deseruisse, harum honestatis cum te.
-            </div>
-        </div>
-    </div>
-
-    <div class="text-center mt-5">
-        <button type="button" class="landing-btn btn btn-success btn-lg">LEARN MORE</button>
-    </div>
-
-</div>
-<!-- / Block -->
-<!-- Block -->
-<div class="landing-block ui-bg-cover ui-bg-fixed ui-bg-overlay-container text-white" style="background-image: url('img/pages/landing-users.jpg');">
-    <div class="ui-bg-overlay bg-dark opacity-75"></div>
-    <div class="container px-3">
-
-        <div class="text-center text-tiny font-weight-bold opacity-50 mb-3">TESTIMONIALS</div>
-        <h1 class="display-4 font-secondary text-center font-weight-semibold mb-5">
-            What Our Users Say
-        </h1>
-
-        <hr class="landing-separator border-primary mx-auto mb-5">
-
-        <div class="col-md-10 col-lg-8 col-xl-7 position-relative px-5 mx-auto">
-            <div class="swiper-container w-auto text-center mx-3" id="landing-testimonials-slider">
-                <div class="swiper-wrapper align-items-stretch">
-
-                    <div class="swiper-slide h-auto">
-                        <img src="img/avatars/4-small.png" class="ui-w-80 rounded-circle" alt>
-                        <div class="ui-customer-review my-3">
-                            Lorem ipsum dolor sit amet, mel ea molestie erroribus consequuntur, munere iracundia percipitur ne usu, his saperet tractatos no.
-                        </div>
-                        <strong>Kenneth Frazier</strong>
-                        <br>
-                        <a href="#" class="text-white small opacity-75">example.com</a>
-                    </div>
-
-                    <div class="swiper-slide h-auto">
-                        <img src="img/avatars/5-small.png" class="ui-w-80 rounded-circle" alt>
-                        <div class="ui-customer-review my-3">
-                            Te nusquam erroribus mei, sensibus vulputate posidonium nam an, ad illud illum vel.
-                        </div>
-                        <strong>Nelle Maxwell</strong>
-                        <br>
-                        <a href="#" class="text-white small opacity-75">xyz.com</a>
-                    </div>
-
-                    <div class="swiper-slide h-auto">
-                        <img src="img/avatars/7-small.png" class="ui-w-80 rounded-circle" alt>
-                        <div class="ui-customer-review my-3">
-                            Mea cu quaeque debitis, ut pro graeco insolens, exerci timeam eos no. Ea eius simul placerat usu, augue delectus nec in.
-                        </div>
-                        <strong>Alice Hampton</strong>
-                        <br>
-                        <a href="#" class="text-white small opacity-75">Company Inc.</a>
-                    </div>
-
-                </div>
-            </div>
-
-            <div id="landing-testimonials-slider-next" class="swiper-button-next custom-icon">
-                <i class="lnr lnr-chevron-right text-lighter"></i>
-            </div>
-            <div id="landing-testimonials-slider-prev" class="swiper-button-prev custom-icon">
-                <i class="lnr lnr-chevron-left text-lighter"></i>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!-- / Block -->
-<!-- Block -->
-<div class="bg-white">
-    <div class="container px-3">
-        <div class="position-relative px-5">
-            <div class="swiper-container w-auto mx-3" id="landing-logos-slider">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-1.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-2.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-3.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-4.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-5.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-6.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-7.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-8.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-9.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-10.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/uikit/logo-11.png" class="img-fluid hoverable ui-img-grayscale" alt>
-                    </div>
-                </div>
-            </div>
-            <div id="landing-logos-slider-next" class="swiper-button-next custom-icon">
-                <i class="lnr lnr-chevron-right text-lighter text-tiny"></i>
-            </div>
-            <div id="landing-logos-slider-prev" class="swiper-button-prev custom-icon">
-                <i class="lnr lnr-chevron-left text-lighter text-tiny"></i>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Block -->
 <div id="pricing" class="landing-block container px-3">
 
-    <div class="text-center text-lighter text-tiny font-weight-bold mb-3">PRICING</div>
+    <div class="text-center text-lighter text-tiny font-weight-bold mb-3">ЦЕНА</div>
     <h1 class="display-4 font-secondary text-center font-weight-semibold">
-        Pay Only for What You Need
+        Плати только за то, что нужно
     </h1>
 
     <hr class="landing-separator border-primary my-5 mx-auto">
@@ -423,123 +378,71 @@
     <div class="row no-gutters row-bordered text-center pt-4">
 
         <div class="d-flex col-md flex-column py-4">
-            <h5 class="m-0">Basic</h5>
+            <h5 class="m-0">2 месяца</h5>
             <div class="flex-grow-1">
                 <div class="py-4 my-2">
-                    <span class="d-inline-block text-muted text-big align-middle mr-2">$</span>
-                    <span class="display-3 d-inline-block font-weight-bold align-middle">12</span>
-                    <span class="d-inline-block text-muted text-big align-middle ml-2">/ mo</span>
+                    <span class="display-3 d-inline-block font-weight-bold align-middle">0</span>
+                    <span class="d-inline-block text-muted text-big align-middle">₽</span>
+                    <span class="d-inline-block text-muted text-big align-middle ml-2">/ месяц</span>
                 </div>
-                <div class="pb-5">
-                    <p class="small mb-2">5 users</p>
-                    <p class="small mb-2">10 projects</p>
-                    <p class="small mb-0">100GB space</p>
+                <div class="pb-3">
+                    <p class="ui-company-text mb-2">Полный доступ ко всем функциям сервиса</p>
                 </div>
             </div>
             <div class="px-md-3 px-lg-5">
-                <button type="button" class="landing-btn btn btn-outline-primary btn-lg rounded-pill">SELECT</button>
+                <button type="button" class="landing-btn btn btn-outline-primary btn-lg rounded-pill"
+                        v-on:click="goToAppBudgetto('FreePriceButton')">
+                    Попробовать бесплатно
+                </button>
+            </div>
+            <div class="pb-5">
+                <p class="small mb-2 text-muted">0 чашек кофе в старбаксе</p>
             </div>
         </div>
 
         <div class="d-flex col-md flex-column py-4">
-            <h5 class="m-0">Professional</h5>
+            <h5 class="m-0">1 год</h5>
             <div class="flex-grow-1">
                 <div class="py-4 my-2">
-                    <span class="d-inline-block text-muted text-big align-middle mr-2">$</span>
-                    <span class="display-3 d-inline-block font-weight-bold align-middle">20</span>
-                    <span class="d-inline-block text-muted text-big align-middle ml-2">/ mo</span>
+                    <span class="display-3 d-inline-block font-weight-bold align-middle">37,5</span>
+                    <span class="d-inline-block text-muted text-big align-middle">₽</span>
+                    <span class="d-inline-block text-muted text-big align-middle ml-2">/ месяц</span>
                 </div>
-                <div class="pb-5">
-                    <p class="small mb-2">20 users</p>
-                    <p class="small mb-2">100 projects</p>
-                    <p class="small mb-0">300GB space</p>
+                <div class="pb-3">
+                    <p class="ui-company-text mb-2">Полный доступ ко всем функциям сервиса</p>
                 </div>
             </div>
             <div class="px-md-3 px-lg-5">
-                <button type="button" class="landing-btn btn btn-primary btn-lg rounded-pill">SELECT</button>
+                <button type="button" class="landing-btn btn btn-primary btn-lg rounded-pill"
+                        v-on:click="goToAppBudgetto('OneYearPriceButton')">
+                    Купить за 450 ₽ на 1 год
+                </button>
+            </div>
+            <div class="pb-5">
+                <p class="small mb-2 text-muted">2 чашки кофе в старбаксе</p>
             </div>
         </div>
 
         <div class="d-flex col-md flex-column py-4">
-            <h5 class="m-0">Team</h5>
+            <h5 class="m-0">3 года</h5>
             <div class="flex-grow-1">
                 <div class="py-4 my-2">
-                    <span class="d-inline-block text-muted text-big align-middle mr-2">$</span>
-                    <span class="display-3 d-inline-block font-weight-bold align-middle">50</span>
-                    <span class="d-inline-block text-muted text-big align-middle ml-2">/ mo</span>
-                </div>
-                <div class="pb-5">
-                    <p class="small mb-2">Unlimited users</p>
-                    <p class="small mb-2">Unlimited projects</p>
-                    <p class="small mb-0">1000GB space</p>
+                    <span class="display-3 d-inline-block font-weight-bold align-middle">33</span>
+                    <span class="d-inline-block text-muted text-big align-middle">₽</span>
+                    <span class="d-inline-block text-muted text-big align-middle ml-2">/ месяц</span>
+                    <div class="pb-3">
+                        <p class="ui-company-text mb-2">Полный доступ ко всем функциям сервиса</p>
+                    </div>
                 </div>
             </div>
             <div class="px-md-3 px-lg-5">
-                <button type="button" class="landing-btn btn btn-outline-primary btn-lg rounded-pill">SELECT</button>
+                <button type="button" class="landing-btn btn btn-outline-primary btn-lg rounded-pill"
+                        v-on:click="goToAppBudgetto('ThreeYearsPriceButton')">
+                    Купить за 1200 ₽ на 3 года
+                </button>
             </div>
-        </div>
-
-    </div>
-
-    <div class="text-center pt-4 mt-5">
-        <a href="#" class="text-muted">Get started with a 14-day no-obligation free trial</a>
-    </div>
-
-</div>
-<!-- / Block -->
-<!-- Block -->
-<div id="downloads" class="landing-block theme-bg-white">
-    <div class="container py-5 px-3 my-5">
-
-        <div class="col-md-10 col-lg-8 col-xl-7 text-center p-0 mx-auto">
-            <h1 class="display-4 font-secondary text-center">
-                <i class="lnr lnr-cloud-download text-primary text-big align-middle"></i>&nbsp;
-                <span class="font-weight-semibold align-middle">Downloads</span>
-            </h1>
-            <div class="lead text-muted mt-4 mb-5">
-                Lorem ipsum dolor sit amet, ad eam consul vituperata. Cum assum inimicus an, his ne liber aeterno debitis. Te his iudico tollit efficiendi.
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="rounded ui-bordered text-center mt-4">
-                    <div class="p-4 p-xl-5">
-                        <div class="display-2 text-windows mb-4">
-                            <i class="ion ion-logo-windows"></i>
-                        </div>
-                        <a href="#" class="btn btn-lg btn-outline-windows rounded-pill">
-                            Download for Windows
-                        </a>
-                        <div class="text-muted small mt-3">Requires Windows 7+</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="rounded ui-bordered text-center mt-4">
-                    <div class="p-4 p-xl-5">
-                        <div class="display-2 text-macos mb-4">
-                            <i class="ion ion-logo-apple"></i>
-                        </div>
-                        <a href="#" class="btn btn-lg btn-outline-macos rounded-pill">
-                            Download for Mac OS X
-                        </a>
-                        <div class="text-muted small mt-3">Requires Mac OS X 10.9+</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="rounded ui-bordered text-center mt-4">
-                    <div class="p-4 p-xl-5">
-                        <div class="display-2 text-linux mb-4">
-                            <i class="ion ion-logo-tux"></i>
-                        </div>
-                        <a href="#" class="btn btn-lg btn-outline-linux rounded-pill">
-                            Download for Linux
-                        </a>
-                        <div class="text-muted small mt-3">Requires Ubuntu/Debian</div>
-                    </div>
-                </div>
+            <div class="pb-5">
+                <p class="small mb-2 text-muted">5 чашек кофе в старбаксе</p>
             </div>
         </div>
 
@@ -547,95 +450,28 @@
 </div>
 <!-- / Block -->
 <!-- Block -->
-<div class="bg-lighter">
-    <div class="container py-2 px-3">
-        <div class="row row-bordered text-center">
+@*<div class="bg-lighter">
+        <div class="container py-2 px-3">
+            <div class="row row-bordered text-center">
 
-            <div class="col-md-4 line-height-1 py-3">
-                <h3 class="font-weight-semibold mb-1">356,566</h3>
-                <small class="text-light text-tiny">DOWNLOADS</small>
-            </div>
+                <div class="col-md-4 line-height-1 py-3">
+                    <h3 class="font-weight-semibold mb-1">356,566</h3>
+                    <small class="text-light text-tiny">DOWNLOADS</small>
+                </div>
 
-            <div class="col-md-4 line-height-1 py-3">
-                <h3 class="font-weight-semibold mb-1">221,332</h3>
-                <small class="text-light text-tiny">USERS</small>
-            </div>
+                <div class="col-md-4 line-height-1 py-3">
+                    <h3 class="font-weight-semibold mb-1">221,332</h3>
+                    <small class="text-light text-tiny">USERS</small>
+                </div>
 
-            <div class="col-md-4 line-height-1 py-3">
-                <h3 class="font-weight-semibold mb-1">4.8</h3>
-                <small class="text-light text-tiny">STARS</small>
-            </div>
+                <div class="col-md-4 line-height-1 py-3">
+                    <h3 class="font-weight-semibold mb-1">4.8</h3>
+                    <small class="text-light text-tiny">STARS</small>
+                </div>
 
-        </div>
-    </div>
-</div>
-<!-- / Block -->
-<!-- Block -->
-<div class="landing-block bg-light">
-    <div class="container px-3">
-
-        <div class="col-md-10 col-lg-8 col-xl-7 text-center p-0 mx-auto">
-            <h1 class="display-4 font-secondary font-weight-semibold">
-                The Crew
-            </h1>
-            <div class="lead text-muted pb-3 mt-4 mb-5">
-                Lorem ipsum dolor sit amet, ad eam consul vituperata. Cum assum inimicus an, his ne liber aeterno debitis. Te his iudico tollit efficiendi.
             </div>
         </div>
-
-        <div class="row text-center">
-            <div class="col-sm-6 col-lg-4 p-4">
-                <img src="img/avatars/1.png" class="ui-w-120 rounded-circle mb-4" alt>
-                <h5 class="font-weight-bold mb-2">Mike Greene</h5>
-                <div class="text-light small mb-3">Creative director</div>
-                <div class="text-muted small">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum maximus lectus eget auctor.
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 p-4">
-                <img src="img/avatars/2.png" class="ui-w-120 rounded-circle mb-4" alt>
-                <h5 class="font-weight-bold mb-2">Leon Wilson</h5>
-                <div class="text-light small mb-3">Curtomer support</div>
-                <div class="text-muted small">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum maximus lectus eget auctor.
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 p-4">
-                <img src="img/avatars/3.png" class="ui-w-120 rounded-circle mb-4" alt>
-                <h5 class="font-weight-bold mb-2">Allie Rodriguez</h5>
-                <div class="text-light small mb-3">CEO &amp; Design</div>
-                <div class="text-muted small">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum maximus lectus eget auctor.
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 p-4">
-                <img src="img/avatars/4.png" class="ui-w-120 rounded-circle mb-4" alt>
-                <h5 class="font-weight-bold mb-2">Kenneth Frazier</h5>
-                <div class="text-light small mb-3">Senior engineer</div>
-                <div class="text-muted small">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum maximus lectus eget auctor.
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 p-4">
-                <img src="img/avatars/5.png" class="ui-w-120 rounded-circle mb-4" alt>
-                <h5 class="font-weight-bold mb-2">Nellie Maxwell</h5>
-                <div class="text-light small mb-3">Financial director</div>
-                <div class="text-muted small">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum maximus lectus eget auctor.
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 p-4">
-                <img src="img/avatars/6.png" class="ui-w-120 rounded-circle mb-4" alt>
-                <h5 class="font-weight-bold mb-2">Mae Gibson</h5>
-                <div class="text-light small mb-3">UI/UX design</div>
-                <div class="text-muted small">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum maximus lectus eget auctor.
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
+    </div>*@
 <!-- / Block -->
 <!-- Block -->
 <div id="subscribe" class="bg-secondary text-white py-5">

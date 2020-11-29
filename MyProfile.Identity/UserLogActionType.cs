@@ -116,5 +116,19 @@
 
         public const string LandingPage_Enter = "LandingPage_Enter";
         public const string LandingPage_MovedToAppBudgetto = "LandingPage_MovedToAppBudgetto";
+        public const string LandingPage_MovedToAppBudgetto_HeaderButton = "LandingPage_MovedToAppBudgetto_HeaderButton";
+        public const string LandingPage_MovedToAppBudgetto_FirstViewButton = "LandingPage_MovedToAppBudgetto_FirstViewButton";
+        public const string LandingPage_MovedToAppBudgetto_SecondViewButton = "LandingPage_MovedToAppBudgetto_SecondViewButton";
+        public const string LandingPage_MovedToAppBudgetto_SectionViewButton = "LandingPage_MovedToAppBudgetto_SectionViewButton";
+        public const string LandingPage_MovedToAppBudgetto_RecordsViewButton = "LandingPage_MovedToAppBudgetto_RecordsViewButton";
+        public const string LandingPage_MovedToAppBudgetto_TableViewButton = "LandingPage_MovedToAppBudgetto_TableViewButton";
+        public const string LandingPage_MovedToAppBudgetto_LimitViewButton = "LandingPage_MovedToAppBudgetto_LimitViewButton";
+        public const string LandingPage_MovedToAppBudgetto_GoalsViewButton = "LandingPage_MovedToAppBudgetto_GoalsViewButton";
+        public const string LandingPage_MovedToAppBudgetto_ChartViewButton = "LandingPage_MovedToAppBudgetto_ChartViewButton";
+        public const string LandingPage_MovedToAppBudgetto_ReminderViewButton = "LandingPage_MovedToAppBudgetto_ReminderViewButton";
+        public const string LandingPage_MovedToAppBudgetto_OneForAllViewButton = "LandingPage_MovedToAppBudgetto_OneForAllViewButton";
+        public const string LandingPage_MovedToAppBudgetto_FreePriceButton = "LandingPage_MovedToAppBudgetto_FreePriceButton";
+        public const string LandingPage_MovedToAppBudgetto_OneYearPriceButton = "LandingPage_MovedToAppBudgetto_OneYearPriceButton";
+        public const string LandingPage_MovedToAppBudgetto_ThreeYearsPriceButton = "LandingPage_MovedToAppBudgetto_ThreeYearsPriceButton";
     }
 }

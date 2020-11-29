@@ -1,4 +1,4 @@
-﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4"
+﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4 px-1 mb-2"
      v-for="goalChartData in goalChartsData"
      v-show="goalChartData.isShow">
 
@@ -40,11 +40,11 @@
 
     @*v-bind:class="goalChartData.isOwner ? 'border-primary' : 'border-secondary'"*@
     @*v-bind:class="goalChartData.percent > 100 ? 'green-line' : ''"*@
-    <div class="card mb-4 custom-card-hover"
+    <div class="card custom-card-hover"
          v-bind:id="'goal_' + goalChartData.id"
          v-if="goalChartData.isDeleted == false">
         <div class="card-body card-body pb-0">
-            <div class="mb-3 d-inline-flex  align-items-center">
+            <div class="d-inline-flex  align-items-center">
                 <i class="lnr lnr-rocket text-primary float-left" style="font-size: x-large;"></i>
                 <strong class="pl-2">{{ goalChartData.name }}</strong>
             </div>
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body pt-2" style=" margin-top: 3px;">
             <div class="d-flex justify-content-between align-items-center small">
                 <div class="font-weight-bold">{{ goalChartData.percent }}%</div>
                 <div class="text-muted">

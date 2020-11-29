@@ -56,8 +56,8 @@
     @RenderSection("Styles", required: false)
 </head>
 
-<body >
-    <div id="page-vue" v-cloak>
+<body>
+    <div id="page-vue" class="theme-bg-white" v-cloak>
 
 
         <div class="page-loader">
@@ -67,7 +67,9 @@
         <!-- Navbar -->
         <nav class="landing-navbar navbar navbar-expand-lg navbar-light fixed-top pt-lg-4">
             <div class="container-fluid px-3">
-                <a href="#" class="navbar-brand text-big font-weight-bolder line-height-1 text-expanded py-3">LANDING</a>
+                <a href="javascript:void(0)" class="navbar-brand text-big font-weight-bolder line-height-1 text-expanded py-3">
+                    <img src="~/img/Logo-min.png" style="width: 180px;" />
+                </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#landing-navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -75,12 +77,13 @@
 
                 <div class="collapse navbar-collapse" id="landing-navbar-collapse">
                     <div class="navbar-nav align-items-lg-center ml-auto">
-                        <a class="anchor-link nav-item nav-link" href="#features">Features</a>
-                        <a class="anchor-link nav-item nav-link" href="#screenshots">Screenshots</a>
-                        <a class="anchor-link nav-item nav-link" href="#pricing">Pricing</a>
-                        <a class="anchor-link nav-item nav-link" href="#subscribe">Subscribe</a>
+                        <a class="nav-item nav-link" href="javascript:void(0)" v-on:click="go_to('#how-it-works')">Как работает сервис</a>
+                        <a class="nav-item nav-link" href="javascript:void(0)" v-on:onclick="go_to('#pricing')">Цены</a>
                         <div class="nav-item py-3 py-lg-0 ml-lg-4">
-                            <a href="#downloads" class="anchor-link btn btn-primary rounded-pill text-expanded"><small>DOWNLOAD</small></a>
+                            <a href="javascript:void(0)" class="btn btn-primary rounded-pill text-expanded"
+                               onclick="PageVue.goToAppBudgetto('HeaderButton')">
+                                <small>Войти</small>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -89,49 +92,41 @@
         <!-- / Navbar -->
         @RenderBody()
 
-        <!-- Footer -->
-        <nav class="footer bg-white pt-4">
-            <div class="container text-center py-4">
-                <div class="pb-3">
-                    <a href="#" class="footer-text text-big font-weight-bolder text-expanded">LANDING</a>
-                    <span class="align-top">©</span>
+        <!-- Layout footer -->
+        <nav class="layout-footer footer bg-footer-theme">
+            <div class="container-fluid d-flex flex-wrap justify-content-between  container-p-x pb-3">
+                <div class="pt-3">
+                    Разработка сайта by
+                    <img src="~/img/raynovgroup-logo.ico" class="ui-w-20" />
+                    <a href="https://www.raynovgroup.com" target="_blank" class="footer-text font-weight-bolder text-decoration-hover">RaynovGroup</a> ©
                 </div>
-                <hr class="mb-4">
-                <div class="row">
-                    <div class="col-6 col-sm pb-4">
-                        <div class="footer-text font-secondary text-tiny font-weight-bold mb-3">ABOUT US</div>
-                        <a href="#" class="footer-link d-block small pb-2">About</a>
-                        <a href="#" class="footer-link d-block small pb-2">Our Story</a>
-                        <a href="#" class="footer-link d-block small pb-2">Careers</a>
-                    </div>
-                    <div class="col-6 col-sm pb-4">
-                        <div class="footer-text font-secondary text-tiny font-weight-bold mb-3">SUPPORT</div>
-                        <a href="#" class="footer-link d-block small pb-2">FAQ</a>
-                        <a href="#" class="footer-link d-block small pb-2">Support</a>
-                        <a href="#" class="footer-link d-block small pb-2">Consultant</a>
-                    </div>
-                    <div class="col-6 col-sm pb-4">
-                        <div class="footer-text font-secondary text-tiny font-weight-bold mb-3">PARTNERS</div>
-                        <a href="#" class="footer-link d-block small pb-2">Wholesale</a>
-                        <a href="#" class="footer-link d-block small pb-2">Office solutions</a>
-                        <a href="#" class="footer-link d-block small pb-2">Press Resource</a>
-                    </div>
-                    <div class="col-6 col-sm pb-4">
-                        <div class="footer-text font-secondary text-tiny font-weight-bold mb-3">CONNECT</div>
-                        <a href="#" class="footer-link d-block small pb-2">
-                            <i class="ion ion-logo-twitter text-twitter"></i> &nbsp;Twitter
+                <div class="pt-3">
+                    @*<a class="text-twitter text-big" href="javascript:void(0)">
+                            <i class="ion ion-logo-twitter"></i>
                         </a>
-                        <a href="#" class="footer-link d-block small pb-2">
-                            <i class="ion ion-logo-facebook text-facebook"></i> &nbsp;Facebook
+                        &nbsp; &nbsp;
+                        <a class="text-facebook text-big" href="javascript:void(0)">
+                            <i class="ion ion-logo-facebook"></i>
                         </a>
-                        <a href="#" class="footer-link d-block small pb-2">
-                            <i class="ion ion-logo-instagram text-instagram"></i> &nbsp;Instagram
-                        </a>
-                    </div>
+                        &nbsp; &nbsp;*@
+                    <a class="text-instagram text-big" href="javascript:void(0)">
+                        <i class="ion ion-logo-instagram"></i>
+                    </a>
+                    <a href="mailto:support@budgetto.org?subject=Предложение по сайту app.budgetto.org" target="_blank" class="footer-link ml-4">
+                        support@budgetto.org
+                    </a>
                 </div>
             </div>
+            <div class="container-fluid d-flex flex-wrap justify-content-between container-p-x pb-3">
+                <div class="pt-1">
+                    <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="footer-link mr-4"
+                       onclick="ShowDocument('personal_data_processing_policy')">Политика конфиденциальности</a>
+                    <a href="~/documents/terms_of_use.pdf" target="_blank" class="footer-link mr-4"
+                       onclick="ShowDocument('terms_of_use')">Пользовательское соглашение</a>
+                </div>
+                <div class="pt-1">© 2020 Управление финансами Budgetto.org</div>
+            </div>
         </nav>
-        <!-- / Footer -->
     </div>
     <!-- Core scripts -->
     <script src="vendor/libs/popper/popper.js"></script>
@@ -145,7 +140,7 @@
     <script src="~/vendor/libs/lettering/lettering.min.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/textillate/textillate.min.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
-   
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

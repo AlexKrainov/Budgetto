@@ -1,4 +1,4 @@
-﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4"
+﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4 px-1"
      v-for="limitChartData in limitsChartsData"
      v-show="limitChartData.isShow">
     <div class="card ui-bordered custom-card-hover mb-2" v-bind:class="limitChartData.percent1 == 100 ? 'red-bottom-line' : ''">
@@ -17,8 +17,8 @@
             </h6>*@
         <div class="media align-items-center p-3">
             @* style="padding-top: 0px !important;" *@
-            <div class="media-body small mr-3">
-                <div class="mb-3 d-inline-flex  align-items-center">
+            <div class="media-body mr-3">
+                <div class="mb-2 d-inline-flex  align-items-center">
                     <i class="lnr lnr-frame-expand text-primary float-left" style="font-size: x-large;"></i>
                     <strong class="pl-2">{{ limitChartData.name }}</strong>
                 </div>
@@ -33,10 +33,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-1">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney).replace(/\D00(?=\D*$)/, '') }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney).replace(/\D00(?=\D*$)/, '') }}</div>
-                <div>{{ limitChartData.text }} {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay).replace(/\D00(?=\D*$)/, '') }}</div>
+                <div class="mb-1 ">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney).replace(/\D00(?=\D*$)/, '') }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney).replace(/\D00(?=\D*$)/, '') }}</div>
+                <div class="small">{{ limitChartData.text }} {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay).replace(/\D00(?=\D*$)/, '') }}</div>
             </div>
-            <div class="d-flex align-items-center position-relative" style="height:60px;width: 60px;">
+            <div class="d-flex align-items-center position-relative " style="height:60px;width: 60px;">
                 <div class="w-100 position-absolute" style="height:60px;top:0;">
                     <canvas v-bind:id="limitChartData.chartID"></canvas>
                 </div>

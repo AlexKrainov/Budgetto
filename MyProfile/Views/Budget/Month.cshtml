@@ -81,10 +81,10 @@
     <div class="row" id="goal-contrainer">
         @await Html.PartialAsync("_GoalsView")
     </div>
-    <div class="row">
+    <div class="row px-1">
         @await Html.PartialAsync("_BigChartView", "/Budget/Month")
     </div>
-    <div class="card table-container mt-2">
+    <div class="card table-container">
         <div class="card-body" style="padding-bottom:5px;">
             <div class="card-title with-elements templates-container">
                 <select id="templates" v-model="templateID" style="width: 300px"

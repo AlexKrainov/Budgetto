@@ -1,4 +1,5 @@
-﻿var PageVue = new Vue({
+﻿
+var PageVue = new Vue({
     el: "#page-vue",
     data: {
         userSessionID: null,
@@ -129,10 +130,10 @@
         }
     },
     methods: {
-        goToAppBudgetto: function () {
+        goToAppBudgetto: function (linkName) {
             return $.ajax({
                 type: "GET",
-                url: "/Home/GoToBudgetto?id=" + PageVue.userSessionID,
+                url: "/Home/GoToBudgetto?id=" + PageVue.userSessionID + "&linkName=" + linkName,
                 context: this,
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -325,7 +326,11 @@
                 cookies: cookieEnabled,
                 flashVersion: flashVersion
             }
+        },
+        go_to: function (name) {
+            $("html, body").animate({
+                scrollTop: $(name).offset().top 
+            }, 1000);
         }
-
     }
 });

@@ -1,5 +1,5 @@
 ﻿<section class="card custom-card-hover" v-for="chartData in bigChartsData"
-         v-bind:class="chartData.isBig ? 'mt-4 col-12' : 'col-12 col-sm-12 col-md-6 p-2'"
+         v-bind:class="chartData.isBig ? 'col-12 px-1 mb-2' : 'col-12 col-sm-12 col-md-6 p-2 px-1 mb-2'"
          v-show="chartData.isShow"
          v-bind:id="'bigChart_'+chartData.chartID">
     <article>
