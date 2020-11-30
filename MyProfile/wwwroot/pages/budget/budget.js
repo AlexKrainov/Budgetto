@@ -689,7 +689,7 @@
                         count = reminder.count;
                     }
 
-                    icons += `<span class="mr-3"><i class="${reminder.cssIcon}" title="${reminder.titles}"></i><span class="reminder-count">${count}</span></span>`;
+                    icons += `<span class="mr-1"><i class="${reminder.cssIcon}" title="${reminder.titles}"></i><span class="reminder-count">${count}</span></span>`;
                 }
                 return icons;
             }

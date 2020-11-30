@@ -34,6 +34,7 @@ namespace MyProfile.LandingPage.Controllers
 
             return Json(new { isOk = true, userSessionID });
         }
+
         public IActionResult GoToBudgetto(Guid id, string linkName)
         {
             if (linkName == "HeaderButton")
@@ -92,6 +93,10 @@ namespace MyProfile.LandingPage.Controllers
             {
                 userLogService.CreateUserLog(id, UserLogActionType.LandingPage_MovedToAppBudgetto_ThreeYearsPriceButton);
             }
+            else if (linkName == "EmailButton")
+            {
+                userLogService.CreateUserLog(id, UserLogActionType.LandingPage_MovedToAppBudgetto_EmailButton);
+            }
             else
             {
                 userLogService.CreateUserLog(id, UserLogActionType.LandingPage_MovedToAppBudgetto);
@@ -100,6 +105,63 @@ namespace MyProfile.LandingPage.Controllers
             return Json(new { isOk = true, id });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ShowDocument(string name)
+        {
+            Guid usID = Guid.Empty;
+            if (Request.Cookies.ContainsKey(UserInfo.USER_SESSION_ID))
+            {
+                Guid.TryParse(Request.Cookies[UserInfo.USER_SESSION_ID].ToString(), out usID);
+            }
 
+            var userLogActionType = string.Empty;
+
+            if (name != null)
+            {
+                switch (name)
+                {
+                    case "cookie_policy":
+                        userLogActionType = UserLogActionType.Document_CookiePolicy;
+                        break;
+                    case "personal_data_processing_policy":
+                        userLogActionType = UserLogActionType.Document_PersonalDataProcessingPolicy;
+                        break;
+                    case "terms_of_use":
+                        userLogActionType = UserLogActionType.Document_TermsOfUse;
+                        break;
+                    default:
+                        userLogActionType = "documents_";
+                        break;
+                }
+            }
+
+            try
+            {
+                await userLogService.CreateUserLogAsync(usID, userLogActionType);
+            }
+            catch (Exception ex)
+            {
+            }
+            return Json(new { isOk = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowMore(string name)
+        {
+            Guid usID = Guid.Empty;
+            if (Request.Cookies.ContainsKey(UserInfo.USER_SESSION_ID))
+            {
+                Guid.TryParse(Request.Cookies[UserInfo.USER_SESSION_ID].ToString(), out usID);
+            }
+
+            try
+            {
+                await userLogService.CreateUserLogAsync(usID, UserLogActionType.LandingPage_ShowMore);
+            }
+            catch (Exception ex)
+            {
+            }
+            return Json(new { isOk = true });
+        }
     }
 }

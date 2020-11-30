@@ -130,5 +130,7 @@
         public const string LandingPage_MovedToAppBudgetto_FreePriceButton = "LandingPage_MovedToAppBudgetto_FreePriceButton";
         public const string LandingPage_MovedToAppBudgetto_OneYearPriceButton = "LandingPage_MovedToAppBudgetto_OneYearPriceButton";
         public const string LandingPage_MovedToAppBudgetto_ThreeYearsPriceButton = "LandingPage_MovedToAppBudgetto_ThreeYearsPriceButton";
+        public const string LandingPage_MovedToAppBudgetto_EmailButton = "LandingPage_MovedToAppBudgetto_EmailButton";
+        public const string LandingPage_ShowMore = "LandingPage_ShowMore";
     }
 }

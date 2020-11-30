@@ -82,11 +82,11 @@ namespace MyProfile.LandingPage
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-#if true
+#if false
             //string connection = Configuration.GetConnectionString("TestConnection");
             string connection = Configuration.GetConnectionString("TestRegRuConnection");
 #else
-            //string connection = Configuration.GetConnectionString("PROD_Connection");
+            string connection = Configuration.GetConnectionString("PROD_Connection");
 #endif
 
             services.AddMemoryCache();

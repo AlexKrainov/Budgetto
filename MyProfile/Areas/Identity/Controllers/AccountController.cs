@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.Login;
 using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
@@ -47,7 +48,7 @@ namespace MyProfile.Areas.Identity.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string ReturnUrl, Guid? id)//Guid? userSessionID)
+        public async Task<IActionResult> Login(string ReturnUrl, Guid? id, string email)//Guid? userSessionID)
         {
             if (await userLogService.CreateAndCheckIP())
             {
@@ -90,11 +91,11 @@ namespace MyProfile.Areas.Identity.Controllers
                 {
                     Guid userSessionID = await userLogService.CreateSession();
 
-                    return View(userSessionID);
+                    return View(new LoginModelView { UserSessionID = userSessionID, Email = email });
                 }
                 else
                 {
-                    return View(id);
+                    return View(new LoginModelView { UserSessionID = id ?? Guid.Empty, Email = email });
                 }
             }
             else

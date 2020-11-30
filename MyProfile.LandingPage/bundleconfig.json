@@ -4,5 +4,11 @@
     "inputFiles": [
       "wwwroot/js/site.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/landing.min.css",
+    "inputFiles": [
+      "wwwroot/css/landing.css"
+    ]
   }
 ]

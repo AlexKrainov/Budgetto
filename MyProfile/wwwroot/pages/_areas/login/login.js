@@ -127,6 +127,10 @@
         this.person_data.userSessionID = this.userSessionID;
         this.person_data.referrer = document.referrer;
 
+        if (Email) {
+            this.email = Email;
+        }
+
         if (UserSessionID && document.location.href.includes("id=") && document.location.href.includes("isLandingPage=true")) {
             return;
         }

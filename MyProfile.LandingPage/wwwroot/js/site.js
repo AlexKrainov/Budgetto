@@ -3,6 +3,7 @@ var PageVue = new Vue({
     el: "#page-vue",
     data: {
         userSessionID: null,
+        email: null,
 
         isSaving: false,
         person_data: {
@@ -138,11 +139,19 @@ var PageVue = new Vue({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
-                    document.location.href = "https://localhost:44394/Identity/Account/Login?isLandingPage=true&id=" + this.userSessionID;
+                    let str = "";
+                    if (this.email) {
+                        str = "&email=" + this.email;
+                    }
+                    document.location.href = "https://app.budgetto.org/Identity/Account/Login?isLandingPage=true&id=" + this.userSessionID + str;
                     return response;
                 },
                 error: function (xhr, status, error) {
-                    document.location.href = "https://localhost:44394/Identity/Account/Login?isLandingPage=true&id=" + this.userSessionID;
+                    let str = "";
+                    if (this.email) {
+                        str = "&email=" + this.email;
+                    }
+                    document.location.href = "https://app.budgetto.org/Identity/Account/Login?isLandingPage=true&id=" + this.userSessionID + str;
                     console.log(error);
                 }
             });
@@ -329,8 +338,34 @@ var PageVue = new Vue({
         },
         go_to: function (name) {
             $("html, body").animate({
-                scrollTop: $(name).offset().top 
+                scrollTop: $(name).offset().top - (name == "#how-it-works" ? 50 : 0)
             }, 1000);
+        },
+        showDocument: function (name) {
+            return $.ajax({
+                type: "GET",
+                url: "/Home/ShowDocument?name=" + name,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        },
+        showMore: function () {
+            return $.ajax({
+                type: "GET",
+                url: "/Home/ShowMore",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                }
+            });
         }
     }
 });

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MyProfile.Entity.ModelView.Login.LoginModelView
+@{
     Layout = "LayoutBlank";
 }
 
@@ -18,7 +19,8 @@
     <script src="~/vendor/libs/textillate/textillate.min.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/vue/dist/vue.min.js" asp-append-version="true"></script>
     <script>
-        var UserSessionID = '@Model';
+        var UserSessionID = '@Model.UserSessionID';
+        var Email = '@Model.Email';
     </script>
     <script src="~/pages/_areas/login/login.min.js" asp-append-version="true"></script>
 }

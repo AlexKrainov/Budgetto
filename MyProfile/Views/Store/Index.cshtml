@@ -30,6 +30,88 @@
         Подтвердить
     </button>
 
+    <div id="pricing" class="landing-block container px-1">
+
+        <h1 class="display-4 font-secondary text-center font-weight-semibold">
+            Цены
+        </h1>
+
+        <hr class="landing-separator border-primary my-5 mx-auto">
+
+        <div class="row no-gutters row-bordered text-center pt-4">
+
+            <div class="d-flex col-md flex-column py-4">
+                <h5 class="m-0">2 месяца</h5>
+                <div class="flex-grow-1">
+                    <div class="py-4 my-2">
+                        <span class="display-3 d-inline-block font-weight-bold align-middle">0</span>
+                        <span class="d-inline-block text-muted text-big align-middle">₽</span>
+                        <span class="d-inline-block text-muted text-big align-middle ml-2">/ месяц</span>
+                    </div>
+                    <div class="pb-3">
+                        <p class="ui-company-text mb-2">Полный доступ ко всем функциям сервиса</p>
+                    </div>
+                </div>
+                <div class="px-md-3 px-lg-5">
+                    <button type="button" class="landing-btn btn btn-outline-primary btn-lg rounded-pill"
+                            >
+                        Попробовать бесплатно
+                    </button>
+                </div>
+                <div class="pb-5">
+                    <p class="small mb-2 text-muted">0 чашек кофе в старбаксе</p>
+                </div>
+            </div>
+
+            <div class="d-flex col-md flex-column py-4">
+                <h5 class="m-0">1 год</h5>
+                <div class="flex-grow-1">
+                    <div class="py-4 my-2">
+                        <span class="display-3 d-inline-block font-weight-bold align-middle">38</span>
+                        <span class="d-inline-block text-muted text-big align-middle">₽</span>
+                        <span class="d-inline-block text-muted text-big align-middle ml-2">/ месяц</span>
+                    </div>
+                    <div class="pb-3">
+                        <p class="ui-company-text mb-2">Полный доступ ко всем функциям сервиса</p>
+                    </div>
+                </div>
+                <div class="px-md-3 px-lg-5">
+                    <button type="button" class="landing-btn btn btn-primary btn-lg rounded-pill"
+                            >
+                        Купить за 450 ₽ на 1 год
+                    </button>
+                </div>
+                <div class="pb-5">
+                    <p class="small mb-2 text-muted">2 чашки кофе в старбаксе</p>
+                </div>
+            </div>
+
+            <div class="d-flex col-md flex-column py-4">
+                <h5 class="m-0">3 года</h5>
+                <div class="flex-grow-1">
+                    <div class="py-4 my-2">
+                        <span class="display-3 d-inline-block font-weight-bold align-middle">33</span>
+                        <span class="d-inline-block text-muted text-big align-middle">₽</span>
+                        <span class="d-inline-block text-muted text-big align-middle ml-2">/ месяц</span>
+                    </div>
+                    <div class="pb-3">
+                        <p class="ui-company-text mb-2">Полный доступ ко всем функциям сервиса</p>
+                    </div>
+                </div>
+                <div class="px-md-3 px-lg-5">
+                    <button type="button" class="landing-btn btn btn-outline-primary btn-lg rounded-pill"
+                            >
+                        Купить за 1200 ₽ на 3 года
+                    </button>
+                </div>
+                <div class="pb-5">
+                    <p class="small mb-2 text-muted">5 чашек кофе в старбаксе</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="callout callout-success mt-3" v-show="textMessage">
         <button type="button" class="close" data-dismiss="alert" v-on:click="textMessage = null">×</button>
         {{ textMessage }}

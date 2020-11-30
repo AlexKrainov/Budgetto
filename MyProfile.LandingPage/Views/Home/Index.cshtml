@@ -1,17 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Регистрация аккаунта";
     Layout = "_Layout";
 }
 
 @section Styles {
     <!-- Page -->
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/pages/authentication.css">
-    <link href="~/vendor/libs/animate-css/animate.css" asp-append-version="true" rel="stylesheet" />
-    <style>
-        .error {
-            border: 1px solid var(--red) !important;
-        }
-    </style>
 }
 @section Scripts {
 
@@ -19,7 +12,7 @@
         var UserSessionID = "@Model";
         var ip = "@this.Context.Connection.RemoteIpAddress.ToString()";
     </script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
 }
 <!-- Header -->
 <div class="swiper-container" id="landing-slider-parallax">
@@ -36,7 +29,7 @@
                             Контролируй свои финансы
                         </h1>
                         <p class="lead text-muted pb-3">
-                            Привычный учет финансов в таблице
+                            Привычный учёт финансов в таблице
                         </p>
                         <div class="mt-2">
                             <a href="javascript:void(0)" class="landing-btn btn btn-lg rounded-pill btn-primary"
@@ -46,9 +39,9 @@
 
                     <div class="col-lg-5 text-center pl-lg-5" data-swiper-parallax="100%" data-swiper-parallax-opacity="0">
                         <div class="ui-presentation-right ui-device macbook float-left rounded">
-                            <img class="device-img" src="img/devices/macbook-gold.png" alt>
+                            <img class="device-img" src="img/devices/macbook-gold-min.png" alt>
                             <div class="device-content">
-                                <img src="~/img/Main_4.PNG" />
+                                <img src="~/img/Main_4-min.png" />
                             </div>
                         </div>
                     </div>
@@ -72,7 +65,7 @@
                             </p>
                             <div class="mt-2" data-swiper-parallax-y="-100">
                                 <a href="javascript:void(0)" class="landing-btn btn btn-lg rounded-pill btn-primary"
-                                   v-on:click="goToAppBudgetto('SecondViewButton')">Попробовать</a>
+                                   v-on:click="goToAppBudgetto('SecondViewButton')">Попробовать бесплатно</a>
                                 </a>
                             </div>
                         </div>
@@ -83,7 +76,7 @@
                 <div class="flex-grow-0 mx-3">
                     <div class="ui-window w-100 rounded-top mx-auto" style="max-width:800px;max-height:250px;" data-swiper-parallax="0" data-swiper-parallax-opacity="0" data-swiper-parallax-duration="1500">
                         <div class="window-content">
-                            <img src="~/img/Main_5.PNG" alt>
+                            <img src="~/img/Main_5-min.png" alt>
                         </div>
                     </div>
                 </div>
@@ -100,7 +93,7 @@
     </div>
 </div>
 <!-- / Header -->
-<div class="jumbotron bg-lighter py-5 m-0">
+<div class="jumbotron bg-lighter py-5 m-0" id="how-it-works">
     <div class="row align-items-center">
         <div class="col-md-10 col-lg-8 col-xl-7 text-center p-0 mx-auto">
             <div class="display-3 text-primary mb-4">
@@ -120,9 +113,9 @@
 
             <div class="col-lg-6 col-xl-5">
                 <div class="ui-presentation-left ui-device macbook float-right">
-                    <img class="device-img" src="/img/devices/macbook-silver.png" alt>
+                    <img class="device-img" src="/img/devices/macbook-silver-min.png" alt>
                     <div class="device-content">
-                        <img src="~/img/Section.PNG" />
+                        <img src="~/img/Section-min.png" />
                     </div>
                 </div>
             </div>
@@ -139,6 +132,7 @@
         </div>
     </div>
 </div>
+
 <!-- Block -->
 <div class="overflow-hidden bg-lighter my-5 py-5">
     <div class="container">
@@ -147,17 +141,16 @@
             <div class="col-lg-6 col-xl-5 text-lg-left text-center mx-auto">
                 <h1 class="display-4 font-secondary font-weight-semibold mb-5">Добавляйте одну или несколько записей сразу</h1>
                 <p class="ui-company-text text-muted my-5">
-                    Не хотите долго заполнять все ваши расходы  или доходы за день? Вводите суммы, выбирайте нужные категории и все готово
-                    Быстрый ввод данных о доходах и расходах - добавляйте все суммы сразу или клавишу "Enter"
+                    Вводите все суммы сразу и присваивайте им разные категории.
                 </p>
                 <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('RecordsViewButton')">Попробовать →</a>
             </div>
 
             <div class="col-lg-6 col-xl-5">
                 <div class="ui-presentation-right ui-device macbook float-left">
-                    <img class="device-img" src="/img/devices/macbook-gold.png" alt>
+                    <img class="device-img" src="/img/devices/macbook-gold-min.png" alt>
                     <div class="device-content">
-                        <img src="~/img/Records.PNG" />
+                        <img src="~/img/Records-min.png" />
                     </div>
                 </div>
             </div>
@@ -175,9 +168,9 @@
 
             <div class="col-lg-6 col-xl-5">
                 <div class="ui-presentation-left ui-device macbook float-right">
-                    <img class="device-img" src="/img/devices/macbook-silver.png" alt>
+                    <img class="device-img" src="/img/devices/macbook-silver-min.png" alt>
                     <div class="device-content">
-                        <img src="~/img/Table.PNG" />
+                        <img src="~/img/Table-min.png" />
                     </div>
                 </div>
             </div>
@@ -212,9 +205,9 @@
 
             <div class="col-lg-6 col-xl-5">
                 <div class="ui-presentation-right ui-device macbook float-left">
-                    <img class="device-img" src="/img/devices/macbook-gold.png" alt>
+                    <img class="device-img" src="/img/devices/macbook-gold-min.png" alt>
                     <div class="device-content">
-                        <img src="~/img/Limits.PNG" />
+                        <img src="~/img/Limits-min.png" />
                     </div>
                 </div>
             </div>
@@ -232,9 +225,9 @@
 
             <div class="col-lg-6 col-xl-5">
                 <div class="ui-presentation-left ui-device macbook float-right">
-                    <img class="device-img" src="/img/devices/macbook-silver.png" alt>
+                    <img class="device-img" src="/img/devices/macbook-silver-min.png" alt>
                     <div class="device-content">
-                        <img src="~/img/goals.PNG" />
+                        <img src="~/img/goals-min.png" />
                     </div>
                 </div>
             </div>
@@ -253,7 +246,14 @@
     </div>
 </div>
 <!-- Block -->
+@*<div class="text-center mt-5">
+        <a data-toggle="collapse" href="#collapseFilter" class="btn btn-primary btn-lg" v-on:click="showMore">Показать больше</a>
+    </div>
 
+    <div id="collapseFilter" class="table-responsive bg-light collapse" style="">
+        asdf
+
+    </div>*@
 <div class="overflow-hidden bg-lighter my-5 py-5">
     <div class="container">
 
@@ -270,9 +270,9 @@
 
             <div class="col-lg-6 col-xl-5">
                 <div class="ui-presentation-right ui-device macbook float-left">
-                    <img class="device-img" src="/img/devices/macbook-gold.png" alt>
+                    <img class="device-img" src="/img/devices/macbook-gold-min.png" alt>
                     <div class="device-content">
-                        <img src="~/img/Chart.PNG" />
+                        <img src="~/img/Chart-min.png" />
                     </div>
                 </div>
             </div>
@@ -289,9 +289,9 @@
 
             <div class="col-lg-6 col-xl-5">
                 <div class="ui-presentation-left ui-device macbook float-right">
-                    <img class="device-img" src="/img/devices/macbook-silver.png" alt>
+                    <img class="device-img" src="/img/devices/macbook-silver-min.png" alt>
                     <div class="device-content">
-                        <img src="~/img/Reminder.PNG" />
+                        <img src="~/img/Reminder-min.png" />
                     </div>
                 </div>
             </div>
@@ -309,6 +309,7 @@
         </div>
     </div>
 </div>
+
 <!-- Block -->
 <div class="overflow-hidden my-5 py-5">
     <div class="container">
@@ -316,10 +317,10 @@
         <div class="row align-items-center">
             <div class="col-lg-6 col-xl-5 text-lg-left text-center mx-auto">
                 <h1 class="display-4 font-secondary font-weight-semibold mb-5">
-                    Все на одной странице
+                    Всё на одной странице
                 </h1>
                 <p class="ui-company-text text-muted my-5">
-                    Настраивайте главную страницу под себя . ?Динамическая  страница лично под вас
+                    Настраивайте главную страницу под себя.
                 </p>
                 <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat"
                    v-on:click="goToAppBudgetto('OneForAllViewButton')">Попробовать →</a>
@@ -327,9 +328,9 @@
 
             <div class="col-lg-6 col-xl-5">
                 <div class="ui-presentation-right ui-device macbook float-left">
-                    <img class="device-img" src="/img/devices/macbook-gold.png" alt>
+                    <img class="device-img" src="/img/devices/macbook-gold-min.png" alt>
                     <div class="device-content">
-                        <img src="~/img/Month.PNG" />
+                        <img src="~/img/Month-min.png" />
                     </div>
                 </div>
             </div>
@@ -351,13 +352,40 @@
         <div class="app-preview-slider swiper-container" id="landing-preview-slider" style="width: 60%">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <img src="img/1.png" alt="" class="img-fluid cursor-pointer">
+                    <img src="img/0-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
+                    <p class="ui-company-text text-muted mt-4">
+                        Страница "Финансы на месяц"
+                    </p>
                 </div>
                 <div class="swiper-slide">
-                    <img src="img/2.png" alt="" class="img-fluid cursor-pointer">
+                    <img src="img/1-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
+                    <p class="ui-company-text text-muted mt-4">
+                        Страница "Финансы на месяц"
+                    </p>
                 </div>
                 <div class="swiper-slide">
-                    <img src="img/3.png" alt="" class="img-fluid cursor-pointer">
+                    <img src="img/2-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
+                    <p class="ui-company-text text-muted mt-4">
+                        Страница "Финансы на год"
+                    </p>
+                </div>
+                <div class="swiper-slide">
+                    <img src="img/3-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
+                    <p class="ui-company-text text-muted mt-4">
+                        Таблица на странице "Финансы на месяц"
+                    </p>
+                </div>
+                <div class="swiper-slide">
+                    <img src="img/4-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
+                    <p class="ui-company-text text-muted mt-4">
+                        Таблица на странице "Финансы на год"
+                    </p>
+                </div>
+                <div class="swiper-slide">
+                    <img src="img/5-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
+                    <p class="ui-company-text text-muted mt-4">
+                        История
+                    </p>
                 </div>
             </div>
             <div class="swiper-pagination"></div>
@@ -366,11 +394,10 @@
 </div>
 <!-- / Block -->
 <!-- Block -->
-<div id="pricing" class="landing-block container px-3">
+<div id="pricing" class="landing-block container px-1">
 
-    <div class="text-center text-lighter text-tiny font-weight-bold mb-3">ЦЕНА</div>
     <h1 class="display-4 font-secondary text-center font-weight-semibold">
-        Плати только за то, что нужно
+        Цены
     </h1>
 
     <hr class="landing-separator border-primary my-5 mx-auto">
@@ -404,7 +431,7 @@
             <h5 class="m-0">1 год</h5>
             <div class="flex-grow-1">
                 <div class="py-4 my-2">
-                    <span class="display-3 d-inline-block font-weight-bold align-middle">37,5</span>
+                    <span class="display-3 d-inline-block font-weight-bold align-middle">38</span>
                     <span class="d-inline-block text-muted text-big align-middle">₽</span>
                     <span class="d-inline-block text-muted text-big align-middle ml-2">/ месяц</span>
                 </div>
@@ -430,9 +457,9 @@
                     <span class="display-3 d-inline-block font-weight-bold align-middle">33</span>
                     <span class="d-inline-block text-muted text-big align-middle">₽</span>
                     <span class="d-inline-block text-muted text-big align-middle ml-2">/ месяц</span>
-                    <div class="pb-3">
-                        <p class="ui-company-text mb-2">Полный доступ ко всем функциям сервиса</p>
-                    </div>
+                </div>
+                <div class="pb-3">
+                    <p class="ui-company-text mb-2">Полный доступ ко всем функциям сервиса</p>
                 </div>
             </div>
             <div class="px-md-3 px-lg-5">
@@ -478,15 +505,19 @@
     <div class="container px-3">
         <div class="row align-items-center">
 
-            <div class="font-secondary col-md-5 col-lg-4 text-xlarge font-weight-light">
-                Join Our Newsletter
+            <div class="font-secondary col-md-6 col-lg-6 text-xlarge font-weight-light">
+                Вступайте в клуб успешных людей
             </div>
 
-            <div class="col-md-7 col-lg-8 mt-3 mt-md-0">
+            <div class="col-md-6 col-lg-6 mt-3 mt-md-0">
                 <div class="input-group">
-                    <input type="email" class="form-control form-control-inverted form-control-lg bg-lighter border-0 px-3" placeholder="E-mail">
+                    <input type="email" class="form-control form-control-inverted form-control-lg bg-lighter border-0 px-3" placeholder="E-mail"
+                           v-model="email">
                     <span class="input-group-append">
-                        <button type="submit" class="btn btn-primary btn-lg">Get Started</button>
+                        <button type="submit" class="btn btn-primary btn-lg"
+                                v-on:click="goToAppBudgetto('EmailButton')">
+                            Вступить
+                        </button>
                     </span>
                 </div>
             </div>

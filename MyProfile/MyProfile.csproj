@@ -111,6 +111,13 @@
     <Folder Include="wwwroot\video\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\img\raynovgroup-logo.ico">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>

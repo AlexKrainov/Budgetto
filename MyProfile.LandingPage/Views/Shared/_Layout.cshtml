@@ -3,19 +3,43 @@
 <!-- Add landing-1 to html element -->
 <html lang="en" class="landing-1 light-style">
 <head>
-    <title>Budgetto.org</title>
-
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
-    <meta name="description" content="">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Budgetto.org - контролируй свои финансы" />
+    <meta property="og:description" content="Сервис по ведению личных финансов, основанный на таблицах." />
+    <meta property="og:image" content="https://app.budgetto.org/img/Logo-min.png" />
+    <meta property="og:site_name" content="Budgetto.org" />
+    <meta property="og:locale" content="ru_RU">
+
+    @*<meta name="keywords" content="где деньги, учет расходов, семейный бюджет, финансовая грамотность, личные финансы, учет доходов и расходов, планирование расходов, планирование бюджета">
+        <meta name="keywords" content="Учет расходов,семейный бюджет,домашняя бухгалтерия,учёт личных финансов,учет долгов">
+        <meta name="keywords" content="Intuit, Intuit Quicken, Quicken, MS Money, Money, Mint, Cash Organizer, Personal Finance, Finance, Credit, Debit, Mint, Coinkeeper, Финансы, Деньги, Кредиты, Заемы, Домашние финансы, Домашняя бухгалтерия, Семейный бюджет, Учет, Управленческий учет, Битрикс">*@
+    <meta name="description" content="Сервис по ведению личных финансов, основанный на таблицах.">
+    <title>
+        Budgetto.org - контролируй свои финансы
+    </title>
+    @*<meta name="keywords" content="таблица финансов, таблица бюджета, бюджет в Excel, финансы в Excel, ведение финансов в Excel, ведение бюджета в Excel,
+        учет расходов в Excel, учет расходов, учет доходов и расходов, книга учетов доходов и расходов, счет учета расходов,
+        бюджет, финансы, личные финансы, контроль финансов, домашняя бухгалтерия, семейный бюджет, доход,
+        учет расходов ип, цель учета расходов, учет основных расходов, учет расходов периода, методы учета расходов, как вести учет расходов,
+        таблица учета расходов, доход расход, учет доход, финансовый excel, семейный бюджет excel, бюджет семьи excel,
+        таблица excel бюджет , таблица excel финансы, таблица учета финансов, таблица контроля финансов, таблицы личных финансов, таблица расходов бюджета,
+        доходы бюджета таблица, семейный бюджет таблица, бюджет семьи таблица" />*@
+
+    <meta name="keywords" content="таблица финансов, таблица бюджета, бюджет в Excel, финансы в Excel,
+          учет расходов в Excel, учет доходов и расходов, таблица доход, личные финансы, контроль финансов, домашняя бухгалтерия, семейный бюджет,
+          учет расходов ип, цель учета расходов, учет основных расходов,
+          таблица учета расходов,  таблица финансы, доходы бюджета таблица, семейный бюджет таблица, год бюджет, семья бюджет" />
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Icon fonts -->
-    <link rel="stylesheet" href="vendor/fonts/ionicons.css">
     <link rel="stylesheet" href="vendor/fonts/linearicons.css">
     <style>
         [v-cloak] {
@@ -30,21 +54,8 @@
     <link rel="stylesheet" href="vendor/css/rtl/colors.css" class="theme-settings-colors-css">
     <link rel="stylesheet" href="vendor/css/rtl/uikit.css">
 
-    <script src="vendor/js/material-ripple.js"></script>
-    <script src="vendor/js/layout-helpers.js"></script>
-
-    <!-- Theme settings -->
-    <!-- This file MUST be included after core stylesheets and layout-helpers.js in the <head> section -->
-    <script src="vendor/js/theme-settings.js"></script>
-    <script>
-        window.themeSettings = new ThemeSettings({
-            cssPath: 'vendor/css/rtl/',
-            themesPath: 'vendor/css/rtl/'
-        });
-    </script>
 
     <!-- Core scripts -->
-    <script src="vendor/js/pace.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- Page -->
@@ -58,7 +69,6 @@
 
 <body>
     <div id="page-vue" class="theme-bg-white" v-cloak>
-
 
         <div class="page-loader">
             <div class="bg-primary"></div>
@@ -78,9 +88,9 @@
                 <div class="collapse navbar-collapse" id="landing-navbar-collapse">
                     <div class="navbar-nav align-items-lg-center ml-auto">
                         <a class="nav-item nav-link" href="javascript:void(0)" v-on:click="go_to('#how-it-works')">Как работает сервис</a>
-                        <a class="nav-item nav-link" href="javascript:void(0)" v-on:onclick="go_to('#pricing')">Цены</a>
+                        <a class="nav-item nav-link" href="javascript:void(0)" v-on:click="go_to('#pricing')">Цены</a>
                         <div class="nav-item py-3 py-lg-0 ml-lg-4">
-                            <a href="javascript:void(0)" class="btn btn-primary rounded-pill text-expanded"
+                            <a href="javascript:void(0)" class="btn btn-primary rounded-pill text-expanded landing-btn"
                                onclick="PageVue.goToAppBudgetto('HeaderButton')">
                                 <small>Войти</small>
                             </a>
@@ -109,7 +119,7 @@
                             <i class="ion ion-logo-facebook"></i>
                         </a>
                         &nbsp; &nbsp;*@
-                    <a class="text-instagram text-big" href="javascript:void(0)">
+                    <a class="text-instagram text-big" href="https://www.instagram.com/app.budgetto/?igshid=jeffvsjuvvpp" target="_blank">
                         <i class="ion ion-logo-instagram"></i>
                     </a>
                     <a href="mailto:support@budgetto.org?subject=Предложение по сайту app.budgetto.org" target="_blank" class="footer-link ml-4">
@@ -119,17 +129,17 @@
             </div>
             <div class="container-fluid d-flex flex-wrap justify-content-between container-p-x pb-3">
                 <div class="pt-1">
-                    <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="footer-link mr-4"
-                       onclick="ShowDocument('personal_data_processing_policy')">Политика конфиденциальности</a>
-                    <a href="~/documents/terms_of_use.pdf" target="_blank" class="footer-link mr-4"
-                       onclick="ShowDocument('terms_of_use')">Пользовательское соглашение</a>
+                    <a href="https://app.budgetto.org/documents/personal_data_processing_policy.pdf" target="_blank" class="footer-link mr-4"
+                       v-on:click="showDocument('personal_data_processing_policy')">Политика конфиденциальности</a>
+                    <a href="https://app.budgetto.org/documents/terms_of_use.pdf" target="_blank" class="footer-link mr-4"
+                       v-on:click="showDocument('terms_of_use')">Пользовательское соглашение</a>
                 </div>
-                <div class="pt-1">© 2020 Управление финансами Budgetto.org</div>
+                <div class="pt-1">© @DateTime.Now.Year Управление финансами Budgetto.org</div>
             </div>
         </nav>
     </div>
     <!-- Core scripts -->
-    <script src="vendor/libs/popper/popper.js"></script>
+    @*<script src="vendor/libs/popper/popper.js"></script>*@
     <script src="vendor/js/bootstrap.js"></script>
 
     <!-- Libs -->
@@ -137,9 +147,7 @@
 
     <!-- Page -->
     <script src="vendor/js/landing.js"></script>
-    <script src="~/vendor/libs/lettering/lettering.min.js" asp-append-version="true"></script>
-    <script src="~/vendor/libs/textillate/textillate.min.js" asp-append-version="true"></script>
-    <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/vue/dist/vue.min.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
