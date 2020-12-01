@@ -163,7 +163,7 @@ function ParseXml(xml, arrayTags) {
 }
 
 //Template methods
-function GetLinkForView(template) {
+function TemplateGetLinkForView(template) {
     if (template.periodTypeID == PeriodTypeEnum.Month) {
         return `/Budget/Month?templateID=${template.id}`;
     } else if (template.periodTypeID == PeriodTypeEnum.Year) {

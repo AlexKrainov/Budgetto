@@ -1,0 +1,11 @@
+# Group 1
+User-agent: Googlebot
+
+# Group 2
+User-agent: Yeandex
+
+# Group 3
+User-agent: *
+Allow: /
+
+Sitemap: https://budgetto.org/sitemap.xml

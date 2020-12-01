@@ -18,7 +18,12 @@
     <script src="~/vendor/libs/smartwizard/smartwizard.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
 
-    <script src="~/pages/start/start-index.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/pages/start/start-index.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/start/start-index.min.js" asp-append-version="true"></script>
+    </environment>
 }
 <h4 class="d-flex flex-wrap w-100 font-weight-bold">
     <span class="ion ion-md-settings display-4 text-primary mr-2"></span>
@@ -139,7 +144,7 @@
                         <h5 class="text-muted small">
                             В дальнйшем вы сможете добавлять/изменять и удалять папки:
                         </h5>
-                        
+
                         <div class="card ui-bordered mt-3 area-item custom-card-hover"
                              v-for="area in areas">
                             <div class="d-flex flex-wrap justify-content-between align-items-center p-3">

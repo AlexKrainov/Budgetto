@@ -203,7 +203,7 @@
                         this.errorMessage = null;
 
                         if (this._saveAndGoToView) {
-                            window.document.location.href = GetLinkForView(this.template);
+                            window.document.location.href = TemplateGetLinkForView(this.template);
                         }
                     } else {
                         if (result.nameAlreadyExist) {

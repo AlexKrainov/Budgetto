@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Template.Service;
@@ -26,155 +27,6 @@ namespace MyProfile.Controllers
             this.repository = repository;
             this.templateService = templateService;
             this.userLogService = userLogService;
-
-            //Person person = new Person
-            //{
-            //	DateCreate = DateTime.Now,
-            //	Email = "ialexkrainov2@gmail.com",
-            //	IsDeleted = false,
-            //	LastName = "Alexey",
-            //	Name = "Kraynov",
-            //	Password = "BlXlR1234"
-            //};
-            //repository.Create(person, true);
-
-            //BudgetArea budgetArea1 = new BudgetArea()
-            //{
-            //	Name = "Основные расходы",
-            //	UserID = UserInfo.UserID
-            //};
-            //repository.Create(budgetArea1, true);
-
-            //var BudgetSections = new List<BudgetSection>()
-            //{
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea1.ID,
-            //		Name = "Расходы (продукты)",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea1.ID,
-            //		Name = "Прочие расходы",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea1.ID,
-            //		Name = "Траты на ребенка",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //		new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea1.ID,
-            //		Name = "Коммунальные",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //			new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea1.ID,
-            //		Name = "Проездной",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //				new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea1.ID,
-            //		Name = "Регулярные платежи",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //};
-            //repository.CreateRange(BudgetSections, true);
-
-            //BudgetArea budgetArea2 = new BudgetArea()
-            //{
-            //	Name = "Прочие расходы",
-            //	UserID = UserInfo.UserID
-            //};
-            //repository.Create(budgetArea2, true);
-
-            //BudgetSections = new List<BudgetSection>()
-            //{
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea2.ID,
-            //		Name = "Внебюджетные расходы",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //};
-            //repository.CreateRange(BudgetSections, true);
-
-            //budgetArea2 = new BudgetArea()
-            //{
-            //	Name = "Зарплата",
-            //	UserID = UserInfo.UserID
-            //};
-            //repository.Create(budgetArea2, true);
-
-            //BudgetSections = new List<BudgetSection>()
-            //{
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea2.ID,
-            //		Name = "Зарплата",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea2.ID,
-            //		Name = "Другие доходы",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea2.ID,
-            //		Name = "Выплаты",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea2.ID,
-            //		Name = "CashBack",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //};
-            //repository.CreateRange(BudgetSections, true);
-
-            //BudgetArea budgetArea = new BudgetArea()
-            //{
-            //	Name = "Инвестирование",
-            //	UserID = UserInfo.UserID
-            //};
-            //repository.Create(budgetArea, true);
-
-            //BudgetSections = new List<BudgetSection>()
-            //{
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea.ID,
-            //		Name = "Российский счет",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //	new BudgetSection
-            //	{
-            //		BudgetAreaID = budgetArea.ID,
-            //		Name = "Американский счет",
-            //		UserID = Guid.Parse("EA02C872-0C3C-4112-7231-08D7BDD8901D"),
-            //	},
-            //};
-            //repository.CreateRange(BudgetSections, true);
-
-
-            //repository.Create<PeriodType>(new PeriodType
-            //{
-            //	Name = "Month",
-            //	CodeName = "Month"
-            //}, true);
-            //repository.Create<PeriodType>(new PeriodType
-            //{
-            //	Name = "Year",
-            //	CodeName = "Year"
-            //}, true);
 
         }
 
@@ -221,7 +73,17 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<IActionResult> Save([FromBody] TemplateViewModel template)
         {
-            var templateResult = await templateService.SaveTemplate(template, false);
+            TemplateErrorModelView templateResult = new TemplateErrorModelView();
+
+            try
+            {
+                templateResult = await templateService.SaveTemplate(template, false);
+            }
+            catch (Exception ex)
+            {
+                templateResult.IsOk = false;
+                await userLogService.CreateErrorLogAsync(UserInfo.Current.UserSessionID, where: "Template.Save", ex);
+            }
 
             return Json(templateResult);
         }
@@ -229,14 +91,22 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveAs([FromBody] TemplateViewModel template)
         {
+            TemplateErrorModelView templateResult = new TemplateErrorModelView();
             var tmpTemplateID = template.ID;
             template.ID = 0;
 
-            var templateResult = await templateService.SaveTemplate(template, true);
-
-            if (templateResult.IsOk == false)
+            try
             {
-                templateResult.Template.ID = tmpTemplateID;
+                templateResult = await templateService.SaveTemplate(template, true);
+
+                if (templateResult.IsOk == false)
+                {
+                    templateResult.Template.ID = tmpTemplateID;
+                }
+            }
+            catch (Exception ex)
+            {
+                await userLogService.CreateErrorLogAsync(UserInfo.Current.UserSessionID, where: "Template.SaveAs", ex);
             }
 
             return Json(templateResult);

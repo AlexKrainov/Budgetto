@@ -80,6 +80,10 @@ INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, K
 VALUES (4, 'Создание графика' ,'2020-11-26 21:40:32.8652966', '2020-11-26 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddChart.cshtml' ,5, 'создание графика; графики; график; диаграммы; диаграмма')
 INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
 VALUES (5, 'Создание папки' ,'2020-11-26 21:40:32.8652966', '2020-11-26 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddFolder.cshtml' ,7, 'создание папка; папки; папка; ')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (6, 'Создание категори' ,'2020-12-01 21:40:32.8652966', '2020-12-01 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddSection.cshtml' ,7, 'создание категории; категории; категория; ')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (7, 'Смена папки у категории' ,'2020-12-01 21:40:32.8652966', '2020-12-01 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/ChangeFolder.cshtml' ,7, 'смена папки, поменять папку; папка; категория; ')
 
 SET IDENTITY_INSERT [HelpArticles] OFF
 GO

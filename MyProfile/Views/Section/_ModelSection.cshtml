@@ -10,6 +10,7 @@
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
             </div>
+            <label class="form-label ml-4 mt-3" style="margin-bottom: -20px;">Тип категории</label>
             <div class="btn-group m-4 section-types">
                 <label class="btn" v-bind:class="section.sectionTypeID == 2 ? 'btn-danger' : 'btn-default'"
                        v-on:click="changeSectionType(2)">
@@ -27,7 +28,7 @@
             <div class="modal-body pt-0">
                 <div class="form-row">
                     <div class="form-group col">
-                        <label class="form-label">Введите название категории</label>
+                        <label class="form-label">Название категории</label>
                         <span class="text-danger">*</span>
                         <input id="section-name" type="text" class="form-control" placeholder="Продукты, книги ..." v-model="section.name">
                         <small class="invalid-feedback">Обязательное поле</small>
@@ -36,14 +37,14 @@
 
                 <div id="section-description" class="form-row">
                     <div class="form-group col mb-0">
-                        <label class="form-label">Введите описание категории </label>
+                        <label class="form-label">Описание категории </label>
                         <textarea class="form-control" v-model="section.description" placeholder=""></textarea>
                     </div>
                 </div>
                 <span id="choose-area">
                     <div class="form-row mt-3 " v-if="section.id">
                         <div class="form-group col mb-0">
-                            <label class="form-label">Сменить папку</label>
+                            <label class="form-label">Папка</label>
                             <select class="form-control" v-on:change="changeArea($event)">
                                 <option v-for="area in areas" v-bind:value="area.id" v-bind:selected="area.id == section.areaID">{{ area.name }}</option>
                             </select>
@@ -61,7 +62,7 @@
                 <div id="accordion2">
                     <div class="form-row mt-3 ">
                         <div class="form-group col mb-0">
-                            <label class="form-label"> Выбор цвета для категории</label>
+                            <label class="form-label">Цвета для категории</label>
                             <div class="card mb-2 choose-color">
                                 <div class="card-header">
                                     <a class="d-flex justify-content-between text-body " data-toggle="collapse" href="#accordion2-1">
@@ -98,7 +99,7 @@
                     </div>
                     <div class="form-row mt-3 ">
                         <div class="form-group col mb-0">
-                            <label class="form-label">Выбор иконки</label>
+                            <label class="form-label">Иконки</label>
                             <div class="card mb-2 choose-icons">
                                 <div class="card-header">
                                     <a class="collapsed d-flex justify-content-between text-body " data-toggle="collapse" href="#accordion2-2">

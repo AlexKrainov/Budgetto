@@ -64,7 +64,26 @@
     <!-- Libs -->
     <link rel="stylesheet" href="vendor/libs/swiper/swiper.css">
     <link rel="stylesheet" href="vendor/libs/plyr/plyr.css">
+    <link href="~/vendor/libs/blueimp-gallery/gallery.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(69955153, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/69955153" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 </head>
 
 <body>
@@ -103,14 +122,14 @@
         @RenderBody()
 
         <!-- Layout footer -->
-        <nav class="layout-footer footer bg-footer-theme">
-            <div class="container-fluid d-flex flex-wrap justify-content-between  container-p-x pb-3">
-                <div class="pt-3">
+        <nav class="layout-footer footer bg-footer-theme ui-company-text">
+            <div class="container-fluid d-flex flex-wrap justify-content-between  container-p-x pt-3">
+                <div>
                     Разработка сайта by
                     <img src="~/img/raynovgroup-logo.ico" class="ui-w-20" />
                     <a href="https://www.raynovgroup.com" target="_blank" class="footer-text font-weight-bolder text-decoration-hover">RaynovGroup</a> ©
                 </div>
-                <div class="pt-3">
+                <div>
                     @*<a class="text-twitter text-big" href="javascript:void(0)">
                             <i class="ion ion-logo-twitter"></i>
                         </a>
@@ -122,12 +141,12 @@
                     <a class="text-instagram text-big" href="https://www.instagram.com/app.budgetto/?igshid=jeffvsjuvvpp" target="_blank">
                         <i class="ion ion-logo-instagram"></i>
                     </a>
-                    <a href="mailto:support@budgetto.org?subject=Предложение по сайту app.budgetto.org" target="_blank" class="footer-link ml-4">
+                    <a href="mailto:support@budgetto.org?subject=Предложение по сайту app.budgetto.org" target="_blank" class="footer-link">
                         support@budgetto.org
                     </a>
                 </div>
             </div>
-            <div class="container-fluid d-flex flex-wrap justify-content-between container-p-x pb-3">
+            <div class="container-fluid d-flex flex-wrap justify-content-between container-p-x pb-1">
                 <div class="pt-1">
                     <a href="https://app.budgetto.org/documents/personal_data_processing_policy.pdf" target="_blank" class="footer-link mr-4"
                        v-on:click="showDocument('personal_data_processing_policy')">Политика конфиденциальности</a>
@@ -144,9 +163,10 @@
 
     <!-- Libs -->
     <script src="vendor/libs/swiper/swiper.js"></script>
+    <script src="~/vendor/libs/blueimp-gallery/gallery.js"></script>
+    <script src="~/vendor/libs/blueimp-gallery/gallery-fullscreen.js"></script>
 
     <!-- Page -->
-    <script src="vendor/js/landing.js"></script>
     <script src="~/vendor/libs/vue/dist/vue.min.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)

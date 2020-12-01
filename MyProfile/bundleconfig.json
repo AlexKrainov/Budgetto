@@ -208,5 +208,11 @@
     "inputFiles": [
       "wwwroot/css/demo.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/start/start-index.min.js",
+    "inputFiles": [
+      "wwwroot/pages/start/start-index.js"
+    ]
   }
 ]

@@ -143,7 +143,8 @@
                 <p class="ui-company-text text-muted my-5">
                     Вводите все суммы сразу и присваивайте им разные категории.
                 </p>
-                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('RecordsViewButton')">Попробовать →</a>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat mb-4"
+                   v-on:click="goToAppBudgetto('RecordsViewButton')">Попробовать →</a>
             </div>
 
             <div class="col-lg-6 col-xl-5">
@@ -200,7 +201,7 @@
                     Много тратите на шопинг или еду? Создавайте лимит, выбирайте по каким категориям следить и контролируйте  себя.
                 </p>
 
-                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('LimitViewButton')">Попробовать →</a>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat mb-4" v-on:click="goToAppBudgetto('LimitViewButton')">Попробовать →</a>
             </div>
 
             <div class="col-lg-6 col-xl-5">
@@ -265,7 +266,7 @@
                 <p class="ui-company-text text-muted my-5">
                     Легко создавайте графики и отслеживайте состояние финансов в динамике.
                 </p>
-                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat" v-on:click="goToAppBudgetto('ChartViewButton')">Попробовать →</a>
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat mb-4" v-on:click="goToAppBudgetto('ChartViewButton')">Попробовать →</a>
             </div>
 
             <div class="col-lg-6 col-xl-5">
@@ -322,7 +323,7 @@
                 <p class="ui-company-text text-muted my-5">
                     Настраивайте главную страницу под себя.
                 </p>
-                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat"
+                <a href="javascript:void(0)" class="btn rounded-pill btn-default md-btn-flat mb-4"
                    v-on:click="goToAppBudgetto('OneForAllViewButton')">Попробовать →</a>
             </div>
 
@@ -348,47 +349,71 @@
     </div>
     <hr class="landing-separator border-primary mx-auto mt-5 mb-4">
 
-    <div class="app-preview-slider-wrapper">
-        <div class="app-preview-slider swiper-container" id="landing-preview-slider" style="width: 60%">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="img/0-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
-                    <p class="ui-company-text text-muted mt-4">
-                        Страница "Финансы на месяц"
-                    </p>
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/1-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
-                    <p class="ui-company-text text-muted mt-4">
-                        Страница "Финансы на месяц"
-                    </p>
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/2-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
-                    <p class="ui-company-text text-muted mt-4">
-                        Страница "Финансы на год"
-                    </p>
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/3-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
-                    <p class="ui-company-text text-muted mt-4">
-                        Таблица на странице "Финансы на месяц"
-                    </p>
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/4-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
-                    <p class="ui-company-text text-muted mt-4">
-                        Таблица на странице "Финансы на год"
-                    </p>
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/5-min.png" alt="" class="img-fluid cursor-pointer" style="width:90%">
-                    <p class="ui-company-text text-muted mt-4">
-                        История
-                    </p>
+    <div class="text-center">
+
+        <!-- Lightbox template -->
+        <div id="shop-preview-lightbox" class="blueimp-gallery blueimp-gallery-controls">
+            <div class="slides"></div>
+            <h3 class="title"></h3>
+            <a class="prev">‹</a>
+            <a class="next">›</a>
+            <a class="close">×</a>
+            <a class="play-pause"></a>
+        </div>
+
+        <!-- Preview -->
+        <a id="shop-preview-image" href="javascript:void(0)" class="img-thumbnail ui-bordered mb-4" style="width: 60%; margin-left: auto;margin-right: 19%;">
+            <span class="img-thumbnail-overlay bg-white opacity-75"></span>
+            <span class="img-thumbnail-content text-primary text-xlarge"><i class="lnr lnr-magnifier"></i></span>
+            <img src="img/0-min.png" alt class="img-fluid">
+        </a>
+
+        <!-- Preview slider -->
+        <div class="position-relative px-4 mx-auto" style="max-width: 200px;">
+            <div id="shop-preview-slider-next" class="swiper-button-next custom-icon mr-n3 text-big"><i class="lnr lnr-chevron-right text-muted"></i></div>
+            <div id="shop-preview-slider-prev" class="swiper-button-prev custom-icon ml-n3 text-big"><i class="lnr lnr-chevron-left text-muted"></i></div>
+
+            <div class="swiper-container" id="shop-preview-slider">
+                <div class="swiper-wrapper">
+                    <a href="javascript:void(0)" class="swiper-slide d-block border-primary ui-bordered">
+                        <img src="img/0-min.png" class="img-fluid" alt>
+                    </a>
+                    <a href="javascript:void(0)" class="swiper-slide d-block ui-bordered">
+                        <img src="img/1-min.png" class="img-fluid" alt>
+                    </a>
+                    <a href="javascript:void(0)" class="swiper-slide d-block ui-bordered">
+                        <img src="img/2-min.png" class="img-fluid" alt>
+                    </a>
+                    <a href="javascript:void(0)" class="swiper-slide d-block ui-bordered">
+                        <img src="img/3-min.png" class="img-fluid" alt>
+                    </a>
+                    <a href="javascript:void(0)" class="swiper-slide d-block ui-bordered">
+                        <img src="img/4-min.png" class="img-fluid" alt>
+                    </a>
+                    <a href="javascript:void(0)" class="swiper-slide d-block ui-bordered">
+                        <img src="img/5-min.png" class="img-fluid" alt>
+                    </a>
+                    @*<p class="ui-company-text text-muted mt-4">
+                            Страница "Финансы на месяц"
+                        </p>
+                        <p class="ui-company-text text-muted mt-4">
+                            Страница "Финансы на месяц"
+                        </p>
+                        <p class="ui-company-text text-muted mt-4">
+                            Страница "Финансы на год"
+                        </p>
+                        <p class="ui-company-text text-muted mt-4">
+                            Таблица на странице "Финансы на месяц"
+                        </p>
+                        <p class="ui-company-text text-muted mt-4">
+                            Таблица на странице "Финансы на год"
+                        </p>
+                        <p class="ui-company-text text-muted mt-4">
+                            История
+                        </p>*@
                 </div>
             </div>
-            <div class="swiper-pagination"></div>
+
         </div>
     </div>
 </div>

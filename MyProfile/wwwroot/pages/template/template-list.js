@@ -40,7 +40,7 @@ var TemplateListVue = new Vue({
                 });
         },
         getLinkForView: function (template) {
-            return GetLinkForView(template);
+            return TemplateGetLinkForView(template);
         },
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);

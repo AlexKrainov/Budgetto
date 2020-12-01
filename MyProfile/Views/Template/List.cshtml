@@ -7,8 +7,12 @@
 
 @section Scripts {
     <script src="~/vendor/libs/masonry/masonry.js" asp-append-version="true"></script>
-
-    <script src="~/pages/template//template-list.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/pages/template/template-list.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/template/template-list.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 <section id="template-list-vue" v-cloak>
@@ -68,7 +72,7 @@
                     <a class="btn btn-primary btn-sm" v-bind:href="'/Template/Edit/'+ template.id">
                         <i class="far fa-edit pr-2"></i>Редактировать
                     </a>
-                    <a class="btn icon-btn btn-sm btn-outline-secondary" v-bind:href="getLinkForView(template)" title="Посмотреть">
+                    <a class="btn icon-btn btn-sm btn-outline-secondary" v-bind:href="TemplateGetLinkForView(template)" title="Посмотреть">
                         <i class="far fa-eye"></i>
                     </a>
                     <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-on:click="remove(template)">

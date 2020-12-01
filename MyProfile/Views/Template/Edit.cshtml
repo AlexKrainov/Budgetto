@@ -23,7 +23,12 @@
     <script src="~/vendor/libs/bootstrap-select/bootstrap-select.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js" asp-append-version="true"></script>
 
-    <script src="~/pages/template/template-edit.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/pages/template/template-edit.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/template/template-edit.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 <section id="template-columns" style="margin-bottom: 250px;" v-cloak>
@@ -34,7 +39,7 @@
         <span class="px-0 pb-2 pt-2">
             {{ template.id == 0 ? 'Создание шаблона' : 'Редактирование шаблона' }}
         </span>
-        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
+        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom"
            title="На этой странице вы можете создавать/редактировать шаблон, по которому будет строиться таблица на страницах 'Финансы на месяц' и 'Финансы на год'.
            Колонки можно перемещать, над категориями в колонках можно совершать действия (* \ + -), а в настройках колонки менять вид итоговой суммы и видимость на главной странице. ">
             <i class="pe-7s-info d-block text-primary"></i>
@@ -104,7 +109,7 @@
                     v-bind:disabled="isSavingTemplate || template.periodTypeID == 0">
                 <span class="spinner-border" role="status" aria-hidden="true" v-show="isSavingTemplate"></span>
                 <i class="ion ion-ios-save pr-2" v-show="!isSavingTemplate" style="font-size: large;"></i>
-                Сохранить и остаться
+                Сохранить
             </button>
             <button type="button" class="btn btn-outline-primary"
                     v-on:click="saveTemplate(true)"
@@ -121,7 +126,7 @@
                     v-bind:disabled="isSavingTemplate"
                     v-bind:class="isSavingTemplate ? 'disabled' : ''">
                 <span class="spinner-border" role="status" aria-hidden="true" v-show="isSavingTemplate"></span>
-                <i class="far fa-eye pr-2" style="font-size: large;"></i>Сохранить и перейти в финансы
+                <i class="far fa-eye pr-2" style="font-size: large;"></i>Сохранить и посмотреть
             </button>
 
             <a href="/Template/Delete/@ViewBag.TemplateID" class="btn btn-outline-danger icon-btn borderless float-right"

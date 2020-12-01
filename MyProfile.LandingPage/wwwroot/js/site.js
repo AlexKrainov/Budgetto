@@ -46,7 +46,7 @@ var PageVue = new Vue({
 
         if (ip == "::1") {
             this.person_data = { "userSessionID": this.userSessionID, "ip": "Local", "city": "Moscow", "country": "Russia", "location": "55.7522, 37.6156", "index": "111111", "browser_name": "Chrome", "browser_version": 85, "os_name": "Windows", "os_version": "10", "screen_size": "1536 x 864", "referrer": "", "isMobile": false, "isLoad": false, "isShow": false, "path": "/Identity/Account/Login", "dateCreate": null, "continent_code": "EU", "continent_name": "Europe", "info": "", "provider_info": "{\"asn\":\"AS8402\",\"name\":\"PJSC \\\"Vimpelcom\\\"\",\"domain\":\"veon.com\",\"route\":\"37.144.0.0/14\",\"type\":\"isp\"}", "threat": "{\"is_tor\":false,\"is_proxy\":false,\"is_anonymous\":false,\"is_known_attacker\":false,\"is_known_abuser\":false,\"is_threat\":false,\"is_bogon\":false}, isLandingPage: true" };
-            return $.ajax({
+            $.ajax({
                 type: "POST",
                 url: "/Home/UpdateUserSession",
                 context: PageVue,
@@ -61,6 +61,7 @@ var PageVue = new Vue({
                     console.log(error);
                 }
             });
+            this.initSettingsPage();
             return;
         }
         try {
@@ -129,6 +130,7 @@ var PageVue = new Vue({
                 }
             });
         }
+        this.initSettingsPage();
     },
     methods: {
         goToAppBudgetto: function (linkName) {
@@ -365,6 +367,164 @@ var PageVue = new Vue({
                 },
                 error: function (xhr, status, error) {
                 }
+            });
+        },
+        initSettingsPage: function () {
+            var navbarScrollThreshold = 20;
+            var navbarBreakpoint = 992;
+
+            var navbarCustomClasses = {
+                default: {
+                    variant: 'navbar-light',
+                    classes: 'pt-lg-4'
+                },
+                alt: {
+                    variant: 'bg-white',
+                    classes: 'py-1'
+                }
+            };
+
+            // Navbar scroll behaviour
+            //
+
+            var $navbar = $('.landing-navbar');
+            var $navbarCollapse = $('#landing-navbar-collapse');
+
+            $(document).on('scroll', function (e) {
+                var scrollTop = $(document).scrollTop();
+
+                if (scrollTop > navbarScrollThreshold && !$navbar.hasClass('landing-navbar-alt')) {
+                    $navbar
+                        .addClass('landing-navbar-alt')
+                        .removeClass(navbarCustomClasses.default.variant + ' ' + navbarCustomClasses.default.classes)
+                        .addClass(navbarCustomClasses.alt.variant + ' ' + navbarCustomClasses.alt.classes)
+                        .find('> div')
+                        .removeClass('container-fluid')
+                        .addClass('container');
+                } else if (scrollTop <= navbarScrollThreshold && $navbar.hasClass('landing-navbar-alt')) {
+                    $navbar.removeClass('landing-navbar-alt')
+                        .addClass(navbarCustomClasses.default.classes)
+                        .removeClass(navbarCustomClasses.alt.classes)
+                        .find('> div')
+                        .addClass('container-fluid')
+                        .removeClass('container');
+
+                    if ($(window).outerWidth() >= navbarBreakpoint || !$navbarCollapse.hasClass('show')) {
+                        $navbar
+                            .addClass(navbarCustomClasses.default.variant)
+                            .removeClass(navbarCustomClasses.alt.variant);
+                    }
+                }
+            });
+
+            $navbarCollapse.on('show.bs.collapse hidden.bs.collapse', function (e) {
+                if ($navbar.hasClass('landing-navbar-alt')) return;
+
+                $navbar[e.type === 'show' ? 'removeClass' : 'addClass'](
+                    navbarCustomClasses.default.variant
+                );
+
+                $navbar[e.type === 'show' ? 'addClass' : 'removeClass'](
+                    navbarCustomClasses.alt.variant
+                );
+            });
+
+            $(window).on('resize', function () {
+                if ($navbar.hasClass('landing-navbar-alt')) return;
+
+                var sm = $(this).outerWidth() < navbarBreakpoint;
+                var alt = $navbar.hasClass(navbarCustomClasses.alt.variant);
+
+                if (sm && !alt && $navbarCollapse.hasClass('show')) {
+                    $navbar
+                        .removeClass(navbarCustomClasses.default.variant)
+                        .addClass(navbarCustomClasses.alt.variant);
+                } else if (!sm && alt) {
+                    $navbar
+                        .removeClass(navbarCustomClasses.alt.variant)
+                        .addClass(navbarCustomClasses.default.variant);
+                }
+            });
+
+
+            $('#landing-slider-parallax').each(function () {
+                new Swiper(this, {
+                    parallax: true,
+                    autoHeight: true,
+                    speed: 1000,
+                    followFinger: false,
+                    threshold: 50,
+                    preventClicks: true,
+                    navigation: {
+                        nextEl: '#landing-slider-next',
+                        prevEl: '#landing-slider-prev'
+                    }
+                });
+            });
+
+            // App preview
+            //
+
+            $('#landing-preview-slider').each(function () {
+                new Swiper(this, {
+                    slidesPerView: 3,
+                    spaceBetween: 0,
+                    threshold: 50,
+                    speed: 400,
+                    centeredSlides: true,
+                    slideToClickedSlide: true,
+                    breakpoints: {
+                        992: {
+                            slidesPerView: 1,
+                            spaceBetween: 20
+                        }
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true
+                    }
+                });
+            });
+
+            $('#shop-preview-slider').each(function () {
+                new Swiper(this, {
+                    slidesPerView: 3,
+                    spaceBetween: 8,
+                    threshold: 20,
+                    navigation: {
+                        nextEl: $('#shop-preview-slider-next')[0],
+                        prevEl: $('#shop-preview-slider-prev')[0]
+                    }
+                });
+            });
+
+            $('#shop-preview-slider').on('click', 'a', function (e) {
+                e.preventDefault();
+                $('#shop-preview-slider .border-primary').removeClass('border-primary');
+                $(this).addClass('border-primary');
+                $('#shop-preview-image img').attr('src', $(this).find('img').attr('src'));
+            });
+
+            $('#shop-preview-image').on('click', function (e) {
+                e.preventDefault();
+
+                // Unset focus
+                $(this).blur();
+
+                var curLink = $(this).find('img')[0].src;
+                var links = [];
+
+                $('#shop-preview-slider').find('img').each(function () {
+                    links.push(this.src);
+                });
+
+                window.blueimpGallery(links, {
+                    container: '#shop-preview-lightbox',
+                    carousel: false,
+                    hidePageScrollbars: true,
+                    disableScroll: true,
+                    index: links.indexOf(curLink)
+                });
             });
         }
     }
