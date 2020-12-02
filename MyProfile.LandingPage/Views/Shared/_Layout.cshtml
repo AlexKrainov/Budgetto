@@ -1,13 +1,13 @@
 ﻿<!DOCTYPE html>
 
 <!-- Add landing-1 to html element -->
-<html lang="en" class="landing-1 light-style">
+<html lang="ru" class="landing-1 light-style">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="https://app.budgetto.org/favicon.ico">
+
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Budgetto.org - контролируй свои финансы" />
@@ -41,11 +41,6 @@
 
     <!-- Icon fonts -->
     <link rel="stylesheet" href="vendor/fonts/linearicons.css">
-    <style>
-        [v-cloak] {
-            display: none;
-        }
-    </style>
 
     <!-- Core stylesheets -->
     <link rel="stylesheet" href="vendor/css/rtl/bootstrap.css" class="theme-settings-bootstrap-css">
@@ -67,9 +62,12 @@
     <link href="~/vendor/libs/blueimp-gallery/gallery.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
 
+</head>
+
+<body>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
-        (function (m, e, t, r, i, k, a) {
+    (function (m, e, t, r, i, k, a) {
             m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
             m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
         })
@@ -80,14 +78,10 @@
             trackLinks: true,
             accurateTrackBounce: true,
             webvisor: true
-        });
-    </script>
+        });</script>
     <noscript><div><img src="https://mc.yandex.ru/watch/69955153" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
-</head>
-
-<body>
-    <div id="page-vue" class="theme-bg-white" v-cloak>
+    <div id="page-vue" class="theme-bg-white">
 
         <div class="page-loader">
             <div class="bg-primary"></div>
@@ -126,7 +120,7 @@
             <div class="container-fluid d-flex flex-wrap justify-content-between  container-p-x pt-3">
                 <div>
                     Разработка сайта by
-                    <img src="~/img/raynovgroup-logo.ico" class="ui-w-20" />
+                    <img src="~/img/raynovgroup-logo.ico" class="ui-w-20" alt="RaynovGrou logo" />
                     <a href="https://www.raynovgroup.com" target="_blank" class="footer-text font-weight-bolder text-decoration-hover">RaynovGroup</a> ©
                 </div>
                 <div>
@@ -138,8 +132,8 @@
                             <i class="ion ion-logo-facebook"></i>
                         </a>
                         &nbsp; &nbsp;*@
-                    <a class="text-instagram text-big" href="https://www.instagram.com/app.budgetto/?igshid=jeffvsjuvvpp" target="_blank">
-                        <i class="ion ion-logo-instagram"></i>
+                    <a class="text-instagram text-big mr-4" href="https://www.instagram.com/app.budgetto/?igshid=jeffvsjuvvpp" target="_blank">
+                        <img src="~/instagram.png" alt="Instagram " />
                     </a>
                     <a href="mailto:support@budgetto.org?subject=Предложение по сайту app.budgetto.org" target="_blank" class="footer-link">
                         support@budgetto.org

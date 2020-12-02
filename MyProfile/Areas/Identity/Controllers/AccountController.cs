@@ -209,6 +209,7 @@ namespace MyProfile.Areas.Identity.Controllers
                         await userLogService.CreateErrorLogAsync(user.UserSessionID, where: "AccountController.Registration_1", ex);
                     }
 
+                    await userLogService.UpdateSession_UserID(user.UserSessionID, user.ID);
                     user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Registration);
                     return Json(new { isOk = true, isShowCode = false, href = "/Start/Index" });
                 }
@@ -275,6 +276,14 @@ namespace MyProfile.Areas.Identity.Controllers
                 return Json(new { isOk = true, emailID, message = "Сообщение отправлено повторно" });
             }
 
+            try
+            {
+                await userLogService.UpdateSession_UserID(model.UserSessionID, UserInfo.Current.ID);
+            }
+            catch (Exception ex)
+            {
+            }
+
             string href = "/Budget/Month";
             if (UserInfo.Current.UserSettings.IsShowConstructor)
             {
@@ -315,6 +324,7 @@ namespace MyProfile.Areas.Identity.Controllers
             user.UserSessionID = checkCodeModel.UserSessionID;
 
             await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.LoginAfterCode);
+            await userLogService.UpdateSession_UserID(user.UserSessionID, user.ID);
 
             string href = "/Budget/Month";
             if (user.UserSettings.IsShowConstructor)
@@ -371,6 +381,7 @@ namespace MyProfile.Areas.Identity.Controllers
                     user.UserSessionID = user.UserSessionID;
 
                     await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.LoginAfterResetPassword);
+                    await userLogService.UpdateSession_UserID(user.UserSessionID, user.ID);
 
                     string href = "/Budget/Month";
                     if (user.UserSettings.IsShowConstructor)

@@ -65,6 +65,7 @@ INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (6, 
 INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (7, 'Категории и папки' ,'pe-7s-albums' ,1 ,5)
 INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (8, 'Календарь' ,'lnr lnr-calendar-full' ,1 ,6)
 INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (9, 'Общие вопросы' ,'lnr lnr-question-circle' ,1 ,7)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (10, 'Записи' ,'oi oi-dollar' ,1 ,8)
 SET IDENTITY_INSERT [HelpMenus] OFF
 
 GO
@@ -84,6 +85,12 @@ INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, K
 VALUES (6, 'Создание категори' ,'2020-12-01 21:40:32.8652966', '2020-12-01 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddSection.cshtml' ,7, 'создание категории; категории; категория; ')
 INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
 VALUES (7, 'Смена папки у категории' ,'2020-12-01 21:40:32.8652966', '2020-12-01 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/ChangeFolder.cshtml' ,7, 'смена папки, поменять папку; папка; категория; ')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (8, 'Создание напоминания' ,'2020-12-02 21:40:32.8652966', '2020-12-02 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddReminder.cshtml' ,2, 'создать напоминание, добавить напоминание; напоминани; ')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (9, 'Добавление записи' ,'2020-12-02 21:40:32.8652966', '2020-12-02 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddRecord.cshtml' ,10, 'создать записи, добавление записей; записи; запись; добавить расход; добавить доход; доход; расход; инвестиции; ')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (10, 'Добавление записи в валюте' ,'2020-12-02 21:40:32.8652966', '2020-12-02 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddCurrencyRecord.cshtml' ,10, 'создать записи, добавление записей; записи; запись; добавить расход; добавить доход; доход; расход; инвестиции; валюта; доллар; евро; ')
 
 SET IDENTITY_INSERT [HelpArticles] OFF
 GO
