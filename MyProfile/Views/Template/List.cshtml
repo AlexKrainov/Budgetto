@@ -72,7 +72,7 @@
                     <a class="btn btn-primary btn-sm" v-bind:href="'/Template/Edit/'+ template.id">
                         <i class="far fa-edit pr-2"></i>Редактировать
                     </a>
-                    <a class="btn icon-btn btn-sm btn-outline-secondary" v-bind:href="TemplateGetLinkForView(template)" title="Посмотреть">
+                    <a class="btn icon-btn btn-sm btn-outline-secondary" v-bind:href="getLinkForView(template)" title="Посмотреть">
                         <i class="far fa-eye"></i>
                     </a>
                     <a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary" v-on:click="remove(template)">

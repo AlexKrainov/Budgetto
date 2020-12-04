@@ -91,6 +91,12 @@ INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, K
 VALUES (9, 'Добавление записи' ,'2020-12-02 21:40:32.8652966', '2020-12-02 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddRecord.cshtml' ,10, 'создать записи, добавление записей; записи; запись; добавить расход; добавить доход; доход; расход; инвестиции; ')
 INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
 VALUES (10, 'Добавление записи в валюте' ,'2020-12-02 21:40:32.8652966', '2020-12-02 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/AddCurrencyRecord.cshtml' ,10, 'создать записи, добавление записей; записи; запись; добавить расход; добавить доход; доход; расход; инвестиции; валюта; доллар; евро; ')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (11, 'Работа с таблицей' ,'2020-12-03 21:40:32.8652966', '2020-12-03 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/Table.cshtml' ,2, 'создать записи, добавление записей; записи; запись; доход; расход; инвестиции; история; найти; напоминани; таблиц ')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (12, 'Дополнительные настройки страницы' ,'2020-12-04 21:40:32.8652966', '2020-12-04 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/PageSettings.cshtml' ,9, 'виджет;настройки;скрыть;показать;завершен;')
+INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
+VALUES (13, 'Поиск записей' ,'2020-12-04 21:40:32.8652966', '2020-12-04 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/SearchRecord.cshtml' ,10, 'поиск;записи;трат;доход;расход')
 
 SET IDENTITY_INSERT [HelpArticles] OFF
 GO

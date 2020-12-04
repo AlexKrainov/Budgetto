@@ -4,14 +4,14 @@
     </a>
     <h5 class="p-4 m-0 line-height-1 font-weight-bolder bg-light theme-settings-header">
 
-        @if (Model == "Budget/Month" || Model == "Budget/Year")
-        {
-            <span class="theme-settings-t-panel_header">ВИДЖЕТЫ</span>
-        }
-        else
-        {
-            <span class="theme-settings-t-panel_header">НАСТРОЙКИ</span>
-        }
+        @*@if (Model == "Budget/Month" || Model == "Budget/Year")
+            {
+                <span class="theme-settings-t-panel_header">ВИДЖЕТЫ</span>
+            }
+            else
+            {
+            }*@
+        <span class="theme-settings-t-panel_header">НАСТРОЙКИ СТРАНИЦЫ</span>
 
         <a href="javascript:void(0)" class="theme-settings-close-btn2 font-weight-light px-4 py-2" tabindex="-1" v-on:click="closeSettings">×</a>
     </h5>
