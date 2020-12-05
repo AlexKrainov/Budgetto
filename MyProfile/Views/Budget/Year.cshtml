@@ -44,7 +44,10 @@
                     <div class="form-group col">
                         <div class="input-group">
                             <span class="input-group-prepend" style=" width: 50px;">
-                                <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
+                                <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 год"
+                                        v-bind:disabled="isLoading">
+                                    <i class="fa fa-angle-left font-size-large" aria-hidden="true"></i>
+                                </button>
                             </span>
                             <select id="budget-year" class="form-control"
                                     v-model="budgetYear"
@@ -55,7 +58,10 @@
                                 }
                             </select>
                             <span class="input-group-append" style=" width: 50px;">
-                                <button v-on:click="changeView(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
+                                <button v-on:click="changeView(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 год"
+                                        v-bind:disabled="isLoading">
+                                    <i class="fa fa-angle-right font-size-large" aria-hidden="true"></i>
+                                </button>
                             </span>
                         </div>
                     </div>
@@ -91,7 +97,9 @@
         <div class="card-body" style="padding-bottom:5px;">
             <div class="card-title with-elements">
                 <select class="form-control form-control-sm" data-style="btn-default" style="width: 300px"
-                        v-model="templateID" v-on:change="refresh('onlyTable')">
+                        v-model="templateID" 
+                        v-on:change="refresh('onlyTable')"
+                        v-bind:disabled="isLoading">
                     @foreach (var template in Model.Templates)
                     {
                         <option value="@template.ID">@template.Name</option>
@@ -100,7 +108,7 @@
                 </select>
                 <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать шаблон"
                    v-bind:href="'/Template/Edit/'+template.id"
-                   v-show="template && template.id">
+                   v-show="template && template.id && isLoading == false">
                     <i class="ion ion-md-create"></i>
                 </a>
                 <div class="card-title-elements">

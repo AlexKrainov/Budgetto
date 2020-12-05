@@ -38,9 +38,9 @@
             if (stepIndex == 0 && stepDirection == "forward") {
                 canGo = ChartEditVue.chart.chartTypeID > 0;
                 if (canGo == false) {
-                    $("#validChooseChartType").attr("style", "display:block");
+                    $("#validChooseChartType").show();
                 } else {
-                    $("#validChooseChartType").removeAttr("style");
+                    $("#validChooseChartType").hide();
                 }
             }
 

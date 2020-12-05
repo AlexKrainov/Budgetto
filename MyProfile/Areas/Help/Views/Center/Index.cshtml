@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/Layouts/_Layout1.cshtml";
     ViewData["Title"] = "Help center - Pages";
     List<MyProfile.Entity.ModelView.MenuItemViewModel> menuItems = MyProfile.Identity.UserInfo.GetMenuItems();
+    var currentUser = MyProfile.Identity.UserInfo.Current;
+
 }
 
 @section Styles {
@@ -16,55 +18,100 @@
         <script src="~/pages/_areas/help_center/help-center.min.js" asp-append-version="true"></script>
     </environment>
 }
-<h4 class="row align-items-center font-weight-bold py-2 mb-2">
-    <span class="lnr lnr-question-circle display-4 text-primary mr-2"></span>
-    <span class="col-sm-3">
-        Help center
-    </span>
-    <span class="col-sm-9 col-md-4 col-xl-3 mt-4 mt-sm-0">
-        <input type="text" class="form-control " placeholder="" size="200" v-model="searchText">
-    </span>
-</h4>
-@*<h3 class="row align-items-center font-weight-bold py-4 mb-4">
-        <div class="col">
+<section id="help-vue">
+
+    <h4 class="d-flex flex-wrap w-100 font-weight-bold  d-inline-flex  align-items-center">
+        <span class="lnr lnr-question-circle  display-4 text-primary mr-2"></span>
+        <span class="px-0 pb-2 pt-2">
             Help center
-            <div class="text-muted text-tiny font-weight-light">Answers to common questions</div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-xl-3 mt-4 mt-sm-0">
-            <input type="text" class="form-control form-control-lg" placeholder="Search topic...">
-        </div>
-    </h3>*@
-<hr class="container-m-nx border-light my-0">
-<article id="help-vue">
-
-    <div class="row row-bordered my-4">
-        <div class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3"
-             v-for="menu in menus"
-             v-show="menu.articles.length > 0 ">
-            <a href="javascript:void(0)" class="card card-hover text-body my-2"
-               v-bind:title="menu.title">
-                <div class="card-body text-center py-5">
-                    <div class="display-3 text-primary"
-                         v-bind:class="menu.icon"></div>
-                    <h5 class="m-0 mt-3">{{ menu.title }}</h5>
-                </div>
-            </a>
-        </div>
-    </div>
-    <hr class="container-m-nx border-light my-0">
-
-    <div class="card mt-5" v-for="menu in menus"
-         v-show="menu.articles.length > 0 ">
-        <h5 class="card-header py-4 px-5">{{ menu.title }}</h5>
-        <div class="row no-gutters row-bordered">
-            <div class="col-md-6 p-5">
-                <a class="d-block mb-3"
-                   v-for="article in menu.articles"
-                   v-bind:href="'/Help/Center/ViewArticle?id=' + article.id">
-                    <i class="ion ion-ios-arrow-forward"></i>&nbsp; {{ article.title }}
-                </a>
+        </span>
+        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom"
+           title="На этой странице можно создавать финансовые цели.
+           Отслеживать прогресс по цели можно на страницах 'Финансы на месяц' и 'Финансы на год'.">
+            <i class="pe-7s-info d-block text-primary"></i>
+        </a>
+        <div class="input-group text-right" style="width: 80%;">
+            <input type="text" class="form-control" value="Advertisers embrace rich media format"
+                   v-model="searchText">
+            <div class="input-group-append" 
+                 v-show="searchText"
+                 v-on:click="searchText = ''">
+                <button type="button" class="btn btn-outline-secondary"><i class="ion ion-ios-close"></i></button>
             </div>
-
+            <div class="input-group-append" v-on:click="searchText = searchText">
+                <button type="button" class="btn btn-outline-primary"><i class="ion ion-ios-search"></i>&nbsp; Поиск</button>
+            </div>
         </div>
-    </div>
-</article>
+    </h4>
+
+    @*<h3 class="row align-items-center font-weight-bold py-4 mb-4">
+            <div class="col">
+                Help center
+                <div class="text-muted text-tiny font-weight-light">Answers to common questions</div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-xl-3 mt-4 mt-sm-0">
+                <input type="text" class="form-control form-control-lg" placeholder="Search topic...">
+            </div>
+        </h3>*@
+    <hr class="container-m-nx border-light my-0">
+    <article>
+        <div class="row mt-4">
+            <div class="col-lg-4 col-xl-3">
+
+                <div>
+                    <a href="javascript:void(0)" class="media align-items-center bg-lighter text-body py-3 px-4"
+                       v-for="menu in menus"
+                       v-show="menu.articles.length > 0 "
+                       v-on:click="selectedMenu(menu)">
+                        <div class="ui-w-30 text-center text-xlarge" style="font-weight: 600;"
+                             v-bind:class="menu.icon"></div>
+                        <div class="media-body ml-3">
+                            {{ menu.title }}
+                            @*<div class="text-muted small">Donec sagittis urna eu leo</div>*@
+                        </div>
+                    </a>
+
+                </div>
+
+                <div class="text-center mt-4 mb-5">
+                    <a asp-area="" asp-controller="Feedback" asp-action="Create" class="btn btn-outline-primary">
+                        Не нашли то, что искали? Напишите нам!
+                    </a>
+                </div>
+
+            </div>
+            <div class="col">
+
+                <section v-for="menu in menus"
+                         v-show="menu.articles.length > 0 && menu.isShow">
+                    <h4 class="media align-items-center my-4" v-bind:id="'menu_' + menu.id ">
+                        <div class="ui-w-60 text-center text-large" style="font-weight: 600;"
+                             v-bind:class="menu.icon"></div>
+                        <div class="media-body ml-1">
+                            {{ menu.title }}
+                        </div>
+                    </h4>
+
+                    <div class="theme-bg-white ui-bordered mb-2"
+                         v-for="article in menu.articles"
+                         v-show="article.isShow">
+                        <a class="d-flex d-inline-flex  align-items-center text-body py-3 px-4"
+                           v-bind:href="'/Help/Center/ViewArticle?id=' + article.id">
+                            <i class="ion ion-ios-arrow-forward"></i>&nbsp; {{ article.title }}
+                        </a>
+                        @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin)
+                        {
+                            <span class="text-muted float-right" style=" margin-top: 18px; margin-right: 20px;">
+                                <i class="ion ion-md-eye text-large align-middle"></i>&nbsp;
+                                <span class="align-middle">{{ article.countViews }}</span>
+                            </span>
+                        }
+                    </div>
+
+                    <hr class="my-3">
+                </section>
+
+            </div>
+        </div>
+    </article>
+</section>

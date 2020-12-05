@@ -48,11 +48,17 @@
                 <div class="form-group col">
                     <div class="input-group budget-date">
                         <span class="input-group-prepend" style=" width: 50px;">
-                            <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"><i class="fa fa-angle-left font-size-large" aria-hidden="true"></i></button>
+                            <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"
+                                    v-bind:disabled="isLoading">
+                                <i class="fa fa-angle-left font-size-large" aria-hidden="true"></i>
+                            </button>
                         </span>
                         <input type="text" class="form-control text-center" id="budget-date" v-model="budgetDate" v-on:input="refresh(undefined)">
                         <span class="input-group-append" style=" width: 50px;">
-                            <button v-on:click="changeView(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"><i class="fa fa-angle-right font-size-large" aria-hidden="true"></i></button>
+                            <button v-on:click="changeView(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"
+                                    v-bind:disabled="isLoading">
+                                <i class="fa fa-angle-right font-size-large" aria-hidden="true"></i>
+                            </button>
                         </span>
                     </div>
                 </div>
@@ -87,8 +93,10 @@
     <div class="card table-container">
         <div class="card-body" style="padding-bottom:5px;">
             <div class="card-title with-elements templates-container">
-                <select id="templates" v-model="templateID" style="width: 300px"
-                        v-on:change="refresh('onlyTable')" class="form-control form-control-sm">
+                <select id="templates" class="form-control form-control-sm" style="width: 300px"
+                        v-model="templateID"
+                        v-on:change="refresh('onlyTable')"
+                        v-bind:disabled="isLoading">
                     @foreach (var template in Model.Templates)
                     {
                         if (!template.IsDefault)
@@ -103,7 +111,7 @@
                 </select>
                 <a class="ml-2 btn btn-outline-primary btn-xs icon-btn md-btn-flat" title="Редактировать шаблон"
                    v-bind:href="'/Template/Edit/'+template.id"
-                   v-show="template && template.id">
+                   v-show="template && template.id && isLoading == false">
                     <i class="ion ion-md-create"></i>
                 </a>
 

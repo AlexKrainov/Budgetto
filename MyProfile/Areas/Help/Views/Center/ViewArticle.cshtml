@@ -26,10 +26,10 @@
             <div class="text-center text-muted text-tiny mb-4">
                 @if (!string.IsNullOrEmpty(Model.UserName))
                 {
-                    <a href="#" class="text-muted">@Model.UserName</a> 
+                    <a href="#" class="text-muted">@Model.UserName</a>
                     <span> \ </span>
                 }
-                 @Model.DateEdit.ToString("dd.MM.yyyy")
+                @Model.DateEdit.ToString("dd.MM.yyyy")
             </div>
             <hr class="blog-separator border-primary mx-auto mb-5">
 
@@ -38,31 +38,38 @@
             <!-- / Article content -->
             <!-- Article info -->
             <div class="my-5">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <a href="#" class="text-muted">
-                                <i class="ion ion-md-eye text-large align-middle"></i>&nbsp;
-                                <span class="align-middle">@Model.Views</span>
-                            </a>
-                            @*&nbsp; &nbsp; &nbsp;
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a href="#" class="text-muted">
+                            <i class="ion ion-md-eye text-large align-middle"></i>&nbsp;
+                            <span class="align-middle">@Model.Views</span>
+                        </a>
+                        @*&nbsp; &nbsp; &nbsp;
                             <a href="#" class="text-muted">
                                 <i class="ion ion-ios-text text-lighter text-large align-middle"></i>&nbsp;
                                 <span class="align-middle">6</span>
                             </a>*@
-                        </div>
-                        @*<div>
-                            <a href="#" class="text-muted">
+                    </div>
+                    <div>
+                        @*<a href="#" class="text-muted">
                                 <i class="ion ion-logo-twitter text-twitter text-large align-middle"></i>&nbsp;
                                 <span class="align-middle">7</span>
                             </a>
-                            &nbsp; &nbsp; &nbsp;
-                            <a href="#" class="text-muted">
-                                <i class="ion ion-logo-facebook text-facebook text-large align-middle"></i>&nbsp;
-                                <span class="align-middle">12</span>
-                            </a>
-                        </div>*@
+                                                &nbsp; &nbsp; &nbsp;
+                                                <a href="#" class="text-muted">
+                                                    <i class="ion ion-logo-facebook text-facebook text-large align-middle"></i>&nbsp;
+                                                    <span class="align-middle">12</span>
+                                                </a>*@
+                        <a asp-area="Help" asp-controller="Center" asp-action="Index" class="btn btn-secondary">
+                            <i class="ion ion-md-arrow-round-back mr-2"></i>
+                            Вернуться
+                        </a>
+                        <a asp-area="" asp-controller="Feedback" asp-action="Create" class="btn btn-outline-secondary">
+                            Не нашли то, что искали? Напишите нам!
+                        </a>
                     </div>
-                    @*<div class="media align-items-center bg-lighter py-3 px-4 mt-4">
+                </div>
+                @*<div class="media align-items-center bg-lighter py-3 px-4 mt-4">
                         <img src="/products/appwork/v152/assets_/img/avatars/6-small.png" alt="" class="d-block ui-w-40 rounded-circle">
                         <div class="media-body ml-3">
                             <a href="#" class="text-body">Mae Gibson</a>
@@ -72,7 +79,7 @@
                         </div>
                         <a href="#" class="btn btn-success d-block">+ Follow</a>
                     </div>*@
-                </div>
+            </div>
 
             <!-- Other articles -->
             @*<hr class="blog-separator border-primary mx-auto mb-4">
@@ -286,16 +293,16 @@
                 </div>
             </div>
 
-            <div class="ui-bordered p-4 mb-4">
+            <!--<div class="ui-bordered p-4 mb-4">
                 <h6 class="small font-weight-bold mb-2">Если остались вопросы</h6>
                 <hr class="blog-separator border-primary">
                 <div class="d-flex flex-wrap">
-                    <a asp-area="" asp-controller="Feedback" asp-action="Create" class="footer-link pt-3 ml-4">
-                        @*<i class="sidenav-icon pe-7s-display1"></i>*@
-                        <div>Feedback</div>
+                    <a asp-area="" asp-controller="Feedback" asp-action="Create" class="footer-link pt-3 ml-4">-->
+            @*<i class="sidenav-icon pe-7s-display1"></i>*@
+            <!--<div>Обратная связь</div>
                     </a>
                 </div>
-            </div>
+            </div>-->
 
         </div>
         <!-- / Side content -->

@@ -59,7 +59,8 @@ namespace MyProfile.HelpCenter.Service
                             ID = y.ID,
                             Title = y.Title,
                             KeyWords = y.KeyWords,
-                            Link = y.Link
+                            Link = y.Link,
+                            CountViews = y.HelpArticleUserViews.Count()
                         })
                  })
                  .ToListAsync();

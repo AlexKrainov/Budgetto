@@ -57,15 +57,15 @@ GO
 
 
 SET IDENTITY_INSERT [HelpMenus] ON 
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (2, 'Финансы на месяц/год' ,'pe-7s-display1' ,1 ,0)
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (3, 'Лимиты' ,'lnr lnr-frame-expand' ,1 ,1)
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (4, 'Цели' ,'lnr lnr-rocket' ,1 ,2)
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (5, 'Графики' ,'lnr lnr-pie-chart' ,1 ,3)
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (6, 'Шаблоны' ,'lnr lnr-layers' ,1 ,4)
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (7, 'Категории и папки' ,'pe-7s-albums' ,1 ,5)
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (8, 'Календарь' ,'lnr lnr-calendar-full' ,1 ,6)
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (9, 'Общие вопросы' ,'lnr lnr-question-circle' ,1 ,7)
-INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (10, 'Записи' ,'oi oi-dollar' ,1 ,8)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (2, 'Финансы на месяц/год' ,'pe-7s-display1' ,1 ,3)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (3, 'Лимиты' ,'lnr lnr-frame-expand' ,1 ,4)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (4, 'Цели' ,'lnr lnr-rocket' ,1 ,5)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (5, 'Графики' ,'lnr lnr-pie-chart' ,1 ,6)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (6, 'Шаблоны' ,'lnr lnr-layers' ,1 ,7)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (7, 'Категории и папки' ,'pe-7s-albums' ,1 ,2)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (8, 'Календарь' ,'lnr lnr-calendar-full' ,1 ,8)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (9, 'Общие вопросы' ,'lnr lnr-question-circle' ,1 ,0)
+INSERT INTO [HelpMenus] ([ID],[Title] ,[Icon] ,[IsVisible] ,[Order]) VALUES (10, 'Записи' ,'oi oi-dollar' ,1 ,1)
 SET IDENTITY_INSERT [HelpMenus] OFF
 
 GO

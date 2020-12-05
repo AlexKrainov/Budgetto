@@ -57,7 +57,7 @@
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/spinkit/spinkit.css" />
     @if (currentUser.UserSettings.IsShowHints)
     {
-        <link href="~/vendor/libs/shepherd/shepherd.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/vendor/libs/shepherd/shepherd.css" rel="stylesheet" asp-append-version="true" />
     }
     <!--Record-->
     <link href="~/css/main.css" rel="stylesheet" asp-append-version="true" />
@@ -123,16 +123,16 @@
 
     @if (currentUser.UserSettings.IsShowCookie)
     {
-        <div id="cookie-model" class="callout callout-secondary" style="max-width: 800px; position: fixed; right: 32px; bottom: 10px; z-index: 3000; box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.5);">
-            <button type="button" class="close" data-dismiss="alert" onclick="$('#cookie-model').remove();">×</button>
-            <p>
-                Мы используем cookie. Это позволяет нам делать сайт быстрее и лучше. Продолжая пользоваться сайтом, вы соглашаетесь с
-                <a href="~/documents/cookie_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('cookie_policy')">Политикой использования файлов cookie</a>,
-                <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('personal_data_processing_policy')">Политикой обработки персональных данных</a> и
-                <a href="~/documents/terms_of_use.pdf" target="_blank" class="callout-link" onclick="ShowDocument('terms_of_use')">Пользовательским соглашением</a>.
-            </p>
-            <p><button class="btn btn-primary mr-1" onclick="ShowCookieOff()">Подтвердить</button></p>
-        </div>
+    <div id="cookie-model" class="callout callout-secondary" style="max-width: 800px; position: fixed; right: 32px; bottom: 10px; z-index: 3000; box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.5);">
+        <button type="button" class="close" data-dismiss="alert" onclick="$('#cookie-model').remove();">×</button>
+        <p>
+            Мы используем cookie. Это позволяет нам делать сайт быстрее и лучше. Продолжая пользоваться сайтом, вы соглашаетесь с
+            <a href="~/documents/cookie_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('cookie_policy')">Политикой использования файлов cookie</a>,
+            <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('personal_data_processing_policy')">Политикой обработки персональных данных</a> и
+            <a href="~/documents/terms_of_use.pdf" target="_blank" class="callout-link" onclick="ShowDocument('terms_of_use')">Пользовательским соглашением</a>.
+        </p>
+        <p><button class="btn btn-primary mr-1" onclick="ShowCookieOff()">Подтвердить</button></p>
+    </div>
     }
 
 
@@ -161,21 +161,21 @@
 
         @if (currentUser.UserSettings.IsShowHints)
         {
-            <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
+        <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
 
-            if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+        @if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
             {
-                <script src="~/pages/_tour/budget-tour.js" asp-append-version="true"></script>
-                <script src="~/pages/_tour/add-record-tour.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/budget-tour.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/add-record-tour.js" asp-append-version="true"></script>
             }
-            if (this.Context.Request.Path == "/Section/Edit")
+        @if (this.Context.Request.Path == "/Section/Edit")
             {
-                <script src="~/pages/_tour/section-tour.js" asp-append-version="true"></script>
-                <script src="~/pages/_tour/add-section-tour.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/section-tour.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/add-section-tour.js" asp-append-version="true"></script>
             }
-            if (this.Context.Request.Path == "/Template/Edit")
+        @if (this.Context.Request.Path == "/Template/Edit")
             {
-                <script src="~/pages/_tour/template-edit-tour.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/template-edit-tour.js" asp-append-version="true"></script>
             }
         }
     </environment>
@@ -192,21 +192,21 @@
 
         @if (currentUser.UserSettings.IsShowHints)
         {
-            <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
+        <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
 
             if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
             {
-                <script src="~/pages/_tour/budget-tour.min.js" asp-append-version="true"></script>
-                <script src="~/pages/_tour/add-record-tour.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/budget-tour.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/add-record-tour.min.js" asp-append-version="true"></script>
             }
             if (this.Context.Request.Path == "/Section/Edit")
             {
-                <script src="~/pages/_tour/section-tour.min.js" asp-append-version="true"></script>
-                <script src="~/pages/_tour/add-section-tour.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/section-tour.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/add-section-tour.min.js" asp-append-version="true"></script>
             }
             if (this.Context.Request.Path == "/Template/Edit")
             {
-                <script src="~/pages/_tour/template-edit-tour.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_tour/template-edit-tour.min.js" asp-append-version="true"></script>
             }
         }
     </environment>

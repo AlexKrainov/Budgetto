@@ -192,7 +192,7 @@ namespace MyProfile.Chart.Service
             }
             else if (charts.Count > 0 && periodTypesEnum == PeriodTypesEnum.Year)
             {
-                labels = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+                labels = new List<string> { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
             }
 
             foreach (var chart in charts.OrderBy(x => x.IsBig))

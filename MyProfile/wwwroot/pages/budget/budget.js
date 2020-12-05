@@ -51,6 +51,8 @@
         bigChartsData: [],
         bigCharts: [],
         bigChartHeight: 310,
+
+        isLoading: false,
     },
     watch: {},
     mounted: BudgetMethods.mounted,
@@ -351,7 +353,7 @@
                                     ticks: {
                                         // Include a dollar sign in the ticks
                                         callback: function (value, index, values) {
-                                            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value).replace(/\D00(?=\D*$)/, '')
+                                            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value).split(",")[0] + " ₽"//.replace(/\D00(?=\D*$)/, '')
                                         },
                                         fontColor: fontColor,
                                         beginAtZero: true
@@ -361,7 +363,7 @@
                             tooltips: {
                                 callbacks: {
                                     label: function (tooltipItem, data) {
-                                        return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value).replace(/\D00(?=\D*$)/, '');
+                                        return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value).split(",")[0] + " ₽"; //.replace(/\D00(?=\D*$)/, '');
                                     }
                                 }
                             },
@@ -392,7 +394,7 @@
                                             console.log(e);
                                         }
 
-                                        return `${label}: ${new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money).replace(/\D00(?=\D*$)/, '')}`;
+                                        return `${label}: ${new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money).split(",")[0] } ₽`;
                                     }
                                 }
                             },
@@ -442,12 +444,14 @@
             if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData" || typeRefresh == "all") {
 
                 if (this.templateID != "-1") {
+                    this.isLoading = true;
                     ShowLoading(".table-container");
 
                     this.load()
                         .then(function () {
                             HideLoading(".table-container");
                             BudgetVue.initTable();
+                            this.isLoading = false;
                         });
                 }
             }

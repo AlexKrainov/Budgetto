@@ -1,0 +1,70 @@
+﻿
+@{
+    Layout = "~/Views/Shared/Layouts/_Layout1.cshtml";
+    ViewData["Title"] = "Help center - Pages";
+    List<MyProfile.Entity.ModelView.MenuItemViewModel> menuItems = MyProfile.Identity.UserInfo.GetMenuItems();
+}
+
+@section Styles {
+}
+
+@section Scripts {
+    <environment names="Development">
+        <script src="~/pages/_areas/help_center/help-center.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/_areas/help_center/help-center.min.js" asp-append-version="true"></script>
+    </environment>
+}
+<h4 class="row align-items-center font-weight-bold py-2 mb-2">
+    <span class="lnr lnr-question-circle display-4 text-primary mr-2"></span>
+    <span class="col-sm-3">
+        Help center
+    </span>
+    <span class="col-sm-9 col-md-4 col-xl-3 mt-4 mt-sm-0">
+        <input type="text" class="form-control " placeholder="" size="200" v-model="searchText">
+    </span>
+</h4>
+@*<h3 class="row align-items-center font-weight-bold py-4 mb-4">
+        <div class="col">
+            Help center
+            <div class="text-muted text-tiny font-weight-light">Answers to common questions</div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-3 mt-4 mt-sm-0">
+            <input type="text" class="form-control form-control-lg" placeholder="Search topic...">
+        </div>
+    </h3>*@
+<hr class="container-m-nx border-light my-0">
+<article id="help-vue">
+
+    <div class="row row-bordered my-4">
+        <div class="col-6 col-sm-3 col-md-2 col-lg-3 col-xl-2"
+             v-for="menu in menus"
+             v-show="menu.articles.length > 0 ">
+            <a href="javascript:void(0)" class="card card-hover text-body my-2"
+               v-bind:title="menu.title">
+                <div class="card-body text-center py-3">
+                    <div class="display-3 text-primary"
+                         v-bind:class="menu.icon"></div>
+                    <h5 class="m-0 mt-3">{{ menu.title }}</h5>
+                </div>
+            </a>
+        </div>
+    </div>
+    <hr class="container-m-nx border-light my-0">
+
+    <div class="card mt-5" v-for="menu in menus"
+         v-show="menu.articles.length > 0 ">
+        <h5 class="card-header py-4 px-5">{{ menu.title }}</h5>
+        <div class="row no-gutters row-bordered">
+            <div class="col-md-6 p-5">
+                <a class="d-block mb-3"
+                   v-for="article in menu.articles"
+                   v-bind:href="'/Help/Center/ViewArticle?id=' + article.id">
+                    <i class="ion ion-ios-arrow-forward"></i>&nbsp; {{ article.title }}
+                </a>
+            </div>
+
+        </div>
+    </div>
+</article>

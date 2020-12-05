@@ -2,7 +2,16 @@
 
 @{
     var currentUser = MyProfile.Identity.UserInfo.Current;
-    var hintsPages = new List<string> { "/", "/Budget/Month", "/Section/Edit", "/Template/Edit" };
+    var hintsPages = new List<string> {
+        "/",
+        "/Budget/Month",
+        "/Section/Edit",
+        "/Template/Edit",
+        "/Chart/List",
+    "/Chart/Edit",
+    "/Limit/List",
+    "/Goal/List",
+    "/Budget/TimeLine"};
 }
 
 <!-- Layout navbar -->
@@ -66,34 +75,139 @@
                     {
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-record">
-                                <i class="ion ion-md-add text-success  text-large"></i> &nbsp; Как добавить запись
+                                <i class="fas fa-route text-large"></i> &nbsp; Как добавить запись
+                            </a>
+                            <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
+                                <i class="fas fa-route text-large"></i> &nbsp; Тур по странице
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
-                                <i class="ion ion-ios-fitness text-dark  text-large"></i> &nbsp; Тур по странице
+                            <a href="/Help/Center/ViewArticle?id=8" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Создание напоминания
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=11" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Работа с таблицей
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=12" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Дополнительные настройки страницы
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=9" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Добавление записи
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=10" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Добавление записи в валюте
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=13" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Поиск записей
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
                             </a>
                         </div>
                     }
-                    @if (this.Context.Request.Path == "/Section/Edit")
+                    else if (this.Context.Request.Path == "/Section/Edit")
                     {
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-section">
-                                <i class="sidenav-icon pe-7s-albums text-success  text-large"></i> &nbsp; Как добавить категорию
+                                <i class="fas fa-route text-large"></i> &nbsp; Как добавить категорию
+                            </a>
+                            <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
+                                <i class="fas fa-route text-large"></i> &nbsp; Тур по странице
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
-                                <i class="ion ion-ios-fitness text-dark  text-large"></i> &nbsp; Тур по странице
+                            <a href="/Help/Center/ViewArticle?id=5" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Создание папки
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=6" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Создание категори
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=7" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Смена папки
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
                             </a>
                         </div>
                     }
-                    @if (this.Context.Request.Path == "/Template/Edit")
+                    else if (this.Context.Request.Path == "/Template/Edit")
                     {
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
-                                <i class="ion ion-ios-fitness text-dark  text-large"></i> &nbsp; Тур по странице
+                                <i class="fas fa-route text-large"></i> &nbsp; Тур по странице
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/Help/Center/ViewArticle?id=3" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Создание шаблона
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
                             </a>
                         </div>
                     }
+                    else if (this.Context.Request.Path == "/Chart/Edit" || this.Context.Request.Path == "/Chart/List")
+                    {
+                        <div class="dropdown-menu dropdown-menu-right">
+
+                            <a href="/Help/Center/ViewArticle?id=4" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Создание графика
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                        </div>
+                    }
+                    else if (this.Context.Request.Path == "/Limit/List")
+                    {
+                        <div class="dropdown-menu dropdown-menu-right">
+
+                            <a href="/Help/Center/ViewArticle?id=1" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp;  Создание лимита
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=12" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Дополнительные настройки страницы
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                        </div>
+                    }
+                    else if (this.Context.Request.Path == "/Goal/List")
+                    {
+                        <div class="dropdown-menu dropdown-menu-right">
+
+                            <a href="/Help/Center/ViewArticle?id=2" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp;  Создание цели
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                        </div>
+                    }
+                    else if ( this.Context.Request.Path == "/Budget/TimeLine")
+                    {
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="/Help/Center/ViewArticle?id=12" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Дополнительные настройки страницы
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                            <a href="/Help/Center/ViewArticle?id=13" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                &nbsp; Поиск записей
+                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                            </a>
+                        </div>
+                    }
+
                 </div>
             }
             @*<a id="shepherd-example" class="nav-link cursor-pointer" href="javascript:void(0)" title="Добавить запись">

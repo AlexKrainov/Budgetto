@@ -11,7 +11,7 @@ namespace MyProfile.Entity.ModelView.HelpCenter
         /// <summary>
         /// Filtered on client side
         /// </summary>
-        public bool IsShows { get; set; } = true;
+        public bool IsShow { get; set; } = true;
         public IEnumerable<MenuArticleModelView> Articles { get; set; }
     }
 
@@ -22,8 +22,9 @@ namespace MyProfile.Entity.ModelView.HelpCenter
         /// <summary>
         /// Filtered on client side
         /// </summary>
-        public bool IsShows { get; set; } = true;
+        public bool IsShow { get; set; } = true;
         public string KeyWords { get; set; }
         public string Link { get; set; }
+        public int CountViews { get; set; }
     }
 }
