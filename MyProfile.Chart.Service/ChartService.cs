@@ -8,7 +8,6 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -394,6 +393,35 @@ namespace MyProfile.Chart.Service
                 })
                 .ToListAsync();
         }
+        
+        public async Task<List<ChartEditModel>> GetLightChartListView(Expression<Func<Chart, bool>> expression = null)
+        {
+            var currentUser = UserInfo.Current;
+            var predicate = PredicateBuilder.True<Chart>();
+
+            predicate = predicate.And(x => x.UserID == currentUser.ID
+                //&& currentUser.UserSettings.Month_BigCharts
+                && x.IsDeleted == false);
+
+            if (expression != null) { predicate = predicate.And(expression); }
+
+            return await repository.GetAll<Chart>(predicate)
+                .Select(x => new ChartEditModel
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    Description = x.Description,
+                    DateCreate = x.DateCreate,
+                    LastDateEdit = x.LastDateEdit,
+                    ChartTypeID = (ChartTypesEnum)x.ChartTypeID,
+                    ChartTypeCodeName = x.ChartType.CodeName,
+                    ChartTypeName = x.ChartType.Name,
+                    IsShowBudgetMonth = x.VisibleElement.IsShow_BudgetMonth,
+                    IsShowBudgetYear = x.VisibleElement.IsShow_BudgetYear,
+                    IsBig = x.ChartType.IsBig,
+                })
+                .ToListAsync();
+        }
 
 
         /// <summary>
@@ -415,6 +443,39 @@ namespace MyProfile.Chart.Service
                 return true;
             }
             return false;
+        }
+
+        public bool ToggleChart(int chartID, PeriodTypesEnum periodType, bool isBudgetPage = false)
+        {
+            var result = false;
+            var db_chart = repository.GetAll<Chart>(x => x.ID == chartID && x.UserID == UserInfo.Current.ID)
+                .FirstOrDefault();
+
+            if (db_chart != null)
+            {
+                if (periodType == PeriodTypesEnum.Month)
+                {
+                    result = db_chart.VisibleElement.IsShow_BudgetMonth = !db_chart.VisibleElement.IsShow_BudgetMonth;
+                }
+                else if (periodType == PeriodTypesEnum.Year)
+                {
+                    result = db_chart.VisibleElement.IsShow_BudgetYear = !db_chart.VisibleElement.IsShow_BudgetYear;
+                }
+
+                db_chart.LastDateEdit = DateTime.Now.ToUniversalTime();
+                repository.Update(db_chart);
+                if (isBudgetPage)
+                {
+                    userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BudgetPage_HideChirt);
+                }
+                else
+                {
+                    userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.BigChart_Toggle);
+                }
+                return result;
+            }
+            return result;
+
         }
 
     }

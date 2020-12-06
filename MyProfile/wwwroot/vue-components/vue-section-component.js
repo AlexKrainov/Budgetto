@@ -10,7 +10,7 @@
             <div class="cards" v-bind:style="searchText ? '' : dataRecordsStyle"
                 v-bind:class="dataClass">
                 <div class="card-section card"
-                     v-for="section in sections"
+                     v-for="(section, index) in sections"
                      v-bind:key="section.id"
                      v-on:click="onSelect(section)"
                      v-bind:title="section.description"
@@ -32,6 +32,9 @@
                         </div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-default card-section text-big" style="box-shadow: none;" 
+                    v-show="privateIsHideMoreThenOneSections && sections.length > 2"
+                    v-on:click="showAllSections">+{{ sections.length - 1 }}</button>
             </div>
         </div>`,
     props: {
@@ -42,6 +45,7 @@
             default: "section-component"
         },
         onchoose: Event,
+        onUpdateView: Event,
         isShowFilter: {
             type: Boolean,
             default: false,
@@ -64,6 +68,10 @@
             type: String,
             default: "cursor-pointer"
         },
+        isHideMoreThenOneSections: {// show or hide all section, for exmaple it's special for limits
+            type: Boolean,
+            default: false
+        },
     },
     //computed: {
     //},
@@ -72,6 +80,7 @@
             count: 0,
             sections: [],
             searchText: null,
+            privateIsHideMoreThenOneSections: false,
         }
     },
     watch: {
@@ -80,6 +89,7 @@
         }
     },
     mounted: function () {
+        this.privateIsHideMoreThenOneSections = this.isHideMoreThenOneSections;
         new PerfectScrollbar(document.getElementsByClassName('cards')[0]);
 
         if (this.dataItems == undefined) {
@@ -122,6 +132,12 @@
                 this.sections = this.dataItems;
             }
 
+            if (this.privateIsHideMoreThenOneSections) {
+                for (var i = 1; i < this.sections.length; i++) {
+                    this.sections[i].isShow = false;
+                }
+            }
+
             this.$forceUpdate();
         },
         checkSelected: function (section) {
@@ -155,6 +171,13 @@
                 }
                 //this.sections[i].isSelected = true;
             }
+        },
+        showAllSections: function () {
+            this.privateIsHideMoreThenOneSections = false;
+            for (var i = 1; i < this.sections.length; i++) {
+                this.sections[i].isShow = true;
+            }
+            this.$emit('onUpdateView', true);
         }
     }
 });

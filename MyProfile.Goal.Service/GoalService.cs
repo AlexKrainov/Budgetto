@@ -112,11 +112,11 @@ namespace MyProfile.Goal.Service
 
             #region Check status
 
-            var goal = await repository.GetAll<Goal>(x => x.ID == record.GoalID 
+            var goal = await repository.GetAll<Goal>(x => x.ID == record.GoalID
             && x.IsFinished == false
             && x.GoalRecords.Sum(y => y.Total) >= x.ExpectationMoney).FirstOrDefaultAsync();
 
-            if (goal != null )
+            if (goal != null)
             {
                 goal.IsFinished = true;
                 await repository.UpdateAsync(goal, true);
@@ -235,6 +235,29 @@ namespace MyProfile.Goal.Service
                 //db_item. = DateTime.Now.ToUniversalTime();
                 await repository.UpdateAsync(db_item, true);
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Goal_Delete);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> ToggleGoal(int goalID, PeriodTypesEnum periodType)
+        {
+            var currentUser = UserInfo.Current;
+            var db_item = await repository.GetAll<Goal>(x => x.ID == goalID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
+
+            if (db_item != null)
+            {
+                if (periodType == PeriodTypesEnum.Month)
+                {
+                    db_item.VisibleElement.IsShow_BudgetMonth = !db_item.VisibleElement.IsShow_BudgetMonth;
+                }
+                else if (periodType == PeriodTypesEnum.Year)
+                {
+                    db_item.VisibleElement.IsShow_BudgetYear = !db_item.VisibleElement.IsShow_BudgetYear;
+                }
+
+                await repository.UpdateAsync(db_item, true);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.BudgetPage_HideGoal);
                 return true;
             }
             return false;

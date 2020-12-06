@@ -172,8 +172,9 @@ namespace MyProfile.Budget.Service
                                     {
                                         Value = total.ToString("C", numberFormatInfo),
                                         NaturalValue = total
-                                    }); 
-                                }else
+                                    });
+                                }
+                                else
                                 {
                                     cells.Add(new Cell { Value = "", NaturalValue = -1 });
                                     footerCells.Add(new FooterCell());
@@ -208,6 +209,7 @@ namespace MyProfile.Budget.Service
                                         CssIcon = x.Key,
                                         Count = x.Count(),
                                         Titles = x.FirstOrDefault().Title,
+                                        IsRepeat = x.Any(y => y.IsRepeat)
                                     })
                                     .ToList();
 
@@ -269,6 +271,7 @@ namespace MyProfile.Budget.Service
                                         CssIcon = x.Key,
                                         Count = x.Count(),
                                         Titles = x.FirstOrDefault().Title,
+                                        IsRepeat = x.Any(y => y.IsRepeat)
                                     })
                                     .ToList();
 

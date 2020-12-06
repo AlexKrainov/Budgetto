@@ -440,7 +440,6 @@
                             this.isSaving = false;
 
                             if (this.after_save_callback && typeof (this.after_save_callback) === "string") {
-
                                 this.after_save_callback = window.getFunctionFromString(this.after_save_callback);
                             }
 

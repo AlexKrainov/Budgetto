@@ -23,5 +23,6 @@ namespace MyProfile.Entity.ModelView.Limit
 		public bool IsShow { get; set; }
         public int PeriodTypeID { get; set; }
         public string Text { get; set; }
+        public int ID { get; set; }
     }
 }

@@ -1,9 +1,11 @@
 ﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4 px-1"
-     v-for="limitChartData in limitsChartsData"
-     v-show="limitChartData.isShow">
-    <div class="card ui-bordered custom-card-hover mb-2" v-bind:class="limitChartData.percent1 == 100 ? 'red-bottom-line' : ''">
+     v-for="limit in limitsChartsData"
+     v-show="limit.isShow">
+    <div class="card ui-bordered custom-card-hover mb-2"
+         v-bind:id="'limit_'+limit.id"
+         v-bind:class="limit.percent1 == 100 ? 'red-bottom-line' : ''">
         @*<h6 class="card-header with-elements border-0 pr-0 pb-0" style="margin-left: -7px;">
-                <div class="card-header-title">{{ limitChartData.name }}</div>
+                <div class="card-header-title">{{ limit.name }}</div>
                 <div class="card-header-elements ml-auto">
                     <div class="btn-group mr-3">
                         <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown">
@@ -20,7 +22,7 @@
             <div class="media-body mr-3">
                 <div class="mb-2 d-inline-flex  align-items-center">
                     <i class="lnr lnr-frame-expand text-primary float-left" style="font-size: x-large;"></i>
-                    <strong class="pl-2">{{ limitChartData.name }}</strong>
+                    <strong class="pl-2">{{ limit.name }}</strong>
                 </div>
                 <div class="card-header-elements ml-auto float-right" style="margin-top: -20px; margin-right: -31px;">
                     <div class="btn-group mr-3">
@@ -29,18 +31,19 @@
                             <i class="ion ion-ios-more"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
-                            <a class="dropdown-item" href="javascript:void(0)">Скрыть лимит на этой странице</a>
+                            <a class="dropdown-item" href="javascript:void(0)"
+                               v-on:click="hideLimit(limit.id)">Скрыть с этой страницы</a>
                         </div>
                     </div>
                 </div>
-                <div class="mb-1 ">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.spendedMoney).replace(/\D00(?=\D*$)/, '') }} / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.limitMoney).replace(/\D00(?=\D*$)/, '') }}</div>
-                <div class="small">{{ limitChartData.text }} {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(limitChartData.leftMoneyInADay).split(",")[0] }} ₽</div>
+                <div class="mb-1 ">{{ getCurrencyValue(limit.spendedMoney) }} / {{ getCurrencyValue(limit.limitMoney) }}</div>
+                <div class="small">{{ limit.text }} {{ getCurrencyValue(limit.leftMoneyInADay) }} </div>
             </div>
             <div class="d-flex align-items-center position-relative " style="height:60px;width: 60px;">
                 <div class="w-100 position-absolute" style="height:60px;top:0;">
-                    <canvas v-bind:id="limitChartData.chartID"></canvas>
+                    <canvas v-bind:id="limit.chartID"></canvas>
                 </div>
-                <div class="w-100 text-center font-weight-bold">{{ limitChartData.percent1 }}%</div>
+                <div class="w-100 text-center font-weight-bold">{{ limit.percent1 }}%</div>
             </div>
         </div>
     </div>

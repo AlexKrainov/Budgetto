@@ -133,7 +133,8 @@ namespace MyProfile.Reminder.Service
                     DateReminder = x.DateReminder,
                     Description = x.Reminder.Description,
                     ReminderID = x.ReminderID,
-                    Title = x.Reminder.Title
+                    Title = x.Reminder.Title,
+                    IsRepeat = x.Reminder.IsRepeat
                 });
 
             //return repository
@@ -210,7 +211,7 @@ namespace MyProfile.Reminder.Service
                         });
                     }
                 }
-                else 
+                else
                 if (reminderEdit.RepeatEvery == Enum.GetName(typeof(RepeatEveryType), RepeatEveryType.Week))
                 {
                     for (int i = 1; i < 100; i++)

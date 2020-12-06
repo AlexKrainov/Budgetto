@@ -25,7 +25,7 @@
         <span class="px-0 pb-2 pt-2">
             Лимиты
         </span>
-        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
+        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom"
            title="Лимиты позволяют контролировать траты по выбранным категориям. В одном лимите можно совмещать несколько категорий.
            Например, поставьте себе лимит на фастфуд или продукты и отслеживайте его на страницах 'Финансы на месяц' и 'Финансы на год'.">
             <i class="pe-7s-info d-block text-primary"></i>
@@ -75,7 +75,9 @@
                         <vue-section-component data-class="cards-medium"
                                                v-bind:is-show-filter="false"
                                                data-section-classes=""
-                                               v-bind:data-items="limit.sections"></vue-section-component>
+                                               v-bind:is-hide-more-then-one-sections="true"
+                                               v-bind:data-items="limit.sections"
+                                               v-on:on-update-view="reloadView"></vue-section-component>
                     </div>
                 </div>
                 <hr class="m-0">
@@ -113,8 +115,12 @@
                     </a>
                     <div class="d-inline-flex align-items-center align-middle float-right ml-1">
                         <span class="px-1 ml-2 ml-lg-0">
-                            <span class="fas fa-eye text-primary" title="Показывать на главной странице" v-show="limit.isShowOnDashboard"></span>
-                            <span class="fas fa-eye-slash text-secondary" title="Не показывать на главной странице" v-show="limit.isShowOnDashboard == false"></span>
+                            <span class="fas fa-eye text-primary cursor-pointer" title="Показывать на главной странице"
+                                  v-show="limit.isShowOnDashboard"
+                                  v-on:click="toggleLimit(limit.id)"></span>
+                            <span class="fas fa-eye-slash text-secondary cursor-pointer" title="Не показывать на главной странице"
+                                  v-show="limit.isShowOnDashboard == false"
+                                  v-on:click="toggleLimit(limit.id)"></span>
                             @*<span class="fas fa-users text-primary" title="Эту папку выдят все" v-show="area.isShowInCollective"></span>
                                 <span class="fas fa-users-slash text-secondary" title="Эту папку выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
                         </span>

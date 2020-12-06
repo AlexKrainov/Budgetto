@@ -126,6 +126,13 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, limit });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ToggleLimit(int id, PeriodTypesEnum periodType)
+        {
+            bool isShow = await limitService.ToggleLimit(id, periodType);
+
+            return Json(new { isOk = true , isShow });
+        }
 
     }
 }

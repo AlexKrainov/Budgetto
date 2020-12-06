@@ -157,5 +157,12 @@ namespace MyProfile.Controllers
             return RedirectToAction("Edit", id);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ToggleTemplate(int id)
+        {
+            await templateService.ToggleTemplate(id);
+            return Json(new { isOk = true });
+        }
+
     }
 }

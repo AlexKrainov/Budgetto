@@ -129,6 +129,37 @@ namespace MyProfile.Template.Service
             return templateViewModel;
         }
 
+        public async Task<bool> ToggleTemplate(int id)
+        {
+            var isDefault = false;
+            var currentUser = UserInfo.Current;
+            var db_chart = await repository.GetAll<Template>(x => x.ID == id && x.UserID == currentUser.ID)
+                .FirstOrDefaultAsync();
+
+            if (db_chart != null)
+            {
+                isDefault = db_chart.IsDefault = !db_chart.IsDefault;
+
+                db_chart.DateEdit = DateTime.Now.ToUniversalTime();
+                repository.Update(db_chart);
+
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Template_ToggleIsDefault);
+
+                if (isDefault)
+                {
+                    await setDefaultTemplates(new TemplateViewModel
+                    {
+                        ID = db_chart.ID,
+                        IsDefault = isDefault,
+                        PeriodTypeID = db_chart.PeriodTypeID,
+                    });
+                }
+
+                return isDefault;
+            }
+            return isDefault;
+        }
+
         public async Task<List<TemplateViewModel>> GetTemplates()
         {
             return await repository.GetAll<Template>(x => x.UserID == UserInfo.Current.ID && x.IsDeleted == false)
@@ -168,6 +199,7 @@ namespace MyProfile.Template.Service
                                         })
                                         .ToList()
                                 })
+                                .OrderBy(p => p.Order)
                                 .ToList()
                         })
                         .ToListAsync();
@@ -194,7 +226,7 @@ namespace MyProfile.Template.Service
                 //}
 
                 await repository.SaveAsync();
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.TemplateColumnOrder);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Template_ColumnOrder);
             }
         }
 
@@ -221,7 +253,7 @@ namespace MyProfile.Template.Service
                     db_item.DateDelete = null;
                 }
                 await repository.UpdateAsync(db_item, true);
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, db_item.DateDelete != null ? UserLogActionType.TemplateDelete : UserLogActionType.TemplateRecovery);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, db_item.DateDelete != null ? UserLogActionType.Template_Delete : UserLogActionType.Template_Recovery);
                 return true;
             }
             return false;
@@ -385,11 +417,11 @@ namespace MyProfile.Template.Service
 
             if (isEdit)
             {
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.TemplateEdit, errorLogIDs: errorLogCreateIDs);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Template_Edit, errorLogIDs: errorLogCreateIDs);
             }
             else
             {
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.TemplateCreate, errorLogIDs: errorLogCreateIDs);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Template_Create, errorLogIDs: errorLogCreateIDs);
             }
 
             await setDefaultTemplates(template);

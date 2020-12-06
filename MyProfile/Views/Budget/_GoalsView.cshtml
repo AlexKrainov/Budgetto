@@ -1,52 +1,13 @@
 ﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4 px-1 mb-2"
-     v-for="goalChartData in goalChartsData"
-     v-show="goalChartData.isShow">
-
-    @*<div class="card pt-2 mb-4" v-bind:class="goalChartData.percent > 100 ? 'green-line' : ''">
-            <div class="card-header-elements ml-auto">
-                <div class="btn-group mr-3">
-                    <button type="button" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown" aria-expanded="false">
-                        <i class="ion ion-ios-more"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
-                        <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="addGoalMoney(goalChartData)">Внести деньги</a>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center position-relative mt-4" style="height:110px;">
-                <div class="w-100 position-absolute" style="height:110px;top:0;">
-                    <canvas v-bind:id="goalChartData.chartID" width="444" height="110" style="display: block; width: 444px; height: 110px;"></canvas>
-                </div>
-                <div class="w-100 text-center text-large">{{ goalChartData.percent }}%</div>
-            </div>
-            <div class="text-center pb-2 my-3">
-                <span class="lnr lnr-rocket text-primary" style="font-size: x-large;"></span>
-                {{ goalChartData.name }}
-            </div>
-            <div class="card-footer text-center py-3">
-                <div class="row">
-                    <div class="col">
-                        <div class="text-muted small">Цель</div>
-                        <strong class="text-big">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.expectationMoney) }}</strong>
-                    </div>
-                    <div class="col">
-                        <div class="text-muted small">Накоплено</div>
-                        <strong class="text-big">{{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.totalMoney) }}</strong>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
-    @*v-bind:class="goalChartData.isOwner ? 'border-primary' : 'border-secondary'"*@
-    @*v-bind:class="goalChartData.percent > 100 ? 'green-line' : ''"*@
+     v-for="goal in goalChartsData"
+     v-show="goal.isShow">
     <div class="card custom-card-hover"
-         v-bind:id="'goal_' + goalChartData.id"
-         v-if="goalChartData.isDeleted == false">
+         v-bind:id="'goal_' + goal.id"
+         v-if="goal.isDeleted == false">
         <div class="card-body card-body pb-0">
             <div class="d-inline-flex  align-items-center">
                 <i class="lnr lnr-rocket text-primary float-left" style="font-size: x-large;"></i>
-                <strong class="pl-2">{{ goalChartData.name }}</strong>
+                <strong class="pl-2">{{ goal.name }}</strong>
             </div>
             <div class="card-header-elements ml-auto float-right" style="margin-top: -20px; margin-right: -31px;">
                 <div class="btn-group mr-3">
@@ -55,22 +16,24 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
                         <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="addGoalMoney(goalChartData)">Внести деньги</a>
+                           v-on:click="addGoalMoney(goal)">Внести деньги</a>
+                        <a class="dropdown-item" href="javascript:void(0)"
+                           v-on:click="hideGoal(goal.id)">Скрыть с этой страницы</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="card-body pt-2" style=" margin-top: 3px;">
             <div class="d-flex justify-content-between align-items-center small">
-                <div class="font-weight-bold">{{ goalChartData.percent }}%</div>
+                <div class="font-weight-bold">{{ goal.percent }}%</div>
                 <div class="text-muted">
-                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.totalMoney).split(",")[0] }} ₽ / {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(goalChartData.expectationMoney).replace(/\D00(?=\D*$)/, '') }}
+                    {{ getCurrencyValue(goal.totalMoney) }} / {{ getCurrencyValue(goal.expectationMoney) }}
                 </div>
             </div>
             <div class="progress mt-1" style="height: 3px;">
                 <div class="progress-bar"
-                     v-bind:class="goalChartData.percent >= 100 ? 'bg-success': 'bg-warning'"
-                     v-bind:style="'width: '+ goalChartData.percent +'%;'"></div>
+                     v-bind:class="goal.percent >= 100 ? 'bg-success': 'bg-warning'"
+                     v-bind:style="'width: '+ goal.percent +'%;'"></div>
             </div>
         </div>
     </div>

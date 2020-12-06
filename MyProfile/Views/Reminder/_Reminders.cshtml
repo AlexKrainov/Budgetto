@@ -11,16 +11,22 @@
             <h5 class="mb-2">
                 <i class="fas fa-trash pl-2 edit-reminder float-right text-danger cursor-pointer"
                    v-on:click="remove(_reminder)"></i>
-                <a href="javascript:void(0)" class="float-right font-weight-semibold ml-3" v-on:click="edit(_reminder)">
+                <a href="javascript:void(0)" class="float-right font-weight-semibold ml-3"
+                   v-on:click="edit(_reminder)">
                     <i class="fas fa-edit pl-2 edit-record"></i>
                 </a>
                 <div class="small float-right">
                     <i class="ion ion-md-time text-primary"></i>
                     <span>{{ GetDateByFormat(_reminder.dateReminder, 'DD.MM.YYYY') }} </span>
                 </div>
-                <div class="text-body">
+                <div class="text-body display-inline element-pointer-hover" v-on:click="edit(_reminder)">
                     {{ _reminder.title }}
                 </div>
+                <span class="text-muted pl-4" title="Повторять каждый "
+                      v-show="_reminder.repeatEvery">
+                    <i class="fas fa-sync"></i>
+                    {{ textRepeat(_reminder.repeatEvery) }}
+                </span>
             </h5>
             <div>{{ _reminder.description }}</div>
         </div>
@@ -38,6 +44,11 @@
                 </div>
                 <div class="text-body deleted-item">
                     {{ _reminder.title }}
+                    <span class="text-muted pl-4" title="Повторять каждый "
+                          v-show="_reminder.repeatEvery">
+                        <i class="fas fa-sync"></i>
+                        {{ textRepeat(_reminder.repeatEvery) }}
+                    </span>
                 </div>
             </h5>
             <div class="deleted-item">{{ _reminder.description }}</div>

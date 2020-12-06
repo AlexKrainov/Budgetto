@@ -34,7 +34,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<JsonResult> GetCharts([FromBody] ChartEditModel chart)
         {
-            return Json(new { isOk = true, charts = await chartService.GetChartListView() });
+            return Json(new { isOk = true, charts = await chartService.GetLightChartListView() });
         }
 
 
@@ -116,5 +116,14 @@ namespace MyProfile.Controllers
             }
             return Json(new { isOk = true, chart });
         }
+
+        [HttpGet]
+        public IActionResult ToggleChart(int id, PeriodTypesEnum periodType,bool isBudgetPage = false)
+        {
+            bool isShow = chartService.ToggleChart(id, periodType, isBudgetPage);
+
+            return Json(new { isOk = true, isShow });
+        }
+
     }
 }

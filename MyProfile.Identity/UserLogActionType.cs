@@ -38,12 +38,17 @@
         public const string HelpCenter_Page = "HelpCenter_Page";
         public const string HelpCenter_Article_Page = "HelpCenter_Article_Page";
 
+        public const string BudgetPage_HideGoal = "BudgetPage_HideGoal";
+        public const string BudgetPage_HideLimit = "BudgetPage_HideLimit";
+        public const string BudgetPage_HideChirt = "BudgetPage_HideChirt";
+
         public const string Reminder_Part = "Reminder_Part";
         public const string ToDoListEdit_Part = "ToDoListEdit_Part";
 
         public const string Limit_Create = "Limit_Create";
         public const string Limit_Edit = "Limit_Edit";
         public const string Limit_Delete = "Limit_Delete";
+        public const string Limit_Toggle = "Limit_Toggle";
 
         public const string Goal_Create = "Goal_Create";
         public const string Goal_Edit = "Goal_Edit";
@@ -53,12 +58,14 @@
         public const string BigChart_Edit = "BigChart_Edit";
         public const string BigChart_Delete = "BigChart_Delete";
         public const string BigChart_Recovery = "BigChart_Recovery";
+        public const string BigChart_Toggle = "BigChart_Toggle";
 
-        public const string TemplateCreate = "TemplateCreate";
-        public const string TemplateEdit = "TemplateEdit";
-        public const string TemplateDelete = "TemplateDelete";
-        public const string TemplateRecovery = "TemplateRecovery";
-        public const string TemplateColumnOrder = "TemplateColumnOrder";
+        public const string Template_Create = "Template_Create";
+        public const string Template_Edit = "Template_Edit";
+        public const string Template_Delete = "Template_Delete";
+        public const string Template_Recovery = "Template_Recovery";
+        public const string Template_ColumnOrder = "Template_ColumnOrder";
+        public const string Template_ToggleIsDefault = "Template_ToggleIsDefault";
 
         public const string Area_Create = "Area_Create";
         public const string Area_Edit = "Area_Edit";

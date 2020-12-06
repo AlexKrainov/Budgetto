@@ -59,6 +59,7 @@ namespace MyProfile.Entity.ModelView.BudgetView
         public string CssIcon { get; set; }
         public int Count { get; set; }
         public string Titles { get; set; }
+        public bool IsRepeat { get; set; }
     }
 
 }

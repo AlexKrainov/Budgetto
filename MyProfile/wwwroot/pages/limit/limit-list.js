@@ -221,6 +221,25 @@ var LimitListVue = new Vue({
                 LimitListVue.msnry.layout();
             }, 15);
         },
+        toggleLimit: function (limitID) {
+            ShowLoading('#limit_' + limitID);
+            return $.ajax({
+                type: "GET",
+                url: "/Limit/ToggleLimit?id=" + limitID,
+                contentType: "application/json",
+                dataType: 'json',
+                context: limitID,
+                success: function (response) {
+                    HideLoading('#limit_' + this);
+                    if (response.isOk = true) {
+                        LimitListVue.limits[LimitListVue.limits.findIndex(x => x.id == this)].isShowOnDashboard = response.isShow;
+                    }
+                },
+                error: function () {
+                    HideLoading('#limit_' + this);
+                }
+            });
+        }
     }
 });
 

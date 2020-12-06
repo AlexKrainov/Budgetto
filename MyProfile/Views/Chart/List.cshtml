@@ -64,11 +64,10 @@
                                 <span class="badge badge-primary">{{ chart.chartTypeName }}</span>
                             </div>
                             <div class="text-big">
-
-                                <span v-show="!chart.isShowBudgetMonth" class="badge badge-secondary" title="Показывать на ...." style="opacity: .3;">Месяц</span>
-                                <span v-show="chart.isShowBudgetMonth" class="badge badge-success">Месяц</span>
-                                <span v-show="!chart.isShowBudgetYear" class="badge badge-secondary" style="opacity: .3;">Год</span>
-                                <span v-show="chart.isShowBudgetYear" class="badge badge-success">Год</span>
+                                <span v-show="!chart.isShowBudgetMonth" v-on:click="toggleChart(chart.id, 1)" class="badge badge-secondary cursor-pointer" style="opacity: .3;">Месяц</span>
+                                <span v-show="chart.isShowBudgetMonth" v-on:click="toggleChart(chart.id, 1)" class="badge badge-success cursor-pointer">Месяц</span>
+                                <span v-show="!chart.isShowBudgetYear" v-on:click="toggleChart(chart.id, 3)" class="badge badge-secondary cursor-pointer" style="opacity: .3;">Год</span>
+                                <span v-show="chart.isShowBudgetYear" v-on:click="toggleChart(chart.id, 3)" class="badge badge-success cursor-pointer">Год</span>
                             </div>
                         </div>
                     </div>

@@ -256,6 +256,25 @@
             }
             this.refrehHeaderTable();
         },
+        hideLimit: function (limitID) {
+            ShowLoading('#limit_' + limitID);
+            return $.ajax({
+                type: "GET",
+                url: "/Limit/ToggleLimit?id=" + limitID + "&periodType=" + this.periodType,
+                contentType: "application/json",
+                dataType: 'json',
+                context: limitID,
+                success: function (response) {
+                    HideLoading('#limit_' + this);
+                    if (response.isOk = true) {
+                        BudgetVue.limitsChartsData.splice(BudgetVue.limitsChartsData.findIndex(x => x.id == this), 1);
+                    }
+                },
+                error: function () {
+                    HideLoading('#limit_' + this);
+                }
+            });
+        },
         //Goal charts
         loadGoalCharts: BudgetMethods.loadGoalCharts,
         OLD_initGoalCharts: function () {
@@ -322,6 +341,25 @@
         },
         addGoalMoney: function (goal) {
             GoalAddMoneyVue.addMoney(goal);
+        },
+        hideGoal: function (goalID) {
+            ShowLoading('#goal_' + goalID);
+            return $.ajax({
+                type: "GET",
+                url: "/Goal/ToggleGoal?id=" + goalID + "&periodType=" + this.periodType,
+                contentType: "application/json",
+                dataType: 'json',
+                context: goalID,
+                success: function (response) {
+                    HideLoading('#goal_' + this);
+                    if (response.isOk = true) {
+                        BudgetVue.goalChartsData.splice(BudgetVue.goalChartsData.findIndex(x => x.id == this), 1);
+                    }
+                },
+                error: function () {
+                    HideLoading('#goal_' + this);
+                }
+            });
         },
         //big charts
         loadBigCharts: BudgetMethods.loadBigCharts,
@@ -394,7 +432,7 @@
                                             console.log(e);
                                         }
 
-                                        return `${label}: ${new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money).split(",")[0] } ₽`;
+                                        return `${label}: ${new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money).split(",")[0]} ₽`;
                                     }
                                 }
                             },
@@ -434,6 +472,25 @@
                 this.bigChartHeight = 600;
             }
             this.refrehHeaderTable();
+        },
+        toggleBigChart: function (chartID) {
+            ShowLoading('#chart_' + chartID);
+            return $.ajax({
+                type: "GET",
+                url: "/Chart/ToggleChart?id=" + chartID + "&periodType=" + this.periodType + "&isBudgetPage=true",
+                contentType: "application/json",
+                dataType: 'json',
+                context: chartID,
+                success: function (response) {
+                    HideLoading('#chart_' + this);
+                    if (response.isOk = true) {
+                        BudgetVue.bigChartsData.splice(BudgetVue.bigChartsData.findIndex(x => x.id == this), 1);
+                    }
+                },
+                error: function () {
+                    HideLoading('#chart_' + this);
+                }
+            });
         },
         //resize and refresh
         refresh: function (typeRefresh) {
@@ -688,12 +745,23 @@
 
                     let reminder = cell.reminders[i];
                     let count = "";
+                    let beforeRepeatIcon = '';
+                    let afterRepeatIcon = '';
+
+                    if (reminder.isRepeat) {
+                        beforeRepeatIcon = '<i class="fas fa-sync" style="font-size: 8px; color: gray; padding-top: -3px; position: absolute;"></i>';
+                    }
 
                     if (reminder.count > 1) {
                         count = reminder.count;
+
+                        if (reminder.isRepeat) {
+                            beforeRepeatIcon = '';
+                            afterRepeatIcon = '<i class="fas fa-sync" style="font-size: 8px; color: gray; padding-top: -3px;"></i>';
+                        }
                     }
 
-                    icons += `<span class="mr-1"><i class="${reminder.cssIcon}" title="${reminder.titles}"></i><span class="reminder-count">${count}</span></span>`;
+                    icons += `<span class="mr-1"><i class="${reminder.cssIcon}" title="${reminder.titles}"></i>${beforeRepeatIcon}<span class="reminder-count">${count}</span>${afterRepeatIcon}</span>`;
                 }
                 return icons;
             }
@@ -800,7 +868,10 @@
 
         //helpers
         getCurrencyValue: function (value) {
-            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value);
+            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName })
+                .format(value)
+                .split(",")[0] + " ₽";
+            //.replace(/\D00(?=\D*$)/, '')
         },
     }
 });

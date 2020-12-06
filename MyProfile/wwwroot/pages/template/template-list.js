@@ -85,6 +85,25 @@ var TemplateListVue = new Vue({
                 }
             });
         },
+        toggleTemplate: function (templateID) {
+            ShowLoading('#template_' + templateID);
+            return $.ajax({
+                type: "GET",
+                url: "/Template/ToggleTemplate?id=" + templateID,
+                contentType: "application/json",
+                dataType: 'json',
+                context: templateID,
+                success: function (response) {
+                    HideLoading('#template_' + this);
+                    if (response.isOk = true) {
+                        TemplateListVue.init();
+                    }
+                },
+                error: function () {
+                    HideLoading('#template_' + this);
+                }
+            });
+        }
     }
 });
 

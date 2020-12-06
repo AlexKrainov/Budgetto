@@ -69,7 +69,7 @@
             this.reminder.cssIcon = cssIcon;
         },
 
-        closeTimeline: function() {
+        closeTimeline: function () {
             this.clearAllStyle();
         },
 
@@ -217,6 +217,24 @@
                 }
             });
         },
+        textRepeat: function (repeatEvery) {
+            switch (repeatEvery) {
+                case "Day":
+                    return "День";
+                    break;
+                case "Week":
+                    return "Неделя";
+                    break;
+                case "Month":
+                    return "Месяц";
+                    break;
+                case "Year":
+                    return "Год";
+                    break;
+                default:
+                    return "";
+            }
+        }
     }
 });
 

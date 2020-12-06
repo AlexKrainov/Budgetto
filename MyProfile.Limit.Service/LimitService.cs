@@ -288,6 +288,7 @@ namespace MyProfile.Limit.Service
 
                 limitCharts.Add(new LimitChartModelView
                 {
+                    ID = limit.ID,
                     ChartID = "limitChart_" + i,
                     Name = limit.Name,
                     SpendedMoney = totalSpended,
@@ -306,6 +307,31 @@ namespace MyProfile.Limit.Service
             }
 
             return limitCharts;
+        }
+
+        public async Task<bool> ToggleLimit(int limitID, PeriodTypesEnum periodType)
+        {
+            var currentUser = UserInfo.Current;
+            var db_limit = await repository.GetAll<Entity.Model.Limit>(x => x.ID == limitID && x.UserID == currentUser.ID)
+                .FirstOrDefaultAsync();
+
+            if (db_limit != null)
+            {
+                db_limit.VisibleElement.IsShowOnDashboards = !db_limit.VisibleElement.IsShowOnDashboards;
+                //db_limit.date = DateTime.Now.ToUniversalTime();
+                await repository.UpdateAsync(db_limit, true);
+
+                if (periodType == PeriodTypesEnum.Undefined)
+                {//if toggle on the limit page
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Toggle);
+                }
+                else
+                {//if hide on the budget page 
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.BudgetPage_HideLimit);
+                }
+                return db_limit.VisibleElement.IsShowOnDashboards;
+            }
+            return false;
         }
     }
 }

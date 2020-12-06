@@ -127,6 +127,13 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, goal });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ToggleGoal(int id, PeriodTypesEnum periodType)
+        {
+            bool isOk = await goalService.ToggleGoal(id, periodType);
+
+            return Json(new { isOk });
+        }
 
     }
 }

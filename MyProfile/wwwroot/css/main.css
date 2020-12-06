@@ -334,7 +334,9 @@ th.column-min-width {
 
 .reminder-count {
     position: absolute;
-    margin-top: -6px;
+    margin-top: -7px;
+    color: gray;
+    font-size: 11px;
 }
 
 .cell-reminder-icons {
@@ -727,3 +729,11 @@ html.dark-style .tagify__input::before {
     background-color: #32353b;
     color: white !important;
 }
+
+.element-pointer-hover {
+    cursor: pointer;
+}
+
+    .element-pointer-hover:hover {
+        color: #3c8ae2 !important;
+    }
