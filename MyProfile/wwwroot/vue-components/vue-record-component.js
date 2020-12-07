@@ -424,7 +424,22 @@
                     context: this,
                     success: function (result) {
                         if (result.isOk == true) {
+
                             if (result.budgetRecord.records.findIndex(x => x.isSaved == false) == -1) {
+
+                                if (result.budgetRecord.records.length == 1) {
+                                    if (this.isEditMode == false) {
+                                        toastr.success("Запись добавилась успешно");
+                                    } else {
+                                        toastr.success("Запись отредактирована");
+                                    }
+                                } else {
+                                    if (this.isEditMode == false) {
+                                        toastr.success("Записи добавились успешно");
+                                    } else {
+                                        toastr.success("Записи отредактированны");
+                                    }
+                                }
                                 this.clearAll();
                             } else {
                                 let records = result.budgetRecord.records.filter(x => x.isSaved);
@@ -434,6 +449,16 @@
                                 //remove comment
                                 if (records.findIndex(x => x.tag == this.descriptionRecord.tag) >= 0) {
                                     this.descriptionRecord = "";
+                                }
+
+                                if (result.budgetRecord.records.some(x => x.isSaved)) {
+                                    toastr.warning("Не все записи сохранились");
+                                } else {
+                                    if (result.budgetRecord.records.length == 1) {
+                                        toastr.error("Не удалось сохранить запись");
+                                    } else {
+                                        toastr.error("Не удалось сохранить записи");
+                                    }
                                 }
                             }
                             this.$emit("afterSave", 123);

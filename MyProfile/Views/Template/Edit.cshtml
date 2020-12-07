@@ -377,15 +377,15 @@
                         <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2" v-bind:id="'settings'+column.id">
 
                             <ul class="list-group list-group-flush" style="overflow-y: unset;">
-                                @*<li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div class="text-muted">Формат отображение даты</div>
-                                        <select class="form-control" v-model="column.format">
-                                            <option v-bind:value="''">Не выбрано</option>
-                                            <option v-bind:value="'dd'">1,2,3</option>
-                                            <option v-bind:value="'dd.MM'">1.03</option>
-                                            <option v-bind:value="'dd.MM.yyyy'">1.03.2020</option>
-                                        </select>
-                                    </li>*@
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="text-muted">Формат отображения даты</div>
+                                    <select class="form-control" v-model="column.format">
+                                        <option v-bind:value="''">Не выбрано</option>
+                                        <option v-bind:value="'MM.yyyy'">12.2020</option>
+                                        <option v-bind:value="'MMMM'">Декабрь</option>
+                                        @*<option v-bind:value="'dd.MM.yyyy'">1.03.2020</option>*@
+                                    </select>
+                                </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div class="text-muted">Показывать колонку ?</div>
                                     <div>

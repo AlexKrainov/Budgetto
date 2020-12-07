@@ -1,8 +1,10 @@
 # Group 1
 User-agent: Googlebot
+Allow: /
 
 # Group 2
 User-agent: Yeandex
+Allow: /
 
 # Group 3
 User-agent: *

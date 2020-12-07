@@ -138,6 +138,7 @@
                 this.column.format = "dd";
             } if (TemplateColumnTypeEnum.MonthsForYear == this.column.templateColumnType) {
                 this.column.name = "Месяц";
+                this.column.format = "MM.yyyy";
             }
         },
         addColumnOption_step1: function (column) {

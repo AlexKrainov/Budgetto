@@ -27,6 +27,7 @@ namespace MyProfile.Budget.Service
         private CollectionUserService collectionUserService;
         private BudgetRecordService budgetRecordService;
         private ReminderService reminderService;
+        private CultureInfo cultureInfo;
 
         public BudgetService(IBaseRepository repository)
         {
@@ -34,6 +35,7 @@ namespace MyProfile.Budget.Service
             this.collectionUserService = new CollectionUserService(repository);
             this.budgetRecordService = new BudgetRecordService(repository);
             this.reminderService = new ReminderService(repository);
+            cultureInfo = new CultureInfo(UserInfo.Current.Currency.SpecificCulture, false);
         }
         #region Budget table view
 
@@ -226,8 +228,7 @@ namespace MyProfile.Budget.Service
                         }
                         else if (column.TemplateColumnType == TemplateColumnType.MonthsForYear)
                         {
-                            string v = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType);
-                            cell.Value = (new DateTime(from.Year, dateCounter, 1)).ToString("MM.yyyy");
+                            cell.Value = SetFormatForDate(new DateTime(from.Year, dateCounter, 1), column.Format, column.TemplateColumnType); ;
                             cell.NaturalValue = cell.dateCounter;
 
                             cells.Add(cell.CloneObject());
@@ -311,11 +312,11 @@ namespace MyProfile.Budget.Service
 
         private string SetFormatForDate(DateTime dateTime, string format, TemplateColumnType templateColumnType)
         {
-            string v = "";
+            string v ;
 
             if (!string.IsNullOrEmpty(format))
             {
-                v = dateTime.ToString(format);
+                v = dateTime.ToString(format, cultureInfo);
             }
             else if (templateColumnType == TemplateColumnType.DaysForMonth)
             {
@@ -335,7 +336,7 @@ namespace MyProfile.Budget.Service
 
         private List<Cell> CalculateFooter(List<List<FooterCell>> footersData, TemplateViewModel template)
         {
-            NumberFormatInfo numberFormatInfo = new CultureInfo(UserInfo.Current.Currency.SpecificCulture, false).NumberFormat;
+            NumberFormatInfo numberFormatInfo = cultureInfo.NumberFormat;
             var specificCulture = UserInfo.Current.Currency.SpecificCulture;
             List<Cell> footer = new List<Cell>();
             decimal v;
@@ -371,7 +372,7 @@ namespace MyProfile.Budget.Service
                         break;
                     case FooterActionType.Undefined:
                     default:
-                        cell.Value = "";
+                        cell.Value = "Итого";
                         break;
                 }
                 footer.Add(cell);
