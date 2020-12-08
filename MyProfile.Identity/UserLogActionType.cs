@@ -20,6 +20,15 @@
         public const string CheckCodeAfterChangeEmail = "CheckCodeAfterChangeEmail";
         public const string ResendEmail = "ResendEmail";
 
+        public const string Email_ConfirmEmail = "Email_ConfirmEmail";
+        public const string Email_ConfirmEmailComplete = "Email_ConfirmEmailComplete";
+        public const string Email_LoginConfirmation = "Email_LoginConfirmation";
+        public const string Email_RecoveryPassword = "Email_RecoveryPassword";
+        public const string Email_CheckCodeOk = "Email_CheckCodeOk";
+        public const string Email_CheckCodeNotOk = "Email_CheckCodeNotOk";
+        public const string Email_CancelLastEmail = "Email_CancelLastEmail";
+
+
         public const string BudgetMonth_Page = "BudgetMonth_Page";
         public const string BudgetYear_Page = "BudgetYear_Page";
         public const string Templates_Page = "Templates_Page";

@@ -4,6 +4,7 @@ using MyProfile.Entity.ModelView.HelpCenter;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;

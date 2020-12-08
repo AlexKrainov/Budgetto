@@ -10,8 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyProfile.User.Service
+namespace MyProfile.UserLog.Service
 {
+    using UserLog = MyProfile.Entity.Model.UserLog;
     public class UserLogService
     {
         private IBaseRepository repository;

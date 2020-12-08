@@ -3,6 +3,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.User;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.Threading.Tasks;
 

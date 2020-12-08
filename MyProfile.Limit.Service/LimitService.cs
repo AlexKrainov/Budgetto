@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using LinqKit;
 using MyProfile.Budget.Service;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 
 namespace MyProfile.Limit.Service
 {

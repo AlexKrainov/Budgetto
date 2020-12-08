@@ -25,6 +25,7 @@ using MyProfile.Template.Service;
 using MyProfile.ToDoList.Service;
 using MyProfile.User.Service;
 using MyProfile.User.Service.PasswordWorker;
+using MyProfile.UserLog.Service;
 
 namespace MyProfile
 {
@@ -54,7 +55,6 @@ namespace MyProfile
             services.AddTransient<BudgetTotalService>();
             services.AddTransient<DictionariesService>();
             services.AddTransient<SectionService>();
-            services.AddTransient<UserLogService>();
             services.AddTransient<CollectionUserService>();
             services.AddTransient<LimitService>();
             services.AddTransient<GoalService>();
@@ -71,6 +71,7 @@ namespace MyProfile
 
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();
+            services.AddTransient<UserLogService>();
             #endregion
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

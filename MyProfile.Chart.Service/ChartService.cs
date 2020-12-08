@@ -7,6 +7,7 @@ using MyProfile.Entity.ModelView.Chart;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

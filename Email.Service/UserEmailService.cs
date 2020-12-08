@@ -3,40 +3,41 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
-using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.UserLog.Service;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-
 namespace Email.Service
 {
     public class UserEmailService
     {
-
         private IBaseRepository _repository;
         private IEmailSender _emailSender;
         private IHostingEnvironment hostingEnvironment;
         private IHttpContextAccessor httpContextAccessor;
+        private UserLogService userLogService;
 
         public UserEmailService(
             IBaseRepository repository,
             IEmailSender emailSender,
             IHostingEnvironment hostingEnvironment,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            UserLogService userLogService)
         {
             this._repository = repository;
             this._emailSender = emailSender;
             this.hostingEnvironment = hostingEnvironment;
             this.httpContextAccessor = httpContextAccessor;
+            this.userLogService = userLogService;
         }
 
-        public async Task<Guid> ConfirmEmail(User user, bool isResend = false)
+        public async Task<Guid> ConfirmEmail(User user, Guid userSessionID, bool isResend = false)
         {
-           // user.Email = "ialexkrainov2@gmail.com";
+            // user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
             Random random = new Random();
 
@@ -69,14 +70,16 @@ namespace Email.Service
                 mailLog.Comment = ex.Message;
 
                 await _repository.CreateAsync(mailLog, true);
+                await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_ConfirmEmail, comment: ex.Message);
                 return Guid.Empty;
             }
 
             await _repository.CreateAsync(mailLog, true);
+            await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_ConfirmEmail);
             return mailLog.ID;
         }
 
-        public async Task<int> ConfirmEmail_Complete(Guid id)
+        public async Task<int> ConfirmEmail_Complete(Guid id, Guid userSessionID)
         {
             var user = UserInfo.Current;
             var mailLog = await _repository.GetAll<MailLog>(x => x.ID == id).FirstOrDefaultAsync();
@@ -90,6 +93,7 @@ namespace Email.Service
 
             user.IsConfirmEmail = true;
             await UserInfo.AddOrUpdate_Authenticate(user);
+            await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_ConfirmEmailComplete);
 
             return 1;
         }
@@ -100,9 +104,9 @@ namespace Email.Service
         /// <param name="user"></param>
         /// <param name="isResend"></param>
         /// <returns>if the this site cannot send email, retun guid.empty</returns>
-        public async Task<Guid> LoginConfirmation(User user, bool isResend = false)
+        public async Task<Guid> LoginConfirmation(User user, Guid userSessionID, bool isResend = false)
         {
-           // user.Email = "ialexkrainov2@gmail.com";
+            // user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
             Random random = new Random();
 
@@ -135,16 +139,18 @@ namespace Email.Service
                 mailLog.IsSuccessful = false;
                 mailLog.Comment = ex.Message;
                 await _repository.CreateAsync(mailLog, true);
+                await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_LoginConfirmation, comment: ex.Message);
                 return Guid.Empty;
             }
 
             await _repository.CreateAsync(mailLog, true);
+            await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_LoginConfirmation);
             return mailLog.ID;
         }
 
 
 
-        public async Task<Guid> RecoveryPassword(User user, bool isResend = false)
+        public async Task<Guid> RecoveryPassword(User user, Guid userSessionID, bool isResend = false)
         {
             //user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
@@ -178,16 +184,18 @@ namespace Email.Service
                 mailLog.IsSuccessful = false;
                 mailLog.Comment = ex.Message;
                 await _repository.CreateAsync(mailLog, true);
+                await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_RecoveryPassword, ex.Message);
 
                 return Guid.Empty;
             }
 
             await _repository.CreateAsync(mailLog, true);
+            await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_RecoveryPassword);
 
             return mailLog.ID;
         }
 
-        public async Task<Guid> CheckCode(Guid mailLogID, int code)
+        public async Task<Guid> CheckCode(Guid mailLogID, int code, Guid userSessionID)
         {
             var mailLog = await _repository.GetAll<MailLog>(x => x.ID == mailLogID).FirstOrDefaultAsync();
 
@@ -202,12 +210,14 @@ namespace Email.Service
                 }
 
                 await _repository.UpdateAsync(mailLog, true);
+                await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_CheckCodeOk);
                 return mailLog.UserID ?? Guid.Empty;
             }
+            await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_CheckCodeNotOk);
             return Guid.Empty;
         }
 
-        public async Task<bool> CheckCode(string email, int code)
+        public async Task<bool> CheckCode(string email, int code, Guid userSessionID)
         {
             var mailLog = await _repository.GetAll<MailLog>(x => x.Email == email)
                 .OrderByDescending(t => t.SentDateTime)
@@ -224,12 +234,14 @@ namespace Email.Service
                 }
 
                 await _repository.UpdateAsync(mailLog, true);
+                await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_CheckCodeOk);
                 return true;
             }
+            await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_CheckCodeNotOk);
             return false;
         }
 
-        public async Task<Guid> CancelLastEmail(Guid emailID)
+        public async Task<Guid> CancelLastEmail(Guid emailID, Guid userSessionID)
         {
             var mailLog = await _repository.GetAll<MailLog>(x => x.ID == emailID).FirstOrDefaultAsync();
 
@@ -242,7 +254,7 @@ namespace Email.Service
             }
 
             await _repository.UpdateAsync(mailLog, true);
-
+            await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_CheckCodeNotOk);
 
             return mailLog.UserID ?? Guid.Empty;
         }

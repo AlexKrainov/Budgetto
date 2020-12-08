@@ -17,6 +17,7 @@ using MyProfile.User.Service;
 using MyProfile.Entity.ModelView.AreaAndSection;
 using Common.Service;
 using MyProfile.Entity.ModelView.TemplateModelView;
+using MyProfile.UserLog.Service;
 
 namespace MyProfile.Budget.Service
 {
@@ -161,6 +162,7 @@ namespace MyProfile.Budget.Service
             };
             if (budgetArea.ID > 0)
             {
+                area.IsUpdated = true;
                 await repository.UpdateAsync(budgetArea, true);
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Edit);
             }
@@ -171,7 +173,6 @@ namespace MyProfile.Budget.Service
             }
 
             area.ID = budgetArea.ID;
-            area.IsUpdated = true;
             return area;
         }
 
@@ -193,13 +194,35 @@ namespace MyProfile.Budget.Service
             };
             if (budgetSection.ID > 0)
             {
-                await repository.UpdateAsync(budgetSection, true);
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Section_Edit);
+                List<int> errorLogEditIDs = new List<int>();
+                try
+                {
+                    await repository.UpdateAsync(budgetSection, true);
+                    section.IsSaved = true;
+                }
+                catch (Exception ex)
+                {
+                    errorLogEditIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Edit", ex));
+                }
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Section_Edit, errorLogIDs: errorLogEditIDs);
+
+                section.IsUpdated = true;
             }
             else
             {
-                await repository.CreateAsync(budgetSection, true);
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Section_Create);
+                List<int> errorLogCreateIDs = new List<int>();
+                try
+                {
+                    await repository.CreateAsync(budgetSection, true);
+                    section.IsSaved = true;
+                }
+                catch (Exception ex)
+                {
+                    errorLogCreateIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Create", ex));
+                }
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Section_Create, errorLogIDs: errorLogCreateIDs);
+
+                section.IsUpdated = false;
             }
 
             await SaveIncludedSection(section.ID, section.CollectiveSections.Select(x => x.ID).ToList());
@@ -207,7 +230,6 @@ namespace MyProfile.Budget.Service
             section.ID = budgetSection.ID;
             section.AreaID = budgetSection.BudgetAreaID;
 
-            section.IsUpdated = true;
             return section;
         }
 

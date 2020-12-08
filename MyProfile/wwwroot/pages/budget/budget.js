@@ -812,7 +812,23 @@
         },
         clickFooterCell: function (cellIndex) {
 
-            let filter = { sections: this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID) };
+            let filter = { sections: [] };
+
+            if (this.template.columns[cellIndex].templateColumnType == TemplateColumnTypeEnum.BudgetSection) {
+
+                filter.sections = this.template.columns[cellIndex].templateBudgetSections.map(x => x.sectionID);
+                this.stylingClickedCells(event, "td_s", cellIndex);
+
+            } else if (this.template.columns[cellIndex].templateColumnType == TemplateColumnTypeEnum.DaysForMonth
+                || this.template.columns[cellIndex].templateColumnType == TemplateColumnTypeEnum.MonthsForYear) {
+
+                filter.sections = this.template.columns.map(x => x.templateBudgetSections.map(x => x.sectionID)).flat();
+                this.stylingClickedCells(event, "table", cellIndex);
+
+            } else {
+                return null;
+            }
+
             if (this.periodType == PeriodTypeEnum.Month) {
 
                 filter.startDate = moment(this.budgetDate).format();
@@ -824,8 +840,6 @@
                 filter.endDate = `${this.budgetYear}-12-31T23:59:59+00:00"`;
             }
 
-            this.stylingClickedCells(event, "td_s", cellIndex);
-
             return HistoryVue.showHistory(filter)
         },
         stylingClickedCells: function (event, type, cellIndex) {
@@ -836,7 +850,9 @@
             } else if (type == "tr") {
                 $(event.target).closest("tr").addClass("table-primary");
             } else if (type == "td_s") {
-                $("#table td:nth-child(" + ++cellIndex + ")").addClass("table-primary");
+                $("#table td:nth-child(" + (++cellIndex) + ")").addClass("table-primary");
+            } else if (type == "table") {
+                $("#table td").addClass("table-primary");
             }
         },
         //after clicked a row, a cell or a footer cell

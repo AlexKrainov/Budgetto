@@ -7,6 +7,7 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Template.Service;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

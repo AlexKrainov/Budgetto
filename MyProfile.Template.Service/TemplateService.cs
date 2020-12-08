@@ -7,6 +7,7 @@ using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

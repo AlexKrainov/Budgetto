@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MyProfile.Entity.ModelView.HelpCenter;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyProfile.HelpCenter.Service;
 using MyProfile.Identity;
-using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
+using System.Threading.Tasks;
 
 namespace MyProfile.Areas.Help.Controllers
 {

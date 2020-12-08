@@ -12,6 +12,7 @@ using MyProfile.Identity;
 using MyProfile.Limit.Service;
 using MyProfile.Template.Service;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -11,6 +11,7 @@ using MyProfile.Identity;
 using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 
 namespace MyProfile.Controllers
 {

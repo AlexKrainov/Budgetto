@@ -4,6 +4,7 @@ using MyProfile.Entity.ModelView.ToDoList;
 using MyProfile.Identity;
 using MyProfile.ToDoList.Service;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

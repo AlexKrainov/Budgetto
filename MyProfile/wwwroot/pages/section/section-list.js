@@ -46,9 +46,9 @@
             SectionVue.areaName = area.name;
 
 
-            $("html, body").animate({
-                scrollTop: $("#section-vue").offset().top - 75
-            }, 1000);
+            //$("html, body").animate({
+            //    scrollTop: $("#section-vue").offset().top - 75
+            //}, 1000);
 
             SectionVue.areas = this.areas.map(function (x) { return { name: x.name, id: x.id } });
 
@@ -185,7 +185,8 @@ var SectionVue = new Vue({
             }
 
             for (var i = 0; i < this.icons.length; i++) {
-                this.icons[i].isShowOnSite = this.icons[i].nameClass.toLocaleLowerCase().indexOf(newValue) >= 0 || this.icons[i].name.toLocaleLowerCase().indexOf(newValue) >= 0;
+                this.icons[i].isShowOnSite = this.icons[i].nameClass.toLocaleLowerCase().indexOf(newValue) >= 0
+                    || this.icons[i].name.toLocaleLowerCase().indexOf(newValue) >= 0;
             }
         },
         searchText: function (newValue, oldValue) {
@@ -200,11 +201,19 @@ var SectionVue = new Vue({
         }
     },
     mounted: function () {
+        //because theiaStickySidebar cannot work with dialog inside container
+        $("#modal-section").appendTo("#model-section-container");
+
         $.getJSON("/json/font-awesome.json", function (json) {
             SectionVue.icons = json;
         });
         $.getJSON("/json/colors-section.json", function (json) {
             SectionVue.colors = json;
+        });
+
+
+        jQuery('#section-vue').theiaStickySidebar({
+            additionalMarginTop: 70,
         });
     },
     methods: {
@@ -285,7 +294,7 @@ var SectionVue = new Vue({
             this.isSaving = true;
             return sendAjax("/Section/SaveSection", this.section, "POST")
                 .then(function (result) {
-                    if (result.isOk) {
+                    if (result.isOk && result.section.isSaved) {
                         if (result.section.areaID == SectionVue.areaID) {
 
                             SectionVue.section = result.section;
@@ -315,8 +324,19 @@ var SectionVue = new Vue({
                             }
                         }
                         //AreaVue.$forceUpdate();//bug areaVuew doesn't update section in a view
+                        if (result.section.isUpdated) {
+                            toastr.success("Категория отредактированна.");
+                        } else {
+                            toastr.success("Категория создана.");
+                        }
                         $("#modal-section").modal("hide");
                         AreaVue.updateSectionComponent();
+                    } else {
+                        if (result.section.isUpdated) {
+                            toastr.error("Ошибка при редактировании категории.");
+                        } else {
+                            toastr.error("Ошибка при создания категории.");
+                        }
                     }
                     SectionVue.isSaving = false;
                 })

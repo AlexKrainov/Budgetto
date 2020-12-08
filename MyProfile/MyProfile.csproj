@@ -68,6 +68,7 @@
     <ProjectReference Include="..\MyProfile.Template.Service\MyProfile.Template.Service.csproj" />
     <ProjectReference Include="..\MyProfile.ToDoList.Service\MyProfile.ToDoList.Service.csproj" />
     <ProjectReference Include="..\MyProfile.User.Service\MyProfile.User.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.UserLog.Service\MyProfile.UserLog.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -95,6 +96,14 @@
     <None Include="wwwroot\vendor\libs\tagify\src\tagify.js" />
     <None Include="wwwroot\vendor\libs\tagify\src\tagify.polyfills.js" />
     <None Include="wwwroot\vendor\libs\tagify\src\tagify.scss" />
+    <None Include="wwwroot\vendor\libs\theia-sticky-sidebar\maps\ResizeSensor.js.map" />
+    <None Include="wwwroot\vendor\libs\theia-sticky-sidebar\maps\ResizeSensor.min.js.map" />
+    <None Include="wwwroot\vendor\libs\theia-sticky-sidebar\maps\theia-sticky-sidebar.js.map" />
+    <None Include="wwwroot\vendor\libs\theia-sticky-sidebar\maps\theia-sticky-sidebar.min.js.map" />
+    <None Include="wwwroot\vendor\libs\theia-sticky-sidebar\ResizeSensor.js" />
+    <None Include="wwwroot\vendor\libs\theia-sticky-sidebar\ResizeSensor.min.js" />
+    <None Include="wwwroot\vendor\libs\theia-sticky-sidebar\theia-sticky-sidebar.js" />
+    <None Include="wwwroot\vendor\libs\theia-sticky-sidebar\theia-sticky-sidebar.min.js" />
     <None Include="wwwroot\vendor\libs\vue\README.md" />
   </ItemGroup>
 

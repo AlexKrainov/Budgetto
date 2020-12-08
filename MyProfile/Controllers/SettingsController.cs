@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.Threading.Tasks;
 
@@ -58,15 +59,17 @@ namespace MyProfile.Controllers
                                 x.ID == checkUserOnline.Uid
                                 && x.Email == checkUserOnline.Ue))
                         {
+                            string IP = UserInfo.HttpContext.Connection.RemoteIpAddress.ToString();
                             if (await repository.AnyAsync<MyProfile.Entity.Model.UserSession>(x =>
                                 x.ID == checkUserOnline.Usid
                                 && x.UserID == checkUserOnline.Uid
+                                && x.IP == IP //Need to be from the same ip
                                 && x.LogOutDate == null))
                             {
                                 var user = await userService.CheckAndGetUser(checkUserOnline.Ue, userID: checkUserOnline.Uid);
                                 user.UserSessionID = checkUserOnline.Usid ?? Guid.Empty;
                                 user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.User_AutoAuthorization);
-                                return Json(new { isOk = true, IsAuthorized = true });
+                                return Json(new { isOk = true, IsAuthorized = true, setAuthorized = true });
                             }
                         }
                     }

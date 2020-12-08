@@ -15,8 +15,8 @@ namespace MyProfile.Entity.ModelView
 		public string CssIcon { get; set; }
 
 		public string Owner { get; set; }
-		public bool IsShowOnSite { get; set; }
-        public bool IsShowInCollective { get; set; }
+		public bool IsShowOnSite { get; set; } = true;
+		public bool IsShowInCollective { get; set; } = true;
 
 
 		public bool IsShow_Filtered { get; set; } = true;

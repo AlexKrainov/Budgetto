@@ -9,6 +9,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Chart;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 
 namespace MyProfile.Controllers
 {

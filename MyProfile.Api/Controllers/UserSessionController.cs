@@ -11,6 +11,7 @@ using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 
 namespace MyProfile.API.Controllers
 {

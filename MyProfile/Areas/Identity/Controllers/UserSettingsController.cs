@@ -13,6 +13,7 @@ using MyProfile.Entity.ModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using Newtonsoft.Json;
 
 namespace MyProfile.Areas.Identity.Controllers

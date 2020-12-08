@@ -10,6 +10,7 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Template.Service;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.IO;
 using System.Linq;

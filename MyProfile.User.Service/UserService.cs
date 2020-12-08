@@ -10,6 +10,7 @@ using MyProfile.Entity.Repository;
 using MyProfile.File.Service;
 using MyProfile.Identity;
 using MyProfile.User.Service.PasswordWorker;
+using MyProfile.UserLog.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -333,7 +334,7 @@ namespace MyProfile.User.Service
             if (oldEmail != userInfoModel.Email)
             {
                 await UserInfo.ReSignInAsync(user);
-                await userConfirmEmailService.ConfirmEmail(user);
+                await userConfirmEmailService.ConfirmEmail(user, userInfoModel.UserSessionID);
 
                 user.IsConfirmEmail = dbUser.IsConfirmEmail = userInfoModel.IsConfirmEmail = false;
 

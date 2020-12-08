@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyProfile.Identity;
-using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System.Net;
 using System.Threading.Tasks;
 

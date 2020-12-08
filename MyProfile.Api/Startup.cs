@@ -25,6 +25,7 @@ using MyProfile.Template.Service;
 using MyProfile.ToDoList.Service;
 using MyProfile.User.Service;
 using MyProfile.User.Service.PasswordWorker;
+using MyProfile.UserLog.Service;
 
 namespace MyProfile.Api
 {

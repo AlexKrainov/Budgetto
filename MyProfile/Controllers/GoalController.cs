@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Goal;
-using MyProfile.Entity.ModelView.Limit;
 using MyProfile.Entity.Repository;
 using MyProfile.Goal.Service;
 using MyProfile.Identity;
-using MyProfile.Limit.Service;
-using MyProfile.LittleDictionaries.Service;
-using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
 {

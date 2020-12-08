@@ -8,6 +8,7 @@ using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Identity;
 using MyProfile.Reminder.Service;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 
 namespace MyProfile.Controllers
 {

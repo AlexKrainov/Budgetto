@@ -4,6 +4,7 @@ using MyProfile.Chat.Service;
 using MyProfile.Entity.ModelView.Feedback;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.Threading.Tasks;
 

@@ -42,6 +42,7 @@
     document.CheckAuthorization = false;
     setInterval(function () {
         document.CheckAuthorization = true;
+        CheckAuthenticated();//try to fix bug with alert username/password
     }, 300000); //5 mins
 
     $(window).focus(onTabFocus);

@@ -3,7 +3,6 @@
 }
 
 @section Styles {
-    @*<link href="~/vendor/libs/colorPick-custom/colorPick.css" rel="stylesheet" asp-append-version="true" />*@
     <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/sections-list.css" rel="stylesheet" asp-append-version="true" />
 }
@@ -12,9 +11,12 @@
     <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
 
     <environment names="Development">
+
+        <script src="~/vendor/libs/theia-sticky-sidebar/theia-sticky-sidebar.js" asp-append-version="true"></script>
         <script src="~/pages/section/section-list.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
+        <script src="~/vendor/libs/theia-sticky-sidebar/theia-sticky-sidebar.min.js" asp-append-version="true"></script>
         <script src="~/pages/section/section-list.min.js" asp-append-version="true"></script>
     </environment>
 }
@@ -103,6 +105,7 @@
         @Html.Partial("_ModelArea")
     </div>
     <div class="col-md-6 col-sm-12" id="section-vue">
+        @Html.Partial("_ModelSection")
         <div class="card mb-3">
             <h6 class="card-header with-elements">
                 <div class="card-header-title">
@@ -148,9 +151,9 @@
                         <div class="d-inline-flex align-items-center align-middle float-right ml-1">
                             <span class="px-1 ml-2 ml-lg-0">
                                 @*<span class="fas fa-eye text-primary" title="Показывать везде на сайте" v-show="section.isShowOnSite"></span>
-                                    <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="section.isShowOnSite == false"></span>*@
+                                <span class="fas fa-eye-slash text-secondary" title="Скрывать везде на сайте" v-show="section.isShowOnSite == false"></span>*@
                                 @*<span class="fas fa-users text-primary" title="Эту категорию выдят все" v-show="section.isShowInCollective"></span>
-                                    <span class="fas fa-users-slash text-secondary" title="Эту категорию выдите только вы" v-show="section.isShowInCollective == false"> </span>*@
+                                <span class="fas fa-users-slash text-secondary" title="Эту категорию выдите только вы" v-show="section.isShowInCollective == false"> </span>*@
                             </span>
                         </div>
                     </div>
@@ -160,6 +163,9 @@
 
             </div>
         </div>
-        @Html.Partial("_ModelSection")
+
     </div>
+</div>
+<div id="model-section-container">
+
 </div>

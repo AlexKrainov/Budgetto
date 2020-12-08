@@ -27,7 +27,8 @@ namespace MyProfile.Areas.Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> ResendConfirmEmail()
         {
-            return Json(new { isOk = true, userConfirmEmailService = await userEmailService.ConfirmEmail(UserInfo.Current) });
+            var currentUser = UserInfo.Current;
+            return Json(new { isOk = true, userConfirmEmailService = await userEmailService.ConfirmEmail(currentUser, currentUser.UserSessionID) });
         }
 
         [HttpPost]
@@ -39,7 +40,7 @@ namespace MyProfile.Areas.Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(Guid id)
         {
-            await userEmailService.ConfirmEmail_Complete(id);
+            await userEmailService.ConfirmEmail_Complete(id, UserInfo.Current.UserSessionID);
 
             return RedirectToAction("AccountSettings");
         }

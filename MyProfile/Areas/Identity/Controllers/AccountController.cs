@@ -10,6 +10,7 @@ using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.IO;
 using System.Linq;
@@ -125,7 +126,7 @@ namespace MyProfile.Areas.Identity.Controllers
             {
                 await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.LimitLogin);
 
-                var emailID = await userEmailService.LoginConfirmation(user);
+                var emailID = await userEmailService.LoginConfirmation(user, login.UserSessionID);
 
                 if (emailID != Guid.Empty)
                 {
@@ -197,7 +198,7 @@ namespace MyProfile.Areas.Identity.Controllers
                     {
                         await userLogService.CreateUserLogAsync(registrationModel.UserSessionID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}");
 
-                        var emailID = await userEmailService.ConfirmEmail(user);
+                        var emailID = await userEmailService.ConfirmEmail(user, user.UserSessionID);
                         if (emailID != Guid.Empty)
                         {
                             return Json(new { isOk = true, isShowCode = true, emailID });
@@ -235,7 +236,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 return Json(new { isOk = false, message = $"Не удалось найти пользователя с такой почтой. Пожалуйста, зарегистрируйтесь" });
             }
 
-            var emailID = await userEmailService.RecoveryPassword(user);
+            var emailID = await userEmailService.RecoveryPassword(user, login.UserSessionID);
 
 
             if (emailID != Guid.Empty)
@@ -255,20 +256,20 @@ namespace MyProfile.Areas.Identity.Controllers
             if (model.EmailID != Guid.Empty)
             {
                 Guid emailID = Guid.Empty;
-                var userID = await userEmailService.CancelLastEmail(model.EmailID);
+                var userID = await userEmailService.CancelLastEmail(model.EmailID, model.UserSessionID);
                 var user = await userService.CheckAndGetUser(null, null, userID);
 
                 if (model.LastActionID == 0)//Login
                 {
-                    emailID = await userEmailService.LoginConfirmation(user, true);
+                    emailID = await userEmailService.LoginConfirmation(user, model.UserSessionID, true);
                 }
                 else if (model.LastActionID == 1)//Registration
                 {
-                    emailID = await userEmailService.ConfirmEmail(user, true);
+                    emailID = await userEmailService.ConfirmEmail(user, model.UserSessionID, true);
                 }
                 else if (model.LastActionID == 2) //RecoveryPassword
                 {
-                    emailID = await userEmailService.RecoveryPassword(user, true);
+                    emailID = await userEmailService.RecoveryPassword(user, model.UserSessionID, true);
                 }
 
                 await userLogService.CreateUserLogAsync(model.UserSessionID, UserLogActionType.ResendEmail);
@@ -298,7 +299,7 @@ namespace MyProfile.Areas.Identity.Controllers
             Guid userID;
             try
             {
-                userID = await userEmailService.CheckCode(checkCodeModel.EmailID, checkCodeModel.Code);
+                userID = await userEmailService.CheckCode(checkCodeModel.EmailID, checkCodeModel.Code, checkCodeModel.UserSessionID);
 
                 if (userID == Guid.Empty)
                 {
@@ -343,7 +344,7 @@ namespace MyProfile.Areas.Identity.Controllers
 
             try
             {
-                if (await userEmailService.CheckCode(currentUser.Email, Code))
+                if (await userEmailService.CheckCode(currentUser.Email, Code, currentUser.UserSessionID))
                 {
                     currentUser.IsConfirmEmail = await userService.SetConfirmEmail(currentUser.ID, true);
                     await userService.AuthenticateOrUpdateUserInfo(currentUser, UserLogActionType.LoginAfterCode);
