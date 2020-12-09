@@ -35,7 +35,36 @@ namespace Email.Service
             this.userLogService = userLogService;
         }
 
-        public async Task<Guid> ConfirmEmail(User user, Guid userSessionID, bool isResend = false)
+        public async Task<Guid> AuthorizationByEmail(Guid mailID, Guid userSessionID, string email)
+        {
+            var dateMinus24Hours = DateTime.Now.ToUniversalTime().AddHours(-24);
+
+            var mailLog = await _repository.GetAll<MailLog>(x => x.ID == mailID
+                                && x.Email == email
+                                && x.SentDateTime >= dateMinus24Hours
+                                && x.CameDateTime == null)// CameDateTime = null - значит по ссылке еще не проходили
+                            .FirstOrDefaultAsync();
+
+            if (mailLog != null)
+            {
+                mailLog.CameDateTime = DateTime.Now.ToUniversalTime();
+
+                if (mailLog.UserID != null && mailLog.User.IsConfirmEmail == false)
+                {
+                    mailLog.User.IsConfirmEmail = true;
+                }
+
+                await _repository.SaveAsync();
+                await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_AuthorizationByEmail);
+            }
+            else
+            {
+                await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_TryAuthorizationByEmail);
+            }
+            return mailLog.UserID ?? Guid.Empty;
+        }
+
+        public async Task<Guid> ConfirmEmail(User user, Guid userSessionID, MailTypeEnum mailTypeEnum , string returnUrl = null)
         {
             // user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
@@ -45,7 +74,7 @@ namespace Email.Service
             {
                 ID = Guid.NewGuid(),
                 IsSuccessful = true,
-                MailTypeID = isResend ? (int)MailTypeEnum.ConfirmEmail : (int)MailTypeEnum.ResendByUser,
+                MailTypeID = (int)mailTypeEnum,
                 SentDateTime = DateTime.Now.ToUniversalTime(),
                 UserID = user.ID,
                 Email = user.Email,
@@ -61,6 +90,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
+                body = body.Replace("${link}", $"https://localhost:44394/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}{( string.IsNullOrEmpty(returnUrl) ? "" : "&ReturnUrl=" + returnUrl)}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
             }
@@ -98,6 +128,7 @@ namespace Email.Service
             return 1;
         }
 
+
         /// <summary>
         /// 
         /// </summary>
@@ -130,6 +161,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
+                body = body.Replace("${link}", $"https://localhost:44394/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Подтверждение входа", body);
             }
@@ -176,6 +208,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
+                body = body.Replace("${link}", $"https://localhost:44394/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Сброс пароля", body);
             }

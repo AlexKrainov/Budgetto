@@ -105,7 +105,13 @@ namespace MyProfile.Entity.Model
         /// <summary>
         /// send news mailing
         /// </summary>
-        public bool NewsLetter { get; set; }
+        public bool Mail_News { get; set; }
+        /// <summary>
+        /// can send reminders mailing
+        /// </summary>
+        public bool Mail_Reminders { get; set; }
+
+        public bool CanUseAlgorithm { get; set; }
 
         /// <summary>
         /// Show hints on pages
@@ -114,6 +120,8 @@ namespace MyProfile.Entity.Model
         public bool IsShowFirstEnterHint { get; set; }
         public bool IsShowConstructor { get; set; }
         public bool IsShowCookie { get; set; }
+
+
         public virtual User User { get; set; }
 
     }

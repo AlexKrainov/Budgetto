@@ -314,7 +314,9 @@ var AccountSettingsVue = new Vue({
             this.isSaving = true;
 
             UserInfo.UserSettings.webSiteTheme = this.user.userSettings.webSiteTheme;
-            UserInfo.UserSettings.newsLetter = this.user.userSettings.newsLetter;
+            UserInfo.UserSettings.mail_News = this.user.userSettings.mail_News;
+            UserInfo.UserSettings.mail_Reminders = this.user.userSettings.mail_Reminders;
+            UserInfo.UserSettings.canUseAlgorithm = this.user.userSettings.canUseAlgorithm;
 
             return sendAjax("/Identity/Account/SaveUserSettings", this.user.userSettings, "POST")
                 .then(function (result) {

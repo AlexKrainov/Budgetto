@@ -6,6 +6,7 @@
         public const string LoginAfterCode = "LoginAfterCode";
         public const string LoginAfterResetPassword = "LoginAfterResetPassword";
         public const string Login_AutoAuthorization = "Login_AutoAuthorization";
+        public const string AutoAuthorization = "AutoAuthorization";
         public const string TryLogin = "TryLogin";
         public const string LimitLogin = "LimitLogin";
 
@@ -27,6 +28,8 @@
         public const string Email_CheckCodeOk = "Email_CheckCodeOk";
         public const string Email_CheckCodeNotOk = "Email_CheckCodeNotOk";
         public const string Email_CancelLastEmail = "Email_CancelLastEmail";
+        public const string Email_AuthorizationByEmail = "Email_AuthorizationByEmail";
+        public const string Email_TryAuthorizationByEmail = "Email_TryAuthorizationByEmail";
 
 
         public const string BudgetMonth_Page = "BudgetMonth_Page";

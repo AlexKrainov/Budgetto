@@ -46,45 +46,47 @@ namespace MyProfile.Areas.Identity.Controllers
         /// </summary>
         /// <param name="ReturnUrl"></param>
         /// <param name="id">UserSessionID</param>
+        /// <param name="mid">MailLog.ID</param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string ReturnUrl, Guid? id, string email)//Guid? userSessionID)
+        public async Task<IActionResult> Login(string ReturnUrl, Guid? id, string email, Guid? mid)
         {
+            IActionResult returnAction = null;
+
             if (await userLogService.CreateAndCheckIP())
             {
                 DateTime nowMinus7Day = DateTime.Now.AddDays(-7);
 
-                //AutoAuthorization by UserSessionID and UserID
-                if (Request.Cookies.ContainsKey(UserInfo.USER_SESSION_ID)
+                //AutoAuthorization by link from mail
+                if (mid != null && mid != Guid.Empty)
+                {
+                    Guid userID = await userEmailService.AuthorizationByEmail(mailID: mid ?? Guid.Empty, userSessionID: id ?? Guid.Empty, email);
+
+                    if (userID != Guid.Empty)
+                    {
+                        returnAction = await AutoAuthorization(ReturnUrl, userID, userSessionID: id ?? Guid.Empty);
+
+                        if (returnAction != null)
+                        {
+                            return returnAction;
+                        }
+                    }
+                }
+                else if (Request.Cookies.ContainsKey(UserInfo.USER_SESSION_ID)//AutoAuthorization by UserSessionID and UserID
                     && Request.Cookies.ContainsKey(UserInfo.USER_ID)
                     && Guid.TryParse(Request.Cookies[UserInfo.USER_SESSION_ID].ToString(), out Guid usID)
                     && Guid.TryParse(Request.Cookies[UserInfo.USER_ID].ToString(), out Guid uID)
                     && await repository.AnyAsync<UserSession>(x => x.ID == usID && x.UserID == uID && x.LogOutDate == null && x.EnterDate >= nowMinus7Day))
                 {
-                    var user = await userService.CheckAndGetUser(email: null, userID: uID);
+                    returnAction = await AutoAuthorization(ReturnUrl, userID: uID, userSessionID: usID);
 
-                    if (user != null)
+                    if (returnAction != null)
                     {
-                        if (await userLogService.IsBedLimitEnter() == false)
-                        {
-                            user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.Login_AutoAuthorization);
-
-                            if (user.UserSettings.IsShowConstructor)
-                            {
-                                return RedirectToAction("Index", "Start");
-                            }
-                            else if (Url.IsLocalUrl(ReturnUrl))
-                            {
-                                return Redirect(ReturnUrl);
-                            }
-                            else
-                            {
-                                return RedirectToAction("Month", "Budget");
-                            }
-                        }
+                        return returnAction;
                     }
                 }
+
                 Response.Cookies.Delete(UserInfo.USER_ID);
                 Response.Cookies.Delete(UserInfo.USER_SESSION_ID);
 
@@ -104,6 +106,40 @@ namespace MyProfile.Areas.Identity.Controllers
                 return NotFound();
             }
         }
+
+        private async Task<IActionResult> AutoAuthorization(string ReturnUrl, Guid userID, Guid userSessionID)
+        {
+            var user = await userService.CheckAndGetUser(email: null, userID: userID);
+
+            if (user != null)
+            {
+                if (await userLogService.IsBedLimitEnter() == false)
+                {
+                    user.UserSessionID = userSessionID;
+                    user = await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.AutoAuthorization);
+                    await userLogService.UpdateSession_UserID(user.UserSessionID, user.ID);
+
+                    Response.Cookies.Append(UserInfo.USER_SESSION_ID, userSessionID.ToString());
+                    Response.Cookies.Append(UserInfo.USER_ID, user.ID.ToString());
+
+                    if (user.UserSettings.IsShowConstructor)
+                    {
+                        return RedirectToAction("Index", "Start");
+                    }
+                    else if (Url.IsLocalUrl(ReturnUrl))
+                    {
+                        return Redirect(ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Month", "Budget");
+                    }
+                }
+            }
+            return null;
+        }
+
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Stat([FromBody] UserStatViewModel personData)
@@ -198,7 +234,7 @@ namespace MyProfile.Areas.Identity.Controllers
                     {
                         await userLogService.CreateUserLogAsync(registrationModel.UserSessionID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}");
 
-                        var emailID = await userEmailService.ConfirmEmail(user, user.UserSessionID);
+                        var emailID = await userEmailService.ConfirmEmail(user, user.UserSessionID, MailTypeEnum.ConfirmEmail);
                         if (emailID != Guid.Empty)
                         {
                             return Json(new { isOk = true, isShowCode = true, emailID });
@@ -265,7 +301,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 }
                 else if (model.LastActionID == 1)//Registration
                 {
-                    emailID = await userEmailService.ConfirmEmail(user, model.UserSessionID, true);
+                    emailID = await userEmailService.ConfirmEmail(user, model.UserSessionID, MailTypeEnum.ResendByUser);
                 }
                 else if (model.LastActionID == 2) //RecoveryPassword
                 {

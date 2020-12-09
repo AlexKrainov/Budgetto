@@ -87,7 +87,7 @@ namespace MyProfile.Entity.Model
               .Property(b => b.WebSiteTheme)
               .HasDefaultValue(WebSiteThemeEnum.Light);
             modelBuilder.Entity<UserSettings>()
-              .Property(b => b.NewsLetter)
+              .Property(b => b.Mail_News)
               .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.IsShowHints)
@@ -98,6 +98,12 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<UserSettings>()
              .Property(b => b.IsShowCookie)
              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+            .Property(b => b.Mail_Reminders)
+            .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+            .Property(b => b.CanUseAlgorithm)
+            .HasDefaultValue(true);
 
             //modelBuilder.Entity<VisibleElement>()
             //    .Property(b => b.IsShow_BudgetMonth)

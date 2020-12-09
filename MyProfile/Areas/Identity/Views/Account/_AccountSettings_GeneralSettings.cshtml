@@ -31,9 +31,17 @@
     <div class="switchers-stacked">
         <label class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input"
-                   v-bind:checked="user.userSettings.newsLetter"
-                   v-on:click="user.userSettings.newsLetter = !user.userSettings.newsLetter">
+                   v-bind:checked="user.userSettings.mail_News"
+                   v-on:click="user.userSettings.mail_News = !user.userSettings.mail_News">
             <span class="custom-control-label">Согласен получать новостную рассылку</span>
+        </label>
+    </div>
+    <div class="switchers-stacked">
+        <label class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input"
+                   v-bind:checked="user.userSettings.mail_Reminders"
+                   v-on:click="user.userSettings.mail_Reminders = !user.userSettings.mail_Reminders">
+            <span class="custom-control-label">Согласен получать рассылку с напоминаниями</span>
         </label>
     </div>
 
@@ -48,6 +56,17 @@
         </label>
     </div>
 
+    <h6 class="mb-2 mt-4">Персональная статистика.</h6>
+
+    <div class="switchers-stacked">
+        <label class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input"
+                   v-bind:checked="user.userSettings.canUseAlgorithm"
+                   v-on:click="user.userSettings.canUseAlgorithm = !user.userSettings.canUseAlgorithm">
+            <span class="custom-control-label">Согласен на обработку данных нашим алгоритмом.</span>
+            <small class="text-muted " style="display: block;">Для предоставления вам более полной и качественной аналитики.</small>
+        </label>
+    </div>
 </div>
 <div class="card-footer">
     <div class="text-left">

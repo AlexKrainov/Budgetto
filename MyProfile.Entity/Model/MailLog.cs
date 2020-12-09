@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace MyProfile.Entity.Model
 {
@@ -16,6 +14,9 @@ namespace MyProfile.Entity.Model
         public DateTime SentDateTime { get; set; }
         public DateTime? CameDateTime { get; set; }
         public string Comment { get; set; }
+        /// <summary>
+        /// Is ok send letter ?
+        /// </summary>
         public bool IsSuccessful { get; set; }
         public int Code { get; set; }
 

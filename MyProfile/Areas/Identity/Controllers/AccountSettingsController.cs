@@ -28,7 +28,7 @@ namespace MyProfile.Areas.Identity.Controllers
         public async Task<IActionResult> ResendConfirmEmail()
         {
             var currentUser = UserInfo.Current;
-            return Json(new { isOk = true, userConfirmEmailService = await userEmailService.ConfirmEmail(currentUser, currentUser.UserSessionID) });
+            return Json(new { isOk = true, userConfirmEmailService = await userEmailService.ConfirmEmail(currentUser, currentUser.UserSessionID, MailTypeEnum.ConfirmEmail, returnUrl: "/Identity/Account/AccountSettings") });
         }
 
         [HttpPost]

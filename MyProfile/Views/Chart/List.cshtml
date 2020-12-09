@@ -64,10 +64,10 @@
                                 <span class="badge badge-primary">{{ chart.chartTypeName }}</span>
                             </div>
                             <div class="text-big">
-                                <span v-show="!chart.isShowBudgetMonth" v-on:click="toggleChart(chart.id, 1)" class="badge badge-secondary cursor-pointer" style="opacity: .3;">Месяц</span>
-                                <span v-show="chart.isShowBudgetMonth" v-on:click="toggleChart(chart.id, 1)" class="badge badge-success cursor-pointer">Месяц</span>
-                                <span v-show="!chart.isShowBudgetYear" v-on:click="toggleChart(chart.id, 3)" class="badge badge-secondary cursor-pointer" style="opacity: .3;">Год</span>
-                                <span v-show="chart.isShowBudgetYear" v-on:click="toggleChart(chart.id, 3)" class="badge badge-success cursor-pointer">Год</span>
+                                <span v-show="!chart.isShowBudgetMonth" v-on:click="toggleChart(chart.id, 1)" class="badge badge-secondary cursor-pointer" style="opacity: .3;">Финансы на месяц</span>
+                                <span v-show="chart.isShowBudgetMonth" v-on:click="toggleChart(chart.id, 1)" class="badge badge-success cursor-pointer">Финансы на месяц</span>
+                                <span v-show="!chart.isShowBudgetYear" v-on:click="toggleChart(chart.id, 3)" class="badge badge-secondary cursor-pointer" style="opacity: .3;">Финансы на год</span>
+                                <span v-show="chart.isShowBudgetYear" v-on:click="toggleChart(chart.id, 3)" class="badge badge-success cursor-pointer">Финансы на год</span>
                             </div>
                         </div>
                     </div>

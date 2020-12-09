@@ -61,7 +61,9 @@ namespace MyProfile.User.Service
                 UserSettings = new UserSettingsClientSide
                 {
                     WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
-                    NewsLetter = currentUser.UserSettings.NewsLetter,
+                    Mail_News = currentUser.UserSettings.Mail_News,
+                    Mail_Reminders = currentUser.UserSettings.Mail_Reminders,
+                    CanUseAlgorithm = currentUser.UserSettings.CanUseAlgorithm,
                     IsShowHints = currentUser.UserSettings.IsShowHints,
                     IsShowFirstEnterHint = currentUser.UserSettings.IsShowFirstEnterHint,
                     IsShowCookie = currentUser.UserSettings.IsShowCookie,
@@ -151,7 +153,11 @@ namespace MyProfile.User.Service
                          LimitPage_IsShow_Collective = x.UserSettings.LimitPage_IsShow_Collective,
 
                          WebSiteTheme = x.UserSettings.WebSiteTheme,
-                         NewsLetter = x.UserSettings.NewsLetter,
+                         CanUseAlgorithm = x.UserSettings.CanUseAlgorithm,
+
+                         Mail_News = x.UserSettings.Mail_News,
+                         Mail_Reminders = x.UserSettings.Mail_Reminders,
+
                          IsShowHints = x.UserSettings.IsShowHints,
                          IsShowFirstEnterHint = x.UserSettings.IsShowFirstEnterHint,
                          IsShowConstructor = x.UserSettings.IsShowConstructor,
@@ -334,7 +340,7 @@ namespace MyProfile.User.Service
             if (oldEmail != userInfoModel.Email)
             {
                 await UserInfo.ReSignInAsync(user);
-                await userConfirmEmailService.ConfirmEmail(user, userInfoModel.UserSessionID);
+                await userConfirmEmailService.ConfirmEmail(user, user.UserSessionID, MailTypeEnum.ConfirmEmail, returnUrl: "/Identity/Account/AccountSettings");
 
                 user.IsConfirmEmail = dbUser.IsConfirmEmail = userInfoModel.IsConfirmEmail = false;
 
@@ -355,7 +361,9 @@ namespace MyProfile.User.Service
                 .FirstOrDefaultAsync();
 
             user.UserSettings.WebSiteTheme = dbUser.UserSettings.WebSiteTheme = userSettings.WebSiteTheme;
-            user.UserSettings.NewsLetter = dbUser.UserSettings.NewsLetter = userSettings.NewsLetter;
+            user.UserSettings.Mail_News = dbUser.UserSettings.Mail_News = userSettings.Mail_News;
+            user.UserSettings.Mail_Reminders = dbUser.UserSettings.Mail_Reminders = userSettings.Mail_Reminders;
+            user.UserSettings.CanUseAlgorithm = dbUser.UserSettings.CanUseAlgorithm = userSettings.CanUseAlgorithm;
             user.UserSettings.IsShowHints = dbUser.UserSettings.IsShowHints = userSettings.IsShowHints;
 
             await repository.UpdateAsync(dbUser, true);

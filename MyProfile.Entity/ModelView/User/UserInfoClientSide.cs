@@ -44,11 +44,13 @@ namespace MyProfile.Entity.ModelView.User
         public bool Dashboard_Year_IsShow_LimitCharts { get; set; }
         public bool Dashboard_Year_IsShow_SpendingChart { get; set; }
         public string WebSiteTheme { get; set; }
-        public bool NewsLetter { get; set; }
+        public bool Mail_News { get; set; }
         public bool IsShowHints { get; set; }
         public bool IsShowFirstEnterHint { get; set; }
         public bool IsShowConstructor { get; set; }
         public bool IsShowCookie { get; set; }
+        public bool Mail_Reminders { get; set; }
+        public bool CanUseAlgorithm { get; set; }
     }
     public class CurrencyClientSide 
     {
