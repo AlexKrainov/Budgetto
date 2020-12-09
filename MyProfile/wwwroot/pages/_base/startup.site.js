@@ -15,7 +15,7 @@
         );
     } catch (e) { }
 
-    // Initialize sidenav
+    // Initialize sidenav 
     $('#layout-sidenav').each(function () {
         new SideNav(this, {
             orientation: $(this).hasClass('sidenav-horizontal') ? 'horizontal' : 'vertical'
