@@ -177,7 +177,7 @@
             for (var i = 1; i < this.sections.length; i++) {
                 this.sections[i].isShow = true;
             }
-            this.$emit('onUpdateView', true);
+            this.$emit('on-update-view', true);
         }
     }
 });

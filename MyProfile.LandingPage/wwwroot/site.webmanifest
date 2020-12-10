@@ -1,0 +1,15 @@
+{
+    "name": "budgetto.org",
+    "short_name": "budgetto.org",
+    "icons": [
+        {
+            "src": "/android-chrome-48x48.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "start_url": "https://budgetto.org",
+    "display": "standalone"
+}

@@ -144,7 +144,7 @@
             </div>
         </div>
         <div class="callout callout-warning mx-4" v-show="!(template && template.id)">
-            <p><b>Нет шаблона для отображения. Пожалуйста, создайте шаблон</b></p>
+            <p><b>Нет шаблона для отображения. Пожалуйста, <a href="/Template/Edit?periodTypeId=1">создайте шаблон</a> </b></p>
         </div>
         <div class="card-datatable table-responsive" style="padding: 0px 12px 8px 11px;">
             @await Html.PartialAsync("_TableView")

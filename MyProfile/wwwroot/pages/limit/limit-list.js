@@ -219,7 +219,7 @@ var LimitListVue = new Vue({
         reloadView: function () {
             setTimeout(function () {
                 LimitListVue.msnry.layout();
-            }, 15);
+            }, 100);
         },
         toggleLimit: function (limitID) {
             ShowLoading('#limit_' + limitID);

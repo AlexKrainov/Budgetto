@@ -4,6 +4,7 @@
         template: {},
         sections: [],
         selectedSelections: [],
+        sectionSource: [],
 
         counterNewColumn: -100,
         counterTemplateBudgetSections: -100,
@@ -65,6 +66,15 @@
                 .then(function (result) {
                     if (result.isOk == true) {
                         TemplateVue.template = result.template;
+
+                        if (TemplateVue.template.id == 0 && parseQueryString()["periodTypeId"] != undefined) {
+                            TemplateVue.template.periodTypeID = parseQueryString()["periodTypeId"] * 1;
+                            if (TemplateVue.template.periodTypeID == PeriodTypeEnum.Month) {
+                                TemplateVue.template.periodName = "Финансы на месяц";
+                            } else if (TemplateVue.template.periodTypeID == PeriodTypeEnum.Year) {
+                                TemplateVue.template.periodName = "Финансы на год";
+                            }
+                        }
 
                         $("#templateName").val(result.template.name);
                         TemplateVue.refreshDragNDrop();
@@ -174,7 +184,7 @@
                 this.selectedSelections.push({ id: section.id, count: 1 });
             }
 
-            $("#section-modal").modal("hide");
+            //$("#section-modal").modal("hide");
         },
         changeType: function () {
             this.template.columns = [];
