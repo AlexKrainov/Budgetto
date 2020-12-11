@@ -475,20 +475,12 @@
                 <form class="modal-content">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
                     <div class="modal-body">
-                        @*<vue-section-component id="test2"
-                                               name="test"
-                                               data-search-id="searchSection"
-                                               data-class="cards-big"
-                                               v-bind:is-show-filter="true"
-                                               v-on:onchoose="addColumnOption_step2"
-                                               v-bind:data-selected-items="selectedSelections"></vue-section-component>*@
                         <vue-section-component data-class="cards-big"
                                                data-records-style="margin-left: 15px;"
                                                data-search-id="searchSection"
                                                v-bind:is-show-filter="true"
                                                v-bind:data-is-selection="true"
-                                               v-bind:data-items="sections"
-                                               v-bind:data-selected-items="selectedSelections"
+                                               v-bind:data-selected-items-count="selectedSelections"
                                                v-on:onchoose="addColumnOption_step2"></vue-section-component>
 
                     </div>

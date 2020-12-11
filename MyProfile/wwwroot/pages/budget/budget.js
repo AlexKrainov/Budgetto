@@ -610,8 +610,7 @@
                             }),
                             dataType: 'json',
                             success: function (response) {
-
-
+                                toastr.success("Изменения шаблона сохранены");
                             }
                         });
                     } else {

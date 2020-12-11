@@ -17,7 +17,7 @@
                      v-show="section.isShow"
                      v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground"
                      v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section', dataSectionClasses ]">
-                    <span class="selected-section-count">{{ checkSelected(section) }}</span>
+                    <span class="selected-section-count">{{ checkCountSelected(section) }}</span>
                     <div class="cards-container card-body d-flex align-items-center ">
                         <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
                         <div class="card-section-text ml-2">
@@ -26,7 +26,7 @@
                                 {{ section.areaName }}
                                 <div class="ml-2" style="display: inline-block;" 
                                     v-show="section.collectiveSections && section.collectiveSections.length > 0">
-                                    <i class="oi oi-layers"></i> +{{section.collectiveSections.length}}
+                                    <i class="oi oi-layers"></i> +{{ section.collectiveSections ? section.collectiveSections.length : "0"}}
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
             type: String,
             default: "cards-small" //   cards-small/cards-medium/cards-big
         },
-        dataSelectedItems: Array,//[{ id:9, count:1 }]
+        dataSelectedItemsCount: Array,//[{ id:9, count:1 }]
         dataIsSelection: {
             type: Boolean,
             default: false
@@ -140,9 +140,9 @@
 
             this.$forceUpdate();
         },
-        checkSelected: function (section) {
-            if (this.dataSelectedItems && this.dataSelectedItems.length > 0) {
-                let p = this.dataSelectedItems.filter(x => x.id == section.id);
+        checkCountSelected: function (section) {
+            if (this.dataSelectedItemsCount && this.dataSelectedItemsCount.length > 0) {
+                let p = this.dataSelectedItemsCount.filter(x => x.id == section.id);
                 if (p && p.length > 0) {
                     return p[0].count;
                 }

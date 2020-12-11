@@ -48,14 +48,14 @@
     mounted: function () {
         this.init()
             .then(function () {
-                TemplateVue.loadBAranAndRType();
+                //TemplateVue.loadBAranAndRType();
 
-                sendAjax("/Common/GetFoolterAction", null, "GET")
-                    .then(function (result) {
-                        if (result.isOk == true) {
-                            TemplateVue.footerActions = result.data;
-                        }
-                    });
+                //sendAjax("/Common/GetFooterAction", null, "GET")
+                //    .then(function (result) {
+                //        if (result.isOk == true) {
+                //            TemplateVue.footerActions = result.data;
+                //        }
+                //    });
             });
     },
     methods: {
@@ -155,8 +155,19 @@
             this.column = column;
             $('.selectpicker').selectpicker("destroy").selectpicker('refresh');
             $("#section-modal").modal("show");
+
+            let sections = this.sectionComponent.sections;
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].isSelected = column.templateBudgetSections.findIndex(x => x.sectionID == sections[i].id) != -1;
+            }
         },
         addColumnOption_step2: function (section) {
+
+            let indexSetionInColumn = this.column.templateBudgetSections.findIndex(x => x.sectionID == section.id);
+            if (indexSetionInColumn >= 0) {
+                this.removeSectionInColumn(null, indexSetionInColumn, this.column.order);
+                return;
+            }
 
             if (this.column.formula.length > 0) {
                 this.column.formula.push({ id: null, value: "+", type: FormulaFieldTypeEnum.Mark });
@@ -168,7 +179,6 @@
             if (this.column.name == this.startColumnsName) {
                 this.column.name = section.name;
             }
-
 
             this.column.templateBudgetSections.push({
                 id: this.counterTemplateBudgetSections++,
@@ -191,6 +201,7 @@
         },
         saveTemplate: function (saveAs, saveAndGoToView) {
             if (this.validTemplate() == false) {
+                toastr.error("Не удалось сохранить шаблон");
                 return false;
             }
 
@@ -200,7 +211,7 @@
             }
             this.isSavingTemplate = true;
             this._saveAndGoToView = saveAndGoToView;
-            
+
             return $.ajax({
                 type: "POST",
                 url: "/Template/" + method,
@@ -209,7 +220,8 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (result) {
-                    if (result.isOk == true) {
+                    if (result.isOk) {
+                        toastr.success("Шаблон сохранен успешно");
                         this.template = result.template;
                         this.errorMessage = null;
 
@@ -220,6 +232,7 @@
                         if (result.nameAlreadyExist) {
                             //Show message
                             this.errorMessage = result.errorMessage;
+                            toastr.error("Не удалось сохранить шаблон");
                         }
                     }
                     this.isSavingTemplate = false;
@@ -247,19 +260,19 @@
             if (this.template.columns.length == 0) {
                 isOk = false;
                 this.errorMessage = "Шаблон должен содержать хотя бы одну колонку.";
-            } 
+            }
 
             if (this.template.columns.length > 0
                 && this.template.columns.findIndex(x => x.templateColumnType == TemplateColumnTypeEnum.BudgetSection && x.templateBudgetSections.length == 0) > -1) {
                 isOk = false;
                 this.errorMessage = "Шаблон должен содержать колонки хотя бы с одной категорией.";
-            } 
+            }
 
             if (this.template.columns.length > 0
                 && this.template.columns.findIndex(x => x.name.length == 0) > -1) {
                 isOk = false;
                 this.errorMessage = "Название у колонок обязательно.";
-            } 
+            }
 
             return isOk;
         },

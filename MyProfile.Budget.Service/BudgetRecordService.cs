@@ -111,6 +111,7 @@ namespace MyProfile.Budget.Service
                         if (record.SectionID <= 0)
                         {
                             errorLogEditIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Edit", new Exception(), "SectionID == 0"));
+                            record.IsSaved = false;
                         }
                         else
                         {
@@ -128,6 +129,7 @@ namespace MyProfile.Budget.Service
                             dbRecord.DateTimeEdit = now;
 
                             await repository.UpdateAsync(dbRecord, true);
+                            record.IsSaved = true;
                         }
                     }
                     catch (Exception ex)

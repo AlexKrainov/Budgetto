@@ -90,7 +90,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://localhost:44394/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}{( string.IsNullOrEmpty(returnUrl) ? "" : "&ReturnUrl=" + returnUrl)}");
+                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}{( string.IsNullOrEmpty(returnUrl) ? "" : "&ReturnUrl=" + returnUrl)}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
             }
@@ -161,7 +161,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://localhost:44394/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
+                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Подтверждение входа", body);
             }
@@ -208,7 +208,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://localhost:44394/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
+                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Сброс пароля", body);
             }

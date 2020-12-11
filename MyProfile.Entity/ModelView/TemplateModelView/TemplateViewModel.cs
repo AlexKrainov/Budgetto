@@ -61,6 +61,10 @@ namespace MyProfile.Entity.ModelView
                     {
                         style += "table-success";
                     }
+                    else if (ColumnSectionType == "Investments")
+                    {
+                        style += "table-dark";
+                    }
                 }
 
                 if (TemplateColumnType == TemplateColumnType.DaysForMonth)

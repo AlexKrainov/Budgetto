@@ -25,7 +25,7 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetFoolterAction()
+        public JsonResult GetFooterAction()
         {
             var data = dictionariesService.GetTotalActions();
             return Json(new { isOk = true, data = data });
