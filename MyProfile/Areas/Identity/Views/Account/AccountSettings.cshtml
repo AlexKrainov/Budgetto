@@ -17,7 +17,12 @@
     <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js" asp-append-version="true"></script>
 
-    <script src="~/pages/_areas/account/account-settings.min.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/pages/_areas/account/account-settings.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/_areas/account/account-settings.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 <h4 class="d-flex flex-wrap w-100 font-weight-bold">
@@ -36,7 +41,7 @@
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#account-change-password">Смена пароля</a>
                 @*<a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#collective-budget">Коллективные настройки</a>*@
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
-                || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+             || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#admin-menu-budget">МЕНЮ АДМИНА</a>
                 }
@@ -57,7 +62,7 @@
                         @await Html.PartialAsync("_AccountSettings_CollectiveBudget")
                     </div>*@
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
-                  || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+               || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <div class="tab-pane fade" id="admin-menu-budget">
                         @await Html.PartialAsync("_AccountSettings_AdminSettings")

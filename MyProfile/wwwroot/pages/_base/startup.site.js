@@ -48,7 +48,7 @@
     $(window).focus(onTabFocus);
     $(window).blur(onTabBlur);
     //$(window).bind("beforeunload", onCloseWindow);
-    $(window).on("unload", onCloseWindow);
+    //$(window).on("unload", onCloseWindow);
     document.onkeydown = onKeyListener;
     document.onkeypress = onKeyListener
     document.onkeyup = onKeyListener;

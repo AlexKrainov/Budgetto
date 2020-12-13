@@ -50,9 +50,10 @@ namespace MyProfile.Areas.Identity.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string ReturnUrl, Guid? id, string email, Guid? mid)
+        public async Task<IActionResult> Login(string ReturnUrl, Guid? id, string email, Guid? mid, bool isRecoveryPassword = false)
         {
             IActionResult returnAction = null;
+            Guid userID = Guid.Empty;
 
             if (await userLogService.CreateAndCheckIP())
             {
@@ -61,13 +62,13 @@ namespace MyProfile.Areas.Identity.Controllers
                 //AutoAuthorization by link from mail
                 if (mid != null && mid != Guid.Empty)
                 {
-                    Guid userID = await userEmailService.AuthorizationByEmail(mailID: mid ?? Guid.Empty, userSessionID: id ?? Guid.Empty, email);
+                    userID = await userEmailService.AuthorizationByEmail(mailID: mid ?? Guid.Empty, userSessionID: id ?? Guid.Empty, email);
 
                     if (userID != Guid.Empty)
                     {
                         returnAction = await AutoAuthorization(ReturnUrl, userID, userSessionID: id ?? Guid.Empty);
 
-                        if (returnAction != null)
+                        if (returnAction != null && isRecoveryPassword == false)
                         {
                             return returnAction;
                         }
@@ -90,7 +91,7 @@ namespace MyProfile.Areas.Identity.Controllers
                 Response.Cookies.Delete(UserInfo.USER_ID);
                 Response.Cookies.Delete(UserInfo.USER_SESSION_ID);
 
-                if (id == null || id == Guid.Empty)
+                if (isRecoveryPassword == false && (id == null || id == Guid.Empty))
                 {
                     Guid userSessionID = await userLogService.CreateSession();
 
@@ -98,7 +99,28 @@ namespace MyProfile.Areas.Identity.Controllers
                 }
                 else
                 {
-                    return View(new LoginModelView { UserSessionID = id ?? Guid.Empty, Email = email });
+                    if (isRecoveryPassword)
+                    {
+                        return View(new LoginModelView
+                        {
+                            UserSessionID = id ?? Guid.Empty,
+                            Email = email,
+                            loginView = new LoginViewModel
+                            {
+                                ID = 4, //onSetNewPassword
+                                MailLogID = mid ?? Guid.Empty,
+                                UserID = userID
+                            }
+                        });
+                    }
+                    else
+                    {
+                        return View(new LoginModelView
+                        {
+                            UserSessionID = id ?? Guid.Empty,
+                            Email = email
+                        });
+                    }
                 }
             }
             else
@@ -162,7 +184,7 @@ namespace MyProfile.Areas.Identity.Controllers
             {
                 await userLogService.CreateUserLogAsync(login.UserSessionID, UserLogActionType.LimitLogin);
 
-                var emailID = await userEmailService.LoginConfirmation(user, login.UserSessionID);
+                var emailID = await userEmailService.LoginConfirmation(user, login.UserSessionID, MailTypeEnum.LoginLimitEnter);
 
                 if (emailID != Guid.Empty)
                 {
@@ -234,7 +256,7 @@ namespace MyProfile.Areas.Identity.Controllers
                     {
                         await userLogService.CreateUserLogAsync(registrationModel.UserSessionID, UserLogActionType.RegistrationSendEmail, $"Email = {user.Email}");
 
-                        var emailID = await userEmailService.ConfirmEmail(user, user.UserSessionID, MailTypeEnum.ConfirmEmail);
+                        var emailID = await userEmailService.ConfirmEmail(user, user.UserSessionID, MailTypeEnum.Registration);
                         if (emailID != Guid.Empty)
                         {
                             return Json(new { isOk = true, isShowCode = true, emailID });
@@ -297,7 +319,7 @@ namespace MyProfile.Areas.Identity.Controllers
 
                 if (model.LastActionID == 0)//Login
                 {
-                    emailID = await userEmailService.LoginConfirmation(user, model.UserSessionID, true);
+                    emailID = await userEmailService.LoginConfirmation(user, model.UserSessionID, MailTypeEnum.ResendByUser);
                 }
                 else if (model.LastActionID == 1)//Registration
                 {
@@ -415,7 +437,7 @@ namespace MyProfile.Areas.Identity.Controllers
                     await userService.UpdatePassword(model.NewPassword, model.ID);
 
                     var user = await userService.CheckAndGetUser(null, null, model.ID);
-                    user.UserSessionID = user.UserSessionID;
+                    user.UserSessionID = model.UserSessionID;
 
                     await userService.AuthenticateOrUpdateUserInfo(user, UserLogActionType.LoginAfterResetPassword);
                     await userLogService.UpdateSession_UserID(user.UserSessionID, user.ID);

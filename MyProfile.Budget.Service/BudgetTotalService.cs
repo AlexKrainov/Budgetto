@@ -17,11 +17,13 @@ namespace MyProfile.Budget.Service
     {
         private IBaseRepository repository;
         private BudgetRecordService budgetRecordService;
+        private SectionService sectionService;
 
-        public BudgetTotalService(IBaseRepository repository)
+        public BudgetTotalService(IBaseRepository repository, SectionService sectionService)
         {
             this.repository = repository;
             this.budgetRecordService = new BudgetRecordService(repository);
+            this.sectionService = sectionService;
         }
 
         public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByYear(int year)
@@ -29,6 +31,7 @@ namespace MyProfile.Budget.Service
             DateTime from = new DateTime(year, 1, 1, 0, 0, 0);
             DateTime to = new DateTime(year, 12, 31, 23, 59, 59);
             var currentUser = UserInfo.Current;
+            var sections = sectionService.GetAllSectionForRecords();
 
             TotalModelView spendingData = new TotalModelView { IsShow = currentUser.UserSettings.Year_SpendingWidget };
             TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.Year_EarningWidget };
@@ -46,6 +49,14 @@ namespace MyProfile.Budget.Service
                 spendingData.Name = "Расходы";
                 spendingData.SectionTypeEnum = SectionTypeEnum.Spendings;
                 spendingData.Total = (thisYear).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                spendingData.Sections = sections
+                    .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings)
+                    .Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
+                    {
+                        ID = x.ID,
+                        Name = x.Name
+                    })
+                    .ToList();
 
 
                 //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
@@ -77,8 +88,16 @@ namespace MyProfile.Budget.Service
                 earningData.data = tuple.Item1.ToArray();
                 earningData.labels = tuple.Item2.ToArray();
                 earningData.Name = "Доходы";
-                earningData.SectionTypeEnum = SectionTypeEnum.Spendings;
+                earningData.SectionTypeEnum = SectionTypeEnum.Earnings;
                 earningData.Total = thisYear.ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                earningData.Sections = sections
+                   .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Earnings)
+                   .Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
+                   {
+                       ID = x.ID,
+                       Name = x.Name
+                   })
+                   .ToList();
 
                 // if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 // {
@@ -111,6 +130,14 @@ namespace MyProfile.Budget.Service
                 investinData.Name = "Инвестиции";
                 investinData.SectionTypeEnum = SectionTypeEnum.Investments;
                 investinData.Total = (thisYear).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                investinData.Sections = sections
+                  .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Investments)
+                  .Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
+                  {
+                      ID = x.ID,
+                      Name = x.Name
+                  })
+                  .ToList();
 
                 //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 //{
@@ -139,6 +166,7 @@ namespace MyProfile.Budget.Service
             DateTime from = to.AddMonths(-11);
             to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month));
             var currentUser = UserInfo.Current;
+            var sections = sectionService.GetAllSectionForRecords();
 
             TotalModelView spendingData = new TotalModelView { IsShow = currentUser.UserSettings.Month_SpendingWidget };
             TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.Month_EarningWidget };
@@ -152,6 +180,14 @@ namespace MyProfile.Budget.Service
                 spendingData.Name = "Расходы";
                 spendingData.SectionTypeEnum = SectionTypeEnum.Spendings;
                 spendingData.Total = (tuple.Item1[tuple.Item1.Count - 1]).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                spendingData.Sections = sections
+                   .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings)
+                   .Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
+                   {
+                       ID = x.ID,
+                       Name = x.Name
+                   })
+                   .ToList();
 
                 if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 {
@@ -179,8 +215,16 @@ namespace MyProfile.Budget.Service
                 earningData.data = tuple.Item1.ToArray();
                 earningData.labels = tuple.Item2.ToArray();
                 earningData.Name = "Доходы";
-                earningData.SectionTypeEnum = SectionTypeEnum.Spendings;
+                earningData.SectionTypeEnum = SectionTypeEnum.Earnings;
                 earningData.Total = (tuple.Item1[tuple.Item1.Count - 1]).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                earningData.Sections = sections
+                   .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Earnings)
+                   .Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
+                   {
+                       ID = x.ID,
+                       Name = x.Name
+                   })
+                   .ToList();
 
                 if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 {
@@ -210,6 +254,14 @@ namespace MyProfile.Budget.Service
                 investingData.Name = "Инвестиции";
                 investingData.SectionTypeEnum = SectionTypeEnum.Investments;
                 investingData.Total = (tuple.Item1[tuple.Item1.Count - 1]).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                investingData.Sections = sections
+                   .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Investments)
+                   .Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
+                   {
+                       ID = x.ID,
+                       Name = x.Name
+                   })
+                   .ToList();
 
                 if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 {

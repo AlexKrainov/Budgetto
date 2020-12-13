@@ -24,12 +24,13 @@ namespace MyProfile.Limit.Service
         private UserLogService userLogService;
 
         public LimitService(IBaseRepository repository,
-            CollectionUserService collectionUserService)
+            CollectionUserService collectionUserService,
+            SectionService sectionService)
         {
             this.repository = repository;
             this.collectionUserService = collectionUserService;
             this.budgetRecordService = new BudgetRecordService(repository);
-            this.sectionService = new SectionService(repository);
+            this.sectionService = sectionService;
             this.userLogService = new UserLogService(repository);
         }
 
@@ -302,8 +303,13 @@ namespace MyProfile.Limit.Service
                     IsFuture = isFuture,
                     IsShow = isShow,
                     PeriodTypeID = (int)periodTypesEnum,
-                    Text = text
-                    //Sections
+                    Text = text,
+                    Sections = limit.Sections.Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
+                    {
+                        ID = x.ID,
+                        Name = x.Name
+                    })
+                    .ToList()
                 });
             }
 

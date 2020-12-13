@@ -81,20 +81,17 @@
                     }
                 });
         },
-        loadBAranAndRType: function () {
-            return sendAjax("/Section/GetAllAreaAndSectionByPerson", null, "GET")
-                .then(function (result) {
-                    if (result.isOk == true) {
-                        TemplateVue.sections = result.areas;
+        //loadBAranAndRType: function () {
+        //    return sendAjax("/Section/GetAllAreaAndSectionByPerson", null, "GET")
+        //        .then(function (result) {
+        //            if (result.isOk == true) {
+        //                TemplateVue.sections = result.areas;
 
-                    }
-                });
-        },
-        onChooseSection: function (section) {
-
-        },
+        //            }
+        //        });
+        //},
         refreshDragNDrop: function () {
-            dragula(
+            var drake = dragula(
                 Array.prototype.slice.call(document.querySelectorAll('.lists')),
                 {
                     moves: function (el, container, handle) {
@@ -118,6 +115,16 @@
                     }
                 }
                 $(".list+.ignore-dnd").insertAfter(".lists .list:last");
+            });
+
+            var scroll = autoScroll([
+                window,
+                document.querySelector('.lists'),
+            ], {
+                margin: 100,
+                autoScroll: function () {
+                    return this.down && drake.dragging;
+                }
             });
         },
         addColumn: function () {
@@ -495,3 +502,4 @@ $(function () {
     }
 
 });
+

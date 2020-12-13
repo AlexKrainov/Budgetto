@@ -167,7 +167,7 @@ namespace MyProfile.Controllers
 
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step2_Sections, errorLogIDs: errorLogCreateIDs);
 
-            return Json(new { isOk = true, sections = await sectionService.GetAllSectionForRecords() });
+            return Json(new { isOk = true, sections =  sectionService.GetAllSectionForRecords() });
         }
 
         [HttpPost]
@@ -241,7 +241,7 @@ namespace MyProfile.Controllers
 
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step4_Limits, errorLogIDs: errorLogCreateIDs);
 
-            return Json(new { isOk = true, sections = await sectionService.GetAllSectionForRecords() });
+            return Json(new { isOk = true, sections =  sectionService.GetAllSectionForRecords() });
         }
 
         [HttpPost]
@@ -267,7 +267,7 @@ namespace MyProfile.Controllers
 
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step5_Goals, errorLogIDs: errorLogCreateIDs);
 
-            return Json(new { isOk = true, sections = await sectionService.GetAllSectionForRecords() });
+            return Json(new { isOk = true, sections =  sectionService.GetAllSectionForRecords() });
         }
 
         public async Task<IActionResult> Finish()
@@ -694,10 +694,9 @@ namespace MyProfile.Controllers
                 new BudgetSectionModelView
                 {
                     ID = 23,
-                    Name = "Дивиденды",
-                    Description = "Дивиденды от депозитов, акций, облигаций и тд",
-                    CodeName = "Dividends",
-                    CssIcon = "fas fa-piggy-bank",
+                    Name = "Зарплата",
+                    CodeName = "Salary",
+                    CssIcon = "fas fa-wallet",
                     CssColor = "rgba(24, 28, 33, 0.8)",
                     CssBackground = "rgb(0, 230, 118)",
                     IsShowInCollective = true,
@@ -713,24 +712,6 @@ namespace MyProfile.Controllers
                 new BudgetSectionModelView
                 {
                     ID = 24,
-                    Name = "Кэшбэки",
-                    CodeName = "Cashback",
-                    CssIcon = "fas fa-ruble-sign",
-                    CssColor = "rgba(24, 28, 33, 0.8)",
-                    CssBackground = "rgb(0, 230, 118)",
-                    IsShowInCollective = true,
-                    IsShowOnSite = true,
-                    AreaID = 1,
-                    AreaName = "Доходы",
-                    IsSelected = false,
-                    IsShow_Filtered = true,
-                    IsShow = true,
-                    SectionTypeID = (int)SectionTypeEnum.Earnings,
-                    SectionTypeName = "Доходы",
-                },
-                new BudgetSectionModelView
-                {
-                    ID = 25,
                     Name = "Доп. доходы",
                     CodeName = "OtherIncome",
                     CssIcon = "fas fa-donate",
@@ -748,10 +729,29 @@ namespace MyProfile.Controllers
                 },
                 new BudgetSectionModelView
                 {
+                    ID = 25,
+                    Name = "Кэшбэки",
+                    CodeName = "Cashback",
+                    CssIcon = "fas fa-ruble-sign",
+                    CssColor = "rgba(24, 28, 33, 0.8)",
+                    CssBackground = "rgb(0, 230, 118)",
+                    IsShowInCollective = true,
+                    IsShowOnSite = true,
+                    AreaID = 1,
+                    AreaName = "Доходы",
+                    IsSelected = false,
+                    IsShow_Filtered = true,
+                    IsShow = true,
+                    SectionTypeID = (int)SectionTypeEnum.Earnings,
+                    SectionTypeName = "Доходы",
+                },
+                new BudgetSectionModelView
+                {
                     ID = 26,
-                    Name = "Зарплата",
-                    CodeName = "Salary",
-                    CssIcon = "fas fa-wallet",
+                    Name = "Дивиденды",
+                    Description = "Дивиденды от депозитов, акций, облигаций и тд",
+                    CodeName = "Dividends",
+                    CssIcon = "fas fa-piggy-bank",
                     CssColor = "rgba(24, 28, 33, 0.8)",
                     CssBackground = "rgb(0, 230, 118)",
                     IsShowInCollective = true,
@@ -769,8 +769,8 @@ namespace MyProfile.Controllers
                 new BudgetSectionModelView
                 {
                     ID = 27,
-                    Name = "Инвестиции",
-                    CodeName = "Investment",
+                    Name = "Вклады",
+                    CodeName = "Deposit",
                     CssIcon = "fas fa-donate",
                     CssColor = "rgb(255, 255, 255)",
                     CssBackground = "rgb(158, 158, 158)",
@@ -787,8 +787,8 @@ namespace MyProfile.Controllers
                 new BudgetSectionModelView
                 {
                     ID = 28,
-                    Name = "Вклады",
-                    CodeName = "Deposit",
+                    Name = "Инвестиции",
+                    CodeName = "Investment",
                     CssIcon = "fas fa-donate",
                     CssColor = "rgb(255, 255, 255)",
                     CssBackground = "rgb(158, 158, 158)",

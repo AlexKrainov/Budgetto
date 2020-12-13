@@ -53,6 +53,10 @@
                     for (var i = 0; i < actions.length; i++) {
                         UserVue.callMethod(actions[i]);
                     }
+                    //cannot get in time because of vue.js
+                    setTimeout(function () {
+                        $('[data-toggle="tooltip"]').tooltip();
+                    }, 1000);
                 }
             });
             return this.ajaxData;

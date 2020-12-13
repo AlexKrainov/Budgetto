@@ -9,10 +9,11 @@ namespace MyProfile.Entity.Model
     public enum MailTypeEnum
     {
         Undefined = 0,
-        ConfirmEmail = 1,
-        ResetPassword = 2,
-        Login = 3,
-        ResendByUser = 4
+        Registration = 1,
+        EmailUpdate = 2,
+        PasswordReset = 3,
+        LoginLimitEnter = 4,
+        ResendByUser = 5
     }
 
     public class MailType

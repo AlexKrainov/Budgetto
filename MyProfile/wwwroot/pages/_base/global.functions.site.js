@@ -8,7 +8,7 @@ function sendAjax(url, value = null, type = "POST") {
         type: type,
         url: url,
         data: value ? JSON.stringify(value) : null,
-        contentType: 'application/json; charset=utf-8',
+        contentType: 'application/json',
         dataType: 'json',
         success: function (response) {
             return response;
@@ -316,7 +316,7 @@ function CheckAuthenticated() {
         type: "POST",
         url: "/Settings/CheckAuthenticated",
         data: JSON.stringify(val),
-        contentType: 'application/json; charset=utf-8',
+        contentType: 'application/json',
         dataType: 'json',
         success: function (response) {
             document.CheckAuthorization = false;
@@ -355,7 +355,7 @@ function onCloseWindow() {
     return $.ajax({
         type: "GET",
         url: "/Settings/LeaveSite?UserSessionID=" + UserInfo.UserSessionID,
-        contentType: 'application/json; charset=utf-8',
+        contentType: 'application/json',
         dataType: 'json'
     });
 }
@@ -365,7 +365,7 @@ function ShowCookieOff() {
     return $.ajax({
         type: "GET",
         url: "/UserSettings/ShowCookieOff",
-        contentType: 'application/json; charset=utf-8',
+        contentType: 'application/json',
         dataType: 'json',
         success: function (response) {
             UserInfo.UserSettings.IsShowCookie = false;
@@ -380,7 +380,7 @@ function ShowDocument(name) {
     return $.ajax({
         type: "GET",
         url: "/UserSettings/ShowDocument?name=" + name,
-        contentType: 'application/json; charset=utf-8',
+        contentType: 'application/json',
         dataType: 'json',
         success: function (response) {
             return response;

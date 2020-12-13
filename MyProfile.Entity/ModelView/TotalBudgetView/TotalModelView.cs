@@ -1,4 +1,5 @@
 ﻿using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.AreaAndSection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,5 +16,6 @@ namespace MyProfile.Entity.ModelView.TotalBudgetView
 		public decimal[] data { get; set; }
 		public string[] labels { get; set; }
 		public bool IsShow { get; set; } = true;
+		public List<SectionLightModelView> Sections { get; set; } = new List<SectionLightModelView>();
 	}
 }

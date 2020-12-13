@@ -20,7 +20,8 @@
         <div class="media align-items-center p-3">
             @* style="padding-top: 0px !important;" *@
             <div class="media-body mr-3">
-                <div class="mb-2 d-inline-flex  align-items-center">
+                <div class="mb-2 d-inline-flex align-items-center cursor-help" data-toggle="tooltip" data-html="true"
+                     v-bind:title="getSectionsTitle(limit.sections)">
                     <i class="lnr lnr-frame-expand text-primary float-left" style="font-size: x-large;"></i>
                     <strong class="pl-2">{{ limit.name }}</strong>
                 </div>

@@ -52,7 +52,7 @@ namespace MyProfile.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Load([FromBody] List<Month1> months)
+        public JsonResult Load([FromBody] List<Month1> months)
         {
             int currentMonth = 0;
             var now = DateTime.Now.ToUniversalTime();

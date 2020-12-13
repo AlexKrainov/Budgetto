@@ -41,13 +41,16 @@
         </div>
         <small class="invalid-feedback">Обязательное поле</small>
     </div>
-    <div class="alert alert-danger mt-3" v-show="user.isConfirmEmail == false">
+    <div class="callout callout-danger mt-3" v-show="user.isConfirmEmail == false">
         Вы еще не подтвердили адрес электронной почты. Пожалуйста, проверьте свою почту.<br>
         <a href="javascript:void(0)" v-on:click="resendConfirmEmail"
            v-bind:class="validEmail ? '' : 'disabled'">Отправить код повторно</a>
         или
         <a href="javascript:void(0)" v-on:click="isShowCode = true"
            v-bind:class="validEmail ? '' : 'disabled'">проверить код.</a>
+    </div>
+    <div class="callout callout-danger mt-3" v-show="errorMessage">
+        {{  errorMessage }}
     </div>
     <label class="form-label" v-show="isShowCode">Код из письма</label>
     <div class="input-group" v-show="isShowCode">
@@ -65,7 +68,7 @@
         </span>
         <small class="invalid-feedback">Введен неверный код.</small>
     </div>
-    @*<div class="alert alert-danger mt-3" v-show="!user.isConfirmEmail && user.email != oldEmail">
+    @*<div class="callout callout-danger mt-3" v-show="!user.isConfirmEmail && user.email != oldEmail">
             Нужно сохранить форму перед отправкой почты<br>
         </div>*@
     <label class="form-label mt-3">Подписка действительна до</label>
@@ -74,8 +77,8 @@
                v-bind:class="user.isAvailable ? '' : 'is-invalid'"
                v-bind:value="getDateByFormat(user.payment.dateTo, 'DD.MM.YYYY')">
         @*<span class="input-group-append">
-            <a class="btn btn-success" href="/Store/Index">Продлить</a>
-        </span>*@
+                <a class="btn btn-success" href="/Store/Index">Продлить</a>
+            </span>*@
     </div>
 </div>
 <div class="card-footer">

@@ -18,6 +18,7 @@ using MyProfile.Entity.ModelView.AreaAndSection;
 using Common.Service;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.UserLog.Service;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MyProfile.Budget.Service
 {
@@ -27,21 +28,26 @@ namespace MyProfile.Budget.Service
         private CollectionUserService collectionUserService;
         private UserLogService userLogService;
         private CommonService commonService;
+        private IMemoryCache cache;
 
-        public SectionService(IBaseRepository repository)
+        public SectionService(IBaseRepository repository, IMemoryCache cache)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
             this.userLogService = new UserLogService(repository);
             this.commonService = new CommonService(repository);
+            this.cache = cache;
         }
 
 
-        public IQueryable<BudgetAreaModelView> GetFullModelByUserID()
+        public IList<BudgetAreaModelView> GetFullModelByUserID()
         {
-            Guid userID = UserInfo.Current.ID;
+            var currentUserID = UserInfo.Current.ID;
+            List<BudgetAreaModelView> sections;
 
-            return repository.GetAll<BudgetArea>(x => x.UserID == userID)
+            if (cache.TryGetValue(typeof(BudgetAreaModelView).Name + "_" + currentUserID, out sections) == false)
+            {
+                sections = repository.GetAll<BudgetArea>(x => x.UserID == currentUserID)
                 .Select(x => new BudgetAreaModelView
                 {
                     ID = x.ID,
@@ -67,7 +73,7 @@ namespace MyProfile.Budget.Service
                             AreaID = y.BudgetAreaID,
                             AreaName = y.BudgetArea.Name,
                             Owner = x.User.Name,
-                            CanEdit = x.UserID == userID,
+                            CanEdit = x.UserID == currentUserID,
                             HasRecords = y.BudgetRecords.Any(q => q.IsDeleted != true),
                             IsShow_Filtered = true,
                             IsShow = true,
@@ -79,12 +85,22 @@ namespace MyProfile.Budget.Service
                             //    AreaName = z.ChildSection.BudgetArea.Name
                             //}),
                         })
-                });
+                })
+                .ToList();
+
+                cache.Set(typeof(BudgetAreaModelView).Name + "_" + currentUserID, sections, DateTime.Now.AddDays(1));
+            }
+            return sections;
         }
 
         public async Task<IEnumerable<SectionLightModelView>> GetAllSectionByUser()
         {
-            return await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID && x.IsShowOnSite)
+            var currentUserID = UserInfo.Current.ID;
+            List<SectionLightModelView> sections;
+
+            if (cache.TryGetValue(typeof(SectionLightModelView).Name + "_" + currentUserID, out sections) == false)
+            {
+                sections = await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID && x.IsShowOnSite)
                  .Select(x => new SectionLightModelView
                  {
                      ID = x.ID,
@@ -95,60 +111,81 @@ namespace MyProfile.Budget.Service
                      SectionTypeID = x.SectionTypeID,
                  })
                  .ToListAsync();
+
+                cache.Set(typeof(SectionLightModelView).Name + "_" + currentUserID, sections, DateTime.Now.AddDays(1));
+            }
+
+            return sections;
         }
 
-        public async Task<IEnumerable<BudgetSectionModelView>> GetAllSectionForRecords()
-        {
-            return await repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID && x.IsShowOnSite)
-                .OrderByDescending(x => x.BudgetRecords.Count())
-                .Select(x => new BudgetSectionModelView
-                {
-                    ID = x.ID,
-                    Name = x.Name,
-                    Description = x.Description,
-                    CssIcon = x.CssIcon,
-                    CssColor = x.CssColor,
-                    CssBackground = x.CssBackground,
-                    AreaName = x.BudgetArea.Name,
-                    AreaID = x.BudgetAreaID,
-                    RecordCount = x.BudgetRecords.Count(),
-                    IsShow_Filtered = true,
-                    IsShow = true,
-                    CollectiveSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
-                    {
-                        ID = y.ChildSection.ID,
-                        CanEdit = false,
-                        Description = y.ChildSection.Description,
-                        Name = y.ChildSection.Name,
-                        Owner = y.ChildSection.BudgetArea.User.Name,
-                        IsShowOnSite = true,
-
-                    })
-                })
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<AreaLightModelView>> GetAllAreaAndSectionByPerson()
+        public IEnumerable<BudgetSectionModelView> GetAllSectionForRecords()
         {
             var currentUserID = UserInfo.Current.ID;
+            List<BudgetSectionModelView> sections;
 
-            return await repository.GetAll<BudgetArea>(x => x.UserID == currentUserID && x.IsShowOnSite)
-                .Select(x => new AreaLightModelView
-                {
-                    ID = x.ID,
-                    Name = x.Name,
-                    BudgetSections = x.BudgetSectinos
-                        .Where(y => y.BudgetArea.UserID == currentUserID)
-                        .Select(y => new SectionLightModelView
-                        {
-                            ID = y.ID,
-                            Name = y.Name,
-                        })
-                })
-                .ToListAsync();
+            if (cache.TryGetValue(typeof(BudgetSection).Name + "_" + currentUserID, out sections) == false)
+            {
+                sections = repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == currentUserID && x.IsShowOnSite)
+                    .OrderByDescending(x => x.BudgetRecords.Count())
+                    .Select(x => new BudgetSectionModelView
+                    {
+                        ID = x.ID,
+                        Name = x.Name,
+                        Description = x.Description,
+                        CssIcon = x.CssIcon,
+                        CssColor = x.CssColor,
+                        CssBackground = x.CssBackground,
+                        AreaName = x.BudgetArea.Name,
+                        AreaID = x.BudgetAreaID,
+                        RecordCount = x.BudgetRecords.Count(),
+                        IsShow_Filtered = true,
+                        IsShow = true,
+                        SectionTypeID = x.SectionTypeID,
+                        //CollectiveSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
+                        //{
+                        //    ID = y.ChildSection.ID,
+                        //    CanEdit = false,
+                        //    Description = y.ChildSection.Description,
+                        //    Name = y.ChildSection.Name,
+                        //    Owner = y.ChildSection.BudgetArea.User.Name,
+                        //    IsShowOnSite = true,
+                        //})
+                    })
+                    .ToList();
+
+                cache.Set(typeof(BudgetSection).Name + "_" + currentUserID, sections, DateTime.Now.AddDays(1));
+            }
+            return sections;
         }
 
-        public async Task<BudgetAreaModelView> CreateOrUpdateArea(BudgetAreaModelView area)
+        public IEnumerable<AreaLightModelView> GetAllAreaAndSectionByPerson()
+        {
+            var currentUserID = UserInfo.Current.ID;
+            List<AreaLightModelView> sections;
+
+            if (cache.TryGetValue(typeof(AreaLightModelView).Name + "_" + currentUserID, out sections) == false)
+            {
+                sections = repository.GetAll<BudgetArea>(x => x.UserID == currentUserID && x.IsShowOnSite)
+                    .Select(x => new AreaLightModelView
+                    {
+                        ID = x.ID,
+                        Name = x.Name,
+                        BudgetSections = x.BudgetSectinos
+                            .Where(y => y.BudgetArea.UserID == currentUserID)
+                            .Select(y => new SectionLightModelView
+                            {
+                                ID = y.ID,
+                                Name = y.Name,
+                            })
+                    })
+                    .ToList();
+
+                cache.Set(typeof(AreaLightModelView).Name + "_" + currentUserID, sections, DateTime.Now.AddDays(1));
+            }
+            return sections;
+        }
+
+        public BudgetAreaModelView CreateOrUpdateArea(BudgetAreaModelView area)
         {
             var currentUser = UserInfo.Current;
             var budgetArea = new BudgetArea
@@ -163,16 +200,22 @@ namespace MyProfile.Budget.Service
             if (budgetArea.ID > 0)
             {
                 area.IsUpdated = true;
-                await repository.UpdateAsync(budgetArea, true);
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Edit);
+                repository.Update(budgetArea, true);
+                userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Edit);
             }
             else
             {
-                await repository.CreateAsync(budgetArea, true);
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Create);
+                repository.Create(budgetArea, true);
+                userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Create);
             }
 
             area.ID = budgetArea.ID;
+
+            cache.Remove(typeof(AreaLightModelView).Name + "_" + currentUser.ID);
+            cache.Remove(typeof(BudgetSection).Name + "_" + currentUser.ID);
+            cache.Remove(typeof(SectionLightModelView).Name + "_" + currentUser.ID);
+            cache.Remove(typeof(BudgetAreaModelView).Name + "_" + currentUser.ID);
+
             return area;
         }
 
@@ -230,6 +273,11 @@ namespace MyProfile.Budget.Service
             section.ID = budgetSection.ID;
             section.AreaID = budgetSection.BudgetAreaID;
 
+            cache.Remove(typeof(AreaLightModelView).Name + "_" + currentUser.ID);
+            cache.Remove(typeof(BudgetSection).Name + "_" + currentUser.ID);
+            cache.Remove(typeof(SectionLightModelView).Name + "_" + currentUser.ID);
+            cache.Remove(typeof(BudgetAreaModelView).Name + "_" + currentUser.ID);
+
             return section;
         }
 
@@ -261,6 +309,12 @@ namespace MyProfile.Budget.Service
                     repository.DeleteRange(section.CollectiveSections);
                 }
             }
+            //ToDo remove cache
+
+            //cache.Remove(typeof(AreaLightModelView).Name + "_" + currentUser.ID);
+            //cache.Remove(typeof(BudgetSection).Name + "_" + currentUser.ID);
+            //cache.Remove(typeof(SectionLightModelView).Name + "_" + currentUser.ID);
+            //cache.Remove(typeof(BudgetAreaModelView).Name + "_" + currentUser.ID);
 
             return await repository.SaveAsync();
         }
@@ -287,6 +341,11 @@ namespace MyProfile.Budget.Service
                 {
                     await repository.DeleteAsync(budgetArea, true);
                     await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Delete);
+
+                    cache.Remove(typeof(AreaLightModelView).Name + "_" + currentUser.ID);
+                    cache.Remove(typeof(BudgetSection).Name + "_" + currentUser.ID);
+                    cache.Remove(typeof(SectionLightModelView).Name + "_" + currentUser.ID);
+                    cache.Remove(typeof(BudgetAreaModelView).Name + "_" + currentUser.ID);
                 }
                 catch (Exception ex)
                 {
@@ -336,6 +395,12 @@ namespace MyProfile.Budget.Service
                     }
                     await repository.DeleteAsync(budgetSection, true);
                     await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Section_Delete);
+
+                    cache.Remove(typeof(AreaLightModelView).Name + "_" + currentUser.ID);
+                    cache.Remove(typeof(BudgetSection).Name + "_" + currentUser.ID);
+                    cache.Remove(typeof(SectionLightModelView).Name + "_" + currentUser.ID);
+                    cache.Remove(typeof(BudgetAreaModelView).Name + "_" + currentUser.ID);
+
                 }
                 catch (Exception ex)
                 {

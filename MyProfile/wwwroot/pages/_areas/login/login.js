@@ -122,7 +122,7 @@
             type: 'word'
         });
 
-        this.changeView(this.login.id);
+
         this.userSessionID = UserSessionID;
         this.person_data.userSessionID = this.userSessionID;
         this.person_data.referrer = document.referrer;
@@ -131,7 +131,14 @@
             this.email = Email;
         }
 
-        if (UserSessionID && document.location.href.includes("id=") && document.location.href.includes("isLandingPage=true")) {
+        if (LoginView != null) {
+            this.recoveryPassword2.userID = LoginView.UserID;
+            this.changeView(2, LoginView.ID);
+        } else {
+            this.changeView(this.login.id);
+        }
+
+        if (UserSessionID && document.location.href.includes("id=") && (document.location.href.includes("isLandingPage=true") || document.location.href.includes("isRecoveryPassword=true"))) {
             return;
         }
 

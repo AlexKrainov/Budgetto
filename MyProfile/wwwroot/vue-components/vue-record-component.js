@@ -90,7 +90,7 @@
                             </div>
                             <div class="form-group col-12 col-sm-12 col-md-6">
                                 <vue-section-component data-search-id="searchSection"
-                                                       data-records-style="height: 200px; overflow-x: overlay;"
+                                                       data-records-style="max-height: 200px; overflow-x: overlay;"
                                                        data-class="cards-small"
                                                        v-bind:is-show-filter="true"
                                                        v-on:onchoose="onChooseSection"></vue-section-component>
@@ -429,15 +429,15 @@
 
                                 if (result.budgetRecord.records.length == 1) {
                                     if (this.isEditMode == false) {
-                                        toastr.success("Запись добавилась успешно");
+                                        toastr.success("Запись добавлена успешно");
                                     } else {
                                         toastr.success("Запись отредактирована");
                                     }
                                 } else {
                                     if (this.isEditMode == false) {
-                                        toastr.success("Записи добавились успешно");
+                                        toastr.success("Записи добавлены успешно");
                                     } else {
-                                        toastr.success("Записи отредактированны");
+                                        toastr.success("Записи отредактированы");
                                     }
                                 }
                                 this.clearAll();
@@ -452,7 +452,7 @@
                                 }
 
                                 if (result.budgetRecord.records.some(x => x.isSaved)) {
-                                    toastr.warning("Не все записи сохранились");
+                                    toastr.warning("Не все записи были сохранены");
                                 } else {
                                     if (result.budgetRecord.records.length == 1) {
                                         toastr.error("Не удалось сохранить запись");

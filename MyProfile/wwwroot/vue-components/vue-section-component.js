@@ -4,7 +4,7 @@
             <input type='search'
                     name="sectionSearch"
                     v-model="searchText"
-                    class="form-control form-control-sm"
+                    class="form-control form-control-sm mb-1"
                     v-on:input="onsearch" 
                     v-show="isShowFilter"/>
             <div class="cards" v-bind:style="searchText ? '' : dataRecordsStyle"

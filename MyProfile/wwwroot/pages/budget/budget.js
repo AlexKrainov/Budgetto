@@ -275,6 +275,16 @@
                 }
             });
         },
+        getSectionsTitle: function (sections) {
+            if (sections.length > 0) {// sections
+                let li_s = "";
+                for (var i = 0; i < sections.length; i++) {
+                    li_s += `<li>${sections[i].name}</li>`;
+                }
+                return "<ul class='my-1 pl-3'>" + li_s + "</ul>";
+            }
+            return "";
+        },
         //Goal charts
         loadGoalCharts: BudgetMethods.loadGoalCharts,
         OLD_initGoalCharts: function () {
@@ -725,7 +735,7 @@
                 return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
             }
         },
-        getTitle: function (column) {
+        getHeaderTitle: function (column) {
 
             if (column.templateColumnType == 1) {// sections
                 let li_s = "";
@@ -879,6 +889,16 @@
 
                 }
             }
+        },
+        getSectionsTitle: function (sections) {
+            if (sections && sections.length > 0) {// sections
+                let li_s = "";
+                for (var i = 0; i < sections.length; i++) {
+                    li_s += `<li>${sections[i].name}</li>`;
+                }
+                return "<ul class='my-1 pl-3'>" + li_s + "</ul>";
+            }
+            return "";
         },
 
         //helpers

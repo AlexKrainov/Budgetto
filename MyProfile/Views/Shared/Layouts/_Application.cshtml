@@ -8,17 +8,44 @@
 <html lang="ru" class="light-style layout-sidenav-100vh layout-expanded layout-fixed layout-navbar-fixed" dir="ltr">
 <head>
     <title>Budgetto.org : @ViewData["Title"]</title>
-    <meta charset="utf-8" />
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
-    <meta name="description" content="">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link rel="icon" type="image/x-icon" href="~/favicon.ico">
 
-    <meta property="og:title" content="Как быстро и бесплатно сделать инфографику: 4 онлайн-сервиса с доступным функционалом" />
-    <meta property="og:description" content="Еще не добавили чат в поиске Яндекса? Стоит сделать это. Но только в том случае, если вы готовы быстро реагировать на вопросы из чата и вообще — разговаривать с вашими покупателями. Рассказываем в деталях, как и зачем подключать чат в поиске." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Budgetto.org - Контролируй свои финансы" />
+    <meta property="og:description" content="budgetto.org - cервис по ведению личных финансов, основанный на таблицах. Отслеживайте свои раcходы, доходы и инвестиции. Ставьте цели и лимиты." />
     <meta property="og:image" content="https://app.budgetto.org/img/Logo-min.png" />
-    <meta property="og:site_name" content="Блог PromoPult о развитии сайта и привлечении клиентов из интернета" />
+    <meta property="og:site_name" content="Budgetto.org | Контролируй свои финансы" />
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:url" content="https://budgetto.org">
+    <meta property="og:updated_time" content="2020-12-11T09:59:35-05:00">
+
+    @*<meta name="keywords" content="где деньги, учет расходов, семейный бюджет, финансовая грамотность, личные финансы, учет доходов и расходов, планирование расходов, планирование бюджета">
+        <meta name="keywords" content="Учет расходов,семейный бюджет,домашняя бухгалтерия,учёт личных финансов,учет долгов">
+        <meta name="keywords" content="Intuit, Intuit Quicken, Quicken, MS Money, Money, Mint, Cash Organizer, Personal Finance, Finance, Credit, Debit, Mint, Coinkeeper, Финансы, Деньги, Кредиты, Заемы, Домашние финансы, Домашняя бухгалтерия, Семейный бюджет, Учет, Управленческий учет, Битрикс">*@
+    <meta name="description" content="Сервис по ведению личных финансов, основанный на таблицах. Отслеживайте свои раcходы, доходы и инвестиции. Ставьте цели и лимиты.">
+    <title>
+        Budgetto.org - Контролируй свои финансы
+    </title>
+    @*<meta name="keywords" content="таблица финансов, таблица бюджета, бюджет в Excel, финансы в Excel, ведение финансов в Excel, ведение бюджета в Excel,
+        учет расходов в Excel, учет расходов, учет доходов и расходов, книга учетов доходов и расходов, счет учета расходов,
+        бюджет, финансы, личные финансы, контроль финансов, домашняя бухгалтерия, семейный бюджет, доход,
+        учет расходов ип, цель учета расходов, учет основных расходов, учет расходов периода, методы учета расходов, как вести учет расходов,
+        таблица учета расходов, доход расход, учет доход, финансовый excel, семейный бюджет excel, бюджет семьи excel,
+        таблица excel бюджет , таблица excel финансы, таблица учета финансов, таблица контроля финансов, таблицы личных финансов, таблица расходов бюджета,
+        доходы бюджета таблица, семейный бюджет таблица, бюджет семьи таблица" />*@
+
+    <meta name="keywords" content="таблица финансов, таблица бюджета, бюджет в Excel, финансы в Excel,
+          учет расходов в Excel, учет доходов и расходов, таблица доход, личные финансы, контроль финансов, домашняя бухгалтерия, семейный бюджет,
+          цель учета расходов, учет основных расходов,
+          таблица учета расходов,  таблица финансы, доходы бюджета таблица, семейный бюджет таблица, год бюджет, семья бюджет" />
+
+    <link rel="canonical" href="https://budgetto.org/">
+    <link rel="shortlink" href="https://budgetto.org/">>
 
     <style>
         [v-cloak] {
@@ -123,16 +150,16 @@
 
     @if (currentUser.UserSettings.IsShowCookie)
     {
-    <div id="cookie-model" class="callout callout-secondary" style="max-width: 800px; position: fixed; right: 32px; bottom: 10px; z-index: 3000; box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.5);">
-        <button type="button" class="close" data-dismiss="alert" onclick="$('#cookie-model').remove();">×</button>
-        <p>
-            Мы используем cookie. Это позволяет нам делать сайт быстрее и лучше. Продолжая пользоваться сайтом, вы соглашаетесь с
-            <a href="~/documents/cookie_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('cookie_policy')">Политикой использования файлов cookie</a>,
-            <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('personal_data_processing_policy')">Политикой обработки персональных данных</a> и
-            <a href="~/documents/terms_of_use.pdf" target="_blank" class="callout-link" onclick="ShowDocument('terms_of_use')">Пользовательским соглашением</a>.
-        </p>
-        <p><button class="btn btn-primary mr-1" onclick="ShowCookieOff()">Подтвердить</button></p>
-    </div>
+        <div id="cookie-model" class="callout callout-secondary" style="max-width: 800px; position: fixed; right: 32px; bottom: 10px; z-index: 3000; box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.5);">
+            <button type="button" class="close" data-dismiss="alert" onclick="$('#cookie-model').remove();">×</button>
+            <p>
+                Мы используем cookie. Это позволяет нам делать сайт быстрее и лучше. Продолжая пользоваться сайтом, вы соглашаетесь с
+                <a href="~/documents/cookie_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('cookie_policy')">Политикой использования файлов cookie</a>,
+                <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="callout-link" onclick="ShowDocument('personal_data_processing_policy')">Политикой обработки персональных данных</a> и
+                <a href="~/documents/terms_of_use.pdf" target="_blank" class="callout-link" onclick="ShowDocument('terms_of_use')">Пользовательским соглашением</a>.
+            </p>
+            <p><button class="btn btn-primary mr-1" onclick="ShowCookieOff()">Подтвердить</button></p>
+        </div>
     }
 
 
@@ -161,21 +188,21 @@
 
         @if (currentUser.UserSettings.IsShowHints)
         {
-        <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
+            <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
 
-        @if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+            @if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
             {
-        <script src="~/pages/_tour/budget-tour.js" asp-append-version="true"></script>
-        <script src="~/pages/_tour/add-record-tour.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/budget-tour.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/add-record-tour.js" asp-append-version="true"></script>
             }
-        @if (this.Context.Request.Path == "/Section/Edit")
+            @if (this.Context.Request.Path == "/Section/Edit")
             {
-        <script src="~/pages/_tour/section-tour.js" asp-append-version="true"></script>
-        <script src="~/pages/_tour/add-section-tour.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/section-tour.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/add-section-tour.js" asp-append-version="true"></script>
             }
-        @if (this.Context.Request.Path == "/Template/Edit")
+            @if (this.Context.Request.Path == "/Template/Edit")
             {
-        <script src="~/pages/_tour/template-edit-tour.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/template-edit-tour.js" asp-append-version="true"></script>
             }
         }
     </environment>
@@ -192,21 +219,21 @@
 
         @if (currentUser.UserSettings.IsShowHints)
         {
-        <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
+            <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
 
             if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
             {
-        <script src="~/pages/_tour/budget-tour.min.js" asp-append-version="true"></script>
-        <script src="~/pages/_tour/add-record-tour.min.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/budget-tour.min.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/add-record-tour.min.js" asp-append-version="true"></script>
             }
             if (this.Context.Request.Path == "/Section/Edit")
             {
-        <script src="~/pages/_tour/section-tour.min.js" asp-append-version="true"></script>
-        <script src="~/pages/_tour/add-section-tour.min.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/section-tour.min.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/add-section-tour.min.js" asp-append-version="true"></script>
             }
             if (this.Context.Request.Path == "/Template/Edit")
             {
-        <script src="~/pages/_tour/template-edit-tour.min.js" asp-append-version="true"></script>
+                <script src="~/pages/_tour/template-edit-tour.min.js" asp-append-version="true"></script>
             }
         }
     </environment>

@@ -21,6 +21,7 @@
     <script>
         var UserSessionID = '@Model.UserSessionID';
         var Email = '@Model.Email';
+        var LoginView = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.loginView, Newtonsoft.Json.Formatting.None))');
     </script>
     <script src="~/pages/_areas/login/login.min.js" asp-append-version="true"></script>
 }
@@ -142,11 +143,11 @@
                                         <i class="fas fa-eye-slash" v-show="isHiddenPassword == false"></i>
                                     </button>
                                 </span>
+                                <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
                             </div>
                             <small class="form-text text-muted">
                                 Пароль должен содержать более 5 символов
                             </small>
-                            <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
                         </div>
                         <button type="button" class="btn btn-primary btn-block mt-4" id="registraion-btn"
                                 v-bind:disabled="isSaving"
@@ -206,11 +207,11 @@
                                         <i class="fas fa-eye-slash" v-show="isHiddenPassword == false"></i>
                                     </button>
                                 </span>
-                                <small class="form-text text-muted">
-                                    Пароль должен содержать больше 5 символов
-                                </small>
                                 <small class="invalid-feedback">Пожалуйста, введите корректный пароль.</small>
                             </div>
+                            <small class="form-text text-muted">
+                                Пароль должен содержать больше 5 символов
+                            </small>
                         </div>
                         <button type="button" class="btn btn-primary btn-block mt-4" id="recovery2-btn"
                                 v-bind:disabled="isSaving"
@@ -273,9 +274,9 @@
     </div>
 </div>
 @*<a href="mailto:support@budgetto.org?subject=Предложение по сайту app.budgetto.org" target="_blank" class="" style="
-    position: absolute;
-    right: 75px;
-    bottom: 15px;
-">
-    support@budgetto.org
-</a>*@
+        position: absolute;
+        right: 75px;
+        bottom: 15px;
+    ">
+        support@budgetto.org
+    </a>*@

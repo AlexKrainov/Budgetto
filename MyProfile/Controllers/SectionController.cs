@@ -37,12 +37,11 @@ namespace MyProfile.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetAllSectionForEdit()
+        public IActionResult GetAllSectionForEdit()
         {
             try
             {
-                var areas = sectionService.GetFullModelByUserID();
-                return Json(new { isOk = true, areas });
+                return Json(new { isOk = true, areas = sectionService.GetFullModelByUserID() });
             }
             catch (Exception ex)
             {
@@ -53,11 +52,11 @@ namespace MyProfile.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveArea([FromBody] BudgetAreaModelView area)
+        public IActionResult SaveArea([FromBody] BudgetAreaModelView area)
         {
             try
             {
-                await sectionService.CreateOrUpdateArea(area);
+                sectionService.CreateOrUpdateArea(area);
 
                 return Json(new { isOk = true, area });
             }
@@ -87,9 +86,9 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAreaAndSectionByPerson()
+        public IActionResult GetAllAreaAndSectionByPerson()
         {
-            var areas = await sectionService.GetAllAreaAndSectionByPerson();
+            var areas = sectionService.GetAllAreaAndSectionByPerson();
 
             return Json(new { isOk = true, areas });
         }
@@ -103,9 +102,9 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSectins()
+        public IActionResult GetSectins()
         {
-            var sections = await sectionService.GetAllSectionForRecords();
+            var sections = sectionService.GetAllSectionForRecords();
 
             return Json(new { isOk = true, sections });
         }

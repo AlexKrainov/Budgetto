@@ -38,7 +38,7 @@
         },
         addReminders: function (dateTime) {
             this.dateTime = dateTime;
-            this.close();
+           // this.close();
 
             this.edit();
 

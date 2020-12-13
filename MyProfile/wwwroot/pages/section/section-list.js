@@ -1,4 +1,4 @@
-﻿var AreaVue = new Vue({
+var AreaVue = new Vue({
     el: "#area-vue",
     data: {
         areas: [],
@@ -325,7 +325,7 @@ var SectionVue = new Vue({
                         }
                         //AreaVue.$forceUpdate();//bug areaVuew doesn't update section in a view
                         if (result.section.isUpdated) {
-                            toastr.success("Категория отредактированна.");
+                            toastr.success("Категория отредактирована.");
                         } else {
                             toastr.success("Категория создана.");
                         }
@@ -335,7 +335,7 @@ var SectionVue = new Vue({
                         if (result.section.isUpdated) {
                             toastr.error("Ошибка при редактировании категории.");
                         } else {
-                            toastr.error("Ошибка при создания категории.");
+                            toastr.error("Ошибка при создании категории.");
                         }
                     }
                     SectionVue.isSaving = false;

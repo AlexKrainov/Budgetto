@@ -61,14 +61,28 @@ namespace Email.Service
             {
                 await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_TryAuthorizationByEmail);
             }
-            return mailLog.UserID ?? Guid.Empty;
+            return mailLog?.UserID ?? Guid.Empty;
         }
 
-        public async Task<Guid> ConfirmEmail(User user, Guid userSessionID, MailTypeEnum mailTypeEnum , string returnUrl = null)
+        public async Task<Guid> ConfirmEmail(User user, Guid userSessionID, MailTypeEnum mailTypeEnum, string returnUrl = null)
         {
             // user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
+            string templatePath = "";
             Random random = new Random();
+
+            switch (mailTypeEnum)
+            {
+                case MailTypeEnum.Registration:
+                    templatePath = @"\\template\\RegistrationAccount.html";
+                    break;
+                case MailTypeEnum.EmailUpdate:
+                case MailTypeEnum.ResendByUser:
+                    templatePath = @"\\template\\EmailUpdate.html";
+                    break;
+                default:
+                    break;
+            }
 
             MailLog mailLog = new MailLog
             {
@@ -84,13 +98,13 @@ namespace Email.Service
 
             try
             {
-                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\CodeEmail.html"))
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + templatePath))
                 {
                     body = reader.ReadToEnd();
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}{( string.IsNullOrEmpty(returnUrl) ? "" : "&ReturnUrl=" + returnUrl)}");
+                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}{(string.IsNullOrEmpty(returnUrl) ? "" : "&ReturnUrl=" + returnUrl)}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
             }
@@ -128,14 +142,13 @@ namespace Email.Service
             return 1;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="user"></param>
         /// <param name="isResend"></param>
         /// <returns>if the this site cannot send email, retun guid.empty</returns>
-        public async Task<Guid> LoginConfirmation(User user, Guid userSessionID, bool isResend = false)
+        public async Task<Guid> LoginConfirmation(User user, Guid userSessionID, MailTypeEnum mailType)
         {
             // user.Email = "ialexkrainov2@gmail.com";
             string body = string.Empty;
@@ -145,7 +158,7 @@ namespace Email.Service
             {
                 ID = Guid.NewGuid(),
                 IsSuccessful = true,
-                MailTypeID = isResend ? (int)MailTypeEnum.Login : (int)MailTypeEnum.ResendByUser,
+                MailTypeID = (int)mailType,
                 SentDateTime = DateTime.Now.ToUniversalTime(),
                 UserID = user.ID,
                 Email = user.Email,
@@ -155,7 +168,7 @@ namespace Email.Service
 
             try
             {
-                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\CodeEmail.html"))
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\LimitEnter.html"))
                 {
                     body = reader.ReadToEnd();
                 }
@@ -180,8 +193,6 @@ namespace Email.Service
             return mailLog.ID;
         }
 
-
-
         public async Task<Guid> RecoveryPassword(User user, Guid userSessionID, bool isResend = false)
         {
             //user.Email = "ialexkrainov2@gmail.com";
@@ -192,7 +203,7 @@ namespace Email.Service
             {
                 ID = Guid.NewGuid(),
                 IsSuccessful = true,
-                MailTypeID = isResend ? (int)MailTypeEnum.ResetPassword : (int)MailTypeEnum.ResendByUser,
+                MailTypeID = isResend ? (int)MailTypeEnum.PasswordReset : (int)MailTypeEnum.ResendByUser,
                 SentDateTime = DateTime.Now.ToUniversalTime(),
                 UserID = user.ID,
                 Email = user.Email,
@@ -202,13 +213,13 @@ namespace Email.Service
 
             try
             {
-                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\CodeEmail.html"))
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\RecoveryPassword.html"))
                 {
                     body = reader.ReadToEnd();
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
+                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}&isRecoveryPassword=true");
 
                 await _emailSender.SendEmailAsync(user.Email, "Сброс пароля", body);
             }

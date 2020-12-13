@@ -284,11 +284,22 @@ namespace MyProfile.User.Service
 
 
 
-        public async Task<UserInfoModel> UpdateUser(UserInfoModel userInfoModel, bool userSettingsSave = false)
+        public async Task<Tuple<UserInfoModel, string>> UpdateUser(UserInfoModel userInfoModel, bool userSettingsSave = false)
         {
+            string errorMessage = null;
             var user = UserInfo.Current;
             var dbUser = await repository.GetAll<Entity.Model.User>(x => x.ID == user.ID)
                 .FirstOrDefaultAsync();
+
+            if (dbUser.Email.Trim().ToLower() != userInfoModel.Email.Trim().ToLower()
+                && await repository.AnyAsync<Entity.Model.User>(x => x.Email == userInfoModel.Email.Trim() && x.ID != dbUser.ID && x.IsDeleted == false))
+            {
+                await userLogService.CreateUserLogAsync(userInfoModel.UserSessionID, UserLogActionType.User_ErrorChangeEmail,
+                    $"Login: {userInfoModel.Email.Trim()}, Comment= we already have user with this email");
+                errorMessage = $"В системе уже есть пользователь с такой почтой ({ userInfoModel.Email.Trim() }).";
+                return new Tuple<UserInfoModel, string>(userInfoModel, errorMessage);
+            }
+
             string oldEmail = new string(dbUser.Email);
 
             dbUser.Name = user.Name = userInfoModel.Name?.Trim();
@@ -333,25 +344,26 @@ namespace MyProfile.User.Service
                 dbUser.UserSettings.IsShowConstructor = userInfoModel.UserSettings.IsShowConstructor;
             }
 
-            await repository.UpdateAsync(dbUser, true);
-
             //Check if we have alredy the new email ???
-
             if (oldEmail != userInfoModel.Email)
             {
                 await UserInfo.ReSignInAsync(user);
-                await userConfirmEmailService.ConfirmEmail(user, user.UserSessionID, MailTypeEnum.ConfirmEmail, returnUrl: "/Identity/Account/AccountSettings");
+                await userConfirmEmailService.ConfirmEmail(user, user.UserSessionID, MailTypeEnum.EmailUpdate, returnUrl: "/Identity/Account/AccountSettings");
 
                 user.IsConfirmEmail = dbUser.IsConfirmEmail = userInfoModel.IsConfirmEmail = false;
 
                 await repository.UpdateAsync(dbUser, true);
-                await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_Change_Email);
+                await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_ChangeEmail);
+            }
+            else
+            {
+                await repository.UpdateAsync(dbUser, true);
             }
 
             await UserInfo.AddOrUpdate_Authenticate(user);
             await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.User_Edit);
 
-            return userInfoModel;
+            return new Tuple<UserInfoModel, string>(userInfoModel, errorMessage);
         }
 
         public async Task<int> UpdateUserSettings(UserSettingsModelView userSettings)

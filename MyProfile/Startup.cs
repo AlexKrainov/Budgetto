@@ -153,6 +153,8 @@ namespace MyProfile
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            //app.UseCors("CorsPolicy");
+
             Identity.UserInfo.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 
             app.UseMvc(routes =>

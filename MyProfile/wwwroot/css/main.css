@@ -737,3 +737,11 @@ html.dark-style .tagify__input::before {
     .element-pointer-hover:hover {
         color: #3c8ae2 !important;
     }
+
+.cursor-help {
+    cursor: help;
+}
+
+.bs-tooltip-top {
+    z-index: 1081 !important;
+}

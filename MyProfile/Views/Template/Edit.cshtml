@@ -22,6 +22,7 @@
     <script src="~/vendor/libs/dragula/dragula.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/bootstrap-select/bootstrap-select.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/auto-scroll/auto-scroll.min.js"></script>
 
     <environment names="Development">
         <script src="~/pages/template/template-edit.js" asp-append-version="true"></script>
@@ -29,6 +30,7 @@
     <environment names="Staging,Production">
         <script src="~/pages/template/template-edit.min.js" asp-append-version="true"></script>
     </environment>
+
 }
 
 <section id="template-columns" style="margin-bottom: 250px;" v-cloak>
@@ -78,15 +80,15 @@
 
                     <!-- Dates -->
                     @*<div class="row no-gutters row-bordered row-border-light ui-bordered mb-4">
-                    <div class="col py-1 px-3">
-                        <div class="text-muted small">Created at</div>
-                        <div class="font-weight-semibold">{{ GetDateByFormat(template.dateCreate, 'DD.MM.YYYY HH:mm') }}</div>
-                    </div>
-                    <div class="col py-1 px-3">
-                        <div class="text-muted small">Last update</div>
-                        <div class="font-weight-semibold">{{ GetDateByFormat(template.dateEdit, 'DD.MM.YYYY HH:mm') }} </div>
-                    </div>
-                </div>*@
+                            <div class="col py-1 px-3">
+                                <div class="text-muted small">Created at</div>
+                                <div class="font-weight-semibold">{{ GetDateByFormat(template.dateCreate, 'DD.MM.YYYY HH:mm') }}</div>
+                            </div>
+                            <div class="col py-1 px-3">
+                                <div class="text-muted small">Last update</div>
+                                <div class="font-weight-semibold">{{ GetDateByFormat(template.dateEdit, 'DD.MM.YYYY HH:mm') }} </div>
+                            </div>
+                        </div>*@
 
                 </div>
             </div>
@@ -472,7 +474,7 @@
         <!-- templateBudgetSection modal -->
         <div class="modal modal-slide fade" id="section-modal">
             <div class="modal-dialog modal-xl">
-                <form class="modal-content">
+                <div class="modal-content">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
                     <div class="modal-body">
                         <vue-section-component data-class="cards-big"
@@ -484,7 +486,8 @@
                                                v-on:onchoose="addColumnOption_step2"></vue-section-component>
 
                     </div>
-                </form>
+                    <button type="button" class="btn btn-secondary mx-4" data-dismiss="modal">Закрыть</button>
+                </div>
             </div>
         </div>
     </article>

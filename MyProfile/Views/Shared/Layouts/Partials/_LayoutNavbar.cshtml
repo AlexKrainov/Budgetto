@@ -5,6 +5,7 @@
     var hintsPages = new List<string> {
         "/",
         "/Budget/Month",
+        "/Budget/Year",
         "/Section/Edit",
         "/Template/Edit",
         "/Chart/List",
@@ -71,21 +72,27 @@
                     <a class="nav-link dropdown-toggle1" href="javascript:void(0)" data-toggle="dropdown">
                         <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
                     </a>
-                    @if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+                    @if (this.Context.Request.Path == "/"
+                    || this.Context.Request.Path == "/Budget/Month"
+                    || this.Context.Request.Path == "/Budget/Year")
                     {
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-record">
-                                <i class="fas fa-route text-large"></i> &nbsp; Как добавить запись
-                            </a>
-                            <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
-                                <i class="fas fa-route text-large"></i> &nbsp; Тур по странице
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="/Help/Center/ViewArticle?id=8" class="dropdown-item d-inline-flex align-items-center" target="_blank">
-                                <i class="lnr lnr-question-circle text-dark  text-large"></i>
-                                &nbsp; Создание напоминания
-                                <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
-                            </a>
+                            @if (this.Context.Request.Path == "/"
+                              || this.Context.Request.Path == "/Budget/Month")
+                            {
+                                <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-record">
+                                    <i class="fas fa-route text-large"></i> &nbsp; Как добавить запись
+                                </a>
+                                <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
+                                    <i class="fas fa-route text-large"></i> &nbsp; Тур по странице
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="/Help/Center/ViewArticle?id=8" class="dropdown-item d-inline-flex align-items-center" target="_blank">
+                                    <i class="lnr lnr-question-circle text-dark  text-large"></i>
+                                    &nbsp; Создание напоминания
+                                    <i class="fas fa-external-link-alt pl-2" style="font-size: small;"></i>
+                                </a>
+                            }
                             <a href="/Help/Center/ViewArticle?id=11" class="dropdown-item d-inline-flex align-items-center" target="_blank">
                                 <i class="lnr lnr-question-circle text-dark  text-large"></i>
                                 &nbsp; Работа с таблицей
@@ -192,7 +199,7 @@
                             </a>
                         </div>
                     }
-                    else if ( this.Context.Request.Path == "/Budget/TimeLine")
+                    else if (this.Context.Request.Path == "/Budget/TimeLine")
                     {
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="/Help/Center/ViewArticle?id=12" class="dropdown-item d-inline-flex align-items-center" target="_blank">

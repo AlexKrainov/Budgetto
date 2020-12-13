@@ -28,13 +28,14 @@ INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], 
 SET IDENTITY_INSERT [dbo].[Currencies] OFF
 GO
 
-SET IDENTITY_INSERT [dbo].[MailTypes] ON 
+SET IDENTITY_INSERT [MailTypes] ON 
 
-INSERT [dbo].[MailTypes] ([ID], [CodeName]) VALUES (1, N'ConfirmEmail')
-INSERT [dbo].[MailTypes] ([ID], [CodeName]) VALUES (2, N'ResetPassword')
-INSERT [dbo].[MailTypes] ([ID], [CodeName]) VALUES (3, N'Login')
-INSERT [dbo].[MailTypes] ([ID], [CodeName]) VALUES (4, N'ResendByUser')
-SET IDENTITY_INSERT [dbo].[MailTypes] OFF
+INSERT [MailTypes] ([ID], [CodeName]) VALUES (1, N'Registration')
+INSERT [MailTypes] ([ID], [CodeName]) VALUES (2, N'EmailUpdate')
+INSERT [MailTypes] ([ID], [CodeName]) VALUES (3, N'PasswordReset')
+INSERT [MailTypes] ([ID], [CodeName]) VALUES (4, N'LoginLimitEnter')
+INSERT [MailTypes] ([ID], [CodeName]) VALUES (5, N'ResendByUser')
+SET IDENTITY_INSERT [MailTypes] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[PeriodTypes] ON 
@@ -96,7 +97,7 @@ VALUES (11, 'Работа с таблицей' ,'2020-12-03 21:40:32.8652966', '
 INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
 VALUES (12, 'Дополнительные настройки страницы' ,'2020-12-04 21:40:32.8652966', '2020-12-04 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/PageSettings.cshtml' ,9, 'виджет;настройки;скрыть;показать;завершен;')
 INSERT INTO HelpArticles (ID, [Title] ,DateCreate, DateEdit, Link, HelpMenuID, KeyWords) 
-VALUES (13, 'Поиск записей' ,'2020-12-04 21:40:32.8652966', '2020-12-04 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/SearchRecord.cshtml' ,10, 'поиск;записи;трат;доход;расход')
+VALUES (13, 'Поиск записей' ,'2020-12-04 21:40:32.8652966', '2020-12-04 21:40:32.8652966' ,'~/Areas/Help/Views/Articles/SearchRecord.cshtml' ,10, 'поиск;записи;трат;доход;расход;история;')
 
 SET IDENTITY_INSERT [HelpArticles] OFF
 GO

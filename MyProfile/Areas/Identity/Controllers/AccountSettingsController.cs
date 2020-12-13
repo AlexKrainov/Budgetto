@@ -28,13 +28,15 @@ namespace MyProfile.Areas.Identity.Controllers
         public async Task<IActionResult> ResendConfirmEmail()
         {
             var currentUser = UserInfo.Current;
-            return Json(new { isOk = true, userConfirmEmailService = await userEmailService.ConfirmEmail(currentUser, currentUser.UserSessionID, MailTypeEnum.ConfirmEmail, returnUrl: "/Identity/Account/AccountSettings") });
+            return Json(new { isOk = true, userConfirmEmailService = await userEmailService.ConfirmEmail(currentUser, currentUser.UserSessionID, MailTypeEnum.EmailUpdate, returnUrl: "/Identity/Account/AccountSettings") });
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveUserInfo([FromBody] UserInfoModel user)
+        public async Task<IActionResult> SaveUserInfo([FromBody] UserInfoModel userInfo)
         {
-            return Json(new { isOk = true, user = await userService.UpdateUser(user) });
+            var tupelUser = await userService.UpdateUser(userInfo);
+
+            return Json(new { isOk = string.IsNullOrEmpty(tupelUser.Item2), user = tupelUser.Item1, errorMessage = tupelUser.Item2 });
         }
 
         [HttpGet]

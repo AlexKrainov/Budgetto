@@ -112,7 +112,7 @@ var AccountSettingsVue = new Vue({
                                     userName += " " + result.user.lastName;
                                 }
                             }
-                            
+
                             $("#userName").text(userName);
 
                             if (this.user.email != this.oldEmail) {
@@ -122,9 +122,12 @@ var AccountSettingsVue = new Vue({
 
                             this.user = result.user;
                             this.oldEmail = result.user.email;
-                            this.isSaving = false;
-
+                            toastr.success("Новые данные пользователя сохранены");
+                        } else {
+                            this.errorMessage = result.errorMessage;
+                            toastr.error("Новые данные пользователя не сохранены");
                         }
+                        this.isSaving = false;
                         return true;
                     },
                     error: function (xhr, status, error) {
@@ -165,8 +168,10 @@ var AccountSettingsVue = new Vue({
                         this.isValidCode = true;
                         this.isShowCode = false;
                         this.user.isConfirmEmail = true;
+                        toastr.success("Почта подтверждена");
                     } else {
                         this.isValidCode = false;
+                        toastr.warning("Неправильный код из письма");
                     }
                     this.isSaving = false;
                     return response;
@@ -191,6 +196,9 @@ var AccountSettingsVue = new Vue({
                             AccountSettingsVue.newPassword = null;
                             AccountSettingsVue.isSaving = false;
                             AccountSettingsVue.isShowSuccessChangedPassword = true;
+                            toastr.success("Пароль обновлен успешно");
+                        } else {
+                            toastr.error("Пароль не обновлен");
                         }
                     });
             } else {
@@ -326,6 +334,7 @@ var AccountSettingsVue = new Vue({
                         themeSettings.setStyle(AccountSettingsVue.user.userSettings.webSiteTheme)
                         //document.location.href = document.location.href;
                     }
+                    toastr.success("Настройки сохранены");
                 });
         },
 
