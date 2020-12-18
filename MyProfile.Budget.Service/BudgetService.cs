@@ -29,11 +29,11 @@ namespace MyProfile.Budget.Service
         private ReminderService reminderService;
         private CultureInfo cultureInfo;
 
-        public BudgetService(IBaseRepository repository)
+        public BudgetService(IBaseRepository repository, BudgetRecordService budgetRecordService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
-            this.budgetRecordService = new BudgetRecordService(repository);
+            this.budgetRecordService = budgetRecordService;
             this.reminderService = new ReminderService(repository);
             cultureInfo = new CultureInfo(UserInfo.Current.Currency.SpecificCulture, false);
         }

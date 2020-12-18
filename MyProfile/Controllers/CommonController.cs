@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Repository;
 using MyProfile.LittleDictionaries.Service;
+using MyProfile.Tag.Service;
 using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
@@ -11,12 +12,15 @@ namespace MyProfile.Controllers
     {
         private IBaseRepository repository;
         private DictionariesService dictionariesService;
+        private TagService tagService;
 
         public CommonController(IBaseRepository repository,
-            DictionariesService dictionariesService)
+            DictionariesService dictionariesService,
+            TagService tagService)
         {
             this.repository = repository;
             this.dictionariesService = dictionariesService;
+            this.tagService = tagService;
         }
 
         public IActionResult Index()
@@ -36,6 +40,12 @@ namespace MyProfile.Controllers
         {
             var data = await dictionariesService.GetCurrencyInfoForClient();
             return Json(new { isOk = true, data = data });
+        }
+
+        [HttpGet]
+        public JsonResult GetUserTags()
+        {
+            return Json(new { isOk = true, tags = tagService.GetUserTags() });
         }
     }
 }

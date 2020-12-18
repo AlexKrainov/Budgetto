@@ -49,5 +49,11 @@ namespace MyProfile.Entity.Model
         public virtual BudgetSection BudgetSection { get; set; }
         public virtual Currency Currency { get; set; }
 
+        public virtual ICollection<RecordTag> Tags { get; set; }
+
+        public BudgetRecord()
+        {
+            this.Tags = new HashSet<RecordTag>();
+        }
     }
 }

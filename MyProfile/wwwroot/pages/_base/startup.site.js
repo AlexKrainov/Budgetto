@@ -81,7 +81,7 @@ if (document.location.href.indexOf("Start/Index") == -1) {
             }
         },
         methods: {
-            addRecord: function myfunction() {
+            addRecord: function () {
                 if (RecordVue.callback) {
                     return this.recordComponent.showModal(undefined, RecordVue.callback);
                 } else {
@@ -102,6 +102,8 @@ if (document.location.href.indexOf("Start/Index") == -1) {
             }
         }
     });
+
+    RecordVue.addRecord();
 }
 
 if (document.location.href.indexOf("localhost") != -1

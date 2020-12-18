@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20201214144539_MyProfile_065")]
+    partial class MyProfile_065
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -890,7 +892,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateSet");
+                    b.Property<DateTime>("DateSet")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(new DateTime(2020, 12, 14, 14, 45, 38, 722, DateTimeKind.Utc).AddTicks(5425));
 
                     b.Property<int>("RecordID");
 
@@ -1117,7 +1121,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateCreate");
+                    b.Property<DateTime>("DateCreate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(new DateTime(2020, 12, 14, 14, 45, 38, 722, DateTimeKind.Utc).AddTicks(3269));
 
                     b.Property<string>("IconCss")
                         .HasMaxLength(32);
@@ -1125,7 +1131,7 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Image")
                         .HasMaxLength(256);
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(132);
 
@@ -1593,7 +1599,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateCreate");
+                    b.Property<DateTime>("DateCreate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(new DateTime(2020, 12, 14, 14, 45, 38, 710, DateTimeKind.Utc).AddTicks(6609));
 
                     b.Property<string>("IconCss")
                         .HasMaxLength(32);
@@ -1601,19 +1609,15 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Image")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("TagID");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(132);
 
-                    b.Property<Guid?>("UserID");
+                    b.Property<int?>("TagID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("TagID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("UserTags");
                 });
@@ -2130,10 +2134,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagID");
-
-                    b.HasOne("MyProfile.Entity.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
                 });
 #pragma warning restore 612, 618
         }

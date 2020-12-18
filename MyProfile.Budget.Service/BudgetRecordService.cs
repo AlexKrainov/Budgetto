@@ -5,6 +5,7 @@ using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Tag.Service;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
 using System;
@@ -12,7 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using RecordTag = MyProfile.Entity.ModelView.RecordTag;
 
 namespace MyProfile.Budget.Service
 {
@@ -21,12 +24,14 @@ namespace MyProfile.Budget.Service
         private IBaseRepository repository;
         private CollectionUserService collectionUserService;
         private UserLogService userLogService;
+        private TagService tagService;
 
-        public BudgetRecordService(IBaseRepository repository)
+        public BudgetRecordService(IBaseRepository repository, TagService tagService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
             this.userLogService = new UserLogService(repository);
+            this.tagService = tagService;
         }
 
         public async Task<RecordModelView> GetByID(int id)
@@ -52,6 +57,7 @@ namespace MyProfile.Budget.Service
             bool isEdit = false;
             bool isCreate = false;
             var now = DateTime.Now.ToUniversalTime();
+            List<RecordTag> newUserTags = new List<RecordTag>();
             List<int> errorLogCreateIDs = new List<int>();
             List<int> errorLogEditIDs = new List<int>();
             budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
@@ -63,6 +69,11 @@ namespace MyProfile.Budget.Service
                 {
                     record.IsSaved = false;
                     continue;
+                }
+
+                if (record.Tags.Count > 0)
+                {
+                    record.Description = await tagService.ParseAndCreateDescription(record.Description, record.Tags, newUserTags);
                 }
 
                 if (record.ID <= 0)// create
@@ -90,6 +101,7 @@ namespace MyProfile.Budget.Service
                                 CurrencyRate = record.CurrencyRate,
                                 CurrencyNominal = record.CurrencyNominal ?? 1,
                                 IsShowForCollection = budgetRecord.IsShowInCollection,
+                                Tags = record.Tags.Select(x => new Entity.Model.RecordTag { DateSet = now, UserTagID = x.ID }).ToList()
                             }, true);
 
                             record.IsSaved = true;
@@ -283,6 +295,12 @@ namespace MyProfile.Budget.Service
                   IsOwner = x.UserID == currentUserID,
                   UserName = x.User.Name + " " + x.User.LastName,
                   ImageLink = x.User.ImageLink,
+                  Tags = x.Tags
+                  .Select(y => new RecordTag
+                  {
+                      ID = y.UserTagID,
+                      Title = y.UserTag.Title,
+                  })
               })
               .OrderByDescending(x => x.DateTimeOfPayment.Date)
               .ToListAsync();
@@ -316,7 +334,13 @@ namespace MyProfile.Budget.Service
                   IsShowForCollection = x.IsShowForCollection,
                   IsOwner = x.UserID == currentUserID,
                   UserName = x.User.Name + " " + x.User.LastName,
-                  ImageLink = x.User.ImageLink
+                  ImageLink = x.User.ImageLink,
+                  Tags = x.Tags
+                  .Select(y => new RecordTag
+                  {
+                      ID = y.UserTagID,
+                      Title = y.UserTag.Title,
+                  })
               })
               .OrderByDescending(x => x.ID)
               .Take(count)

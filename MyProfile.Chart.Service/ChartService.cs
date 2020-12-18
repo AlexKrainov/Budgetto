@@ -25,10 +25,10 @@ namespace MyProfile.Chart.Service
         private BudgetRecordService budgetRecordService;
         private UserLogService userLogService;
 
-        public ChartService(IBaseRepository repository)
+        public ChartService(IBaseRepository repository, BudgetRecordService budgetRecordService)
         {
             this.repository = repository;
-            this.budgetRecordService = new BudgetRecordService(repository);
+            this.budgetRecordService = budgetRecordService;
             this.userLogService = new UserLogService(repository);
         }
 

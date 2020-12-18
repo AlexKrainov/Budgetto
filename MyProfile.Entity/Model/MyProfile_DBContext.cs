@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Cryptography.X509Certificates;
 
 namespace MyProfile.Entity.Model
@@ -169,6 +170,7 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<HelpArticle>()
              .Property(b => b.IsVisible)
              .HasDefaultValue(true);
+
             #endregion
         }
 
@@ -225,6 +227,9 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<UserErrorLog> UserErrorLogs { get; set; }
         public virtual DbSet<IPSetting> IPSettings { get; set; }
         public virtual DbSet<HelpMenu> HelpMenus { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<RecordTag> RecordTags { get; set; }
+        public virtual DbSet<UserTag> UserTags { get; set; }
 
     }
 }

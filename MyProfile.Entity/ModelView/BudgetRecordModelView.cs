@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace MyProfile.Entity.ModelView
 {
@@ -10,7 +11,45 @@ namespace MyProfile.Entity.ModelView
         public int ID { get; set; }
         public decimal Money { get; set; }
         public string RawData { get; set; }
-        public string Description { get; set; }
+        public IEnumerable<RecordTag> Tags { get; set; }
+        public string FrontDescription
+        {
+            get
+            {
+                string __description = _description;
+                foreach (var tag in Tags.ToList())
+                {
+                    __description = __description.Replace("{{" + tag.ID + "}}",
+$@"<tag title='{tag.Title}' class='tagify__tag tagify--noAnim' id='{tag.ID}'>
+    <div>
+        <span class='tagify__tag-text'>{tag.Title}</span>
+    </div>
+</tag>");
+                }
+
+                return __description;
+            }
+        }
+        public string _description;
+        public string Description
+        {
+            get
+            {
+                return _description;
+                //string __description = _description;
+
+                //foreach (var tag in Tags)
+                //{
+                //    __description = __description.Replace("{{" + tag.ID + "}}", JsonConvert.SerializeObject(tag));
+                //}
+
+                //return __description;
+            }
+            set
+            {
+                _description = value;
+            }
+        }
         public DateTime DateTimeOfPayment { get; set; }
         public DateTime? DateTimeCreate { get; set; }
         public DateTime? DateTimeEdit { get; set; }
@@ -60,10 +99,46 @@ namespace MyProfile.Entity.ModelView
         public bool IsSaved { get; set; }
         public bool IsCorrect { get; set; }
         public DateTime? DateTimeOfPayment { get; set; }
-        public string Description { get; set; }
+        private string _description;
+        public string Description
+        {
+            get
+            {
+                string __description = _description;
+
+                for (int i = 0; i < Tags.Count; i++)
+                {
+                    __description = __description.Replace("{{" + Tags[i].ID + "}}", JsonConvert.SerializeObject(Tags[i]));
+                }
+
+                return __description;
+            }
+            set
+            {
+                _description = value;
+            }
+        }
         public int? CurrencyID { get; set; }
         public decimal? CurrencyRate { get; set; }
         public int? CurrencyNominal { get; set; }
+
+        public List<RecordTag> Tags { get; set; }
+    }
+
+    public class RecordTag
+    {
+
+        /// <summary>
+        /// if ID <= 0 = new , if ID > 0 - old
+        /// </summary>
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public string Value { get; set; }
+        public DateTime DateCreate { get; set; }
+        public string Image { get; set; }
+        public string IconCss { get; set; }
+        public bool IsNew { get { return this.ID <= 0; } }
+        public bool ToBeEdit { get; set; }
     }
 
     public class RecordsModelView

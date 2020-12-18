@@ -21,6 +21,7 @@ using MyProfile.Limit.Service;
 using MyProfile.LittleDictionaries.Service;
 using MyProfile.Payment.Service;
 using MyProfile.Reminder.Service;
+using MyProfile.Tag.Service;
 using MyProfile.Template.Service;
 using MyProfile.ToDoList.Service;
 using MyProfile.User.Service;
@@ -68,6 +69,7 @@ namespace MyProfile
             services.AddTransient<ToDoListService>();
             services.AddTransient<HelpCenterService>();
             services.AddTransient<PaymentService>();
+            services.AddTransient<TagService>();
 
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();
@@ -76,12 +78,7 @@ namespace MyProfile
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-#if true
-            //string connection = Configuration.GetConnectionString("TestConnection");
-            string connection = Configuration.GetConnectionString("TestRegRuConnection");
-#else
-            //string connection = Configuration.GetConnectionString("PROD_Connection");
-#endif
+            string connection = Configuration.GetConnectionString(PublishSettings.ConnectionString);
 
             services.AddMemoryCache();
 

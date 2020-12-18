@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20201214123736_MyProfile_064")]
+    partial class MyProfile_064
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -890,8 +892,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateSet");
-
                     b.Property<int>("RecordID");
 
                     b.Property<int>("UserTagID");
@@ -1125,7 +1125,7 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Image")
                         .HasMaxLength(256);
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(132);
 
@@ -1601,19 +1601,15 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Image")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("TagID");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(132);
 
-                    b.Property<Guid?>("UserID");
+                    b.Property<int?>("TagID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("TagID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("UserTags");
                 });
@@ -2130,10 +2126,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagID");
-
-                    b.HasOne("MyProfile.Entity.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
                 });
 #pragma warning restore 612, 618
         }

@@ -25,11 +25,12 @@ namespace MyProfile.Limit.Service
 
         public LimitService(IBaseRepository repository,
             CollectionUserService collectionUserService,
-            SectionService sectionService)
+            SectionService sectionService,
+            BudgetRecordService budgetRecordService)
         {
             this.repository = repository;
             this.collectionUserService = collectionUserService;
-            this.budgetRecordService = new BudgetRecordService(repository);
+            this.budgetRecordService = budgetRecordService;
             this.sectionService = sectionService;
             this.userLogService = new UserLogService(repository);
         }

@@ -1,4 +1,4 @@
-import { sameStr, removeCollectionProp, isObject, parseHTML, minify, escapeHTML, extend } from './parts/helpers'
+﻿import { sameStr, removeCollectionProp, isObject, parseHTML, minify, escapeHTML, extend } from './parts/helpers'
 import dropdownMethods from './parts/dropdown'
 import DEFAULTS from './parts/defaults'
 import templates from './parts/templates'

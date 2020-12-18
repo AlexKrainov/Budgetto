@@ -1,4 +1,5 @@
-﻿using Email.Service.EmailEnvironment;
+﻿using Common.Service;
+using Email.Service.EmailEnvironment;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -94,7 +95,6 @@ namespace Email.Service
                 Email = user.Email,
                 Code = (random.Next(1000, 9999)),
             };
-            //string confirmUrl = @"https://" + httpContextAccessor.HttpContext.Request.Host.Value.ToString() + @"/Identity/Account/ConfirmEmail?id=" + mailLog.ID;
 
             try
             {
@@ -104,7 +104,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}{(string.IsNullOrEmpty(returnUrl) ? "" : "&ReturnUrl=" + returnUrl)}");
+                body = body.Replace("${link}", $"https://{PublishSettings.SiteName}/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}{(string.IsNullOrEmpty(returnUrl) ? "" : "&ReturnUrl=" + returnUrl)}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
             }
@@ -164,7 +164,6 @@ namespace Email.Service
                 Email = user.Email,
                 Code = (random.Next(1000, 9999)),
             };
-            //string confirmUrl = @"https://" + httpContextAccessor.HttpContext.Request.Host.Value.ToString() + @"/Identity/Account/ConfirmEmail?id=" + mailLog.ID;
 
             try
             {
@@ -174,7 +173,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
+                body = body.Replace("${link}", $"https://{PublishSettings.SiteName}/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}");
 
                 await _emailSender.SendEmailAsync(user.Email, "Подтверждение входа", body);
             }
@@ -209,8 +208,7 @@ namespace Email.Service
                 Email = user.Email,
                 Code = (random.Next(1000, 9999)),
             };
-            //string confirmUrl = @"https://" + httpContextAccessor.HttpContext.Request.Host.Value.ToString() + @"/Identity/Account/ResetPassword2?id=" + mailLog.ID;
-
+            
             try
             {
                 using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\RecoveryPassword.html"))
@@ -219,7 +217,7 @@ namespace Email.Service
                 }
 
                 body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://testmybudget.ru/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}&isRecoveryPassword=true");
+                body = body.Replace("${link}", $"https://{PublishSettings.SiteName}/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}&isRecoveryPassword=true");
 
                 await _emailSender.SendEmailAsync(user.Email, "Сброс пароля", body);
             }

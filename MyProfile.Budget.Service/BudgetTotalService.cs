@@ -19,10 +19,12 @@ namespace MyProfile.Budget.Service
         private BudgetRecordService budgetRecordService;
         private SectionService sectionService;
 
-        public BudgetTotalService(IBaseRepository repository, SectionService sectionService)
+        public BudgetTotalService(IBaseRepository repository,
+            SectionService sectionService,
+            BudgetRecordService budgetRecordService)
         {
             this.repository = repository;
-            this.budgetRecordService = new BudgetRecordService(repository);
+            this.budgetRecordService = budgetRecordService;
             this.sectionService = sectionService;
         }
 

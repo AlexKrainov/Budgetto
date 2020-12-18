@@ -68,14 +68,14 @@
                                     <div class="col-6 col-sm-6 col-md-6 mb-3 record-item">
                                         <a href="javascript:void(0)"
                                            class="a-hover font-weight-bold font-size-large"
-                                           v-bind:class="descriptionRecord == record ? 'text-primary' : 'text-secondary'"
+                                           v-bind:class="selectedRecord == record ? 'text-primary' : 'text-secondary'"
                                            title="Добавить описание"
-                                           v-on:click="descriptionRecord = record">
+                                           v-on:click="selectedRecord = record">
                                             {{ showRecord(record) }}
                                             <i class="fas badge badge-dot indicator fa-comment-dots has-comment" v-show="record.description != undefined && record.description != ''"></i>
                                         </a>
                                         <span class="record-item-actions cursor-pointer font-size-large ml-3">
-                                            <span v-on:click="descriptionRecord = record">+ <i class="far fa-comment"></i></span>
+                                            <span v-on:click="selectedRecord = record">+ <i class="far fa-comment"></i></span>
                                         </span>
                                     </div>
                                     <div class="col-6 col-sm-6 col-md-6 mb-3 text-right">
@@ -96,21 +96,27 @@
                                                        v-on:onchoose="onChooseSection"></vue-section-component>
                             </div>
                         </div>
-                        <div class="form-row " v-bind:class="descriptionRecord ? 'show-comment': 'hide-comment'">
+{{ selectedRecord }}
+                        <div class="form-row " v-bind:class="selectedRecord && selectedRecord.id ? 'show-comment': 'hide-comment'">
                             <div class="form-group col">
-                                <label class="form-label">Комментарий для {{ showRecord(descriptionRecord) }}</label>
-                                <span class="comment-actions cursor-pointer ml-3">
-                                    <i class="fa fa-trash"
-                                       v-on:click="descriptionRecord.description = null;"
-                                       v-show="descriptionRecord.description"></i>
+                                <label class="form-label">Комментарий для </label>
+                                <span title="123" contenteditable="false" spellcheck="false" tabindex="-1" class="tagify__tag 1" id="-999" style="--tag-bg: #02BC77" __isvalid="true" value="123">
+                                    <div>
+                                       <span class="tagify__tag-text">{{ showRecord(selectedRecord) }}</span>
+                                    </div>
+                                </span>
+                                <span class="comment-actions cursor-pointer ml-3" title="Очистить поле комментарий">
+                                    <i class="fas fa-comment-slash"
+                                       v-on:click="selectedRecord.description = null; selectedRecord.Tags = []; tagifyTagsClearAll()"
+                                       v-show="selectedRecord.description"></i>
                                 </span>
                                 <div class="input-group">
-                                    <textarea class="form-control"
-                                              v-model="descriptionRecord.description"></textarea>
+                                    <textarea class="form-control" id="selectedRecord"
+                                              v-model="selectedRecord.description"></textarea>
                                 </div>
                             </div>
                         </div>
-
+{{ selectedRecord.description }}
                     </section>
                     <section id="history-records" v-show="isShowHistory">
                         <vue-record-history-component>
@@ -159,7 +165,9 @@
             isShowCollectionElement: true,
             isShowInCollection: true,
             records: [],
-            counter: -99,
+            userTags: [],
+
+            counter: -999,
 
             currentCurrencyID: 1,
             currentCurrency: {},
@@ -168,13 +176,16 @@
             isUseBankRate: false,
             currencyInfos: null,
 
-            descriptionRecord: "",
+            selectedRecord: {
+                tags: []
+            },
 
             isShowHistory: false,
 
             //components
             flatpickr: {},
             tagify: {},
+            tagifyTags: {},
 
             //state
             isSaving: false,
@@ -183,6 +194,17 @@
             after_save_callback: Event,
             after_save_callback_args: undefined,
             isAvailable: UserInfo.IsAvailable,
+        }
+    },
+    watch: {
+        selectedRecord: function (newValue, oldValue) {
+            if (newValue == undefined || newValue == "" || newValue == null || newValue.id != oldValue.id) {
+                this.tagifyTagsClearAll();
+
+                if (typeof newValue.id === "number") {
+                    this.tagifyTags.loadOriginalValues(newValue.description);
+                }
+            }
         }
     },
     computed: {
@@ -212,32 +234,21 @@
         //https://yaireo.github.io/tagify/
         //https://rawgit.com/joewalnes/filtrex/master/example/colorize.html
         //https://github.com/joewalnes/filtrex/blob/master/example/colorize.js
-        var elementMoney = document.getElementById("money");
-        this.tagify = new Tagify(elementMoney, {
+        this.tagify = new Tagify(document.getElementById("money"), {
             transformTag: this.transformTag,
             duplicates: true,
             placeholder: "550 или 100+500 или 199.99",
             callbacks: {
-                change: function () {
-                    //console.log("Change");
-                    //console.log(arguments);
-                },
-                blur: function () {
-                    //console.log("Blur");
-                    //console.log(arguments);
-                },
+                remove: this.removeTag
             }
         });
 
-        this.tagify
-            .on('remove', this.removeTag);
-        //.on('keydown', this.keydownTagify)
-
-        this.loadCurrenciesInfo()
+        this.loadTags()
             .then(function () {
-
+                this.initTagifyTags();
             });
 
+        this.loadCurrenciesInfo();
         this.isShowCollectionElement = UserInfo.IsAllowCollectiveBudget;
 
         $('#modal-record').on('show.bs.modal', function () {
@@ -252,6 +263,7 @@
         });
     },
     methods: {
+        //Records
         transformTag: function (item) {
             let total;
             let value = item.value;
@@ -304,12 +316,13 @@
                     currencyRate: null,
                     currencyNominal: 1,
                     currencyID: this.currentCurrencyID,
+                    tags: [],
                 };
 
                 this.records.push(newRecords);
 
                 if (newRecords.isCorrect) {
-                    this.descriptionRecord = newRecords;
+                    this.selectedRecord = newRecords;
                 }
             } else {
                 let el = this.records.find(x => x.id == item.id);
@@ -329,8 +342,8 @@
             if (event.detail.data && event.detail.data.value) {
                 let removeIndex = this.records.findIndex(x => x.tag == event.detail.data.value);
                 if (removeIndex >= 0) {
-                    if (this.descriptionRecord.tag == event.detail.data.value) {
-                        this.descriptionRecord = "";
+                    if (this.selectedRecord.tag == event.detail.data.value) {
+                        this.selectedRecord = {};
                     }
                     this.records.splice(removeIndex, 1);
                 }
@@ -400,6 +413,130 @@
             //{ { record.tag == record.money ? getMoney(record.money) : record.tag + " " + currentCurrencyIcon } }
             //{ { record.tag != record.money ? '= ' + getMoney(record.money) " " + currentCurrencyIcon : '' } }
         },
+
+        // Tags
+        initTagifyTags: function () {
+            let el = document.getElementById("selectedRecord");
+            this.tagifyTags = new Tagify(el, {
+                //  mixTagsInterpolator: ["{{", "}}"],
+                duplicates: true,
+                mode: 'mix',  // <--  Enable mixed-content
+                pattern: /@|#|!/,
+                // Array for initial interpolation, which allows only these tags to be used
+                whitelist: Array.from(this.concatArray(this.userTags, this.selectedRecord.tags)),
+                editTags: {
+                    clicks: 1,
+                },
+                dropdown: {
+                    enabled: 0,
+                    position: "text",
+                    highlightFirst: true  // automatically highlights first sugegstion item in the dropdown
+                },
+                callbacks: {
+                    add: this.tagifyTagsAdd,
+                    input: this.tagifyTagsInput,
+                    remove: this.tagifyTagsRemove,
+                    'edit:updated': this.tagifyTagsEdit,
+                },
+            });
+            //el.addEventListener('change', onChange);
+            //el.addEventListener('keydown', onChange);
+
+            //function onChange(e) {
+            //    if (!e.target.value) {
+            //        return;
+            //    }
+            //    console.log(e.target.value);
+            //    RecordVue.recordComponent.selectedRecord.description = e.target.value;
+            //}
+        },
+        tagifyTagsAdd: function (e) {
+            let tag = e.detail.data;
+            tag.value = tag.value.trim();
+
+            if (tag.id == undefined) {//new tag
+                tag.id = this.counter++;
+                tag.title = tag.value;
+                tag.toBeEdit = false;
+            }
+
+            this.selectedRecord.tags.push(tag);
+
+            if (this.userTags.some(x => x.title == tag.title) == false) {//
+                this.userTags.push(tag);
+            }
+
+            this.tagifyTags.settings.whitelist = this.userTags;
+            this.selectedRecord.description = document.getElementById("selectedRecord").value;
+        },
+        tagifyTagsEdit: function (e) {
+            let index = e.detail.index;
+            let newValue = e.detail.data.value.trim();
+            let oldValue = this.selectedRecord.tags[index].title;
+
+            this.selectedRecord.tags[index].value = newValue;
+            this.selectedRecord.tags[index].title = newValue;
+
+            if (this.selectedRecord.tags[index].id > 0) {
+                this.selectedRecord.tags[index].toBeEdit = true;
+            }
+
+            let indexUserTags = this.userTags.findIndex(x => x.id == e.detail.data.id);
+
+            if (indexUserTags != -1) {
+                this.userTags[indexUserTags].title = newValue;
+                this.userTags[indexUserTags].value = newValue;
+                this.userTags[indexUserTags].toBeEdit = this.selectedRecord.tags[index].toBeEdit;
+            }
+
+            this.tagifyTags.settings.whitelist = this.userTags;
+            this.selectedRecord.description = document.getElementById("selectedRecord").value;
+
+            //??
+            //replaceTag
+            //newValue = '"' + newValue + '"';
+            //oldValue = '"' + oldValue + '"';
+            for (var i = 0; i < this.records.length; i++) {
+                for (var j = 0; j < this.records[i].tags.length; j++) {
+                    if (this.selectedRecord.tags[index].id == this.records[i].tags[j].id) {
+                        let record = this.records[i];
+                        //console.log(record.description);
+                        if (record.description) {
+                            record.description = record.description.replaceAll(oldValue, newValue);
+                        }
+                        record.tags[j].value = newValue;
+                        record.tags[j].title = newValue;
+                    }
+                }
+            }
+
+            return true;
+        },
+        tagifyTagsRemove: function (e) {
+            this.selectedRecord.tags.splice(e.detail.index, 1);
+            this.selectedRecord.description = document.getElementById("selectedRecord").value;
+        },
+        tagifyTagsInput: function (e) {
+            var prefix = e.detail.prefix;
+
+            // first, clean the whitlist array, because the below code, while not, might be async,
+            // therefore it should be up to you to decide WHEN to render the suggestions dropdown
+            //  tagify.settings.whitelist.length = 0;
+
+            if (prefix) {
+                //if (prefix == '@' || prefix == '#' || prefix == '!') {
+                //    this.tagifyTags.settings.whitelist = this.concatArray(this.userTags, this.selectedRecord.tags);
+                //}
+                if (e.detail.value.length > 1)
+                    this.tagifyTags.dropdown.show.call(this.tagifyTags, e.detail.value);
+            }
+            this.selectedRecord.description = document.getElementById("selectedRecord").value;
+            return true;
+        },
+        tagifyTagsClearAll: function () {
+            this.tagifyTags.removeAllTags();
+        },
+
         save: function (emit) {
             if (this.isAvailable && this.records && this.records.length > 0 && this.records.some(x => x.isCorrect)) {
 
@@ -447,8 +584,8 @@
                                 this.tagify.removeTags(tags);
 
                                 //remove comment
-                                if (records.findIndex(x => x.tag == this.descriptionRecord.tag) >= 0) {
-                                    this.descriptionRecord = "";
+                                if (records.findIndex(x => x.tag == this.selectedRecord.tag) >= 0) {
+                                    this.selectedRecord = "";
                                 }
 
                                 if (result.budgetRecord.records.some(x => x.isSaved)) {
@@ -490,6 +627,9 @@
                         } else {
                             this.isSaving = false;
                         }
+
+                        this.loadTags();
+
                         return result;
                     },
                     error: function (xhr, status, error) {
@@ -570,9 +710,8 @@
         clearAll: function () {
             this.records = [];
             this.tagify.removeAllTags();
-            this.descriptionRecord = "";
+            this.selectedRecord = {};
         },
-
         addDays: function (days) {
             var result = new Date(this.flatpickr.latestSelectedDateObj);
             result.setDate(result.getDate() + days);
@@ -632,6 +771,8 @@
             this.currentCurrencyID = currencyID;
             this.currentCurrency = this.currencyInfos.find(x => x.id == this.currentCurrencyID);
         },
+
+        //Loads
         loadCurrenciesInfo: function () {
             return $.ajax({
                 type: "GET",
@@ -653,6 +794,25 @@
                 }
             });
         },
+        loadTags: function () {
+            return $.ajax({
+                type: "GET",
+                url: "/Common/GetUserTags",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    if (response.isOk) {
+                        this.userTags = response.tags;
+                    }
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        },
+
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
@@ -676,6 +836,17 @@
             if (isShow) {
                 this.historyComponent.dateTimeOfPayment = moment(this.flatpickr.latestSelectedDateObj).format("YYYY-MM-DDTHH:mm:ss");
             }
+        },
+
+        //Helpers
+        concatArray: function (ar1, ar2) {
+            let arr = ar1;// JSCopyObject(ar1);
+            for (var i = 0; i < ar2.length; i++) {
+                if (ar1.some(x => x.title.toLocaleLowerCase() != ar2[i].title.toLocaleLowerCase())) {
+                    arr.push(ar2[i]);
+                }
+            }
+            return arr;
         }
     }
 });

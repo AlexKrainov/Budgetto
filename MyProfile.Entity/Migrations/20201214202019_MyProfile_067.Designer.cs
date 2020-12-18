@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20201214202019_MyProfile_067")]
+    partial class MyProfile_067
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1607,13 +1609,9 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(132);
 
-                    b.Property<Guid?>("UserID");
-
                     b.HasKey("ID");
 
                     b.HasIndex("TagID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("UserTags");
                 });
@@ -2130,10 +2128,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagID");
-
-                    b.HasOne("MyProfile.Entity.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
                 });
 #pragma warning restore 612, 618
         }
