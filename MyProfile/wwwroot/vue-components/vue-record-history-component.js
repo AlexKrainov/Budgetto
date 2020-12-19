@@ -35,7 +35,7 @@
                                  <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
                              </div>
                          </h5>
-                         <div>{{ record.description }}</div>
+                         <div v-html="descriptionBuilder(record)"> </div>
                          <div class="mt-2">
                              <div class="card-title with-elements">
                                  <div class="card-title-elements ml-md-auto">
@@ -212,5 +212,8 @@
         GetDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
+        descriptionBuilder: function (record) {
+            return TagBuilder.toDescription(record);
+        }
     }
 });

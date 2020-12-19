@@ -96,11 +96,10 @@
                                                        v-on:onchoose="onChooseSection"></vue-section-component>
                             </div>
                         </div>
-{{ selectedRecord }}
                         <div class="form-row " v-bind:class="selectedRecord && selectedRecord.id ? 'show-comment': 'hide-comment'">
                             <div class="form-group col">
                                 <label class="form-label">Комментарий для </label>
-                                <span title="123" contenteditable="false" spellcheck="false" tabindex="-1" class="tagify__tag 1" id="-999" style="--tag-bg: #02BC77" __isvalid="true" value="123">
+                                <span class="tagify__tag" style="--tag-bg: #02BC77" __isvalid="true">
                                     <div>
                                        <span class="tagify__tag-text">{{ showRecord(selectedRecord) }}</span>
                                     </div>
@@ -116,7 +115,6 @@
                                 </div>
                             </div>
                         </div>
-{{ selectedRecord.description }}
                     </section>
                     <section id="history-records" v-show="isShowHistory">
                         <vue-record-history-component>
@@ -429,6 +427,7 @@
                 },
                 dropdown: {
                     enabled: 0,
+                    maxItems: 5,
                     position: "text",
                     highlightFirst: true  // automatically highlights first sugegstion item in the dropdown
                 },
@@ -597,6 +596,19 @@
                                         toastr.error("Не удалось сохранить записи");
                                     }
                                 }
+                                //update all new tags
+                                if (result.budgetRecord.newTags && result.budgetRecord.newTags.length > 0) {
+                                    let newTags = result.budgetRecord.newTags;
+
+                                    for (var i = 0; i < this.records.length; i++) {
+                                        for (var j = 0; j < this.records[i].tags.length; j++) {
+                                            let index = newTags.findIndex(x => x.title == this.records[i].tags[j].title)
+                                            if (index >= 0) {
+                                                this.records[i].tags[j].id = newTags[index].id;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             this.$emit("afterSave", 123);
                             this.isSaving = false;
@@ -609,7 +621,7 @@
                                 try {
                                     if (this.after_save_callback_args != undefined) {
                                         this.after_save_callback.call(this, this.after_save_callback_args);
-                                        this.this.after_save_callback_args = undefined
+                                        this.after_save_callback_args = undefined
                                     } else {
                                         this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
                                     }
@@ -668,9 +680,11 @@
                     this.clearAll();
 
                     if (result.isOk == true) {
+                        record.description = TagBuilder.toTagifyString(record);
                         this.records.push(result.record);
                         this.flatpickr.setDate(result.record.dateTimeOfPayment);
                         this.tagify.addTags([{ value: result.record.tag, id: result.record.id }]);
+                        this.selectedRecord = record;
                         $("#modal-record").modal("show");
                     }
 
@@ -686,6 +700,8 @@
         editByElement: function (record, callback, args) {
             this.clearAll();
 
+            record.description = TagBuilder.toTagifyString(record);
+
             this.records.push(record);
 
             this.setCurrentCurrency(record.currencyID);
@@ -697,6 +713,7 @@
             this.after_save_callback = callback;
             this.after_save_callback_args = args;
             this.isEditMode = true;
+            this.selectedRecord = record;
             $("#modal-record").modal("show");
         },
         onChooseSection: function (section) {
@@ -834,7 +851,7 @@
         showHistory: function (isShow) {
             this.isShowHistory = isShow;
             if (isShow) {
-                this.historyComponent.dateTimeOfPayment = moment(this.flatpickr.latestSelectedDateObj).format("YYYY-MM-DDTHH:mm:ss");
+                this.historyComponent.dateTimeOfPayment = moment(this.flatpickr.latestSelectedDateObj).add(1, "seconds").format("YYYY-MM-DDTHH:mm:ss");
             }
         },
 

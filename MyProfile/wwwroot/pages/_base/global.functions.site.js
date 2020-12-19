@@ -393,3 +393,29 @@ function ShowDocument(name) {
 function JSCopyObject(src) {
     return Object.assign({}, src);
 }
+
+var TagBuilder = {
+    toTagifyString: function (record) {
+        let _description = record.description;
+
+        for (var i = 0; i < record.tags.length; i++) {
+            let tag = record.tags[i];
+            _description = _description.replaceAll("{{" + tag.id + "}}", "[[" + JSON.stringify(tag) + "]]");
+        }
+        return _description;
+    },
+    toDescription: function (record) {
+        let _description = record.description;
+
+        for (var i = 0; i < record.tags.length; i++) {
+            let tag = record.tags[i];
+            _description = _description.replaceAll("{{" + tag.id + "}}",
+                `<tag title='${tag.title}' class='tagify__tag tagify--noAnim' id='${tag.id}'>
+                    <div>
+                        <span class='tagify__tag-text'>${tag.title}</span>
+                    </div>
+                </tag>`);
+        }
+        return _description;
+    }
+};

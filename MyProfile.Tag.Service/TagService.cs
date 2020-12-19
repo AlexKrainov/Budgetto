@@ -25,7 +25,7 @@ namespace MyProfile.Tag.Service
         }
 
 
-        public async Task<string> ParseAndCreateDescription(string description, List<RecordTag> recordTags, List<RecordTag> newTags)
+        public async Task<string> ParseAndCreateDescription(string rawDescription, IEnumerable<RecordTag> recordTags, List<RecordTag> newTags)
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
@@ -67,7 +67,6 @@ namespace MyProfile.Tag.Service
                             {
                                 ID = newUserTag.ID,
                                 Title = newUserTag.Title,
-                                Value = newUserTag.Title,
                             });
                         }
                     }
@@ -83,17 +82,17 @@ namespace MyProfile.Tag.Service
 
             #region Parse description
 
-            for (int i = 0; i < recordTags.Count; i++)
+            foreach (var recordTag in recordTags)
             {
-                int startIndex = description.IndexOf("[[{");
-                newDescription += description.Substring(0, startIndex);
-                newDescription += "{{" + recordTags[i].ID + "}}";
+                int startIndex = rawDescription.IndexOf("[[{");
+                newDescription += rawDescription.Substring(0, startIndex);
+                newDescription += "{{" + recordTag.ID + "}}";
 
-                description = description.Substring(startIndex + 2, description.Length - startIndex - 2);
-                int finishIndex = description.IndexOf("}]]");
-                description = description.Substring(finishIndex + 3, description.Length - finishIndex - 3);
+                rawDescription = rawDescription.Substring(startIndex + 2, rawDescription.Length - startIndex - 2);
+                int finishIndex = rawDescription.IndexOf("}]]");
+                rawDescription = rawDescription.Substring(finishIndex + 3, rawDescription.Length - finishIndex - 3);
             }
-            newDescription += description;
+            newDescription += rawDescription;
 
             #endregion
 
@@ -136,16 +135,34 @@ namespace MyProfile.Tag.Service
                 {
                     ID = x.ID,
                     Title = x.Title,
-                    Value = x.Title,
                     DateCreate = x.DateCreate,
-                    IconCss = x.IconCss,
-                    Image = x.Image
+
+                    //IconCss = x.IconCss,
+                    //Image = x.Image
                 })
                 .ToList();
 
                 cache.Set(typeof(RecordTag).Name + "_" + currentUserID, tags, DateTime.Now.AddDays(1));
             }
             return tags;
+        }
+
+        public ICollection<RecordTag> CheckTags(ICollection<DBRecordTag> oldTags, List<RecordTag> newTags)
+        {
+            foreach (var oldTag in oldTags)
+            {
+                var newTag = newTags.FirstOrDefault(x => x.ID == oldTag.UserTag.ID);
+                if (newTag != null)
+                {
+                    newTags.Remove(newTag);
+                }
+                else
+                {
+                    repository.Delete(oldTag);
+                }
+
+            }
+            return newTags;
         }
     }
 }

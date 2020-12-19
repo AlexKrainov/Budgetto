@@ -47,6 +47,14 @@ namespace MyProfile.Budget.Service
                     SectionName = x.BudgetSection.Name,
                     Tag = x.RawData,
                     DateTimeOfPayment = x.DateTimeOfPayment,
+                    Tags = x.Tags
+                      .Select(y => new RecordTag
+                      {
+                          ID = y.UserTagID,
+                          Title = y.UserTag.Title,
+                          IsDeleted = y.UserTag.IsDeleted,
+                          DateCreate = y.UserTag.DateCreate,
+                      })
                 })
                 .FirstOrDefaultAsync();
         }
@@ -71,7 +79,7 @@ namespace MyProfile.Budget.Service
                     continue;
                 }
 
-                if (record.Tags.Count > 0)
+                if (record.Tags.Count() > 0)
                 {
                     record.Description = await tagService.ParseAndCreateDescription(record.Description, record.Tags, newUserTags);
                 }
@@ -139,6 +147,10 @@ namespace MyProfile.Budget.Service
                             dbRecord.CurrencyRate = record.CurrencyRate;
                             dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
                             dbRecord.DateTimeEdit = now;
+                            foreach (var newTag in tagService.CheckTags(dbRecord.Tags, record.Tags.ToList()))
+                            {
+                                dbRecord.Tags.Add(new Entity.Model.RecordTag { DateSet = now, UserTagID = newTag.ID });
+                            }
 
                             await repository.UpdateAsync(dbRecord, true);
                             record.IsSaved = true;
@@ -163,6 +175,11 @@ namespace MyProfile.Budget.Service
             if (currentUser.IsAvailable == false)
             {
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_IsNotAvailibleUser, errorLogIDs: errorLogCreateIDs);
+            }
+
+            if (budgetRecord.Records.Any(x => x.IsSaved == false))
+            {
+                budgetRecord.NewTags = newUserTags;
             }
 
             return true;
@@ -300,6 +317,8 @@ namespace MyProfile.Budget.Service
                   {
                       ID = y.UserTagID,
                       Title = y.UserTag.Title,
+                      IsDeleted = y.UserTag.IsDeleted,
+                      DateCreate = y.UserTag.DateCreate,
                   })
               })
               .OrderByDescending(x => x.DateTimeOfPayment.Date)
@@ -340,6 +359,8 @@ namespace MyProfile.Budget.Service
                   {
                       ID = y.UserTagID,
                       Title = y.UserTag.Title,
+                      IsDeleted = y.UserTag.IsDeleted,
+                      DateCreate = y.UserTag.DateCreate,
                   })
               })
               .OrderByDescending(x => x.ID)

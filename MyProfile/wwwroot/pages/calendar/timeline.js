@@ -67,6 +67,9 @@ $(function () {
 
                 //RecordVue.recordComponent.edit(record.id);
             },
+            descriptionBuilder: function (record) {
+                return TagBuilder.toDescription(record);
+            },
             remove: function (record) {
                 ShowLoading('#record_' + record.id);
 

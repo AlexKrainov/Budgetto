@@ -116,7 +116,7 @@
         unselectAll: function () {
             $("#history-sections").val(null).trigger("change");
         },
-        closeTimeline: function() {
+        closeTimeline: function () {
             this.clearAllStyle();
         },
         getCurrencyValue: function (record) {
@@ -128,6 +128,9 @@
                 }
             }
             return value;
+        },
+        descriptionBuilder: function (record) {
+            return TagBuilder.toDescription(record);
         },
         GetDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);

@@ -174,6 +174,12 @@ namespace MyProfile.Controllers
             return Json(new { isOk = false });
         }
 
+        /// <summary>
+        /// http://www.cbr.ru/development/sxml/
+        /// </summary>
+        /// <param name="link"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> GetRateFromBank(string link, DateTime date)
         {

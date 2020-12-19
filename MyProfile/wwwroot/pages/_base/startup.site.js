@@ -102,8 +102,6 @@ if (document.location.href.indexOf("Start/Index") == -1) {
             }
         }
     });
-
-    RecordVue.addRecord();
 }
 
 if (document.location.href.indexOf("localhost") != -1
