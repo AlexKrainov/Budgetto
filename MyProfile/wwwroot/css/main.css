@@ -402,20 +402,20 @@ th.column-min-width {
     }
 
 
-.show-comment {
+/*.show-comment {
     visibility: visible !important;
-    -webkit-transition: all .2s linear .10s;
-    -o-transition: all .2s linear .10s;
-    transition: all .2s linear .10s;
+    -webkit-transition: all .2s linear .2s;
+    -o-transition: all .2s linear .2s;
+    transition: all .2s linear .2s;
 }
 
 .hide-comment {
     height: 20px;
     visibility: hidden !important;
-    -webkit-transition: all .2s linear .2s;
-    -o-transition: all .2s linear .2s;
-    transition: all .2s linear .2s;
-}
+    -webkit-transition: all .1s linear .1s;
+    -o-transition: all .1s linear .1s;
+    transition: all .1s linear .1s;
+}*/
 
 .text-decoration {
     text-decoration: underline;

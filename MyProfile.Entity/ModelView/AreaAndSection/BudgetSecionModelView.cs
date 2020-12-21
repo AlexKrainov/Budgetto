@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyProfile.Entity.ModelView
 {
@@ -37,5 +38,6 @@ namespace MyProfile.Entity.ModelView
         public string CssBackground { get; set; }
         public string CodeName { get; set; }
 		public bool IsSelected { get; set; } = true;
+        public IList<TagSectionModelView> Tags { get; set; }
     }
 }

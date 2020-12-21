@@ -141,6 +141,7 @@ namespace MyProfile.Budget.Service
                         IsShow_Filtered = true,
                         IsShow = true,
                         SectionTypeID = x.SectionTypeID,
+                        Tags = x.BudgetRecords.SelectMany(y => y.Tags).GroupBy(y => y.UserTag).Select(y => new TagSectionModelView { ID = y.Key.ID, Title= y.Key.Title, Count = y.Count() }).OrderByDescending(y => y.Count).ToList()
                         //CollectiveSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
                         //{
                         //    ID = y.ChildSection.ID,

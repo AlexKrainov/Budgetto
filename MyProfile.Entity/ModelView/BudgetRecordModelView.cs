@@ -84,6 +84,8 @@ namespace MyProfile.Entity.ModelView
         public bool IsNew { get { return this.ID <= 0; } }
         public bool ToBeEdit { get; set; }
         public bool IsDeleted { get; set; }
+        //public IOrderedEnumerable<TagSectionModelView> Sections { get; set; }
+        //public IQueryable<TagSectionModelView> SectionIDs { get; set; }
     }
 
     public class RecordsModelView
@@ -92,5 +94,11 @@ namespace MyProfile.Entity.ModelView
         public bool IsShowInCollection { get; set; }
         public List<RecordModelView> Records { get; set; }
         public List<RecordTag> NewTags { get; set; }
+    }
+    public class TagSectionModelView
+    {
+        public int ID { get; set; }
+        public int Count { get; set; }
+        public string Title { get; set; }
     }
 }

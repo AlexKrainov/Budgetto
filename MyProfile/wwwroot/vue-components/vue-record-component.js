@@ -41,7 +41,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <small class="text-muted">Чтобы изменить сумму, нажмите на нее два раза</small>
                             </div>
                         </div>
                         <div id="currency-container" class="form-inline mb-4" v-show="currentCurrencyID != 1">
@@ -96,7 +95,7 @@
                                                        v-on:onchoose="onChooseSection"></vue-section-component>
                             </div>
                         </div>
-                        <div class="form-row " v-bind:class="selectedRecord && selectedRecord.id ? 'show-comment': 'hide-comment'">
+                        <div class="form-row " v-show="selectedRecord && selectedRecord.id">
                             <div class="form-group col">
                                 <label class="form-label">Комментарий для </label>
                                 <span class="tagify__tag" style="--tag-bg: #02BC77" __isvalid="true">
@@ -113,6 +112,11 @@
                                     <textarea class="form-control" id="selectedRecord"
                                               v-model="selectedRecord.description"></textarea>
                                 </div>
+                            <small class="text-muted">Чтобы добавить тег начинате вводить ! или # </small>
+                            <br />
+                            <a href="javascript:void(0)" class="pr-2 text-decoration-hover"
+                                v-for="tag in topTagIDsBySection"
+                                v-on:click="selectedTag(tag)">{{ tag.title }}</a>
                             </div>
                         </div>
                     </section>
@@ -164,6 +168,7 @@
             isShowInCollection: true,
             records: [],
             userTags: [],
+            topTagIDsBySection: [],
 
             counter: -999,
 
@@ -238,7 +243,10 @@
             placeholder: "550 или 100+500 или 199.99",
             callbacks: {
                 remove: this.removeTag
-            }
+            },
+            editTags: {
+                clicks: 1,
+            },
         });
 
         this.loadTags()
@@ -419,7 +427,7 @@
                 //  mixTagsInterpolator: ["{{", "}}"],
                 duplicates: true,
                 mode: 'mix',  // <--  Enable mixed-content
-                pattern: /@|#|!/,
+                pattern: /#|!/,
                 // Array for initial interpolation, which allows only these tags to be used
                 whitelist: Array.from(this.concatArray(this.userTags, this.selectedRecord.tags)),
                 editTags: {
@@ -534,6 +542,18 @@
         },
         tagifyTagsClearAll: function () {
             this.tagifyTags.removeAllTags();
+        },
+        selectedTag: function (tag) {
+            let index = this.userTags.findIndex(x => x.id == tag.id);
+            if (index != -1) {
+                if (this.selectedRecord.description) {
+                    this.selectedRecord.description += "[[" + JSON.stringify(this.userTags[index]) + "]] ";
+                } else {
+                    this.selectedRecord.description = "[[" + JSON.stringify(this.userTags[index]) + "]] ";
+                }
+                this.tagifyTags.loadOriginalValues(this.selectedRecord.description);
+                this.selectedRecord.tags.push(this.userTags[index]);
+            }
         },
 
         save: function (emit) {
@@ -723,7 +743,10 @@
                 record.sectionID = section.id;
                 record.sectionName = section.name
             }
+
+            this.topTagIDsBySection = section.tags;
         },
+
         clearAll: function () {
             this.records = [];
             this.tagify.removeAllTags();

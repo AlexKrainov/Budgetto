@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,5 +28,12 @@ namespace MyProfile.Entity.Model
 
 		public virtual User User { get; set; }
 		public virtual Tag Tag { get; set; }
-    }
+
+		public virtual ICollection<RecordTag> RecordTags { get; set; }
+
+		public UserTag()
+		{
+			this.RecordTags = new HashSet<RecordTag>();
+		}
+	}
 }

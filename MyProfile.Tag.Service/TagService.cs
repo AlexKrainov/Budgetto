@@ -43,12 +43,15 @@ namespace MyProfile.Tag.Service
                         recordTag.ID = newTags.FirstOrDefault(x => x.Title == recordTag.Title && x.IsNew == false).ID;
                         continue;
                     }
-                    newUserTags.Add(new UserTag
+                    if (!newUserTags.Any(x => x.Title == recordTag.Title)) //check if user added the same tag in one comment
                     {
-                        UserID = currentUser.ID,
-                        DateCreate = now,
-                        Title = recordTag.Title,
-                    });
+                        newUserTags.Add(new UserTag
+                        {
+                            UserID = currentUser.ID,
+                            DateCreate = now,
+                            Title = recordTag.Title,
+                        });
+                    }
                 }
 
                 if (newUserTags.Count() > 0)
@@ -136,6 +139,7 @@ namespace MyProfile.Tag.Service
                     ID = x.ID,
                     Title = x.Title,
                     DateCreate = x.DateCreate,
+                    //Sections = x.RecordTags.Select(y => y.Record).GroupBy(y => y.BudgetSectionID).Select(y => new TagSectionModelView { ID = y.Key, Count = y.Count() }).OrderBy(y => y.Count)
 
                     //IconCss = x.IconCss,
                     //Image = x.Image
