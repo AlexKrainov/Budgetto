@@ -297,7 +297,7 @@ namespace MyProfile.Limit.Service
                     SpendedMoney = totalSpended,
                     LimitMoney = limit.LimitMoney,
                     LeftMoneyInADay = leftMoneyInADay,
-                    Percent2 = percent2,
+                    Percent2 = percent2 < 0 ? 0 : percent2,
                     Percent1 = 100 - percent2,
                     IsThis = isThis,
                     IsPast = isPast,

@@ -235,13 +235,15 @@ namespace MyProfile.User.Service
                 Payment = new Payment
                 {
                     DateFrom = now,
-                    DateTo = now.AddMonths(2),
+                    DateTo = now.AddYears(1),
+                    //DateTo = now.AddMonths(2),
                     IsPaid = false,
                     Tariff = PaymentTariffs.Free,
                     PaymentHistories = new List<PaymentHistory> {
                         new PaymentHistory {
                             DateFrom = now,
-                            DateTo = now.AddMonths(2),
+                            DateTo = now.AddYears(1),
+                            //DateTo = now.AddMonths(2),
                             Tariff = PaymentTariffs.Free,
                         }
                     }

@@ -577,6 +577,7 @@
             if (this.dataTable && this.dataTable.fixedHeader) {
                 this.dataTable.fixedHeader.adjust()
             }
+            $('[data-toggle="tooltip"]').tooltip();
         },
         initTable: function () {
             this.dataTable = $("#table").DataTable({

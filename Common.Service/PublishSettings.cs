@@ -5,11 +5,11 @@ namespace Common.Service
     public class PublishSettings
     {
 #if PROD
-        public readonly string ConnectionString = "PROD_Connection";
-        public readonly string SiteName = "app.budgetto.org";
+        public const string ConnectionString = "PROD_Connection";
+        public const string SiteName = "app.budgetto.org";
 #else
-        public readonly static string ConnectionString = "TestRegRuConnection";
-        public readonly static string SiteName = "testmybudget.ru";
+        public const string ConnectionString = "TestRegRuConnection";
+        public const string SiteName = "testmybudget.ru";
 
 #endif
 

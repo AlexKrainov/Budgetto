@@ -71,7 +71,7 @@
                                            title="Добавить описание"
                                            v-on:click="selectedRecord = record">
                                             {{ showRecord(record) }}
-                                            <i class="fas badge badge-dot indicator fa-comment-dots has-comment" v-show="record.description != undefined && record.description != ''"></i>
+                                            <i class="fas badge badge-dot indicator fa-comment-dots has-comment" v-show="!(record.description == undefined || record.description == null || record.description == '')"></i>
                                         </a>
                                         <span class="record-item-actions cursor-pointer font-size-large ml-3">
                                             <span v-on:click="selectedRecord = record">+ <i class="far fa-comment"></i></span>
@@ -100,7 +100,7 @@
                                 <label class="form-label">Комментарий для </label>
                                 <span class="tagify__tag" style="--tag-bg: #02BC77" __isvalid="true">
                                     <div>
-                                       <span class="tagify__tag-text">{{ showRecord(selectedRecord) }}</span>
+                                       <span class="tagify__tag-text" style="white-space: inherit;">{{ showRecord(selectedRecord) }}</span>
                                     </div>
                                 </span>
                                 <span class="comment-actions cursor-pointer ml-3" title="Очистить поле комментарий">
@@ -112,11 +112,12 @@
                                     <textarea class="form-control" id="selectedRecord"
                                               v-model="selectedRecord.description"></textarea>
                                 </div>
-                            <small class="text-muted">Чтобы добавить тег начинате вводить ! или # </small>
+                            <small class="text-muted">Чтобы добавить тег начинайте вводить ! или # </small>
                             <br />
                             <a href="javascript:void(0)" class="pr-2 text-decoration-hover"
                                 v-for="tag in topTagIDsBySection"
-                                v-on:click="selectedTag(tag)">{{ tag.title }}</a>
+                                v-on:click="selectedTag(tag)"
+                                v-show="tag.isShow">{{ tag.title }}</a>
                             </div>
                         </div>
                     </section>
@@ -522,6 +523,17 @@
         tagifyTagsRemove: function (e) {
             this.selectedRecord.tags.splice(e.detail.index, 1);
             this.selectedRecord.description = document.getElementById("selectedRecord").value;
+
+            if (this.selectedRecord.description == '\n') {
+                this.selectedRecord.description = null;
+            }
+
+            if (this.topTagIDsBySection && e.detail.data.id) {
+                let index = this.topTagIDsBySection.findIndex(x => x.id == e.detail.data.id);
+                if (index != -1) {
+                    this.topTagIDsBySection[index].isShow = true;
+                }
+            }
         },
         tagifyTagsInput: function (e) {
             var prefix = e.detail.prefix;
@@ -553,6 +565,7 @@
                 }
                 this.tagifyTags.loadOriginalValues(this.selectedRecord.description);
                 this.selectedRecord.tags.push(this.userTags[index]);
+                tag.isShow = false;
             }
         },
 

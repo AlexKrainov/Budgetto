@@ -100,5 +100,6 @@ namespace MyProfile.Entity.ModelView
         public int ID { get; set; }
         public int Count { get; set; }
         public string Title { get; set; }
+        public bool IsShow { get; set; } = true;
     }
 }
