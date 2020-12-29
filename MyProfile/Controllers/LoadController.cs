@@ -58,114 +58,116 @@ namespace MyProfile.Controllers
             var now = DateTime.Now.ToUniversalTime();
 
             List<BudgetRecord> records = new List<BudgetRecord>();
+            //Guid userID = Guid.Parse("0C499EA3-9749-4879-F9C1-08D8530A928F");//test
+            Guid userID = Guid.Parse("5A4454D6-3706-473D-57CA-08D88D635029");//prod
 
-            foreach (var month in months)
+            foreach (var day in months)
             {
-                if (month.day == "day")
+                if (day.day == "day")
                 {
                     currentMonth = currentMonth + 1;
                     continue;
                 }
-                var date = new DateTime(2020, currentMonth, int.Parse(month.day), 13, 00, 00);
+                var date = new DateTime(2016, currentMonth, int.Parse(day.day), 13, 00, 00);
                 //"1265.00 ₽"
-                if (!string.IsNullOrEmpty(month.product))
+                if (!string.IsNullOrEmpty(day.product))
                 {
-                    month.product = month.product.Replace(" ₽", "");
+                    day.product = day.product.Replace(" ₽", "");
 
                     records.Add(new BudgetRecord
                     {
-                        UserID = Guid.Parse("5A4454D6-3706-473D-57CA-08D88D635029"),
+                        UserID = userID,
                         CurrencyID = 1,
                         BudgetSectionID = 29,
                         CurrencyNominal = 1,
                         DateTimeCreate = now,
                         DateTimeEdit = now,
                         DateTimeOfPayment = date,
-                        Total = Decimal.Parse(month.product),
-                        RawData = month.product
+                        Total = Decimal.Parse(day.product),
+                        RawData = day.product,
+                        Description = string.IsNullOrEmpty(day.anotherSpending) ? day.comment : null,
                     });
                 }
 
-                if (!string.IsNullOrEmpty(month.spending))
+                if (!string.IsNullOrEmpty(day.spending) && !string.IsNullOrEmpty(day.comment) && day.comment.Contains("Материалы для ремонта"))
                 {
-                    month.spending = month.spending.Replace(" ₽", "");
+                    day.spending = day.spending.Replace(" ₽", "");
 
                     records.Add(new BudgetRecord
                     {
-                        UserID = Guid.Parse("5A4454D6-3706-473D-57CA-08D88D635029"),
+                        UserID = userID,
+                        CurrencyID = 1,
+                        BudgetSectionID = 40,//ремонт
+                        CurrencyNominal = 1,
+                        DateTimeCreate = now,
+                        DateTimeEdit = now,
+                        DateTimeOfPayment = date,
+                        Total = Decimal.Parse(day.spending),
+                        RawData = day.spending,
+                        Description = day.comment
+                    });
+                }else if (!string.IsNullOrEmpty(day.spending))
+                {
+                    day.spending = day.spending.Replace(" ₽", "");
+
+                    records.Add(new BudgetRecord
+                    {
+                        UserID = userID,
                         CurrencyID = 1,
                         BudgetSectionID = 66,
                         CurrencyNominal = 1,
                         DateTimeCreate = now,
                         DateTimeEdit = now,
                         DateTimeOfPayment = date,
-                        Total = Decimal.Parse(month.spending),
-                        RawData = month.spending
+                        Total = Decimal.Parse(day.spending),
+                        RawData = day.spending
                     });
                 }
 
-                if (!string.IsNullOrEmpty(month.babySpending))
+                if (!string.IsNullOrEmpty(day.babySpending))
                 {
-                    month.babySpending = month.babySpending.Replace(" ₽", "");
+                    day.babySpending = day.babySpending.Replace(" ₽", "");
 
                     records.Add(new BudgetRecord
                     {
-                        UserID = Guid.Parse("5A4454D6-3706-473D-57CA-08D88D635029"),
+                        UserID = userID,
                         CurrencyID = 1,
                         BudgetSectionID = 56,
                         CurrencyNominal = 1,
                         DateTimeCreate = now,
                         DateTimeEdit = now,
                         DateTimeOfPayment = date,
-                        Total = Decimal.Parse(month.babySpending),
-                        RawData = month.babySpending
+                        Total = Decimal.Parse(day.babySpending),
+                        RawData = day.babySpending
                     });
                 }
 
-                if (!string.IsNullOrEmpty(month.anotherSpending))
+                if (!string.IsNullOrEmpty(day.anotherSpending))
                 {
-                    month.anotherSpending = month.anotherSpending.Replace(" ₽", "");
+                    day.anotherSpending = day.anotherSpending.Replace(" ₽", "");
 
                     records.Add(new BudgetRecord
                     {
-                        UserID = Guid.Parse("5A4454D6-3706-473D-57CA-08D88D635029"),
+                        UserID = userID,
                         CurrencyID = 1,
                         BudgetSectionID = 66,
                         CurrencyNominal = 1,
                         DateTimeCreate = now,
                         DateTimeEdit = now,
                         DateTimeOfPayment = date,
-                        Total = Decimal.Parse(month.anotherSpending),
-                        RawData = month.anotherSpending,
-                        Description = month.comment
+                        Total = Decimal.Parse(day.anotherSpending),
+                        RawData = day.anotherSpending,
+                        Description = day.comment
                     });
                 }
 
-                if (!string.IsNullOrEmpty(month.tax) && month.tax != " должен вернуть (132к + 5% - 10к(мамины за подарок) - 7.4к (за подарок для мамы 5к и 2.4к за шашлык) + 1.5к (за сыр)) - 10к (за ворота) - 9к ( мама отдала)")
+                if (!string.IsNullOrEmpty(day.home)) 
                 {
-                    month.tax = month.tax.Replace(" ₽", "");
-
-                    records.Add(new BudgetRecord
-                    {
-                        UserID = Guid.Parse("5A4454D6-3706-473D-57CA-08D88D635029"),
-                        CurrencyID = 1,
-                        BudgetSectionID = 50,
-                        CurrencyNominal = 1,
-                        DateTimeCreate = now,
-                        DateTimeEdit = now,
-                        DateTimeOfPayment = date,
-                        Total = Decimal.Parse(month.tax),
-                        RawData = month.tax
-                    });
-                }
-
-                if (!string.IsNullOrEmpty(month.home))
-                {
-                    month.home = month.home.Replace(" ₽", "");
-                    var m = Decimal.Parse(month.home);
+                    day.home = day.home.Replace(" ₽", "");
+                    var m = Decimal.Parse(day.home);
                     var BudgetSectionID = 36;
 
-                    if (m <= 2300 && m >= 1900)
+                    if (m <= 2300 && m >= 1900 && m == 700)
                     {
                         BudgetSectionID = 37; //связь
                     }
@@ -177,26 +179,26 @@ namespace MyProfile.Controllers
                     {
                         BudgetSectionID = 59; //вода
                     }
-                    else if (m >= 1100 && m <= 1900 || m >= 800 && m <= 1000)
+                    else if (m >= 1100 && m <= 1900 || m >= 550 && m <= 1000)
                     {
                         BudgetSectionID = 39; //электричество
                     }
-                    else if (m == 169)
-                    {
-                        BudgetSectionID = 74; //яндекс плюс
-                    }
-                    else if (m == 299)
-                    {
-                        BudgetSectionID = 74; //ютуб
-                    }
-                    else if (m <= 100)
+                    //else if (m == 169)
+                    //{
+                    //    BudgetSectionID = 74; //яндекс плюс
+                    //}
+                    //else if (m == 299)
+                    //{
+                    //    BudgetSectionID = 74; //ютуб
+                    //}
+                    else if (m <= 150)
                     {
                         BudgetSectionID = 57; //банкинг
                     }
 
                     records.Add(new BudgetRecord
                     {
-                        UserID = Guid.Parse("5A4454D6-3706-473D-57CA-08D88D635029"),
+                        UserID = userID,
                         CurrencyID = 1,
                         BudgetSectionID = BudgetSectionID,
                         CurrencyNominal = 1,
@@ -204,7 +206,80 @@ namespace MyProfile.Controllers
                         DateTimeEdit = now,
                         DateTimeOfPayment = date,
                         Total = m,
-                        RawData = month.home
+                        RawData = day.home,
+                        Description = day.comment2
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(day.selery))
+                {
+                    day.selery = day.selery.Replace(" ₽", "");
+
+                    records.Add(new BudgetRecord
+                    {
+                        UserID = userID,
+                        CurrencyID = 1,
+                        BudgetSectionID = 47,//??
+                        CurrencyNominal = 1,
+                        DateTimeCreate = now,
+                        DateTimeEdit = now,
+                        DateTimeOfPayment = date,
+                        Total = Decimal.Parse(day.selery),
+                        RawData = day.selery
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(day.anotherSelery))
+                {
+                    day.anotherSelery = day.anotherSelery.Replace(" ₽", "");
+
+                    records.Add(new BudgetRecord
+                    {
+                        UserID = userID,
+                        CurrencyID = 1,
+                        BudgetSectionID = 46,//??
+                        CurrencyNominal = 1,
+                        DateTimeCreate = now,
+                        DateTimeEdit = now,
+                        DateTimeOfPayment = date,
+                        Total = Decimal.Parse(day.anotherSelery),
+                        RawData = day.anotherSelery
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(day.cashback))
+                {
+                    day.cashback = day.cashback.Replace(" ₽", "");
+
+                    records.Add(new BudgetRecord
+                    {
+                        UserID = userID,
+                        CurrencyID = 1,
+                        BudgetSectionID = 45,//??
+                        CurrencyNominal = 1,
+                        DateTimeCreate = now,
+                        DateTimeEdit = now,
+                        DateTimeOfPayment = date,
+                        Total = Decimal.Parse(day.cashback),
+                        RawData = day.cashback
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(day.investing))
+                {
+                    day.investing = day.investing.Replace(" ₽", "");
+
+                    records.Add(new BudgetRecord
+                    {
+                        UserID = userID,
+                        CurrencyID = 1,
+                        BudgetSectionID = 102,//Вклад
+                        CurrencyNominal = 1,
+                        DateTimeCreate = now,
+                        DateTimeEdit = now,
+                        DateTimeOfPayment = date,
+                        Total = Decimal.Parse(day.investing),
+                        RawData = day.investing
                     });
                 }
 
@@ -224,8 +299,10 @@ namespace MyProfile.Controllers
             public string comment { get; set; }
             public string babySpending { get; set; }
             public string spending { get; set; }
-            public string cashBack { get; set; }
-            public string tax { get; set; }
+            public string cashback { get; set; }
+            public string anotherSelery { get; set; }
+            public string selery { get; set; }
+            public string investing { get; set; }
         }
 
         public class Month2

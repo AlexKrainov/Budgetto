@@ -160,7 +160,6 @@
         onSelect: function (section) {
             if (this.dataIsSelection) {
                 section.isSelected = !section.isSelected;
-
             }
             this.$emit('onchoose', section);
         },

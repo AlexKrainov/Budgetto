@@ -20,7 +20,6 @@ namespace MyProfile.Controllers
             TimeLineViewModel model = new TimeLineViewModel();
 
             model.Years = (await budgetRecordService.GetAllYears()).Select(x => new YearsAndCount { year = x }).ToList();
-            model.Sections = await sectionService.GetAllSectionByUser();
 
             await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.TimeLine_Page);
 

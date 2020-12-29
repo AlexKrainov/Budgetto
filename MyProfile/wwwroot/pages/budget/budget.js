@@ -247,6 +247,7 @@
 
             }
             this.resizeLimitCharts();
+            this.resizeLimitCharts();
         },
         resizeLimitCharts: function () {
             for (var i = 0; i < this.limitsCharts.length; i++) {
@@ -621,7 +622,7 @@
                             }),
                             dataType: 'json',
                             success: function (response) {
-                                toastr.success("Изменения шаблона сохранены");
+                                toastr.success("Изменения в шаблоне сохранены");
                             }
                         });
                     } else {

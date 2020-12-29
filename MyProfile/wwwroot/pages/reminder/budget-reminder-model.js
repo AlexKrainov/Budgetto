@@ -2,7 +2,7 @@
     el: "#reminder-vue",
     data: {
         reminders: [],
-        reminder: {},
+        reminder: { isRepeat: false},
         dateTime: null,
         flatpickrReminder: {},
 
@@ -234,7 +234,7 @@
                 default:
                     return "";
             }
-        }
+        },
     }
 });
 

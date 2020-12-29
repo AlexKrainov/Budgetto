@@ -1,195 +1,235 @@
-﻿const dateFormatForFilter = "DD.MM.YYYY HH:mm",
-    dateFormatForServer = "DD.MM.YYYY HH:mm",
+﻿const dateFormatForServer = "DD.MM.YYYY HH:mm",
     dateFormatForCalendar = "DD.MM.YYYY",
-    dateFormatForTimeLine = "DD.MM.YYYY",
-    datetimeFormatForTimeLine = "DD.MM.YYYY HH:mm:ss",
-    timeFormatForTimeLine = "HH:mm:ss",
-    timeFormatForTimeLineDelay = "mm:ss:ms",
-    separatorDateRange = " - ";
-
-var vueTimeline;
-var gMapOptions;
+    dateFormatForTimeLine = "DD.MM.YYYY";
 // https://cal-heatmap.com/
 
-$(function () {
-    filter.init_filter();
-    //WinMove(); // draggble .ibox
-
-    vueTimeline = new Vue({
-        el: "#timeline_records",
-        data: {
-            records: [],
-            currentDate: "",
-            sections: [],
-        },
-        updated: function () {
-            this.$nextTick(function () {
-                // Code that will run only after the
-                // entire view has been re-rendered
-
-                //timeline.after_loading(false);// worked very bad
-            });
-        },
-        mounted: function () {
-            this.sections = $("#Sections").data("items");
-        },
-        methods: {
-            add: function (arr) {
-                for (var i = 0; i < arr.length; i++) {
-                    arr[i].delay = 0;
-                    arr[i].date = "";
-
-                    // #region date
-                    let date = moment(arr[i].dateTimeOfPayment).format(dateFormatForTimeLine);
-
-                    if (date != this.currentDate) {
-                        this.currentDate = date
-                        arr[i].date = date;
-                    }
-
-                    // #endregion
-
-                    this.records.push(arr[i]);
-                }
-            },
-            titleClick: function (event, eventID, latitude, longitude, address) {
-                latitude = latitude * 1;
-                longitude = longitude * 1;
-                if (latitude == 0 && longitude == 0 && !address) {
-                    return;
-                }
-            },
-            GetDateByFormat: function (date, format) {
-                return GetDateByFormat(date, format);
-            },
-            edit: function (record) {
-                RecordVue.editByElement(record, timeline.calendar_day_click_after_change_record);
-
-                //RecordVue.recordComponent.edit(record.id);
-            },
-            descriptionBuilder: function (record) {
-                return TagBuilder.toDescription(record);
-            },
-            remove: function (record) {
-                ShowLoading('#record_' + record.id);
-
-                return $.ajax({
-                    type: "POST",
-                    url: "/Budget/RemoveRecord",
-                    data: JSON.stringify(record),
-                    context: record,
-                    contentType: "application/json",
-                    dataType: 'json',
-                    success: function (response) {
-                        record.isDeleted = response.isOk;
-                        HideLoading('#record_' + record.id);
-                        //calendar.after_loading(response);
-                    }
-                });
-            },
-            recovery: function (record) {
-                ShowLoading('#record_' + record.id);
-                return $.ajax({
-                    type: "POST",
-                    url: "/Budget/RecoveryRecord",
-                    data: JSON.stringify(record),
-                    context: record,
-                    contentType: "application/json",
-                    dataType: 'json',
-                    success: function (response) {
-                        record.isDeleted = !response.isOk;
-                        HideLoading('#record_' + record.id);
-                        //calendar.after_loading(response);
-                    }
-                });
-            },
-            getCurrencyValue: function (record) {
-                let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(record.money);
-                if (UserInfo.Currency.ID != record.currencyID) {
-                    try {
-                        value += " (" + new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(CalculateExpression(record.tag)) + ")";
-                    } catch (e) {
-                    }
-                }
-                return value;
-            }
-        }
-    });
-
-    // #region button up, event click
-
-    //$(".go_to_up").click(function (event) {
-    //    $("html, body").animate({
-    //        scrollTop: 0
-    //    }, "slow");
-    //    event.preventDefault();
-    //})
-
-    // #endregion
-
-    // #region resize calendar
-
-    timeline.search_click();
-});
-
-var filter = {
-    date: {},
+var vueTimeline = new Vue({
+    el: "#timeline_records",
     data: {
-        startDate: moment().subtract(6, 'days').startOf('day'),
-        endDate: moment()
+        records: [],
+        currentDate: "",
+        sections: [],
+        userTags: [],
+        filter: { Count: 0, isAmount: true, isConsiderCollection: false, isCount: false, Year: moment().get("year"), sections: [] },
+        searchSection: null,
     },
-    init_filter: function () {
-        $("#Sections").select2();
+    updated: function () {
+        this.$nextTick(function () {
+            // Code that will run only after the
+            // entire view has been re-rendered
 
-
-        $("#filter").change(function () {
-            timeline.search_click();
+            //timeline.after_loading(false);// worked very bad
         });
     },
-    serialize: function (isReloadCalendar) {
-        filter.data = $("#filter").serializeObject();
-        filter.data.Count = $("#Count").val('0').val();
-        filter.data.isAmount = $("#isAmount").prop("checked");
-        filter.data.isConsiderCollection = $("#isConsiderCollection").prop("checked");
+    mounted: function () {
+        this.init_filter();
+    },
+    methods: {
+        init_filter: function () {
+            $.ajax({
+                type: "GET",
+                url: "/Section/GetSectins",
+                data: null,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (result) {
+                    if (result.isOk) {
+                        this.sections = result.sections;
+                    }
+                    timeline.search_click();
+                    return result;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            }, this);
 
-        if ($("button[data-year=" + moment().get("year") + "]").length > 0 && isReloadCalendar) {
-            calendar.before_loading($("button[data-year=" + moment().get("year") + "]"), moment().get("year"));
+            $.ajax({
+                type: "GET",
+                url: "/Common/GetUserTags",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    if (response.isOk) {
+
+                        this.userTags = response.tags;
+                        var input = document.querySelector('input[name="tags"]');
+                        var tagify = new Tagify(input, {
+                            whitelist: this.userTags,
+                            enforceWhitelist: true,
+                            dropdown: {
+                                maxItems: 20,           // <- mixumum allowed rendered suggestions
+                                classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                                enabled: 0,             // <- show suggestions on focus
+                                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                            }
+                        });
+                    }
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+            //$("#filter").change(function () {
+            //    timeline.search_click();
+            //});
+        },
+        changeSwitch: function (val) {
+            timeline.search_click();
+        },
+        onChooseSection: function (section) {
+            timeline.search_click();
+        },
+        serialize: function (isReloadCalendar) {
+
+            this.filter.sections = this.sections.filter(x => x.isSelected).map(x => x.id);
+
+            if ($("button[data-year=" + moment().get("year") + "]").length > 0 && isReloadCalendar) {
+                calendar.before_loading($("button[data-year=" + moment().get("year") + "]"), moment().get("year"));
+            }
+        },
+        selectAll: function () {
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isSelected = true;
+            }
+        },
+        selectAllTags: function () {
+           
+        },
+        unselectAllTags: function () {
+
+        },
+        unselectAll: function () {
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isSelected = false;
+            }
+        },
+        selectOnlyType: function (sectionTypeID) {
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isSelected = this.sections[i].sectionTypeID == sectionTypeID;
+            }
+        },
+
+        add: function (arr) {
+            for (var i = 0; i < arr.length; i++) {
+                arr[i].delay = 0;
+                arr[i].date = "";
+
+                // #region date
+                let date = moment(arr[i].dateTimeOfPayment).format(dateFormatForTimeLine);
+
+                if (date != this.currentDate) {
+                    this.currentDate = date
+                    arr[i].date = date;
+                }
+
+                // #endregion
+
+                this.records.push(arr[i]);
+            }
+        },
+        titleClick: function (event, eventID, latitude, longitude, address) {
+            latitude = latitude * 1;
+            longitude = longitude * 1;
+            if (latitude == 0 && longitude == 0 && !address) {
+                return;
+            }
+        },
+        GetDateByFormat: function (date, format) {
+            return GetDateByFormat(date, format);
+        },
+        edit: function (record) {
+            RecordVue.editByElement(record, timeline.calendar_day_click_after_change_record);
+
+            //RecordVue.recordComponent.edit(record.id);
+        },
+        descriptionBuilder: function (record) {
+            return TagBuilder.toDescription(record);
+        },
+        remove: function (record) {
+            ShowLoading('#record_' + record.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/Budget/RemoveRecord",
+                data: JSON.stringify(record),
+                context: record,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    record.isDeleted = response.isOk;
+                    HideLoading('#record_' + record.id);
+                    //calendar.after_loading(response);
+                }
+            });
+        },
+        recovery: function (record) {
+            ShowLoading('#record_' + record.id);
+            return $.ajax({
+                type: "POST",
+                url: "/Budget/RecoveryRecord",
+                data: JSON.stringify(record),
+                context: record,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    record.isDeleted = !response.isOk;
+                    HideLoading('#record_' + record.id);
+                    //calendar.after_loading(response);
+                }
+            });
+        },
+        getCurrencyValue: function (record) {
+            let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(record.money);
+            if (UserInfo.Currency.ID != record.currencyID) {
+                try {
+                    value += " (" + new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(CalculateExpression(record.tag)) + ")";
+                } catch (e) {
+                }
+            }
+            return value;
         }
-    },
-    selectAll: function () {
-        $("#Sections option").prop("selected", true);
-        $("#Sections").trigger("change");
-    },
-    unselectAll: function () {
-        $("#Sections").val(null).trigger("change");
-    },
-    selectOnlyType: function (sectionTypeID) {
-        $("#Sections").val(null);
-        $("#Sections").val(
-            vueTimeline.sections
-                .filter(x => x.SectionTypeID == sectionTypeID)
-                .map(x => x.ID))
-            .trigger("change");
-    },
-}
+    }
+});
 
 var timeline = {
     isLoading: true, //flag for loading ajax query 
+    countRefresh: 0,
     search_click: function () {
+        timeline.countRefresh += 1;
 
-        filter.serialize(true);
-        timeline.init();
+        //if (timeline.countRefresh == 1) {
+        setTimeout(
+            function () {
+                if (timeline.countRefresh <= 1) {
+                    vueTimeline.serialize(true);
+                    timeline.init();
+                    timeline.countRefresh = 0;
+                } else {
+                    timeline.countRefresh -= 1;
+                }
+            },
+            1000);
+        //}
+        //else {
+        //    timeline.canRefresh = false;
+        //    vueTimeline.serialize(true);
+        //    timeline.init();
+        //}
         //calendar.calHeatMap.destroy();
     },
-    calendar_day_click_after_change_record: function(dateTimeOfPayment) {
+    calendar_day_click_after_change_record: function (dateTimeOfPayment) {
         dateTimeOfPayment = moment(dateTimeOfPayment);
         timeline.calendar_day_click(dateTimeOfPayment.date(), dateTimeOfPayment.get("months"), dateTimeOfPayment.get("year"));
         calendar.before_loading($("button[data-year=" + moment().get("year") + "]"), moment().get("year"));
     },
     calendar_day_click: function (day, month, year) {
-        filter.serialize(false);
-        filter.data.StartDate = moment(new Date(year, month, day, 00, 00)).format();//dateFormatForServer);
-        filter.data.EndDate = moment(new Date(year, month, day, 23, 59, 59)).format();//dateFormatForServer);
+        vueTimeline.serialize(false);
+        vueTimeline.filter.StartDate = moment(new Date(year, month, day, 00, 00)).format();//dateFormatForServer);
+        vueTimeline.filter.EndDate = moment(new Date(year, month, day, 23, 59, 59)).format();//dateFormatForServer);
         timeline.init();
     },
     init: function () {
@@ -206,15 +246,13 @@ var timeline = {
         timeline.toggleSpinner(true);
         timeline.isLoading = true;
         $("#to_up").show();
-
-        filter.data.Count = $("#Count").val();
     },
     loading_records: function () {
         timeline.before_loading();
         return $.ajax({
             type: "POST",
             url: "/Budget/LoadingRecordsForCalendar",
-            data: JSON.stringify(filter.data),
+            data: JSON.stringify(vueTimeline.filter),
             contentType: "application/json",
             dataType: 'json',
             success: function (response) {
@@ -232,19 +270,19 @@ var timeline = {
         timeline.toggleSpinner(false);
     },
     draw_records: function (response) {
-        $("#Count").val(vueTimeline.records.length + response.take);
+        vueTimeline.filter.Count = vueTimeline.records.length + response.take;
         setTimeout(function () {
             vueTimeline.add(response.data);
 
             if (response.isEnd == true) {
                 timeline.end_loading();
             } else {
-               // timeline.scroll_event();
+                // timeline.scroll_event();
             }
             timeline.after_loading(false);
         }, 400);
 
-        timeline.up_element($("#Count").val(), response.count);
+        timeline.up_element(vueTimeline.filter.Count, response.count);
     },
     scroll_event: function () {
         $(window).scroll(function (event) {
@@ -294,16 +332,13 @@ var calendar = {
             $("#cal-heatmap").empty();
         }
 
-        //let _filter = $("#filter").serializeObject();
-        //_filter.Year = year;
-        filter.data.Year = year;
-        calendar.loading_dates(filter.data);
+        calendar.loading_dates();
     },
     loading_dates: function (_filter) {
         return $.ajax({
             type: "POST",
             url: "/Budget/GetCountRecordsByYear",
-            data: JSON.stringify(_filter),
+            data: JSON.stringify(vueTimeline.filter),
             contentType: "application/json",
             dataType: 'json',
             success: function (response) {
