@@ -417,7 +417,7 @@
                                 }
                             },
                             legend: {
-                                display: bigChartData.chartTypesEnum == 1,
+                                display: bigChartData.chartTypesEnum == 1 || bigChartData.chartTypesEnum == 6,
                                 fontColor: fontColor
                             },
                             responsive: false,
@@ -549,6 +549,8 @@
 
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
+            HistoryVue.showLastHistory();
+
             let dateOfPayment = moment(dateTimeOfPayment);
 
             if (this.periodType == PeriodTypeEnum.Month) {
@@ -565,7 +567,7 @@
                     return this.refresh("runtimeData");
                 }
             }
-
+            
             return false;
         },
         resizeAll: function () {

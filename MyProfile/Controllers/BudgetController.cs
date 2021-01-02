@@ -133,8 +133,8 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<JsonResult> GetYearBudget(int year, int templateID)
         {
-            DateTime start = new DateTime(year, 1, 01);
-            DateTime finish = new DateTime(year, 12, 31);
+            DateTime start = new DateTime(year, 1, 01, 00, 00, 00);
+            DateTime finish = new DateTime(year, 12, 31, 23, 59, 59);
 
             var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.Current.ID);
             if (template != null)
@@ -162,8 +162,8 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<JsonResult> GetYearsBudget(int lastYear, int templateID)
         {
-            DateTime start = new DateTime(lastYear, 1, 01);
-            DateTime finish = new DateTime(lastYear, 12, 31);
+            DateTime start = new DateTime(lastYear, 1, 01, 00, 00, 00);
+            DateTime finish = new DateTime(lastYear, 12, 31, 23, 59, 59);
 
             var template = await templateService.GetTemplateByID(x => x.ID == templateID && x.UserID == UserInfo.Current.ID);
             if (template != null)

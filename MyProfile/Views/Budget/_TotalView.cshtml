@@ -1,14 +1,14 @@
 ﻿<div class="col-sm-6 col-xl-4 px-1" v-show="earningData.isShow">
     <div class="card mb-2 green-bottom-line  custom-card-hover">
-        <div class="card-body d-flex justify-content-between align-items-center" style="height: 98px">
-            <div class="cursor-help" data-toggle="tooltip" data-html="true"
-                 v-bind:data-original-title="getSectionsTitle(earningData.sections)">
-                <div class="text-muted small">Доходы</div>
+        <div class="card-body row" style="height: 98px">
+            <div class="col-md-6">
+                <div class="text-muted small">Доходы <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                 v-bind:data-original-title="getSectionsTitle(earningData.sections)"></i></div>
                 <strong class="text-large font-weight-normal">{{ earningData.total }}</strong>
                 <sup v-show="earningData.percent != 0 && earningData.isGood" class="text-success small">+ {{ earningData.percent }}%</sup>
                 <sup v-show="earningData.percent != 0 && !earningData.isGood" class="text-danger small">- {{ earningData.percent }}%</sup>
             </div>
-            <div class="w-45" style="height: 65px;">
+            <div class="col-md-6" style="height: 65px;">
                 <canvas id="earningChart"></canvas>
             </div>
         </div>
@@ -16,15 +16,15 @@
 </div>
 <div class="col-sm-6 col-xl-4 px-1" v-show="spendingData.isShow">
     <div class="card mb-2 red-bottom-line  custom-card-hover">
-        <div class="card-body d-flex justify-content-between align-items-center" style="height: 98px">
-            <div class="cursor-help" data-toggle="tooltip" data-html="true"
-                 v-bind:data-original-title="getSectionsTitle(spendingData.sections)">
-                <div class="text-muted small">Расходы</div>
+        <div class="card-body row" style="height: 98px">
+            <div class="col-md-6">
+                <div class="text-muted small">Расходы <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                    v-bind:data-original-title="getSectionsTitle(spendingData.sections)"></i></div>
                 <strong class="text-large font-weight-normal">{{ spendingData.total }}</strong>
                 <sup v-show="spendingData.percent != 0 && !spendingData.isGood" class="text-danger small">+ {{ spendingData.percent }}%</sup>
                 <sup v-show="spendingData.percent != 0 && spendingData.isGood" class="text-success small">- {{ spendingData.percent }}%</sup>
             </div>
-            <div class="w-45">
+            <div class="col-md-6">
                 <div style="height: 70px;">
                     <canvas id="spendingChart"></canvas>
                 </div>
@@ -34,15 +34,17 @@
 </div>
 <div class="col-sm-6 col-xl-4 px-1" v-show="investingData.isShow">
     <div class="card mb-2 gray-bottom-line  custom-card-hover">
-        <div class="card-body d-flex justify-content-between align-items-center" style="height: 98px">
-            <div class="cursor-help" data-toggle="tooltip" data-html="true"
-                 v-bind:data-original-title="getSectionsTitle(investingData.sections)">
-                <div class="text-muted small">Инвестиции</div>
+        <div class="card-body row" style="height: 98px">
+            <div class="col-md-6">
+                <div class="text-muted small">
+                    Инвестиции <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                                  v-bind:data-original-title="getSectionsTitle(investingData.sections)"></i>
+                </div>
                 <strong class="text-large font-weight-normal">{{ investingData.total }}</strong>
                 <sup v-show="investingData.percent != 0 && !investingData.isGood" class="text-danger small">- {{ investingData.percent }}%</sup>
                 <sup v-show="investingData.percent != 0 && investingData.isGood" class="text-success small">+ {{ investingData.percent }}%</sup>
             </div>
-            <div class="w-50">
+            <div class="col-md-6">
                 <div style="height: 70px;">
                     <canvas id="investmentsChart"></canvas>
                 </div>

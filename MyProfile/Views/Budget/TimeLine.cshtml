@@ -38,28 +38,27 @@
         <h6 class="card-header">Фильтр</h6>
         <div class="card-body">
             <form id="filter" class="margin-top">
-                <input type="hidden" v-model="filter.Count" />
                 <div class="row mb-5">
                     <div class="col-12 col-sm-12 col-md-8">
                         <div class="nav-tabs-top mb-4">
                             <ul class="nav nav-tabs">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#sale-stats">Категории</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#sale-stats" v-on:click="filter.isSection = true">Категории</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#latest-sales">Теги</a>
-                                </li>
+                                @*<li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#latest-sales" v-on:click="filter.isSection = false">Теги</a>
+                                </li>*@
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane fade active show" id="sale-stats">
+                                <div class="tab-pane fade active show p-2" id="sale-stats">
                                     <vue-section-component data-class="cards-medium"
                                                            data-records-style="margin-left: 15px;"
                                                            data-search-id="searchSection"
-                                                           v-bind:is-show-filter="true"
+                                                           v-bind:is-show-filter="false"
                                                            v-bind:data-is-selection="true"
                                                            v-bind:data-items="sections"
                                                            v-on:onchoose="onChooseSection"></vue-section-component>
-                                    <span class="text-right">
+                                    <span class="float-right">
                                         <span v-on:click="selectOnlyType(2)" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Выбрать только расходы </span>|
                                         <span v-on:click="selectOnlyType(1)" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать только доходы </span>|
                                         <span v-on:click="selectAll" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все категории </span>|
@@ -68,6 +67,16 @@
                                 </div>
                                 <div class="tab-pane fade" id="latest-sales">
                                     <input type="text" class="form-control" name="tags" placeholder="Начинайте вводить тег" />
+                                    <section>
+                                        <span v-bind:title="tag.title" tabindex="-1" class="tagify__tag cursor-pointer"
+                                              v-for="tag in userTags"
+                                              v-show="tag.isShow"
+                                              v-on:click="selectedTag(tag)">
+                                            <div>
+                                                <span class="tagify__tag-text">{{ tag.title }}</span>
+                                            </div>
+                                        </span>
+                                    </section>
                                     <span class="text-right">
                                         <span v-on:click="selectAllTags" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все теги </span>|
                                         <span v-on:click="unselectAllTags" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить поле </span>
@@ -143,8 +152,10 @@
                             <div class="col-lg-1 float-e-margins">
                                 @for (int i = 0; i < Model.Years.Count; i++)
                                 {
-                                    <button type="button" class="btn btn-outline-primary mb-1" onclick="calendar.before_loading(this,@Model.Years[i].year)"
-                                            title="@Model.Years[i].count records" data-year="@Model.Years[i].year">
+                                    <button type="button" class="btn btn-outline-primary mb-1 @( i == Model.Years.Count - 1 ? "active" : "" )"
+                                            title="@Model.Years[i].count записей" 
+                                            data-year="@Model.Years[i].year"
+                                            onclick="calendar.before_loading(@Model.Years[i].year)">
                                         @Model.Years[i].year
                                     </button>
                                 }

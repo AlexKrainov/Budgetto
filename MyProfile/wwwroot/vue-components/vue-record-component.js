@@ -73,9 +73,9 @@
                                             {{ showRecord(record) }}
                                             <i class="fas badge badge-dot indicator fa-comment-dots has-comment" v-show="!(record.description == undefined || record.description == null || record.description == '')"></i>
                                         </a>
-                                        <span class="record-item-actions cursor-pointer font-size-large ml-3">
+                                       <!-- <span class="record-item-actions cursor-pointer font-size-large ml-3">
                                             <span v-on:click="selectedRecord = record">+ <i class="far fa-comment"></i></span>
-                                        </span>
+                                        </span> -->
                                     </div>
                                     <div class="col-6 col-sm-6 col-md-6 mb-3 text-right">
                                         <span class="text-muted">{{ record.sectionName }} </span>
@@ -146,6 +146,13 @@
                         v-show="isShowHistory == false">
                         <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                         {{ isEditMode ? 'Редактировать': 'Добавить' }}
+                    </button>
+                    <button class="btn btn-default button-add-record" type="button" 
+                        v-bind:disabled="isAvailable == false || isSaving || records.length == 0" 
+                        v-on:click="save($emit, true)"
+                        v-show="isShowHistory == false">
+                        <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                        {{ isEditMode ? 'Редактировать и закрыть': 'Добавить и закрыть' }}
                     </button>
                     <button type="button" class="btn btn-default button-close-record" data-dismiss="modal">Закрыть</button>
                 </div>
@@ -328,13 +335,14 @@
 
                 this.records.push(newRecords);
 
-                if (newRecords.isCorrect) {
+                if (isCorrect) {
                     this.selectedRecord = newRecords;
                 }
             } else {
                 let el = this.records.find(x => x.id == item.id);
                 el.money = total;
                 el.tag = item.value;
+                el.isCorrect = isCorrect;
 
             }
         },
@@ -565,11 +573,11 @@
                 }
                 this.tagifyTags.loadOriginalValues(this.selectedRecord.description);
                 this.selectedRecord.tags.push(this.userTags[index]);
-                tag.isShow = false;
+                //tag.isShow = false;
             }
         },
 
-        save: function (emit) {
+        save: function (emit, isClose) {
             if (this.isAvailable && this.records && this.records.length > 0 && this.records.some(x => x.isCorrect)) {
 
                 if (this.checkValidBeforeSave() == false) {
@@ -669,6 +677,10 @@
                             }
                             this.isEditMode = false;
                             this.sectionComponent.clearSearchTextValue();
+
+                            if (isClose) {
+                                $("#modal-record").modal('hide');
+                            }
                         } else {
                             this.isSaving = false;
                         }

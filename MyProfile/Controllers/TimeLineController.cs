@@ -65,7 +65,22 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<JsonResult> LoadingRecordsForCalendar([FromBody] CalendarFilterModels filter)
         {
-            var result = await budgetRecordService.GetBudgetRecordsByFilter(filter);
+            IList<BudgetRecordModelView> result = null;
+            try
+            {
+                if (filter.IsSection)
+                {
+                    result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
+                }
+                else
+                {
+                    result = budgetRecordService.GetBudgetRecordsByFilter(filter);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             return Json(new { isOk = true, data = result, take = result.Count, isEnd = true });
         }
@@ -84,7 +99,7 @@ namespace MyProfile.Controllers
 
             filter.IsConsiderCollection = currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective;
 
-            var result = await budgetRecordService.GetBudgetRecordsByFilter(filter);
+            var result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
 
             #region For select sections
             var sections = (await sectionService.GetAllSectionByUser()).ToList();
@@ -123,7 +138,7 @@ namespace MyProfile.Controllers
             filter.EndDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
             filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
 
-            var result = await budgetRecordService.GetBudgetRecordsByFilter(filter);
+            var result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
 
             return Json(new { isOk = true, data = result });
         }

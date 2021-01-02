@@ -10,15 +10,27 @@ var vueTimeline = new Vue({
         currentDate: "",
         sections: [],
         userTags: [],
-        filter: { Count: 0, isAmount: true, isConsiderCollection: false, isCount: false, Year: moment().get("year"), sections: [] },
+        filter: {
+            isSection: true,
+            Count: 0,
+            isAmount: true,
+            isConsiderCollection: false,
+            isCount: false,
+            Year: moment().get("year"),
+            sections: [],
+            tags: []
+        },
         searchSection: null,
+        countRefresh: 0,
+
+        tagify: null,
     },
     updated: function () {
         this.$nextTick(function () {
             // Code that will run only after the
             // entire view has been re-rendered
 
-            //timeline.after_loading(false);// worked very bad
+            //vueTimeline.after_loading(false);// worked very bad
         });
     },
     mounted: function () {
@@ -37,7 +49,7 @@ var vueTimeline = new Vue({
                     if (result.isOk) {
                         this.sections = result.sections;
                     }
-                    timeline.search_click();
+                    this.serialize(true);
                     return result;
                 },
                 error: function (xhr, status, error) {
@@ -45,62 +57,151 @@ var vueTimeline = new Vue({
                 }
             }, this);
 
-            $.ajax({
-                type: "GET",
-                url: "/Common/GetUserTags",
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                context: this,
-                success: function (response) {
-                    if (response.isOk) {
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/Common/GetUserTags",
+            //    contentType: 'application/json; charset=utf-8',
+            //    dataType: 'json',
+            //    context: this,
+            //    success: function (response) {
+            //        if (response.isOk) {
 
-                        this.userTags = response.tags;
-                        var input = document.querySelector('input[name="tags"]');
-                        var tagify = new Tagify(input, {
-                            whitelist: this.userTags,
-                            enforceWhitelist: true,
-                            dropdown: {
-                                maxItems: 20,           // <- mixumum allowed rendered suggestions
-                                classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
-                                enabled: 0,             // <- show suggestions on focus
-                                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-                            }
-                        });
-                    }
-                    return response;
-                },
-                error: function (xhr, status, error) {
-                    console.log(error);
-                }
-            });
-            //$("#filter").change(function () {
-            //    timeline.search_click();
+            //            this.userTags = response.tags;
+
+            //            this.tagify = new Tagify(document.querySelector('input[name="tags"]'), {
+            //                whitelist: this.userTags,
+            //                enforceWhitelist: true,
+            //                delimiters: null,
+            //                dropdown: {
+            //                    maxItems: 20,           // <- mixumum allowed rendered suggestions
+            //                    classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+            //                    enabled: 0,             // <- show suggestions on focus
+            //                    closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+            //                },
+            //                callbacks: {
+            //                    remove: this.removeTag
+            //                }
+            //            });
+            //            this.selectAllTags();
+            //        }
+            //        return response;
+            //    },
+            //    error: function (xhr, status, error) {
+            //        console.log(error);
+            //    }
             //});
         },
-        changeSwitch: function (val) {
-            timeline.search_click();
+
+        loadingDatesForCalendar: function () {
+            vueTimeline.countRefresh += 1;
+
+            setTimeout(
+                function () {
+                    if (vueTimeline.countRefresh <= 1) {
+
+                        vueTimeline.records = [];
+                        vueTimeline.currentDate = "";
+                        vueTimeline.serialize(true);
+
+                        vueTimeline.countRefresh = 0;
+                    } else {
+                        vueTimeline.countRefresh -= 1;
+                    }
+                },
+                1000);
         },
-        onChooseSection: function (section) {
-            timeline.search_click();
+        init: function () {
+            vueTimeline.records = [];
+            vueTimeline.currentDate = "";
+            this.loading_records();
         },
+        loading_records: function () {
+            this.toggleSpinner(true);
+            return $.ajax({
+                type: "POST",
+                url: "/Budget/LoadingRecordsForCalendar",
+                data: JSON.stringify(vueTimeline.filter),
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    vueTimeline.draw_records(response);
+
+                },
+                error: function () {
+                    vueTimeline.toggleSpinner(false);
+                    toastr.error("Ошибка сервера. Повторите запрос позже.");
+                }
+            });
+        },
+        after_loading: function (isShowSpinner) {
+            vueTimeline.toggleSpinner(isShowSpinner);
+        },
+        draw_records: function (response) {
+            if (response.isOk == false) {
+                return;
+            }
+            setTimeout(function () {
+                vueTimeline.add(response.data);
+
+                vueTimeline.after_loading(false);
+            }, 400);
+        },
+        toggleSpinner: function (isShowSpinner) {
+            if (isShowSpinner) {
+                ShowLoading('#filter');
+            } else {
+                HideLoading('#filter');
+            }
+        },
+
         serialize: function (isReloadCalendar) {
 
             this.filter.sections = this.sections.filter(x => x.isSelected).map(x => x.id);
+            //this.filter.tags = this.userTags.filter(x => x.isShow == false).map(x => x.id);
+            this.filter.Year = $(".active[data-year]").attr("data-year");
 
-            if ($("button[data-year=" + moment().get("year") + "]").length > 0 && isReloadCalendar) {
-                calendar.before_loading($("button[data-year=" + moment().get("year") + "]"), moment().get("year"));
+            if (this.filter.Year > 0 && isReloadCalendar) {
+                calendar.before_loading(this.filter.Year);
             }
         },
+
+        changeSwitch: function (val) {
+            vueTimeline.loadingDatesForCalendar();
+        },
+        onChooseSection: function (section) {
+            vueTimeline.loadingDatesForCalendar();
+        },
+
         selectAll: function () {
             for (var i = 0; i < this.sections.length; i++) {
                 this.sections[i].isSelected = true;
             }
         },
         selectAllTags: function () {
-           
+            this.userTags = this.userTags.map(function (item) {
+                item.isShow = false;
+                return item;
+            });
+            this.tagify.addTags(this.userTags);
         },
         unselectAllTags: function () {
-
+            this.tagify.removeAllTags();
+            for (var i = 0; i < this.userTags.length; i++) {
+                this.userTags[i].isShow = true;
+            }
+        },
+        selectedTag: function (tag) {
+            this.tagify.addTags([tag]);
+            tag.isShow = false;
+        },
+        removeTag: function (event) {
+            console.log(event);
+            if (event.detail.data && event.detail.data.id) {
+                let removeIndex = this.userTags.findIndex(x => x.id == event.detail.data.id);
+                if (removeIndex >= 0) {
+                    this.userTags[removeIndex].isShow = true;
+                }
+            }
         },
         unselectAll: function () {
             for (var i = 0; i < this.sections.length; i++) {
@@ -142,7 +243,7 @@ var vueTimeline = new Vue({
             return GetDateByFormat(date, format);
         },
         edit: function (record) {
-            RecordVue.editByElement(record, timeline.calendar_day_click_after_change_record);
+            RecordVue.editByElement(record, calendar.calendar_day_click_after_change_record);
 
             //RecordVue.recordComponent.edit(record.id);
         },
@@ -195,146 +296,36 @@ var vueTimeline = new Vue({
     }
 });
 
-var timeline = {
-    isLoading: true, //flag for loading ajax query 
-    countRefresh: 0,
-    search_click: function () {
-        timeline.countRefresh += 1;
-
-        //if (timeline.countRefresh == 1) {
-        setTimeout(
-            function () {
-                if (timeline.countRefresh <= 1) {
-                    vueTimeline.serialize(true);
-                    timeline.init();
-                    timeline.countRefresh = 0;
-                } else {
-                    timeline.countRefresh -= 1;
-                }
-            },
-            1000);
-        //}
-        //else {
-        //    timeline.canRefresh = false;
-        //    vueTimeline.serialize(true);
-        //    timeline.init();
-        //}
-        //calendar.calHeatMap.destroy();
-    },
+var calendar = {
+    calHeatMap: undefined,
+    range: 12,
+    sizes: [],
     calendar_day_click_after_change_record: function (dateTimeOfPayment) {
         dateTimeOfPayment = moment(dateTimeOfPayment);
-        timeline.calendar_day_click(dateTimeOfPayment.date(), dateTimeOfPayment.get("months"), dateTimeOfPayment.get("year"));
+        calendar.calendar_day_click(dateTimeOfPayment.date(), dateTimeOfPayment.get("months"), dateTimeOfPayment.get("year"));
         calendar.before_loading($("button[data-year=" + moment().get("year") + "]"), moment().get("year"));
     },
     calendar_day_click: function (day, month, year) {
         vueTimeline.serialize(false);
         vueTimeline.filter.StartDate = moment(new Date(year, month, day, 00, 00)).format();//dateFormatForServer);
         vueTimeline.filter.EndDate = moment(new Date(year, month, day, 23, 59, 59)).format();//dateFormatForServer);
-        timeline.init();
+        vueTimeline.init();
     },
-    init: function () {
-        this.isLoading = false;
-        vueTimeline.records = [];
-        vueTimeline.currentDate = "";
-        this.up_element("_", "_");
-        this.loading_records();
-        //    .then(function () {
-        //    timeline.scroll_event();
-        //});
-    },
-    before_loading: function () {
-        timeline.toggleSpinner(true);
-        timeline.isLoading = true;
-        $("#to_up").show();
-    },
-    loading_records: function () {
-        timeline.before_loading();
-        return $.ajax({
-            type: "POST",
-            url: "/Budget/LoadingRecordsForCalendar",
-            data: JSON.stringify(vueTimeline.filter),
-            contentType: "application/json",
-            dataType: 'json',
-            success: function (response) {
-                timeline.draw_records(response);
-            }
-        });
-    },
-    after_loading: function (isShowSpinner) {
-        timeline.toggleSpinner(isShowSpinner);
-        timeline.isLoading = false;
-    },
-    end_loading: function () {
-        timeline.isLoading = true;
-        //timeline.scroll_event_destroy();
-        timeline.toggleSpinner(false);
-    },
-    draw_records: function (response) {
-        vueTimeline.filter.Count = vueTimeline.records.length + response.take;
-        setTimeout(function () {
-            vueTimeline.add(response.data);
+    before_loading: function (year) {
 
-            if (response.isEnd == true) {
-                timeline.end_loading();
-            } else {
-                // timeline.scroll_event();
-            }
-            timeline.after_loading(false);
-        }, 400);
+        $("[data-year]").removeClass("active");
+        $("[data-year=" + year + "]").addClass("active");
 
-        timeline.up_element(vueTimeline.filter.Count, response.count);
-    },
-    scroll_event: function () {
-        $(window).scroll(function (event) {
-            var scrollHeight = $(document).height();
-            var scrollPosition = Math.ceil($(window).height() + $(window).scrollTop()); // округляем большую сторону (bug in FireFox)
-            if (scrollPosition - scrollHeight === 0 && timeline.isLoading == false) {
-                event.preventDefault();
-                timeline.loading_records();
-            }
-        });
-    },
-    scroll_event_destroy: function () {
-        $(window).off("scroll"); // stop scroll
-    },
-    up_element: function (have, count) {
-        $("#to_up .badge").text(have + "/" + count);
-    },
-    toggleSpinner: function (isShowSpinner) {
-        if (isShowSpinner) {
-            ShowLoading('#filter');
-        } else {
-            HideLoading('#filter');
-        }
-    }
-}
-
-var calendar = {
-    calHeatMap: undefined,
-    range: 12,
-    sizes: [],
-    resize: function () {
-        let sizeContainer = parseInt($("#cal-heatmap-container").width());
-        for (var i = 0; i < calendar.sizes.length; i++) {
-            if (sizeContainer <= calendar.sizes[i].size.to && sizeContainer >= calendar.sizes[i].size.from) {
-                calendar.range = calendar.sizes[i].size.range;
-            }
-        }
-    },
-    before_loading: function (obj, year) {
-
-        $(obj).parent().find("button").removeClass("active");
-        $(obj).addClass("active")
-
-        calendar.toggleSpinner(true);
         if (calendar.calHeatMap != undefined) {
             calendar.calHeatMap.destroy();
             $("#cal-heatmap").empty();
         }
 
+        vueTimeline.serialize(false);
         calendar.loading_dates();
     },
-    loading_dates: function (_filter) {
+    loading_dates: function () {
+        vueTimeline.toggleSpinner(true);
         return $.ajax({
             type: "POST",
             url: "/Budget/GetCountRecordsByYear",
@@ -343,11 +334,11 @@ var calendar = {
             dataType: 'json',
             success: function (response) {
                 calendar.after_loading(response);
+                vueTimeline.toggleSpinner(false);
             }
         });
     },
     after_loading: function (response) {
-
         var parser = function (data) { //формируем объект ввида { 12341234: 4, 412314212: 10 }, где 12341234 дата в формате (unix, Timestamp (seconds)), и 4 - count
             let stats = {};
             let d, c;
@@ -434,7 +425,7 @@ var calendar = {
             return true;
         }
         let m = moment(date);
-        timeline.calendar_day_click(m.get("date"), m.get("month"), m.get("year"));
+        calendar.calendar_day_click(m.get("date"), m.get("month"), m.get("year"));
     },
     onComplete: function () {
     },
@@ -456,9 +447,14 @@ var calendar = {
         }
         return dates;
     },
-    toggleSpinner: function (isShowSpinner) {
-
-    }
+    resize: function () {
+        let sizeContainer = parseInt($("#cal-heatmap-container").width());
+        for (var i = 0; i < calendar.sizes.length; i++) {
+            if (sizeContainer <= calendar.sizes[i].size.to && sizeContainer >= calendar.sizes[i].size.from) {
+                calendar.range = calendar.sizes[i].size.range;
+            }
+        }
+    },
 }
 
 $.getJSON("/json/timeline-calendar-resize.json", function () { })

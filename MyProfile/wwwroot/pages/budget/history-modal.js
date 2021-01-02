@@ -1,4 +1,5 @@
-﻿var HistoryVue = new Vue({
+﻿
+var HistoryVue = new Vue({
     el: "#history-vue",
     data: {
         records: [],
@@ -57,6 +58,8 @@
 
         $('#modalTimeLine').on('hide.bs.modal', function () {
             $("#historyCollapse").removeClass("show");
+            HistoryVue.flatpickrStart = undefined;
+            HistoryVue.flatpickrEnd = undefined;
         });
     },
     methods: {
@@ -66,7 +69,13 @@
 
             return this.loadTimeLine(filter);
         },
+        showLastHistory: function () {
+            this.search();
+        },
         search: function () {
+            if (this.flatpickrStart == undefined) {
+                return;
+            }
             let filter = {
                 sections: $("#history-sections").val(),
                 startDate: moment(this.flatpickrStart.latestSelectedDateObj).format(),

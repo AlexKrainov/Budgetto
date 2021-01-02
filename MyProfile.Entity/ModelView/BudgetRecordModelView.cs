@@ -82,6 +82,7 @@ namespace MyProfile.Entity.ModelView
         public string Value { get { return Title; } }
         public DateTime DateCreate { get; set; }
         public bool IsNew { get { return this.ID <= 0; } }
+        public bool IsShow { get; set; } = true;
         public bool ToBeEdit { get; set; }
         public bool IsDeleted { get; set; }
         //public IOrderedEnumerable<TagSectionModelView> Sections { get; set; }

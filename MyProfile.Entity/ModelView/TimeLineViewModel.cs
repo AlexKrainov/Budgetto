@@ -29,10 +29,15 @@ namespace MyProfile.Entity.ModelView
     {
         public int Year { get; set; }
         public List<int> Sections { get; set; } = new List<int>();
+        public List<int> Tags { get; set; } = new List<int>();
         public bool IsAmount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsConsiderCollection { get; set; } = true;
+        /// <summary>
+        /// Search records by section or tags
+        /// </summary>
+        public bool IsSection { get; set; } = true;
 
         public CalendarFilterModels()
         {

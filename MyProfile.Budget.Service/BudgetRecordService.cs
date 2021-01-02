@@ -241,16 +241,16 @@ namespace MyProfile.Budget.Service
 
         public async Task<IQueryable<IGrouping<DateTime, TmpBudgetRecord>>> GetBudgetRecordsGroupByDate(CalendarFilterModels filter)
         {
-            return repository.GetAll(await getExpressionByCalendarFilter(filter))
+            return repository.GetAll(await getExpressionByCalendarFilterAsync(filter))
                 .Select(x => new TmpBudgetRecord
                 {
                     Total = x.Total,
                     DateTimeOfPayment = x.DateTimeOfPayment,
-                    SectionID = x.BudgetSectionID,
-                    SectionName = x.BudgetSection.Name,
-                    AreaID = x.BudgetSection.BudgetArea.ID,
-                    AreaName = x.BudgetSection.BudgetArea.Name,
-                    CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0)
+                    //SectionID = x.BudgetSectionID,
+                    //SectionName = x.BudgetSection.Name,
+                    //AreaID = x.BudgetSection.BudgetArea.ID,
+                    //AreaName = x.BudgetSection.BudgetArea.Name,
+                    //CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0)
                 })
               .GroupBy(x => x.DateTimeOfPayment.Date)
               .AsQueryable();
@@ -278,10 +278,10 @@ namespace MyProfile.Budget.Service
         }
 
 
-        public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsByFilter(CalendarFilterModels filter)
+        public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsByFilterAsync(CalendarFilterModels filter)
         {
             var currentUserID = UserInfo.Current.ID;
-            var expression = await getExpressionByCalendarFilter(filter);
+            var expression = await getExpressionByCalendarFilterAsync(filter);
 
             return await repository
               .GetAll(expression)
@@ -323,6 +323,53 @@ namespace MyProfile.Budget.Service
               })
               .OrderByDescending(x => x.DateTimeOfPayment.Date)
               .ToListAsync();
+        }
+
+        public IList<BudgetRecordModelView> GetBudgetRecordsByFilter(CalendarFilterModels filter)
+        {
+            var currentUserID = UserInfo.Current.ID;
+            var expression = getExpressionByCalendarFilter(filter);
+
+            return repository
+              .GetAll(expression)
+              .Select(x => new BudgetRecordModelView
+              {
+                  ID = x.ID,
+                  DateTimeCreate = x.DateTimeCreate,
+                  DateTimeEdit = x.DateTimeEdit,
+                  Description = x.Description,
+                  IsConsider = x.IsHide,
+                  RawData = x.RawData,
+                  Money = x.Total,
+                  CurrencyID = x.CurrencyID,
+                  CurrencyNominal = x.CurrencyNominal,
+                  CurrencyRate = x.CurrencyRate,
+                  CurrencySpecificCulture = x.Currency.SpecificCulture,
+                  CurrencyCodeName = x.Currency.CodeName,
+                  DateTimeOfPayment = x.DateTimeOfPayment,
+                  SectionID = x.BudgetSectionID,
+                  SectionName = x.BudgetSection.Name,
+                  SectionTypeID = x.BudgetSection.SectionTypeID,
+                  AreaID = x.BudgetSection.BudgetArea.ID,
+                  AreaName = x.BudgetSection.BudgetArea.Name,
+                  CssIcon = x.BudgetSection.CssIcon,
+                  CssBackground = x.BudgetSection.CssBackground,
+                  CssColor = x.BudgetSection.CssColor,
+                  IsShowForCollection = x.IsShowForCollection,
+                  IsOwner = x.UserID == currentUserID,
+                  UserName = x.User.Name + " " + x.User.LastName,
+                  ImageLink = x.User.ImageLink,
+                  Tags = x.Tags
+                  .Select(y => new RecordTag
+                  {
+                      ID = y.UserTagID,
+                      Title = y.UserTag.Title,
+                      IsDeleted = y.UserTag.IsDeleted,
+                      DateCreate = y.UserTag.DateCreate,
+                  })
+              })
+              .OrderByDescending(x => x.DateTimeOfPayment.Date)
+              .ToList();
         }
 
         public async Task<IList<BudgetRecordModelView>> GetLast(int count)
@@ -371,7 +418,7 @@ namespace MyProfile.Budget.Service
 
         public async Task<decimal> GetTotalSpendsForLimitByFilter(CalendarFilterModels filter)
         {
-            var expression = await getExpressionByCalendarFilter(filter);
+            var expression = await getExpressionByCalendarFilterAsync(filter);
 
             return await repository
               .GetAll(expression)
@@ -380,14 +427,23 @@ namespace MyProfile.Budget.Service
 
         public async Task<List<int>> GetAllYears()
         {
-            return await repository.GetAll<BudgetRecord>(x => x.UserID == UserInfo.Current.ID)
+            List<int> years = await repository.GetAll<BudgetRecord>(x => x.UserID == UserInfo.Current.ID)
                 .GroupBy(x => x.DateTimeOfPayment.Year)
-                .OrderBy(x => x.Key)
+                //.OrderBy(x => x.Key)
                 .Select(x => x.Key)
                 .ToListAsync();
+
+            if (!years.Any(x => x == DateTime.Now.Year))
+            {
+                years.Add(DateTime.Now.Year);
+            }
+
+            return years
+                .OrderBy(x => x)
+                .ToList();
         }
 
-        private async Task<Expression<Func<BudgetRecord, bool>>> getExpressionByCalendarFilter(CalendarFilterModels filter)
+        private async Task<Expression<Func<BudgetRecord, bool>>> getExpressionByCalendarFilterAsync(CalendarFilterModels filter)
         {
             Guid currentUserID = UserInfo.Current.ID;
             var expression = PredicateBuilder.True<BudgetRecord>();
@@ -408,8 +464,54 @@ namespace MyProfile.Budget.Service
                 expression = expression.And(x => x.UserID == currentUserID);
             }
 
+            if (filter.IsSection)// by sections
+            {
+                expression = expression.And(x => filter.Sections.Contains(x.BudgetSectionID));
+            }
+            else // by tags
+            {
+                expression = expression.And(x => 
+                filter.Tags.Except(x.Tags.Select(y => y.UserTagID)).Any() == false);// .Count() == 0
+            }
+
             expression = expression.And(x => filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
-                  && filter.Sections.Contains(x.BudgetSectionID)
+                  && (x.UserID != currentUserID ? x.IsShowForCollection : true)
+                  && x.IsDeleted == false);
+            return expression;
+        }
+
+        private Expression<Func<BudgetRecord, bool>> getExpressionByCalendarFilter(CalendarFilterModels filter)
+        {
+            Guid currentUserID = UserInfo.Current.ID;
+            var expression = PredicateBuilder.True<BudgetRecord>();
+
+            if (filter.IsConsiderCollection)
+            {
+                List<Guid> allCollectiveUserIDs = collectionUserService.GetAllCollectiveUserIDs();
+                expression = expression.And(x => allCollectiveUserIDs.Contains(x.UserID));
+
+                var userIDs_withoutCurrent = allCollectiveUserIDs.Where(x => x != currentUserID).ToList();
+
+                filter.Sections.AddRange(repository.GetAll<BudgetSection>(
+                    x => userIDs_withoutCurrent.Contains(x.BudgetArea.UserID ?? Guid.Parse("086d7c26-1d8d-4cc7-e776-08d7eab4d0ed"))
+                    && x.IsShowInCollective).Select(x => x.ID).ToList());
+            }
+            else
+            {
+                expression = expression.And(x => x.UserID == currentUserID);
+            }
+
+            if (filter.IsSection)// by sections
+            {
+                expression = expression.And(x => filter.Sections.Contains(x.BudgetSectionID));
+            }
+            else // by tags
+            {
+                expression = expression.And(x =>
+                filter.Tags.Except(x.Tags.Select(y => y.UserTagID)).Any() == false);// .Count() == 0
+            }
+
+            expression = expression.And(x => filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
                   && (x.UserID != currentUserID ? x.IsShowForCollection : true)
                   && x.IsDeleted == false);
             return expression;
