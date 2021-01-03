@@ -68,14 +68,7 @@ namespace MyProfile.Controllers
             IList<BudgetRecordModelView> result = null;
             try
             {
-                if (filter.IsSection)
-                {
                     result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
-                }
-                else
-                {
-                    result = budgetRecordService.GetBudgetRecordsByFilter(filter);
-                }
             }
             catch (Exception ex)
             {

@@ -470,8 +470,7 @@ namespace MyProfile.Budget.Service
             }
             else // by tags
             {
-                expression = expression.And(x => 
-                filter.Tags.Except(x.Tags.Select(y => y.UserTagID)).Any() == false);// .Count() == 0
+                expression = expression.And(x => x.Tags.Any(y => filter.Tags.Contains(y.UserTagID)));
             }
 
             expression = expression.And(x => filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
@@ -507,8 +506,7 @@ namespace MyProfile.Budget.Service
             }
             else // by tags
             {
-                expression = expression.And(x =>
-                filter.Tags.Except(x.Tags.Select(y => y.UserTagID)).Any() == false);// .Count() == 0
+                expression = expression.And(x => x.Tags.Any(y => filter.Tags.Contains(y.UserTagID)));
             }
 
             expression = expression.And(x => filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment

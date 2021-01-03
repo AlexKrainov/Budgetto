@@ -1,4 +1,3 @@
-import { decode, extend, minify } from './helpers'
 
 export function triggerChangeEvent(){
     if( this.settings.mixMode.integrated ) return;

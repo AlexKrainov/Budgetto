@@ -30,6 +30,7 @@ namespace MyProfile.Tag.Service
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
             string newDescription = string.Empty;
+            var dbUserTags = await GetUserTagsAsync();
 
             #region Create new user tags
             List<UserTag> newUserTags = new List<UserTag>();
@@ -38,12 +39,17 @@ namespace MyProfile.Tag.Service
             {
                 foreach (var recordTag in recordTags.Where(x => x.IsNew))
                 {
-                    if (newTags.Any(x => x.Title == recordTag.Title && x.IsNew == false))
+                    if (newTags.Any(x => x.Title.ToLower() == recordTag.Title.ToLower() && x.IsNew == false))
                     {
                         recordTag.ID = newTags.FirstOrDefault(x => x.Title == recordTag.Title && x.IsNew == false).ID;
                         continue;
                     }
-                    if (!newUserTags.Any(x => x.Title == recordTag.Title)) //check if user added the same tag in one comment
+                    if (dbUserTags.Any(x => x.Title.ToLower() == recordTag.Title.ToLower()))
+                    {
+                        recordTag.ID = dbUserTags.FirstOrDefault(x => x.Title == recordTag.Title).ID;
+                        continue;
+                    }
+                    if (!newUserTags.Any(x => x.Title.ToLower() == recordTag.Title.ToLower())) //check if user added the same tag in one comment
                     {
                         newUserTags.Add(new UserTag
                         {
@@ -63,7 +69,7 @@ namespace MyProfile.Tag.Service
                 {
                     foreach (var recordTag in recordTags)
                     {
-                        if (newUserTag.Title == recordTag.Title)
+                        if (newUserTag.Title.ToLower() == recordTag.Title.ToLower())
                         {
                             recordTag.ID = newUserTag.ID;
                             newTags.Add(new RecordTag
@@ -145,6 +151,31 @@ namespace MyProfile.Tag.Service
                     //Image = x.Image
                 })
                 .ToList();
+
+                cache.Set(typeof(RecordTag).Name + "_" + currentUserID, tags, DateTime.Now.AddDays(1));
+            }
+            return tags;
+        }
+
+        public async Task<IList<RecordTag>> GetUserTagsAsync()
+        {
+            var currentUserID = UserInfo.Current.ID;
+            List<RecordTag> tags;
+
+            if (cache.TryGetValue(typeof(RecordTag).Name + "_" + currentUserID, out tags) == false)
+            {
+                tags = await repository.GetAll<UserTag>(x => x.UserID == currentUserID && x.IsDeleted == false)
+                .Select(x => new RecordTag
+                {
+                    ID = x.ID,
+                    Title = x.Title,
+                    DateCreate = x.DateCreate,
+                    //Sections = x.RecordTags.Select(y => y.Record).GroupBy(y => y.BudgetSectionID).Select(y => new TagSectionModelView { ID = y.Key, Count = y.Count() }).OrderBy(y => y.Count)
+
+                    //IconCss = x.IconCss,
+                    //Image = x.Image
+                })
+                .ToListAsync();
 
                 cache.Set(typeof(RecordTag).Name + "_" + currentUserID, tags, DateTime.Now.AddDays(1));
             }

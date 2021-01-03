@@ -58,8 +58,6 @@ var HistoryVue = new Vue({
 
         $('#modalTimeLine').on('hide.bs.modal', function () {
             $("#historyCollapse").removeClass("show");
-            HistoryVue.flatpickrStart = undefined;
-            HistoryVue.flatpickrEnd = undefined;
         });
     },
     methods: {
@@ -73,9 +71,6 @@ var HistoryVue = new Vue({
             this.search();
         },
         search: function () {
-            if (this.flatpickrStart == undefined) {
-                return;
-            }
             let filter = {
                 sections: $("#history-sections").val(),
                 startDate: moment(this.flatpickrStart.latestSelectedDateObj).format(),
@@ -163,7 +158,7 @@ var HistoryVue = new Vue({
                 RecordVue.editByElement,
                 750,
                 record,
-                BudgetVue.refreshAfterChangeRecords
+                [BudgetVue.refreshAfterChangeRecords, HistoryVue.showLastHistory]
             );
         },
         remove: function (record) {

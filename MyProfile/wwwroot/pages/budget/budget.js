@@ -549,8 +549,7 @@
 
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
-            HistoryVue.showLastHistory();
-
+            
             let dateOfPayment = moment(dateTimeOfPayment);
 
             if (this.periodType == PeriodTypeEnum.Month) {

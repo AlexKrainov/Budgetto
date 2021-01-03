@@ -57,39 +57,39 @@ var vueTimeline = new Vue({
                 }
             }, this);
 
-            //$.ajax({
-            //    type: "GET",
-            //    url: "/Common/GetUserTags",
-            //    contentType: 'application/json; charset=utf-8',
-            //    dataType: 'json',
-            //    context: this,
-            //    success: function (response) {
-            //        if (response.isOk) {
+            $.ajax({
+                type: "GET",
+                url: "/Common/GetUserTags",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    if (response.isOk) {
 
-            //            this.userTags = response.tags;
+                        this.userTags = response.tags;
 
-            //            this.tagify = new Tagify(document.querySelector('input[name="tags"]'), {
-            //                whitelist: this.userTags,
-            //                enforceWhitelist: true,
-            //                delimiters: null,
-            //                dropdown: {
-            //                    maxItems: 20,           // <- mixumum allowed rendered suggestions
-            //                    classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
-            //                    enabled: 0,             // <- show suggestions on focus
-            //                    closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-            //                },
-            //                callbacks: {
-            //                    remove: this.removeTag
-            //                }
-            //            });
-            //            this.selectAllTags();
-            //        }
-            //        return response;
-            //    },
-            //    error: function (xhr, status, error) {
-            //        console.log(error);
-            //    }
-            //});
+                        this.tagify = new Tagify(document.querySelector('input[name="tags"]'), {
+                            whitelist: this.userTags,
+                            enforceWhitelist: true,
+                            delimiters: null,
+                            dropdown: {
+                                maxItems: 20,           // <- mixumum allowed rendered suggestions
+                                classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                                enabled: 0,             // <- show suggestions on focus
+                                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                            },
+                            callbacks: {
+                                remove: this.removeTag
+                            }
+                        });
+                        this.selectAllTags();
+                    }
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
         },
 
         loadingDatesForCalendar: function () {
@@ -157,7 +157,7 @@ var vueTimeline = new Vue({
         serialize: function (isReloadCalendar) {
 
             this.filter.sections = this.sections.filter(x => x.isSelected).map(x => x.id);
-            //this.filter.tags = this.userTags.filter(x => x.isShow == false).map(x => x.id);
+            this.filter.tags = this.userTags.filter(x => x.isShow == false).map(x => x.id);
             this.filter.Year = $(".active[data-year]").attr("data-year");
 
             if (this.filter.Year > 0 && isReloadCalendar) {
@@ -176,6 +176,7 @@ var vueTimeline = new Vue({
             for (var i = 0; i < this.sections.length; i++) {
                 this.sections[i].isSelected = true;
             }
+            vueTimeline.loadingDatesForCalendar();
         },
         selectAllTags: function () {
             this.userTags = this.userTags.map(function (item) {
@@ -183,16 +184,19 @@ var vueTimeline = new Vue({
                 return item;
             });
             this.tagify.addTags(this.userTags);
+            vueTimeline.loadingDatesForCalendar();
         },
         unselectAllTags: function () {
             this.tagify.removeAllTags();
             for (var i = 0; i < this.userTags.length; i++) {
                 this.userTags[i].isShow = true;
             }
+            vueTimeline.loadingDatesForCalendar();
         },
         selectedTag: function (tag) {
             this.tagify.addTags([tag]);
             tag.isShow = false;
+            vueTimeline.loadingDatesForCalendar();
         },
         removeTag: function (event) {
             console.log(event);
@@ -202,16 +206,19 @@ var vueTimeline = new Vue({
                     this.userTags[removeIndex].isShow = true;
                 }
             }
+            vueTimeline.loadingDatesForCalendar();
         },
         unselectAll: function () {
             for (var i = 0; i < this.sections.length; i++) {
                 this.sections[i].isSelected = false;
             }
+            vueTimeline.loadingDatesForCalendar();
         },
         selectOnlyType: function (sectionTypeID) {
             for (var i = 0; i < this.sections.length; i++) {
                 this.sections[i].isSelected = this.sections[i].sectionTypeID == sectionTypeID;
             }
+            vueTimeline.loadingDatesForCalendar();
         },
 
         add: function (arr) {

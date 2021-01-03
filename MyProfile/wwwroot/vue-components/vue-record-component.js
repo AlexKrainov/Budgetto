@@ -439,6 +439,9 @@
                 pattern: /#|!/,
                 // Array for initial interpolation, which allows only these tags to be used
                 whitelist: Array.from(this.concatArray(this.userTags, this.selectedRecord.tags)),
+                mixMode: {
+                    insertAfterTag: "  "
+                },
                 editTags: {
                     clicks: 1,
                 },
@@ -492,6 +495,11 @@
 
             this.selectedRecord.tags[index].value = newValue;
             this.selectedRecord.tags[index].title = newValue;
+            //for (var i = 0; i < this.selectedRecord.tags.length; i++) {
+            //    if (this.selectedRecord.tags[i].id == this.selectedRecord.tags[index].id) {
+            //        this.selectedRecord.description = this.selectedRecord.description.replaceAll(oldValue, newValue);
+            //    }
+            //}
 
             if (this.selectedRecord.tags[index].id > 0) {
                 this.selectedRecord.tags[index].toBeEdit = true;
@@ -600,6 +608,7 @@
                     dataType: 'json',
                     context: this,
                     success: function (result) {
+
                         if (result.isOk == true) {
 
                             if (result.budgetRecord.records.findIndex(x => x.isSaved == false) == -1) {
@@ -654,11 +663,11 @@
                             this.$emit("afterSave", 123);
                             this.isSaving = false;
 
+                            //#region call feadback functions
+
                             if (this.after_save_callback && typeof (this.after_save_callback) === "string") {
                                 this.after_save_callback = window.getFunctionFromString(this.after_save_callback);
-                            }
-
-                            if (typeof (this.after_save_callback) === "function") {
+                            } else if (typeof (this.after_save_callback) === "function") {
                                 try {
                                     if (this.after_save_callback_args != undefined) {
                                         this.after_save_callback.call(this, this.after_save_callback_args);
@@ -671,18 +680,33 @@
                                     console.log(e);
                                 }
                                 // this.after_save_callback = null;
-                            } else {
-                                //if it's a budget page we need to update data
+                            } else if (typeof (this.after_save_callback) === "object" && typeof (this.after_save_callback[0]) === "function") { //Array
+                                try {
+                                    for (var i = 0; i < this.after_save_callback.length; i++) {
 
+                                        if (this.after_save_callback_args != undefined) {
+                                            this.after_save_callback[i].call(this, this.after_save_callback_args);
+                                            //this.after_save_callback_args = undefined
+                                        } else {
+                                            this.after_save_callback[i].call(this, result.budgetRecord.dateTimeOfPayment);
+                                        }
+                                    }
+
+                                } catch (e) {
+                                    console.log(e);
+                                }
                             }
+                            //#endregion
+
                             this.isEditMode = false;
                             this.sectionComponent.clearSearchTextValue();
 
-                            if (isClose) {
-                                $("#modal-record").modal('hide');
-                            }
                         } else {
                             this.isSaving = false;
+                        }
+
+                        if (isClose && this.records.length == 0) {
+                            $("#modal-record").modal('hide');
                         }
 
                         this.loadTags();

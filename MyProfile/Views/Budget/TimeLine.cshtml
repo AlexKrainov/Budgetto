@@ -43,11 +43,11 @@
                         <div class="nav-tabs-top mb-4">
                             <ul class="nav nav-tabs">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#sale-stats" v-on:click="filter.isSection = true">Категории</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#sale-stats" v-on:click="filter.isSection = true; serialize(true);">Категории</a>
                                 </li>
-                                @*<li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#latest-sales" v-on:click="filter.isSection = false">Теги</a>
-                                </li>*@
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#latest-sales" v-on:click="filter.isSection = false; serialize(true)">Теги</a>
+                                </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade active show p-2" id="sale-stats">
@@ -65,7 +65,7 @@
                                         <span v-on:click="unselectAll" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить форму </span>
                                     </span>
                                 </div>
-                                <div class="tab-pane fade" id="latest-sales">
+                                <div class="tab-pane fade p-2" id="latest-sales">
                                     <input type="text" class="form-control" name="tags" placeholder="Начинайте вводить тег" />
                                     <section>
                                         <span v-bind:title="tag.title" tabindex="-1" class="tagify__tag cursor-pointer"
@@ -77,7 +77,7 @@
                                             </div>
                                         </span>
                                     </section>
-                                    <span class="text-right">
+                                    <span class="float-right">
                                         <span v-on:click="selectAllTags" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все теги </span>|
                                         <span v-on:click="unselectAllTags" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить поле </span>
                                     </span>
@@ -105,7 +105,7 @@
                         }
                         <div class="switchers-stacked">
                             <label class="switcher">
-                                <input type="checkbox" class="switcher-input" name="switch"
+                                <input type="checkbox" class="switcher-input" name="switch" id="isAmount"
                                        v-model="filter.isAmount"
                                        v-bind:value="!filter.isAmount"
                                        v-on:input="filter.isCount = filter.isAmount"
@@ -122,7 +122,7 @@
                                 <span class="switcher-label">Отображать по сумме трат в день</span>
                             </label>
                             <label class="switcher">
-                                <input type="checkbox" class="switcher-input" name="switch"
+                                <input type="checkbox" class="switcher-input" name="switch" id="isCount"
                                        v-model="filter.isCount"
                                        v-bind:value="!filter.isCount"
                                        v-on:change="changeSwitch"
@@ -153,7 +153,7 @@
                                 @for (int i = 0; i < Model.Years.Count; i++)
                                 {
                                     <button type="button" class="btn btn-outline-primary mb-1 @( i == Model.Years.Count - 1 ? "active" : "" )"
-                                            title="@Model.Years[i].count записей" 
+                                            title="@Model.Years[i].count записей"
                                             data-year="@Model.Years[i].year"
                                             onclick="calendar.before_loading(@Model.Years[i].year)">
                                         @Model.Years[i].year
