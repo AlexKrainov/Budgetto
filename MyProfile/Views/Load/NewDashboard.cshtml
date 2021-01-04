@@ -1,0 +1,219 @@
+﻿@{
+    ViewData["Title"] = "Финансы на месяц";
+}
+
+@section Styles {
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/datatables/datatables.css">
+    <link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/vendor/libs/chartjs/chartjs.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/datatables/datatables.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
+
+    <environment names="Development">
+        <script src="~/vendor/libs/flatpickr/plugins/monthSelect.js" asp-append-version="true"></script>
+
+        <script src="~/pages/budget/_budget-month.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/budget.js" asp-append-version="true"></script>
+    </environment>
+    <script>
+        $(function () {
+            var chart = new Chart(document.getElementById('statistics-chart-14').getContext("2d"), {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        data: ['24', '92', '77', '90', '91', '78', '28', '49', '23', '81', '15', '97', '94', '16', '99', '61',
+                            '38', '34', '48', '3', '5', '21', '27', '4', '33', '40', '46', '47', '48', '18'],
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(206, 221, 54, 0.2)',
+                        borderColor: '#cedd36',
+                        pointBorderColor: 'rgba(0,0,0,0)',
+                        pointRadius: 1,
+                        lineTension: 0
+                    }],
+                    labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                },
+
+                options: {
+                    scales: { xAxes: [{ display: false, }], yAxes: [{ display: false }] },
+                    legend: { display: false },
+                    tooltips: { enabled: false },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // In RTL mode charts aren't resized properly
+            //
+
+            if ($('html').attr('dir') === 'rtl') {
+                window.addEventListener('resize', function () {
+                    chart.resize();
+                });
+            }
+        });
+    </script>
+}
+
+<div id="budget-vue" style="margin-top: -12px;">
+    <input type="hidden" id="templateID_hidden" value="-1" />
+    <input type="hidden" id="budgetDate_hidden" value="2021/01/01" />
+    <div class="row">
+        <div class="col-md-4 px-1">
+            <div class="input-group budget-date">
+                <span class="input-group-prepend" style="width: 50px;height: 26px;">
+                    <button type="button" title="Минус 1 день" class="btn btn-sm btn-default modal-record-date-button"><i aria-hidden="true" class="fa fa-angle-left font-size-large"></i></button>
+                </span>
+                <input type="text" id="budget-date" class="form-control text-center flatpickr-input form-control-sm" value="2021/01/01">
+                <span class="input-group-append" style="width: 50px;height: 26px;">
+                    <button type="button" title="Плюс 1 день" class="btn btn-sm btn-default modal-record-date-button"><i aria-hidden="true" class="fa fa-angle-right font-size-large"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2 row">
+        <div class="col-md-12 px-1">
+            <div class="card mb-4">
+                <div class="row no-gutters row-bordered">
+                    <div class="col-lg-4">
+
+                        <div class="card-body pb-0">
+                            <div class="text-muted small">Денежный поток ( доходы - расходы )</div>
+                            <div class="row">
+                                <div class="col-md-4 text-xlarge" style="display: inline-block">
+                                    3 182 ₽<small><sup class="text-success">+11.25%</sup></small>
+                                </div>
+                                <div class="col-md-8" style="display:inline-block; width: 60%; height: 50px;">
+                                    <canvas id="statistics-chart-14"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+
+                        <div class="card-body row">
+                            <div class="col-lg-6 text-muted small ">Рабочих часов в месяц</div><div class="col-lg-6">178</div>
+                            <div class="col-lg-6 text-muted small ">Обязательств в месяц</div><div class="col-lg-6 text-danger">12 000 ₽</div>
+                            <div class="col-lg-6 text-muted small ">Итого денег на счетах</div><div class="col-lg-6 text-success">136 000 ₽</div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row no-gutters row-bordered" style=" border-top: 1px solid lightgray;">
+                    <div class="col-lg-3">
+
+                        <div class="card-body d-flex align-items-center pb-0">
+                            <span class="ui-icon ui-statistics-icon ion ion-ios-cash text-primary"></span>
+                            <div class="ml-3">
+                                <div class="text-xlarge">10 332 ₽</div>
+                                <div class="text-muted small">Кеш</div>
+                            </div>
+                            <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" style="position: absolute;right: 10px;top: 5px;"><i class="ion ion-ios-more"></i></button>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3">
+
+                        <div class="card-body d-flex align-items-center">
+                            <img src="https://alfabank.gcdn.co/media/footer-alfa-logo_1025x1025_common_31-07-2019.svg" alt="" class="ui-w-40 rounded-circle">
+                            <div class="ml-3">
+                                <div class="text-xlarge">12 000 ₽</div>
+                                <div class="text-muted small">Альфа банк</div>
+                            </div>
+                            <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" style="position: absolute;right: 10px;top: 5px;"><i class="ion ion-ios-more"></i></button>
+                        </div>
+
+                    </div><div class="col-lg-3">
+
+                        <div class="card-body d-flex align-items-center">
+                            <img src="https://tinkoffkin.ru/wp-content/uploads/2017/11/emblema-tinkoff-bank.png" alt="" class="ui-w-40 rounded-circle">
+                            <div class="ml-3">
+                                <div class="text-xlarge">12 000 ₽</div>
+                                <div class="text-muted small">Тинькофф банк</div>
+                            </div>
+                            <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" style="position: absolute;right: 10px;top: 5px;"><i class="ion ion-ios-more"></i></button>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3">
+
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <span class="ui-icon ui-statistics-icon ion ion-md-add text-primary"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+
+    </div>
+
+    <div class="row total-view my-0">
+        <div class="col-sm-6 col-xl-4 px-1" style="">
+            <div class="card mb-2 green-bottom-line  custom-card-hover">
+                <div class="card-body row" style="height: 98px;">
+                    <div class="col-md-6">
+                        <div class="text-muted small">Доходы <i data-toggle="tooltip" data-html="true" data-original-title="<ul class='my-1 pl-3'><li>Кэшбэки</li><li>Доп. доходы</li><li>Зарплата</li><li>324</li><li>345</li><li>525</li><li>525</li></ul>" class="fas fa-info-circle cursor-help"></i></div> <strong class="text-large font-weight-normal">0 ₽</strong> <sup class="text-success small" style="display: none;">+ 0%</sup> <sup class="text-danger small" style="display: none;">- 0%</sup>
+                    </div>
+                    <div class="col-md-6" style="height: 65px;">
+                        <canvas id="earningChart" width="191" height="81" style="display: block; height: 65px; width: 153px;"></canvas>
+                    </div>
+                </div>
+                <div class="card-footer small">
+                    <div class="float-right text-danger">
+                        <small class="ion ion-md-arrow-round-down"></small> 11.25%
+                    </div>
+                    Total sales: 13442
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-4 px-1" style="">
+            <div class="card mb-2 red-bottom-line  custom-card-hover">
+                <div class="card-body row" style="height: 98px;">
+                    <div class="col-md-6">
+                        <div class="text-muted small">Расходы <i data-toggle="tooltip" data-html="true" data-original-title="<ul class='my-1 pl-3'><li>Одежда</li><li>Крупная бытовая тех.</li><li>Налоги</li><li>12</li><li>Посещение врача</li><li>Стоматология</li><li>Бензин</li><li>Путешествия</li><li>Рестораны</li><li>Общ. транспорт</li><li>Фастфуд</li><li>Красота</li><li>Ремонт</li><li>Все для дома</li><li>Ремонт авто</li><li>Подарки1</li><li>За квартиру</li><li>Интернет</li><li>Страховка</li><li>Связь</li><li>Аптеки</li><li>Электричество</li><li>Развлечения</li><li>Книги</li><li>обои</li><li>Бензин</li><li>Еда</li><li>Клей</li><li>фотообои</li><li>12345</li><li>324</li><li>444</li><li>525</li><li>525</li><li>5251</li><li>tttt</li><li>test1</li></ul>" class="fas fa-info-circle cursor-help"></i></div> <strong class="text-large font-weight-normal">2&nbsp;618 ₽</strong> <sup class="text-danger small" style="display: none;">+ 0%</sup> <sup class="text-success small" style="display: none;">- 0%</sup>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="height: 70px;">
+                            <canvas id="spendingChart" width="191" height="87" style="display: block; height: 70px; width: 153px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer small">
+                    <div class="float-right text-danger">
+                        <small class="ion ion-md-arrow-round-down"></small> 11.25%
+                    </div>
+                    Total sales: 13442
+                </div>
+            </div>
+        </div> <div class="col-sm-6 col-xl-4 px-1" style="">
+            <div class="card mb-2 gray-bottom-line  custom-card-hover">
+                <div class="card-body row" style="height: 98px;">
+                    <div class="col-md-6">
+                        <div class="text-muted small">
+                            Инвестиции <i data-toggle="tooltip" data-html="true" data-original-title="<ul class='my-1 pl-3'><li>Дивиденды</li><li>Инвестиции</li><li>Комиссия брокера</li><li>525</li><li>525</li><li>525</li></ul>" class="fas fa-info-circle cursor-help"></i>
+
+                        </div> <strong class="text-large font-weight-normal">0 ₽</strong> <sup class="text-danger small" style="display: none;">- 0%</sup> <sup class="text-success small" style="display: none;">+ 0%</sup>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="height: 70px;">
+                            <canvas id="investmentsChart" width="191" height="87" style="display: block; height: 70px; width: 153px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer small">
+                    <div class="float-right text-danger">
+                        <small class="ion ion-md-arrow-round-down"></small> 11.25%
+                    </div>
+                    Total sales: 13442
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

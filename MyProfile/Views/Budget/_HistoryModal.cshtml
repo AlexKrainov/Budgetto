@@ -41,28 +41,60 @@
                                 </div>*@
                             <div class="row my-3">
                                 <div class="col-md-12">
-                                    <span class="text-muted m-b block">Категории</span>
-                                    <select id="history-sections" class="form-control" style="width: 100%" multiple>
-                                        <option v-for="section in sections"
-                                                v-bind:selected="section.selected"
-                                                v-bind:value="section.id">
-                                            {{ section.name}}
-                                        </option>
-                                    </select>
-                                    <span class="float-right">
-                                        <span v-on:click="selectAll()" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все категории</span> |
-                                        <span v-on:click="unselectAll()" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить форму</span>
-                                    </span>
+                                    <div class="nav-tabs-top mb-4">
+                                        <ul class="nav nav-tabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#sale-stats" v-on:click="filter.isSection = true; search()">Категории</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#latest-sales" v-on:click="filter.isSection = false; search()">Теги</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade active show p-2" id="sale-stats">
+                                                <vue-section-component data-class="cards-medium"
+                                                                       data-records-style="margin-left: 15px;"
+                                                                       data-search-id="searchSection"
+                                                                       v-bind:is-show-filter="false"
+                                                                       v-bind:data-is-selection="true"
+                                                                       v-bind:data-items="sections"
+                                                                       v-on:onchoose="onChooseSection"></vue-section-component>
+                                                <span class="float-right">
+                                                    <span v-on:click="selectOnlyType(2)" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Выбрать только расходы </span>|
+                                                    <span v-on:click="selectOnlyType(1)" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать только доходы </span>|
+                                                    <span v-on:click="selectAll" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все категории </span>|
+                                                    <span v-on:click="unselectAll" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить форму </span>
+                                                </span>
+                                            </div>
+                                            <div class="tab-pane fade p-2" id="latest-sales">
+                                                <input type="text" class="form-control" name="tags" placeholder="Начинайте вводить тег" />
+                                                <section>
+                                                    <span v-bind:title="tag.title" tabindex="-1" class="tagify__tag cursor-pointer"
+                                                          v-for="tag in userTags"
+                                                          v-show="tag.isShow"
+                                                          v-on:click="selectedTag(tag)">
+                                                        <div>
+                                                            <span class="tagify__tag-text">{{ tag.title }}</span>
+                                                        </div>
+                                                    </span>
+                                                </section>
+                                                <span class="float-right">
+                                                    <span v-on:click="selectAllTags" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все теги </span>|
+                                                    <span v-on:click="unselectAllTags" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить поле </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <span class="text-muted m-b block">С</span>
-                                    <input type="date" id="dateHistoryStart" class="form-control" v-model="dateStart" />
+                                    <input type="date" id="dateHistoryStart" class="form-control" v-model="filter.startDate" />
                                 </div>
                                 <div class="col-md-6">
                                     <span class="text-muted m-b block">По</span>
-                                    <input type="date" id="dateHistoryEnd" class="form-control" v-model="dateEnd" />
+                                    <input type="date" id="dateHistoryEnd" class="form-control" v-model="filter.endDate" />
                                 </div>
                             </div>
                             <div class="mt-3 float-right">

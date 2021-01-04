@@ -393,6 +393,9 @@ function ShowDocument(name) {
 function JSCopyObject(src) {
     return Object.assign({}, src);
 }
+function JSCopyArray(src) {
+    return $.extend(true, [], src); 
+}
 
 var TagBuilder = {
     toTagifyString: function (record) {

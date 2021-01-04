@@ -7,11 +7,22 @@ var HistoryVue = new Vue({
         spendingErningMoney: 0,
         spendingInvestingMoney: 0,
         dateTime: null,
-        dateStart: null,
-        dateEnd: null,
+        filter: {
+            isSection: true,
+            Count: 0,
+            isAmount: true,
+            isConsiderCollection: false,
+            isCount: false,
+            Year: moment().get("year"),
+            sections: [],
+            tags: [],
+            startDate: null,
+            endDate: null
+        },
 
         searchText: null,
         sections: [],
+        userTags: [],
         flatpickrStart: null,
         flatpickrEnd: null,
     },
@@ -54,7 +65,28 @@ var HistoryVue = new Vue({
         }
     },
     mounted: function () {
-        $("#history-sections").select2();
+        setTimeout(function () {
+            HistoryVue.sections = JSCopyArray(RecordVue.recordComponent.sectionComponent.sections);
+            HistoryVue.userTags = JSCopyArray(RecordVue.recordComponent.userTags);
+
+            HistoryVue.tagify = new Tagify(document.querySelector('input[name="tags"]'), {
+                whitelist: HistoryVue.userTags,
+                enforceWhitelist: true,
+                delimiters: null,
+                dropdown: {
+                    maxItems: 20,           // <- mixumum allowed rendered suggestions
+                    classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                    enabled: 0,             // <- show suggestions on focus
+                    closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                },
+                callbacks: {
+                    remove: HistoryVue.removeTag
+                }
+            });
+
+            setTimeout(HistoryVue.unselectAllTags, 100);
+
+        }, 3000);
 
         $('#modalTimeLine').on('hide.bs.modal', function () {
             $("#historyCollapse").removeClass("show");
@@ -65,60 +97,94 @@ var HistoryVue = new Vue({
             this.dateTime = dateTime;//?
             this.unselectAll();
 
-            return this.loadTimeLine(filter);
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isSelected = filter.sections.some(x => x == this.sections[i].id);
+            }
+
+            this.filter.startDate = filter.startDate;
+            this.filter.endDate = filter.endDate;
+
+            let dateConfig = GetFlatpickrRuConfig(moment(this.filter.startDate, "YYYY/MM/DD").toDate());
+            //dateConfig.minDate = this.dateEnd;
+            this.flatpickrStart = flatpickr('#dateHistoryStart', dateConfig);
+            var dateConfig2 = GetFlatpickrRuConfig(moment(this.filter.endDate, "YYYY/MM/DD").toDate());
+            //dateConfig2.maxDate = this.dateStart;
+            this.flatpickrEnd = flatpickr('#dateHistoryEnd', dateConfig2);
+
+            this.search();
         },
         showLastHistory: function () {
             this.search();
         },
         search: function () {
-            let filter = {
-                sections: $("#history-sections").val(),
-                startDate: moment(this.flatpickrStart.latestSelectedDateObj).format(),
-                endDate: moment(this.flatpickrEnd.latestSelectedDateObj).format(),
-            };
-            return this.loadTimeLine(filter);
+            this.filter.sections = this.sections.filter(x => x.isSelected).map(x => x.id);
+            this.filter.tags = this.userTags.filter(x => x.isShow == false).map(x => x.id);
+            this.filter.startDate = moment(this.flatpickrStart.latestSelectedDateObj).format();
+            this.filter.endDate = moment(this.flatpickrEnd.latestSelectedDateObj).format();
+
+            return this.loadTimeLine();
         },
-        loadTimeLine: function (filter) {
-
-            this.dateStart = filter.startDate;
-            this.dateEnd = filter.endDate;
-
-            let dateConfig = GetFlatpickrRuConfig(moment(this.dateStart, "YYYY/MM/DD").toDate());
-            //dateConfig.minDate = this.dateEnd;
-            this.flatpickrStart = flatpickr('#dateHistoryStart', dateConfig);
-            var dateConfig2 = GetFlatpickrRuConfig(moment(this.dateEnd, "YYYY/MM/DD").toDate());
-            //dateConfig2.maxDate = this.dateStart;
-            this.flatpickrEnd = flatpickr('#dateHistoryEnd', dateConfig2);
-
+        loadTimeLine: function () {
             ShowLoading('.records-timeline');
-
+            $("#modalTimeLine").modal("show");
             return $.ajax({
                 type: "POST",
                 url: "/Budget/LoadingRecordsForTableView",
-                data: JSON.stringify(filter),
+                data: JSON.stringify(this.filter),
                 contentType: "application/json",
                 dataType: 'json',
                 context: this,
                 success: function (response) {
                     this.records = response.data;
-                    this.sections = response.sections;
-                    $("#history-sections").val(this.sections
-                        .filter(x => x.selected)
-                        .map(x => x.id))
-                        .trigger("change");
 
                     HideLoading('.records-timeline');
-                    $("#modalTimeLine").modal("show");
                 }
             });
         },
         selectAll: function () {
-            $("#history-sections").val(this.sections
-                .map(x => x.id))
-                .trigger("change");
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isSelected = true;
+            }
         },
         unselectAll: function () {
-            $("#history-sections").val(null).trigger("change");
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isSelected = false;
+            }
+        },
+        selectOnlyType: function (sectionTypeID) {
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isSelected = this.sections[i].sectionTypeID == sectionTypeID;
+            }
+        },
+        selectAllTags: function () {
+            this.userTags = this.userTags.map(function (item) {
+                item.isShow = false;
+                return item;
+            });
+            this.tagify.addTags(this.userTags);
+        },
+        unselectAllTags: function () {
+            this.tagify.removeAllTags();
+            for (var i = 0; i < this.userTags.length; i++) {
+                this.userTags[i].isShow = true;
+            }
+        },
+        selectedTag: function (tag) {
+            this.tagify.addTags([tag]);
+            tag.isShow = false;
+        },
+        removeTag: function (event) {
+            console.log(event);
+            if (event.detail.data && event.detail.data.id) {
+                let removeIndex = this.userTags.findIndex(x => x.id == event.detail.data.id);
+                if (removeIndex >= 0) {
+                    this.userTags[removeIndex].isShow = true;
+                }
+            }
+           // vueTimeline.loadingDatesForCalendar();
+        },
+        onChooseSection: function (section) {
+            //vueTimeline.loadingDatesForCalendar();
         },
         closeTimeline: function () {
             this.clearAllStyle();

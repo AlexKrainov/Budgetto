@@ -45,11 +45,17 @@ namespace MyProfile.Controllers
             this.budgetRecordService = budgetRecordService;
             this.userLogService = userLogService;
         }
+
         public IActionResult Index()
         {
-
             return View();
         }
+
+        public IActionResult NewDashboard()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public JsonResult Load([FromBody] List<Month1> months)

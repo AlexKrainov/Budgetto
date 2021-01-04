@@ -172,12 +172,6 @@ var vueTimeline = new Vue({
             vueTimeline.loadingDatesForCalendar();
         },
 
-        selectAll: function () {
-            for (var i = 0; i < this.sections.length; i++) {
-                this.sections[i].isSelected = true;
-            }
-            vueTimeline.loadingDatesForCalendar();
-        },
         selectAllTags: function () {
             this.userTags = this.userTags.map(function (item) {
                 item.isShow = false;
@@ -205,6 +199,12 @@ var vueTimeline = new Vue({
                 if (removeIndex >= 0) {
                     this.userTags[removeIndex].isShow = true;
                 }
+            }
+            vueTimeline.loadingDatesForCalendar();
+        },
+        selectAll: function () {
+            for (var i = 0; i < this.sections.length; i++) {
+                this.sections[i].isSelected = true;
             }
             vueTimeline.loadingDatesForCalendar();
         },
