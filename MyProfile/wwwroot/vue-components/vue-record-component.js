@@ -216,6 +216,15 @@
                     this.tagifyTags.loadOriginalValues(newValue.description);
                 }
             }
+            let sectinos = this.sectionComponent.sections;
+            if (newValue.sectionID > 0) {
+                let index = sectinos.findIndex(x => x.id == newValue.sectionID);
+                if (index != -1) {
+                    this.topTagIDsBySection = sectinos[index].tags;
+                }
+            } else {
+                this.topTagIDsBySection = [];
+            }
         }
     },
     computed: {
