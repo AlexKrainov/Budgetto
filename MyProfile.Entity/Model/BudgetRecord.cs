@@ -16,6 +16,9 @@ namespace MyProfile.Entity.Model
         [Required]
         [Column(TypeName = "Money")]
         public decimal Total { get; set; }
+        [Required]
+        [Column(TypeName = "Money")]
+        public decimal Cashback { get; set; }
         /// <summary>
         /// It needs to understand what data an user wrote
         /// </summary>
@@ -44,10 +47,13 @@ namespace MyProfile.Entity.Model
         public int BudgetSectionID { get; set; }
         [ForeignKey("Currency")]
         public int? CurrencyID { get; set; }
+        [ForeignKey("Account")]
+        public int? AccountID { get; set; }
 
         public virtual User User { get; set; }
         public virtual BudgetSection BudgetSection { get; set; }
         public virtual Currency Currency { get; set; }
+        public virtual Account Account { get; set; }
 
         public virtual ICollection<RecordTag> Tags { get; set; }
 

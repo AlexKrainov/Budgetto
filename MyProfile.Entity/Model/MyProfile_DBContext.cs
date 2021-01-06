@@ -230,6 +230,9 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<RecordTag> RecordTags { get; set; }
         public virtual DbSet<UserTag> UserTags { get; set; }
+        public virtual DbSet<AccountType> AccountTypes { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Bank> Banks { get; set; }
 
     }
 }
