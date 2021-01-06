@@ -25,14 +25,6 @@ var vueTimeline = new Vue({
 
         tagify: null,
     },
-    updated: function () {
-        this.$nextTick(function () {
-            // Code that will run only after the
-            // entire view has been re-rendered
-
-            //vueTimeline.after_loading(false);// worked very bad
-        });
-    },
     mounted: function () {
         this.init_filter();
     },
@@ -79,6 +71,7 @@ var vueTimeline = new Vue({
                                 closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
                             },
                             callbacks: {
+                                add: this.addTag,
                                 remove: this.removeTag
                             }
                         });
@@ -192,8 +185,16 @@ var vueTimeline = new Vue({
             tag.isShow = false;
             vueTimeline.loadingDatesForCalendar();
         },
+        addTag: function (e) {
+            let tag = e.detail.data;
+            if (tag.isShow) {
+                let index = this.userTags.findIndex(x => x.id == tag.id);
+                if (index != -1) {
+                    this.userTags[index].isShow = false;
+                }
+            }
+        },
         removeTag: function (event) {
-            console.log(event);
             if (event.detail.data && event.detail.data.id) {
                 let removeIndex = this.userTags.findIndex(x => x.id == event.detail.data.id);
                 if (removeIndex >= 0) {

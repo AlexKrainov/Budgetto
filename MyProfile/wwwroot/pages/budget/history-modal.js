@@ -80,6 +80,7 @@ var HistoryVue = new Vue({
                     closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
                 },
                 callbacks: {
+                    add: HistoryVue.addTag,
                     remove: HistoryVue.removeTag
                 }
             });
@@ -173,8 +174,16 @@ var HistoryVue = new Vue({
             this.tagify.addTags([tag]);
             tag.isShow = false;
         },
+        addTag: function (e) {
+            let tag = e.detail.data;
+            if (tag.isShow) {
+                let index = this.userTags.findIndex(x => x.id == tag.id);
+                if (index != -1) {
+                    this.userTags[index].isShow = false;
+                }
+            }
+        },
         removeTag: function (event) {
-            console.log(event);
             if (event.detail.data && event.detail.data.id) {
                 let removeIndex = this.userTags.findIndex(x => x.id == event.detail.data.id);
                 if (removeIndex >= 0) {
