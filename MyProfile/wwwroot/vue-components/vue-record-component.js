@@ -64,7 +64,26 @@
                         <div class="form-row">
                             <div class="form-group col-12 col-sm-12 col-md-6">
                                 <div class="row records" v-for="record in records" v-show="record.isCorrect">
-                                    <div class="col-6 col-sm-6 col-md-6 mb-3 record-item">
+                                    <div class="col-1 col-sm-1 col-md-1 px-0 pl-3 mr-2">
+                                        <img class="ui-payment-small cursor-pointer dropdown-toggle" data-toggle="dropdown" alt=""
+                                            v-show="record.account.accountType != 1 && record.account.bankImage"
+                                            v-bind:src="record.account.bankImage" 
+                                            v-bind:title="record.account.name">
+                                        <i class="text-xlarge cursor-pointer mt-1" data-toggle="dropdown"
+                                            v-show="record.account.accountType == 1 || (record.account.accountType != 1 && !record.account.bankImage)" 
+                                            v-bind:class="record.account.accountIcon"
+                                            v-bind:title="record.account.name"></i>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item"
+                                               href="javascript:void(0)"
+                                               v-for="_account in accounts"
+                                               v-show="_account.isDeleted == false || record.accountID == _account.id"
+                                               v-bind:class="record.accountID == _account.id ? 'active' : ''"
+                                               v-on:click="record.accountID = _account.id; record.account = _account;">{{ _account.name }}</a>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-5 col-sm-5 col-md-5 mb-3 mt-1 record-item">
                                         <a href="javascript:void(0)"
                                            class="a-hover font-weight-bold font-size-large"
                                            v-bind:class="selectedRecord == record ? 'text-primary' : 'text-secondary'"
@@ -77,7 +96,7 @@
                                             <span v-on:click="selectedRecord = record">+ <i class="far fa-comment"></i></span>
                                         </span> -->
                                     </div>
-                                    <div class="col-6 col-sm-6 col-md-6 mb-3 text-right">
+                                    <div class="col-6 col-sm-6 col-md-5 mb-3 mt-1 text-right">
                                         <span class="text-muted">{{ record.sectionName }} </span>
                                         <span class="fa fa-trash remove-section-icon cursor-pointer ml-1"
                                               v-on:click="record.sectionID = -1; record.sectionName = '';"
@@ -177,6 +196,8 @@
             records: [],
             userTags: [],
             topTagIDsBySection: [],
+            accounts: [],
+            accountByDefault: {},
 
             counter: -999,
 
@@ -272,6 +293,7 @@
             });
 
         this.loadCurrenciesInfo();
+        this.loadAccounts();
         this.isShowCollectionElement = UserInfo.IsAllowCollectiveBudget;
 
         $('#modal-record').on('show.bs.modal', function () {
@@ -340,6 +362,8 @@
                     currencyNominal: 1,
                     currencyID: this.currentCurrencyID,
                     tags: [],
+                    accountID: this.accountByDefault.id,
+                    account: JSCopyObject(this.accountByDefault),
                 };
 
                 this.records.push(newRecords);
@@ -676,6 +700,14 @@
 
                             if (this.after_save_callback && typeof (this.after_save_callback) === "string") {
                                 this.after_save_callback = window.getFunctionFromString(this.after_save_callback);
+
+                                if (this.after_save_callback_args != undefined) {
+                                    this.after_save_callback.call(this, this.after_save_callback_args);
+                                    this.after_save_callback_args = undefined
+                                } else {
+                                    this.after_save_callback.call(this, result.budgetRecord.dateTimeOfPayment);
+                                }
+
                             } else if (typeof (this.after_save_callback) === "function") {
                                 try {
                                     if (this.after_save_callback_args != undefined) {
@@ -872,6 +904,7 @@
 
         //Loads
         loadCurrenciesInfo: function () {
+            //toDo: get currency info from UserInfo 
             return $.ajax({
                 type: "GET",
                 url: "/Common/GetCurrenciesInfo",
@@ -902,6 +935,25 @@
                 success: function (response) {
                     if (response.isOk) {
                         this.userTags = response.tags;
+                    }
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        },
+        loadAccounts: function () {
+            return $.ajax({
+                type: "GET",
+                url: "/Account/GetShortAccounts",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    if (response.isOk) {
+                        this.accounts = response.accounts;
+                        this.accountByDefault = response.accountByDefault;
                     }
                     return response;
                 },

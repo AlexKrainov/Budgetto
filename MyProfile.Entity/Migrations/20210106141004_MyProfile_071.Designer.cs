@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210106141004_MyProfile_071")]
+    partial class MyProfile_071
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,10 +34,10 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int?>("BankID");
 
-                    b.Property<decimal>("CachbackBalance")
+                    b.Property<decimal>("CachBackBalance")
                         .HasColumnType("Money");
 
-                    b.Property<decimal?>("CachbackForAllPercent");
+                    b.Property<decimal?>("CashBackForAllPercent");
 
                     b.Property<int?>("CurrencyID");
 
@@ -48,9 +50,9 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<decimal?>("InterestRate");
 
-                    b.Property<bool>("IsCachback");
+                    b.Property<bool>("IsCachBackMoney");
 
-                    b.Property<bool>("IsCachbackMoney");
+                    b.Property<bool>("IsCachback");
 
                     b.Property<bool>("IsDefault");
 
@@ -66,7 +68,7 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.Property<DateTime?>("ResetCachbackDate");
+                    b.Property<DateTime?>("ResetCashBackDate");
 
                     b.Property<Guid>("UserID");
 
@@ -1643,10 +1645,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("Month_Accounts")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
                     b.Property<bool>("Month_BigCharts")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
@@ -1671,17 +1669,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("Month_Summary")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
                     b.Property<string>("WebSiteTheme")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue("light");
-
-                    b.Property<bool>("Year_Accounts")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
 
                     b.Property<bool>("Year_BigCharts")
                         .ValueGeneratedOnAdd()
@@ -1704,10 +1694,6 @@ namespace MyProfile.Entity.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<bool>("Year_SpendingWidget")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("Year_Summary")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 

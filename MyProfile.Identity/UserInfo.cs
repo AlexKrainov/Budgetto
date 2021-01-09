@@ -143,6 +143,8 @@ namespace MyProfile.Identity
                     Dashboard_Month_IsShow_InvestingChart = currentUser.UserSettings.Month_InvestingWidget,
                     Dashboard_Month_IsShow_LimitCharts = currentUser.UserSettings.Month_LimitWidgets,
                     Dashboard_Month_IsShow_SpendingChart = currentUser.UserSettings.Month_SpendingWidget,
+                    Dashboard_Month_IsShow_Summary = currentUser.UserSettings.Month_Summary,
+                    Dashboard_Month_IsShow_Accounts = currentUser.UserSettings.Month_Accounts,
 
                     Dashboard_Year_IsShow_BigCharts = currentUser.UserSettings.Year_BigCharts,
                     Dashboard_Year_IsShow_EarningChart = currentUser.UserSettings.Year_EarningWidget,
@@ -150,6 +152,8 @@ namespace MyProfile.Identity
                     Dashboard_Year_IsShow_InvestingChart = currentUser.UserSettings.Year_InvestingWidget,
                     Dashboard_Year_IsShow_LimitCharts = currentUser.UserSettings.Year_LimitWidgets,
                     Dashboard_Year_IsShow_SpendingChart = currentUser.UserSettings.Year_SpendingWidget,
+                    Dashboard_Year_IsShow_Summary = currentUser.UserSettings.Year_Summary,
+                    Dashboard_Year_IsShow_Accounts = currentUser.UserSettings.Year_Accounts,
 
                     WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
                     IsShowHints = currentUser.UserSettings.IsShowHints,

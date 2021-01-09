@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210107070501_MyProfile_072")]
+    partial class MyProfile_072
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,10 +34,10 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int?>("BankID");
 
-                    b.Property<decimal>("CachbackBalance")
+                    b.Property<decimal>("CachBackBalance")
                         .HasColumnType("Money");
 
-                    b.Property<decimal?>("CachbackForAllPercent");
+                    b.Property<decimal?>("CashBackForAllPercent");
 
                     b.Property<int?>("CurrencyID");
 
@@ -48,9 +50,9 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<decimal?>("InterestRate");
 
-                    b.Property<bool>("IsCachback");
+                    b.Property<bool>("IsCachBackMoney");
 
-                    b.Property<bool>("IsCachbackMoney");
+                    b.Property<bool>("IsCachback");
 
                     b.Property<bool>("IsDefault");
 
@@ -66,7 +68,7 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.Property<DateTime?>("ResetCachbackDate");
+                    b.Property<DateTime?>("ResetCashBackDate");
 
                     b.Property<Guid>("UserID");
 

@@ -12,6 +12,7 @@ using MyProfile.Template.Service;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;

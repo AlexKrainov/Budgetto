@@ -152,5 +152,10 @@
         public const string LandingPage_MovedToAppBudgetto_ThreeYearsPriceButton = "LandingPage_MovedToAppBudgetto_ThreeYearsPriceButton";
         public const string LandingPage_MovedToAppBudgetto_EmailButton = "LandingPage_MovedToAppBudgetto_EmailButton";
         public const string LandingPage_ShowMore = "LandingPage_ShowMore";
+
+        public const string Account_Create = "Account_Create";
+        public const string Account_Update = "Account_Update";
+        public const string Account_Delete = "Account_Delete";
+        public const string Account_Recovery = "Account_Recovery";
     }
 }

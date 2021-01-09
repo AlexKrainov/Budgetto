@@ -48,6 +48,9 @@ namespace MyProfile.Entity.Model
         /// The pages Budget/Month... show/hide big charts 
         /// </summary>
         public bool Month_BigCharts { get; set; }
+
+        public bool Month_Summary { get; set; }
+        public bool Month_Accounts { get; set; }
         #endregion
 
         #region Year page
@@ -75,6 +78,9 @@ namespace MyProfile.Entity.Model
         /// The pages Budget/Year... show/hide big charts 
         /// </summary>
         public bool Year_BigCharts { get; set; }
+
+        public bool Year_Summary { get; set; }
+        public bool Year_Accounts { get; set; }
         #endregion
 
 

@@ -87,6 +87,12 @@ var HistoryVue = new Vue({
 
             setTimeout(HistoryVue.unselectAllTags, 100);
 
+            if (HistoryVue.sections.length == 0) {
+                setTimeout(function () {
+                    HistoryVue.sections = JSCopyArray(RecordVue.recordComponent.sectionComponent.sections);
+                }, 8000);
+            }
+
         }, 3000);
 
         $('#modalTimeLine').on('hide.bs.modal', function () {
@@ -190,7 +196,7 @@ var HistoryVue = new Vue({
                     this.userTags[removeIndex].isShow = true;
                 }
             }
-           // vueTimeline.loadingDatesForCalendar();
+            // vueTimeline.loadingDatesForCalendar();
         },
         onChooseSection: function (section) {
             //vueTimeline.loadingDatesForCalendar();

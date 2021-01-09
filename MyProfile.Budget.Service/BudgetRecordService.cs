@@ -1,7 +1,9 @@
 ﻿using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.AreaAndSection;
 using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
@@ -25,13 +27,23 @@ namespace MyProfile.Budget.Service
         private CollectionUserService collectionUserService;
         private UserLogService userLogService;
         private TagService tagService;
+        private AccountService accountService;
+        private SectionService sectionService;
+        private IMemoryCache cache;
 
-        public BudgetRecordService(IBaseRepository repository, TagService tagService)
+        public BudgetRecordService(IBaseRepository repository,
+            TagService tagService,
+            AccountService accountService,
+            IMemoryCache cache,
+            SectionService sectionService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
             this.userLogService = new UserLogService(repository);
             this.tagService = tagService;
+            this.accountService = accountService;
+            this.sectionService = sectionService;
+            this.cache = cache;
         }
 
         public async Task<RecordModelView> GetByID(int id)
@@ -61,15 +73,18 @@ namespace MyProfile.Budget.Service
 
         public async Task<bool> CreateOrUpdate(RecordsModelView budgetRecord)
         {
-            var currentUser = UserInfo.Current;
+            UserInfoModel currentUser = UserInfo.Current;
             bool isEdit = false;
             bool isCreate = false;
-            var now = DateTime.Now.ToUniversalTime();
+            DateTime now = DateTime.Now.ToUniversalTime();
             List<RecordTag> newUserTags = new List<RecordTag>();
             List<int> errorLogCreateIDs = new List<int>();
             List<int> errorLogEditIDs = new List<int>();
             budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
-
+            decimal cashback = 0;
+            List<Account> accounts = new List<Account>();
+            List<SectionLightModelView> sections = (await sectionService.GetAllSectionByUser()).ToList();
+            bool isSpending = false;
 
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
@@ -78,7 +93,26 @@ namespace MyProfile.Budget.Service
                     record.IsSaved = false;
                     continue;
                 }
+                cashback = 0;
 
+                Account account = accounts.FirstOrDefault(x => x.ID == record.AccountID);
+                SectionLightModelView section = sections.FirstOrDefault(x => x.ID == record.SectionID);
+                isSpending = section.SectionTypeID == (int?)SectionTypeEnum.Spendings;
+
+                if (account == null)
+                {
+                    account = await repository.GetAll<Account>(x => x.ID == record.AccountID)
+                       .FirstOrDefaultAsync();
+
+                    accounts.Add(account);
+                }
+                if (isSpending
+                    && record.Money >= 100
+                    && account.IsCachback
+                    && account.CachbackForAllPercent != null)
+                {
+                    cashback = (record.Money * account.CachbackForAllPercent ?? 1) / 100;
+                }
                 if (record.Tags.Count() > 0)
                 {
                     record.Description = await tagService.ParseAndCreateDescription(record.Description, record.Tags, newUserTags);
@@ -94,25 +128,51 @@ namespace MyProfile.Budget.Service
                         }
                         else
                         {
-                            await repository.CreateAsync(new BudgetRecord
+                            var newRecord = new BudgetRecord
                             {
+                                UserID = currentUser.ID,
                                 BudgetSectionID = record.SectionID,
+                                AccountID = record.AccountID,
                                 DateTimeCreate = now,
                                 DateTimeEdit = now,
                                 DateTimeOfPayment = budgetRecord.DateTimeOfPayment,
                                 Description = record.Description,
                                 IsHide = false,
-                                UserID = currentUser.ID,
                                 Total = record.Money,
                                 RawData = record.Tag,
                                 CurrencyID = record.CurrencyID,
                                 CurrencyRate = record.CurrencyRate,
                                 CurrencyNominal = record.CurrencyNominal ?? 1,
                                 IsShowForCollection = budgetRecord.IsShowInCollection,
-                                Tags = record.Tags.Select(x => new Entity.Model.RecordTag { DateSet = now, UserTagID = x.ID }).ToList()
-                            }, true);
+                                Cashback = cashback,
+                                Tags = record.Tags
+                                    .Select(x => new Entity.Model.RecordTag
+                                    {
+                                        DateSet = now,
+                                        UserTagID = x.ID
+                                    })
+                                    .ToList(),
+                            };
+
+                            await repository.CreateAsync(newRecord, true);
 
                             record.IsSaved = true;
+
+                            #region Account 
+                            if (isSpending)
+                            {
+                                account.Balance -= record.Money;
+
+                                if (account.IsCachback && account.CachbackForAllPercent != null)
+                                {
+                                    account.CachbackBalance += cashback;
+                                }
+                            }
+                            else
+                            {
+                                account.Balance += record.Money;
+                            }
+                            #endregion
                         }
                     }
                     catch (Exception ex)
@@ -136,6 +196,11 @@ namespace MyProfile.Budget.Service
                         else
                         {
                             var dbRecord = repository.GetByID<BudgetRecord>(record.ID);
+                            int oldAccountID = dbRecord.AccountID ?? -1,
+                                oldSectionTypeID = dbRecord.BudgetSection.SectionTypeID ?? 0;
+                            decimal oldTotal = dbRecord.Total,
+                                oldCashback = dbRecord.Cashback;
+                            bool isOldAccountHasChashback = dbRecord.Account.IsCachback && dbRecord.Account.CachbackForAllPercent != null;
 
                             dbRecord.BudgetSectionID = record.SectionID;
                             dbRecord.Total = record.Money;
@@ -147,6 +212,9 @@ namespace MyProfile.Budget.Service
                             dbRecord.CurrencyRate = record.CurrencyRate;
                             dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
                             dbRecord.DateTimeEdit = now;
+                            dbRecord.AccountID = record.AccountID;
+                            dbRecord.Cashback = cashback;
+
                             foreach (var newTag in tagService.CheckTags(dbRecord.Tags, record.Tags.ToList()))
                             {
                                 dbRecord.Tags.Add(new Entity.Model.RecordTag { DateSet = now, UserTagID = newTag.ID });
@@ -154,6 +222,78 @@ namespace MyProfile.Budget.Service
 
                             await repository.UpdateAsync(dbRecord, true);
                             record.IsSaved = true;
+
+                            #region Account
+                            if (oldAccountID == record.AccountID)
+                            {
+                                if (oldSectionTypeID == (int)SectionTypeEnum.Spendings)
+                                {
+                                    account.Balance += oldTotal;
+
+                                    if (isOldAccountHasChashback)
+                                    {
+                                        account.CachbackBalance -= oldCashback;
+                                    }
+                                }
+                                else
+                                {
+                                    account.Balance -= oldTotal;
+                                }
+
+                                if (isSpending)//new section type
+                                {
+                                    account.Balance -= record.Money;
+
+                                    if (account.IsCachback && account.CachbackForAllPercent != null)
+                                    {
+                                        account.CachbackBalance += cashback;
+                                    }
+                                }
+                                else
+                                {
+                                    account.Balance += record.Money;
+                                }
+                            }
+                            else
+                            {
+                                Account oldAccount = accounts.FirstOrDefault(x => x.ID == oldAccountID);
+
+                                if (oldAccount == null)
+                                {
+                                    oldAccount = await repository.GetAll<Account>(x => x.ID == oldAccountID)
+                                       .FirstOrDefaultAsync();
+
+                                    accounts.Add(oldAccount);
+                                }
+
+                                if (oldSectionTypeID == (int)SectionTypeEnum.Spendings)
+                                {
+                                    oldAccount.Balance += oldTotal;
+                                    if (oldAccount.IsCachback && oldAccount.CachbackForAllPercent != null)
+                                    {
+                                        oldAccount.CachbackBalance -= oldCashback;
+                                    }
+                                }
+                                else
+                                {
+                                    oldAccount.Balance -= oldTotal;
+                                }
+
+                                if (isSpending)// new section type
+                                {
+                                    account.Balance -= record.Money;
+
+                                    if (account.IsCachback && account.CachbackForAllPercent != null)
+                                    {
+                                        account.CachbackBalance += cashback;
+                                    }
+                                }
+                                else
+                                {
+                                    account.Balance += record.Money;
+                                }
+                            }
+                            #endregion
                         }
                     }
                     catch (Exception ex)
@@ -182,18 +322,35 @@ namespace MyProfile.Budget.Service
                 budgetRecord.NewTags = newUserTags;
             }
 
+            cache.Remove(typeof(Entity.ModelView.Account.AccountShortViewModel).Name + "_" + currentUser.ID);
+
             return true;
         }
 
         public async Task<bool> RemoveRecord(BudgetRecordModelView record)
         {
             var currentUser = UserInfo.Current;
-            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
+            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == currentUser.ID)
+                .FirstOrDefaultAsync();
 
             if (db_record != null)
             {
                 db_record.IsDeleted = true;
                 db_record.DateTimeDelete = DateTime.Now.ToUniversalTime();
+
+                if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings)
+                {
+                    db_record.Account.Balance += db_record.Total;
+                    if (db_record.Account.IsCachback && db_record.Account.CachbackForAllPercent != null)
+                    {
+                        db_record.Account.CachbackBalance -= db_record.Cashback;
+                    }
+                }
+                else
+                {
+                    db_record.Account.Balance -= db_record.Total;
+                }
+
                 await repository.UpdateAsync(db_record, true);
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Delete);
                 return true;
@@ -210,6 +367,20 @@ namespace MyProfile.Budget.Service
             {
                 db_record.IsDeleted = false;
                 db_record.DateTimeDelete = null;
+
+                if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings)
+                {
+                    db_record.Account.Balance -= db_record.Total;
+                    if (db_record.Account.IsCachback && db_record.Account.CachbackForAllPercent != null)
+                    {
+                        db_record.Account.CachbackBalance += db_record.Cashback;
+                    }
+                }
+                else
+                {
+                    db_record.Account.Balance += db_record.Total;
+                }
+
                 await repository.UpdateAsync(db_record, true);
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Recovery);
                 return true;
@@ -288,6 +459,7 @@ namespace MyProfile.Budget.Service
               .Select(x => new BudgetRecordModelView
               {
                   ID = x.ID,
+                  AccountID = x.AccountID,
                   DateTimeCreate = x.DateTimeCreate,
                   DateTimeEdit = x.DateTimeEdit,
                   Description = x.Description,
@@ -312,6 +484,13 @@ namespace MyProfile.Budget.Service
                   IsOwner = x.UserID == currentUserID,
                   UserName = x.User.Name + " " + x.User.LastName,
                   ImageLink = x.User.ImageLink,
+                  Account = x.AccountID == null ? null : new AccountModelView
+                  {
+                      AccountType = x.Account.AccountTypeID,
+                      BankImage = x.Account.Bank != null ? x.Account.Bank.ImageSrc : null,
+                      Name = x.Account.Name,
+                      AccountIcon = x.Account.AccountType.Icon
+                  },
                   Tags = x.Tags
                   .Select(y => new RecordTag
                   {
@@ -335,6 +514,7 @@ namespace MyProfile.Budget.Service
               .Select(x => new BudgetRecordModelView
               {
                   ID = x.ID,
+                  AccountID = x.AccountID,
                   DateTimeCreate = x.DateTimeCreate,
                   DateTimeEdit = x.DateTimeEdit,
                   Description = x.Description,
@@ -359,6 +539,13 @@ namespace MyProfile.Budget.Service
                   IsOwner = x.UserID == currentUserID,
                   UserName = x.User.Name + " " + x.User.LastName,
                   ImageLink = x.User.ImageLink,
+                  Account = x.AccountID == null ? null : new AccountModelView
+                  {
+                      AccountType = x.Account.AccountTypeID,
+                      BankImage = x.Account.Bank != null ? x.Account.Bank.ImageSrc : null,
+                      Name = x.Account.Name,
+                      AccountIcon = x.Account.AccountType.Icon
+                  },
                   Tags = x.Tags
                   .Select(y => new RecordTag
                   {
@@ -381,17 +568,20 @@ namespace MyProfile.Budget.Service
               .Select(x => new BudgetRecordModelView
               {
                   ID = x.ID,
+                  AccountID = x.AccountID,
                   DateTimeCreate = x.DateTimeCreate,
                   DateTimeEdit = x.DateTimeEdit,
                   Description = x.Description,
                   IsConsider = x.IsHide,
                   RawData = x.RawData,
                   Money = x.Total,
+
                   CurrencyID = x.CurrencyID,
                   CurrencyNominal = x.CurrencyNominal,
                   CurrencyRate = x.CurrencyRate,
                   CurrencySpecificCulture = x.Currency.SpecificCulture,
                   CurrencyCodeName = x.Currency.CodeName,
+
                   DateTimeOfPayment = x.DateTimeOfPayment,
                   SectionID = x.BudgetSectionID,
                   SectionName = x.BudgetSection.Name,
@@ -401,6 +591,13 @@ namespace MyProfile.Budget.Service
                   IsOwner = x.UserID == currentUserID,
                   UserName = x.User.Name + " " + x.User.LastName,
                   ImageLink = x.User.ImageLink,
+                  Account = x.AccountID == null ? null : new AccountModelView
+                  {
+                      AccountType = x.Account.AccountTypeID,
+                      BankImage = x.Account.Bank != null ? x.Account.Bank.ImageSrc : null,
+                      Name = x.Account.Name,
+                      AccountIcon = x.Account.AccountType.Icon
+                  },
                   Tags = x.Tags
                   .Select(y => new RecordTag
                   {

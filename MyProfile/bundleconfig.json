@@ -220,5 +220,11 @@
     "inputFiles": [
       "wwwroot/vendor/libs/auto-scroll/auto-scroll.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/budget/account-modal.min.js",
+    "inputFiles": [
+      "wwwroot/pages/budget/account-modal.js"
+    ]
   }
 ]

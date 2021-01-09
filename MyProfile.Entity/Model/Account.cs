@@ -17,23 +17,23 @@ namespace MyProfile.Entity.Model
 		[Column(TypeName = "Money")]
 		public decimal Balance { get; set; }
 		[Column(TypeName = "Money")]
-		public decimal CachBackBalance { get; set; }
+		public decimal CachbackBalance { get; set; }
 
 		[MaxLength(264)]
 		public string Description { get; set; }
         public decimal? InterestRate { get; set; }
-        public decimal? CashBackForAllPercent { get; set; }
+        public decimal? CachbackForAllPercent { get; set; }
         public bool IsCachback { get; set; }
 		/// <summary>
 		/// Is cachback return money or rocket-ruble or miles and etc/
 		/// </summary>
-        public bool IsCachBackMoney { get; set; }
+        public bool IsCachbackMoney { get; set; }
         public bool IsOverdraft { get; set; }
         public bool IsDefault { get; set; }
         public bool IsHide { get; set; }
         public bool IsDeleted { get; set; }
 		public DateTime? ExpirationDate { get; set; }
-		public DateTime? ResetCashBackDate { get; set; }
+		public DateTime? ResetCachbackDate { get; set; }
 		public DateTime DateCreate { get; set; }
 		public DateTime LastChanges { get; set; }
 
@@ -42,7 +42,7 @@ namespace MyProfile.Entity.Model
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }
 		[ForeignKey("Currency")]
-		public int? CurrencyID { get; set; }
+		public int CurrencyID { get; set; }
 		[ForeignKey("Bank")]
 		public int? BankID { get; set; }
 

@@ -105,6 +105,18 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<UserSettings>()
             .Property(b => b.CanUseAlgorithm)
             .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Month_Accounts)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Month_Summary)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_Accounts)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_Summary)
+              .HasDefaultValue(true);
 
             //modelBuilder.Entity<VisibleElement>()
             //    .Property(b => b.IsShow_BudgetMonth)

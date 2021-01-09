@@ -50,6 +50,9 @@ namespace MyProfile.Areas.Identity.Controllers
                 user.UserSettings.Month_GoalWidgets = dbUserSettings.Month_GoalWidgets = userSettings.Month_GoalWidgets;
 
                 user.UserSettings.Month_BigCharts = dbUserSettings.Month_BigCharts = userSettings.Month_BigCharts;
+
+                user.UserSettings.Month_Summary = dbUserSettings.Month_Summary = userSettings.Month_Summary;
+                user.UserSettings.Month_Accounts = dbUserSettings.Month_Accounts = userSettings.Month_Accounts;
             }
             else if (userSettings.PageName == "Budget/Year")
             {
@@ -64,6 +67,9 @@ namespace MyProfile.Areas.Identity.Controllers
                 user.UserSettings.Year_GoalWidgets = dbUserSettings.Year_GoalWidgets = userSettings.Year_GoalWidgets;
 
                 user.UserSettings.Year_BigCharts = dbUserSettings.Year_BigCharts = userSettings.Year_BigCharts;
+
+                user.UserSettings.Year_Summary = dbUserSettings.Year_Summary = userSettings.Year_Summary;
+                user.UserSettings.Year_Accounts = dbUserSettings.Year_Accounts = userSettings.Year_Accounts;
             }
             else if (userSettings.PageName == "Goal/List")
             {

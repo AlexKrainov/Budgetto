@@ -138,6 +138,8 @@ namespace MyProfile.User.Service
                          Month_BigCharts = x.UserSettings.Month_BigCharts,
                          Month_GoalWidgets = x.UserSettings.Month_GoalWidgets,
                          Month_LimitWidgets = x.UserSettings.Month_LimitWidgets,
+                         Month_Accounts = x.UserSettings.Month_Accounts,
+                         Month_Summary = x.UserSettings.Month_Summary,
 
                          Year_EarningWidget = x.UserSettings.Year_EarningWidget,
                          Year_InvestingWidget = x.UserSettings.Year_InvestingWidget,
@@ -145,6 +147,8 @@ namespace MyProfile.User.Service
                          Year_BigCharts = x.UserSettings.Year_BigCharts,
                          Year_GoalWidgets = x.UserSettings.Year_GoalWidgets,
                          Year_LimitWidgets = x.UserSettings.Year_LimitWidgets,
+                         Year_Accounts = x.UserSettings.Year_Accounts,
+                         Year_Summary = x.UserSettings.Year_Summary,
 
                          GoalPage_IsShow_Collective = x.UserSettings.GoalPage_IsShow_Collective,
                          GoalPage_IsShow_Finished = x.UserSettings.GoalPage_IsShow_Finished,
@@ -162,7 +166,8 @@ namespace MyProfile.User.Service
                          IsShowFirstEnterHint = x.UserSettings.IsShowFirstEnterHint,
                          IsShowConstructor = x.UserSettings.IsShowConstructor,
                          IsShowCookie = x.UserSettings.IsShowCookie,
-                     }
+                     },
+
                  })
                  .FirstOrDefaultAsync();
 
@@ -246,6 +251,17 @@ namespace MyProfile.User.Service
                             //DateTo = now.AddMonths(2),
                             Tariff = PaymentTariffs.Free,
                         }
+                    }
+                },
+                Accounts = new List<Account>{
+                    new Account
+                    {
+                        AccountTypeID = (int)AccountTypesEnum.Cash,
+                        Balance = 0,
+                        CurrencyID = 1, //Rubles
+                        DateCreate = now,
+                        IsDefault = true,
+                        Name = "Наличные",
                     }
                 },
                 UserTypeID = (int)UserTypeEnum.User,

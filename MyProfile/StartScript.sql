@@ -101,3 +101,24 @@ VALUES (13, 'Поиск записей' ,'2020-12-04 21:40:32.8652966', '2020-12
 
 SET IDENTITY_INSERT [HelpArticles] OFF
 GO
+
+SET IDENTITY_INSERT [AccountTypes] ON 
+
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (1, N'Наличные', N'Cash', 'ion ion-ios-cash')
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (2, N'Дебедовый счет', N'Debed', 'fas fa-credit-card')
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (3, N'Кредитный счет', N'Credit', 'fas fa-credit-card')
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (4, N'Карта рассрочки', N'Installment', 'fas fa-credit-card')
+SET IDENTITY_INSERT [AccountTypes] OFF
+GO
+
+SET IDENTITY_INSERT [Banks] ON 
+
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (1, N'Сбер', '')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (2, N'ВТБ', '')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (3, N'Газпромбанк', '')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (4, N'Альфа-Банк', '/resources/banks/alfa-logo.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (5, N'Банк Открытие', '')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (6, N'Тинькофф Банк', '/resources/banks/tinkoff-bank.png')
+
+SET IDENTITY_INSERT [Banks] OFF
+GO

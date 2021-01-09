@@ -48,6 +48,8 @@ namespace MyProfile.Entity.ModelView
         public string CssBackground { get; set; }
         public string CssColor { get; set; }
         public int? SectionTypeID { get; set; }
+        public int? AccountID { get; set; }
+        public AccountModelView Account { get; set; }
     }
 
     /// <summary>
@@ -67,6 +69,8 @@ namespace MyProfile.Entity.ModelView
         public int? CurrencyID { get; set; }
         public decimal? CurrencyRate { get; set; }
         public int? CurrencyNominal { get; set; }
+        public int AccountID { get; set; }
+        public AccountModelView Account { get; set; }
 
         public IEnumerable<RecordTag> Tags { get; set; }
     }
@@ -102,5 +106,12 @@ namespace MyProfile.Entity.ModelView
         public int Count { get; set; }
         public string Title { get; set; }
         public bool IsShow { get; set; } = true;
+    }
+    public class AccountModelView
+    {
+        public int AccountType { get; set; }
+        public string BankImage { get; set; }
+        public string Name { get; set; }
+        public string AccountIcon { get; set; }
     }
 }

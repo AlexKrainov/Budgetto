@@ -22,6 +22,7 @@
         <script src="~/pages/budget/history-modal.js" asp-append-version="true"></script>
         <script src="~/pages/reminder/budget-reminder-model.js" asp-append-version="true"></script>
         <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/account-modal.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/vendor/libs/flatpickr/plugins/monthSelect.min.js" asp-append-version="true"></script>
@@ -31,6 +32,7 @@
         <script src="~/pages/budget/history-modal.min.js" asp-append-version="true"></script>
         <script src="~/pages/reminder/budget-reminder-model.min.js" asp-append-version="true"></script>
         <script src="~/pages/goal/goal-add-money.min.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/account-modal.js" asp-append-version="true"></script>
     </environment>
 }
 
@@ -40,46 +42,31 @@
     <input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />
 
     <!-- Head block -->
-
-    <div class="container-m-nx container-m-ny theme-bg-white container-p-x py-4 mb-0">
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group col">
-                    <div class="input-group budget-date">
-                        <span class="input-group-prepend" style=" width: 50px;">
-                            <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 день"
-                                    v-bind:disabled="isLoading">
-                                <i class="fa fa-angle-left font-size-large" aria-hidden="true"></i>
-                            </button>
-                        </span>
-                        <input type="text" class="form-control text-center" id="budget-date" v-model="budgetDate" v-on:input="refresh(undefined)">
-                        <span class="input-group-append" style=" width: 50px;">
-                            <button v-on:click="changeView(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 день"
-                                    v-bind:disabled="isLoading">
-                                <i class="fa fa-angle-right font-size-large" aria-hidden="true"></i>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <h2 class="font-weight-light mb-2">Сегодня: <b>@DateTime.Now.ToString("dd.MM.yyyy")</b></h2>
-                @*<div class="badge badge-success font-weight-bold"></div>*@
-            </div>
-            <div class="col-md-4">
-                @*<button class="btn btn-lg btn-default" id="test">
-                        <i class="ion ion-md-power text-danger"></i>&nbsp;
-                        Shut Down
-                    </button>*@
+    <div class="row mb-2">
+        <div class="col-md-4 px-1">
+            <div class="input-group budget-date">
+                <span class="input-group-prepend" style="width: 50px;height: 26px;">
+                    <button v-on:click="changeView(-1)" class="btn btn-sm btn-default modal-record-date-button" type="button" title="Минус 1 день"
+                            v-bind:disabled="isLoading">
+                        <i class="fa fa-angle-left font-size-large" aria-hidden="true"></i>
+                    </button>
+                </span>
+                <input type="text" class="form-control form-control-sm text-center" id="budget-date" v-model="budgetDate" v-on:input="refresh(undefined)">
+                <span class="input-group-append" style="width: 50px;height: 26px;">
+                    <button v-on:click="changeView(1)" class="btn btn-sm btn-default modal-record-date-button" type="button" title="Плюс 1 день"
+                            v-bind:disabled="isLoading">
+                        <i class="fa fa-angle-right font-size-large" aria-hidden="true"></i>
+                    </button>
+                </span>
             </div>
         </div>
     </div>
-    <!-- / Head block -->
-    <hr class="container-m-nx border-light mt-0 mb-2">
 
+    <div class="row summary-view">
+        @await Html.PartialAsync("_SummaryView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+    </div>
     <div class="row total-view">
-        @await Html.PartialAsync("_TotalView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+        @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
     </div>
     <div class="row">
         @await Html.PartialAsync("_LimitsView")
@@ -160,5 +147,6 @@
     @await Html.PartialAsync("../Reminder/_ReminderListModel.cshtml")
 </div>
 @await Html.PartialAsync("../Goal/_GoalAddMoney.cshtml")
+@await Html.PartialAsync("../Account/_AccountModal.cshtml")
 
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Month")

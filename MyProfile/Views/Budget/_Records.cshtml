@@ -6,7 +6,14 @@
     <div v-if="record.isDeleted == false">
         <div class="row">
             <div class="col-md-6 col-sm-12 col-12">
-                <i class="record-icon position-absolute" v-bind:class="record.cssIcon"></i>
+                <div class="ui-feed-icon-container d-inline-block"
+                     v-bind:class="record.account.accountType != 1 && record.account.bankImage ? 'mr-2': ''">
+                    <img v-show="record.account.accountType != 1 && record.account.bankImage" v-bind:src="record.account.bankImage" v-bind:alt="record.account.bankName" class="ui-w-40 rounded-circle ui-icon ui-feed-icon">
+                    <span v-show="record.account.accountType == 1 || (record.account.accountType != 1 && !record.account.bankImage)" class="ui-icon ui-feed-icon ui-statistics-icon text-primary"
+                          v-bind:class="record.account.accountIcon"></span>
+                    @*<span class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-toggle="tooltip" title="Счет по умолчанию"></span>*@
+                    <i  class="ui-icon ui-statistics-icon text-primary" v-bind:class="record.cssIcon"></i>
+                </div>
                 <div>
                     <h5 class="mb-0">
                         {{ record.areaName }} > {{ record.sectionName }}

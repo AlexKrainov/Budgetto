@@ -52,6 +52,11 @@
         bigCharts: [],
         bigChartHeight: 310,
 
+        //Summary
+        //Accounts
+        accounts: [],
+        accountsAjax: null,
+
         isLoading: false,
     },
     watch: {},
@@ -503,6 +508,38 @@
                 }
             });
         },
+        //Summary
+        //Accounts
+        loadAccounts: function () {
+            //if (!(UserInfo.UserSettings.Dashboard_Month_Accounts)) {
+            //    return false;
+            //}
+
+            if (this.accountsAjax && (this.accountsAjax.readyState == 1 || this.accountsAjax.readyState == 3)) { // OPENED & LOADING
+                this.accountsAjax.abort();
+            }
+
+            this.accountsAjax = $.ajax({
+                type: "GET",
+                url: "/Account/GetAccounts",
+                contentType: "application/json",
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    this.accounts = response.accounts;
+                }
+            });
+            return this.accountsAjax;
+        },
+        editAccount: function (account) {
+            AccountVue.edit(JSCopyObject(account));
+        },
+        removeOrRecoveryAccount: function (account) {
+            AccountVue.removeOrRecovery(account);
+        },
+        showHideAccount: function (account, isHide) {
+           return AccountVue.showHide(account, isHide);
+        },
         //resize and refresh
         refresh: function (typeRefresh) {
             //let typeRefresh = [
@@ -532,13 +569,24 @@
                 this.loadBigCharts();
                 this.loadTotalCharts();
                 this.loadLimitCharts();
+                this.loadAccounts();
                 return false;
             }
             if (typeRefresh == "onlyGoal") {
                 ShowLoading("#goal-contrainer");
-                this.loadGoalCharts().then(function () {
-                    HideLoading("#goal-contrainer");
-                });
+                this.loadGoalCharts()
+                    .then(function () {
+                        HideLoading("#goal-contrainer");
+                    });
+                return;
+            }
+
+            if (typeRefresh == "onlySummery") {
+                ShowLoading(".summary-view");
+                this.loadAccounts()
+                    .then(function () {
+                        HideLoading(".summary-view");
+                    });
                 return;
             }
 
@@ -546,10 +594,11 @@
             this.loadTotalCharts();
             this.loadLimitCharts();
             this.loadGoalCharts();
+            this.loadAccounts();
 
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
-            
+
             let dateOfPayment = moment(dateTimeOfPayment);
 
             if (this.periodType == PeriodTypeEnum.Month) {
@@ -566,7 +615,7 @@
                     return this.refresh("runtimeData");
                 }
             }
-            
+
             return false;
         },
         resizeAll: function () {

@@ -1,0 +1,121 @@
+﻿
+<div class="col-md-12 px-1">
+    <div class="card mb-4">
+        <div class="row no-gutters row-bordered">
+            <div class="col-lg-4">
+
+                <div class="card-body pb-0">
+                    <div class="text-muted small">Денежный поток ( доходы - расходы )</div>
+                    <div class="row">
+                        <div class="col-md-4 text-xlarge" style="display: inline-block">
+                            3 182 ₽<small><sup class="text-success">+11.25%</sup></small>
+                        </div>
+                        <div class="col-md-8" style="display:inline-block; width: 60%; height: 50px;">
+                            <canvas id="statistics-chart-14"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+
+                <div class="card-body row">
+                    <div class="col-lg-6 text-muted small ">Рабочих часов в месяц</div><div class="col-lg-6">178</div>
+                    <div class="col-lg-6 text-muted small ">Обязательств в месяц</div><div class="col-lg-6 text-danger">12 000 ₽</div>
+                    <div class="col-lg-6 text-muted small ">Итого денег на счетах</div><div class="col-lg-6 text-success">136 000 ₽</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row no-gutters row-bordered" style="overflow: inherit; border-top: 1px solid lightgray;">
+            <div v-for="account in accounts"
+                 v-bind:id="'account_'+ account.id"
+                 v-bind:class="[account.isHide ? 'col-lg-1' : 'col-lg-3', account.isDeleted ? 'deleted-item': '' ]">
+
+                <div class="card-body d-flex align-items-center py-3 px-3" style="padding-bottom: 15px !important; "
+                     v-if="!account.isHide">
+                    <div class="ui-feed-icon-container d-inline-block"
+                         v-bind:class="account.accountType != 1 && account.bankImage ? 'mr-2': ''">
+                        <span class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-toggle="tooltip" title="Счет по умолчанию"
+                              v-if="account.isDefault"></span>
+                        <img v-show="account.accountType != 1 && account.bankImage" v-bind:src="account.bankImage" v-bind:alt="account.bankName" class="ui-w-40 rounded-circle">
+                        <span v-show="account.accountType == 1 || (account.accountType != 1 && !account.bankImage)" class="ui-icon ui-statistics-icon text-primary"
+                              v-bind:class="account.accountIcon"></span>
+                    </div>
+                    <div class="ml-3">
+                        <div class="text-xlarge"
+                             v-bind:class="account.balance < 0 ? 'text-danger' : ''">{{ getCurrencyValue(account.balance) }}</div>
+                        <div class="text-muted small">{{ account.name }}</div>
+                    </div>
+
+                    <button type="button" data-toggle="dropdown" aria-expanded="false"
+                            class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
+                            style="position: absolute;right: 10px;top: 5px;"
+                            v-show="!account.isDeleted">
+                        <i class="ion ion-ios-more"></i>
+                    </button>
+                    <i class="fa fa-undo pl-2 float-right text-success cursor-pointer"
+                       style="position: absolute;right: 13px;top: 13px;"
+                       v-show="account.isDeleted"
+                       v-on:click="removeOrRecoveryAccount(account)"></i>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="javascript:void(0)"
+                           v-on:click="editAccount(account)">Редактировать счет</a>
+                        <a class="dropdown-item" href="javascript:void(0)"
+                           v-on:click="showHideAccount(account, true)">Скрыть счет</a>
+                        <a class="dropdown-item text-danger" href="javascript:void(0)"
+                           v-on:click="removeOrRecoveryAccount(account)">Удалить счет</a>
+                    </div>
+                </div>
+                <div class="card-footer small"
+                     v-if="!account.isHide">
+                    <span class="float-right text-success">{{ getCurrencyValue(account.cachBackBalance) }}</span>
+                    Кешбек
+                </div>
+
+                <div class="card-body d-flex align-items-center py-3" style="padding-bottom: 15px !important; "
+                     v-else-if="account.isHide">
+                    <div class="ui-feed-icon-container d-inline-block">
+                        <span class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-toggle="tooltip" title="Счет по умолчанию"
+                              v-if="account.isDefault"></span>
+                        <img class="ui-w-40 rounded-circle" data-toggle="tooltip"
+                             v-show="account.accountType != 1 && account.bankImage"
+                             v-bind:src="account.bankImage"
+                             v-bind:alt="account.bankName"
+                             v-bind:title="account.name">
+                        <span class="ui-icon ui-statistics-icon text-primary" data-toggle="tooltip"
+                              v-show="account.accountType == 1 || (account.accountType != 1 && !account.bankImage)"
+                              v-bind:class="account.accountIcon"
+                              v-bind:title="account.name"></span>
+                    </div>
+                    <button type="button" data-toggle="dropdown" aria-expanded="false"
+                            class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
+                            v-if="!account.isDeleted"
+                            style="position: absolute;right: 10px;top: 5px;">
+                        <i class="ion ion-ios-more"></i>
+                    </button>
+                    <i class="fa fa-undo pl-2 float-right text-success cursor-pointer"
+                       style="position: absolute;right: 13px;top: 13px;"
+                       v-else-if="account.isDeleted"
+                       v-on:click="removeOrRecoveryAccount(account)"></i>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="javascript:void(0)"
+                           v-on:click="editAccount(account)">Редактировать счет</a>
+                        <a class="dropdown-item" href="javascript:void(0)"
+                           v-on:click="showHideAccount(account, false)">Показавать счет</a>
+                        <a class="dropdown-item text-danger" href="javascript:void(0)"
+                           v-on:click="removeOrRecoveryAccount(account)">Удалить счет</a>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-lg-1">
+                <div class="card-body d-flex justify-content-center align-items-center pt-3" style=" padding-bottom: 15px !important;">
+                    <span class="ui-icon ui-statistics-icon ion ion-md-add text-primary cursor-pointer"
+                          v-on:click="editAccount()"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-4"></div>

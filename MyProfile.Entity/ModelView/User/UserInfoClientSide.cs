@@ -51,6 +51,10 @@ namespace MyProfile.Entity.ModelView.User
         public bool IsShowCookie { get; set; }
         public bool Mail_Reminders { get; set; }
         public bool CanUseAlgorithm { get; set; }
+        public bool Dashboard_Month_IsShow_Accounts { get; set; }
+        public bool Dashboard_Month_IsShow_Summary { get; set; }
+        public bool Dashboard_Year_IsShow_Accounts { get; set; }
+        public bool Dashboard_Year_IsShow_Summary { get; set; }
     }
     public class CurrencyClientSide 
     {

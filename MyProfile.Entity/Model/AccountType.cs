@@ -6,7 +6,10 @@ namespace MyProfile.Entity.Model
 	public enum AccountTypesEnum
 	{
 		Undefined,
-		Cash = 1
+		Cash = 1,
+		Debed,
+		Credit,
+		Installment
 	}
 	public class AccountType
 	{
@@ -21,7 +24,7 @@ namespace MyProfile.Entity.Model
 		public string CodeName { get; set; }
 		[MaxLength(512)]
 		public string Description { get; set; }
-		[MaxLength(16)]
+		[MaxLength(64)]
 		public string Icon { get; set; }
 	}
 }

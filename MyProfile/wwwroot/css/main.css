@@ -745,3 +745,7 @@ html.dark-style .tagify__input::before {
 .bs-tooltip-top {
     z-index: 1081 !important;
 }
+
+.dropdown-menu {
+    z-index: 1080 !important;
+}

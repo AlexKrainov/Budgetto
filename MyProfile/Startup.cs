@@ -70,6 +70,7 @@ namespace MyProfile
             services.AddTransient<HelpCenterService>();
             services.AddTransient<PaymentService>();
             services.AddTransient<TagService>();
+            services.AddTransient<AccountService>();
 
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();
