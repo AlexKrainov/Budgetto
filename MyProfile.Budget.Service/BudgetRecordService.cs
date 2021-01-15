@@ -1,10 +1,12 @@
-﻿using LinqKit;
+﻿using Common.Service;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.AreaAndSection;
 using MyProfile.Entity.ModelView.BudgetView;
+using MyProfile.Entity.ModelView.Currency;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Tag.Service;
@@ -14,8 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RecordTag = MyProfile.Entity.ModelView.RecordTag;
 
@@ -29,13 +29,15 @@ namespace MyProfile.Budget.Service
         private TagService tagService;
         private AccountService accountService;
         private SectionService sectionService;
+        private CommonService commonService;
         private IMemoryCache cache;
 
         public BudgetRecordService(IBaseRepository repository,
             TagService tagService,
             AccountService accountService,
             IMemoryCache cache,
-            SectionService sectionService)
+            SectionService sectionService,
+            CommonService commonService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
@@ -43,6 +45,7 @@ namespace MyProfile.Budget.Service
             this.tagService = tagService;
             this.accountService = accountService;
             this.sectionService = sectionService;
+            this.commonService = commonService;
             this.cache = cache;
         }
 
@@ -81,10 +84,14 @@ namespace MyProfile.Budget.Service
             List<int> errorLogCreateIDs = new List<int>();
             List<int> errorLogEditIDs = new List<int>();
             budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
-            decimal cashback = 0;
+            decimal recordCashback = 0;
+            decimal _money = 0;
             List<Account> accounts = new List<Account>();
             List<SectionLightModelView> sections = (await sectionService.GetAllSectionByUser()).ToList();
             bool isSpending = false;
+            BankCurrencyData accountCurrency;
+            List<AccountRecordHistory> histories = new List<AccountRecordHistory>();
+            AccountRecordHistory history;
 
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
@@ -93,11 +100,13 @@ namespace MyProfile.Budget.Service
                     record.IsSaved = false;
                     continue;
                 }
-                cashback = 0;
+                recordCashback = 0;
+                _money = 0;
+                history = new AccountRecordHistory();
 
                 Account account = accounts.FirstOrDefault(x => x.ID == record.AccountID);
                 SectionLightModelView section = sections.FirstOrDefault(x => x.ID == record.SectionID);
-                isSpending = section.SectionTypeID == (int?)SectionTypeEnum.Spendings;
+                isSpending = section?.SectionTypeID == (int?)SectionTypeEnum.Spendings;
 
                 if (account == null)
                 {
@@ -111,7 +120,7 @@ namespace MyProfile.Budget.Service
                     && account.IsCachback
                     && account.CachbackForAllPercent != null)
                 {
-                    cashback = (record.Money * account.CachbackForAllPercent ?? 1) / 100;
+                    recordCashback = (record.Money * account.CachbackForAllPercent ?? 1) / 100;
                 }
                 if (record.Tags.Count() > 0)
                 {
@@ -144,7 +153,7 @@ namespace MyProfile.Budget.Service
                                 CurrencyRate = record.CurrencyRate,
                                 CurrencyNominal = record.CurrencyNominal ?? 1,
                                 IsShowForCollection = budgetRecord.IsShowInCollection,
-                                Cashback = cashback,
+                                Cashback = recordCashback,
                                 Tags = record.Tags
                                     .Select(x => new Entity.Model.RecordTag
                                     {
@@ -159,19 +168,87 @@ namespace MyProfile.Budget.Service
                             record.IsSaved = true;
 
                             #region Account 
+                            accountCurrency = new BankCurrencyData
+                            {
+                                CurrencyID = account.CurrencyID ?? 0,
+                                Date = newRecord.DateTimeOfPayment.Date,
+                            };
+                            history.RecordCachback = recordCashback;
+
+                            if ((record.CurrencyID == currentUser.CurrencyID && currentUser.CurrencyID == account.CurrencyID)
+                                ||
+                                (record.CurrencyID != currentUser.CurrencyID && currentUser.CurrencyID == account.CurrencyID))
+                            {
+                                _money = record.Money;
+                            }
+                            else if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
+                            {
+                                accountCurrency.Rate = record.CurrencyRate;
+                                accountCurrency.Nominal = record.CurrencyNominal ?? 1;
+
+                                _money = record.Money / record.CurrencyRate ?? 1;
+                            }
+                            else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
+                            {
+                                var val = await commonService.GetRatesFromBank(newRecord.DateTimeOfPayment, account.Currency.CodeName_CBR);
+
+                                if (val != null)
+                                {
+                                    accountCurrency.Rate = val.Rate;
+                                    accountCurrency.Nominal = val.Nominal;
+
+                                    _money = record.Money / accountCurrency.Rate ?? 1;
+                                }
+                                else
+                                {
+                                    record.isAnyError = true;
+                                    record.Error = "Не удалось списать средства со счета: " + account.Name;
+                                    _money = 0;
+                                    recordCashback = 0;
+                                }
+                            }
+
                             if (isSpending)
                             {
-                                account.Balance -= record.Money;
+                                account.Balance -= _money;
 
-                                if (account.IsCachback && account.CachbackForAllPercent != null)
+                                if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                 {
-                                    account.CachbackBalance += cashback;
+                                    if (!(record.CurrencyID == account.CurrencyID && record.CurrencyID == currentUser.CurrencyID))
+                                    {
+                                        recordCashback = ((record.Money / accountCurrency.Rate ?? 1) * account.CachbackForAllPercent ?? 1) / 100;
+                                    }
+                                    account.CachbackBalance += recordCashback;
+                                }
+                                else
+                                {
+                                    recordCashback = 0;
                                 }
                             }
                             else
                             {
-                                account.Balance += record.Money;
+                                account.Balance += _money;
                             }
+
+                            history.ActionTypeCode = ActionTypeCode.Create;
+                            history.RecordID = newRecord.ID;
+                            history.AccountID = account.ID;
+                            history.DateTimeOfPayment = newRecord.DateTimeOfPayment;
+                            history.DateCreate = now;
+                            history.RecordCurrencyID = newRecord.CurrencyID ?? 0;
+                            history.RacordCurrencyRate = newRecord.CurrencyRate;
+                            history.RecordCurrencyNominal = newRecord.CurrencyNominal;
+                            history.AccountCurrencyID = account.CurrencyID ?? 0;
+                            history.AccountCurrencyNominal = accountCurrency.Nominal;
+                            history.AccountCurrencyRate = accountCurrency.Rate;
+                            history.SectionID = newRecord.BudgetSectionID;
+                            history.RecordTotal = newRecord.Total;
+                            history.AccountNewBalance = account.Balance;
+                            history.AccountNewBalanceCashback = account.CachbackBalance;
+                            history.AccountTotal = _money;
+                            history.AccountCashback = recordCashback;
+
+                            histories.Add(history);
                             #endregion
                         }
                     }
@@ -200,7 +277,7 @@ namespace MyProfile.Budget.Service
                                 oldSectionTypeID = dbRecord.BudgetSection.SectionTypeID ?? 0;
                             decimal oldTotal = dbRecord.Total,
                                 oldCashback = dbRecord.Cashback;
-                            bool isOldAccountHasChashback = dbRecord.Account.IsCachback && dbRecord.Account.CachbackForAllPercent != null;
+                            bool isChangeAccount = record.AccountID != dbRecord.AccountID;
 
                             dbRecord.BudgetSectionID = record.SectionID;
                             dbRecord.Total = record.Money;
@@ -213,7 +290,7 @@ namespace MyProfile.Budget.Service
                             dbRecord.IsShowForCollection = budgetRecord.IsShowInCollection;
                             dbRecord.DateTimeEdit = now;
                             dbRecord.AccountID = record.AccountID;
-                            dbRecord.Cashback = cashback;
+                            dbRecord.Cashback = recordCashback;
 
                             foreach (var newTag in tagService.CheckTags(dbRecord.Tags, record.Tags.ToList()))
                             {
@@ -224,40 +301,109 @@ namespace MyProfile.Budget.Service
                             record.IsSaved = true;
 
                             #region Account
-                            if (oldAccountID == record.AccountID)
+
+                            accountCurrency = new BankCurrencyData
                             {
+                                CurrencyID = account.CurrencyID ?? 0,
+                                Date = dbRecord.DateTimeOfPayment.Date,
+                            };
+
+                            if (isChangeAccount == false)
+                            {
+                                #region OLD Return back balance and cashback
+
+                                AccountRecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
+                                       .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
+                                       .OrderByDescending(x => x.ID)
+                                       .FirstOrDefault();
+
+                                // if ((record.CurrencyID == currentUser.CurrencyID && currentUser.CurrencyID == account.CurrencyID)
+                                //||
+                                //(record.CurrencyID != currentUser.CurrencyID && currentUser.CurrencyID == account.CurrencyID))
+                                // {
+                                //     _money = oldTotal;
+                                // }
+                                // else //if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
+                                // // and when record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
+                                // {
+
+                                //     _money = oldTotal / lastRecordHistory.AccountCurrencyRate ?? 1;
+                                // }
+
                                 if (oldSectionTypeID == (int)SectionTypeEnum.Spendings)
                                 {
-                                    account.Balance += oldTotal;
+                                    account.Balance += lastAccountRecordHistory.AccountTotal;// _money;
 
-                                    if (isOldAccountHasChashback)
+                                    if (lastAccountRecordHistory.Account.IsCachback && lastAccountRecordHistory.Account.CachbackForAllPercent != null)
                                     {
-                                        account.CachbackBalance -= oldCashback;
+                                        account.CachbackBalance -= lastAccountRecordHistory.AccountCashback;
                                     }
                                 }
                                 else
                                 {
-                                    account.Balance -= oldTotal;
+                                    account.Balance -= lastAccountRecordHistory.AccountTotal;
+                                }
+                                #endregion
+
+
+                                #region NEW action with balance and cashback
+
+                                if ((record.CurrencyID == currentUser.CurrencyID && currentUser.CurrencyID == account.CurrencyID)
+                                     ||
+                                    (record.CurrencyID != currentUser.CurrencyID && currentUser.CurrencyID == account.CurrencyID))
+                                {
+                                    _money = record.Money;
+                                }
+                                else if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
+                                {
+                                    accountCurrency.Rate = record.CurrencyRate;
+                                    accountCurrency.Nominal = record.CurrencyNominal ?? 1;
+
+                                    _money = record.Money / record.CurrencyRate ?? 1;
+                                }
+                                else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
+                                {
+                                    var val = await commonService.GetRatesFromBank(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR);
+
+                                    if (val != null)
+                                    {
+                                        accountCurrency.Rate = val.Rate;
+                                        accountCurrency.Nominal = val.Nominal;
+
+                                        _money = record.Money / accountCurrency.Rate ?? 1;
+                                    }
+                                    else
+                                    {
+                                        record.isAnyError = true;
+                                        record.Error = "Не удалось списать средства со счета: " + account.Name;
+                                        _money = 0;
+                                        recordCashback = 0;
+                                    }
                                 }
 
                                 if (isSpending)//new section type
                                 {
-                                    account.Balance -= record.Money;
+                                    account.Balance -= _money;
 
-                                    if (account.IsCachback && account.CachbackForAllPercent != null)
+                                    if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                     {
-                                        account.CachbackBalance += cashback;
+                                        if (!(record.CurrencyID == account.CurrencyID && record.CurrencyID == currentUser.CurrencyID))
+                                        {
+                                            recordCashback = ((record.Money / accountCurrency.Rate ?? 1) * account.CachbackForAllPercent ?? 1) / 100;
+                                        }
+                                        account.CachbackBalance += recordCashback;
                                     }
                                 }
                                 else
                                 {
-                                    account.Balance += record.Money;
+                                    account.Balance += _money;
                                 }
+                                #endregion
                             }
                             else
                             {
-                                Account oldAccount = accounts.FirstOrDefault(x => x.ID == oldAccountID);
 
+                                Account oldAccount = accounts.FirstOrDefault(x => x.ID == oldAccountID);
                                 if (oldAccount == null)
                                 {
                                     oldAccount = await repository.GetAll<Account>(x => x.ID == oldAccountID)
@@ -266,33 +412,118 @@ namespace MyProfile.Budget.Service
                                     accounts.Add(oldAccount);
                                 }
 
+                                AccountRecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
+                                     .Where(x => (x.ActionTypeCode == ActionTypeCode.Create
+                                          || x.ActionTypeCode == ActionTypeCode.Edit)
+                                          && x.AccountID == oldAccount.ID)
+                                     .OrderByDescending(x => x.ID)
+                                     .FirstOrDefault();
+
+                                #region OLD Return back balance and cashback
+
+                                //if ((record.CurrencyID == currentUser.CurrencyID && currentUser.CurrencyID == oldAccount.CurrencyID)
+                                //    ||
+                                //    (record.CurrencyID != currentUser.CurrencyID && currentUser.CurrencyID == oldAccount.CurrencyID))
+                                //{
+                                //    _money = oldTotal;
+                                //}
+                                //else //if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
+                                //// and when record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
+                                //{
+                                //    _money = oldTotal / lastAccountRecordHistory.AccountCurrencyRate ?? 1;
+                                //}
+
                                 if (oldSectionTypeID == (int)SectionTypeEnum.Spendings)
                                 {
-                                    oldAccount.Balance += oldTotal;
-                                    if (oldAccount.IsCachback && oldAccount.CachbackForAllPercent != null)
+                                    oldAccount.Balance += lastAccountRecordHistory.AccountTotal; // _money;
+
+                                    if (lastAccountRecordHistory.Account.IsCachback && lastAccountRecordHistory.Account.CachbackForAllPercent != null)
                                     {
-                                        oldAccount.CachbackBalance -= oldCashback;
+                                        oldAccount.CachbackBalance -= lastAccountRecordHistory.AccountNewBalanceCashback;
                                     }
                                 }
                                 else
                                 {
-                                    oldAccount.Balance -= oldTotal;
+                                    oldAccount.Balance -= lastAccountRecordHistory.AccountTotal; ;// _money;
+                                }
+
+                                #endregion
+
+                                #region NEW New action with balance and cashback
+
+                                if ((record.CurrencyID == currentUser.CurrencyID && currentUser.CurrencyID == account.CurrencyID)
+                                     ||
+                                    (record.CurrencyID != currentUser.CurrencyID && currentUser.CurrencyID == account.CurrencyID))
+                                {
+                                    _money = record.Money;
+                                }
+                                else if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
+                                {
+                                    accountCurrency.Rate = record.CurrencyRate;
+                                    accountCurrency.Nominal = record.CurrencyNominal ?? 1;
+
+                                    _money = record.Money / record.CurrencyRate ?? 1;
+                                }
+                                else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
+                                {
+                                    var val = await commonService.GetRatesFromBank(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR);
+
+                                    if (val != null)
+                                    {
+                                        accountCurrency.Rate = val.Rate;
+                                        accountCurrency.Nominal = val.Nominal;
+
+                                        _money = record.Money / accountCurrency.Rate ?? 1;
+                                    }
+                                    else
+                                    {
+                                        record.isAnyError = true;
+                                        record.Error = "Не удалось списать средства со счета: " + account.Name;
+                                        _money = 0;
+                                        recordCashback = 0;
+                                    }
                                 }
 
                                 if (isSpending)// new section type
                                 {
-                                    account.Balance -= record.Money;
+                                    account.Balance -= _money;
 
-                                    if (account.IsCachback && account.CachbackForAllPercent != null)
+                                    if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                     {
-                                        account.CachbackBalance += cashback;
+                                        if (!(record.CurrencyID == account.CurrencyID && record.CurrencyID == currentUser.CurrencyID))
+                                        {
+                                            recordCashback = ((record.Money / accountCurrency.Rate ?? 1) * account.CachbackForAllPercent ?? 1) / 100;
+                                        }
+                                        account.CachbackBalance += recordCashback;
                                     }
                                 }
                                 else
                                 {
-                                    account.Balance += record.Money;
+                                    account.Balance += _money;
                                 }
+                                #endregion
                             }
+
+                            history.ActionTypeCode = ActionTypeCode.Edit;
+                            history.RecordID = dbRecord.ID;
+                            history.AccountID = account.ID;
+                            history.DateTimeOfPayment = dbRecord.DateTimeOfPayment;
+                            history.DateCreate = now;
+                            history.RecordCurrencyID = dbRecord.CurrencyID ?? 0;
+                            history.RacordCurrencyRate = dbRecord.CurrencyRate;
+                            history.RecordCurrencyNominal = dbRecord.CurrencyNominal;
+                            history.AccountCurrencyID = account.CurrencyID ?? 0;
+                            history.AccountCurrencyNominal = accountCurrency.Nominal;
+                            history.AccountCurrencyRate = accountCurrency.Rate;
+                            history.SectionID = dbRecord.BudgetSectionID;
+                            history.RecordTotal = dbRecord.Total;
+                            history.RecordCachback = dbRecord.Cashback;
+                            history.AccountNewBalance = account.Balance;
+                            history.AccountNewBalanceCashback = account.CachbackBalance;
+                            history.AccountTotal = _money;
+                            history.AccountCashback = recordCashback;
+
+                            histories.Add(history);
                             #endregion
                         }
                     }
@@ -304,6 +535,13 @@ namespace MyProfile.Budget.Service
                     isEdit = true;
                 }
             }
+            if (histories.Count > 0)
+            {
+                repository.CreateRange(histories);
+            }
+
+            await repository.SaveAsync();
+
             if (isEdit)
             {
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Edit, errorLogIDs: errorLogEditIDs);
@@ -330,26 +568,44 @@ namespace MyProfile.Budget.Service
         public async Task<bool> RemoveRecord(BudgetRecordModelView record)
         {
             var currentUser = UserInfo.Current;
+            var now = DateTime.Now.ToUniversalTime();
             var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == currentUser.ID)
                 .FirstOrDefaultAsync();
 
             if (db_record != null)
             {
                 db_record.IsDeleted = true;
-                db_record.DateTimeDelete = DateTime.Now.ToUniversalTime();
+                db_record.DateTimeDelete = now;
+
+
+                #region Account and AccountHistory
+
+                AccountRecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
+                                      .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
+                                      .OrderByDescending(x => x.ID)
+                                      .FirstOrDefault();
 
                 if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings)
                 {
-                    db_record.Account.Balance += db_record.Total;
+                    db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
                     if (db_record.Account.IsCachback && db_record.Account.CachbackForAllPercent != null)
                     {
-                        db_record.Account.CachbackBalance -= db_record.Cashback;
+                        db_record.Account.CachbackBalance -= lastAccountRecordHistory.AccountCashback;
                     }
                 }
                 else
                 {
-                    db_record.Account.Balance -= db_record.Total;
+                    db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
                 }
+
+                db_record.AccountRecordHistories.Add(new AccountRecordHistory
+                {
+                    ActionTypeCode = ActionTypeCode.Delete,
+                    AccountID = db_record.AccountID,
+                    AccountCurrencyID = db_record.Account.CurrencyID,
+                    DateCreate = now,
+                });
+                #endregion
 
                 await repository.UpdateAsync(db_record, true);
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Delete);
@@ -361,6 +617,7 @@ namespace MyProfile.Budget.Service
         public async Task<bool> RecoveryRecord(BudgetRecordModelView record)
         {
             var currentUser = UserInfo.Current;
+            var now = DateTime.Now.ToUniversalTime();
             var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
             if (db_record != null)
@@ -368,18 +625,35 @@ namespace MyProfile.Budget.Service
                 db_record.IsDeleted = false;
                 db_record.DateTimeDelete = null;
 
+                #region Account and AccountHistory
+
+                AccountRecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
+                                      .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
+                                      .OrderByDescending(x => x.ID)
+                                      .FirstOrDefault();
+
                 if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings)
                 {
-                    db_record.Account.Balance -= db_record.Total;
+                    db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
                     if (db_record.Account.IsCachback && db_record.Account.CachbackForAllPercent != null)
                     {
-                        db_record.Account.CachbackBalance += db_record.Cashback;
+                        db_record.Account.CachbackBalance += lastAccountRecordHistory.AccountCashback;
                     }
                 }
                 else
                 {
-                    db_record.Account.Balance += db_record.Total;
+                    db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
                 }
+
+                db_record.AccountRecordHistories.Add(new AccountRecordHistory
+                {
+                    ActionTypeCode = ActionTypeCode.Recovery,
+                    AccountID = db_record.AccountID,
+                    AccountCurrencyID = db_record.Account.CurrencyID,
+                    DateCreate = now,
+                });
+
+                #endregion
 
                 await repository.UpdateAsync(db_record, true);
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Recovery);
@@ -466,6 +740,7 @@ namespace MyProfile.Budget.Service
                   IsConsider = x.IsHide,
                   RawData = x.RawData,
                   Money = x.Total,
+                  Cashback = x.Cashback,
                   CurrencyID = x.CurrencyID,
                   CurrencyNominal = x.CurrencyNominal,
                   CurrencyRate = x.CurrencyRate,
@@ -489,7 +764,8 @@ namespace MyProfile.Budget.Service
                       AccountType = x.Account.AccountTypeID,
                       BankImage = x.Account.Bank != null ? x.Account.Bank.ImageSrc : null,
                       Name = x.Account.Name,
-                      AccountIcon = x.Account.AccountType.Icon
+                      AccountIcon = x.Account.AccountType.Icon,
+                      CurrencyIcon = x.Account.Currency.Icon,
                   },
                   Tags = x.Tags
                   .Select(y => new RecordTag
@@ -521,6 +797,7 @@ namespace MyProfile.Budget.Service
                   IsConsider = x.IsHide,
                   RawData = x.RawData,
                   Money = x.Total,
+                  Cashback = x.Cashback,
                   CurrencyID = x.CurrencyID,
                   CurrencyNominal = x.CurrencyNominal,
                   CurrencyRate = x.CurrencyRate,
@@ -544,7 +821,8 @@ namespace MyProfile.Budget.Service
                       AccountType = x.Account.AccountTypeID,
                       BankImage = x.Account.Bank != null ? x.Account.Bank.ImageSrc : null,
                       Name = x.Account.Name,
-                      AccountIcon = x.Account.AccountType.Icon
+                      AccountIcon = x.Account.AccountType.Icon,
+                      CurrencyIcon = x.Account.Currency.Icon,
                   },
                   Tags = x.Tags
                   .Select(y => new RecordTag
@@ -575,6 +853,7 @@ namespace MyProfile.Budget.Service
                   IsConsider = x.IsHide,
                   RawData = x.RawData,
                   Money = x.Total,
+                  Cashback = x.Cashback,
 
                   CurrencyID = x.CurrencyID,
                   CurrencyNominal = x.CurrencyNominal,
@@ -712,4 +991,5 @@ namespace MyProfile.Budget.Service
             return expression;
         }
     }
+
 }

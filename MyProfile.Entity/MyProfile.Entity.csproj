@@ -79,6 +79,30 @@
     <Compile Remove="Migrations\20201214144112_MyProfile_065.Designer.cs" />
     <Compile Remove="Migrations\20201217200254_MyProfile_068.cs" />
     <Compile Remove="Migrations\20201217200254_MyProfile_068.Designer.cs" />
+    <Compile Remove="Migrations\20210113132604_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113132604_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113132806_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113132806_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113133119_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113133119_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113133343_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113133343_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113133543_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113133543_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113133739_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113133739_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113135009_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113135009_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113135331_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113135331_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113135543_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113135543_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210113135841_MyProfile_074.cs" />
+    <Compile Remove="Migrations\20210113135841_MyProfile_074.Designer.cs" />
+    <Compile Remove="Migrations\20210114104427_MyProfile_077.cs" />
+    <Compile Remove="Migrations\20210114104427_MyProfile_077.Designer.cs" />
+    <Compile Remove="Migrations\20210114105042_077.cs" />
+    <Compile Remove="Migrations\20210114105042_077.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

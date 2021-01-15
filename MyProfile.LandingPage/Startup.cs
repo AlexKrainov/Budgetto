@@ -18,7 +18,6 @@ using MyProfile.File.Service;
 using MyProfile.Goal.Service;
 using MyProfile.HelpCenter.Service;
 using MyProfile.Limit.Service;
-using MyProfile.LittleDictionaries.Service;
 using MyProfile.Payment.Service;
 using MyProfile.Reminder.Service;
 using MyProfile.Template.Service;
@@ -60,7 +59,6 @@ namespace MyProfile.LandingPage
             services.AddTransient<BudgetService>();
             services.AddTransient<BudgetRecordService>();
             services.AddTransient<BudgetTotalService>();
-            services.AddTransient<DictionariesService>();
             services.AddTransient<SectionService>();
             services.AddTransient<UserLogService>();
             services.AddTransient<CollectionUserService>();

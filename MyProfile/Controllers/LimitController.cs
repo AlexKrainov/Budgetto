@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Model;
@@ -9,7 +10,6 @@ using MyProfile.Entity.ModelView.Limit;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Limit.Service;
-using MyProfile.LittleDictionaries.Service;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
 
@@ -20,17 +20,17 @@ namespace MyProfile.Controllers
     {
         private IBaseRepository repository;
         private LimitService limitService;
-        private DictionariesService dictionariesService;
+        private CommonService commonService;
         private UserLogService userLogService;
 
         public LimitController(IBaseRepository repository,
             LimitService limitService,
-            LittleDictionaries.Service.DictionariesService dictionariesService,
+            CommonService dictionariesService,
             UserLogService userLogService)
         {
             this.repository = repository;
             this.limitService = limitService;
-            this.dictionariesService = dictionariesService;
+            this.commonService = dictionariesService;
             this.userLogService = userLogService;
         }
 
@@ -58,7 +58,7 @@ namespace MyProfile.Controllers
 
         public async Task<JsonResult> GetPeriodTypes()
         {
-            return Json(new { isOk = true, periodTypes = dictionariesService.GetPeriodTypes() });
+            return Json(new { isOk = true, periodTypes = commonService.GetPeriodTypes() });
         }
 
         [HttpPost]

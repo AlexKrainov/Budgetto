@@ -5,6 +5,8 @@ var AccountVue = new Vue({
         account: {
             id: undefined,
             accountType: 1,
+            currency: {},
+            currencyID: -1,
             //resetCashBackDate: null
         },
 
@@ -12,12 +14,14 @@ var AccountVue = new Vue({
         banks: [],
         flatpickrExpirationDate: null,
 
+        currencyInfos: Metadata.currencies,
         isSaving: false
     },
     watch: {
 
     },
     mounted: function () {
+
         $.ajax({
             type: "GET",
             url: "/Account/GetEnvironment",
@@ -41,7 +45,14 @@ var AccountVue = new Vue({
         edit: function (account) {
             if (account) {
                 this.account = account;
+            } else {
+                this.account = {
+                    id: undefined,
+                    accountType: 1
+                };
 
+                this.account.currencyID = UserInfo.Currency.ID;
+                this.account.currency = this.currencyInfos[this.currencyInfos.findIndex(x => x.id == this.account.currencyID)];
             }
             let dateConfig = GetFlatpickrRuConfig_Month(this.account.expirationDate);
             this.flatpickrExpirationDate = flatpickr('#expirationDate', dateConfig);
@@ -165,6 +176,11 @@ var AccountVue = new Vue({
                     console.log(error);
                 }
             });
+        },
+        changeCurrency: function (currency) {
+            this.account.currencyID = currency.id;
+            this.account.currency = currency;
+            this.$forceUpdate();
         }
     }
 });

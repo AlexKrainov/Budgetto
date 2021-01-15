@@ -30,12 +30,14 @@ namespace MyProfile.Budget.Service
         private CommonService commonService;
         private IMemoryCache cache;
 
-        public SectionService(IBaseRepository repository, IMemoryCache cache)
+        public SectionService(IBaseRepository repository, 
+            IMemoryCache cache,
+            CommonService commonService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
             this.userLogService = new UserLogService(repository);
-            this.commonService = new CommonService(repository);
+            this.commonService = commonService;
             this.cache = cache;
         }
 

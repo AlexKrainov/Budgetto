@@ -20,7 +20,6 @@
     <ProjectReference Include="..\MyProfile.Goal.Service\MyProfile.Goal.Service.csproj" />
     <ProjectReference Include="..\MyProfile.HelpCenter.Service\MyProfile.HelpCenter.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Limit.Service\MyProfile.Limit.Service.csproj" />
-    <ProjectReference Include="..\MyProfile.LittleDictionaries.Service\MyProfile.LittleDictionaries.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Payment.Service\MyProfile.Payment.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Template.Service\MyProfile.Template.Service.csproj" />
     <ProjectReference Include="..\MyProfile.ToDoList.Service\MyProfile.ToDoList.Service.csproj" />

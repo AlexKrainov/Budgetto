@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Common.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MyProfile.Budget.Service;
@@ -37,7 +38,8 @@ namespace MyProfile.Controllers
             TemplateService templateService,
             SectionService sectionService,
             BudgetRecordService budgetRecordService,
-            UserLogService userLogService)
+            UserLogService userLogService,
+            CommonService commonService)
         //,IOptions<ProjectConfig> config)
         {
             this.repository = repository;
@@ -47,6 +49,7 @@ namespace MyProfile.Controllers
             this.budgetRecordService = budgetRecordService;
             this.userLogService = userLogService;
             //this.config = config;
+           
         }
 
         [HttpGet]
@@ -173,34 +176,6 @@ namespace MyProfile.Controllers
                 return Json(new { isOk = true, rows = budgetDataForTable.Item1, footerRow = budgetDataForTable.Item2, template });
             }
             return Json(new { isOk = false });
-        }
-
-        /// <summary>
-        /// http://www.cbr.ru/development/sxml/
-        /// </summary>
-        /// <param name="link"></param>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<JsonResult> GetRateFromBank(string link, DateTime date)
-        {
-            string text = string.Empty;
-            var _link = link + date.ToString("dd/MM/yyyy");
-            WebRequest wr = WebRequest.Create(_link);
-            wr.Timeout = 3500;
-
-            try
-            {
-                var response = await wr.GetResponseAsync();
-                var readStream = new StreamReader(((HttpWebResponse)response).GetResponseStream(), Encoding.GetEncoding("windows-1251"));
-                text = readStream.ReadToEnd();
-            }
-            catch (Exception ex)
-            {
-                await userLogService.CreateErrorLogAsync(UserInfo.Current.UserSessionID, where: "Budget.GetRateFromBank", ex, comment: _link);
-            }
-
-            return Json(new { isOk = true, response = text });
         }
 
         [HttpPost]

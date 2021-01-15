@@ -62,7 +62,6 @@
     <ProjectReference Include="..\MyProfile.HelpCenter.Service\MyProfile.HelpCenter.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
     <ProjectReference Include="..\MyProfile.Limit.Service\MyProfile.Limit.Service.csproj" />
-    <ProjectReference Include="..\MyProfile.LittleDictionaries.Service\MyProfile.LittleDictionaries.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Payment.Service\MyProfile.Payment.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Reminder.Service\MyProfile.Reminder.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Tag.Service\MyProfile.Tag.Service.csproj" />

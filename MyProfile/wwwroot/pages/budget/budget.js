@@ -511,9 +511,9 @@
         //Summary
         //Accounts
         loadAccounts: function () {
-            //if (!(UserInfo.UserSettings.Dashboard_Month_Accounts)) {
-            //    return false;
-            //}
+            if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Accounts)) {
+                return false;
+            }
 
             if (this.accountsAjax && (this.accountsAjax.readyState == 1 || this.accountsAjax.readyState == 3)) { // OPENED & LOADING
                 this.accountsAjax.abort();
@@ -532,13 +532,17 @@
             return this.accountsAjax;
         },
         editAccount: function (account) {
-            AccountVue.edit(JSCopyObject(account));
+            if (account == undefined) {
+                AccountVue.edit(undefined);
+            } else {
+                AccountVue.edit(JSCopyObject(account));
+            }
         },
         removeOrRecoveryAccount: function (account) {
             AccountVue.removeOrRecovery(account);
         },
         showHideAccount: function (account, isHide) {
-           return AccountVue.showHide(account, isHide);
+            return AccountVue.showHide(account, isHide);
         },
         //resize and refresh
         refresh: function (typeRefresh) {

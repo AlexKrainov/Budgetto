@@ -42,9 +42,15 @@ namespace MyProfile.Budget.Service
                     AccountType = (AccountTypesEnum)x.AccountTypeID,
                     AccountTypeName = x.AccountType.Name,
                     AccountIcon = x.AccountType.Icon,
-                    CurrencyID = x.CurrencyID,
-                    CurrencySpecificCulture = x.Currency.SpecificCulture,
-                    CurrencyCodeName = x.Currency.CodeName,
+                    CurrencyID = x.CurrencyID ?? 0,
+                    CurrencyIcon = x.Currency.Icon,
+                    Currency = new Entity.ModelView.Currency.CurrencyClientModelView
+                    {
+                        id = x.CurrencyID ?? 0,
+                        codeName = x.Currency.CodeName,
+                        specificCulture = x.Currency.SpecificCulture,
+                        icon = x.Currency.Icon,
+                    },
 
                     BankID = x.BankID,
                     BankName = x.Bank != null ? x.Bank.Name : "",
@@ -58,6 +64,8 @@ namespace MyProfile.Budget.Service
                     CachBackBalance = x.CachbackBalance,
                     CashBackForAllPercent = x.CachbackForAllPercent,
                     ResetCashBackDate = x.ResetCachbackDate,
+
+                    IsShow = true,
                 })
                 .OrderByDescending(x => x.IsDefault)
                 .ThenBy(x => x.IsHide)
@@ -83,6 +91,7 @@ namespace MyProfile.Budget.Service
                      CurrencyID = x.CurrencyID,
                      CurrencySpecificCulture = x.Currency.SpecificCulture,
                      CurrencyCodeName = x.Currency.CodeName,
+                     CurrencyIcon = x.Currency.Icon,
 
                      BankID = x.BankID,
                      BankName = x.Bank != null ? x.Bank.Name : "",
@@ -147,7 +156,7 @@ namespace MyProfile.Budget.Service
                     IsHide = account.IsHide,
 
                     DateCreate = now,
-                    CurrencyID = 1, // ruble
+                    CurrencyID = account.CurrencyID, // ruble
                 };
 
                 try
@@ -172,19 +181,21 @@ namespace MyProfile.Budget.Service
 
                 if (accountDB != null)
                 {
-                    accountDB.AccountTypeID = (int)account.AccountType;
+                    //accountDB.AccountTypeID = (int)account.AccountType;
                     accountDB.Balance = account.Balance;
                     accountDB.Description = account.Description;
                     accountDB.IsHide = account.IsHide;
                     accountDB.LastChanges = now;
                     accountDB.Name = account.Name;
                     accountDB.IsDefault = account.IsDefault;
+                    //accountDB.CurrencyID = account.CurrencyID;
 
-                    if (account.AccountType != AccountTypesEnum.Cash)
+                    if (accountDB.AccountType.ID != (int)AccountTypesEnum.Cash)
                     {
                         accountDB.BankID = account.BankID;
                         accountDB.IsCachback = account.IsCachback;
                         accountDB.IsCachbackMoney = account.IsCachBackMoney;
+                        accountDB.CachbackBalance = account.CachBackBalance;
                         accountDB.CachbackForAllPercent = account.CashBackForAllPercent;
                         accountDB.ExpirationDate = account.ExpirationDate;
                         accountDB.IsOverdraft = account.IsOverdraft;

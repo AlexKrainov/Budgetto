@@ -27,7 +27,9 @@
 
             </div>
         </div>
-        <div class="row no-gutters row-bordered" style="overflow: inherit; border-top: 1px solid lightgray;">
+        <div class="row no-gutters row-bordered" style="overflow: inherit; border-top: 1px solid lightgray;"
+             v-show="accounts && accounts.length > 0 && accounts[0].isShow">
+            @*&& accounts.some(x => x.isShow)*@
             <div v-for="account in accounts"
                  v-bind:id="'account_'+ account.id"
                  v-bind:class="[account.isHide ? 'col-lg-1' : 'col-lg-3', account.isDeleted ? 'deleted-item': '' ]">
@@ -44,7 +46,9 @@
                     </div>
                     <div class="ml-3">
                         <div class="text-xlarge"
-                             v-bind:class="account.balance < 0 ? 'text-danger' : ''">{{ getCurrencyValue(account.balance) }}</div>
+                             v-bind:class="account.balance < 0 ? 'text-danger' : ''">
+                            {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
+                        </div>
                         <div class="text-muted small">{{ account.name }}</div>
                     </div>
 
@@ -69,7 +73,9 @@
                 </div>
                 <div class="card-footer small"
                      v-if="!account.isHide">
-                    <span class="float-right text-success">{{ getCurrencyValue(account.cachBackBalance) }}</span>
+                    <span class="float-right text-success">
+                        {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.cachBackBalance) }}
+                    </span>
                     Кешбек
                 </div>
 
@@ -107,12 +113,12 @@
                            v-on:click="removeOrRecoveryAccount(account)">Удалить счет</a>
                     </div>
                 </div>
-                
+
             </div>
             <div class="col-lg-1">
                 <div class="card-body d-flex justify-content-center align-items-center pt-3" style=" padding-bottom: 15px !important;">
                     <span class="ui-icon ui-statistics-icon ion ion-md-add text-primary cursor-pointer"
-                          v-on:click="editAccount()"></span>
+                          v-on:click="editAccount(undefined)"></span>
                 </div>
             </div>
         </div>

@@ -17,5 +17,6 @@ namespace MyProfile.Entity.ModelView.Account
         public string CurrencyCodeName { get; set; }
         public string AccountIcon { get; set; }
         public bool IsDeleted { get; set; }
+        public string CurrencyIcon { get; set; }
     }
 }

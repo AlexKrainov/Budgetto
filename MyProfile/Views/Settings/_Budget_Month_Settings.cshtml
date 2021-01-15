@@ -39,7 +39,7 @@
     </div>
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_Accounts" name="user_settings" data-prop="Month_Accounts"
-               v-on:change="toggleElements('accounts', 'Month_Accounts', 'Dashboard_Month_IsShow_Accounts');">
+               v-on:change="toggleElements('accounts', 'Month_Accounts', 'Dashboard_Month_IsShow_Accounts'); change(false, ['BudgetVue.loadAccounts'])">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>

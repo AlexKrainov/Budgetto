@@ -1,5 +1,6 @@
 ﻿@{
     var currentUser = MyProfile.Identity.UserInfo.GetUserInfoModelForClient();
+    var metadata = (new MyProfile.Code.SiteData()).GetMetadata();
 }
 <!DOCTYPE html>
 
@@ -22,7 +23,7 @@
     <meta property="og:site_name" content="Budgetto.org | Контролируй свои финансы" />
     <meta property="og:locale" content="ru_RU">
     <meta property="og:url" content="https://budgetto.org">
-    <meta property="og:updated_time" content="2020-12-11T09:59:35-05:00">
+    <meta property="og:updated_time" content="2021-01-11T09:59:35-05:00">
 
     @*<meta name="keywords" content="где деньги, учет расходов, семейный бюджет, финансовая грамотность, личные финансы, учет доходов и расходов, планирование расходов, планирование бюджета">
         <meta name="keywords" content="Учет расходов,семейный бюджет,домашняя бухгалтерия,учёт личных финансов,учет долгов">
@@ -115,6 +116,7 @@
 
 
         var UserInfo = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(currentUser, Newtonsoft.Json.Formatting.None))');
+        var Metadata = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(metadata, Newtonsoft.Json.Formatting.None))');
 
         if (window.layoutHelpers.isNavbarFixed() == false) {
             window.layoutHelpers.setNavbarFixed(true);
@@ -179,14 +181,16 @@
 
 
     <environment names="Development">
+        <script src="~/pages/_base/global.functions.site.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/startup.site.js" asp-append-version="true"></script>
+
         <script src="~/vendor/libs/vue/dist/vue.js" asp-append-version="true"></script>
         <!-- Record -->
         <script src="~/vue-components/vue-section-component.js" asp-append-version="true"></script>
         <script src="~/vue-components/vue-record-history-component.js" asp-append-version="true"></script>
         <script src="~/vue-components/vue-record-component.js" asp-append-version="true"></script>
         <script src="~/vendor/libs/filtrex/src/filtrex.js" asp-append-version="true"></script>
-        <script src="~/pages/_base/global.functions.site.js" asp-append-version="true"></script>
-        <script src="~/pages/_base/startup.site.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/record-vue.js"></script>
 
         @if (currentUser.UserSettings.IsShowHints)
         {
@@ -209,15 +213,16 @@
         }
     </environment>
     <environment names="Staging,Production">
+        <script src="~/pages/_base/global.functions.site.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/startup.site.min.js" asp-append-version="true"></script>
+
         <script src="~/vendor/libs/vue/dist/vue.min.js" asp-append-version="true"></script>
         <!-- Record -->
         <script src="~/vue-components/vue-section-component.min.js" asp-append-version="true"></script>
         <script src="~/vue-components/vue-record-history-component.js" asp-append-version="true"></script>
         <script src="~/vue-components/vue-record-component.js" asp-append-version="true"></script>
         <script src="~/vendor/libs/filtrex/src/filtrex.js" asp-append-version="true"></script>
-
-        <script src="~/pages/_base/global.functions.site.min.js" asp-append-version="true"></script>
-        <script src="~/pages/_base/startup.site.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_base/record-vue.min.js"></script>
 
         @if (currentUser.UserSettings.IsShowHints)
         {
@@ -246,6 +251,11 @@
             var script = document.createElement('script');
             script.src = "../pages/_base/page-settings.js";
             document.head.appendChild(script);
+        }
+
+        if (document.location.href.indexOf("localhost") != -1
+            || document.location.href.indexOf("testapi.budgetto.org") != -1) {
+            Vue.config.devtools = true;
         }
     </script>
     @*<script src="~/js/base/user.js" asp-append-version="true"></script>*@

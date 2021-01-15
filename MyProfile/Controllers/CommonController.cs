@@ -1,8 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Common.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Repository;
-using MyProfile.LittleDictionaries.Service;
+using MyProfile.Identity;
 using MyProfile.Tag.Service;
+using MyProfile.UserLog.Service;
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyProfile.Controllers
@@ -11,16 +17,19 @@ namespace MyProfile.Controllers
     public class CommonController : Controller
     {
         private IBaseRepository repository;
-        private DictionariesService dictionariesService;
+        private CommonService commonService;
         private TagService tagService;
+        private UserLogService userLogService;
 
         public CommonController(IBaseRepository repository,
-            DictionariesService dictionariesService,
-            TagService tagService)
+            CommonService commonService,
+            TagService tagService,
+            UserLogService userLogService)
         {
             this.repository = repository;
-            this.dictionariesService = dictionariesService;
+            this.commonService = commonService;
             this.tagService = tagService;
+            this.userLogService = userLogService;
         }
 
         public IActionResult Index()
@@ -31,14 +40,14 @@ namespace MyProfile.Controllers
         [HttpGet]
         public JsonResult GetFooterAction()
         {
-            var data = dictionariesService.GetTotalActions();
+            var data = commonService.GetTotalActions();
             return Json(new { isOk = true, data = data });
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetCurrenciesInfo()
+        public JsonResult GetCurrenciesInfo()
         {
-            var data = await dictionariesService.GetCurrencyInfoForClient();
+            var data = commonService.GetCurrencyInfo();
             return Json(new { isOk = true, data = data });
         }
 
@@ -46,6 +55,19 @@ namespace MyProfile.Controllers
         public JsonResult GetUserTags()
         {
             return Json(new { isOk = true, tags = tagService.GetUserTags() });
+        }
+
+
+        /// <summary>
+        /// http://www.cbr.ru/development/sxml/
+        /// </summary>
+        /// <param name="link"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<JsonResult> GetRateFromBank(string codeNameCBR, DateTime date)
+        {
+            return Json(new { isOk = true, bankCurrencyData = await commonService.GetRatesFromBank(date, codeNameCBR) });
         }
     }
 }

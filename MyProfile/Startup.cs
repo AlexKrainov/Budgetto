@@ -18,7 +18,6 @@ using MyProfile.File.Service;
 using MyProfile.Goal.Service;
 using MyProfile.HelpCenter.Service;
 using MyProfile.Limit.Service;
-using MyProfile.LittleDictionaries.Service;
 using MyProfile.Payment.Service;
 using MyProfile.Reminder.Service;
 using MyProfile.Tag.Service;
@@ -54,7 +53,6 @@ namespace MyProfile
             services.AddTransient<BudgetService>();
             services.AddTransient<BudgetRecordService>();
             services.AddTransient<BudgetTotalService>();
-            services.AddTransient<DictionariesService>();
             services.AddTransient<SectionService>();
             services.AddTransient<CollectionUserService>();
             services.AddTransient<LimitService>();
@@ -122,6 +120,8 @@ namespace MyProfile
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            ServiceActivator.Configure(app.ApplicationServices);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

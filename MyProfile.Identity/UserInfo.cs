@@ -14,7 +14,6 @@ namespace MyProfile.Identity
 {
     public static class UserInfo
     {
-
         public static readonly string USER_INFO = "UserInfo";
         public static readonly string USER_SESSION_ID = "telefunken";
         public static readonly string USER_ID = "sumsung";
@@ -164,104 +163,6 @@ namespace MyProfile.Identity
             };
         }
 
-        public static List<MenuItemViewModel> GetMenuItems()
-        {
-            return new List<MenuItemViewModel>
-            {
-                new MenuItemViewModel
-                {
-                    Title = "Финансы на месяц",
-                    Area ="",
-                    Controller = "Budget",
-                    Action = "Month",
-                    Icon = "pe-7s-display1",
-                    IsLastBeforeLine = false,
-                },
-                new MenuItemViewModel
-                {
-                    Title = "Финансы на год",
-                    Area ="",
-                    Controller = "Budget",
-                    Action = "Year",
-                    Icon = "pe-7s-display1",
-                    IsLastBeforeLine = true,
-                },
-                new MenuItemViewModel
-                {
-                    Title = "Лимиты",
-                    Area ="",
-                    Controller = "Limit",
-                    Action = "List",
-                    Icon = "lnr lnr-frame-expand",
-                    IsLastBeforeLine = false,
-                },
-                new MenuItemViewModel
-                {
-                    Title = "Цели",
-                    Area ="",
-                    Controller = "Goal",
-                    Action = "List",
-                    Icon = "lnr lnr-rocket",
-                    IsLastBeforeLine = false,
-                },
-               
-                 new MenuItemViewModel
-                {
-                    Title = "Шаблоны",
-                    Area ="",
-                    Controller = "Template",
-                    Action = "List",
-                    Icon = "lnr lnr-layers",
-                    IsLastBeforeLine = false,
-                },
-                  new MenuItemViewModel
-                {
-                    Title = "Графики",
-                    Area ="",
-                    Controller = "Chart",
-                    Action = "List",
-                    Icon = "lnr lnr-pie-chart",
-                    IsLastBeforeLine = true,
-                },
-                  new MenuItemViewModel
-                {
-                    Title = "Категории",
-                    Area ="",
-                    Controller = "Section",
-                    Action = "Edit",
-                    Icon = "pe-7s-albums",
-                    IsLastBeforeLine = false,
-                },
-                   new MenuItemViewModel
-                {
-                    Title = "История",
-                    Area ="",
-                    Controller = "Budget",
-                    Action = "TimeLine",
-                    Icon = "lnr lnr-calendar-full",
-                    IsLastBeforeLine = false,
-                },
-                    new MenuItemViewModel
-                {
-                    Title = "Списки",
-                    Area ="",
-                    Controller = "ToDoList",
-                    Action = "List",
-                    Icon = "lnr lnr lnr-list",
-                    IsLastBeforeLine = false,
-                },
-                      new MenuItemViewModel
-                {
-                    Title = "Help center",
-                    Area ="Help",
-                    Controller = "Center",
-                    Action = "Index",
-                    Icon = "lnr lnr-question-circle",
-                    IsLastBeforeLine = false,
-                    ClassElement = "margin-top-auto",
-                }
 
-            };
-        }
     }
 }

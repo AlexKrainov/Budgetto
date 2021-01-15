@@ -65,6 +65,7 @@
                             <div class="form-group col-12 col-sm-12 col-md-6">
                                 <div class="row records" v-for="record in records" v-show="record.isCorrect">
                                     <div class="col-1 col-sm-1 col-md-1 px-0 pl-3 mr-2">
+                                        <span class="ui-icon ui-feed-icon-min bg-success text-white">{{record.account.currencyIcon}}</span>
                                         <img class="ui-payment-small cursor-pointer dropdown-toggle" data-toggle="dropdown" alt=""
                                             v-show="record.account.accountType != 1 && record.account.bankImage"
                                             v-bind:src="record.account.bankImage" 
@@ -646,6 +647,11 @@
 
                             if (result.budgetRecord.records.findIndex(x => x.isSaved == false) == -1) {
 
+                                if (result.budgetRecord.records.some(x => x.isAnyError)) {
+                                    let index = result.budgetRecord.records.findIndex(x => x.isAnyError);
+                                    toastr.warning(result.budgetRecord.records[index].error);
+                                }
+
                                 if (result.budgetRecord.records.length == 1) {
                                     if (this.isEditMode == false) {
                                         toastr.success("Запись добавлена успешно");
@@ -853,7 +859,7 @@
             this.currentCurrency = currencyInfo;
             this.currentCurrencyID = currencyInfo.id;
 
-            if (this.currentCurrencyID != UserInfo.currencyID) {
+            if (this.currentCurrencyID != UserInfo.CurrencyID) {
                 this.isUseBankRate = true;
                 this.getRate();
             } else {
@@ -873,17 +879,13 @@
             ShowLoading("#currency-container");
             return $.ajax({
                 type: "GET",
-                url: "/Budget/GetRateFromBank?link=" + this.currentCurrency.cbR_Link + "&date=" + dateInFormat, // "http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002&VAL_NM_RQ=R01235",
+                url: "/Common/GetRateFromBank?codeNameCBR=" + this.currentCurrency.codeName_CBR + "&date=" + dateInFormat, // "http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002&VAL_NM_RQ=R01235",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 context: this,
                 success: function (response) {
-                    if (response.isOk && response.response) {
-                        let obj = ParseXml(response.response);
-                        let cur = obj.ValCurs.Valute.find(x => x.ID == this.currentCurrency.codeName_CBR);
-                        if (cur) {
-                            this.exchangeRate = cur.Value["#text"].replaceAll(",", ".");
-                        }
+                    if (response.isOk && response.bankCurrencyData) {
+                        this.exchangeRate = response.bankCurrencyData.rate;
                     } else {
                         this.isUseBankRate = false;
                         toastr.error("Извините, не удалось подгрузить данные из ЦБ.");
@@ -905,25 +907,26 @@
         //Loads
         loadCurrenciesInfo: function () {
             //toDo: get currency info from UserInfo 
-            return $.ajax({
-                type: "GET",
-                url: "/Common/GetCurrenciesInfo",
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                context: this,
-                success: function (response) {
-                    if (response.isOk) {
-                        this.currencyInfos = response.data;
+            this.currencyInfos = Metadata.currencies;
+            this.setCurrentCurrency(UserInfo.CurrencyID);
+            //return $.ajax({
+            //    type: "GET",
+            //    url: "/Common/GetCurrenciesInfo",
+            //    contentType: 'application/json; charset=utf-8',
+            //    dataType: 'json',
+            //    context: this,
+            //    success: function (response) {
+            //        if (response.isOk) {
+            //            this.currencyInfos = response.data;
 
-                        this.setCurrentCurrency(UserInfo.CurrencyID);
-                    }
+            //        }
 
-                    return response;
-                },
-                error: function (xhr, status, error) {
-                    console.log(error);
-                }
-            });
+            //        return response;
+            //    },
+            //    error: function (xhr, status, error) {
+            //        console.log(error);
+            //    }
+            //});
         },
         loadTags: function () {
             return $.ajax({

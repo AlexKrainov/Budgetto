@@ -2,7 +2,6 @@
 @{
     Layout = "~/Views/Shared/Layouts/_Layout1.cshtml";
     ViewData["Title"] = "Help center - Pages";
-    List<MyProfile.Entity.ModelView.MenuItemViewModel> menuItems = MyProfile.Identity.UserInfo.GetMenuItems();
     var currentUser = MyProfile.Identity.UserInfo.Current;
 
 }

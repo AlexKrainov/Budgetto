@@ -83,6 +83,75 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.AccountRecordHistory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("AccountCashback")
+                        .HasColumnType("Money");
+
+                    b.Property<int?>("AccountCurrencyID");
+
+                    b.Property<int>("AccountCurrencyNominal");
+
+                    b.Property<decimal?>("AccountCurrencyRate")
+                        .HasColumnType("Money");
+
+                    b.Property<int?>("AccountID");
+
+                    b.Property<decimal>("AccountNewBalance")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("AccountNewBalanceCashback")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("AccountTotal")
+                        .HasColumnType("Money");
+
+                    b.Property<string>("ActionTypeCode")
+                        .IsRequired();
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(264);
+
+                    b.Property<DateTime>("DateCreate");
+
+                    b.Property<DateTime>("DateTimeOfPayment");
+
+                    b.Property<decimal?>("RacordCurrencyRate")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("RecordCachback")
+                        .HasColumnType("Money");
+
+                    b.Property<int?>("RecordCurrencyID");
+
+                    b.Property<int>("RecordCurrencyNominal");
+
+                    b.Property<int>("RecordID");
+
+                    b.Property<decimal>("RecordTotal")
+                        .HasColumnType("Money");
+
+                    b.Property<int?>("SectionID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AccountCurrencyID");
+
+                    b.HasIndex("AccountID");
+
+                    b.HasIndex("RecordCurrencyID");
+
+                    b.HasIndex("RecordID");
+
+                    b.HasIndex("SectionID");
+
+                    b.ToTable("AccountRecordHistories");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.AccountType", b =>
                 {
                     b.Property<int>("ID")
@@ -1803,9 +1872,33 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("CurrencyID");
 
                     b.HasOne("MyProfile.Entity.Model.User", "User")
-                        .WithMany()
+                        .WithMany("Accounts")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.AccountRecordHistory", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Currency", "AccountCurrency")
+                        .WithMany()
+                        .HasForeignKey("AccountCurrencyID");
+
+                    b.HasOne("MyProfile.Entity.Model.Account", "Account")
+                        .WithMany("AccountRecordHistories")
+                        .HasForeignKey("AccountID");
+
+                    b.HasOne("MyProfile.Entity.Model.Currency", "RecordCurrency")
+                        .WithMany()
+                        .HasForeignKey("RecordCurrencyID");
+
+                    b.HasOne("MyProfile.Entity.Model.BudgetRecord", "Record")
+                        .WithMany("AccountRecordHistories")
+                        .HasForeignKey("RecordID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.BudgetSection", "Section")
+                        .WithMany()
+                        .HasForeignKey("SectionID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetArea", b =>

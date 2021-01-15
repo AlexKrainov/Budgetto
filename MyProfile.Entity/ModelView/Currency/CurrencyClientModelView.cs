@@ -2,13 +2,13 @@
 {
     public class CurrencyClientModelView
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string CodeName { get; set; }
-        public string SpecificCulture { get; set; }
-        public string Icon { get; set; }
-        public string CodeName_CBR { get; set; }
-        public int? CodeNumber_CBR { get; set; }
-        public string CBR_Link { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public string codeName { get; set; }
+        public string specificCulture { get; set; }
+        public string icon { get; set; }
+        public string codeName_CBR { get; set; }
+        public int? codeNumber_CBR { get; set; }
+        public string cbr_link { get; set; }
     }
 }

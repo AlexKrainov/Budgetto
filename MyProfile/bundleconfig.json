@@ -226,5 +226,11 @@
     "inputFiles": [
       "wwwroot/pages/budget/account-modal.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_base/record-vue.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_base/record-vue.js"
+    ]
   }
 ]

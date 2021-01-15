@@ -16,7 +16,7 @@
                     <div class="form-row">
                         <div class="form-group col">
                             <label class="form-label">Тип счета</label>
-                            <select class="form-control" v-model="account.accountType">
+                            <select class="form-control" v-model="account.accountType"  v-bind:disabled="account.id != undefined">
                                 <option v-for="accountType in accountTypes" v-bind:value="accountType.id">
                                     {{ accountType.name }}
                                 </option>
@@ -31,14 +31,30 @@
                             <small class="invalid-feedback">Обязательное поле</small>
                         </div>
                     </div>
+
                     <div class="form-row">
                         <div class="form-group col">
                             <label class="form-label">Баланс</label>
                             <span class="text-danger">*</span>
-                            <input id="account-balance" type="number" class="form-control" placeholder="" v-model="account.balance" required>
-                            <small class="invalid-feedback">Обязательное поле</small>
+                            <div class="input-group input-money">
+                                <input id="account-balance" type="number" class="form-control" placeholder="" v-model="account.balance" required>
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" v-bind:disabled="account.id != undefined">
+                                        {{ account.currency.icon }}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item"
+                                           href="javascript:void(0)"
+                                           v-for="currencyInfo in currencyInfos"
+                                           v-bind:class="account.currentyID == currencyInfo.id ? 'active' : ''"
+                                           v-on:click="changeCurrency(currencyInfo)">{{ currencyInfo.icon }}</a>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div class="form-row" v-show="account.accountType != 1">
                         <div class="form-group col">
                             <label class="form-label">Банк</label>
@@ -93,11 +109,11 @@
                     </div>
 
                     @*<div class="form-row" v-show="account.accountType != 1 && account.isCachback">
-            <div class="form-group col">
-                <label class="form-label">Следующая дата зачисления кешбек</label>
-                <input type="text" class="form-control" id="resetCashBackDate" v-model="account.resetCashBackDate" required>
-            </div>
-        </div>*@
+                            <div class="form-group col">
+                                <label class="form-label">Следующая дата зачисления кешбек</label>
+                                <input type="text" class="form-control" id="resetCashBackDate" v-model="account.resetCashBackDate" required>
+                            </div>
+                        </div>*@
                     <div id="section-description" class="form-row">
                         <div class="form-group col mb-0">
                             <label class="form-label">Описание счета</label>
@@ -119,59 +135,59 @@
                         </label>
                     </div>
                     @*<div class="form-row">
-            <div class="form-group col">
-                <label class="form-label">Начало</label>
-                <span class="text-danger">*</span>
-                <input type="text" class="form-control" id="date-start" v-model="account.dateStart" required>
-                <small class="invalid-feedback">Обязательное поле</small>
-            </div>
-            <div class="form-group col">
-                <label class="form-label">Окончание</label>
-                <input type="text" class="form-control" id="date-end" v-model="account.dateEnd">
-            </div>
-        </div>
+                            <div class="form-group col">
+                                <label class="form-label">Начало</label>
+                                <span class="text-danger">*</span>
+                                <input type="text" class="form-control" id="date-start" v-model="account.dateStart" required>
+                                <small class="invalid-feedback">Обязательное поле</small>
+                            </div>
+                            <div class="form-group col">
+                                <label class="form-label">Окончание</label>
+                                <input type="text" class="form-control" id="date-end" v-model="account.dateEnd">
+                            </div>
+                        </div>
 
-        <div class="form-row">
-            <div class="form-group col">
-                <label class="form-label">Сколько нужно накопить?</label>
-                <span class="text-danger">*</span>
-                <input id="account-expectationMoney" type="number" class="form-control" placeholder="" v-model="account.expectationMoney" required min="0">
-                <div class="text-muted small mt-1" v-show="account.expectationMoney">
-                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(account.expectationMoney) }}
-                </div>
-                <small class="invalid-feedback">Обязательное поле</small>
-            </div>
-        </div>
-        <div id="account-comment" class="form-row">
-            <div class="form-group col mb-0">
-                <label class="form-label">Комментарии</label>
-                <textarea class="form-control" v-model="account.description" placeholder=""></textarea>
-            </div>
-        </div>
-        <div class="form-row mt-3">
-            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" v-model="account.isShow_BudgetMonth" checked>
-                    <span class="custom-control-label">Показывать на странице "Финансы на месяц"</span>
-                </label>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" v-model="account.isShow_BudgetYear" checked>
-                    <span class="custom-control-label">Показывать на странице "Финансы на год"</span>
-                </label>
-            </div>
-        </div>
-        <div id="gaol-is-finish" class="form-row">
-            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;" v-show="account.id">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" v-model="account.isFinished">
-                    <span class="custom-control-label">Завершить цель</span>
-                </label>
-            </div>
-        </div>*@
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label class="form-label">Сколько нужно накопить?</label>
+                                <span class="text-danger">*</span>
+                                <input id="account-expectationMoney" type="number" class="form-control" placeholder="" v-model="account.expectationMoney" required min="0">
+                                <div class="text-muted small mt-1" v-show="account.expectationMoney">
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(account.expectationMoney) }}
+                                </div>
+                                <small class="invalid-feedback">Обязательное поле</small>
+                            </div>
+                        </div>
+                        <div id="account-comment" class="form-row">
+                            <div class="form-group col mb-0">
+                                <label class="form-label">Комментарии</label>
+                                <textarea class="form-control" v-model="account.description" placeholder=""></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row mt-3">
+                            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="account.isShow_BudgetMonth" checked>
+                                    <span class="custom-control-label">Показывать на странице "Финансы на месяц"</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="account.isShow_BudgetYear" checked>
+                                    <span class="custom-control-label">Показывать на странице "Финансы на год"</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="gaol-is-finish" class="form-row">
+                            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;" v-show="account.id">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="account.isFinished">
+                                    <span class="custom-control-label">Завершить цель</span>
+                                </label>
+                            </div>
+                        </div>*@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="button"

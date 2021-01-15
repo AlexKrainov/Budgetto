@@ -6,28 +6,36 @@
     <div v-if="record.isDeleted == false">
         <div class="row">
             <div class="col-md-6 col-sm-12 col-12">
-                <div class="ui-feed-icon-container d-inline-block"
-                     v-bind:class="record.account.accountType != 1 && record.account.bankImage ? 'mr-2': ''">
-                    <img v-show="record.account.accountType != 1 && record.account.bankImage" v-bind:src="record.account.bankImage" v-bind:alt="record.account.bankName" class="ui-w-40 rounded-circle ui-icon ui-feed-icon">
-                    <span v-show="record.account.accountType == 1 || (record.account.accountType != 1 && !record.account.bankImage)" class="ui-icon ui-feed-icon ui-statistics-icon text-primary"
-                          v-bind:class="record.account.accountIcon"></span>
-                    @*<span class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-toggle="tooltip" title="Счет по умолчанию"></span>*@
-                    <i  class="ui-icon ui-statistics-icon text-primary" v-bind:class="record.cssIcon"></i>
-                </div>
+                <i class="record-icon position-absolute" v-bind:class="record.cssIcon"></i>
                 <div>
-                    <h5 class="mb-0">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        @*<span class="ui-icon ui-feed-icon-min bg-success text-white">{{record.account.currencyIcon}}</span>*@
+                        <img class="ui-payment-small mr-1" alt=""
+                             v-show="record.account.accountType != 1 && record.account.bankImage"
+                             v-bind:src="record.account.bankImage"
+                             v-bind:title="record.account.name">
+                        <i class="text-xlarge mt-1 text-primary mr-1"
+                           v-show="record.account.accountType == 1 || (record.account.accountType != 1 && !record.account.bankImage)"
+                           v-bind:class="record.account.accountIcon"
+                           v-bind:title="record.account.name"></i>
                         {{ record.areaName }} > {{ record.sectionName }}
                     </h5>
-                    <span class="text-muted small pt-1">
+                    <span class="text-muted small1 pt-1">
                         <i class="ion ion-md-time text-primary"></i>
                         <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
+                        <span class="badge badge-outline-default text-muted">
+                            <i class="ion ion-md-create text-primary"></i>  Внесенная сумма: {{ record.rawData }}
+                        </span>
                     </span>
                 </div>
             </div>
             <div class="col-md-6 col-sm-12 col-12 text-right">
-                <h5>
-                    <a href="javascript:void(0)" class="font-weight-semibold ml-3" v-on:click="edit(record)" v-if="record.isOwner">
-                        {{ getCurrencyValue(record) }}
+                <h5 class="ml-3">
+                    <span class="text-muted1 small pt-1 text-success" v-show="record.cashback > 0">
+                        {{ getCurrencyValue(record, record.cashback, false) }}
+                    </span>
+                    <a href="javascript:void(0)" class="font-weight-semibold" v-on:click="edit(record)" v-if="record.isOwner">
+                        {{ getCurrencyValue(record, record.money) }}
                     </a>
                     <i class="fas fa-edit pl-2 edit-record cursor-pointer" v-on:click="edit(record)" v-if="record.isOwner"></i>
                     <i class="fas fa-trash pl-2 edit-record text-danger cursor-pointer" v-on:click="remove(record)" v-if="record.isOwner"></i>
@@ -57,10 +65,6 @@
                     <span class="badge badge-outline-default text-muted"><i class="ion ion-md-time text-primary"></i>  Создан: {{ GetDateByFormat(record.dateTimeCreate, 'DD.MM.YYYY') }}</span>
                     <br />
                     <span class="badge badge-outline-default text-muted"><i class="ion ion-md-time text-primary"></i>  Отредактирован: {{ GetDateByFormat(record.dateTimeEdit, 'DD.MM.YYYY') }}</span>
-                    <br />
-                    <span class="badge badge-outline-default text-muted">
-                        <i class="ion ion-md-create text-primary"></i>  Внесенная сумма: {{ record.rawData }}
-                    </span>
                 </div>
             </div>
         </div>
@@ -79,7 +83,7 @@
             <div class="col-md-6 col-sm-12 col-12 text-right">
                 <h5>
                     <a href="javascript:void(0)" class="font-weight-semibold ml-3" v-on:click="edit(record)" v-if="record.isOwner">
-                        {{ getCurrencyValue(record) }}
+                        {{ getCurrencyValue(record, record.money) }}
                     </a>
                     <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" v-on:click="recovery(record)"></i>
                 </h5>

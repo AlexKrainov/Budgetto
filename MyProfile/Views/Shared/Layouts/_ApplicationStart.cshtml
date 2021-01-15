@@ -1,5 +1,6 @@
 ﻿@{
     var currentUser = MyProfile.Identity.UserInfo.GetUserInfoModelForClient();
+    var metadata = (new MyProfile.Code.SiteData()).GetMetadata();
 }
 <!DOCTYPE html>
 
@@ -80,6 +81,7 @@
 
 
         var UserInfo = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(currentUser, Newtonsoft.Json.Formatting.None))');
+        var Metadata = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(metadata, Newtonsoft.Json.Formatting.None))');
 
         if (window.layoutHelpers.isNavbarFixed() == false) {
             window.layoutHelpers.setNavbarFixed(true);

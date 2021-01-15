@@ -749,3 +749,14 @@ html.dark-style .tagify__input::before {
 .dropdown-menu {
     z-index: 1080 !important;
 }
+
+.ui-feed-icon-min {
+    position: absolute;
+    top: -5px;
+    right: -19px;
+    width: 16px;
+    height: 15px;
+    border: 1px;
+    font-size: 13px;
+    line-height: 15px;
+}

@@ -50,6 +50,7 @@ namespace MyProfile.Entity.ModelView
         public int? SectionTypeID { get; set; }
         public int? AccountID { get; set; }
         public AccountModelView Account { get; set; }
+        public decimal Cashback { get; set; }
     }
 
     /// <summary>
@@ -73,6 +74,9 @@ namespace MyProfile.Entity.ModelView
         public AccountModelView Account { get; set; }
 
         public IEnumerable<RecordTag> Tags { get; set; }
+
+        public bool isAnyError { get; set; }
+        public string Error { get; set; }
     }
 
     public class RecordTag
@@ -113,5 +117,6 @@ namespace MyProfile.Entity.ModelView
         public string BankImage { get; set; }
         public string Name { get; set; }
         public string AccountIcon { get; set; }
+        public string CurrencyIcon { get; set; }
     }
 }

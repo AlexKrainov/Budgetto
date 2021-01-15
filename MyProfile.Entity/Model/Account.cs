@@ -42,7 +42,7 @@ namespace MyProfile.Entity.Model
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }
 		[ForeignKey("Currency")]
-		public int CurrencyID { get; set; }
+		public int? CurrencyID { get; set; }
 		[ForeignKey("Bank")]
 		public int? BankID { get; set; }
 
@@ -53,11 +53,13 @@ namespace MyProfile.Entity.Model
 		public virtual Bank Bank { get; set; }
 
 		public virtual ICollection<BudgetRecord> BudgetRecords { get; set; }
+        public virtual ICollection<AccountRecordHistory> AccountRecordHistories { get; set; }
 
-		public Account()
+        public Account()
 		{
 			this.BudgetRecords = new HashSet<BudgetRecord>();
-		}
+            this.AccountRecordHistories = new HashSet<AccountRecordHistory>();
+        }
 
 	}
 }

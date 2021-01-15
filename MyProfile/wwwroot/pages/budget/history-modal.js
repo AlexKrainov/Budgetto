@@ -88,12 +88,26 @@ var HistoryVue = new Vue({
             setTimeout(HistoryVue.unselectAllTags, 100);
 
             if (HistoryVue.sections.length == 0) {
-                setTimeout(function () {
-                    HistoryVue.sections = JSCopyArray(RecordVue.recordComponent.sectionComponent.sections);
-                }, 8000);
+                $.ajax({
+                    type: "GET",
+                    url: "/Section/GetSectins",
+                    data: null,
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    context: this,
+                    success: function (result) {
+                        if (result.isOk) {
+                            HistoryVue.sections = result.sections;
+                        }
+                        return result;
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                }, this);
             }
 
-        }, 3000);
+        }, 2000);
 
         $('#modalTimeLine').on('hide.bs.modal', function () {
             $("#historyCollapse").removeClass("show");
@@ -121,7 +135,9 @@ var HistoryVue = new Vue({
             this.search();
         },
         showLastHistory: function () {
-            this.search();
+            if ($("#modal-record").hasClass("show") == false) {
+                this.search();
+            }
         },
         search: function () {
             this.filter.sections = this.sections.filter(x => x.isSelected).map(x => x.id);
@@ -145,6 +161,9 @@ var HistoryVue = new Vue({
                     this.records = response.data;
 
                     HideLoading('.records-timeline');
+                    //setTimeout(function () {
+                    //    $('[data-toggle="tooltip"]').tooltip();
+                    //}, 1000);
                 }
             });
         },
@@ -204,9 +223,9 @@ var HistoryVue = new Vue({
         closeTimeline: function () {
             this.clearAllStyle();
         },
-        getCurrencyValue: function (record) {
-            let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(record.money);
-            if (UserInfo.Currency.ID != record.currencyID) {
+        getCurrencyValue: function (record, money, isCashback) {
+            let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money);
+            if (UserInfo.Currency.ID != record.currencyID && isCashback == undefined) {
                 try {
                     value += " (" + new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(CalculateExpression(record.tag)) + ")";
                 } catch (e) {
