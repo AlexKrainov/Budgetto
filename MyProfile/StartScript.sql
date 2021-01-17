@@ -105,7 +105,7 @@ GO
 SET IDENTITY_INSERT [AccountTypes] ON 
 
 INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (1, N'Наличные', N'Cash', 'ion ion-ios-cash')
-INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (2, N'Дебедовый счет', N'Debed', 'fas fa-credit-card')
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (2, N'Дебетовый счет', N'Debed', 'fas fa-credit-card')
 INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (3, N'Кредитный счет', N'Credit', 'fas fa-credit-card')
 INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (4, N'Карта рассрочки', N'Installment', 'fas fa-credit-card')
 SET IDENTITY_INSERT [AccountTypes] OFF

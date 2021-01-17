@@ -38,5 +38,9 @@ namespace MyProfile.Entity.ModelView.Account
 
         public CurrencyClientModelView Currency { get; set; }
         public string CurrencyIcon { get; set; }
+        public decimal BalanceEarnings { get; set; }
+        public decimal BalanceInvestments { get; set; }
+        public bool IsPast { get; set; }
+        public decimal BalanceSpendings { get; set; }
     }
 }

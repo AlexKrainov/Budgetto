@@ -61,7 +61,7 @@ namespace MyProfile.Controllers
                .ToListAsync();
 
             Random random = new Random();
-            var records = new List<BudgetRecord>();
+            var records = new List<Record>();
 
             for (int day = 0; day < allDays; day++)
             {
@@ -69,7 +69,7 @@ namespace MyProfile.Controllers
                 int randomValue = random.Next(0, 1500);
                 int randomSection = random.Next(0, sectionSpending.Count);
 
-                records.Add(new BudgetRecord
+                records.Add(new Record
                 {
                     BudgetSectionID = sectionSpending[randomSection].ID,
                     DateTimeCreate = now,
@@ -92,7 +92,7 @@ namespace MyProfile.Controllers
 
                     randomSection = random.Next(0, sectionEarnings.Count);
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         BudgetSectionID = sectionEarnings[randomSection].ID,
                         DateTimeCreate = now,
@@ -116,7 +116,7 @@ namespace MyProfile.Controllers
 
                     randomSection = random.Next(0, sectionInvestments.Count);
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         BudgetSectionID = sectionInvestments[randomSection].ID,
                         DateTimeCreate = now,
@@ -138,7 +138,7 @@ namespace MyProfile.Controllers
                     try
                     {
                         await repository.CreateRangeAsync(records, true);
-                        records = new List<BudgetRecord>();
+                        records = new List<Record>();
                     }
                     catch (Exception)
                     {

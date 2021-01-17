@@ -52,13 +52,13 @@ namespace MyProfile.Entity.Model
 		public virtual Currency Currency { get; set; }
 		public virtual Bank Bank { get; set; }
 
-		public virtual ICollection<BudgetRecord> BudgetRecords { get; set; }
-        public virtual ICollection<AccountRecordHistory> AccountRecordHistories { get; set; }
+		public virtual ICollection<Record> BudgetRecords { get; set; }
+        public virtual ICollection<RecordHistory> AccountRecordHistories { get; set; }
 
         public Account()
 		{
-			this.BudgetRecords = new HashSet<BudgetRecord>();
-            this.AccountRecordHistories = new HashSet<AccountRecordHistory>();
+			this.BudgetRecords = new HashSet<Record>();
+            this.AccountRecordHistories = new HashSet<RecordHistory>();
         }
 
 	}

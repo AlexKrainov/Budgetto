@@ -3,7 +3,7 @@
         <div class="card-body row" style="height: 98px">
             <div class="col-md-6">
                 <div class="text-muted small">Доходы <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
-                 v-bind:data-original-title="getSectionsTitle(earningData.sections)"></i></div>
+                 v-bind:data-original-title="getSectionsTitle(earningData.sections, earningData.sectionTypeEnum )"></i></div>
                 <strong class="text-large font-weight-normal">{{ earningData.total }}</strong>
                 <sup v-show="earningData.percent != 0 && earningData.isGood" class="text-success small">+ {{ earningData.percent }}%</sup>
                 <sup v-show="earningData.percent != 0 && !earningData.isGood" class="text-danger small">- {{ earningData.percent }}%</sup>
@@ -19,7 +19,7 @@
         <div class="card-body row" style="height: 98px">
             <div class="col-md-6">
                 <div class="text-muted small">Расходы <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
-                    v-bind:data-original-title="getSectionsTitle(spendingData.sections)"></i></div>
+                    v-bind:data-original-title="getSectionsTitle(spendingData.sections, spendingData.sectionTypeEnum)"></i></div>
                 <strong class="text-large font-weight-normal">{{ spendingData.total }}</strong>
                 <sup v-show="spendingData.percent != 0 && !spendingData.isGood" class="text-danger small">+ {{ spendingData.percent }}%</sup>
                 <sup v-show="spendingData.percent != 0 && spendingData.isGood" class="text-success small">- {{ spendingData.percent }}%</sup>
@@ -38,7 +38,7 @@
             <div class="col-md-6">
                 <div class="text-muted small">
                     Инвестиции <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
-                                  v-bind:data-original-title="getSectionsTitle(investingData.sections)"></i>
+                                  v-bind:data-original-title="getSectionsTitle(investingData.sections, investingData.sectionTypeEnum)"></i>
                 </div>
                 <strong class="text-large font-weight-normal">{{ investingData.total }}</strong>
                 <sup v-show="investingData.percent != 0 && !investingData.isGood" class="text-danger small">- {{ investingData.percent }}%</sup>

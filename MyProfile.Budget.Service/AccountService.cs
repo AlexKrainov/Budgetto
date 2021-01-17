@@ -69,9 +69,49 @@ namespace MyProfile.Budget.Service
                 })
                 .OrderByDescending(x => x.IsDefault)
                 .ThenBy(x => x.IsHide)
+                .ThenBy(x => x.AccountType == AccountTypesEnum.Cash)
+                .ThenBy(x => x.AccountType == AccountTypesEnum.Installment)
+                .ThenBy(x => x.AccountType == AccountTypesEnum.Credit)
+                .ThenBy(x => x.AccountType == AccountTypesEnum.Debed)
                 .ToList();
         }
 
+        public List<AccountViewModel> GetAcountsPast(DateTime start, DateTime finish, List<AccountViewModel> accounts)
+        {
+            var currentUser = UserInfo.Current;
+
+            var records = repository.GetAll<Record>(x => x.UserID == currentUser.ID
+             && x.IsDeleted == false
+             && x.AccountID != null
+             && x.DateTimeOfPayment >= start && x.DateTimeOfPayment <= finish
+             && x.AccountRecordHistories.Count > 0)
+                  .Select(x => x.AccountRecordHistories
+                                      .OrderByDescending(x => x.ID)
+                                      .FirstOrDefault())
+                  .Select(x => new
+                  {
+                      x.ID,
+                      x.AccountID,
+                      x.Section.SectionTypeID,
+                      x.DateTimeOfPayment,
+                      x.AccountTotal,
+                      x.AccountCashback
+                  })
+                  .ToList();
+
+            foreach (var account in accounts)
+            {
+                account.IsPast = true;
+                //account.Balance += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
+                //account.CachBackBalance += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountCashback);
+
+                account.BalanceSpendings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
+                account.BalanceEarnings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Earnings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
+                account.BalanceInvestments += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Investments && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
+            }
+
+            return accounts;
+        }
 
         public List<AccountShortViewModel> GetShortAccounts()
         {
@@ -239,6 +279,12 @@ namespace MyProfile.Budget.Service
             var currentUser = UserInfo.Current;
             var accountDB = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.ID == account.ID).FirstOrDefault();
 
+            if (account.IsDeleted && repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.IsDeleted == false).Count() <= 1)
+            {
+                userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Account_TryToDeleteLastAccount);
+                //User cannot remove last account
+                return !account.IsDeleted;
+            }
             try
             {
                 accountDB.IsDeleted = account.IsDeleted;
@@ -257,6 +303,8 @@ namespace MyProfile.Budget.Service
             catch (Exception ex)
             {
                 userLogService.CreateErrorLog(currentUser.UserSessionID, "AccountService.RemoveOrRecovery", ex, account.IsDeleted ? UserLogActionType.Account_Delete : UserLogActionType.Account_Recovery);
+
+                return !account.IsDeleted;
             }
 
             userLogService.CreateUserLog(currentUser.UserSessionID, account.IsDeleted ? UserLogActionType.Account_Delete : UserLogActionType.Account_Recovery);
@@ -333,6 +381,7 @@ namespace MyProfile.Budget.Service
                     Icon = x.Icon,
                     accountType = (AccountTypesEnum)x.ID
                 })
+                .Take(2)
                 .ToList();
 
                 cache.Set(typeof(AccountTypeModelView).Name, accountTypes, DateTime.Now.AddDays(15));

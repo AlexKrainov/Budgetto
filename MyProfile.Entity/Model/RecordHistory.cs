@@ -12,7 +12,7 @@ namespace MyProfile.Entity.Model
        public static readonly string Recovery = "Recovery";
     }
 
-    public class AccountRecordHistory
+    public class RecordHistory
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -72,7 +72,7 @@ namespace MyProfile.Entity.Model
         public int? SectionID { get; set; }
 
 
-        public virtual BudgetRecord Record { get; set; }
+        public virtual Record Record { get; set; }
         public virtual Account Account { get; set; }
         public virtual Currency RecordCurrency { get; set; }
         public virtual Currency AccountCurrency { get; set; }

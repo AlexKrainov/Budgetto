@@ -53,7 +53,7 @@
                                 </div>
                             </label>
                             <div class="input-group text-right">
-                                <input type="number" class="form-control"
+                                <input type="number" class="form-control" id="exchangeRate"
                                        v-model="exchangeRate"
                                        v-bind:disabled="isUseBankRate">
                                 <div class="input-group-prepend">
@@ -777,7 +777,15 @@
             for (var i = 0; i < this.records.length; i++) {
                 if (this.records[i].sectionID == -1) {
                     this.isErrorSelectSection = true;
+                    isOk = false;
                 }
+            }
+
+            if (UserInfo.CurrencyID != this.currentCurrencyID && !this.exchangeRate) {
+                isOk = false;
+                $("#exchangeRate").addClass("is-invalid");
+            } else {
+                $("#exchangeRate").removeClass("is-invalid");
             }
 
             return isOk;

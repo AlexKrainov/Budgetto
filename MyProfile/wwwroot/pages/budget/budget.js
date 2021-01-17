@@ -510,27 +510,7 @@
         },
         //Summary
         //Accounts
-        loadAccounts: function () {
-            if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Accounts)) {
-                return false;
-            }
-
-            if (this.accountsAjax && (this.accountsAjax.readyState == 1 || this.accountsAjax.readyState == 3)) { // OPENED & LOADING
-                this.accountsAjax.abort();
-            }
-
-            this.accountsAjax = $.ajax({
-                type: "GET",
-                url: "/Account/GetAccounts",
-                contentType: "application/json",
-                dataType: 'json',
-                context: this,
-                success: function (response) {
-                    this.accounts = response.accounts;
-                }
-            });
-            return this.accountsAjax;
-        },
+        loadAccounts: BudgetMethods.loadAccounts,
         editAccount: function (account) {
             if (account == undefined) {
                 AccountVue.edit(undefined);
@@ -556,10 +536,22 @@
                     this.isLoading = true;
                     ShowLoading(".table-container");
 
+                    if (this.dataTable) {//sometimes bug with : Cannot read property 'mData' of undefined
+                        this.dataTable = undefined;
+                        $("#table").DataTable().destroy();
+                    }
                     this.load()
                         .then(function () {
                             HideLoading(".table-container");
-                            BudgetVue.initTable();
+                            try {
+                                BudgetVue.initTable();
+                            } catch (e) {
+                                console.log(e);
+                                BudgetVue.template = {};
+                                BudgetVue.footerRow = [];
+                                BudgetVue.row = [];
+                                BudgetVue.refresh('onlyTable');
+                            }
                             this.isLoading = false;
                         });
                 }
@@ -635,6 +627,7 @@
             $('[data-toggle="tooltip"]').tooltip();
         },
         initTable: function () {
+
             this.dataTable = $("#table").DataTable({
                 columnDefs: [
                     {
@@ -946,15 +939,32 @@
                 }
             }
         },
-        getSectionsTitle: function (sections) {
+        getSectionsTitle: function (sections, sectionTypeEnum) {
+            let title = ""
+            if (sectionTypeEnum == SectionTypeEnum.Earnings) {
+                title += "Доходы за";
+            } else if (sectionTypeEnum == SectionTypeEnum.Investments) {
+                title += "Инвестиции за ";
+            } else if (sectionTypeEnum == SectionTypeEnum.Spendings) {
+                title += "Расходы за ";
+            }
+
+            if (this.periodType == PeriodTypeEnum.Month) {
+                title += " месяц ";
+            } else if (this.periodType == PeriodTypeEnum.Year) {
+                title += " год ";
+            }
+
+            title += "по категориям: ";
+
             if (sections && sections.length > 0) {// sections
                 let li_s = "";
                 for (var i = 0; i < sections.length; i++) {
                     li_s += `<li>${sections[i].name}</li>`;
                 }
-                return "<ul class='my-1 pl-3'>" + li_s + "</ul>";
+                return title + "<ul class='my-1 pl-3'>" + li_s + "</ul>";
             }
-            return "";
+            return title;
         },
 
         //helpers

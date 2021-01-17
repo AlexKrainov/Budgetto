@@ -51,7 +51,7 @@ namespace MyProfile.Budget.Service
 
         public async Task<RecordModelView> GetByID(int id)
         {
-            return await repository.GetAll<BudgetRecord>(x => x.ID == id && x.UserID == UserInfo.Current.ID)
+            return await repository.GetAll<Record>(x => x.ID == id && x.UserID == UserInfo.Current.ID)
                 .Select(x => new RecordModelView
                 {
                     ID = id,
@@ -89,9 +89,9 @@ namespace MyProfile.Budget.Service
             List<Account> accounts = new List<Account>();
             List<SectionLightModelView> sections = (await sectionService.GetAllSectionByUser()).ToList();
             bool isSpending = false;
-            BankCurrencyData accountCurrency;
-            List<AccountRecordHistory> histories = new List<AccountRecordHistory>();
-            AccountRecordHistory history;
+            CurrencyRateHistory accountCurrency;
+            List<RecordHistory> histories = new List<RecordHistory>();
+            RecordHistory history;
 
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
@@ -102,7 +102,7 @@ namespace MyProfile.Budget.Service
                 }
                 recordCashback = 0;
                 _money = 0;
-                history = new AccountRecordHistory();
+                history = new RecordHistory();
 
                 Account account = accounts.FirstOrDefault(x => x.ID == record.AccountID);
                 SectionLightModelView section = sections.FirstOrDefault(x => x.ID == record.SectionID);
@@ -137,7 +137,7 @@ namespace MyProfile.Budget.Service
                         }
                         else
                         {
-                            var newRecord = new BudgetRecord
+                            var newRecord = new Record
                             {
                                 UserID = currentUser.ID,
                                 BudgetSectionID = record.SectionID,
@@ -168,7 +168,7 @@ namespace MyProfile.Budget.Service
                             record.IsSaved = true;
 
                             #region Account 
-                            accountCurrency = new BankCurrencyData
+                            accountCurrency = new CurrencyRateHistory
                             {
                                 CurrencyID = account.CurrencyID ?? 0,
                                 Date = newRecord.DateTimeOfPayment.Date,
@@ -183,7 +183,7 @@ namespace MyProfile.Budget.Service
                             }
                             else if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
                             {
-                                accountCurrency.Rate = record.CurrencyRate;
+                                accountCurrency.Rate = record.CurrencyRate ?? 1;
                                 accountCurrency.Nominal = record.CurrencyNominal ?? 1;
 
                                 _money = record.Money / record.CurrencyRate ?? 1;
@@ -197,7 +197,7 @@ namespace MyProfile.Budget.Service
                                     accountCurrency.Rate = val.Rate;
                                     accountCurrency.Nominal = val.Nominal;
 
-                                    _money = record.Money / accountCurrency.Rate ?? 1;
+                                    _money = record.Money / accountCurrency.Rate;
                                 }
                                 else
                                 {
@@ -214,9 +214,9 @@ namespace MyProfile.Budget.Service
 
                                 if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                 {
-                                    if (!(record.CurrencyID == account.CurrencyID && record.CurrencyID == currentUser.CurrencyID))
+                                    if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                     {
-                                        recordCashback = ((record.Money / accountCurrency.Rate ?? 1) * account.CachbackForAllPercent ?? 1) / 100;
+                                        recordCashback = ((record.Money / accountCurrency.Rate) * account.CachbackForAllPercent ?? 1) / 100;
                                     }
                                     account.CachbackBalance += recordCashback;
                                 }
@@ -272,7 +272,7 @@ namespace MyProfile.Budget.Service
                         }
                         else
                         {
-                            var dbRecord = repository.GetByID<BudgetRecord>(record.ID);
+                            var dbRecord = repository.GetByID<Record>(record.ID);
                             int oldAccountID = dbRecord.AccountID ?? -1,
                                 oldSectionTypeID = dbRecord.BudgetSection.SectionTypeID ?? 0;
                             decimal oldTotal = dbRecord.Total,
@@ -302,7 +302,7 @@ namespace MyProfile.Budget.Service
 
                             #region Account
 
-                            accountCurrency = new BankCurrencyData
+                            accountCurrency = new CurrencyRateHistory
                             {
                                 CurrencyID = account.CurrencyID ?? 0,
                                 Date = dbRecord.DateTimeOfPayment.Date,
@@ -312,7 +312,7 @@ namespace MyProfile.Budget.Service
                             {
                                 #region OLD Return back balance and cashback
 
-                                AccountRecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
+                                RecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
                                        .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
                                        .OrderByDescending(x => x.ID)
                                        .FirstOrDefault();
@@ -334,10 +334,10 @@ namespace MyProfile.Budget.Service
                                 {
                                     account.Balance += lastAccountRecordHistory.AccountTotal;// _money;
 
-                                    if (lastAccountRecordHistory.Account.IsCachback && lastAccountRecordHistory.Account.CachbackForAllPercent != null)
-                                    {
-                                        account.CachbackBalance -= lastAccountRecordHistory.AccountCashback;
-                                    }
+                                    //if (lastAccountRecordHistory.Account.IsCachback && lastAccountRecordHistory.Account.CachbackForAllPercent != null)
+                                    //{
+                                    account.CachbackBalance -= lastAccountRecordHistory.AccountCashback;
+                                    //}
                                 }
                                 else
                                 {
@@ -356,7 +356,7 @@ namespace MyProfile.Budget.Service
                                 }
                                 else if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
                                 {
-                                    accountCurrency.Rate = record.CurrencyRate;
+                                    accountCurrency.Rate = record.CurrencyRate ?? 1;
                                     accountCurrency.Nominal = record.CurrencyNominal ?? 1;
 
                                     _money = record.Money / record.CurrencyRate ?? 1;
@@ -370,7 +370,7 @@ namespace MyProfile.Budget.Service
                                         accountCurrency.Rate = val.Rate;
                                         accountCurrency.Nominal = val.Nominal;
 
-                                        _money = record.Money / accountCurrency.Rate ?? 1;
+                                        _money = record.Money / accountCurrency.Rate;
                                     }
                                     else
                                     {
@@ -387,9 +387,9 @@ namespace MyProfile.Budget.Service
 
                                     if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                     {
-                                        if (!(record.CurrencyID == account.CurrencyID && record.CurrencyID == currentUser.CurrencyID))
+                                        if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                         {
-                                            recordCashback = ((record.Money / accountCurrency.Rate ?? 1) * account.CachbackForAllPercent ?? 1) / 100;
+                                            recordCashback = ((record.Money / accountCurrency.Rate) * account.CachbackForAllPercent ?? 1) / 100;
                                         }
                                         account.CachbackBalance += recordCashback;
                                     }
@@ -412,7 +412,7 @@ namespace MyProfile.Budget.Service
                                     accounts.Add(oldAccount);
                                 }
 
-                                AccountRecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
+                                RecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
                                      .Where(x => (x.ActionTypeCode == ActionTypeCode.Create
                                           || x.ActionTypeCode == ActionTypeCode.Edit)
                                           && x.AccountID == oldAccount.ID)
@@ -437,10 +437,7 @@ namespace MyProfile.Budget.Service
                                 {
                                     oldAccount.Balance += lastAccountRecordHistory.AccountTotal; // _money;
 
-                                    if (lastAccountRecordHistory.Account.IsCachback && lastAccountRecordHistory.Account.CachbackForAllPercent != null)
-                                    {
-                                        oldAccount.CachbackBalance -= lastAccountRecordHistory.AccountNewBalanceCashback;
-                                    }
+                                    oldAccount.CachbackBalance -= lastAccountRecordHistory.AccountCashback;
                                 }
                                 else
                                 {
@@ -459,7 +456,7 @@ namespace MyProfile.Budget.Service
                                 }
                                 else if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
                                 {
-                                    accountCurrency.Rate = record.CurrencyRate;
+                                    accountCurrency.Rate = record.CurrencyRate ?? 1;
                                     accountCurrency.Nominal = record.CurrencyNominal ?? 1;
 
                                     _money = record.Money / record.CurrencyRate ?? 1;
@@ -473,7 +470,7 @@ namespace MyProfile.Budget.Service
                                         accountCurrency.Rate = val.Rate;
                                         accountCurrency.Nominal = val.Nominal;
 
-                                        _money = record.Money / accountCurrency.Rate ?? 1;
+                                        _money = record.Money / accountCurrency.Rate;
                                     }
                                     else
                                     {
@@ -490,9 +487,9 @@ namespace MyProfile.Budget.Service
 
                                     if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                     {
-                                        if (!(record.CurrencyID == account.CurrencyID && record.CurrencyID == currentUser.CurrencyID))
+                                        if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                         {
-                                            recordCashback = ((record.Money / accountCurrency.Rate ?? 1) * account.CachbackForAllPercent ?? 1) / 100;
+                                            recordCashback = ((record.Money / accountCurrency.Rate) * account.CachbackForAllPercent ?? 1) / 100;
                                         }
                                         account.CachbackBalance += recordCashback;
                                     }
@@ -569,7 +566,7 @@ namespace MyProfile.Budget.Service
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
-            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == currentUser.ID)
+            var db_record = await repository.GetAll<Record>(x => x.ID == record.ID && x.UserID == currentUser.ID)
                 .FirstOrDefaultAsync();
 
             if (db_record != null)
@@ -580,7 +577,7 @@ namespace MyProfile.Budget.Service
 
                 #region Account and AccountHistory
 
-                AccountRecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
+                RecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
                                       .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
                                       .OrderByDescending(x => x.ID)
                                       .FirstOrDefault();
@@ -598,12 +595,13 @@ namespace MyProfile.Budget.Service
                     db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
                 }
 
-                db_record.AccountRecordHistories.Add(new AccountRecordHistory
+                db_record.AccountRecordHistories.Add(new RecordHistory
                 {
                     ActionTypeCode = ActionTypeCode.Delete,
                     AccountID = db_record.AccountID,
                     AccountCurrencyID = db_record.Account.CurrencyID,
                     DateCreate = now,
+                    SectionID = db_record.BudgetSectionID,
                 });
                 #endregion
 
@@ -618,7 +616,7 @@ namespace MyProfile.Budget.Service
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
-            var db_record = await repository.GetAll<BudgetRecord>(x => x.ID == record.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
+            var db_record = await repository.GetAll<Record>(x => x.ID == record.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
             if (db_record != null)
             {
@@ -627,7 +625,7 @@ namespace MyProfile.Budget.Service
 
                 #region Account and AccountHistory
 
-                AccountRecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
+                RecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
                                       .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
                                       .OrderByDescending(x => x.ID)
                                       .FirstOrDefault();
@@ -645,12 +643,13 @@ namespace MyProfile.Budget.Service
                     db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
                 }
 
-                db_record.AccountRecordHistories.Add(new AccountRecordHistory
+                db_record.AccountRecordHistories.Add(new RecordHistory
                 {
                     ActionTypeCode = ActionTypeCode.Recovery,
                     AccountID = db_record.AccountID,
                     AccountCurrencyID = db_record.Account.CurrencyID,
                     DateCreate = now,
+                    SectionID = db_record.BudgetSectionID,
                 });
 
                 #endregion
@@ -666,7 +665,7 @@ namespace MyProfile.Budget.Service
             DateTime from,
             DateTime to,
             Func<TmpBudgetRecord, int> groupBy,
-            Expression<Func<BudgetRecord, bool>> expression = null)
+            Expression<Func<Record, bool>> expression = null)
         {
             return _getBudgetRecords(from, to, expression)
                 .Select(x => new TmpBudgetRecord
@@ -701,14 +700,14 @@ namespace MyProfile.Budget.Service
               .AsQueryable();
         }
 
-        private IQueryable<BudgetRecord> _getBudgetRecords(
+        private IQueryable<Record> _getBudgetRecords(
             DateTime from,
             DateTime to,
-            Expression<Func<BudgetRecord, bool>> expression = null)
+            Expression<Func<Record, bool>> expression = null)
         {
             Guid currentUserID = UserInfo.Current.ID;
             List<Guid> allCollectiveUserIDs = collectionUserService.GetAllCollectiveUserIDs();
-            var predicate = PredicateBuilder.True<BudgetRecord>();
+            var predicate = PredicateBuilder.True<Record>();
 
             predicate = predicate.And(x => allCollectiveUserIDs.Contains(x.UserID)
                   && from <= x.DateTimeOfPayment && to >= x.DateTimeOfPayment
@@ -842,7 +841,7 @@ namespace MyProfile.Budget.Service
             var currentUserID = UserInfo.Current.ID;
 
             return await repository
-              .GetAll<BudgetRecord>(x => x.UserID == currentUserID)
+              .GetAll<Record>(x => x.UserID == currentUserID)
               .Select(x => new BudgetRecordModelView
               {
                   ID = x.ID,
@@ -903,7 +902,7 @@ namespace MyProfile.Budget.Service
 
         public async Task<List<int>> GetAllYears()
         {
-            List<int> years = await repository.GetAll<BudgetRecord>(x => x.UserID == UserInfo.Current.ID)
+            List<int> years = await repository.GetAll<Record>(x => x.UserID == UserInfo.Current.ID)
                 .GroupBy(x => x.DateTimeOfPayment.Year)
                 //.OrderBy(x => x.Key)
                 .Select(x => x.Key)
@@ -919,10 +918,10 @@ namespace MyProfile.Budget.Service
                 .ToList();
         }
 
-        private async Task<Expression<Func<BudgetRecord, bool>>> getExpressionByCalendarFilterAsync(CalendarFilterModels filter)
+        private async Task<Expression<Func<Record, bool>>> getExpressionByCalendarFilterAsync(CalendarFilterModels filter)
         {
             Guid currentUserID = UserInfo.Current.ID;
-            var expression = PredicateBuilder.True<BudgetRecord>();
+            var expression = PredicateBuilder.True<Record>();
 
             if (filter.IsConsiderCollection)
             {
@@ -955,10 +954,10 @@ namespace MyProfile.Budget.Service
             return expression;
         }
 
-        private Expression<Func<BudgetRecord, bool>> getExpressionByCalendarFilter(CalendarFilterModels filter)
+        private Expression<Func<Record, bool>> getExpressionByCalendarFilter(CalendarFilterModels filter)
         {
             Guid currentUserID = UserInfo.Current.ID;
-            var expression = PredicateBuilder.True<BudgetRecord>();
+            var expression = PredicateBuilder.True<Record>();
 
             if (filter.IsConsiderCollection)
             {

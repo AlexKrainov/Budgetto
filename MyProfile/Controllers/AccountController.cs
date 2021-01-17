@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
+using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Account;
 using MyProfile.Entity.Repository;
 using MyProfile.UserLog.Service;
@@ -38,10 +39,34 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAccounts()
+        public JsonResult GetAccounts(DateTime? date, int year, PeriodTypesEnum periodType)
         {
-            var accounts = accountService.GetAcounts();
-            return Json(new { isOk = true, accounts = accounts });
+            DateTime start;
+            DateTime finish;
+            DateTime now = DateTime.Now;
+            List<AccountViewModel> accounts = new List<AccountViewModel>();
+
+            if (date.HasValue)
+            {
+                start = new DateTime(date.Value.Year, date.Value.Month, 01, 00, 00, 00);
+                finish = new DateTime(date.Value.Year, date.Value.Month, DateTime.DaysInMonth(date.Value.Year, date.Value.Month), 23, 59, 59);
+            }
+            else
+            {
+                start = new DateTime(year, 1, 01, 00, 00, 00);
+                finish = new DateTime(year, 12, 31, 23, 59, 59);
+            }
+
+            accounts = accountService.GetAcounts(); // current data of accounts (month is now or year is now)
+            bool isPast = now >= start && now >= finish;
+
+            //if (isPast)
+            {
+                accounts = accountService.GetAcountsPast(start, finish, accounts);
+            }
+
+
+            return Json(new { isOk = true, accounts = accounts, isPast });
         }
 
         [HttpGet]
@@ -71,7 +96,7 @@ namespace MyProfile.Controllers
 
             return Json(new { isOk = true, isDeleted, accountIDWithIsDefault });
         }
-        
+
         [HttpPost]
         public JsonResult ShowHide([FromBody] AccountViewModel account)
         {

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210116113200_083")]
+    partial class _083
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -643,6 +645,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<decimal>("Rate");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("CurrencyID");
 
                     b.ToTable("CurrencyRateHistories");
                 });
@@ -2062,6 +2066,13 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.BudgetSection", "Section")
                         .WithMany("CollectiveSections")
                         .HasForeignKey("SectionID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CurrencyRateHistory", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.ErrorLog", b =>

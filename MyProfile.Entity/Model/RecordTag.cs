@@ -16,6 +16,6 @@ namespace MyProfile.Entity.Model
         public int UserTagID { get; set; }
 
         public virtual UserTag UserTag { get; set; }
-        public virtual BudgetRecord Record { get; set; }
+        public virtual Record Record { get; set; }
     }
 }

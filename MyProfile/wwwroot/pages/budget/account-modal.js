@@ -7,7 +7,10 @@ var AccountVue = new Vue({
             accountType: 1,
             currency: {},
             currencyID: -1,
-            //resetCashBackDate: null
+            balance: 0,
+            cachBackBalance: 0,
+            //resetCashBackDate: null,
+            isDeleted: false
         },
 
         accountTypes: [],
@@ -48,7 +51,13 @@ var AccountVue = new Vue({
             } else {
                 this.account = {
                     id: undefined,
-                    accountType: 1
+                    accountType: 1,
+                    currency: {},
+                    currencyID: -1,
+                    balance: 0,
+                    cachBackBalance: 0,
+                    //resetCashBackDate: null,
+                    isDeleted: false
                 };
 
                 this.account.currencyID = UserInfo.Currency.ID;
@@ -77,12 +86,24 @@ var AccountVue = new Vue({
                 dataType: 'json',
                 context: this,
                 success: function (response) {
+                    HideLoading(el_id);
+
                     if (response.isOk) {
                         //toastr.success("Данные счета обновлены");
                         this.account.isHide = isHide;
 
+                        if (typeof (BudgetVue) == "object" && isHide) {
+                            let index = BudgetVue.accounts.findIndex(x => x.id == this.account.id);
+                            BudgetVue.accounts.splice(index, 1);
+                            BudgetVue.accounts.push(this.account);
+                        } else {
+                            let hideAccounts = BudgetVue.accounts.filter(x => x.isHide);
+                            let notHideAccounts = BudgetVue.accounts.filter(x => x.isHide == false);
+
+                            BudgetVue.accounts = notHideAccounts.concat(hideAccounts);
+                        }
                     }
-                    HideLoading(el_id);
+                    $('[data-toggle="tooltip"]').tooltip();
                     return response;
                 },
                 error: function (xhr, status, error) {
@@ -91,6 +112,11 @@ var AccountVue = new Vue({
             });
         },
         save: function () {
+
+            if (this.checkForm() == false) {
+                return;
+            }
+
             this.isSaving = true;
 
             $.ajax({
@@ -122,12 +148,34 @@ var AccountVue = new Vue({
                 }
             });
         },
+        checkForm: function (e) {
+            let isOk = true;
+
+            if (!(this.account.name && this.account.name.length > 0)) {
+                isOk = false;
+                $("#account-name").addClass("is-invalid");
+            } else {
+                $("#account-name").removeClass("is-invalid");
+            }
+
+            //if (this.goal.expectationMoney && this.goal.expectationMoney > 0) {
+            //    $("#goal-expectationMoney").removeClass("is-invalid");
+            //} else {
+            //    isOk = false;
+            //    $("#goal-expectationMoney").addClass("is-invalid");
+            //}
+
+            if (isOk == false && e) {
+                e.preventDefault();
+            }
+            return isOk;
+        },
         removeOrRecovery: function (account) {
             if (typeof (BudgetVue) == "object" && this.account.isDeleted == false) {
-                let lengthOfDeleted = BudgetVue.accounts.filter(x => x.isDeleted).length;
+                let lengthOfDeleted = BudgetVue.accounts.filter(x => x.isDeleted == false).length;
 
-                if (BudgetVue.accounts.length - lengthOfDeleted <= 1) {
-                    toastr.error("Нельзя удалить все счета, должен оставаться хотябы один.");
+                if (lengthOfDeleted <= 1) {
+                    toastr.error("Нельзя удалить все счета, должен оставаться хотя бы один.");
                     return;
                 }
             }
@@ -148,6 +196,16 @@ var AccountVue = new Vue({
                 context: this,
                 success: function (response) {
                     if (response.isOk) {
+                        if (!this.account.isDeleted == response.isDeleted) {
+                            if (this.account.isDeleted) {
+                                toastr.error("Ошибка во время удаления счета. Возможно вы удаляете последний счет.");
+                            } else {
+                                toastr.error("Ошибка во время восстановления счета.");
+                            }
+                            this.account.isDeleted = !this.account.isDeleted;
+                            HideLoading("#account_" + this.account.id);
+                            return;
+                        }
                         this.account.isDeleted = response.isDeleted;
                         this.account.isDefault = false;
 

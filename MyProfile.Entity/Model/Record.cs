@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-    public class BudgetRecord
+    public class Record
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -56,12 +56,12 @@ namespace MyProfile.Entity.Model
         public virtual Account Account { get; set; }
 
         public virtual ICollection<RecordTag> Tags { get; set; }
-        public virtual ICollection<AccountRecordHistory> AccountRecordHistories { get; set; }
+        public virtual ICollection<RecordHistory> AccountRecordHistories { get; set; }
 
-        public BudgetRecord()
+        public Record()
         {
             this.Tags = new HashSet<RecordTag>();
-            this.AccountRecordHistories = new HashSet<AccountRecordHistory>();
+            this.AccountRecordHistories = new HashSet<RecordHistory>();
         }
     }
 }

@@ -35,6 +35,9 @@
                 $('[data-toggle="tooltip"]').tooltip('dispose');
             }
         }
+        //this.rows = [];
+        //this.footerRow = [];
+        //this.template = {};
 
         this.tableAjax = $.ajax({
             type: "POST",
@@ -184,5 +187,31 @@
         });
 
         return this.bigChartsAjax;
+    },
+    //Accounts 
+    loadAccounts: function () {
+        if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Accounts)) {
+            return false;
+        }
+
+        if (this.accountsAjax && (this.accountsAjax.readyState == 1 || this.accountsAjax.readyState == 3)) { // OPENED & LOADING
+            this.accountsAjax.abort();
+        }
+
+        ShowLoading('#accounts-view');
+
+        this.accountsAjax = $.ajax({
+            type: "GET",
+            url: "/Account/GetAccounts?date=" + this.budgetDate + "&periodType=1",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+                this.accounts = response.accounts;
+
+                HideLoading('#accounts-view');
+            }
+        });
+        return this.accountsAjax;
     },
 };

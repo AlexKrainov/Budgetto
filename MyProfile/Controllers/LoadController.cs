@@ -63,7 +63,7 @@ namespace MyProfile.Controllers
             int currentMonth = 0;
             var now = DateTime.Now.ToUniversalTime();
 
-            List<BudgetRecord> records = new List<BudgetRecord>();
+            List<Record> records = new List<Record>();
             //Guid userID = Guid.Parse("0C499EA3-9749-4879-F9C1-08D8530A928F");//test
             Guid userID = Guid.Parse("5A4454D6-3706-473D-57CA-08D88D635029");//prod
 
@@ -80,7 +80,7 @@ namespace MyProfile.Controllers
                 {
                     day.product = day.product.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -99,7 +99,7 @@ namespace MyProfile.Controllers
                 {
                     day.spending = day.spending.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -116,7 +116,7 @@ namespace MyProfile.Controllers
                 {
                     day.spending = day.spending.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -134,7 +134,7 @@ namespace MyProfile.Controllers
                 {
                     day.babySpending = day.babySpending.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -152,7 +152,7 @@ namespace MyProfile.Controllers
                 {
                     day.anotherSpending = day.anotherSpending.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -202,7 +202,7 @@ namespace MyProfile.Controllers
                         BudgetSectionID = 57; //банкинг
                     }
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -221,7 +221,7 @@ namespace MyProfile.Controllers
                 {
                     day.selery = day.selery.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -239,7 +239,7 @@ namespace MyProfile.Controllers
                 {
                     day.anotherSelery = day.anotherSelery.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -257,7 +257,7 @@ namespace MyProfile.Controllers
                 {
                     day.cashback = day.cashback.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,
@@ -275,7 +275,7 @@ namespace MyProfile.Controllers
                 {
                     day.investing = day.investing.Replace(" ₽", "");
 
-                    records.Add(new BudgetRecord
+                    records.Add(new Record
                     {
                         UserID = userID,
                         CurrencyID = 1,

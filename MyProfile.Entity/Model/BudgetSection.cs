@@ -48,7 +48,7 @@ namespace MyProfile.Entity.Model
         public virtual SectionType SectionType { get; set; }
 
 
-        public virtual IEnumerable<BudgetRecord> BudgetRecords { get; set; }
+        public virtual IEnumerable<Record> BudgetRecords { get; set; }
         public virtual IEnumerable<CollectiveSection> CollectiveSections { get; set; }
         public virtual IEnumerable<SectionGroupLimit> SectionGroupLimits { get; set; }
         public virtual IEnumerable<TemplateBudgetSection> TemplateBudgetSections { get; set; }
@@ -56,7 +56,7 @@ namespace MyProfile.Entity.Model
         public BudgetSection()
         {
             this.SectionGroupLimits = new HashSet<SectionGroupLimit>();
-            this.BudgetRecords = new HashSet<BudgetRecord>();
+            this.BudgetRecords = new HashSet<Record>();
             this.CollectiveSections = new HashSet<CollectiveSection>();
             this.TemplateBudgetSections = new HashSet<TemplateBudgetSection>();
         }

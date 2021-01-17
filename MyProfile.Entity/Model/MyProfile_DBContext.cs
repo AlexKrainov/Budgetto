@@ -27,7 +27,7 @@ namespace MyProfile.Entity.Model
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Indexes
-            modelBuilder.Entity<BudgetRecord>()
+            modelBuilder.Entity<Record>()
              .HasIndex(x => x.DateTimeOfPayment);
 
             #endregion
@@ -133,10 +133,10 @@ namespace MyProfile.Entity.Model
                .Property(b => b.CurrencyID)
                .HasDefaultValue(1);
 
-            modelBuilder.Entity<BudgetRecord>()
+            modelBuilder.Entity<Record>()
                 .Property(b => b.CurrencyID)
                 .HasDefaultValue(1);
-            modelBuilder.Entity<BudgetRecord>()
+            modelBuilder.Entity<Record>()
                 .Property(b => b.CurrencyNominal)
                 .HasDefaultValue(1);
 
@@ -188,7 +188,7 @@ namespace MyProfile.Entity.Model
 
         public virtual DbSet<BudgetArea> BudgetAreas { get; set; }
         public virtual DbSet<BudgetSection> BudgetSections { get; set; }
-        public virtual DbSet<BudgetRecord> BudgetRecords { get; set; }
+        public virtual DbSet<Record> BudgetRecords { get; set; }
         public virtual DbSet<Limit> Limits { get; set; }
         public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<TemplateBudgetSection> TemplateBudgetSections { get; set; }
@@ -245,7 +245,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<AccountType> AccountTypes { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Bank> Banks { get; set; }
-        public virtual DbSet<AccountRecordHistory> AccountRecordHistories { get; set; }
+        public virtual DbSet<RecordHistory> AccountRecordHistories { get; set; }
+        public virtual DbSet<CurrencyRateHistory> CurrencyRateHistories { get; set; }
 
     }
 }
