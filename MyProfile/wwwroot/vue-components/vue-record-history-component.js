@@ -180,7 +180,7 @@
                 success: function (response) {
                     record.isDeleted = response.isOk;
                     HideLoading('#record_' + record.id);
-                    //calendar.after_loading(response);
+                    BudgetVue.refreshAfterChangeRecords(response.dateTimeOfPayment)
                 }
             });
         },
@@ -196,6 +196,7 @@
                 success: function (response) {
                     record.isDeleted = !response.isOk;
                     HideLoading('#record_' + record.id);
+                    BudgetVue.refreshAfterChangeRecords(response.dateTimeOfPayment)
                 }
             });
         },

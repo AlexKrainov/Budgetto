@@ -245,7 +245,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<AccountType> AccountTypes { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Bank> Banks { get; set; }
-        public virtual DbSet<RecordHistory> AccountRecordHistories { get; set; }
+        public virtual DbSet<RecordHistory> RecordHistories { get; set; }
+        public virtual DbSet<AccountHistory> AccountHistories { get; set; }
         public virtual DbSet<CurrencyRateHistory> CurrencyRateHistories { get; set; }
 
     }

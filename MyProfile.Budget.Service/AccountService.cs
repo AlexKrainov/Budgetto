@@ -4,6 +4,7 @@ using MyProfile.Entity.ModelView.Account;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.UserLog.Service;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,14 @@ namespace MyProfile.Budget.Service
                 .ToList();
         }
 
-        public List<AccountViewModel> GetAcountsPast(DateTime start, DateTime finish, List<AccountViewModel> accounts)
+        /// <summary>
+        /// Get all money by section type for the period
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="finish"></param>
+        /// <param name="accounts"></param>
+        /// <returns></returns>
+        public void GetAcountsAllMoney(DateTime start, DateTime finish, List<AccountViewModel> accounts)
         {
             var currentUser = UserInfo.Current;
 
@@ -103,14 +111,13 @@ namespace MyProfile.Budget.Service
             {
                 account.IsPast = true;
                 //account.Balance += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
-                //account.CachBackBalance += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountCashback);
 
                 account.BalanceSpendings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
                 account.BalanceEarnings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Earnings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
                 account.BalanceInvestments += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Investments && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
-            }
 
-            return accounts;
+                account.BalancePastCachback += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountCashback);
+            }
         }
 
         public List<AccountShortViewModel> GetShortAccounts()
@@ -146,26 +153,6 @@ namespace MyProfile.Budget.Service
             return accounts;
         }
 
-        public bool ShowHide(AccountViewModel account)
-        {
-            var currentUser = UserInfo.Current;
-            var accountDB = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.ID == account.ID).FirstOrDefault();
-
-            try
-            {
-                accountDB.IsHide = !account.IsHide;
-                accountDB.LastChanges = DateTime.Now.ToUniversalTime();
-
-                repository.Update(accountDB, true);
-            }
-            catch (Exception ex)
-            {
-                userLogService.CreateErrorLog(currentUser.UserSessionID, "AccountService.ShowHide", ex, account.IsDeleted ? UserLogActionType.Account_Delete : UserLogActionType.Account_Recovery);
-            }
-
-            return account.IsHide;
-        }
-
         public AccountViewModel Save(AccountViewModel account)
         {
             var currentUser = UserInfo.Current;
@@ -196,11 +183,27 @@ namespace MyProfile.Budget.Service
                     IsHide = account.IsHide,
 
                     DateCreate = now,
-                    CurrencyID = account.CurrencyID, // ruble
+                    CurrencyID = account.CurrencyID,
                 };
+
+                if (account.IsCachback)
+                {
+                    if (account.CachBackBalance <= 0)
+                    {
+                        accountDB.CachbackBalance = 0.1m;
+                    }
+                }
 
                 try
                 {
+                    AccountHistory accountHistory = new AccountHistory
+                    {
+                        NewAccountStateJson = Serialize(accountDB),
+                        CurrentDate = now,
+                        ActionType = AccountHistoryActionType.Create
+                    };
+                    accountDB.AccountHistories.Add(accountHistory);
+
                     repository.Create(accountDB, true);
 
                     UpdateIsDefaultAccount(accountDB);
@@ -221,6 +224,12 @@ namespace MyProfile.Budget.Service
 
                 if (accountDB != null)
                 {
+                    AccountHistory accountHistory = new AccountHistory
+                    {
+                        OldAccountStateJson = Serialize(accountDB),
+                        CurrentDate = now,
+                        ActionType = AccountHistoryActionType.Edit
+                    };
                     //accountDB.AccountTypeID = (int)account.AccountType;
                     accountDB.Balance = account.Balance;
                     accountDB.Description = account.Description;
@@ -241,6 +250,14 @@ namespace MyProfile.Budget.Service
                         accountDB.IsOverdraft = account.IsOverdraft;
                         accountDB.InterestRate = account.InterestRate;
                         accountDB.ResetCachbackDate = account.ResetCashBackDate;
+
+                        if (account.IsCachback)
+                        {
+                            if (account.CachBackBalance <= 0)
+                            {
+                                accountDB.CachbackBalance = 0.1m;
+                            }
+                        }
                     }
                     else
                     {
@@ -256,6 +273,9 @@ namespace MyProfile.Budget.Service
 
                     try
                     {
+                        accountHistory.NewAccountStateJson = Serialize(accountDB);
+                        accountDB.AccountHistories.Add(accountHistory);
+
                         repository.Update(accountDB, true);
 
                         UpdateIsDefaultAccount(accountDB);
@@ -274,8 +294,38 @@ namespace MyProfile.Budget.Service
             return account;
         }
 
-        public bool RemoveOrRecovery(AccountViewModel account, ref int accountWithID)
+        public bool ShowHide(AccountViewModel account)
         {
+            var now = DateTime.Now.ToUniversalTime();
+            var currentUser = UserInfo.Current;
+            var accountDB = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.ID == account.ID).FirstOrDefault();
+
+            try
+            {
+                AccountHistory accountHistory = new AccountHistory
+                {
+                    OldAccountStateJson = Serialize(accountDB),
+                    CurrentDate = now,
+                    ActionType = AccountHistoryActionType.ShowHide
+                };
+                accountDB.IsHide = !account.IsHide;
+                accountDB.LastChanges = now;
+                accountHistory.NewAccountStateJson = Serialize(accountDB);
+                accountDB.AccountHistories.Add(accountHistory);
+
+                repository.Update(accountDB, true);
+            }
+            catch (Exception ex)
+            {
+                userLogService.CreateErrorLog(currentUser.UserSessionID, "AccountService.ShowHide", ex, account.IsDeleted ? UserLogActionType.Account_Delete : UserLogActionType.Account_Recovery);
+            }
+
+            return account.IsHide;
+        }
+
+        public bool RemoveOrRecovery(AccountViewModel account, ref int accountIDWithIsDefault)
+        {
+            var now = DateTime.Now.ToUniversalTime();
             var currentUser = UserInfo.Current;
             var accountDB = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.ID == account.ID).FirstOrDefault();
 
@@ -287,15 +337,25 @@ namespace MyProfile.Budget.Service
             }
             try
             {
+                AccountHistory accountHistory = new AccountHistory
+                {
+                    OldAccountStateJson = Serialize(accountDB),
+                    CurrentDate = now,
+                    ActionType = account.IsDeleted ? AccountHistoryActionType.Delete : AccountHistoryActionType.Recovery
+                };
+
                 accountDB.IsDeleted = account.IsDeleted;
                 accountDB.IsDefault = false;
-                accountDB.LastChanges = DateTime.Now.ToUniversalTime();
+                accountDB.LastChanges = now;
+
+                accountHistory.NewAccountStateJson = Serialize(accountDB);
+                accountDB.AccountHistories.Add(accountHistory);
 
                 repository.Update(accountDB, true);
 
                 if (account.IsDefault)
                 {
-                    accountWithID = UpdateIsDefaultAccount(accountDB);
+                    accountIDWithIsDefault = UpdateIsDefaultAccount(accountDB);
                 }
 
                 cache.Remove(typeof(AccountShortViewModel).Name + "_" + currentUser.ID);
@@ -364,6 +424,36 @@ namespace MyProfile.Budget.Service
                 }
             }
             return accountIDWithIsDefault;
+        }
+
+        private string Serialize(Account accountDB)
+        {
+            Account account = new Account
+            {
+                AccountTypeID = accountDB.AccountTypeID,
+                Balance = accountDB.Balance,
+                BankID = accountDB.BankID,
+                CachbackBalance = accountDB.CachbackBalance,
+                CachbackForAllPercent = accountDB.CachbackForAllPercent,
+                CurrencyID = accountDB.CurrencyID,
+                DateCreate = accountDB.DateCreate,
+                Description = accountDB.Description,
+                ExpirationDate = accountDB.ExpirationDate,
+                ID = accountDB.ID,
+                InterestRate = accountDB.InterestRate,
+                IsCachback = accountDB.IsCachback,
+                IsCachbackMoney = accountDB.IsCachbackMoney,
+                IsDefault = accountDB.IsDefault,
+                IsDeleted = accountDB.IsDeleted,
+                IsHide = accountDB.IsHide,
+                IsOverdraft = accountDB.IsOverdraft,
+                LastChanges = accountDB.LastChanges,
+                Name = accountDB.Name,
+                ResetCachbackDate = accountDB.ResetCachbackDate,
+                UserID = accountDB.UserID
+            };
+
+            return JsonConvert.SerializeObject(account, Formatting.Indented);
         }
 
         public List<AccountTypeModelView> GetAcountTypes()

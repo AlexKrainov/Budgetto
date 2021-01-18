@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-    public class ActionTypeCode
+    public class RecordActionTypeCode
     {
        public static readonly string Create = "Create";
        public static readonly string Edit = "Edit";

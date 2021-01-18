@@ -55,6 +55,8 @@
                 });
             }
         });
+
+        $('#modal-record1').modal('show');
     </script>
 }
 
@@ -119,35 +121,35 @@
                     </div>
                     @*<div class="col-lg-3">
 
-            <div class="card-body d-flex align-items-center py-3">
-                <img src="~/resources/banks/alfa-logo.svg" alt="" class="ui-w-40 rounded-circle">
-                <div class="ml-3">
-                    <div class="text-xlarge">12 000 ₽</div>
-                    <div class="text-muted small">Альфа банк</div>
-                </div>
-                <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" style="position: absolute;right: 10px;top: 5px;"><i class="ion ion-ios-more"></i></button>
-            </div>
-            <div class="card-footer small">
-                <span class="float-right text-success">230  ₽</span>
-                Кешбек
-            </div>
+                            <div class="card-body d-flex align-items-center py-3">
+                                <img src="~/resources/banks/alfa-logo.svg" alt="" class="ui-w-40 rounded-circle">
+                                <div class="ml-3">
+                                    <div class="text-xlarge">12 000 ₽</div>
+                                    <div class="text-muted small">Альфа банк</div>
+                                </div>
+                                <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" style="position: absolute;right: 10px;top: 5px;"><i class="ion ion-ios-more"></i></button>
+                            </div>
+                            <div class="card-footer small">
+                                <span class="float-right text-success">230  ₽</span>
+                                Кешбек
+                            </div>
 
-        </div>
-        <div class="col-lg-3">
+                        </div>
+                        <div class="col-lg-3">
 
-            <div class="card-body d-flex align-items-center py-3">
-                <img src="~/resources/banks/tinkoff-bank.png" alt="" class="ui-w-40 rounded-circle">
-                <div class="ml-3">
-                    <div class="text-xlarge">12 000 ₽</div>
-                    <div class="text-muted small">Тинькофф банк</div>
-                </div>
-                <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" style="position: absolute;right: 10px;top: 5px;"><i class="ion ion-ios-more"></i></button>
-            </div>
-            <div class="card-footer small">
-                <span class="float-right">0  ₽</span>
-                Кешбек
-            </div>
-        </div>*@
+                            <div class="card-body d-flex align-items-center py-3">
+                                <img src="~/resources/banks/tinkoff-bank.png" alt="" class="ui-w-40 rounded-circle">
+                                <div class="ml-3">
+                                    <div class="text-xlarge">12 000 ₽</div>
+                                    <div class="text-muted small">Тинькофф банк</div>
+                                </div>
+                                <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" style="position: absolute;right: 10px;top: 5px;"><i class="ion ion-ios-more"></i></button>
+                            </div>
+                            <div class="card-footer small">
+                                <span class="float-right">0  ₽</span>
+                                Кешбек
+                            </div>
+                        </div>*@
                     <div class="col-lg-3">
 
                         <div class="card-body d-flex align-items-center py-3">
@@ -216,7 +218,6 @@
                         <div class="card-body d-flex justify-content-center align-items-center">
                             <span class="ui-icon ui-statistics-icon ion ion-md-add text-primary"></span>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -333,5 +334,98 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="modal-record1" class="modal modal-top fade" style="display: block; padding-right: 16px;" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <article class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Перевод средств
+                </h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group" style=" margin-bottom: -15px;">
+                    <label class="form-label">1 счет</label>
+                    <select class="form-control" style="visibility:hidden;">
+                        <option value="1" selected>
+                            Наличные
+                        </option>
+                    </select>
+                    <span class="input-group-append" style="visibility:hidden;">
+                        <span class=" btn btn-secondary ion ion-md-arrow-round-forward"></span>
+                    </span>
+                    <label class="form-label">2 счет</label>
+                    <select class="form-control" style="visibility:hidden;">
+                        <option value="1">
+                            Наличные
+                        </option>
+                        <option value="2" selected>
+                            Тинькофф банк
+                        </option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <select class="form-control">
+                        <option value="1" selected>
+                            Наличные
+                        </option>
+                        <option value="2">
+                            Тинькофф банк
+                        </option>
+                    </select>
+                    <span class="input-group-append">
+                        <span class=" btn btn-secondary ion ion-md-arrow-round-forward"></span>
+                    </span>
+                    <select class="form-control">
+                        <option value="1">
+                            Наличные
+                        </option>
+                        <option value="2" selected>
+                            Тинькофф банк
+                        </option>
+                    </select>
+                </div>
+                <div class="form-row mt-2">
+                    <div class="col-md-4">
+                        <label class="form-label">Баланс 1 счета</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" required value="20000" disabled />
+                            <span class="input-group-append">
+                                <span class="input-group-text" style="background: #f5f5f5;">₽</span>
+                            </span>
+                        </div>
+                        <small class="form-text text-muted">
+                            Новое значение: 19 000,00 ₽
+                        </small>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Сумма для перевода</label>
+                        <input type="number" class="form-control" required value="1000" placeholder="Введите сумму для перевода" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Баланс 2 счета</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" required value="5000" disabled />
+                            <span class="input-group-append">
+                                <span class="input-group-text" style="background: #f5f5f5;">₽</span>
+                            </span>
+                        </div>
+                        <small class="form-text text-muted float-right">
+                            Новое значение: 6 000,00 ₽
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" disabled="disabled" class="btn btn-default button-add-record">
+                    <span role="status" aria-hidden="true" class="spinner-border" style="display: none;"></span>
+                    Сохранить
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-default button-close-record">Закрыть</button>
+            </div>
+        </article>
     </div>
 </div>

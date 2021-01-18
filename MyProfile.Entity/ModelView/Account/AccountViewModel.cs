@@ -42,5 +42,6 @@ namespace MyProfile.Entity.ModelView.Account
         public decimal BalanceInvestments { get; set; }
         public bool IsPast { get; set; }
         public decimal BalanceSpendings { get; set; }
+        public decimal BalancePastCachback { get; set; }
     }
 }

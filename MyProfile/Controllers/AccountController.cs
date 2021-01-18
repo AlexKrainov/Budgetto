@@ -60,11 +60,10 @@ namespace MyProfile.Controllers
             accounts = accountService.GetAcounts(); // current data of accounts (month is now or year is now)
             bool isPast = now >= start && now >= finish;
 
-            //if (isPast)
+            if (isPast)
             {
-                accounts = accountService.GetAcountsPast(start, finish, accounts);
+                accountService.GetAcountsAllMoney(start, finish, accounts);
             }
-
 
             return Json(new { isOk = true, accounts = accounts, isPast });
         }

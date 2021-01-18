@@ -9,6 +9,7 @@ var AccountVue = new Vue({
             currencyID: -1,
             balance: 0,
             cachBackBalance: 0,
+            cashBackForAllPercent: 1,
             //resetCashBackDate: null,
             isDeleted: false
         },
@@ -56,6 +57,7 @@ var AccountVue = new Vue({
                     currencyID: -1,
                     balance: 0,
                     cachBackBalance: 0,
+                    cashBackForAllPercent: 1,
                     //resetCashBackDate: null,
                     isDeleted: false
                 };
@@ -63,9 +65,12 @@ var AccountVue = new Vue({
                 this.account.currencyID = UserInfo.Currency.ID;
                 this.account.currency = this.currencyInfos[this.currencyInfos.findIndex(x => x.id == this.account.currencyID)];
             }
+
+
             let dateConfig = GetFlatpickrRuConfig_Month(this.account.expirationDate);
             this.flatpickrExpirationDate = flatpickr('#expirationDate', dateConfig);
 
+            $("#account-name").removeClass("is-invalid");
             $("#modal-account").modal("show");
         },
         showHide: function (account, isHide) {

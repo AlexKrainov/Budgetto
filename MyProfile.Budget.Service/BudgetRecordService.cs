@@ -230,7 +230,7 @@ namespace MyProfile.Budget.Service
                                 account.Balance += _money;
                             }
 
-                            history.ActionTypeCode = ActionTypeCode.Create;
+                            history.ActionTypeCode = RecordActionTypeCode.Create;
                             history.RecordID = newRecord.ID;
                             history.AccountID = account.ID;
                             history.DateTimeOfPayment = newRecord.DateTimeOfPayment;
@@ -313,7 +313,7 @@ namespace MyProfile.Budget.Service
                                 #region OLD Return back balance and cashback
 
                                 RecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
-                                       .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
+                                       .Where(x => x.ActionTypeCode == RecordActionTypeCode.Create || x.ActionTypeCode == RecordActionTypeCode.Edit)
                                        .OrderByDescending(x => x.ID)
                                        .FirstOrDefault();
 
@@ -413,8 +413,8 @@ namespace MyProfile.Budget.Service
                                 }
 
                                 RecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
-                                     .Where(x => (x.ActionTypeCode == ActionTypeCode.Create
-                                          || x.ActionTypeCode == ActionTypeCode.Edit)
+                                     .Where(x => (x.ActionTypeCode == RecordActionTypeCode.Create
+                                          || x.ActionTypeCode == RecordActionTypeCode.Edit)
                                           && x.AccountID == oldAccount.ID)
                                      .OrderByDescending(x => x.ID)
                                      .FirstOrDefault();
@@ -501,7 +501,7 @@ namespace MyProfile.Budget.Service
                                 #endregion
                             }
 
-                            history.ActionTypeCode = ActionTypeCode.Edit;
+                            history.ActionTypeCode = RecordActionTypeCode.Edit;
                             history.RecordID = dbRecord.ID;
                             history.AccountID = account.ID;
                             history.DateTimeOfPayment = dbRecord.DateTimeOfPayment;
@@ -578,7 +578,7 @@ namespace MyProfile.Budget.Service
                 #region Account and AccountHistory
 
                 RecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
-                                      .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
+                                      .Where(x => x.ActionTypeCode == RecordActionTypeCode.Create || x.ActionTypeCode == RecordActionTypeCode.Edit)
                                       .OrderByDescending(x => x.ID)
                                       .FirstOrDefault();
 
@@ -597,7 +597,7 @@ namespace MyProfile.Budget.Service
 
                 db_record.AccountRecordHistories.Add(new RecordHistory
                 {
-                    ActionTypeCode = ActionTypeCode.Delete,
+                    ActionTypeCode = RecordActionTypeCode.Delete,
                     AccountID = db_record.AccountID,
                     AccountCurrencyID = db_record.Account.CurrencyID,
                     DateCreate = now,
@@ -626,7 +626,7 @@ namespace MyProfile.Budget.Service
                 #region Account and AccountHistory
 
                 RecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
-                                      .Where(x => x.ActionTypeCode == ActionTypeCode.Create || x.ActionTypeCode == ActionTypeCode.Edit)
+                                      .Where(x => x.ActionTypeCode == RecordActionTypeCode.Create || x.ActionTypeCode == RecordActionTypeCode.Edit)
                                       .OrderByDescending(x => x.ID)
                                       .FirstOrDefault();
 
@@ -645,7 +645,7 @@ namespace MyProfile.Budget.Service
 
                 db_record.AccountRecordHistories.Add(new RecordHistory
                 {
-                    ActionTypeCode = ActionTypeCode.Recovery,
+                    ActionTypeCode = RecordActionTypeCode.Recovery,
                     AccountID = db_record.AccountID,
                     AccountCurrencyID = db_record.Account.CurrencyID,
                     DateCreate = now,

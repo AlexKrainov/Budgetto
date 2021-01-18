@@ -45,7 +45,8 @@
                               v-bind:class="account.accountIcon"></span>
                     </div>
                     <div class="ml-3">
-                        <div v-bind:class="account.balance < 0 ? 'text-danger' : ''">
+                        <div v-show="account.isPast == false"
+                             v-bind:class="account.balance < 0 ? 'text-danger' : ''">
                             <span  class="text-xlarge">
                                 {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
                             </span>
@@ -105,7 +106,7 @@
                         <a class="dropdown-item" href="javascript:void(0)"
                            v-on:click="editAccount(account)">Редактировать счет</a>
                         <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="showHideAccount(account, false)">Показавать счет</a>
+                           v-on:click="showHideAccount(account, false)">Показывать счет</a>
                         <a class="dropdown-item text-danger" href="javascript:void(0)"
                            v-on:click="removeOrRecoveryAccount(account)">Удалить счет</a>
                     </div>
@@ -113,6 +114,7 @@
                 </div>
                 <div class="card-footer small"
                      v-show="account.isPast && account.isHide == false">
+                    <div class="text-secondary">Итогb с этого счета за данный период</div>
                     <div>
                         <span class="float-right text-success">
                             {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balanceEarnings) }}
@@ -131,7 +133,12 @@
                         </span>
                         Инвестиции
                     </div>
-                    <div class="text-secondary small float-right">Итого с этого счета за данный период</div>
+                    <div v-show="account.isCachback">
+                        <span class="float-right text-success">
+                            {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balancePastCachback) }}
+                        </span>
+                        Кешбек
+                    </div>
                 </div>
             </div>
             <div class="col-lg-1">
