@@ -36,7 +36,7 @@ namespace MyProfile.Budget.Service
             var sections = sectionService.GetAllSectionForRecords();
 
             TotalModelView spendingData = new TotalModelView { IsShow = currentUser.UserSettings.Year_SpendingWidget };
-            TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.Year_EarningWidget };
+            TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.    Year_EarningWidget };
             TotalModelView investinData = new TotalModelView { IsShow = currentUser.UserSettings.Year_InvestingWidget };
 
             if (currentUser.UserSettings.Year_SpendingWidget)

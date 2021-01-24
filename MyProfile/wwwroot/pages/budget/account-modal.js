@@ -203,7 +203,7 @@ var AccountVue = new Vue({
                     if (response.isOk) {
                         if (!this.account.isDeleted == response.isDeleted) {
                             if (this.account.isDeleted) {
-                                toastr.error("Ошибка во время удаления счета. Возможно вы удаляете последний счет.");
+                                toastr.error("Ошибка во время удаления счета. Возможно, вы удаляете последний счет.");
                             } else {
                                 toastr.error("Ошибка во время восстановления счета.");
                             }
@@ -220,6 +220,7 @@ var AccountVue = new Vue({
                             if (index != -1 && response.accountIDWithIsDefault != -1) {
                                 BudgetVue.accounts[index].isDefault = true;
                             }
+                            BudgetVue.loadSummaries();
                         }
                         //refresh record metadata
                         if (typeof (RecordVue) == "object") {
@@ -247,3 +248,109 @@ var AccountVue = new Vue({
         }
     }
 });
+
+
+//var AccountTransferVue = new Vue({
+//    el: "#account-transfer-modal-vue",
+//    data: {
+//        accountsFrom: [],
+//        accountsTo: [],
+
+//        accountFrom: {},
+//        accountTo: {},
+
+//        value: null,
+//        newValueFrom: null,
+//        newValueTo: null,
+
+//        showEmpty: false,
+
+//        currencyInfos: Metadata.currencies,
+//        isSaving: false
+//    },
+//    watch: {
+//        value: function (newValue) {
+//            if (newValue > 0) {
+//                this.newValueFrom = this.accountFrom.balance - newValue * 1;
+//                this.newValueTo = this.accountTo.balance + newValue * 1;
+//            } else {
+//                this.newValueFrom = null;
+//                this.newValueTo = null;
+//            }
+//        },
+//        accountFrom: function (newValue) {
+//            let selectedCurrencyID = newValue.currencyID;
+//            let accountsCurrency = this.accountsTo.filter(x => x.currencyID == selectedCurrencyID);
+//            if (accountsCurrency.length >= 2) {
+//                let indexTo = accountsCurrency.findIndex(x => x.id != newValue.id);
+//                this.accountTo = accountsCurrency[indexTo];
+//                accountsCurrency[indexTo].isSelected = true;
+//                this.showEmpty = false;
+//            } else {
+//                this.showEmpty = true;
+//            }
+//        },
+//        accountTo: function (newValue) {
+
+//        },
+//    },
+//    computed: {
+//    },
+//    mounted: function () {
+
+//    },
+//    methods: {
+//        transferMoney: function (accounts, accountID) {
+//            this.accountsFrom = JSCopyArray(accounts);
+//            this.accountsTo = JSCopyArray(accounts);
+
+//            let indexFrom = this.accountsFrom.findIndex(x => x.id == accountID);
+//            this.accountFrom = this.accountsFrom[indexFrom];
+
+//            //let indexTo = this.accountsTo.findIndex(x => x.id != accountID);
+//            //this.accountTo = this.accountsTo[indexTo];
+
+//            $("#modal-account-transfer").modal("show");
+//        },
+//        getCurrencyValue: function (val) {
+//            if (this.accountFrom.currency) {
+//                return new Intl.NumberFormat(this.accountFrom.currency.specificCulture, { style: 'currency', currency: this.accountFrom.currency.codeName }).format(val)
+//            }
+//            return null;
+//        },
+
+//        save: function () {
+//            this.isSaving = true;
+
+//            $.ajax({
+//                type: "POST",
+//                url: "/Account/TransferMoney",
+//                contentType: 'application/json; charset=utf-8',
+//                data: JSON.stringify({
+//                    accountFromID: this.accountFrom.id,
+//                    accountToID: this.accountTo.id,
+//                    value: this.value
+//                }),
+//                dataType: 'json',
+//                context: this,
+//                success: function (response) {
+//                    if (response.isOk) {
+
+//                        toastr.success("Деньги переведены");
+
+//                        if (typeof (BudgetVue) == "object") {
+//                            BudgetVue.refresh("onlySummery");
+//                        }
+//                        $("#modal-account-transfer").modal("hide");
+//                    }
+//                    this.isSaving = false;
+//                    return response;
+//                },
+//                error: function (xhr, status, error) {
+//                    this.isSaving = false;
+//                    console.log(error);
+//                }
+//            });
+//        }
+//    }
+//});

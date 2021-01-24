@@ -121,7 +121,7 @@ namespace Common.Service
             return currencies;
         }
 
-        public async Task<CurrencyRateHistory> GetRatesFromBank(DateTime date, string codeName_CBR)
+        public async Task<CurrencyRateHistory> GetRatesFromBankAsync(DateTime date, string codeName_CBR)
         {
             string text = string.Empty;
             var _link = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + date.ToString("dd/MM/yyyy");
@@ -253,6 +253,153 @@ namespace Common.Service
                     }
 
                     await repository.SaveAsync();
+
+                    if (currencies == null) { currencies = new Dictionary<DateTime, List<CurrencyRateHistory>>(); }
+
+                    currencies.Add(date.Date, bankCurrencyDatas);
+
+                    cache.Set("List_BankCurrencyData", currencies, DateTime.Now.AddDays(5));
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return bankCurrencyData;
+        }
+
+        public CurrencyRateHistory GetRatesFromBank(DateTime date, string codeName_CBR)
+        {
+            string text = string.Empty;
+            var _link = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + date.ToString("dd/MM/yyyy");
+            WebRequest wr = WebRequest.Create(_link);
+            wr.Timeout = 3500;
+            decimal rate = -1;
+            int nominal = -1;
+            Dictionary<DateTime, List<CurrencyRateHistory>> currencies = new Dictionary<DateTime, List<CurrencyRateHistory>>();
+            CurrencyRateHistory bankCurrencyData = null;
+
+            if (cache.TryGetValue("List_BankCurrencyData", out currencies))
+            {
+                if (currencies.ContainsKey(date.Date))
+                {
+                    bankCurrencyData = currencies[date.Date].FirstOrDefault(x => x.CodeName_CBR == codeName_CBR);
+                }
+            }
+
+            if (bankCurrencyData == null
+                && repository.Any<CurrencyRateHistory>(x => x.Date.Date == date.Date && x.CodeName_CBR == codeName_CBR))
+            {
+                var currencyRateHistories =  repository.GetAll<CurrencyRateHistory>(x => x.Date.Date == date.Date)
+                           .Select(x => new CurrencyRateHistory
+                           {
+                               ID = x.ID,
+                               CharCode = x.CharCode,
+                               CodeName_CBR = x.CodeName_CBR,
+                               CurrencyID = x.CurrencyID,
+                               Date = x.Date,
+                               Name = x.Name,
+                               Nominal = x.Nominal,
+                               NumCode = x.NumCode,
+                               Rate = x.Rate
+                           })
+                           .ToList();
+
+                if (currencyRateHistories != null && currencyRateHistories.Count != 0)
+                {
+                    if (currencies == null) { currencies = new Dictionary<DateTime, List<CurrencyRateHistory>>(); }
+
+                    currencies.Add(date.Date, currencyRateHistories);
+
+                    bankCurrencyData = currencyRateHistories.FirstOrDefault(x => x.CodeName_CBR == codeName_CBR);
+
+                    if (bankCurrencyData != null)
+                    {
+                        cache.Set("List_BankCurrencyData", currencies, DateTime.Now.AddDays(5));
+                    }
+                }
+            }
+
+            if (bankCurrencyData == null)
+            {
+                try
+                {
+                    var currenciesDB = GetCurrencyInfo();
+                    List<CurrencyRateHistory> bankCurrencyDatas = new List<CurrencyRateHistory>();
+
+                    var response =  wr.GetResponse();
+                    var readStream = new StreamReader(((HttpWebResponse)response).GetResponseStream(), Encoding.GetEncoding("windows-1251"));
+                    var doc = XElement.Load(readStream);
+
+                    foreach (XElement element in doc.Elements("Valute"))
+                    {
+                        var _codeName_CBR = element.Attribute("ID").Value;
+                        var numCode = element.Element("NumCode");
+                        var charCode = element.Element("CharCode");
+                        var name = element.Element("Name");
+                        var elementPrice = element.Element("Value");
+                        var elementNominal = element.Element("Nominal");
+
+                        if (!string.IsNullOrEmpty(numCode.Value)
+                            && !string.IsNullOrEmpty(charCode.Value)
+                            && !string.IsNullOrEmpty(name.Value)
+                            && !string.IsNullOrEmpty(elementPrice.Value)
+                            && !string.IsNullOrEmpty(elementNominal.Value))
+                        {
+                            int _currencyID = -1;
+
+                            if (currenciesDB.Any(x => x.codeName_CBR == _codeName_CBR))
+                            {
+                                _currencyID = currenciesDB.FirstOrDefault(x => x.codeName_CBR == _codeName_CBR).id;
+                            }
+
+                            if (decimal.TryParse(elementPrice.Value.Replace(",", "."), out rate))
+                            {
+                                var _bankCurrencyData = new CurrencyRateHistory
+                                {
+                                    CurrencyID = _currencyID,
+                                    CharCode = charCode.Value,
+                                    Date = date.Date,
+                                    Name = name.Value,
+                                    Nominal = int.Parse(elementNominal.Value),
+                                    Rate = rate,
+                                    NumCode = numCode.Value,
+                                    CodeName_CBR = _codeName_CBR
+                                };
+
+                                if (_codeName_CBR == codeName_CBR)
+                                {
+                                    bankCurrencyData = _bankCurrencyData;
+                                }
+                                bankCurrencyDatas.Add(_bankCurrencyData);
+                            }
+                        }
+                    }
+
+                    var dbHistories = repository.GetAll<CurrencyRateHistory>(x => x.Date.Date == date.Date)
+                        .ToList();
+
+                    if (dbHistories.Count == 0)
+                    {
+                        repository.CreateRange(bankCurrencyDatas);
+                    }
+                    else
+                    {
+                        foreach (var currencyRate in bankCurrencyDatas)
+                        {
+                            var rateHistory = dbHistories.FirstOrDefault(x => x.CodeName_CBR == currencyRate.CodeName_CBR);
+                            if (rateHistory != null)
+                            {
+                                rateHistory.Rate = currencyRate.Rate;
+                            }
+                            else
+                            {
+                                repository.Create(currencyRate);
+                            }
+                        }
+                    }
+
+                     repository.Save();
 
                     if (currencies == null) { currencies = new Dictionary<DateTime, List<CurrencyRateHistory>>(); }
 

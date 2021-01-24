@@ -67,7 +67,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<JsonResult> GetRateFromBank(string codeNameCBR, DateTime date)
         {
-            return Json(new { isOk = true, bankCurrencyData = await commonService.GetRatesFromBank(date, codeNameCBR) });
+            return Json(new { isOk = true, bankCurrencyData = await commonService.GetRatesFromBankAsync(date, codeNameCBR) });
         }
     }
 }

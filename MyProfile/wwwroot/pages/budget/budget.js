@@ -53,6 +53,14 @@
         bigChartHeight: 310,
 
         //Summary
+        summary: {
+            isShow: BudgetMethods.isShowSummary,
+            earningsPerHour: {},
+            expensesPerDay: {},
+            cashFlow: {},
+            allAccountsMoney: {},
+        },
+        summaryAjax: null,
         //Accounts
         accounts: [],
         accountsAjax: null,
@@ -509,6 +517,31 @@
             });
         },
         //Summary
+        loadSummaries: function () {
+            if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Summary)) {
+                return false;
+            }
+
+            if (this.summaryAjax && (this.summaryAjax.readyState == 1 || this.summaryAjax.readyState == 3)) { // OPENED & LOADING
+                this.summaryAjax.abort();
+            }
+
+            ShowLoading('#summary-view');
+
+            this.summaryAjax = $.ajax({
+                type: "GET",
+                url: "/Summary/GetSummaries?date=" + this.budgetDate + "&periodType=1",
+                contentType: "application/json",
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    this.summary = response.summaries;
+
+                    HideLoading('#summary-view');
+                }
+            });
+            return this.summaryAjax;
+        },
         //Accounts
         loadAccounts: BudgetMethods.loadAccounts,
         editAccount: function (account) {
@@ -524,6 +557,10 @@
         showHideAccount: function (account, isHide) {
             return AccountVue.showHide(account, isHide);
         },
+        transferMoney: function (accountID) {
+            AccountTransferVue.transferMoney(this.accounts, accountID);
+        },
+
         //resize and refresh
         refresh: function (typeRefresh) {
             //let typeRefresh = [
@@ -566,6 +603,7 @@
                 this.loadTotalCharts();
                 this.loadLimitCharts();
                 this.loadAccounts();
+                this.loadSummaries();
                 return false;
             }
             if (typeRefresh == "onlyGoal") {
@@ -578,11 +616,8 @@
             }
 
             if (typeRefresh == "onlySummery") {
-                ShowLoading(".summary-view");
-                this.loadAccounts()
-                    .then(function () {
-                        HideLoading(".summary-view");
-                    });
+                this.loadAccounts();
+                this.loadSummaries();
                 return;
             }
 
@@ -591,7 +626,7 @@
             this.loadLimitCharts();
             this.loadGoalCharts();
             this.loadAccounts();
-
+            this.loadSummaries();
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
 
@@ -854,7 +889,7 @@
                 return;
             }
 
-            let filter = { sections: sections };
+            let filter = { sections: sections, isSection: true };
             if (this.periodType == PeriodTypeEnum.Month) {
 
                 filter.startDate = moment(this.budgetDate, "YYYY/MM/DD").add(rowIndex, "days").format();

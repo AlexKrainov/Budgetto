@@ -68,6 +68,7 @@ namespace MyProfile.Entity.Model
         public virtual IEnumerable<Reminder> Reminders { get; set; }
         public virtual IEnumerable<Account> Accounts { get; set; }
         public virtual IEnumerable<ToDoListFolder> ToDoListFolders { get; set; }
+        public virtual IEnumerable<UserSummary> UserSummaries { get; set; }
 
         public User()
         {
@@ -83,6 +84,7 @@ namespace MyProfile.Entity.Model
             this.Reminders = new HashSet<Reminder>();
             this.ToDoListFolders = new HashSet<ToDoListFolder>();
             this.Accounts = new HashSet<Account>();
+            this.UserSummaries = new HashSet<UserSummary>();
         }
     }
 }

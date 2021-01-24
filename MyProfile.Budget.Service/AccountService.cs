@@ -84,7 +84,7 @@ namespace MyProfile.Budget.Service
         /// <param name="finish"></param>
         /// <param name="accounts"></param>
         /// <returns></returns>
-        public void GetAcountsAllMoney(DateTime start, DateTime finish, List<AccountViewModel> accounts)
+        public void GetAcountsAllMoneyByPeriod(DateTime start, DateTime finish, List<AccountViewModel> accounts)
         {
             var currentUser = UserInfo.Current;
 
@@ -118,6 +118,26 @@ namespace MyProfile.Budget.Service
 
                 account.BalancePastCachback += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountCashback);
             }
+        }
+
+        public void Transfer(TransferMoney transfer)
+        {
+            var currentUser = UserInfo.Current;
+
+            var accountFrom = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.IsDeleted == false && x.ID == transfer.AccountFromID).FirstOrDefault();
+            var accountTo = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.IsDeleted == false && x.ID == transfer.AccountToID).FirstOrDefault();
+
+            if (transfer.Value > 0
+                && accountFrom != null
+                && accountTo != null)
+            {
+                accountFrom.Balance -= transfer.Value;
+                accountTo.Balance += transfer.Value;
+            }
+
+            userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Account_TransferMoney);
+
+            repository.Save();
         }
 
         public List<AccountShortViewModel> GetShortAccounts()

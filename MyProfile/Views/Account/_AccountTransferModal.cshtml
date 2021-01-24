@@ -1,0 +1,108 @@
+﻿<div id="account-transfer-modal-vue">
+
+    <div id="modal-account-transfer" class="modal modal-top fade" aria-modal="true">
+        <div class="modal-dialog modal-lg">
+            <article class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Перевод средств
+                    </h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group" style=" margin-bottom: -15px;">
+                        <label class="form-label">1 счет</label>
+                        <select class="form-control" style="visibility:hidden;">
+                            <option value="1">
+                                Наличные
+                            </option>
+                        </select>
+                        <span class="input-group-append" style="visibility:hidden;">
+                            <span class=" btn btn-secondary ion ion-md-arrow-round-forward"></span>
+                        </span>
+                        <label class="form-label">2 счет</label>
+                        <select class="form-control" style="visibility:hidden;">
+                            <option value="1">
+                                Наличные
+                            </option>
+                            <option value="2">
+                                Тинькофф банк
+                            </option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        @*<span class="input-group-append" style="min-width: 50px;">
+                                <span class=" btn btn-outline-default "
+                                      v-show="accountFrom.accountType == 1 || (accountFrom.accountType != 1 && !accountFrom.bankImage)"
+                                      v-bind:class="accountFrom.accountIcon"></span>
+                                <img class="ui-payment-small cursor-pointer dropdown-toggle" style=" padding: 0px; padding-left: 10px; margin-top: 3px;"
+                                     v-show="accountFrom.accountType != 1 && accountFrom.bankImage"
+                                     v-bind:src="accountFrom.bankImage">
+                            </span>*@
+                        <select class="form-control" v-model="accountFrom">
+                            <option v-for="account in accountsFrom"
+                                    v-bind:value="account"
+                                    v-bind:disabled="account.isDisabled"
+                                    v-bind:style="account.isDisabled ? 'color:red;' : '' ">
+                                {{ account.name }}
+                            </option>
+                        </select>
+                        <span class="input-group-append">
+                            <span class=" btn btn-secondary ion ion-md-arrow-round-forward"></span>
+                        </span>
+                        <select class="form-control">
+                            <option value="-1" v-show="showEmpty" ></option>
+                            <option v-for="account in accountsTo"
+                                    v-bind:value="account"
+                                    v-bind:selected="account.isSelected"
+                                    v-bind:disabled="account.isDisabled"
+                                    v-bind:style=" account.isDisabled ? 'color:red;' : '' ">
+                                {{ account.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-row mt-2">
+                        <div class="col-md-4">
+                            <label class="form-label">Баланс 1 счета</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" required disabled v-bind:value="accountFrom.balance" />
+                                <span class="input-group-append">
+                                    <span class="input-group-text" style="background: #f5f5f5;">{{ accountFrom.currencyIcon }}</span>
+                                </span>
+                            </div>
+                            <small class="form-text text-muted" v-show="newValueFrom != null">
+                                Новый баланс: {{ getCurrencyValue(newValueFrom) }}
+                            </small>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Сумма для перевода</label>
+                            <input type="number" class="form-control" required v-model="value" placeholder="Введите сумму для перевода" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Баланс 2 счета</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" required disabled v-bind:value="accountTo.balance" />
+                                <span class="input-group-append">
+                                    <span class="input-group-text" style="background: #f5f5f5;">{{ accountTo.currencyIcon }}</span>
+                                </span>
+                            </div>
+                            <small class="form-text text-muted float-right" v-show="newValueTo != null">
+                                Новый баланс: {{ getCurrencyValue(newValueTo) }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                            v-bind:disabled="isSaving"
+                            v-on:click="save">
+                        <span role="status" aria-hidden="true" class="spinner-border"
+                              v-show="isSaving"></span>
+                        Сохранить
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default button-close-record">Закрыть</button>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>

@@ -48,7 +48,7 @@ namespace MyProfile.User.Service
         {
             var currentUser = UserInfo.Current;
 
-            return new UserInfoClientSide
+            var user = new UserInfoClientSide
             {
                 CollectiveBudgetID = currentUser.CollectiveBudgetID,
                 DateCreate = currentUser.DateCreate,
@@ -74,8 +74,32 @@ namespace MyProfile.User.Service
                     DateFrom = currentUser.Payment.DateFrom,
                     DateTo = currentUser.Payment.DateTo,
                     Tariff = currentUser.Payment.Tariff
-                }
+                },
             };
+
+            var earningsPerHour = repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID 
+                    && x.SummaryID == (int)SummaryType.EarningsPerHour
+                    && x.IsActive)
+                .Select(x => new { x.CurrentDate, x.Value })
+                .FirstOrDefault();
+
+            if (earningsPerHour != null && int.TryParse(earningsPerHour.Value, out int hours))
+            {
+                user.EarningsPerHour = new EarningsPerHourModelView
+                {
+                    LastChange = earningsPerHour.CurrentDate,
+                    WorkHours = hours
+                };
+            }else
+            {
+                user.EarningsPerHour = new EarningsPerHourModelView
+                {
+                    LastChange = DateTime.Now,
+                    WorkHours = 0
+                };
+            }
+
+            return user;
         }
 
         public async Task<UserInfoModel> CheckAndGetUser(string email, string password = null, Guid? userID = null)

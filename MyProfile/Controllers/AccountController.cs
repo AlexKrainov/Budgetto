@@ -62,7 +62,7 @@ namespace MyProfile.Controllers
 
             if (isPast)
             {
-                accountService.GetAcountsAllMoney(start, finish, accounts);
+                accountService.GetAcountsAllMoneyByPeriod(start, finish, accounts);
             }
 
             return Json(new { isOk = true, accounts = accounts, isPast });
@@ -86,7 +86,6 @@ namespace MyProfile.Controllers
             var newAccount = accountService.Save(account);
             return Json(new { isOk = true, account = newAccount });
         }
-
         [HttpPost]
         public JsonResult RemoveOrRecovery([FromBody] AccountViewModel account)
         {
@@ -103,6 +102,14 @@ namespace MyProfile.Controllers
 
             return Json(new { isOk = true, isHide });
         }
+
+        [HttpPost]
+        public JsonResult TransferMoney([FromBody] TransferMoney transfer)
+        {
+            accountService.Transfer(transfer);
+            return Json(new { isOk = true});
+        }
+
 
     }
 }

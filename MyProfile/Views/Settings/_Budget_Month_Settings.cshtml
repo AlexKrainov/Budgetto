@@ -19,14 +19,14 @@
     </label>
     <hr class="m-0 border-light">
 }
-<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Сводные данные + счета</span> </h5>
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Общая сводка + счета</span> </h5>
 <label class="m-0 px-4 pb-3 d-flex media align-items-middle">
     <div class="media-body">
-        <span class="theme-settings-t-rtl_switcher">Сводные данные</span>
+        <span class="theme-settings-t-rtl_switcher">Общая сводка</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_Summary" name="user_settings" data-prop="Month_Summary"
-               v-on:change="toggleElements('accounts', 'Month_Summary', 'Dashboard_Month_IsShow_Summary'); change(false, ['BudgetVue.loadTotalCharts']);">
+               v-on:change="toggleSummary('Month_Summary', 'Dashboard_Month_IsShow_Summary'); change(false, ['BudgetVue.loadSummaries']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>

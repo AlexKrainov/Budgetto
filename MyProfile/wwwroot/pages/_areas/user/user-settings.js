@@ -13,12 +13,13 @@
 });
 
 
-var AccountSettingsVue = new Vue({
-    el: "#account-settings",
+var UserSettingsVue = new Vue({
+    el: "#user-settings-vue",
     data: {
         user: {
             userSettings: {},
             payment: {},
+            earningsPerHour: {},
             imageBase64: null
         },
         oldTheme: "",
@@ -73,12 +74,12 @@ var AccountSettingsVue = new Vue({
         loadUser: function (id) {
             return sendAjax("/Identity/Account/LoadUserSettings", null, "GET")
                 .then(function (result) {
-                    AccountSettingsVue.user = result.user;
-                    AccountSettingsVue.oldTheme = result.user.userSettings.webSiteTheme;
-                    AccountSettingsVue.oldEmail = result.user.email;
+                    UserSettingsVue.user = result.user;
+                    UserSettingsVue.oldTheme = result.user.userSettings.webSiteTheme;
+                    UserSettingsVue.oldEmail = result.user.email;
 
-                    AccountSettingsVue.refreshCollectiveList();
-                    AccountSettingsVue.checkOffers();
+                    UserSettingsVue.refreshCollectiveList();
+                    UserSettingsVue.checkOffers();
                 });
         },
         resendConfirmEmail: function () {
@@ -86,7 +87,7 @@ var AccountSettingsVue = new Vue({
                 this.isSaving = true;
                 return sendAjax("/Identity/Account/ResendConfirmEmail", null, "GET")
                     .then(function (result) {
-                        AccountSettingsVue.isSaving = false;
+                        UserSettingsVue.isSaving = false;
                     });
             }
         },
@@ -142,7 +143,7 @@ var AccountSettingsVue = new Vue({
             var file = event.target.files[0];
             var reader = new FileReader();
             reader.onloadend = function () {
-                AccountSettingsVue.user.imageBase64 = reader.result;
+                UserSettingsVue.user.imageBase64 = reader.result;
                 //$("#photo").attr("src", reader.result);
                 //console.log('RESULT', reader.result)
             }
@@ -193,9 +194,9 @@ var AccountSettingsVue = new Vue({
                 return sendAjax("/Identity/Account/ChangePassword", this.newPassword, "POST")
                     .then(function (result) {
                         if (result.isOk) {
-                            AccountSettingsVue.newPassword = null;
-                            AccountSettingsVue.isSaving = false;
-                            AccountSettingsVue.isShowSuccessChangedPassword = true;
+                            UserSettingsVue.newPassword = null;
+                            UserSettingsVue.isSaving = false;
+                            UserSettingsVue.isShowSuccessChangedPassword = true;
                             toastr.success("Пароль обновлен успешно");
                         } else {
                             toastr.error("Пароль не обновлен");
@@ -241,9 +242,9 @@ var AccountSettingsVue = new Vue({
 
             return sendAjax("/Identity/Account/ChangeStatusCollectiveBudget", this.user.isAllowCollectiveBudget, "POST")
                 .then(function (result) {
-                    AccountSettingsVue.refreshCollectiveList()
+                    UserSettingsVue.refreshCollectiveList()
                         .then(function () {
-                            AccountSettingsVue.checkOffers();
+                            UserSettingsVue.checkOffers();
                         });
                 });
         },
@@ -253,11 +254,11 @@ var AccountSettingsVue = new Vue({
             return sendAjax("/Identity/Account/SearchUser?email=" + this.collectiveUserSearch, null, "GET")
                 .then(function (result) {
                     if (result.isOk) {
-                        AccountSettingsVue.isSaving = false;
-                        AccountSettingsVue.isFoundCollectiveUser = result.user != null;
+                        UserSettingsVue.isSaving = false;
+                        UserSettingsVue.isFoundCollectiveUser = result.user != null;
 
-                        if (AccountSettingsVue.isFoundCollectiveUser) {
-                            AccountSettingsVue.collectiveSearchedUser = result.user;
+                        if (UserSettingsVue.isFoundCollectiveUser) {
+                            UserSettingsVue.collectiveSearchedUser = result.user;
                         }
                     }
                 });
@@ -267,9 +268,9 @@ var AccountSettingsVue = new Vue({
             return sendAjax("/Identity/Account/SendOffer?email=" + email, null, "GET")
                 .then(function (result) {
                     if (result.isOk) {
-                        AccountSettingsVue.isSaving = false;
-                        AccountSettingsVue.isFoundCollectiveUser = null;
-                        AccountSettingsVue.offerSent = true;
+                        UserSettingsVue.isSaving = false;
+                        UserSettingsVue.isFoundCollectiveUser = null;
+                        UserSettingsVue.offerSent = true;
 
                     }
                 });
@@ -278,8 +279,8 @@ var AccountSettingsVue = new Vue({
             return sendAjax("/Identity/Account/RefreshCollectiveList", null, "GET")
                 .then(function (result) {
                     if (result.isOk) {
-                        AccountSettingsVue.collectiveUsers = result.collectiveUsers;
-                        AccountSettingsVue.collectiveRequests = result.collectiveRequests;
+                        UserSettingsVue.collectiveUsers = result.collectiveUsers;
+                        UserSettingsVue.collectiveRequests = result.collectiveRequests;
 
                     }
                 });
@@ -289,7 +290,7 @@ var AccountSettingsVue = new Vue({
                 .then(function (result) {
                     if (result.isOk) {
                         //update lists
-                        AccountSettingsVue.refreshCollectiveList();
+                        UserSettingsVue.refreshCollectiveList();
                     }
                 });
         },
@@ -297,7 +298,7 @@ var AccountSettingsVue = new Vue({
             return sendAjax("/Identity/Account/CheckOffers", null, "GET")
                 .then(function (result) {
                     if (result.isOk) {
-                        AccountSettingsVue.offers = result.offers;
+                        UserSettingsVue.offers = result.offers;
                     }
                 });
         },
@@ -307,11 +308,11 @@ var AccountSettingsVue = new Vue({
             return sendAjax("/Identity/Account/OfferAction?offerID=" + offerID + "&action=" + action, null, "GET")
                 .then(function (result) {
                     if (result.isOk) {
-                        AccountSettingsVue.offers = result.offers;
+                        UserSettingsVue.offers = result.offers;
 
-                        AccountSettingsVue.refreshCollectiveList()
+                        UserSettingsVue.refreshCollectiveList()
                             .then(function () {
-                                AccountSettingsVue.checkOffers();
+                                UserSettingsVue.checkOffers();
                             });
                     }
                 });
@@ -328,16 +329,62 @@ var AccountSettingsVue = new Vue({
 
             return sendAjax("/Identity/Account/SaveUserSettings", this.user.userSettings, "POST")
                 .then(function (result) {
-                    AccountSettingsVue.isSaving = false;
+                    UserSettingsVue.isSaving = false;
 
-                    if (AccountSettingsVue.oldTheme != AccountSettingsVue.user.userSettings.webSiteTheme) {
-                        themeSettings.setStyle(AccountSettingsVue.user.userSettings.webSiteTheme)
+                    if (UserSettingsVue.oldTheme != UserSettingsVue.user.userSettings.webSiteTheme) {
+                        themeSettings.setStyle(UserSettingsVue.user.userSettings.webSiteTheme)
                         //document.location.href = document.location.href;
                     }
                     toastr.success("Настройки сохранены");
                 });
         },
 
+        //User statistics
+        saveUserStatistics: function () {
+            if (this.checkStatisticsForm() == false) {
+                return;
+            }
+
+            this.isSaving = true;
+
+            $.ajax({
+                type: "POST",
+                url: "/Identity/Account/SaveUserStatistic",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(this.user.earningsPerHour),
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    if (response.isOk) {
+                        toastr.success("Настройки сохранены");
+                    } else {
+                        toastr.error("Произошла ошибка во время сохранения");
+                    }
+                    this.isSaving = false;
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    toastr.error("Произошла ошибка во время сохранения");
+                    this.isSaving = false;
+                    console.log(error);
+                }
+            });
+        },
+        checkStatisticsForm: function () {
+            let isOk = true;
+
+            if (!(this.user.earningsPerHour.workHours && this.user.earningsPerHour.workHours > -1)) {
+                isOk = false;
+                $("#work-hours").addClass("is-invalid");
+            } else {
+                $("#work-hours").removeClass("is-invalid");
+            }
+
+            if (isOk == false && e) {
+                e.preventDefault();
+            }
+            return isOk;
+        },
 
         //Testing
         generatedRecords: function () {
@@ -345,7 +392,7 @@ var AccountSettingsVue = new Vue({
                 this.isSaving = true;
                 return sendAjax("/Test/GenerateRecords", null, "GET")
                     .then(function (result) {
-                        AccountSettingsVue.isSaving = false;
+                        UserSettingsVue.isSaving = false;
                     });
             }
         },

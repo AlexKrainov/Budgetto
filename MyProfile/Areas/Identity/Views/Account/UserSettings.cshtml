@@ -18,10 +18,10 @@
     <script src="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.js" asp-append-version="true"></script>
 
     <environment names="Development">
-        <script src="~/pages/_areas/account/account-settings.js" asp-append-version="true"></script>
+        <script src="~/pages/_areas/user/user-settings.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="~/pages/_areas/account/account-settings.min.js" asp-append-version="true"></script>
+        <script src="~/pages/_areas/user/user-settings.min.js" asp-append-version="true"></script>
     </environment>
 }
 
@@ -32,16 +32,17 @@
     </span>
 </h4>
 
-<div id="account-settings" class="card overflow-hidden" v-cloak>
+<div id="user-settings-vue" class="card overflow-hidden" v-cloak>
     <div class="row no-gutters row-bordered row-border-light">
         <div class="col-md-3 pt-0">
-            <div class="list-group list-group-flush account-settings-links">
-                <a class="list-group-item list-group-item-action not-dark active" data-toggle="list" href="#account-general">Персональные данные</a>
+            <div class="list-group list-group-flush user-settings-links">
+                <a class="list-group-item list-group-item-action not-dark active" data-toggle="list" href="#user-general">Персональные данные</a>
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-settings">Общие настройки</a>
-                <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#account-change-password">Смена пароля</a>
+                <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-change-password">Смена пароля</a>
                 @*<a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#collective-budget">Коллективные настройки</a>*@
+                <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-statistic">Статистические данные</a>
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
-             || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+            || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#admin-menu-budget">МЕНЮ АДМИНА</a>
                 }
@@ -49,23 +50,26 @@
         </div>
         <div class="col-md-9">
             <div class="tab-content">
-                <div class="tab-pane fade show active" id="account-general">
-                    @await Html.PartialAsync("_AccountSettings_UserData")
+                <div class="tab-pane fade show active" id="user-general">
+                    @await Html.PartialAsync("_UserSettings_UserData")
                 </div>
                 <div class="tab-pane fade" id="user-settings">
-                    @await Html.PartialAsync("_AccountSettings_GeneralSettings")
+                    @await Html.PartialAsync("_UserSettings_GeneralSettings")
                 </div>
-                <div class="tab-pane fade" id="account-change-password">
-                    @await Html.PartialAsync("_AccountSettings_ChangePassword")
+                <div class="tab-pane fade" id="user-change-password">
+                    @await Html.PartialAsync("_UserSettings_ChangePassword")
+                </div>
+                <div class="tab-pane fade" id="user-statistic">
+                    @await Html.PartialAsync("_UserSettings_StatisticSettings")
                 </div>
                 @*<div class="tab-pane fade" id="collective-budget">
-                        @await Html.PartialAsync("_AccountSettings_CollectiveBudget")
+                        @await Html.PartialAsync("_UserSettings_CollectiveBudget")
                     </div>*@
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
                || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <div class="tab-pane fade" id="admin-menu-budget">
-                        @await Html.PartialAsync("_AccountSettings_AdminSettings")
+                        @await Html.PartialAsync("_UserSettings_AdminSettings")
                     </div>
                 }
             </div>

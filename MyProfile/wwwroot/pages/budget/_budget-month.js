@@ -1,5 +1,6 @@
 ﻿var BudgetMethods = {
     periodType: PeriodTypeEnum.Month,
+    isShowSummary: UserInfo.UserSettings.Dashboard_Month_IsShow_Summary,
     mounted: function () {
         this.getPageSettings();
 

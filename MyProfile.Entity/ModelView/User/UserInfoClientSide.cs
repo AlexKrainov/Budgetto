@@ -17,6 +17,7 @@ namespace MyProfile.Entity.ModelView.User
 
         public virtual UserSettingsClientSide UserSettings { get; set; }
         public virtual CurrencyClientSide Currency { get; set; }
+        public EarningsPerHourModelView EarningsPerHour { get; set; }
         public string UserType { get; set; }
         public Guid CollectiveBudgetID { get; set; }
         public DateTime DateCreate { get; set; }
@@ -56,7 +57,7 @@ namespace MyProfile.Entity.ModelView.User
         public bool Dashboard_Year_IsShow_Accounts { get; set; }
         public bool Dashboard_Year_IsShow_Summary { get; set; }
     }
-    public class CurrencyClientSide 
+    public class CurrencyClientSide
     {
         public int ID { get; set; }
         public string Name { get; set; }

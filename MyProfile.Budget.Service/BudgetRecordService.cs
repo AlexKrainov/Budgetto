@@ -186,11 +186,11 @@ namespace MyProfile.Budget.Service
                                 accountCurrency.Rate = record.CurrencyRate ?? 1;
                                 accountCurrency.Nominal = record.CurrencyNominal ?? 1;
 
-                                _money = record.Money / record.CurrencyRate ?? 1;
+                                _money = record.Money / (record.CurrencyRate ?? 1);
                             }
                             else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
                             {
-                                var val = await commonService.GetRatesFromBank(newRecord.DateTimeOfPayment, account.Currency.CodeName_CBR);
+                                var val = await commonService.GetRatesFromBankAsync(newRecord.DateTimeOfPayment, account.Currency.CodeName_CBR);
 
                                 if (val != null)
                                 {
@@ -216,7 +216,7 @@ namespace MyProfile.Budget.Service
                                 {
                                     if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                     {
-                                        recordCashback = ((record.Money / accountCurrency.Rate) * account.CachbackForAllPercent ?? 1) / 100;
+                                        recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
                                     }
                                     account.CachbackBalance += recordCashback;
                                 }
@@ -359,11 +359,11 @@ namespace MyProfile.Budget.Service
                                     accountCurrency.Rate = record.CurrencyRate ?? 1;
                                     accountCurrency.Nominal = record.CurrencyNominal ?? 1;
 
-                                    _money = record.Money / record.CurrencyRate ?? 1;
+                                    _money = record.Money / (record.CurrencyRate ?? 1);
                                 }
                                 else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
                                 {
-                                    var val = await commonService.GetRatesFromBank(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR);
+                                    var val = await commonService.GetRatesFromBankAsync(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR);
 
                                     if (val != null)
                                     {
@@ -389,7 +389,7 @@ namespace MyProfile.Budget.Service
                                     {
                                         if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                         {
-                                            recordCashback = ((record.Money / accountCurrency.Rate) * account.CachbackForAllPercent ?? 1) / 100;
+                                            recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
                                         }
                                         account.CachbackBalance += recordCashback;
                                     }
@@ -459,11 +459,11 @@ namespace MyProfile.Budget.Service
                                     accountCurrency.Rate = record.CurrencyRate ?? 1;
                                     accountCurrency.Nominal = record.CurrencyNominal ?? 1;
 
-                                    _money = record.Money / record.CurrencyRate ?? 1;
+                                    _money = record.Money / (record.CurrencyRate ?? 1);
                                 }
                                 else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
                                 {
-                                    var val = await commonService.GetRatesFromBank(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR);
+                                    var val = await commonService.GetRatesFromBankAsync(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR);
 
                                     if (val != null)
                                     {
@@ -489,7 +489,7 @@ namespace MyProfile.Budget.Service
                                     {
                                         if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                         {
-                                            recordCashback = ((record.Money / accountCurrency.Rate) * account.CachbackForAllPercent ?? 1) / 100;
+                                            recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
                                         }
                                         account.CachbackBalance += recordCashback;
                                     }
@@ -899,6 +899,30 @@ namespace MyProfile.Budget.Service
               .GetAll(expression)
               .SumAsync(x => x.Total);
         }
+
+        public decimal GetTotalForSummaryByFilter(SummaryFilter filter)
+        {
+            var expression = PredicateBuilder.True<Record>();
+
+            expression = expression.And(x => x.UserID == filter.UserID
+                    && filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
+                    && (x.UserID != filter.UserID ? x.IsShowForCollection : true)
+                    && x.IsDeleted == false);
+
+            if (filter.SectionTypes != null)// by sections
+            {
+                expression = expression.And(x => filter.SectionTypes.Contains(x.BudgetSection.SectionTypeID ?? 0));
+            }
+            else if (filter.Sections != null)
+            {
+                expression = expression.And(x => filter.Sections.Contains(x.BudgetSectionID));
+            }
+
+            return repository
+              .GetAll(expression)
+              .Sum(x => x.Total);
+        }
+
 
         public async Task<List<int>> GetAllYears()
         {

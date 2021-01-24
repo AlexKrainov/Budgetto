@@ -69,6 +69,7 @@ namespace MyProfile
             services.AddTransient<PaymentService>();
             services.AddTransient<TagService>();
             services.AddTransient<AccountService>();
+            services.AddTransient<SummaryService>();
 
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();
@@ -168,6 +169,12 @@ namespace MyProfile
             // Identity
             //ApplicationUserInfo.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
             //CacheStorage.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var repository = serviceScope.ServiceProvider.GetRequiredService<BaseRepository>();
+                Inserters inserters = new Inserters(repository);
+            }
         }
     }
 }

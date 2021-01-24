@@ -248,6 +248,10 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<RecordHistory> RecordHistories { get; set; }
         public virtual DbSet<AccountHistory> AccountHistories { get; set; }
         public virtual DbSet<CurrencyRateHistory> CurrencyRateHistories { get; set; }
+        public virtual DbSet<Summary> Summaries { get; set; }
+        public virtual DbSet<UserSummary> UserSummaries { get; set; }
+        public virtual DbSet<UserSummarySection> UserSummarySections { get; set; }
+        public virtual DbSet<UserSummarySectionType> UserSummarySectionTypes { get; set; }
 
     }
 }

@@ -2,7 +2,7 @@
     el: "#reminder-vue",
     data: {
         reminders: [],
-        reminder: { isRepeat: false},
+        reminder: { isRepeat: false },
         dateTime: null,
         flatpickrReminder: {},
 
@@ -38,7 +38,7 @@
         },
         addReminders: function (dateTime) {
             this.dateTime = dateTime;
-           // this.close();
+            // this.close();
 
             this.edit();
 
@@ -179,6 +179,13 @@
                 $("#reminderDateReminder").addClass("is-invalid")
             }
 
+            if (this.reminder.isRepeat && this.reminder.repeatEvery == null) {
+                $("#repeatType").addClass("is-invalid");
+                isOk = false;
+            } else {
+                $("#repeatType").removeClass("is-invalid");
+            }
+
             return isOk;
         },
         remove: function (reminder) {
@@ -189,11 +196,14 @@
                 type: "POST",
                 url: "/Reminder/Remove",
                 data: JSON.stringify(reminder),
-                context: reminder,
+                context: this,
                 contentType: "application/json",
                 dataType: 'json',
                 success: function (response) {
                     reminder.isDeleted = response.isDeleted;
+                    if (this.reminder.id == reminder.id) {
+                        this.close();
+                    }
                     HideLoading('#reminder_' + reminder.id);
                     BudgetVue.refresh("onlyTable");
                 }

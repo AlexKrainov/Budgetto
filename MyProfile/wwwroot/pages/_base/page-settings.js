@@ -94,6 +94,15 @@
                 setTimeout(BudgetVue.refrehViewTable, 50);
             }
         },
+        toggleSummary: function (dataProp, dashboardname) {
+            let checked = document.querySelector("[data-prop=" + dataProp + "]").checked;
+
+            UserInfo.UserSettings[dashboardname] = BudgetVue.summary.isShow = checked;
+            
+            if (typeof (BudgetVue.refrehViewTable) == "function") {
+                setTimeout(BudgetVue.refrehViewTable, 50);
+            }
+        },
         toggleElements: function (fieldname, dataProp, dashboardname) {
             let checked = document.querySelector("[data-prop=" + dataProp + "]").checked;
             for (var i = 0; i < BudgetVue[fieldname].length; i++) {

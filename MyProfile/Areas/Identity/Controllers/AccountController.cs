@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Login;
 using MyProfile.Entity.ModelView.User;
@@ -27,18 +28,21 @@ namespace MyProfile.Areas.Identity.Controllers
         private UserService userService;
         private UserEmailService userEmailService;
         private CollectionUserService collectionUserService;
+        private SummaryService summaryService;
 
         public AccountController(IBaseRepository repository,
             UserLogService userLogService,
             UserService userService,
             UserEmailService userConfirmEmailService,
-            CollectionUserService collectionUserService)
+            CollectionUserService collectionUserService,
+            SummaryService summaryService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
             this.userService = userService;
             this.userEmailService = userConfirmEmailService;
             this.collectionUserService = collectionUserService;
+            this.summaryService = summaryService;
         }
 
         /// <summary>

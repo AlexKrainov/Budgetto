@@ -10,7 +10,7 @@ namespace MyProfile.Areas.Identity.Controllers
     public partial class AccountController : Controller
     {
         [HttpGet]
-        public async Task<IActionResult> AccountSettings()
+        public async Task<IActionResult> UserSettings()
         {
             await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.AccountSetting_Page);
 
@@ -45,6 +45,12 @@ namespace MyProfile.Areas.Identity.Controllers
             await userEmailService.ConfirmEmail_Complete(id, UserInfo.Current.UserSessionID);
 
             return RedirectToAction("AccountSettings");
+        }
+
+        [HttpPost]
+        public IActionResult SaveUserStatistic([FromBody] EarningsPerHourModelView earningsPerHour)
+        {
+            return Json(new { isOk = summaryService.SaveWorkhours(earningsPerHour) });
         }
 
         #endregion

@@ -35,6 +35,14 @@ namespace MyProfile.Entity.ModelView.Account
         public string AccountIcon { get; set; }
         public string AccountTypeName { get; set; }
         public bool IsShow { get; set; }
+        /// <summary>
+        /// For Transfer money
+        /// </summary>
+        public bool IsSelected { get; set; }
+        /// <summary>
+        /// For Transfer money
+        /// </summary>
+        public bool IsDisabled { get; set; }
 
         public CurrencyClientModelView Currency { get; set; }
         public string CurrencyIcon { get; set; }

@@ -1,0 +1,26 @@
+﻿<div class="card-body pb-2">
+
+    @*<h6 class="mb-2">Статистические данные</h6>*@
+
+    <div class="form-row">
+        <div class="form-group col">
+            <label class="form-label">Количество рабочих часов в месяц</label>
+            <span class="text-danger">*</span>
+            <input id="work-hours" type="number" class="form-control" min="0" max="744"
+                   v-model="user.earningsPerHour.workHours" required>
+            <small class="invalid-feedback">Обязательное поле</small>
+            <small class="form-text text-muted">Нужно, чтобы высчитывать ваш доход в час</small>
+        </div>
+    </div>
+
+</div>
+<div class="card-footer">
+    <div class="text-left">
+        <button type="button" class="btn btn-primary"
+                v-on:click="saveUserStatistics"
+                v-bind:disabled="isSaving">
+            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+            Сохранить
+        </button>
+    </div>
+</div>
