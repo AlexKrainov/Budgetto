@@ -26,13 +26,13 @@
     </environment>
 }
 @*<h4 class="d-flex flex-wrap w-100 font-weight-bold">
-    <span class="ion ion-md-settings display-4 text-primary mr-2"></span>
-    <span class="py-2" style=" margin-top: -3px;">
-        Настройка рабочей области
-    </span>
-</h4>*@
+        <span class="ion ion-md-settings display-4 text-primary mr-2"></span>
+        <span class="py-2" style=" margin-top: -3px;">
+            Настройка рабочей области
+        </span>
+    </h4>*@
 <h4 class="text-center w-100 font-weight-bold">
-        Настройка рабочей области
+    Настройка рабочей области
 </h4>
 <hr class="container-m-nx border-light mt-0 mb-5">
 
@@ -85,21 +85,30 @@
         <div id="smartwizard-1-step-1" class="card animated fadeIn">
             <div class="card-body">
                 <div class="form-row">
-                    <div class="form-group col-12 col-sm-12 col-md-4">
+                    <div class="form-group ">
                         <h4 class="">
                             <strong>Давайте знакомиться!</strong>
                         </h4>
-                        <label class="form-label">Ваше имя</label>
-                        <span class="text-danger">*</span>
-                        <input type="text" class="form-control" v-model="userInfo.name" id="userInfoName">
-                        <small class="invalid-feedback">Обязательное поле</small>
-                        <div class="text-light small mt-1"> Имя должно содержать больше 2 символов</div>
                     </div>
                 </div>
-
-                <div class="text-center">
-                    <small class="invalid-feedback" id="validChooseChartType">Выберите тип графика</small>
+                <div class="form-row col-12 col-sm-12 col-md-4">
+                    <label class="form-label">Ваше имя</label>
+                    <span class="text-danger">*</span>
+                    <input type="text" class="form-control" v-model="userInfo.name" id="userInfoName">
+                    <small class="invalid-feedback">Обязательное поле</small>
+                    <div class="text-light small mt-1"> Имя должно содержать больше 2 символов</div>
                 </div>
+                <br />
+                <div class="form-row col-12 col-sm-12 col-md-4">
+                    <label class="form-label">Количество рабочих часов в месяц</label>
+                    <span class="text-danger">*</span>
+                    <input id="work-hours" type="number" class="form-control" min="0" max="744"
+                           v-model="userInfo.workHours" required>
+                    <small class="invalid-feedback">Обязательное поле</small>
+                    <small class="form-text text-muted">Нужно, чтобы высчитывать ваш доход в час</small>
+                </div>
+
+
             </div>
         </div>
         <div id="smartwizard-1-step-2" class="card animated fadeIn" style="display: none;">

@@ -160,6 +160,6 @@
         public const string Account_TryToDeleteLastAccount = "Account_TryToDeleteLastAccount";
         public const string Account_TransferMoney= "Account_TransferMoney";
 
-        public const string Summary_Edit_WorkHours = "Summary_Edit_WorkHours";
+        public const string Summary_Set_WorkHours = "Summary_Edit_WorkHours";
     }
 }

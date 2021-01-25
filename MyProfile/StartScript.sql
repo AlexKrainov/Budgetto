@@ -113,12 +113,19 @@ GO
 
 SET IDENTITY_INSERT [Banks] ON 
 
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (1, N'Сбер', '')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (2, N'ВТБ', '')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (3, N'Газпромбанк', '')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (1, N'Сбер', '/resources/banks/sber.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (2, N'ВТБ', '/resources/banks/vtb.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (3, N'Газпромбанк', '/resources/banks/gasprom.svg')
 INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (4, N'Альфа-Банк', '/resources/banks/alfa-logo.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (5, N'Банк Открытие', '')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (5, N'Банк Открытие', '/resources/banks/open.svg')
 INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (6, N'Тинькофф Банк', '/resources/banks/tinkoff-bank.png')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (7, N'Национальный Клиринговый Центр', '/resources/banks/moex.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (8, N'Россельхозбанк', '/resources/banks/rosselhoz.jfif')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (9, N'Московский Кредитный Банк', '/resources/banks/mkb.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (10, N'Совкомбанк', '/resources/banks/sovkombank.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (11, N'Росбанк', '/resources/banks/ros.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (12, N'Райффайзенбанк', '/resources/banks/rasf.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (13, N'Ситибанк', '/resources/banks/citi.svg')
 
 SET IDENTITY_INSERT [Banks] OFF
 GO

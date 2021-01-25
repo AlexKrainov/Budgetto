@@ -77,7 +77,7 @@ namespace MyProfile.User.Service
                 },
             };
 
-            var earningsPerHour = repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID 
+            var earningsPerHour = repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
                     && x.SummaryID == (int)SummaryType.EarningsPerHour
                     && x.IsActive)
                 .Select(x => new { x.CurrentDate, x.Value })
@@ -90,7 +90,8 @@ namespace MyProfile.User.Service
                     LastChange = earningsPerHour.CurrentDate,
                     WorkHours = hours
                 };
-            }else
+            }
+            else
             {
                 user.EarningsPerHour = new EarningsPerHourModelView
                 {
@@ -286,6 +287,21 @@ namespace MyProfile.User.Service
                         DateCreate = now,
                         IsDefault = true,
                         Name = "Наличные",
+                    }
+                },
+                UserSummaries = new List<UserSummary> {
+                    new  UserSummary
+                    {
+                        Name = "Доходы в час",
+                        Value = "0",
+                        CurrentDate = now,
+                        IsActive = true,
+                        SummaryID = (int)SummaryType.EarningsPerHour,
+                        VisibleElement = new VisibleElement
+                        {
+                            IsShow_BudgetMonth = true,
+                            IsShow_BudgetYear = true,
+                        }
                     }
                 },
                 UserTypeID = (int)UserTypeEnum.User,

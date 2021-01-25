@@ -1,0 +1,14 @@
+<svg width="70" height="50" xmlns="http://www.w3.org/2000/svg">
+ <mask id="mask0" maskUnits="userSpaceOnUse" x="63" y="15" width="117" height="53">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="m63.8857,15.9917l115.5993,0l0,51.781l-115.5993,0l0,-51.781z" fill="white" id="svg_1"/>
+ </mask>
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="72" height="52" id="canvas_background" fill="none"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="m19.4978,8.5l-3.12643,8.4755l43.32493,0l3.1264,-8.4755l-43.3249,0zm-4.69093,12.7113l-3.1264,8.4735l43.32493,0l3.1264,-8.4735l-43.32493,0zm-4.68047,12.7113l-3.1264,8.4735l43.325,0l3.1244,-8.4735l-43.323,0z" fill="#009FDF" id="svg_4"/>
+ </g>
+</svg>

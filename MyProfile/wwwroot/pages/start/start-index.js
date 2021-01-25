@@ -4,6 +4,7 @@
         //1 
         userInfo: {
             name: null,
+            workHours: 0,
         },
 
         //2
@@ -203,7 +204,7 @@
                 success: function (result) {
                     if (result.isOk) {
                         this.isSaving = false;
-                        this.userInfo.name = result.userInfo.name;
+                        this.userInfo = result.userInfo;
                     }
                     return true;
                 },

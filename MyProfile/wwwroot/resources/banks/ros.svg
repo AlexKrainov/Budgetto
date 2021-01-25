@@ -1,0 +1,19 @@
+<svg width="45" height="45" xmlns="http://www.w3.org/2000/svg">
+ <mask id="mask0" maskUnits="userSpaceOnUse" x="164" y="17" width="16" height="17">
+  <path d="m164.653,17.1697l15.347,0l0,16.2927l-15.347,0l0,-16.2927z" fill="white" id="svg_1"/>
+ </mask>
+
+ <mask id="mask1" maskUnits="userSpaceOnUse" x="0" y="9" width="180" height="55">
+  <path d="m0,63.5785l180,0l0,-54.5785l-180,0l0,54.5785z" fill="white" id="svg_2"/>
+ </mask>
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="47" height="47" id="canvas_background" fill="none"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="m6.0719,22.6862l32.8904,0l0,-16.6862l-32.8904,0l0,16.6862z" fill="#EC1A3A" id="svg_3"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="m6.0719,38.7169l32.8927,0l0,-16.3585l-32.8927,0l0,16.3585z" fill="#231F20" id="svg_4"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="m11.80756,23.3545l21.40064,0l0,-1.991l-21.40064,0l0,1.991z" fill="#FEFEFE" id="svg_5"/>
+ </g>
+</svg>

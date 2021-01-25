@@ -1,4 +1,5 @@
 ﻿using Common.Service;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MyProfile.Budget.Service
 {
@@ -110,7 +112,7 @@ namespace MyProfile.Budget.Service
             return summaries;
         }
 
-        public bool SaveWorkhours(EarningsPerHourModelView userInfo)
+        public bool SetWorkHours(int workHours)
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
@@ -119,13 +121,17 @@ namespace MyProfile.Budget.Service
 
             var oldUserSummary = repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
                 && x.SummaryID == (int)SummaryType.EarningsPerHour
-                && x.IsActive).FirstOrDefault();
-            oldUserSummary.IsActive = false;
+                && x.IsActive)
+                .FirstOrDefault();
+            if (oldUserSummary != null)
+            {
+                oldUserSummary.IsActive = false;
+            }
 
             UserSummary userSummary = new UserSummary
             {
                 Name = oldUserSummary.Name,
-                Value = userInfo.WorkHours.ToString(),
+                Value = workHours.ToString(),
                 CurrentDate = now,
                 IsActive = true,
                 UserID = currentUser.ID,
@@ -147,7 +153,54 @@ namespace MyProfile.Budget.Service
                 errorLogIDs.Add(userLogService.CreateErrorLog(currentUser.UserSessionID, "SumaryService_SaveWorkhours", ex));
                 result = false;
             }
-            userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Summary_Edit_WorkHours, errorLogIDs: errorLogIDs);
+            userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Summary_Set_WorkHours, errorLogIDs: errorLogIDs);
+
+            return result;
+        }
+
+        public async Task<bool> SetWorkHoursAsync(int workHours)
+        {
+            var currentUser = UserInfo.Current;
+            var now = DateTime.Now.ToUniversalTime();
+            bool result = true;
+            List<int> errorLogIDs = new List<int>();
+
+            var oldUserSummary = await repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
+                && x.SummaryID == (int)SummaryType.EarningsPerHour
+                && x.IsActive)
+                .FirstOrDefaultAsync();
+
+            if (oldUserSummary != null)
+            {
+                oldUserSummary.IsActive = false;
+            }
+
+            UserSummary userSummary = new UserSummary
+            {
+                Name = oldUserSummary.Name,
+                Value = workHours.ToString(),
+                CurrentDate = now,
+                IsActive = true,
+                UserID = currentUser.ID,
+                SummaryID = (int)SummaryType.EarningsPerHour,
+                VisibleElement = new VisibleElement
+                {
+                    IsShow_BudgetMonth = true,
+                    IsShow_BudgetYear = true,
+                }
+            };
+
+            try
+            {
+                await repository.CreateAsync(userSummary, true);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                errorLogIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "SumaryService_SetWorkhours", ex));
+                result = false;
+            }
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Summary_Set_WorkHours, errorLogIDs: errorLogIDs);
 
             return result;
         }

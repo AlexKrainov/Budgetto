@@ -29,6 +29,7 @@ namespace MyProfile.Controllers
         private UserLogService userLogService;
         private LimitService limitService;
         private GoalService goalService;
+        private SummaryService summaryService;
 
         public StartController(IBaseRepository repository,
             UserService userService,
@@ -36,7 +37,8 @@ namespace MyProfile.Controllers
             LimitService limitService,
             GoalService goalService,
             SectionService sectionService,
-            UserLogService userLogService)
+            UserLogService userLogService,
+            SummaryService summaryService)
         {
             this.repository = repository;
             this.templateService = templateService;
@@ -45,6 +47,7 @@ namespace MyProfile.Controllers
             this.userLogService = userLogService;
             this.limitService = limitService;
             this.goalService = goalService;
+            this.summaryService = summaryService;
         }
 
         public IActionResult Index()
@@ -78,11 +81,23 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadUserInfo()
+        public IActionResult LoadUserInfo()
         {
             var currentUser = UserInfo.Current;
+            int workHours = 0;
 
-            return Json(new { isOk = true, userInfo = new { name = currentUser.Name } });
+            var userSummary =repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
+                      && x.SummaryID == (int)SummaryType.EarningsPerHour
+                      && x.IsActive
+                      && x.Value != null)
+                 .FirstOrDefault();
+
+            if (userSummary != null && int.TryParse(userSummary.Value, out int hours))
+            {
+                workHours = hours;
+            }
+
+            return Json(new { isOk = true, userInfo = new { name = currentUser.Name, workHours } });
         }
         [HttpPost]
         public async Task<IActionResult> SaveUserInfo([FromBody] UserInfoModel userInfo)
@@ -91,6 +106,7 @@ namespace MyProfile.Controllers
             currentUser.Name = userInfo.Name;
 
             await userService.UpdateUser(currentUser);
+            await summaryService.SetWorkHoursAsync(userInfo.WorkHours);
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step1_UserInfo);
 
             return Json(new { isOk = true, user = UserInfo.GetUserInfoModelForClient() });
