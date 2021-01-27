@@ -52,6 +52,7 @@ namespace MyProfile.Controllers
 
         public IActionResult Index()
         {
+            return View();
             var currentUser = UserInfo.Current;
             if (currentUser.UserSettings.IsShowConstructor)
             {
@@ -84,7 +85,7 @@ namespace MyProfile.Controllers
         public IActionResult LoadUserInfo()
         {
             var currentUser = UserInfo.Current;
-            int workHours = 0;
+            int allWorkHours = 0;
 
             var userSummary =repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
                       && x.SummaryID == (int)SummaryType.EarningsPerHour
@@ -94,10 +95,10 @@ namespace MyProfile.Controllers
 
             if (userSummary != null && int.TryParse(userSummary.Value, out int hours))
             {
-                workHours = hours;
+                allWorkHours = hours;
             }
 
-            return Json(new { isOk = true, userInfo = new { name = currentUser.Name, workHours } });
+            return Json(new { isOk = true, userInfo = new { name = currentUser.Name, allWorkHours } });
         }
         [HttpPost]
         public async Task<IActionResult> SaveUserInfo([FromBody] UserInfoModel userInfo)
@@ -106,7 +107,7 @@ namespace MyProfile.Controllers
             currentUser.Name = userInfo.Name;
 
             await userService.UpdateUser(currentUser);
-            await summaryService.SetWorkHoursAsync(userInfo.WorkHours);
+            await summaryService.SetWorkHoursAsync(userInfo.AllWorkHours);
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step1_UserInfo);
 
             return Json(new { isOk = true, user = UserInfo.GetUserInfoModelForClient() });

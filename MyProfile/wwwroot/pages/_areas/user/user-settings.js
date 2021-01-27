@@ -373,7 +373,7 @@ var UserSettingsVue = new Vue({
         checkStatisticsForm: function () {
             let isOk = true;
 
-            if (!(this.user.earningsPerHour.workHours && this.user.earningsPerHour.workHours > -1)) {
+            if (!(this.user.earningsPerHour.allWorkHours && this.user.earningsPerHour.allWorkHours > -1)) {
                 isOk = false;
                 $("#work-hours").addClass("is-invalid");
             } else {

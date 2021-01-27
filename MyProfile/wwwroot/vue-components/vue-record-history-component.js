@@ -102,7 +102,6 @@
     },
     watch: {
         dateTimeOfPayment: function (newValue, oldValue) {
-            console.log(newValue);
             this.loadHistory();
         },
         searchText: function (newValue, oldValue) {

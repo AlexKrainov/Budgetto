@@ -232,5 +232,11 @@
     "inputFiles": [
       "wwwroot/pages/_base/record-vue.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_areas/user/user-settings.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_areas/user/user-settings.js"
+    ]
   }
 ]

@@ -1,5 +1,6 @@
 ﻿var BudgetMethods = {
     periodType: PeriodTypeEnum.Year,
+    isShowSummary: UserInfo.UserSettings.Dashboard_Year_IsShow_Summary,
     mounted: function () {
         this.getPageSettings();
         this.templateID = document.getElementById("templateID_hidden").value;
@@ -175,6 +176,59 @@
         });
 
         return this.bigChartsAjax;
+    },
+    //Accounts 
+    loadAccounts: function () {
+        if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Accounts)) {
+            return false;
+        }
+
+        if (this.accountsAjax && (this.accountsAjax.readyState == 1 || this.accountsAjax.readyState == 3)) { // OPENED & LOADING
+            this.accountsAjax.abort();
+        }
+
+        ShowLoading('#accounts-view');
+
+        this.accountsAjax = $.ajax({
+            type: "GET",
+            url: "/Account/GetAccounts?year=" + this.budgetYear + "&periodType=3",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+                this.accounts = response.accounts;
+
+                HideLoading('#accounts-view');
+            }
+        });
+        return this.accountsAjax;
+    },
+    //Summary
+    loadSummaries: function () {
+        if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Summary)) {
+            return false;
+        }
+
+        if (this.summaryAjax && (this.summaryAjax.readyState == 1 || this.summaryAjax.readyState == 3)) { // OPENED & LOADING
+            this.summaryAjax.abort();
+        }
+
+        ShowLoading('#summary-view');
+
+        this.summaryAjax = $.ajax({
+            type: "GET",
+            url: "/Summary/GetSummaries?year=" + this.budgetYear + "&periodType=3",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+                this.summary = response.summaries;
+
+                this.initSummaryCharts();
+                HideLoading('#summary-view');
+            }
+        });
+        return this.summaryAjax;
     },
 };
 

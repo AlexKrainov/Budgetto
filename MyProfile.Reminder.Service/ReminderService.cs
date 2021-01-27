@@ -68,6 +68,10 @@ namespace MyProfile.Reminder.Service
                     && x.IsDeleted == false)
                         .FirstOrDefaultAsync();
 
+                    if (reminderEdit.IsRepeat == false)
+                    {
+                        reminderEdit.RepeatEvery = null;
+                    }
                     reminder.Title = reminderEdit.Title;
                     reminder.Description = reminderEdit.Description;
                     reminder.DateReminder = reminderEdit.DateReminder;
@@ -80,6 +84,7 @@ namespace MyProfile.Reminder.Service
                     {
                         await repository.DeleteRangeAsync(reminder.ReminderDates, true);
                     }
+
 
                     reminder.ReminderDates = reminderDates;
 

@@ -20,6 +20,7 @@
         <script src="~/pages/budget/budget.js" asp-append-version="true"></script>
         <script src="~/pages/budget/history-modal.js" asp-append-version="true"></script>
         <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/account-modal.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/vendor/libs/flatpickr/plugins/monthSelect.min.js" asp-append-version="true"></script>
@@ -28,60 +29,46 @@
         <script src="~/pages/budget/budget.min.js" asp-append-version="true"></script>
         <script src="~/pages/budget/history-modal.min.js" asp-append-version="true"></script>
         <script src="~/pages/goal/goal-add-money.min.js" asp-append-version="true"></script>
+        <script src="~/pages/budget/account-modal.min.js" asp-append-version="true"></script>
     </environment>
 }
 
-<div id="budget-vue" v-cloak>
+<div id="budget-vue" v-cloak style=" margin-top: -15px;">
     <input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
     <input type="hidden" id="budgetMonth_hidden" value="@Model.SelectedYear" />
 
     <!-- Head block -->
-    <div class="container-m-nx container-m-ny theme-bg-white container-p-x py-4 mb-0">
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group col">
-                    <div class="form-group col">
-                        <div class="input-group">
-                            <span class="input-group-prepend" style=" width: 50px;">
-                                <button v-on:click="changeView(-1)" class="btn btn-default modal-record-date-button" type="button" title="Минус 1 год"
-                                        v-bind:disabled="isLoading">
-                                    <i class="fa fa-angle-left font-size-large" aria-hidden="true"></i>
-                                </button>
-                            </span>
-                            <select id="budget-year" class="form-control"
-                                    v-model="budgetYear"
-                                    v-on:change="refresh(undefined)">
-                                @foreach (var year in Model.Years)
-                                {
-                                    <option value="@year">@year</option>
-                                }
-                            </select>
-                            <span class="input-group-append" style=" width: 50px;">
-                                <button v-on:click="changeView(1)" class="btn btn-default modal-record-date-button" type="button" title="Плюс 1 год"
-                                        v-bind:disabled="isLoading">
-                                    <i class="fa fa-angle-right font-size-large" aria-hidden="true"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <h2 class="font-weight-light mb-2">Сегодня: <b>@DateTime.Now.ToString("dd.MM.yyyy")</b></h2>
-                @*<div class="badge badge-success font-weight-bold">RUNNING</div>*@
-            </div>
-            <div class="col-md-4">
-                @*<button class="btn btn-lg btn-default">
-                        <i class="ion ion-md-power text-danger"></i>&nbsp;
-                        Shut Down
-                    </button>*@
+    <div class="row mb-2">
+        <div class="col-md-4 px-1">
+            <div class="input-group budget-date">
+                <span class="input-group-prepend" style="width: 50px;height: 26px;">
+                    <button v-on:click="changeView(-1)" class="btn btn-sm btn-default modal-record-date-button" type="button" title="Минус 1 год"
+                            v-bind:disabled="isLoading">
+                        <i class="fa fa-angle-left font-size-large" aria-hidden="true"></i>
+                    </button>
+                </span>
+                <select id="budget-year" class="form-control form-control-sm"
+                        v-model="budgetYear"
+                        v-on:change="refresh(undefined)">
+                    @foreach (var year in Model.Years)
+                    {
+                        <option value="@year">@year</option>
+                    }
+                </select>
+                <span class="input-group-append" style="width: 50px;height: 26px;">
+                    <button v-on:click="changeView(1)" class="btn btn-sm btn-default modal-record-date-button" type="button" title="Плюс 1 год"
+                            v-bind:disabled="isLoading">
+                        <i class="fa fa-angle-right font-size-large" aria-hidden="true"></i>
+                    </button>
+                </span>
             </div>
         </div>
     </div>
-    <!-- / Head block -->
-    <hr class="container-m-nx border-light mt-0 mb-2">
-    <div class="row">
+
+    <div class="row summary-view">
+        @await Html.PartialAsync("_SummaryView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+    </div>
+    <div class="row total-view">
         @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Year)
     </div>
     <div class="row">
@@ -97,7 +84,7 @@
         <div class="card-body" style="padding-bottom:5px;">
             <div class="card-title with-elements">
                 <select class="form-control form-control-sm" data-style="btn-default" style="width: 300px"
-                        v-model="templateID" 
+                        v-model="templateID"
                         v-on:change="refresh('onlyTable')"
                         v-bind:disabled="isLoading">
                     @foreach (var template in Model.Templates)
@@ -150,6 +137,7 @@
 </div>
 
 @await Html.PartialAsync("../Goal/_GoalAddMoney.cshtml")
+@await Html.PartialAsync("../Account/_AccountModal.cshtml")
 
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Year")
 

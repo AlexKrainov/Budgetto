@@ -22,11 +22,13 @@ namespace MyProfile.Budget.Service
         private UserLogService userLogService;
         private BudgetRecordService recordService;
         private CommonService commonService;
+        private BudgetTotalService budgetTotalService;
 
         public SummaryService(IBaseRepository repository,
             IMemoryCache cache,
             UserLogService userLogService,
             BudgetRecordService recordService,
+            BudgetTotalService budgetTotalService,
             CommonService commonService)
         {
             this.repository = repository;
@@ -34,6 +36,7 @@ namespace MyProfile.Budget.Service
             this.userLogService = userLogService;
             this.recordService = recordService;
             this.commonService = commonService;
+            this.budgetTotalService = budgetTotalService;
         }
 
         public SummaryModelView GetSummaries(SummaryFilter filter)
@@ -79,15 +82,15 @@ namespace MyProfile.Budget.Service
 
             if (bdSummaries.Any(x => x.ID == (int)SummaryType.CashFlow))
             {
-                var expensesPerDay = bdSummaries.FirstOrDefault(x => x.ID == (int)SummaryType.CashFlow);
+                var chashFlow = bdSummaries.FirstOrDefault(x => x.ID == (int)SummaryType.CashFlow);
 
                 summaries.CashFlow = new CashFlowModelView
                 {
-                    ID = expensesPerDay.ID,
-                    ElementID = expensesPerDay.CodeName,
+                    ID = chashFlow.ID,
+                    ElementID = chashFlow.CodeName,
                     IsShow = true,
-                    Name = expensesPerDay.Name
-
+                    IsChart = chashFlow.IsChart,
+                    Name = chashFlow.Name
                 };
                 BuildCashFlow(summaries, filter);
             }
@@ -209,6 +212,7 @@ namespace MyProfile.Budget.Service
 
         private void BuildEarningsPerHour(SummaryModelView summary, SummaryFilter filter)
         {
+            var now = DateTime.Now;
             var userSummary = repository.GetAll<UserSummary>(x => x.UserID == filter.UserID
                       && x.SummaryID == (int)SummaryType.EarningsPerHour
                       && x.IsActive
@@ -219,6 +223,7 @@ namespace MyProfile.Budget.Service
             {
                 if (userSummary.Sections == null || userSummary.Sections.Count == 0)
                 {
+                    bool isPast = false;
                     var _filter = new SummaryFilter
                     {
                         StartDate = filter.StartDate,
@@ -227,17 +232,50 @@ namespace MyProfile.Budget.Service
                         SectionTypes = new List<int> { (int)SectionTypeEnum.Earnings }
                     };
 
+                    summary.EarningsPerHour.AllWorkHours = hours;
+
                     if (filter.PeriodType == PeriodTypesEnum.Year)
                     {
                         hours *= 12;
                     }
 
                     summary.TotalEarnings = recordService.GetTotalForSummaryByFilter(_filter);
-                    summary.EarningsPerHour.WorkHours = hours;
+                    summary.EarningsPerHour.AllWorkHoursByPeriod = hours;
+                    int totalDays = 0;
 
-                    if (summary.TotalEarnings != 0 && hours != 0)
+
+                    if (now > filter.StartDate && now <= filter.EndDate)
                     {
-                        summary.EarningsPerHour.Balance = (summary.TotalEarnings ?? 1) / hours;
+                        totalDays = (int)(now.Date - filter.StartDate.Date).TotalDays;
+                    }
+                    else if (now > filter.EndDate && now > filter.StartDate)
+                    {
+                        totalDays = (int)(filter.EndDate.Date - filter.StartDate.Date).TotalDays;
+                        isPast = true;
+                    }
+                    else if (now < filter.EndDate && now < filter.StartDate)
+                    {
+                        totalDays = 0;
+                    }
+
+                    if (totalDays != 0 && hours != 0)
+                    {
+                        decimal workhoursPerDay = summary.EarningsPerHour.AllWorkHours / 30.4m;
+
+                        if (isPast)
+                        {
+                            summary.EarningsPerHour.WorkedHours = summary.EarningsPerHour.AllWorkHoursByPeriod;
+                        }
+                        else
+                        {
+                            summary.EarningsPerHour.WorkedHours = (int)Math.Round(workhoursPerDay * totalDays, 1);
+                        }
+
+                    }
+
+                    if (summary.TotalEarnings != 0 && summary.EarningsPerHour.WorkedHours != 0)
+                    {
+                        summary.EarningsPerHour.Balance = (summary.TotalEarnings ?? 1) / summary.EarningsPerHour.WorkedHours;
                     }
                     else
                     {
@@ -329,6 +367,23 @@ namespace MyProfile.Budget.Service
                 }
 
                 summary.CashFlow.Balance = (summary.TotalEarnings ?? 0) - (summary.TotalSpendings ?? 0);
+
+                if (summary.CashFlow.IsChart)
+                {
+                    //if (filter.PeriodType == PeriodTypesEnum.Month)
+                    var spending = budgetTotalService.GetChartTotalByMonth(filter.StartDate.AddMonths(-11), filter.EndDate, SectionTypeEnum.Spendings);
+                    var earnings = budgetTotalService.GetChartTotalByMonth(filter.StartDate.AddMonths(-11), filter.EndDate, SectionTypeEnum.Earnings);
+
+                    summary.CashFlow.data = new decimal[spending.Item1.Count];
+                    summary.CashFlow.labels = new string[spending.Item2.Count];
+
+                    for (int i = 0; i < spending.Item1.Count; i++)
+                    {
+                        summary.CashFlow.data[i] = earnings.Item1[i] - spending.Item1[i];
+                        summary.CashFlow.labels[i] = spending.Item2[i];
+                    }
+
+                }
             }
         }
 

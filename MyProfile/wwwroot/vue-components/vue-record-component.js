@@ -848,6 +848,7 @@
                 record.sectionName = section.name
             }
 
+            this.selectedRecord = record;
             this.topTagIDsBySection = section.tags;
         },
 
@@ -995,7 +996,12 @@
         showHistory: function (isShow) {
             this.isShowHistory = isShow;
             if (isShow) {
-                this.historyComponent.dateTimeOfPayment = moment(this.flatpickr.latestSelectedDateObj).add(1, "seconds").format("YYYY-MM-DDTHH:mm:ss");
+                let _date = moment(this.flatpickr.latestSelectedDateObj).add(1, "seconds").format("YYYY-MM-DDTHH:mm:ss");
+                if (_date == this.historyComponent.dateTimeOfPayment) {
+                    this.historyComponent.loadHistory();
+                } else {
+                    this.historyComponent.dateTimeOfPayment = _date;
+                }
             }
         },
 

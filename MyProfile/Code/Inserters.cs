@@ -65,6 +65,7 @@ namespace MyProfile.Code
                     CodeName = "CashFlow",
                     CurrentDate = now,
                     IsActive = true,
+                    IsChart = true,
                     VisibleElement = new VisibleElement
                     {
                         IsShow_BudgetMonth = true,

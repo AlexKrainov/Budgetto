@@ -9,7 +9,7 @@ namespace MyProfile.Entity.ModelView
         public Guid CollectiveBudgetID { get; set; }
         public string ImageBase64 { get; set; }
         public bool IsAvailable { get; set; }
-        public int WorkHours { get; set; }
+        public int AllWorkHours { get; set; }
 
         public UserInfoModel()
         {

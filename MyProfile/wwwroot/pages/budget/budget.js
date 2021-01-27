@@ -60,6 +60,7 @@
             cashFlow: {},
             allAccountsMoney: {},
         },
+        chashFlowChart: undefined,
         summaryAjax: null,
         //Accounts
         accounts: [],
@@ -106,7 +107,7 @@
                         display: false
                     },
                     tooltips: {
-                        enabled: true
+                        enabled: false
                     },
                     responsive: false,
                     maintainAspectRatio: false
@@ -517,30 +518,58 @@
             });
         },
         //Summary
-        loadSummaries: function () {
-            if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Summary)) {
-                return false;
-            }
-
-            if (this.summaryAjax && (this.summaryAjax.readyState == 1 || this.summaryAjax.readyState == 3)) { // OPENED & LOADING
-                this.summaryAjax.abort();
-            }
-
-            ShowLoading('#summary-view');
-
-            this.summaryAjax = $.ajax({
-                type: "GET",
-                url: "/Summary/GetSummaries?date=" + this.budgetDate + "&periodType=1",
-                contentType: "application/json",
-                dataType: 'json',
-                context: this,
-                success: function (response) {
-                    this.summary = response.summaries;
-
-                    HideLoading('#summary-view');
+        loadSummaries: BudgetMethods.loadSummaries,
+        initSummaryCharts: function () {
+            if (this.summary.cashFlow.isShow && this.summary.cashFlow.isChart) {
+                if (this.chashFlowChart) {
+                    this.chashFlowChart.destroy();
                 }
-            });
-            return this.summaryAjax;
+                this.chashFlowChart = new Chart(document.getElementById('chashFlowChart').getContext("2d"), {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            data: this.summary.cashFlow.data,
+                            borderWidth: 1,
+                            backgroundColor: 'rgba(38, 180, 255, .2)',
+                            borderColor: 'rgba(38, 180, 255, 1)',
+                            pointBorderColor: 'rgba(0,0,0,0)',
+                            pointRadius: 1,
+                            lineTension: 0
+                        }],
+                        labels: this.summary.cashFlow.labels
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                display: false,
+                            }],
+                            yAxes: [{
+                                display: false
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            enabled: false,
+                            //mode: 'index',
+                            //position: 'nearest',
+                            //custom: customTooltips
+                        },
+                        responsive: false,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+
+            setTimeout(this.resizeSummaryCharts, 50);
+        },
+        resizeSummaryCharts: function () {
+            if (this.chashFlowChart) {
+                this.chashFlowChart.resize();
+            }
+
+            this.refrehHeaderTable();
         },
         //Accounts
         loadAccounts: BudgetMethods.loadAccounts,
@@ -654,6 +683,7 @@
             this.resizeLimitCharts();
             //this.resizeGoalCharts();
             this.resizeBigCharts();
+            this.resizeSummaryCharts();
         },
         refrehHeaderTable: function () {
             if (this.dataTable && this.dataTable.fixedHeader) {
@@ -1013,3 +1043,70 @@
 });
 
 
+var customTooltips = function (tooltip) {
+    // Tooltip Element
+    var tooltipEl = document.getElementById('chartjs-tooltip');
+
+    if (!tooltipEl) {
+        tooltipEl = document.createElement('div');
+        tooltipEl.id = 'chartjs-tooltip';
+        tooltipEl.innerHTML = '<table></table>';
+        this._chart.canvas.parentNode.appendChild(tooltipEl);
+    }
+
+    // Hide if no tooltip
+    if (tooltip.opacity === 0) {
+        tooltipEl.style.opacity = 0;
+        return;
+    }
+
+    // Set caret Position
+    tooltipEl.classList.remove('above', 'below', 'no-transform');
+    if (tooltip.yAlign) {
+        tooltipEl.classList.add(tooltip.yAlign);
+    } else {
+        tooltipEl.classList.add('no-transform');
+    }
+
+    function getBody(bodyItem) {
+        return bodyItem.lines;
+    }
+
+    // Set Text
+    if (tooltip.body) {
+        var titleLines = tooltip.title || [];
+        var bodyLines = tooltip.body.map(getBody);
+
+        var innerHtml = '<thead>';
+
+        titleLines.forEach(function (title) {
+            innerHtml += '<tr><th>' + title + '</th></tr>';
+        });
+        innerHtml += '</thead><tbody>';
+
+        bodyLines.forEach(function (body, i) {
+            var colors = tooltip.labelColors[i];
+            var style = 'background:' + colors.backgroundColor;
+            style += '; border-color:' + colors.borderColor;
+            style += '; border-width: 2px';
+            var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+            innerHtml += '<tr><td>' + span + body + '</td></tr>';
+        });
+        innerHtml += '</tbody>';
+
+        var tableRoot = tooltipEl.querySelector('table');
+        tableRoot.innerHTML = innerHtml;
+    }
+
+    var positionY = this._chart.canvas.offsetTop;
+    var positionX = this._chart.canvas.offsetLeft;
+
+    // Display, position, and set styles for font
+    tooltipEl.style.opacity = 1;
+    tooltipEl.style.left = positionX + tooltip.caretX + 'px';
+    tooltipEl.style.top = positionY + tooltip.caretY + 'px';
+    tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+    tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+    tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+    tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+};

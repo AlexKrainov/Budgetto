@@ -3,48 +3,58 @@
     <div class="card mb-4">
         <div id="summary-view" class="row no-gutters row-bordered"
              v-show="summary.isShow">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
 
-                <div class="card-body pt-3 pb-0">
+                <div class="card-body pt-3 pb-1">
                     <div class="text-muted small">
                         Всего на всех счетах
                         <i class="fas fa-info-circle cursor-help text-danger" data-toggle="tooltip" data-html="true"
                            v-show="summary.allAccountsMoney.convertError"
                            title="Не удалось конвертировать все счета"></i>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 text-xlarge" style="display: inline-block"
-                             v-if="summary.currencySpecificCulture">
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.allAccountsMoney.balance) }}
-                            @*<small><sup class="text-success">+11.25%</sup></small>*@
-                        </div>
-                        @*<div class="col-md-8" style="display:inline-block; width: 60%; height: 50px;">
-                                <canvas id="statistics-chart-14"></canvas>
-                            </div>*@
+                    <div class="text-xlarge" style="display: inline-block"
+                         v-if="summary.currencySpecificCulture">
+                        {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.allAccountsMoney.balance) }}
+                        @*<small><sup class="text-success">+11.25%</sup></small>*@
                     </div>
-                </div>
-
-            </div>
-            <div class="col-lg-4">
-
-                <div class="card-body pt-3 pb-0">
-                    <div class="text-muted small">Денежный поток ( доходы - расходы )</div>
-                    <div class="row">
-                        <div class="col-md-6 text-xlarge" style="display: inline-block"
-                             v-if="summary.currencySpecificCulture">
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.cashFlow.balance) }}
-                            @*<small><sup class="text-success">+11.25%</sup></small>*@
-                        </div>
-                        <div class="col-md-6" style="display:inline-block; width: 60%; height: 50px;">
+                    @*<div class="col-md-8" style="display:inline-block; width: 60%; height: 50px;">
                             <canvas id="statistics-chart-14"></canvas>
+                        </div>*@
+                </div>
+
+            </div>
+            <div class="col-lg-5">
+
+                <div class="card-body pt-3 pb-1">
+                    <div class="row">
+                        <div class="col-md-6" style="display: inline-block"
+                             v-if="summary.currencySpecificCulture">
+                            <div class="text-muted small">
+                                Денежный поток
+                                <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                                   title="Доходы - Расходы  <p>С помощью этого показателя вы можете определить не выходите ли вы за рамки бюджета в данном месяце/годе</p>"></i>
+                            </div>
+                            <span class=" text-xlarge"
+                                  v-bind:class="summary.cashFlow.balance >= 0 ? 'text-success': 'text-danger'">
+                                {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.cashFlow.balance) }}
+                            </span>
+                            @*<small><sup class="text-success">+11.25%</sup></small>*@
+                        </div>
+                        <div class="col-md-6 col-sm-1 col-xs-1" style="display:inline-block; width: 60%; height: 50px;">
+                            <canvas id="chashFlowChart" width="100" height="50"></canvas>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div class="col-lg-4">
-                <div class="card-body row pt-3 pb-0">
-                    <div class="col-lg-6 text-muted small ">Рабочих часов в месяц</div><div class="col-lg-6">{{ summary.earningsPerHour.workHours }}</div>
+                <div class="card-body row pt-3 pb-1">
+                    <div class="col-lg-6 text-muted small ">
+                        Отработанных/всего рабочих часов
+                        <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                           title="Отработанных/всего рабочих часов за данный период"></i>
+                    </div>
+                    <div class="col-lg-6">{{ summary.earningsPerHour.workedHours }} / {{ summary.earningsPerHour.allWorkHoursByPeriod }}</div>
 
                     <div class="col-lg-6 text-muted small ">{{ summary.earningsPerHour.name }}</div>
                     <div class="col-lg-6 text-success"
@@ -103,8 +113,8 @@
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="javascript:void(0)"
                            v-on:click="editAccount(account)">Редактировать счет</a>
-                        <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="transferMoney(account.id)">Пополнить счет</a>
+                        @*<a class="dropdown-item" href="javascript:void(0)"
+                            v-on:click="transferMoney(account.id)">Пополнить счет</a>*@
                         <a class="dropdown-item" href="javascript:void(0)"
                            v-on:click="showHideAccount(account, true)">Скрыть счет</a>
                         <a class="dropdown-item text-danger" href="javascript:void(0)"
@@ -185,4 +195,3 @@
         </div>
     </div>
 </div>
-<div class="col-md-4"></div>

@@ -88,7 +88,7 @@ namespace MyProfile.User.Service
                 user.EarningsPerHour = new EarningsPerHourModelView
                 {
                     LastChange = earningsPerHour.CurrentDate,
-                    WorkHours = hours
+                    AllWorkHours = hours
                 };
             }
             else
@@ -96,7 +96,7 @@ namespace MyProfile.User.Service
                 user.EarningsPerHour = new EarningsPerHourModelView
                 {
                     LastChange = DateTime.Now,
-                    WorkHours = 0
+                    AllWorkHours = 0
                 };
             }
 

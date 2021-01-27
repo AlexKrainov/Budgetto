@@ -11,7 +11,7 @@ namespace MyProfile.Entity.ModelView
         public string CurrencyCodeName { get; set; }
         public string CurrencySpecificCulture { get; set; }
         public bool IsShow { get; set; }
-
+        
 
         public EarningsPerHourModelView EarningsPerHour { get; set; }
         public ExpensesPerDayModelView ExpensesPerDay { get; set; }
@@ -27,11 +27,14 @@ namespace MyProfile.Entity.ModelView
         public decimal Balance { get; set; }
 
         public bool IsShow { get; set; }
+        public bool IsChart { get; set; }
     }
 
     public class EarningsPerHourModelView : SummaryBase
     {
-        public int WorkHours { get; set; }
+        public int WorkedHours { get; set; }
+        public int AllWorkHours { get; set; }
+        public int AllWorkHoursByPeriod { get; set; }
         public DateTime LastChange { get; set; }
     }
     public class ExpensesPerDayModelView : SummaryBase
@@ -40,7 +43,8 @@ namespace MyProfile.Entity.ModelView
     }
     public class CashFlowModelView : SummaryBase
     {
-
+        public decimal[] data { get; set; }
+        public string[] labels { get; set; }
     }
     public class AllAccountsMoneyModelView : SummaryBase
     {

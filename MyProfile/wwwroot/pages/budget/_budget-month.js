@@ -215,4 +215,31 @@
         });
         return this.accountsAjax;
     },
+    //Summary
+    loadSummaries: function () {
+        if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Summary)) {
+            return false;
+        }
+
+        if (this.summaryAjax && (this.summaryAjax.readyState == 1 || this.summaryAjax.readyState == 3)) { // OPENED & LOADING
+            this.summaryAjax.abort();
+        }
+
+        ShowLoading('#summary-view');
+
+        this.summaryAjax = $.ajax({
+            type: "GET",
+            url: "/Summary/GetSummaries?date=" + this.budgetDate + "&periodType=1",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+                this.summary = response.summaries;
+
+                this.initSummaryCharts();
+                HideLoading('#summary-view');
+            }
+        });
+        return this.summaryAjax;
+    },
 };

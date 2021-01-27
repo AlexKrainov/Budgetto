@@ -7,6 +7,40 @@
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/datatables/datatables.css">
     <link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
+
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        #chartjs-tooltip {
+            opacity: 1;
+            position: absolute;
+            background: rgba(0, 0, 0, .7);
+            color: white;
+            border-radius: 3px;
+            -webkit-transition: all .1s ease;
+            transition: all .1s ease;
+            pointer-events: none;
+            -webkit-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+            z-index: 9979999999;
+            zoom: 1;
+        }
+
+        .chartjs-tooltip-key {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 10px;
+        }
+        canvas {
+            position: relative;
+            z-index: 999999;
+        }
+    </style>
 }
 
 @section Scripts {
@@ -36,7 +70,7 @@
     </environment>
 }
 
-<div id="budget-vue" v-cloak>
+<div id="budget-vue" v-cloak style=" margin-top: -15px;"> 
 
     <input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
     <input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />
