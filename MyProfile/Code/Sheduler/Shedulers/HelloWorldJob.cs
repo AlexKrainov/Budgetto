@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyProfile.Code.Sheduler.Shedulers
 {
+    /// <summary>
+    /// https://andrewlock.net/creating-a-quartz-net-hosted-service-with-asp-net-core/
+    /// </summary>
     public class HelloWorldJob : IJob
     {
         private readonly ILogger<HelloWorldJob> _logger;
