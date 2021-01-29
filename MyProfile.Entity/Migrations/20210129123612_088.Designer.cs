@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210129123612_088")]
+    partial class _088
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1343,63 +1345,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("SectionTypeViews");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.ShedulerTask", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Comment");
-
-                    b.Property<string>("CronExpression")
-                        .HasMaxLength(16);
-
-                    b.Property<DateTime?>("FirstStart");
-
-                    b.Property<DateTime?>("LastStart");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("TaskStatus")
-                        .IsRequired()
-                        .HasMaxLength(16);
-
-                    b.Property<string>("TaskType")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.HasKey("ID");
-
-                    b.ToTable("ShedulerTasks");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.ShedulerTaskLog", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ChangedItems");
-
-                    b.Property<string>("Comment");
-
-                    b.Property<DateTime?>("End");
-
-                    b.Property<bool>("IsError");
-
-                    b.Property<DateTime>("Start");
-
-                    b.Property<int>("TaskID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("TaskID");
-
-                    b.ToTable("ShedulerTaskLogs");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.SiteSettings", b =>
                 {
                     b.Property<int>("ID")
@@ -2469,14 +2414,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.ShedulerTaskLog", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.ShedulerTask", "Task")
-                        .WithMany("TaskLogs")
-                        .HasForeignKey("TaskID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

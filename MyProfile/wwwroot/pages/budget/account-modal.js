@@ -250,107 +250,112 @@ var AccountVue = new Vue({
 });
 
 
-//var AccountTransferVue = new Vue({
-//    el: "#account-transfer-modal-vue",
-//    data: {
-//        accountsFrom: [],
-//        accountsTo: [],
+var AccountTransferVue = new Vue({
+    el: "#account-transfer-modal-vue",
+    data: {
+        accountsFrom: [],
+        accountsTo: [],
 
-//        accountFrom: {},
-//        accountTo: {},
+        accountFrom: {},
+        accountTo: {},
 
-//        value: null,
-//        newValueFrom: null,
-//        newValueTo: null,
+        value: null,
+        newValueFrom: null,
+        newValueTo: null,
 
-//        showEmpty: false,
+        showEmpty: false,
 
-//        currencyInfos: Metadata.currencies,
-//        isSaving: false
-//    },
-//    watch: {
-//        value: function (newValue) {
-//            if (newValue > 0) {
-//                this.newValueFrom = this.accountFrom.balance - newValue * 1;
-//                this.newValueTo = this.accountTo.balance + newValue * 1;
-//            } else {
-//                this.newValueFrom = null;
-//                this.newValueTo = null;
-//            }
-//        },
-//        accountFrom: function (newValue) {
-//            let selectedCurrencyID = newValue.currencyID;
-//            let accountsCurrency = this.accountsTo.filter(x => x.currencyID == selectedCurrencyID);
-//            if (accountsCurrency.length >= 2) {
-//                let indexTo = accountsCurrency.findIndex(x => x.id != newValue.id);
-//                this.accountTo = accountsCurrency[indexTo];
-//                accountsCurrency[indexTo].isSelected = true;
-//                this.showEmpty = false;
-//            } else {
-//                this.showEmpty = true;
-//            }
-//        },
-//        accountTo: function (newValue) {
+        currencyInfos: Metadata.currencies,
+        isSaving: false
+    },
+    watch: {
+        value: function (newValue) {
+            if (newValue > 0) {
+                this.newValueFrom = this.accountFrom.balance - newValue * 1;
+                this.newValueTo = this.accountTo.balance + newValue * 1;
+            } else {
+                this.newValueFrom = null;
+                this.newValueTo = null;
+            }
+        },
+        accountFrom: function (newValue) {
+            let selectedCurrencyID = newValue.currencyID;
+            this.accountTo = {};
 
-//        },
-//    },
-//    computed: {
-//    },
-//    mounted: function () {
+            for (var i = 0; i < this.accountsTo.length; i++) {
+                this.accountsTo[i].isDisabled = this.accountsTo[i].currencyID != selectedCurrencyID || this.accountsTo[i].id == newValue.id;
+                this.accountsTo[i].isSelected = false;
+            }
+            this.showEmpty = this.accountsTo.filter(x => x.isDisabled).length == this.accountsTo.length;
 
-//    },
-//    methods: {
-//        transferMoney: function (accounts, accountID) {
-//            this.accountsFrom = JSCopyArray(accounts);
-//            this.accountsTo = JSCopyArray(accounts);
+            let accountsCurrency = this.accountsTo.filter(x => x.currencyID == selectedCurrencyID);
+            if (accountsCurrency.length >= 2) {
+                let indexTo = accountsCurrency.findIndex(x => x.id != newValue.id);
+                this.accountTo = accountsCurrency[indexTo];
+                accountsCurrency[indexTo].isSelected = true;
+            }
+        },
+        accountTo: function (newValue) {
 
-//            let indexFrom = this.accountsFrom.findIndex(x => x.id == accountID);
-//            this.accountFrom = this.accountsFrom[indexFrom];
+        },
+    },
+    computed: {
+    },
+    mounted: function () {
 
-//            //let indexTo = this.accountsTo.findIndex(x => x.id != accountID);
-//            //this.accountTo = this.accountsTo[indexTo];
+    },
+    methods: {
+        transferMoney: function (accounts, accountID) {
+            this.accountsFrom = JSCopyArray(accounts);
+            this.accountsTo = JSCopyArray(accounts);
 
-//            $("#modal-account-transfer").modal("show");
-//        },
-//        getCurrencyValue: function (val) {
-//            if (this.accountFrom.currency) {
-//                return new Intl.NumberFormat(this.accountFrom.currency.specificCulture, { style: 'currency', currency: this.accountFrom.currency.codeName }).format(val)
-//            }
-//            return null;
-//        },
+            let indexFrom = this.accountsFrom.findIndex(x => x.id == accountID);
+            this.accountFrom = this.accountsFrom[indexFrom];
 
-//        save: function () {
-//            this.isSaving = true;
+            //let indexTo = this.accountsTo.findIndex(x => x.id != accountID);
+            //this.accountTo = this.accountsTo[indexTo];
 
-//            $.ajax({
-//                type: "POST",
-//                url: "/Account/TransferMoney",
-//                contentType: 'application/json; charset=utf-8',
-//                data: JSON.stringify({
-//                    accountFromID: this.accountFrom.id,
-//                    accountToID: this.accountTo.id,
-//                    value: this.value
-//                }),
-//                dataType: 'json',
-//                context: this,
-//                success: function (response) {
-//                    if (response.isOk) {
+            $("#modal-account-transfer").modal("show");
+        },
+        getCurrencyValue: function (val) {
+            if (this.accountFrom.currency) {
+                return new Intl.NumberFormat(this.accountFrom.currency.specificCulture, { style: 'currency', currency: this.accountFrom.currency.codeName }).format(val)
+            }
+            return null;
+        },
 
-//                        toastr.success("Деньги переведены");
+        save: function () {
+            this.isSaving = true;
 
-//                        if (typeof (BudgetVue) == "object") {
-//                            BudgetVue.refresh("onlySummery");
-//                        }
-//                        $("#modal-account-transfer").modal("hide");
-//                    }
-//                    this.isSaving = false;
-//                    return response;
-//                },
-//                error: function (xhr, status, error) {
-//                    this.isSaving = false;
-//                    console.log(error);
-//                }
-//            });
-//        }
-//    }
-//});
+            $.ajax({
+                type: "POST",
+                url: "/Account/TransferMoney",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    accountFromID: this.accountFrom.id,
+                    accountToID: this.accountTo.id,
+                    value: this.value
+                }),
+                dataType: 'json',
+                context: this,
+                success: function (response) {
+                    if (response.isOk) {
+
+                        toastr.success("Деньги переведены");
+
+                        if (typeof (BudgetVue) == "object") {
+                            BudgetVue.refresh("onlySummery");
+                        }
+                        $("#modal-account-transfer").modal("hide");
+                    }
+                    this.isSaving = false;
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    this.isSaving = false;
+                    console.log(error);
+                }
+            });
+        }
+    }
+});

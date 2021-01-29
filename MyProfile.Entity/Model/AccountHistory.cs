@@ -11,6 +11,8 @@ namespace MyProfile.Entity.Model
 		public static readonly string ShowHide = "ShowHide";
 		public static readonly string Delete = "Delete";
 		public static readonly string Recovery = "Recovery";
+		public static readonly string MoveMoney = "MoveMoney";
+		public static readonly string ResetCacback = "ResetCacback";
 	}
 	public class AccountHistory
 	{
@@ -22,6 +24,8 @@ namespace MyProfile.Entity.Model
 		public string ActionType { get; set; }
         public string OldAccountStateJson { get; set; }
         public string NewAccountStateJson { get; set; }
+		[MaxLength(32)]
+        public string Value { get; set; }
         public DateTime CurrentDate { get; set; }
 
 		[ForeignKey("AccountID")]

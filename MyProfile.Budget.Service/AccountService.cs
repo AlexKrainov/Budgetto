@@ -123,9 +123,26 @@ namespace MyProfile.Budget.Service
         public void Transfer(TransferMoney transfer)
         {
             var currentUser = UserInfo.Current;
+            var now = DateTime.Now.ToUniversalTime();
 
             var accountFrom = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.IsDeleted == false && x.ID == transfer.AccountFromID).FirstOrDefault();
             var accountTo = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.IsDeleted == false && x.ID == transfer.AccountToID).FirstOrDefault();
+
+            AccountHistory accountHistoryFrom = new AccountHistory
+            {
+                OldAccountStateJson = Serialize(accountFrom),
+                CurrentDate = now,
+                ActionType = AccountHistoryActionType.MoveMoney,
+                Value = "-" + transfer.Value.ToString()
+            };
+
+            AccountHistory accountHistoryTo = new AccountHistory
+            {
+                OldAccountStateJson = Serialize(accountTo),
+                CurrentDate = now,
+                ActionType = AccountHistoryActionType.MoveMoney,
+                Value = "+" + transfer.Value.ToString()
+            };
 
             if (transfer.Value > 0
                 && accountFrom != null
@@ -134,6 +151,12 @@ namespace MyProfile.Budget.Service
                 accountFrom.Balance -= transfer.Value;
                 accountTo.Balance += transfer.Value;
             }
+
+            accountHistoryFrom.NewAccountStateJson = Serialize(accountFrom);
+            accountFrom.AccountHistories.Add(accountHistoryFrom);
+
+            accountHistoryTo.NewAccountStateJson = Serialize(accountTo);
+            accountTo.AccountHistories.Add(accountHistoryTo);
 
             userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Account_TransferMoney);
 
@@ -210,7 +233,7 @@ namespace MyProfile.Budget.Service
                 {
                     if (account.CachBackBalance <= 0)
                     {
-                        accountDB.CachbackBalance = 0.1m;
+                        accountDB.CachbackBalance = 0.0m;
                     }
                 }
 
@@ -275,7 +298,7 @@ namespace MyProfile.Budget.Service
                         {
                             if (account.CachBackBalance <= 0)
                             {
-                                accountDB.CachbackBalance = 0.1m;
+                                accountDB.CachbackBalance = 0.0m;
                             }
                         }
                     }
@@ -390,6 +413,31 @@ namespace MyProfile.Budget.Service
             userLogService.CreateUserLog(currentUser.UserSessionID, account.IsDeleted ? UserLogActionType.Account_Delete : UserLogActionType.Account_Recovery);
 
             return account.IsDeleted;
+        }
+
+        public int ResetAllCahbacks()
+        {
+            var now = DateTime.Now.ToUniversalTime();
+            var accounts = repository
+                .GetAll<Account>(x => x.IsDeleted == false && x.IsCachback && x.CachbackBalance != 0)
+                .ToList();
+
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                AccountHistory accountHistory = new AccountHistory
+                {
+                    CurrentDate = now,
+                    ActionType = AccountHistoryActionType.ResetCacback,
+                    Value = accounts[i].CachbackBalance.ToString()
+                };
+
+                accounts[i].CachbackBalance = 0;
+                accounts[i].AccountHistories.Add(accountHistory);
+
+            }
+            repository.Save();
+            
+            return accounts.Count;
         }
 
         /// <summary>

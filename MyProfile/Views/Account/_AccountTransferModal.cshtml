@@ -75,7 +75,8 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Сумма для перевода</label>
-                            <input type="number" class="form-control" required v-model="value" placeholder="Введите сумму для перевода" />
+                            <input type="number" class="form-control" required v-model="value" placeholder="Введите сумму для перевода" 
+                                   v-bind:disabled="showEmpty"/>
                         </div>
 
                         <div class="col-md-4">
@@ -94,7 +95,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary"
-                            v-bind:disabled="isSaving"
+                            v-bind:disabled="showEmpty || isSaving"
                             v-on:click="save">
                         <span role="status" aria-hidden="true" class="spinner-border"
                               v-show="isSaving"></span>

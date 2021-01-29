@@ -26,6 +26,10 @@ using MyProfile.ToDoList.Service;
 using MyProfile.User.Service;
 using MyProfile.User.Service.PasswordWorker;
 using MyProfile.UserLog.Service;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
+using MyProfile.Code.Sheduler.Shedulers;
 
 namespace MyProfile
 {
@@ -74,6 +78,16 @@ namespace MyProfile
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();
             services.AddTransient<UserLogService>();
+
+            services.AddSingleton<IJobFactory, JobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            services.AddHostedService<QuartzHostedService>();
+
+            services.AddTransient<ResetCachbackAccountTask>();
+            //https://www.freeformatter.com/cron-expression-generator-quartz.html
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(ResetCachbackAccountTask),
+                 cronExpression: "0 0 12 1 * ?")); //Every month on the 1st, at noon
             #endregion
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -115,7 +129,9 @@ namespace MyProfile
 
             services.Configure<ProjectConfig>(Configuration.GetSection("ProjectConfig"));// In controller is using like IOptions<ProjectConfig> config
 
-            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -150,9 +166,9 @@ namespace MyProfile
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            //app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
-            //app.UseCors("CorsPolicy");
 
             Identity.UserInfo.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 

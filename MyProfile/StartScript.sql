@@ -129,3 +129,10 @@ INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (13, N'Ситибанк', '/res
 
 SET IDENTITY_INSERT [Banks] OFF
 GO
+
+SET IDENTITY_INSERT [ShedulerTasks] ON
+
+INSERT INTO [ShedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression])
+VALUES (1,'AccountRemoveCachback', 'New', 'AccountRemoveCachback', '0 0 12 1 * ?')
+
+SET IDENTITY_INSERT [ShedulerTasks] OFF

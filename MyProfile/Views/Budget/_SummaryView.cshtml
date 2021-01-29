@@ -48,22 +48,38 @@
 
             </div>
             <div class="col-lg-4">
-                <div class="card-body row pt-3 pb-1">
-                    <div class="col-lg-6 text-muted small ">
-                        Отработанных/всего рабочих часов
-                        <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
-                           title="Отработанных/всего рабочих часов за данный период"></i>
+                <div class="card-body row py-3">
+                    <div class="col-lg-12">
+                        <span class="text-muted small">
+
+                            Отработанных/всего рабочих часов
+                            <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                               title="Отработанных/всего рабочих часов за данный период"></i>
+                        </span>
+                        <span class="float-right">
+                            {{ summary.earningsPerHour.workedHours }} / {{ summary.earningsPerHour.allWorkHoursByPeriod }}
+                        </span>
                     </div>
-                    <div class="col-lg-6">{{ summary.earningsPerHour.workedHours }} / {{ summary.earningsPerHour.allWorkHoursByPeriod }}</div>
+                    <div class="col-lg-12">
+                        <span class="text-muted small">
+                            {{ summary.earningsPerHour.name }}
+                        </span>
+                        <span class="float-right"
+                              v-bind:class="summary.earningsPerHour != undefined && summary.earningsPerHour.balance > 0 ? 'text-success' : ''"
+                              v-if="summary.currencySpecificCulture">
+                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balance) }}
+                        </span>
+                    </div>
 
-                    <div class="col-lg-6 text-muted small ">{{ summary.earningsPerHour.name }}</div>
-                    <div class="col-lg-6 text-success"
-                         v-bind:class="summary.earningsPerHour != undefined && summary.earningsPerHour.balance > 0 ? 'text-success' : ''"
-                         v-if="summary.currencySpecificCulture">{{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balance) }}</div>
-
-                    <div class="col-lg-6 text-muted small ">Расходы в день</div>
-                    <div class="col-lg-6 text-danger"
-                         v-if="summary.currencySpecificCulture">{{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.expensesPerDay.balance) }}</div>
+                    <div class="col-lg-12">
+                        <span class="text-muted small">
+                            Расходы в день
+                        </span>
+                        <span class="float-right text-danger"
+                              v-if="summary.currencySpecificCulture">
+                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.expensesPerDay.balance) }}
+                        </span>
+                    </div>
                     @*<div class="col-lg-6 text-muted small ">Обязательств в месяц</div><div class="col-lg-6 text-danger">12 000 ₽</div>*@
                 </div>
 
@@ -113,8 +129,8 @@
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="javascript:void(0)"
                            v-on:click="editAccount(account)">Редактировать счет</a>
-                        @*<a class="dropdown-item" href="javascript:void(0)"
-                            v-on:click="transferMoney(account.id)">Пополнить счет</a>*@
+                        <a class="dropdown-item" href="javascript:void(0)"
+                            v-on:click="transferMoney(account.id)">Перевести деньги</a>
                         <a class="dropdown-item" href="javascript:void(0)"
                            v-on:click="showHideAccount(account, true)">Скрыть счет</a>
                         <a class="dropdown-item text-danger" href="javascript:void(0)"
@@ -149,7 +165,8 @@
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="javascript:void(0)"
                            v-on:click="editAccount(account)">Редактировать счет</a>
-
+                        <a class="dropdown-item" href="javascript:void(0)"
+                           v-on:click="transferMoney(account.id)">Перевести деньги</a>
                         <a class="dropdown-item" href="javascript:void(0)"
                            v-on:click="showHideAccount(account, false)">Показывать счет</a>
                         <a class="dropdown-item text-danger" href="javascript:void(0)"

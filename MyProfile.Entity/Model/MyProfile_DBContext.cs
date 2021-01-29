@@ -252,6 +252,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<UserSummary> UserSummaries { get; set; }
         public virtual DbSet<UserSummarySection> UserSummarySections { get; set; }
         public virtual DbSet<UserSummarySectionType> UserSummarySectionTypes { get; set; }
+        public virtual DbSet<ShedulerTask> ShedulerTasks { get; set; }
+        public virtual DbSet<ShedulerTaskLog> ShedulerTaskLogs { get; set; }
 
     }
 }

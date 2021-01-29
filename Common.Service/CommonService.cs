@@ -124,9 +124,6 @@ namespace Common.Service
         public async Task<CurrencyRateHistory> GetRatesFromBankAsync(DateTime date, string codeName_CBR)
         {
             string text = string.Empty;
-            var _link = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + date.ToString("dd/MM/yyyy");
-            WebRequest wr = WebRequest.Create(_link);
-            wr.Timeout = 3500;
             decimal rate = -1;
             int nominal = -1;
             Dictionary<DateTime, List<CurrencyRateHistory>> currencies = new Dictionary<DateTime, List<CurrencyRateHistory>>();
@@ -180,6 +177,13 @@ namespace Common.Service
                     var currenciesDB = GetCurrencyInfo();
                     List<CurrencyRateHistory> bankCurrencyDatas = new List<CurrencyRateHistory>();
 
+                    var _link = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + date.ToString("dd/MM/yyyy");
+                    WebRequest wr = WebRequest.Create(_link);
+                    wr.Timeout = 5000;
+                    wr.Headers.Add("Accept-Encoding", "gzip, deflate");
+                    wr.Headers.Add("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,ar;q=0.6");
+                    wr.Headers.Add("Accept", "*/*");
+                    wr.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36");
                     var response = await wr.GetResponseAsync();
                     var readStream = new StreamReader(((HttpWebResponse)response).GetResponseStream(), Encoding.GetEncoding("windows-1251"));
                     var doc = XElement.Load(readStream);
@@ -271,9 +275,6 @@ namespace Common.Service
         public CurrencyRateHistory GetRatesFromBank(DateTime date, string codeName_CBR)
         {
             string text = string.Empty;
-            var _link = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + date.ToString("dd/MM/yyyy");
-            WebRequest wr = WebRequest.Create(_link);
-            wr.Timeout = 3500;
             decimal rate = -1;
             int nominal = -1;
             Dictionary<DateTime, List<CurrencyRateHistory>> currencies = new Dictionary<DateTime, List<CurrencyRateHistory>>();
@@ -327,6 +328,13 @@ namespace Common.Service
                     var currenciesDB = GetCurrencyInfo();
                     List<CurrencyRateHistory> bankCurrencyDatas = new List<CurrencyRateHistory>();
 
+                    var _link = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + date.ToString("dd/MM/yyyy");
+                    WebRequest wr = WebRequest.Create(_link);
+                    wr.Timeout = 5000;
+                    wr.Headers.Add("Accept-Encoding", "gzip, deflate");
+                    wr.Headers.Add("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,ar;q=0.6");
+                    wr.Headers.Add("Accept", "*/*");
+                    wr.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36");
                     var response =  wr.GetResponse();
                     var readStream = new StreamReader(((HttpWebResponse)response).GetResponseStream(), Encoding.GetEncoding("windows-1251"));
                     var doc = XElement.Load(readStream);

@@ -760,3 +760,14 @@ html.dark-style .tagify__input::before {
     font-size: 13px;
     line-height: 15px;
 }
+
+.card-header {
+    padding: 15px !important;
+}
+.card-body {
+    padding: 15px !important;
+}
+
+.card-footer {
+    padding :15px !important;
+}
