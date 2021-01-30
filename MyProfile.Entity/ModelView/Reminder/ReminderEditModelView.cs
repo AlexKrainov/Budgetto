@@ -25,5 +25,7 @@ namespace MyProfile.Entity.ModelView.Reminder
         public string RepeatEvery { get; set; }
         public string Title { get; set; }
         public string CssIcon { get; set; }
+        public string DateReminderString { get; set; }
+        public string RepeatEveryName { get; set; }
     }
 }

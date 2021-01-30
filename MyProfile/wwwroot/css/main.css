@@ -344,6 +344,10 @@ th.column-min-width {
     color: var(--orange);
 }
 
+.reminder-is-done {
+    color: var(--secondary) !important;
+}
+
 .add-cell-action:hover {
 }
 
@@ -764,10 +768,11 @@ html.dark-style .tagify__input::before {
 .card-header {
     padding: 15px !important;
 }
+
 .card-body {
     padding: 15px !important;
 }
 
 .card-footer {
-    padding :15px !important;
+    padding: 15px !important;
 }

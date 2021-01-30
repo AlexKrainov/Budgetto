@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-    public class ShedulerTaskLog
+    public class SchedulerTaskLog
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,6 +19,6 @@ namespace MyProfile.Entity.Model
         [ForeignKey("Task")]
         public int TaskID { get; set; }
 
-        public virtual ShedulerTask Task { get; set; }
+        public virtual SchedulerTask Task { get; set; }
     }
 }

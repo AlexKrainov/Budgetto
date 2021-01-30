@@ -17,10 +17,11 @@ namespace MyProfile.Entity.Model
     public enum TaskType
     {
         Undefined = 0,
-        AccountRemoveCachback
+        AccountRemoveCachback,
+        SetDoneToReminderDates
     }
 
-    public class ShedulerTask
+    public class SchedulerTask
     {
         [Key]
         public int ID { get; set; }
@@ -37,14 +38,16 @@ namespace MyProfile.Entity.Model
         public string TaskType { get; set; }
         [MaxLength(16)]
         public string CronExpression { get; set; }
+        [MaxLength(64)]
+        public string CronComment { get; set; }
         public string Comment { get; set; }
 
 
-        public virtual ICollection<ShedulerTaskLog> TaskLogs { get; set; }
+        public virtual ICollection<SchedulerTaskLog> TaskLogs { get; set; }
 
-        public ShedulerTask()
+        public SchedulerTask()
         {
-            this.TaskLogs = new HashSet<ShedulerTaskLog>();
+            this.TaskLogs = new HashSet<SchedulerTaskLog>();
         }
 
     }

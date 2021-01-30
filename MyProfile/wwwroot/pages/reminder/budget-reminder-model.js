@@ -26,6 +26,11 @@
         //            || (reminder.userName && reminder.userName.toLocaleLowerCase().indexOf(newValue) >= 0);
         //    }
         //}
+        "reminder.isRepeat": function () {
+            if (this.reminder.isRepeat && this.reminder.repeatEvery == undefined) {
+                this.reminder.repeatEvery = "Month";
+            }
+        }
     },
     mounted: function () {
     },
@@ -71,10 +76,6 @@
 
         closeTimeline: function () {
             this.clearAllStyle();
-        },
-
-        GetDateByFormat: function (date, format) {
-            return GetDateByFormat(date, format);
         },
         edit: function (reminder) {
             this.isShowModal = true;
@@ -127,20 +128,16 @@
                 success: function (response) {
 
                     if (response.isOk) {
-                        let index = this.reminders.findIndex(x => x.id == response.data.id);
-                        //Check date
-                        if (index == -1) {
-                            this.reminders.push(response.data);
-                        } else {
+                        if (this.reminder.id > 0) {
+                            let index = this.reminders.findIndex(x => x.id == response.data.id);
                             this.reminders[index] = response.data;
+                        } else {
+                            this.reminders.push(response.data);
                         }
                         BudgetVue.refresh("onlyTable");
 
                         this.close();
-                    } else {
-
-                    }
-
+                    } 
                     this.isSaving = false;
                 },
                 error: function () {
@@ -201,6 +198,9 @@
                 dataType: 'json',
                 success: function (response) {
                     reminder.isDeleted = response.isDeleted;
+                    //bug, don't change view removed/recovered
+                    ReminderVue.$forceUpdate();
+
                     if (this.reminder.id == reminder.id) {
                         this.close();
                     }
@@ -227,23 +227,8 @@
                 }
             });
         },
-        textRepeat: function (repeatEvery) {
-            switch (repeatEvery) {
-                case "Day":
-                    return "День";
-                    break;
-                case "Week":
-                    return "Неделя";
-                    break;
-                case "Month":
-                    return "Месяц";
-                    break;
-                case "Year":
-                    return "Год";
-                    break;
-                default:
-                    return "";
-            }
+        GetDateByFormat: function (date, format) {
+            return GetDateByFormat(date, format);
         },
     }
 });

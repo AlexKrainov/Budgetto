@@ -130,9 +130,11 @@ INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (13, N'Ситибанк', '/res
 SET IDENTITY_INSERT [Banks] OFF
 GO
 
-SET IDENTITY_INSERT [ShedulerTasks] ON
+SET IDENTITY_INSERT [SchedulerTasks] ON
 
-INSERT INTO [ShedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression])
-VALUES (1,'AccountRemoveCachback', 'New', 'AccountRemoveCachback', '0 0 12 1 * ?')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (1,'AccountRemoveCachback', 'New', 'AccountRemoveCachback', '0 0 12 1 * ?', 'Every month on the 1st, at noon')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (2,'SetDoneToReminderDates', 'New', 'SetDoneToReminderDates', '0 0 1 * * ?', 'Every day at 1am')
 
-SET IDENTITY_INSERT [ShedulerTasks] OFF
+SET IDENTITY_INSERT [SchedulerTasks] OFF

@@ -79,15 +79,23 @@ namespace MyProfile
             services.AddTransient<CommonService>();
             services.AddTransient<UserLogService>();
 
+            #endregion
+            #region Tasks? Schedulers
             services.AddSingleton<IJobFactory, JobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
             services.AddHostedService<QuartzHostedService>();
 
-            services.AddTransient<ResetCachbackAccountTask>();
             //https://www.freeformatter.com/cron-expression-generator-quartz.html
+            services.AddTransient<ResetCachbackAccountTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(ResetCachbackAccountTask),
-                 cronExpression: "0 0 12 1 * ?")); //Every month on the 1st, at noon
+                 cronExpression: "0 0 12 1 * ?")); //Every month on the 1st, at noon 
+
+            services.AddTransient<SetDoneReminderTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(SetDoneReminderTask),
+                 cronExpression: "0 0 1 * * ?")); //Every day at 1am
+
             #endregion
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

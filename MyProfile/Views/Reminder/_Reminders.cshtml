@@ -3,7 +3,7 @@
     v-bind:id="'reminder_'+_reminder.id"
     v-show="_reminder.isShowForFilter"
     v-bind:class="_reminder.id == reminder.id ? 'active-item' : ''">
-    <div class="media flex-wrap" v-if="_reminder.isDeleted == false">
+    <div class="media flex-wrap" v-show="_reminder.isDeleted == false">
         <div class="">
             <i class="reminder-icon" v-bind:class="_reminder.cssIcon"></i>
         </div>
@@ -17,7 +17,7 @@
                 </a>
                 <div class="small float-right">
                     <i class="ion ion-md-time text-primary"></i>
-                    <span>{{ GetDateByFormat(_reminder.dateReminder, 'DD.MM.YYYY') }} </span>
+                    <span>{{ _reminder.dateReminderString }} </span>
                 </div>
                 <div class="text-body display-inline element-pointer-hover" v-on:click="edit(_reminder)">
                     {{ _reminder.title }}
@@ -25,29 +25,30 @@
                 <span class="text-muted pl-4" title="Повторять каждый "
                       v-show="_reminder.repeatEvery">
                     <i class="fas fa-sync"></i>
-                    {{ textRepeat(_reminder.repeatEvery) }}
+                    {{ _reminder.repeatEveryName }}
                 </span>
             </h5>
             <div>{{ _reminder.description }}</div>
         </div>
     </div>
-    <div class="media flex-wrap" v-else-if="_reminder.isDeleted">
+    <div class="media flex-wrap" v-show="_reminder.isDeleted">
         <div class="deleted-item">
             <i class="reminder-icon" v-bind:class="_reminder.cssIcon"></i>
         </div>
         <div class="media-body ml-sm-4">
-            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" v-on:click="recovery(_reminder)"></i>
+            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" 
+               v-on:click="recovery(_reminder)"></i>
             <h5 class="mb-2 pr-4">
                 <div class="text-muted small float-right deleted-item">
                     <i class="ion ion-md-time text-primary"></i>
-                    <span>{{ GetDateByFormat(_reminder.dateReminder, 'DD.MM.YYYY') }} </span>
+                    <span>{{ _reminder.dateReminderString }} </span>
                 </div>
                 <div class="text-body deleted-item">
                     {{ _reminder.title }}
                     <span class="text-muted pl-4" title="Повторять каждый "
                           v-show="_reminder.repeatEvery">
                         <i class="fas fa-sync"></i>
-                        {{ textRepeat(_reminder.repeatEvery) }}
+                        {{ _reminder.repeatEveryName }}
                     </span>
                 </div>
             </h5>

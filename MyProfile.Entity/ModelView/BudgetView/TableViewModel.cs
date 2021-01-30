@@ -60,6 +60,7 @@ namespace MyProfile.Entity.ModelView.BudgetView
         public int Count { get; set; }
         public string Titles { get; set; }
         public bool IsRepeat { get; set; }
+        public bool IsDone { get; set; }
     }
 
 }

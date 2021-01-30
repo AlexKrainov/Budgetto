@@ -211,7 +211,8 @@ namespace MyProfile.Budget.Service
                                         CssIcon = x.Key,
                                         Count = x.Count(),
                                         Titles = x.FirstOrDefault().Title,
-                                        IsRepeat = x.Any(y => y.IsRepeat)
+                                        IsRepeat = x.Any(y => y.IsRepeat),
+                                        IsDone = x.Any( y => y.IsDone)
                                     })
                                     .ToList();
 
@@ -272,7 +273,8 @@ namespace MyProfile.Budget.Service
                                         CssIcon = x.Key,
                                         Count = x.Count(),
                                         Titles = x.FirstOrDefault().Title,
-                                        IsRepeat = x.Any(y => y.IsRepeat)
+                                        IsRepeat = x.Any(y => y.IsRepeat),
+                                        IsDone = x.Any(y => y.IsDone)
                                     })
                                     .ToList();
 

@@ -12,5 +12,6 @@ namespace MyProfile.Entity.ModelView.Reminder
         public string CssIcon { get; set; }
         public DateTime? DateReminder { get; set; }
         public bool IsRepeat { get; set; }
+        public bool IsDone { get; set; }
     }
 }

@@ -777,10 +777,12 @@
         },
         //View cell
         getCellContent: function (cell, cellIndex, rowIndex) {
+            let isDoneReminder_class = cell.reminders && cell.reminders.some(x => x.isDone) ? 'reminder-is-done' : '';
+
             if (this.periodType == PeriodTypeEnum.Month) {
                 return `<div class="cell-head">${this.getCellActions(cell, cellIndex, rowIndex) + this.getCellValue(cell, cellIndex, rowIndex)}</div>
                     <div class="cell-footer mt-1">
-                        <span class="cell-reminder-icons"
+                        <span class="cell-reminder-icons ${isDoneReminder_class}"
                                 onclick="ReminderVue.showReminders('${cell.currentDate}')">${this.getRemindersIcons(cell)}</span>
                         <span class="cell-section-icons"></span>
                     </div>`;
