@@ -28,22 +28,18 @@ namespace MyProfile.Reminder.Service
             var currenUserID = UserInfo.Current.ID;
 
             var reminders = await repository
-                .GetAll<Reminder>(x => x.UserID == currenUserID
-                    && x.IsDeleted == false
-                    && x.DateReminder != null
-                    && (x.DateReminder.Value.Date == currentDate.Date
-                        || x.ReminderDates.Any(y => y.DateReminder.Date == currentDate.Date)))
+                .GetAll<ReminderDate>(x => x.Reminder.UserID == currenUserID
+                    && x.Reminder.IsDeleted == false
+                    && x.DateReminder == currentDate)
                  .Select(x => new ReminderEditModelView
                  {
-                     ID = x.ID,
-                     DateCreate = x.DateCreate,
-                     DateEdit = x.DateEdit,
-                     DateReminder = x.DateReminder,
-                     Description = x.Description,
-                     IsRepeat = x.IsRepeat,
-                     RepeatEvery = x.RepeatEvery,
-                     Title = x.Title,
-                     CssIcon = x.CssIcon,
+                     ID = x.ReminderID,
+                     DateReminder = currentDate, // x.DateReminder,
+                     Description = x.Reminder.Description,
+                     IsRepeat = x.Reminder.IsRepeat,
+                     RepeatEvery = x.Reminder.RepeatEvery,
+                     Title = x.Reminder.Title,
+                     CssIcon = x.Reminder.CssIcon,
                      isShowForFilter = true,
                      isDeleted = false,
                  })
@@ -104,7 +100,10 @@ namespace MyProfile.Reminder.Service
                     if (newReminder.IsRepeat == false && oldReminder.IsRepeat)
                     {
                         //remove until reminder.DateReminder
-                        await repository.DeleteRangeAsync(oldReminder.ReminderDates.Where(x => x.DateReminder <= oldReminder.DateReminder).ToList(), true);
+                        await repository.DeleteRangeAsync(await repository.GetAll<ReminderDate>(x => x.ReminderID == newReminder.ID
+                            && x.Reminder.UserID == currentUser.ID
+                            && x.Reminder.IsDeleted == false
+                            && x.DateReminder >= newReminder.DateReminder).ToListAsync(),true);
                     }
                     else if (newReminder.IsRepeat && oldReminder.IsRepeat == false)
                     {
@@ -114,14 +113,17 @@ namespace MyProfile.Reminder.Service
                         && oldReminder.IsRepeat
                         && newReminder.RepeatEvery != oldReminder.RepeatEvery)
                     {
-                        await repository.DeleteRangeAsync(oldReminder.ReminderDates.Where(x => x.DateReminder <= oldReminder.DateReminder).ToList());
+                        await repository.DeleteRangeAsync(await repository.GetAll<ReminderDate>(x => x.ReminderID == newReminder.ID
+                            && x.Reminder.UserID == currentUser.ID
+                            && x.Reminder.IsDeleted == false
+                            && x.DateReminder >= newReminder.DateReminder).ToListAsync(), true);
                         oldReminder.ReminderDates = GetReminderDates(newReminder, isCreateCurrentReminderDate: true);
                     }
 
                     oldReminder.Title = newReminder.Title;
                     oldReminder.Description = newReminder.Description;
                     oldReminder.DateReminder = newReminder.DateReminder;
-                    newReminder.DateEdit = oldReminder.DateEdit = now;
+                    oldReminder.DateEdit = now;
                     oldReminder.IsRepeat = newReminder.IsRepeat;
                     oldReminder.RepeatEvery = newReminder.RepeatEvery;
                     oldReminder.CssIcon = newReminder.CssIcon ?? "pe-7s-bell";
@@ -134,7 +136,7 @@ namespace MyProfile.Reminder.Service
                     var reminder = new Reminder();
 
                     reminder.UserID = currentUser.ID;
-                    newReminder.DateEdit = newReminder.DateCreate = reminder.DateEdit = reminder.DateCreate = now;
+                    reminder.DateEdit = reminder.DateCreate = now;
 
                     reminder.Title = newReminder.Title;
                     reminder.Description = newReminder.Description;

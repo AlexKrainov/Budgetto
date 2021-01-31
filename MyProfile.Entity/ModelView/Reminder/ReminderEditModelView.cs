@@ -17,8 +17,6 @@ namespace MyProfile.Entity.ModelView.Reminder
         public bool isDeleted;
 
         public int ID { get; set; }
-        public DateTime DateCreate { get; set; }
-        public DateTime DateEdit { get; set; }
         public DateTime? DateReminder { get; set; }
         public string Description { get; set; }
         public bool IsRepeat { get; set; }
