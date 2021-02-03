@@ -306,7 +306,7 @@ namespace MyProfile.UserLog.Service
         /// <param name="errorText"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public async Task<int> CreateErrorLogAsync(Guid userSessionID, string where, Exception exception, string comment = null, List<int> userLogIDs = null)
+        public async Task<int> CreateErrorLogAsync(Guid? userSessionID, string where, Exception exception, string comment = null, List<int> userLogIDs = null)
         {
             repository.ResetContextState();
 
@@ -349,7 +349,7 @@ namespace MyProfile.UserLog.Service
 
             return log.ID;
         }
-        public int CreateErrorLog(Guid userSessionID, string where, Exception exception, string comment = null, List<int> userLogIDs = null)
+        public int CreateErrorLog(Guid? userSessionID, string where, Exception exception, string comment = null, List<int> userLogIDs = null)
         {
             repository.ResetContextState();
 

@@ -17,12 +17,11 @@ namespace MyProfile.Entity.Model
         public DateTime CurrentDate { get; set; }
         [StringLength(64)]
         public string Where { get; set; }
-        [StringLength(512)]
         public string Comment { get; set; }
         public string ErrorText { get; set; }
 
         [ForeignKey("UserSession")]
-        public Guid UserSessionID { get; set; }
+        public Guid? UserSessionID { get; set; }
 
         public virtual UserSession UserSession { get; set; }
         public virtual IEnumerable<UserErrorLog> UserErrorLogs { get; set; }

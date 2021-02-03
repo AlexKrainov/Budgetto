@@ -29,7 +29,7 @@ namespace MyProfile.Budget.Service
         private TagService tagService;
         private AccountService accountService;
         private SectionService sectionService;
-        private CommonService commonService;
+        private CurrencyService currencyService;
         private IMemoryCache cache;
 
         public BudgetRecordService(IBaseRepository repository,
@@ -37,7 +37,7 @@ namespace MyProfile.Budget.Service
             AccountService accountService,
             IMemoryCache cache,
             SectionService sectionService,
-            CommonService commonService)
+            CurrencyService currencyService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
@@ -45,7 +45,7 @@ namespace MyProfile.Budget.Service
             this.tagService = tagService;
             this.accountService = accountService;
             this.sectionService = sectionService;
-            this.commonService = commonService;
+            this.currencyService = currencyService;
             this.cache = cache;
         }
 
@@ -194,7 +194,7 @@ namespace MyProfile.Budget.Service
                             }
                             else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
                             {
-                                var val = await commonService.GetRatesFromBankAsync(newRecord.DateTimeOfPayment, account.Currency.CodeName_CBR);
+                                var val = await currencyService.GetRateByCodeAsync(newRecord.DateTimeOfPayment, account.Currency.CodeName_CBR, currentUser.UserSessionID);
 
                                 if (val != null)
                                 {
@@ -216,21 +216,23 @@ namespace MyProfile.Budget.Service
                             {
                                 account.Balance -= _money;
 
-                                if (isThisMonth)
+                                if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                 {
-                                    if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
+                                    if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                     {
-                                        if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
-                                        {
-                                            recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
-                                        }
+                                        recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
+                                    }
+
+                                    if (isThisMonth)//update CashbackBalance only for this month
+                                    {
                                         account.CachbackBalance += recordCashback;
                                     }
-                                    else
-                                    {
-                                        recordCashback = 0;
-                                    }
                                 }
+                                else
+                                {
+                                    recordCashback = 0;
+                                }
+
                             }
                             else
                             {
@@ -358,7 +360,7 @@ namespace MyProfile.Budget.Service
                                 }
                                 else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
                                 {
-                                    var val = await commonService.GetRatesFromBankAsync(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR);
+                                    var val = await currencyService.GetRateByCodeAsync(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR, currentUser.UserSessionID);
 
                                     if (val != null)
                                     {
@@ -380,14 +382,14 @@ namespace MyProfile.Budget.Service
                                 {
                                     account.Balance -= _money;
 
-                                    if (isThisMonth)
+                                    if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                     {
-                                        if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
+                                        if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                         {
-                                            if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
-                                            {
-                                                recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
-                                            }
+                                            recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
+                                        }
+                                        if (isThisMonth)
+                                        {
                                             account.CachbackBalance += recordCashback;
                                         }
                                     }
@@ -418,18 +420,6 @@ namespace MyProfile.Budget.Service
                                      .FirstOrDefault();
 
                                 #region OLD Return back balance and cashback
-
-                                //if ((record.CurrencyID == currentUser.CurrencyID && currentUser.CurrencyID == oldAccount.CurrencyID)
-                                //    ||
-                                //    (record.CurrencyID != currentUser.CurrencyID && currentUser.CurrencyID == oldAccount.CurrencyID))
-                                //{
-                                //    _money = oldTotal;
-                                //}
-                                //else //if (record.CurrencyID != currentUser.CurrencyID && record.CurrencyID == account.CurrencyID)
-                                //// and when record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
-                                //{
-                                //    _money = oldTotal / lastAccountRecordHistory.AccountCurrencyRate ?? 1;
-                                //}
 
                                 if (oldSectionTypeID == (int)SectionTypeEnum.Spendings)
                                 {
@@ -464,7 +454,7 @@ namespace MyProfile.Budget.Service
                                 }
                                 else //When record.CurrencyID != currentUser.CurrencyID != account.CurrencyID
                                 {
-                                    var val = await commonService.GetRatesFromBankAsync(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR);
+                                    var val = await currencyService.GetRateByCodeAsync(dbRecord.DateTimeOfPayment.Date, account.Currency.CodeName_CBR, currentUser.UserSessionID);
 
                                     if (val != null)
                                     {
@@ -486,14 +476,14 @@ namespace MyProfile.Budget.Service
                                 {
                                     account.Balance -= _money;
 
-                                    if (isThisMonth)
+                                    if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
                                     {
-                                        if (account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
+                                        if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                         {
-                                            if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
-                                            {
-                                                recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
-                                            }
+                                            recordCashback = ((record.Money / accountCurrency.Rate) * (account.CachbackForAllPercent ?? 1)) / 100;
+                                        }
+                                        if (isThisMonth)
+                                        {
                                             account.CachbackBalance += recordCashback;
                                         }
                                     }
@@ -644,6 +634,7 @@ namespace MyProfile.Budget.Service
                 if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings)
                 {
                     db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
+
                     if (isThisMonth && db_record.Account.IsCachback && db_record.Account.CachbackForAllPercent != null)
                     {
                         db_record.Account.CachbackBalance += lastAccountRecordHistory.AccountCashback;
@@ -661,6 +652,7 @@ namespace MyProfile.Budget.Service
                     AccountCurrencyID = db_record.Account.CurrencyID,
                     DateCreate = now,
                     SectionID = db_record.BudgetSectionID,
+                    AccountCashback = lastAccountRecordHistory.AccountCashback
                 });
 
                 #endregion

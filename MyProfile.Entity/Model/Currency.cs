@@ -20,18 +20,19 @@ namespace MyProfile.Entity.Model
         [MaxLength(24)]
         public string Name { get; set; }
         [Required]
-        [MaxLength(3)]
+        [MaxLength(8)]
         public string CodeName { get; set; }
         [Required]
         [MaxLength(16)]
         public string SpecificCulture { get; set; }
         [Required]
-        [MaxLength(1)]
+        [MaxLength(8)]
         public string Icon { get; set; }
         /// <summary>
         /// Show or hide, as in the choice for the user, as the main currency
         /// </summary>
         public bool CanBeUser { get; set; }
+        //public bool CanSeeUser { get; set; }
         [MaxLength(8)]
         /// <summary>
         /// Name carrency for http://www.cbr.ru/development/sxml/

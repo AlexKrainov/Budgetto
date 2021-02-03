@@ -1,6 +1,6 @@
 ﻿
 <div class="col-md-12 px-1">
-    <div class="card mb-4">
+    <div class="card mb-2">
         <div id="summary-view" class="row no-gutters row-bordered"
              v-show="summary.isShow">
             <div class="col-lg-3">
@@ -54,7 +54,7 @@
 
                             Отработанных/всего рабочих часов
                             <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
-                               title="Отработанных/всего рабочих часов за данный период"></i>
+                               title="Отработанных/всего рабочих часов за данный период. Из расчета [Количество дней]/[Количество рабочих часов]"></i>
                         </span>
                         <span class="float-right">
                             {{ summary.earningsPerHour.workedHours }} / {{ summary.earningsPerHour.allWorkHoursByPeriod }}
@@ -110,7 +110,7 @@
                             </span>
                             <span class="float-right text-success"
                                   v-show="account.isCachback">
-                                {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.cachBackBalance) }}
+                                ≈{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.cachBackBalance) }}
                             </span>
                         </div>
                         <div class="text-muted small">{{ account.name }}</div>

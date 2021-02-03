@@ -273,9 +273,8 @@ var AccountTransferVue = new Vue({
             if (newValue > 0) {
                 this.newValueFrom = this.accountFrom.balance - newValue * 1;
                 this.newValueTo = this.accountTo.balance + newValue * 1;
-            } else {
-                this.newValueFrom = null;
-                this.newValueTo = null;
+            } else if(newValue < 0) {
+                this.value = 0;
             }
         },
         accountFrom: function (newValue) {
@@ -306,8 +305,12 @@ var AccountTransferVue = new Vue({
     },
     methods: {
         transferMoney: function (accounts, accountID) {
-            this.accountsFrom = JSCopyArray(accounts);
-            this.accountsTo = JSCopyArray(accounts);
+            this.newValueFrom = null;
+            this.newValueTo = null;
+            this.value = null;
+
+            this.accountsFrom = JSCopyArray(accounts.filter(x => x.isDeleted == false));
+            this.accountsTo = JSCopyArray(accounts.filter(x => x.isDeleted == false));
 
             let indexFrom = this.accountsFrom.findIndex(x => x.id == accountID);
             this.accountFrom = this.accountsFrom[indexFrom];

@@ -20,11 +20,23 @@ SET IDENTITY_INSERT [dbo].[ChartTypes] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[Currencies] ON 
-
+--https://dotnetfiddle.net/ytW9rB
 INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (1, N'Russian Ruble', N'RUB', N'ru-RU', N'₽', 1, NULL, NULL)
 INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (2, N'Euro', N'EUR', N'de-DE', N'€', 0, N'R01239', 978)
 INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (4, N'United States Dollar', N'USD', N'en-US', N'$', 0, N'R01235', 840)
 INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (5, N'United Kingdom Pound', N'GBP', N'en-GB', N'£', 0, N'R01035', 826)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (6, N'Австралийский доллар', N'AUD', N'en-AU', N'$', 0, N'R01010', 036)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (7, N'Южноафриканских рэндов', N'ZAR', N'af-ZA', N'R', 0, N'R01810', 710)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (8, N'Швейцарский франк', N'CHF', N'de-CH', N'₣', 0, N'R01775', 756)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (9, N'Шведских крон', N'SEK', N'se-SE', N'kr', 0, N'R01770', 752)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (10, N'Чешских крон', N'CZK', N'cs-CZ', N'Kč', 0, N'R01760', 203)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (11, N'Украинских гривен', N'UAH', N'uk-UA', N'₴', 0, N'R01720', 980)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (12, N'Узбекских сумов', N'UZS', N'uz-Cyrl-UZ', N'So’m', 0, N'R01717', 860)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (13, N'Туркменский манат', N'TMT', N'tk-TM', N'T', 0, N'R01710A', 934)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (14, N'Турецких лир', N'TRY', N'tr-TR', N'₤', 0, N'R01700J', 949)
+INSERT [dbo].[Currencies] ([ID], [Name], [CodeName], [SpecificCulture], [Icon], [CanBeUser], [CodeName_CBR], [CodeNumber_CBR]) VALUES (15, N'Таджикских сомони', N'TJS', N'tg-Cyrl-TJ', N'SM', 0, N'R01670', 972)
+
+
 SET IDENTITY_INSERT [dbo].[Currencies] OFF
 GO
 
@@ -136,5 +148,7 @@ INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpre
 VALUES (1,'AccountRemoveCachback', 'New', 'AccountRemoveCachback', '0 0 12 1 * ?', 'Every month on the 1st, at noon')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (2,'SetDoneToReminderDates', 'New', 'SetDoneToReminderDates', '0 0 1 * * ?', 'Every day at 1am')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (3,'CurrencyHistoryTask', 'New', 'CurrencyHistoryTask', '0 0 * ? * *', 'Every hour')
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF

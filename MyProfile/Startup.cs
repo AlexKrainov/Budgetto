@@ -78,23 +78,41 @@ namespace MyProfile
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();
             services.AddTransient<UserLogService>();
+            services.AddTransient<CurrencyService>();
 
             #endregion
-            #region Tasks? Schedulers
+
+            #region Task Schedulers
+
             services.AddSingleton<IJobFactory, JobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
             services.AddHostedService<QuartzHostedService>();
+
 
             //https://www.freeformatter.com/cron-expression-generator-quartz.html
             services.AddTransient<ResetCachbackAccountTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(ResetCachbackAccountTask),
-                 cronExpression: "0 0 12 1 * ?")); //Every month on the 1st, at noon 
+                 cronExpression: "0 0 1 4 * ?")); //At 12:00 AM, on day 2 of the month (0 0 1 2 * ? *)
+            CronExpression.ValidateExpression("0 0 1 4 * ?");
+
 
             services.AddTransient<SetDoneReminderTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(SetDoneReminderTask),
-                 cronExpression: "0 0 1 * * ?")); //Every day at 1am
+                 cronExpression: "0 0 1 * * ?")); //Every day At 12:00 AM
+            CronExpression.ValidateExpression("0 0 1 * * ?");
+
+            if (PublishSettings.IsOnlyProdTask)
+            {
+                services.AddTransient<CurrencyHistoryTask>();
+                services.AddSingleton(new JobSchedule(
+                    jobType: typeof(CurrencyHistoryTask),
+                     cronExpression: "0 0 * ? * *")); //Every 1 hour
+                CronExpression.ValidateExpression("0 0 * ? * *");
+            }
+            //"0 */5 * ? * *" - Every 5 minutes
+            //0 0 1 2 * ? * - At 01:00 AM, on day 2 of the month
 
             #endregion
 

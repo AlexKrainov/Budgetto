@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DynamicExpresso.Exceptions;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Spi;
@@ -52,7 +53,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
             return TriggerBuilder
                 .Create()
                 .WithIdentity($"{schedule.JobType.FullName}.trigger")
-                .WithCronSchedule(schedule.CronExpression)
+                .WithCronSchedule(schedule.CronExpression, x => x.InTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time")))
                 .WithDescription(schedule.CronExpression)
                 .Build();
         }

@@ -57,6 +57,7 @@
     <ProjectReference Include="..\MyProfile.Budget.Service\MyProfile.Budget.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Chart.Service\MyProfile.Chart.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Chat.Service\MyProfile.Chat.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Common\MyProfile.Common.csproj" />
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
     <ProjectReference Include="..\MyProfile.File.Service\MyProfile.File.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Goal.Service\MyProfile.Goal.Service.csproj" />

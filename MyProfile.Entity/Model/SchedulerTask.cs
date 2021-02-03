@@ -18,7 +18,9 @@ namespace MyProfile.Entity.Model
     {
         Undefined = 0,
         AccountRemoveCachback,
-        SetDoneToReminderDates
+        SetDoneToReminderDates,
+        CurrencyHistoryTask,
+        Test,
     }
 
     public class SchedulerTask

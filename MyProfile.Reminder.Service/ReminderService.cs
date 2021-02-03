@@ -69,11 +69,11 @@ namespace MyProfile.Reminder.Service
 
                 if (i % 500 == 0)
                 {
-                    repository.Save();
+                    //repository.Save();
                 }
             }
 
-            repository.Save();
+            //repository.Save();
 
             return reminderDates.Count;
         }
@@ -164,14 +164,10 @@ namespace MyProfile.Reminder.Service
             return true;
         }
 
-        public IQueryable<ReminderShortModelView> GetRemindersByDateRange(DateTime from, DateTime to)
+        public IQueryable<ReminderShortModelView> GetRemindersByDateRange(DateTime from, DateTime to, Guid currentUserID)
         {
-            var currenUserID = UserInfo.Current.ID;
-            //from = from.AddSeconds(-1);
-            //to = to.AddSeconds(1);
-
             return repository
-                .GetAll<ReminderDate>(x => x.Reminder.UserID == currenUserID
+                .GetAll<ReminderDate>(x => x.Reminder.UserID == currentUserID
                 && x.Reminder.IsDeleted == false
                 && x.DateReminder >= from
                 && x.DateReminder <= to)

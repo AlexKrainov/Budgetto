@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyProfile.Budget.Service;
+using MyProfile.Common;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using Quartz;
@@ -23,7 +24,8 @@ namespace MyProfile.Code.Sheduler.Shedulers
 
         internal void BaseExecute(BaseRepository repository, TaskType taskType, Func<int> _service)
         {
-            var now = DateTime.Now.ToUniversalTime();
+            var now = TimeZoner.GetCurrentDateTimeWithRusTimeZone();
+
             var task = repository.GetAll<SchedulerTask>(x => x.ID == (int)taskType).FirstOrDefault();
 
             if (task != null)
@@ -33,6 +35,11 @@ namespace MyProfile.Code.Sheduler.Shedulers
                 if (task.TaskStatus == Enum.GetName(typeof(TaskStatus), TaskStatus.New)
                     || task.TaskStatus == Enum.GetName(typeof(TaskStatus), TaskStatus.InProcess))
                 {
+                    if (task.TaskStatus == Enum.GetName(typeof(TaskStatus), TaskStatus.New))
+                    {
+                        task.FirstStart = now;
+                    }
+
                     task.TaskStatus = Enum.GetName(typeof(TaskStatus), TaskStatus.InProcess);
 
                     try
@@ -44,7 +51,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                             TaskID = (int)taskType,
                             ChangedItems = changedCounts,
                             Start = now,
-                            End = DateTime.Now.ToUniversalTime(),
+                            End = TimeZoner.GetCurrentDateTimeWithRusTimeZone(),
                         }, true);
                     }
                     catch (Exception ex)
@@ -58,7 +65,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                             Comment = ex.Message,
                             ChangedItems = -1,
                             Start = now,
-                            End = DateTime.Now.ToUniversalTime(),
+                            End = TimeZoner.GetCurrentDateTimeWithRusTimeZone(),
                         }, true);
                     }
                 }

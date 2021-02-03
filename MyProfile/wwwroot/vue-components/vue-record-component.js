@@ -846,10 +846,10 @@
             if (record) {
                 record.sectionID = section.id;
                 record.sectionName = section.name
-            }
 
-            this.selectedRecord = record;
-            this.topTagIDsBySection = section.tags;
+                this.selectedRecord = record;
+                this.topTagIDsBySection = section.tags;
+            }
         },
 
         clearAll: function () {
@@ -884,11 +884,11 @@
             return;
         },
         getRateFromBank: function () {
-            let dateInFormat = this.flatpickr.latestSelectedDateObj.toISOString();
+            let dateInFormat = moment(this.flatpickr.latestSelectedDateObj).format("YYYY-MM-DD HH:mm:ss");
             ShowLoading("#currency-container");
             return $.ajax({
                 type: "GET",
-                url: "/Common/GetRateFromBank?codeNameCBR=" + this.currentCurrency.codeName_CBR + "&date=" + dateInFormat, // "http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002&VAL_NM_RQ=R01235",
+                url: "/Common/GetRateFromBank?charCode=" + this.currentCurrency.codeName + "&date=" + dateInFormat, // "http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002&VAL_NM_RQ=R01235",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 context: this,

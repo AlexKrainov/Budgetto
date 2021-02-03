@@ -9,6 +9,5 @@
         public string icon { get; set; }
         public string codeName_CBR { get; set; }
         public int? codeNumber_CBR { get; set; }
-        public string cbr_link { get; set; }
     }
 }

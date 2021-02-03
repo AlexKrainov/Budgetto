@@ -21,7 +21,7 @@ namespace MyProfile.Budget.Service
         private IMemoryCache cache;
         private UserLogService userLogService;
         private BudgetRecordService recordService;
-        private CommonService commonService;
+        private CurrencyService сurrencyService;
         private BudgetTotalService budgetTotalService;
 
         public SummaryService(IBaseRepository repository,
@@ -29,13 +29,13 @@ namespace MyProfile.Budget.Service
             UserLogService userLogService,
             BudgetRecordService recordService,
             BudgetTotalService budgetTotalService,
-            CommonService commonService)
+            CurrencyService сurrencyService)
         {
             this.repository = repository;
             this.cache = cache;
             this.userLogService = userLogService;
             this.recordService = recordService;
-            this.commonService = commonService;
+            this.сurrencyService = сurrencyService;
             this.budgetTotalService = budgetTotalService;
         }
 
@@ -390,7 +390,7 @@ namespace MyProfile.Budget.Service
         private void BuildAllAccountsMoney(SummaryModelView summary, SummaryFilter filter)
         {
             var now = DateTime.Now;
-            var userCurrencyID = UserInfo.Current.CurrencyID;
+            var currentUser = UserInfo.Current;;
 
             var userSummary = repository.GetAll<UserSummary>(x => x.UserID == filter.UserID
                       && x.SummaryID == (int)SummaryType.AllAccountsMoney
@@ -408,7 +408,7 @@ namespace MyProfile.Budget.Service
                     {
                         x.Balance,
                         x.CurrencyID,
-                        x.Currency.CodeName_CBR
+                        x.Currency.CodeName
                     })
                     .ToList();
 
@@ -416,9 +416,9 @@ namespace MyProfile.Budget.Service
                 {
                     try
                     {
-                        if (userCurrencyID != accounts[i].CurrencyID)
+                        if (currentUser.CurrencyID != accounts[i].CurrencyID)
                         {
-                            var val = commonService.GetRatesFromBank(now, accounts[i].CodeName_CBR);
+                            var val = сurrencyService.GetRateByCode(now, accounts[i].CodeName, currentUser.UserSessionID);
 
                             if (val != null && val.Rate != 0)
                             {

@@ -42,20 +42,20 @@
                             <option v-for="account in accountsFrom"
                                     v-bind:value="account"
                                     v-bind:disabled="account.isDisabled"
-                                    v-bind:style="account.isDisabled ? 'color:red;' : '' ">
+                                    v-bind:style="account.isDisabled ? 'color:lightgray;' : '' ">
                                 {{ account.name }}
                             </option>
                         </select>
                         <span class="input-group-append">
                             <span class=" btn btn-secondary ion ion-md-arrow-round-forward"></span>
                         </span>
-                        <select class="form-control">
+                        <select class="form-control" v-model="accountTo">
                             <option value="-1" v-show="showEmpty" ></option>
                             <option v-for="account in accountsTo"
                                     v-bind:value="account"
                                     v-bind:selected="account.isSelected"
                                     v-bind:disabled="account.isDisabled"
-                                    v-bind:style=" account.isDisabled ? 'color:red;' : '' ">
+                                    v-bind:style=" account.isDisabled ? 'color:lightgray;' : '' ">
                                 {{ account.name }}
                             </option>
                         </select>
@@ -75,8 +75,9 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Сумма для перевода</label>
-                            <input type="number" class="form-control" required v-model="value" placeholder="Введите сумму для перевода" 
-                                   v-bind:disabled="showEmpty"/>
+                            <input type="number" class="form-control" required v-model="value" placeholder="Введите сумму для перевода" min="0"
+                                   v-bind:disabled="showEmpty"
+                                   />
                         </div>
 
                         <div class="col-md-4">
@@ -99,7 +100,7 @@
                             v-on:click="save">
                         <span role="status" aria-hidden="true" class="spinner-border"
                               v-show="isSaving"></span>
-                        Сохранить
+                        Перевести
                     </button>
                     <button type="button" data-dismiss="modal" class="btn btn-default button-close-record">Закрыть</button>
                 </div>

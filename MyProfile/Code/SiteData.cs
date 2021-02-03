@@ -14,7 +14,7 @@ namespace MyProfile.Code
 
             using (var serviceScope = ServiceActivator.GetScope())
             {
-                CommonService service = (CommonService)serviceScope.ServiceProvider.GetService(typeof(CommonService));
+                CurrencyService service = (CurrencyService)serviceScope.ServiceProvider.GetService(typeof(CurrencyService));
 
                 metadata.currencies = service.GetCurrencyInfo();
             }

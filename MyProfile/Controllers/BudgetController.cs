@@ -9,6 +9,7 @@ using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Reminder.Service;
 using MyProfile.Template.Service;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
@@ -39,7 +40,8 @@ namespace MyProfile.Controllers
             SectionService sectionService,
             BudgetRecordService budgetRecordService,
             UserLogService userLogService,
-            CommonService commonService)
+            CommonService commonService,
+            ReminderService reminderService)
         //,IOptions<ProjectConfig> config)
         {
             this.repository = repository;
@@ -49,7 +51,6 @@ namespace MyProfile.Controllers
             this.budgetRecordService = budgetRecordService;
             this.userLogService = userLogService;
             //this.config = config;
-           
         }
 
         [HttpGet]
