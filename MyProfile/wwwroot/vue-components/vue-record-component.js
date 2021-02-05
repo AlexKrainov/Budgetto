@@ -167,7 +167,7 @@
                         <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
                         {{ isEditMode ? 'Редактировать': 'Добавить' }}
                     </button>
-                    <button class="btn btn-default button-add-record" type="button" 
+                    <button id="button-addAndclose-record" class="btn btn-default button-add-record" type="button" 
                         v-bind:disabled="isAvailable == false || isSaving || records.length == 0" 
                         v-on:click="save($emit, true)"
                         v-show="isShowHistory == false">

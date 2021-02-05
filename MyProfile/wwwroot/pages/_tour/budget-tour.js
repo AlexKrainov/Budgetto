@@ -49,10 +49,38 @@ $(function () {
 
         BudgetTour.addStep({
             title: 'Выбор месяца',
-            text: `<p>по умолчанию отображается текущий месяц. 
-Вы можете выбрать нужный месяц с помощью стрелок справа и слева от названия месяца.</p>`,
+            text: `По умолчанию отображается текущий месяц. 
+Вы можете выбрать нужный месяц с помощью стрелок справа и слева от названия месяца.`,
             attachTo: { element: '.budget-date', on: 'left' },
             buttons: buttons
+        });
+        BudgetTour.addStep({
+            title: 'Основные показатели',
+            text: `На этой панеле представлены основные показатели вашего финансового состояния.`,
+            attachTo: { element: '#summary-view', on: 'bottom' },
+            buttons: [{
+                action: BudgetTour.back,
+                classes: backButtonClass,
+                text: 'Назад'
+            }, {
+                action: BudgetTour.next,
+                classes: nextButtonClass,
+                text: 'Далее'
+            }]
+        });
+        BudgetTour.addStep({
+            title: 'Панель всех ваших счетов',
+            text: `Вы можете добавлять, редактировать, скрывать счета. Так же переводить деньги на другие счета.`,
+            attachTo: { element: '#accounts-view', on: 'bottom' },
+            buttons: [{
+                action: BudgetTour.back,
+                classes: backButtonClass,
+                text: 'Назад'
+            }, {
+                action: BudgetTour.next,
+                classes: nextButtonClass,
+                text: 'Далее'
+            }]
         });
         BudgetTour.addStep({
             title: 'Виджеты доходов, расходов и инвестиций',
@@ -70,7 +98,7 @@ $(function () {
         });
         BudgetTour.addStep({
             title: 'Выбор шаблона',
-            text: `Выбранный шаблон отображается в таблице. Вы можете создавать несколько шаблонов.`,
+            text: `Выбранный шаблон отображается в таблице. Вы можете создавать несколько шаблонов под свои задачи.`,
             attachTo: { element: '#templates', on: 'right' },
             buttons: [{
                 action: BudgetTour.back,

@@ -36,6 +36,7 @@ namespace MyProfile.Entity.ModelView
         public int AllWorkHours { get; set; }
         public int AllWorkHoursByPeriod { get; set; }
         public DateTime LastChange { get; set; }
+        public decimal BalancePerDay { get; set; }
     }
     public class ExpensesPerDayModelView : SummaryBase
     {

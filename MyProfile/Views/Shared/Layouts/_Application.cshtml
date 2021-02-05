@@ -228,17 +228,17 @@
         {
             <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
 
-            if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+            if (this.Context.Request.Path == "/" || this.Context.Request.Path.Value.Contains("/Budget/Month"))
             {
                 <script src="~/pages/_tour/budget-tour.min.js" asp-append-version="true"></script>
                 <script src="~/pages/_tour/add-record-tour.min.js" asp-append-version="true"></script>
             }
-            if (this.Context.Request.Path == "/Section/Edit")
+            if (this.Context.Request.Path.Value.Contains("/Section/Edit"))
             {
                 <script src="~/pages/_tour/section-tour.min.js" asp-append-version="true"></script>
                 <script src="~/pages/_tour/add-section-tour.min.js" asp-append-version="true"></script>
             }
-            if (this.Context.Request.Path == "/Template/Edit")
+            if (this.Context.Request.Path.Value.Contains("/Template/Edit"))
             {
                 <script src="~/pages/_tour/template-edit-tour.min.js" asp-append-version="true"></script>
             }

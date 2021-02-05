@@ -33,7 +33,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                 var repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
                 var accountService = scope.ServiceProvider.GetRequiredService<AccountService>();
 
-                base.BaseExecute(repository, TaskType.SetDoneToReminderDates, accountService.ResetAllCahbacks);
+                base.BaseExecute(repository, TaskType.AccountRemoveCachback, accountService.ResetAllCahbacks);
             }
             return Task.CompletedTask;
         }

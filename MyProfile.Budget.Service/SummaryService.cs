@@ -133,7 +133,7 @@ namespace MyProfile.Budget.Service
 
             UserSummary userSummary = new UserSummary
             {
-                Name = oldUserSummary.Name,
+                Name = "Рабочих часов в месяц",
                 Value = workHours.ToString(),
                 CurrentDate = now,
                 IsActive = true,
@@ -276,10 +276,12 @@ namespace MyProfile.Budget.Service
                     if (summary.TotalEarnings != 0 && summary.EarningsPerHour.WorkedHours != 0)
                     {
                         summary.EarningsPerHour.Balance = (summary.TotalEarnings ?? 1) / summary.EarningsPerHour.WorkedHours;
+                        summary.EarningsPerHour.BalancePerDay = summary.EarningsPerHour.Balance * 24;
                     }
                     else
                     {
                         summary.EarningsPerHour.Balance = 0;
+                        summary.EarningsPerHour.BalancePerDay = 0;
                     }
                 }
                 else
@@ -390,7 +392,7 @@ namespace MyProfile.Budget.Service
         private void BuildAllAccountsMoney(SummaryModelView summary, SummaryFilter filter)
         {
             var now = DateTime.Now;
-            var currentUser = UserInfo.Current;;
+            var currentUser = UserInfo.Current; ;
 
             var userSummary = repository.GetAll<UserSummary>(x => x.UserID == filter.UserID
                       && x.SummaryID == (int)SummaryType.AllAccountsMoney

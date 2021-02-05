@@ -30,7 +30,7 @@ namespace MyProfile.Code
             //{
             //    summaries.Add(new Summary
             //    {
-            //        Name = "Доходы в час",
+            //        Name = "Доходы в час/день",
             //        CodeName = "EarningsPerHour",
             //        CurrentDate = now,
             //        IsActive = true,

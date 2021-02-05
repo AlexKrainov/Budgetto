@@ -67,7 +67,8 @@
                         <span class="float-right"
                               v-bind:class="summary.earningsPerHour != undefined && summary.earningsPerHour.balance > 0 ? 'text-success' : ''"
                               v-if="summary.currencySpecificCulture">
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balance) }}
+                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balance) }} /
+                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balancePerDay) }}
                         </span>
                     </div>
 

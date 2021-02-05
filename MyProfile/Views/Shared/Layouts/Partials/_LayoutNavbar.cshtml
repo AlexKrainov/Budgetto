@@ -13,6 +13,14 @@
     "/Limit/List",
     "/Goal/List",
     "/Budget/TimeLine"};
+
+    string s = this.Context.Request.Path;
+
+    if (s.Split("/").Length == 4)
+    {
+        var z = s.Split("/");
+        s = "/" +z[1] + "/" + z[2];
+    }
 }
 
 <!-- Layout navbar -->
@@ -66,19 +74,19 @@
             <a id="addRecord" class="nav-link cursor-pointer" onclick="RecordVue.addRecord();" title="Добавить запись">
                 <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
             </a>
-            @if (currentUser.UserSettings.IsShowHints && hintsPages.Contains(this.Context.Request.Path))
+            @if (currentUser.UserSettings.IsShowHints && hintsPages.Contains(s))
             {
                 <div id="help-container" class="navbar-user dropdown">
                     <a class="nav-link dropdown-toggle1" href="javascript:void(0)" data-toggle="dropdown">
                         <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
                     </a>
                     @if (this.Context.Request.Path == "/"
-                    || this.Context.Request.Path == "/Budget/Month"
-                    || this.Context.Request.Path == "/Budget/Year")
+                   || this.Context.Request.Path == "/Budget/Month"
+                   || this.Context.Request.Path == "/Budget/Year")
                     {
                         <div class="dropdown-menu dropdown-menu-right">
                             @if (this.Context.Request.Path == "/"
-                              || this.Context.Request.Path == "/Budget/Month")
+                             || this.Context.Request.Path == "/Budget/Month")
                             {
                                 <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-record">
                                     <i class="fas fa-route text-large"></i> &nbsp; Как добавить запись
@@ -351,12 +359,12 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     @*<a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-person text-lightest"></i> &nbsp; My profile</a>
-        <a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-mail text-lightest"></i> &nbsp; Messages</a>*@
+                        <a href="javascript:void(0)" class="dropdown-item"><i class="ion ion-ios-mail text-lightest"></i> &nbsp; Messages</a>*@
                     @*@if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin)
-        {
-            <a asp-area="Identity" asp-controller="Admin" asp-action="Index" class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i> &nbsp; Админка</a>
-            <div class="dropdown-divider"></div>
-        }*@
+                        {
+                            <a asp-area="Identity" asp-controller="Admin" asp-action="Index" class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i> &nbsp; Админка</a>
+                            <div class="dropdown-divider"></div>
+                        }*@
                     <a asp-area="Identity" asp-controller="Account" asp-action="UserSettings" class="dropdown-item"><i class="ion ion-md-settings text-lightest"></i> &nbsp; Настройки аккаунта</a>
                     <div class="dropdown-divider"></div>
                     <a asp-area="Identity" asp-controller="Account" asp-action="Logout" class="dropdown-item"><i class="ion ion-ios-log-out text-danger"></i> &nbsp; Завершить</a>

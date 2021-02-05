@@ -93,8 +93,8 @@ namespace MyProfile
             services.AddTransient<ResetCachbackAccountTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(ResetCachbackAccountTask),
-                 cronExpression: "0 0 1 4 * ?")); //At 12:00 AM, on day 2 of the month (0 0 1 2 * ? *)
-            CronExpression.ValidateExpression("0 0 1 4 * ?");
+                 cronExpression: "0 0 01 6 * ?")); //At 12:00 AM, on day 2 of the month (0 0 1 2 * ? *)
+            CronExpression.ValidateExpression("0 0 01 6 * ?");
 
 
             services.AddTransient<SetDoneReminderTask>();

@@ -19,19 +19,19 @@ $(function () {
         });
         AddRecordTour.addStep({
             title: 'Шаг 2.',
-            text: 'Введите сумму, которую хотите отразить в таблице (траты из одной категории можно записывать сразу через символ "+"). Нажмите Enter.',
-            attachTo: { element: '.input-money', on: 'bottom' },
+            text: 'Введите сумму, которую хотите отразить в таблице (траты из одной категории можно записывать сразу через символ "+"). Далее нажмите Enter.',
+            attachTo: { element: '#record-add-section .input-money', on: 'bottom' },
             buttons: []
         });
         AddRecordTour.addStep({
             title: 'Шаг 3.',
-            text: 'Выберите категорию для суммы',
+            text: 'Выберите категорию для записи',
             attachTo: { element: '.cards-small', on: 'top' },
             buttons: []
         });
         AddRecordTour.addStep({
             title: 'Шаг 4.',
-            text: 'Вы можете оставить комментарий для суммы или удалить категорию. Не покидая страницу, можно добавлять следующие суммы и выбирать для них категории.',
+            text: 'Вы можете выбрать счет, оставить комментарий и добавить тег/и для записи или удалить категорию. Не покидая диалоговое окно, можно добавлять следующие записи и выбирать для них нужные параметры.',
             attachTo: { element: '.records', on: 'bottom' },
             buttons: [{
                 action: AddRecordTour.next,
@@ -41,8 +41,8 @@ $(function () {
         });
         AddRecordTour.addStep({
             title: 'Шаг 5.',
-            text: 'Нажимая кнопку добавить, вы сохраняйте все внесенные суммы в соответствующих категориях.',
-            attachTo: { element: '.button-add-record', on: 'top' },
+            text: 'Нажимая кнопку добавить, вы сохраняйте все внесенные записи в соответствующих категориях.',
+            attachTo: { element: '#button-addAndclose-record', on: 'top' },
             buttons: [{
                 action: AddRecordTour.cancel,
                 classes: nextButtonClass,

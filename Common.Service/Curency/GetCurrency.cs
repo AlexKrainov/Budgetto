@@ -224,7 +224,7 @@ namespace Common.Service.Curency
 
             if (DateTime.Now.Date != date.Date)
             {
-                _link = "https://www.cbr-xml-daily.ru/archive/" + date.Date.ToString("yyyy/MM/dd") + "/daily_json.js";
+                _link = "https://www.cbr-xml-daily.ru/archive/" + date.Date.ToString("yyyy/MM/dd").Replace(".","/") + "/daily_json.js";
             }
             string s = string.Empty;
 
