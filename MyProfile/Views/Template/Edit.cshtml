@@ -482,11 +482,12 @@
                                                data-search-id="searchSection"
                                                v-bind:is-show-filter="true"
                                                v-bind:data-is-selection="true"
+                                               v-bind:is-show-change-view-mode="true"
                                                v-bind:data-selected-items-count="selectedSelections"
                                                v-on:onchoose="addColumnOption_step2"></vue-section-component>
 
                     </div>
-                    <button type="button" class="btn btn-secondary mx-4" data-dismiss="modal">Закрыть</button>
+                    <button id="close-sections" type="button" class="btn btn-secondary mx-4" data-dismiss="modal">Закрыть</button>
                 </div>
             </div>
         </div>

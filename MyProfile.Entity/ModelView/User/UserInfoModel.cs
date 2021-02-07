@@ -10,6 +10,7 @@ namespace MyProfile.Entity.ModelView
         public string ImageBase64 { get; set; }
         public bool IsAvailable { get; set; }
         public int AllWorkHours { get; set; }
+        public int AllWorkDays { get; set; }
 
         public UserInfoModel()
         {

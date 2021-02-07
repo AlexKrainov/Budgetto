@@ -1,41 +1,103 @@
 ﻿Vue.component("vue-section-component", {
     template: `
         <div v-bind:id="dataId" >
-            <input type='search'
+            <div class="cursor-pointer">
+                <i class="ion ion-md-apps text-large" 
+                    v-show="isShowChangeViewMode"
+                    v-bind:class="privateIsShowByFolderMode == false ? 'text-primary' : ''"
+                    v-on:click="selectView(false)"></i>
+                <i class="ion ion-ios-list text-large px-1"
+                    v-show="isShowChangeViewMode"
+                    v-bind:class="privateIsShowByFolderMode == true ? 'text-primary' : ''"
+                    v-on:click="selectView(true)"></i>
+                <input type='search' style="max-width: 85%;display: inline;padding-top: 9px;"
                     name="sectionSearch"
                     v-model="searchText"
                     class="form-control form-control-sm mb-1"
                     v-on:input="onsearch" 
                     v-show="isShowFilter"/>
-            <div class="cards" v-bind:style="searchText ? '' : dataRecordsStyle"
-                v-bind:class="dataClass">
-                <div class="card-section card"
-                     v-for="(section, index) in sections"
-                     v-bind:key="section.id"
-                     v-on:click="onSelect(section)"
-                     v-bind:title="section.description"
-                     v-show="section.isShow"
-                     v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground"
-                     v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section', dataSectionClasses ]">
-                    <span class="selected-section-count">{{ checkCountSelected(section) }}</span>
-                    <div class="cards-container d-flex align-items-center ">
-                        <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
-                        <div class="card-section-text ml-2">
-                            <div class="section-name">{{section.name}}</div>
-                            <div class="area-name opacity-75" style="margin-top: -5px;">
-                                {{ section.areaName }}
-                                <div class="ml-2" style="display: inline-block;" 
-                                    v-show="section.collectiveSections && section.collectiveSections.length > 0">
-                                    <i class="oi oi-layers"></i> +{{ section.collectiveSections ? section.collectiveSections.length : "0"}}
+              </div>
+
+                <div class="cards"
+                     v-if="!privateIsShowByFolderMode"
+                     v-bind:style="searchText ? '' : dataRecordsStyle"
+                     v-bind:class="dataClass">
+                    <div class="card-section card"
+                         v-for="(section, index) in sections"
+                         v-bind:key="section.id"
+                         v-on:click="onSelect(section)"
+                         v-bind:title="section.description"
+                         v-show="section.isShow"
+                         v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground"
+                         v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section', dataSectionClasses ]">
+                        <span class="selected-section-count">{{ checkCountSelected(section) }}</span>
+                        <div class="cards-container d-flex align-items-center ">
+                            <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
+                            <div class="card-section-text ml-2">
+                                <div class="section-name">{{section.name}}</div>
+                                <div class="area-name opacity-75" style="margin-top: -5px;">
+                                    {{ section.areaName }}
+                                    <div class="ml-2" style="display: inline-block;"
+                                         v-show="section.collectiveSections && section.collectiveSections.length > 0">
+                                        <i class="oi oi-layers"></i> +{{ section.collectiveSections ? section.collectiveSections.length : "0"}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-default card-section text-big" style="box-shadow: none;"
+                            v-show="privateIsHideMoreThenOneSections && sections.length > 2"
+                            v-on:click="showAllSections">
+                        +{{ sections.length - 1 }}
+                    </button>
+                </div>            
+
+                <div class="ps1 ps--active-y" 
+                    v-else=""
+                     v-bind:style="searchText ? '' : dataRecordsStyle">
+                    <div v-for="area in areas">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center ui-bordered1">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <a data-toggle="collapse" v-bind:href="'#order-' + area.areaID" class="d-block ml-3 collapsed" aria-expanded="true">
+                                <i class="collapse-icon" style=" display: inline-block;"></i>
+                                <strong class="ml-2"
+                                    v-bind:class="privateModeClass">{{ area.areaName }}</strong>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="collapse cards cards-small show" 
+                        v-bind:id="'order-' + area.areaID" 
+                        v-bind:class="dataClass">
+                    <div class="card-section card"
+                         v-for="(section, index) in area.sections"
+                         v-bind:key="section.id"
+                         v-on:click="onSelect(section)"
+                         v-bind:title="section.description"
+                         v-show="section.isShow"
+                         v-bind:style="'color: '+ section.cssColor +';background-color: '+ section.cssBackground"
+                         v-bind:class="[section.isSelected  ? 'selected-section' : 'not-selected-section', dataSectionClasses ]">
+                        <span class="selected-section-count">{{ checkCountSelected(section) }}</span>
+                        <div class="cards-container d-flex align-items-center ">
+                            <i class="icon-large opacity-75" v-bind:class="section.cssIcon"></i>
+                            <div class="card-section-text ml-2">
+                                <div class="section-name">{{section.name}}</div>
+                                <div class="area-name opacity-75" style="margin-top: -5px;">
+                                    {{ section.areaName }}
+                                    <div class="ml-2" style="display: inline-block;" 
+                                        v-show="section.collectiveSections && section.collectiveSections.length > 0">
+                                        <i class="oi oi-layers"></i> +{{ section.collectiveSections ? section.collectiveSections.length : "0"}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-default card-section text-big" style="box-shadow: none;" 
+                        v-show="privateIsHideMoreThenOneSections && sections.length > 2"
+                        v-on:click="showAllSections">+{{ sections.length - 1 }}</button>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-default card-section text-big" style="box-shadow: none;" 
-                    v-show="privateIsHideMoreThenOneSections && sections.length > 2"
-                    v-on:click="showAllSections">+{{ sections.length - 1 }}</button>
             </div>
+
         </div>`,
     props: {
         dataSearchId: String,
@@ -72,6 +134,14 @@
             type: Boolean,
             default: false
         },
+        isShowByFolderMode: {// show mode by folders or by sections
+            type: Boolean,
+            default: false, //false
+        },
+        isShowChangeViewMode: {
+            type: Boolean,
+            deafult: false
+        }
     },
     //computed: {
     //},
@@ -79,8 +149,11 @@
         return {
             count: 0,
             sections: [],
+            areas: [],
             searchText: null,
             privateIsHideMoreThenOneSections: false,
+            privateIsShowByFolderMode: false,
+            privateModeClass: themeSettings.isDarkStyle() ? "theme-text-white" : "theme-text-dark",
         }
     },
     watch: {
@@ -90,7 +163,15 @@
     },
     mounted: function () {
         this.privateIsHideMoreThenOneSections = this.isHideMoreThenOneSections;
-        new PerfectScrollbar(document.getElementsByClassName('cards')[0]);
+
+        let v = localStorage.getItem(document.location.pathname + "_IsShowByFolderMode");
+        if (this.isShowChangeViewMode && v != null) {
+            this.privateIsShowByFolderMode = v == "true";
+        } else {
+            this.privateIsShowByFolderMode = this.isShowByFolderMode;
+        }
+
+        //new PerfectScrollbar(document.getElementsByClassName('cards')[0]);
 
         if (this.dataItems == undefined) {
             this.load();
@@ -99,6 +180,10 @@
         }
     },
     methods: {
+        //collectSectionStyle: function (section) {
+        //    console.log("{ " + this.dataRecordsStyle + " color: " + section.cssColor + ";background-color: " + section.cssBackground + "; }");
+        //    return "{ " + this.dataRecordsStyle + " color: " + section.cssColor + ";background-color: " + section.cssBackground + "; }";
+        //},
         load: function () {
             return $.ajax({
                 type: "GET",
@@ -110,6 +195,7 @@
                 success: function (result) {
                     if (result.isOk) {
                         this.sections = result.sections;
+                        this.updateAreas();
                     }
                     return result;
                 },
@@ -137,8 +223,25 @@
                     this.sections[i].isShow = false;
                 }
             }
-
+            this.updateAreas();
             this.$forceUpdate();
+        },
+        updateAreas: function () {
+            this.areas = [];
+            for (var i = 0; i < this.sections.length; i++) {
+                let index = this.areas.findIndex(x => x.areaID == this.sections[i].areaID);
+
+                if (index == -1) {
+                    this.areas.push(
+                        {
+                            areaID: this.sections[i].areaID,
+                            areaName: this.sections[i].areaName,
+                            sections: [this.sections[i]]
+                        });
+                } else {
+                    this.areas[index].sections.push(this.sections[i]);
+                }
+            }
         },
         checkCountSelected: function (section) {
             if (this.dataSelectedItemsCount && this.dataSelectedItemsCount.length > 0) {
@@ -177,6 +280,10 @@
                 this.sections[i].isShow = true;
             }
             this.$emit('on-update-view', true);
-        }
+        },
+        selectView: function (isShow) {
+            this.privateIsShowByFolderMode = isShow;
+            localStorage.setItem(document.location.pathname + "_IsShowByFolderMode", isShow);
+        },
     }
 });

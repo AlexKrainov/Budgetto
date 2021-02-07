@@ -34,13 +34,17 @@ namespace MyProfile.Entity.ModelView
     {
         public int WorkedHours { get; set; }
         public int AllWorkHours { get; set; }
+        public int AllWorkDays { get; set; }
         public int AllWorkHoursByPeriod { get; set; }
         public DateTime LastChange { get; set; }
         public decimal BalancePerDay { get; set; }
+        public decimal BalancePerHour { get; set; }
     }
     public class ExpensesPerDayModelView : SummaryBase
     {
         public int TotalDays { get; set; }
+        public decimal BalancePerDay { get; set; }
+        public decimal BalancePerHour { get; set; }
     }
     public class CashFlowModelView : SummaryBase
     {

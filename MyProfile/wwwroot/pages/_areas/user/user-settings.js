@@ -379,6 +379,12 @@ var UserSettingsVue = new Vue({
             } else {
                 $("#work-hours").removeClass("is-invalid");
             }
+            if (!(this.user.earningsPerHour.allWorkDays && this.user.earningsPerHour.allWorkDays > -1)) {
+                isOk = false;
+                $("#work-days").addClass("is-invalid");
+            } else {
+                $("#work-days").removeClass("is-invalid");
+            }
 
             if (isOk == false && e) {
                 e.preventDefault();

@@ -22,7 +22,16 @@ var AccountVue = new Vue({
         isSaving: false
     },
     watch: {
-
+        "account.cachBackBalance": function (newValue) {
+            if (!newValue) {
+                this.account.cachBackBalance = 0;
+            }
+        },
+        "account.balance": function (newValue) {
+            if (!newValue) {
+                this.account.balance = 0;
+            }
+        },
     },
     mounted: function () {
 
@@ -270,12 +279,7 @@ var AccountTransferVue = new Vue({
     },
     watch: {
         value: function (newValue) {
-            if (newValue > 0) {
-                this.newValueFrom = this.accountFrom.balance - newValue * 1;
-                this.newValueTo = this.accountTo.balance + newValue * 1;
-            } else if(newValue < 0) {
-                this.value = 0;
-            }
+            this.refreshValue();
         },
         accountFrom: function (newValue) {
             let selectedCurrencyID = newValue.currencyID;
@@ -293,9 +297,10 @@ var AccountTransferVue = new Vue({
                 this.accountTo = accountsCurrency[indexTo];
                 accountsCurrency[indexTo].isSelected = true;
             }
+            this.refreshValue();
         },
         accountTo: function (newValue) {
-
+            this.refreshValue();
         },
     },
     computed: {
@@ -326,7 +331,14 @@ var AccountTransferVue = new Vue({
             }
             return null;
         },
-
+        refreshValue: function () {
+            if (this.value > 0) {
+                this.newValueFrom = this.accountFrom.balance - this.value * 1;
+                this.newValueTo = this.accountTo.balance + this.value * 1;
+            } else if (this.value < 0) {
+                this.value = 0;
+            }
+        },
         save: function () {
             this.isSaving = true;
 

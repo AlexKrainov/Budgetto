@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelEntitySave;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.Account;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.UserLog.Service;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,7 +117,7 @@ namespace MyProfile.Budget.Service
             return summaries;
         }
 
-        public bool SetWorkHours(int workHours)
+        public bool SetWorkHours(EarningsPerHourModelView model)
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
@@ -133,8 +135,8 @@ namespace MyProfile.Budget.Service
 
             UserSummary userSummary = new UserSummary
             {
-                Name = "Рабочих часов в месяц",
-                Value = workHours.ToString(),
+                Name = "Рабочих часов/дней",
+                Value = JsonConvert.SerializeObject(new EarningsPerHourItem { WorkHours = model.AllWorkHours, WorkDays = model.AllWorkDays }),
                 CurrentDate = now,
                 IsActive = true,
                 UserID = currentUser.ID,
@@ -161,7 +163,7 @@ namespace MyProfile.Budget.Service
             return result;
         }
 
-        public async Task<bool> SetWorkHoursAsync(int workHours)
+        public async Task<bool> SetWorkHoursAsync(int allWorkHours, int allWorkDays)
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
@@ -181,7 +183,7 @@ namespace MyProfile.Budget.Service
             UserSummary userSummary = new UserSummary
             {
                 Name = oldUserSummary.Name,
-                Value = workHours.ToString(),
+                Value = JsonConvert.SerializeObject(new EarningsPerHourItem { WorkHours = allWorkHours, WorkDays = allWorkDays }),
                 CurrentDate = now,
                 IsActive = true,
                 UserID = currentUser.ID,
@@ -219,8 +221,18 @@ namespace MyProfile.Budget.Service
                       && x.Value != null)
                  .FirstOrDefault();
 
-            if (userSummary != null && !string.IsNullOrEmpty(userSummary.Value) && int.TryParse(userSummary.Value, out int hours))
+            if (userSummary != null && !string.IsNullOrEmpty(userSummary.Value))
             {
+                EarningsPerHourItem item = null;
+                try
+                {
+                    item = JsonConvert.DeserializeObject<EarningsPerHourItem>(userSummary.Value);
+                }
+                catch (Exception ex)
+                {
+                    item = new EarningsPerHourItem();
+                }
+
                 if (userSummary.Sections == null || userSummary.Sections.Count == 0)
                 {
                     bool isPast = false;
@@ -232,55 +244,54 @@ namespace MyProfile.Budget.Service
                         SectionTypes = new List<int> { (int)SectionTypeEnum.Earnings }
                     };
 
-                    summary.EarningsPerHour.AllWorkHours = hours;
+                    summary.EarningsPerHour.AllWorkHours = item.WorkHours;
+                    summary.EarningsPerHour.AllWorkDays = item.WorkDays;
 
-                    if (filter.PeriodType == PeriodTypesEnum.Year)
-                    {
-                        hours *= 12;
-                    }
+                    //if (filter.PeriodType == PeriodTypesEnum.Year)
+                    //{
+                    //    summary.EarningsPerHour.AllWorkHours *= 12;
+                    //}
 
                     summary.TotalEarnings = recordService.GetTotalForSummaryByFilter(_filter);
-                    summary.EarningsPerHour.AllWorkHoursByPeriod = hours;
-                    int totalDays = 0;
+                    //summary.EarningsPerHour.AllWorkHoursByPeriod = hours;
+                    //int totalDays = 0;
+                    //if (now > filter.StartDate && now <= filter.EndDate)
+                    //{
+                    //    totalDays = (int)(now.Date - filter.StartDate.Date).TotalDays;
+                    //}
+                    //else if (now > filter.EndDate && now > filter.StartDate)
+                    //{
+                    //    totalDays = (int)(filter.EndDate.Date - filter.StartDate.Date).TotalDays;
+                    //    isPast = true;
+                    //}
+                    //else if (now < filter.EndDate && now < filter.StartDate)
+                    //{
+                    //    totalDays = 0;
+                    //}
 
+                    //if (totalDays != 0 && hours != 0)
+                    //{
+                    //    //decimal workhoursPerDay = summary.EarningsPerHour.AllWorkHours / 30.4m;
 
-                    if (now > filter.StartDate && now <= filter.EndDate)
+                    //    if (isPast)
+                    //    {
+                    //        summary.EarningsPerHour.WorkedHours = summary.EarningsPerHour.AllWorkHoursByPeriod;
+                    //    }
+                    //    else
+                    //    {
+                    //        summary.EarningsPerHour.WorkedHours = (int)Math.Round(workhoursPerDay * totalDays, 1);
+                    //    }
+
+                    //}
+
+                    if (summary.TotalEarnings != 0 && item.WorkDays != 0 && item.WorkHours != 0) //summary.EarningsPerHour.WorkedHours != 0)
                     {
-                        totalDays = (int)(now.Date - filter.StartDate.Date).TotalDays;
-                    }
-                    else if (now > filter.EndDate && now > filter.StartDate)
-                    {
-                        totalDays = (int)(filter.EndDate.Date - filter.StartDate.Date).TotalDays;
-                        isPast = true;
-                    }
-                    else if (now < filter.EndDate && now < filter.StartDate)
-                    {
-                        totalDays = 0;
-                    }
-
-                    if (totalDays != 0 && hours != 0)
-                    {
-                        decimal workhoursPerDay = summary.EarningsPerHour.AllWorkHours / 30.4m;
-
-                        if (isPast)
-                        {
-                            summary.EarningsPerHour.WorkedHours = summary.EarningsPerHour.AllWorkHoursByPeriod;
-                        }
-                        else
-                        {
-                            summary.EarningsPerHour.WorkedHours = (int)Math.Round(workhoursPerDay * totalDays, 1);
-                        }
-
-                    }
-
-                    if (summary.TotalEarnings != 0 && summary.EarningsPerHour.WorkedHours != 0)
-                    {
-                        summary.EarningsPerHour.Balance = (summary.TotalEarnings ?? 1) / summary.EarningsPerHour.WorkedHours;
-                        summary.EarningsPerHour.BalancePerDay = summary.EarningsPerHour.Balance * 24;
+                        summary.EarningsPerHour.BalancePerHour = (summary.TotalEarnings ?? 1) / item.WorkHours;
+                        summary.EarningsPerHour.BalancePerDay = (summary.TotalEarnings ?? 1) / item.WorkDays;
                     }
                     else
                     {
-                        summary.EarningsPerHour.Balance = 0;
+                        summary.EarningsPerHour.BalancePerHour = 0;
                         summary.EarningsPerHour.BalancePerDay = 0;
                     }
                 }
@@ -320,7 +331,7 @@ namespace MyProfile.Budget.Service
                 }
                 else if (now > filter.EndDate && now > filter.StartDate)
                 {
-                    summary.ExpensesPerDay.TotalDays = (int)(filter.EndDate.Date - filter.StartDate.Date).TotalDays;
+                    summary.ExpensesPerDay.TotalDays = (int)(filter.EndDate.Date - filter.StartDate.Date).TotalDays + 1;
                 }
                 else if (now < filter.EndDate && now < filter.StartDate)
                 {
@@ -329,11 +340,13 @@ namespace MyProfile.Budget.Service
 
                 if (summary.TotalSpendings != 0 && summary.ExpensesPerDay.TotalDays != 0)
                 {
-                    summary.ExpensesPerDay.Balance = (summary.TotalSpendings ?? 1) / summary.ExpensesPerDay.TotalDays;
+                    summary.ExpensesPerDay.BalancePerDay = (summary.TotalSpendings ?? 1) / summary.ExpensesPerDay.TotalDays;
+                    summary.ExpensesPerDay.BalancePerHour = (summary.TotalSpendings ?? 1) / (summary.ExpensesPerDay.TotalDays * 24);
                 }
                 else
                 {
-                    summary.ExpensesPerDay.Balance = 0;
+                    summary.ExpensesPerDay.BalancePerHour = 0;
+                    summary.ExpensesPerDay.BalancePerDay = 0;
                 }
             }
         }

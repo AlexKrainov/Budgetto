@@ -101,13 +101,20 @@
                 <br />
                 <div class="form-row col-12 col-sm-12 col-md-4">
                     <label class="form-label">Количество рабочих часов в месяц</label>
-                    <span class="text-danger">*</span>
+                    @*<span class="text-danger">*</span>*@
                     <input id="work-hours" type="number" class="form-control" min="0" max="744"
                            v-model="userInfo.allWorkHours" required>
                     <small class="invalid-feedback">Обязательное поле</small>
-                    <small class="form-text text-muted">Нужно, чтобы высчитывать ваш доход в час</small>
+                    <small class="form-text text-muted">Нужно, чтобы высчитывать ваш доход в час.<br /> При 5-дневной рабочей неделе по 8 рабочих часов ≈ 168 часов <br />При графике 2/2 и 8 рабочих часов ≈ 120 часов</small>
                 </div>
-
+                <div class="form-row col-12 col-sm-12 col-md-4">
+                    <label class="form-label">Количество рабочих дней в месяце</label>
+                    @*<span class="text-danger">*</span>*@
+                    <input id="work-hours" type="number" class="form-control" min="0" max="31"
+                           v-model="userInfo.allWorkDays" required>
+                    <small class="invalid-feedback">Обязательное поле</small>
+                    <small class="form-text text-muted">Нужно, чтобы высчитывать ваш доход в день. <br />При 5-дневной рабочей неделе ≈ 21 день <br />При графике 2/2 рабочей неделе ≈ 15 дней</small>
+                </div>
 
             </div>
         </div>

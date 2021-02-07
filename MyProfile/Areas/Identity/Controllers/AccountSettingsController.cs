@@ -50,7 +50,7 @@ namespace MyProfile.Areas.Identity.Controllers
         [HttpPost]
         public IActionResult SaveUserStatistic([FromBody] EarningsPerHourModelView earningsPerHour)
         {
-            return Json(new { isOk = summaryService.SetWorkHours(earningsPerHour.AllWorkHours) });
+            return Json(new { isOk = summaryService.SetWorkHours(earningsPerHour) });
         }
 
         #endregion

@@ -52,7 +52,6 @@ namespace MyProfile.Controllers
 
         public IActionResult Index()
         {
-            return View();
             var currentUser = UserInfo.Current;
             if (currentUser.UserSettings.IsShowConstructor)
             {
@@ -107,7 +106,7 @@ namespace MyProfile.Controllers
             currentUser.Name = userInfo.Name;
 
             await userService.UpdateUser(currentUser);
-            await summaryService.SetWorkHoursAsync(userInfo.AllWorkHours);
+            await summaryService.SetWorkHoursAsync(userInfo.AllWorkHours, userInfo.AllWorkDays);
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step1_UserInfo);
 
             return Json(new { isOk = true, user = UserInfo.GetUserInfoModelForClient() });

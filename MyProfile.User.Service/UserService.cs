@@ -3,6 +3,7 @@ using Email.Service;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelEntitySave;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.ModelView.User;
@@ -77,28 +78,46 @@ namespace MyProfile.User.Service
                 },
             };
 
+            #region Get Work hours and work days
             var earningsPerHour = repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
-                    && x.SummaryID == (int)SummaryType.EarningsPerHour
-                    && x.IsActive)
-                .Select(x => new { x.CurrentDate, x.Value })
-                .FirstOrDefault();
+                      && x.SummaryID == (int)SummaryType.EarningsPerHour
+                      && x.IsActive)
+                  .Select(x => new { x.CurrentDate, x.Value })
+                  .FirstOrDefault();
 
-            if (earningsPerHour != null && int.TryParse(earningsPerHour.Value, out int hours))
+            if (earningsPerHour != null && !string.IsNullOrEmpty(earningsPerHour.Value))
             {
-                user.EarningsPerHour = new EarningsPerHourModelView
+                EarningsPerHourItem item = null;
+                try
                 {
-                    LastChange = earningsPerHour.CurrentDate,
-                    AllWorkHours = hours
-                };
+                    item = JsonConvert.DeserializeObject<EarningsPerHourItem>(earningsPerHour.Value);
+                }
+                catch (Exception ex)
+                {
+                    userLogService.CreateErrorLog(currentUser.UserSessionID, "UserService.GetUserSettings", ex, "Cannot deserilize EarningsPerHourItem");
+                }
+
+                if (item != null)
+                {
+                    user.EarningsPerHour = new EarningsPerHourModelView
+                    {
+                        LastChange = earningsPerHour.CurrentDate,
+                        AllWorkHours = item.WorkHours,
+                        AllWorkDays = item.WorkDays
+                    };
+                }
             }
-            else
+
+            if (user.EarningsPerHour == null)
             {
                 user.EarningsPerHour = new EarningsPerHourModelView
                 {
                     LastChange = DateTime.Now,
-                    AllWorkHours = 0
+                    AllWorkHours = 0,
+                    AllWorkDays = 0
                 };
-            }
+            } 
+            #endregion
 
             return user;
         }

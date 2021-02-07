@@ -32,7 +32,7 @@
                             <div class="text-muted small">
                                 Денежный поток
                                 <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
-                                   title="Доходы - Расходы  <p>С помощью этого показателя вы можете определить не выходите ли вы за рамки бюджета в данном месяце/годе</p>"></i>
+                                   title="[Доходы] - [Расходы] <p>С помощью этого показателя вы можете определить не выходите ли вы за рамки бюджета в данном месяце/годе</p>"></i>
                             </div>
                             <span class=" text-xlarge"
                                   v-bind:class="summary.cashFlow.balance >= 0 ? 'text-success': 'text-danger'">
@@ -51,34 +51,36 @@
                 <div class="card-body row py-3">
                     <div class="col-lg-12">
                         <span class="text-muted small">
-
-                            Отработанных/всего рабочих часов
-                            <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
-                               title="Отработанных/всего рабочих часов за данный период. Из расчета [Количество дней]/[Количество рабочих часов]"></i>
+                            Рабочих часов / дней
                         </span>
                         <span class="float-right">
-                            {{ summary.earningsPerHour.workedHours }} / {{ summary.earningsPerHour.allWorkHoursByPeriod }}
+                            {{ summary.earningsPerHour.allWorkHours }} / {{ summary.earningsPerHour.allWorkDays }}
                         </span>
                     </div>
                     <div class="col-lg-12">
                         <span class="text-muted small">
-                            {{ summary.earningsPerHour.name }}
+                            Доходы в час / день
+                            <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                               title="Из расчета для часов: <br />[Доход] / [Количество рабочих часов] <br /> Из расчета для дней: <br />[Доход] / [Количество рабочих дней]"></i>
                         </span>
                         <span class="float-right"
-                              v-bind:class="summary.earningsPerHour != undefined && summary.earningsPerHour.balance > 0 ? 'text-success' : ''"
+                              v-bind:class="summary.earningsPerHour != undefined && summary.earningsPerHour.balancePerHour > 0 ? 'text-success' : ''"
                               v-if="summary.currencySpecificCulture">
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balance) }} /
+                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balancePerHour) }} /
                             {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balancePerDay) }}
                         </span>
                     </div>
 
                     <div class="col-lg-12">
                         <span class="text-muted small">
-                            Расходы в день
+                            Расходы в час / день
+                            <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                               title="Из расчета для часов: <br />[Расходы] / [Количество всех часов до сегодняшнего дня] <br /> Из расчета для дней: <br />[Расходы] / [Количество всех дней до сегодняшнего дня]"></i>
                         </span>
                         <span class="float-right text-danger"
                               v-if="summary.currencySpecificCulture">
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.expensesPerDay.balance) }}
+                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.expensesPerDay.balancePerHour) }} /
+                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.expensesPerDay.balancePerDay) }}
                         </span>
                     </div>
                     @*<div class="col-lg-6 text-muted small ">Обязательств в месяц</div><div class="col-lg-6 text-danger">12 000 ₽</div>*@

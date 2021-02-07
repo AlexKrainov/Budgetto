@@ -19,7 +19,7 @@
     if (s.Split("/").Length == 4)
     {
         var z = s.Split("/");
-        s = "/" +z[1] + "/" + z[2];
+        s = "/" + z[1] + "/" + z[2];
     }
 }
 
@@ -81,12 +81,12 @@
                         <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
                     </a>
                     @if (this.Context.Request.Path == "/"
-                   || this.Context.Request.Path == "/Budget/Month"
-                   || this.Context.Request.Path == "/Budget/Year")
+                || this.Context.Request.Path.Value.Contains("/Budget/Month")
+                || this.Context.Request.Path.Value.Contains("/Budget/Year"))
                     {
                         <div class="dropdown-menu dropdown-menu-right">
                             @if (this.Context.Request.Path == "/"
-                             || this.Context.Request.Path == "/Budget/Month")
+                          || this.Context.Request.Path.Value.Contains("/Budget/Month"))
                             {
                                 <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-record">
                                     <i class="fas fa-route text-large"></i> &nbsp; Как добавить запись
@@ -128,7 +128,7 @@
                             </a>
                         </div>
                     }
-                    else if (this.Context.Request.Path == "/Section/Edit")
+                    else if (this.Context.Request.Path.Value.Contains("/Section/Edit"))
                     {
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-section">
@@ -155,13 +155,16 @@
                             </a>
                         </div>
                     }
-                    else if (this.Context.Request.Path == "/Template/Edit")
+                    else if (s == "/Template/Edit")
                     {
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
-                                <i class="fas fa-route text-large"></i> &nbsp; Тур по странице
-                            </a>
-                            <div class="dropdown-divider"></div>
+                            @if (this.Context.Request.Path.Value == "/Template/Edit")
+                            {
+                                <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-show-page">
+                                    <i class="fas fa-route text-large"></i> &nbsp; Тур по созданию шаблона
+                                </a>
+                                <div class="dropdown-divider"></div>
+                            }
                             <a href="/Help/Center/ViewArticle?id=3" class="dropdown-item d-inline-flex align-items-center" target="_blank">
                                 <i class="lnr lnr-question-circle text-dark  text-large"></i>
                                 &nbsp; Создание шаблона

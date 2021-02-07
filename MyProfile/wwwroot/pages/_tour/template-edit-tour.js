@@ -46,7 +46,7 @@ $(function () {
         TemplateTour.addStep({
             title: 'Первая колонка',
             text: 'В первой колонке будут отображаться дни месяца. В "настройках колонки" можно задать формат даты.',
-            attachTo: { element: '.lists .list', on: 'top' },
+            attachTo: { element: '.lists .card', on: 'top' },
             buttons: [{
                 action: function () {
                     TemplateTour.next();
@@ -59,26 +59,26 @@ $(function () {
                             setTimeout(TemplateTour.next, 700);
                             $("#template-sections").off();
 
-                            $(".cards-big .card-section").click(function () {
-                                setTimeout(TemplateTour.next, 500);
-                                $(".cards-big .card-section").off();
+                            //$(".cards-big .card-section").click(function () {
+                            //    setTimeout(TemplateTour.next, 500);
+                            //    $(".cards-big .card-section").off();
 
-                                $(".add-section").click(function () {
-                                    setTimeout(TemplateTour.next, 800);
-                                    $(".add-section").off();
+                            //$(".add-section").click(function () {
+                            //    setTimeout(TemplateTour.next, 800);
+                            //    $(".add-section").off();
 
-                                    $(".cards-big .card-section").click(function () {
-                                        setTimeout(TemplateTour.next, 500);
-                                        $(".cards-big .card-section").off();
+                            //    $(".cards-big .card-section").click(function () {
+                            //        setTimeout(TemplateTour.next, 500);
+                            //        $(".cards-big .card-section").off();
 
-                                        $(".save-template").click(function () {
-                                            setTimeout(TemplateTour.next, 1000);
-                                            $(".save-template").off();
-                                        });
-                                    });
-
-                                });
+                            $(".save-template").click(function () {
+                                setTimeout(TemplateTour.next, 1000);
+                                $(".save-template").off();
                             });
+                            //    });
+
+                            //});
+                            // });
                         });
                     });
                 },
@@ -100,43 +100,59 @@ $(function () {
         });
 
         TemplateTour.addStep({
-            title: 'Выбор категории',
-            text: 'Выберите категорию которая будет отображаться во второй колонке в таблице.',
+            title: 'Выбор категорий',
+            text: 'Выберите категории который будут отображаться во второй колонке в таблице и нажмите "Далее".',
             attachTo: { element: '.cards-big', on: 'top' },
-            buttons: []
+            buttons: [{
+                action: function () {
+                    TemplateTour.next()
+                    $("#close-sections").click();
+                },
+                classes: nextButtonClass,
+                text: 'Далее'
+            }]
         });
         TemplateTour.addStep({
             title: 'Вторая колонки',
-            text: 'Вторая колонка состоит из категорий. Здесь вы можете дать название колонке и в настройках выбрать дополнительные опции.',
-            attachTo: { element: '.lists .list:nth-child(2)', on: 'top' },
+            text: 'Вторая колонка состоит из категорий, по умолчанию они будут сложены в итоговую сумму в таблицу для конкретного дня. Здесь вы можете дать название колонке, добавить/удалить категории и в настройках выбрать дополнительные опции.',
+            attachTo: { element: '.lists .list:nth-child(2) .card', on: 'top' },
             buttons: [{
                 action: TemplateTour.next,
                 classes: nextButtonClass,
                 text: 'Далее'
             }]
         });
-        TemplateTour.addStep({
-            title: 'Добавление категорий',
-            text: 'Вы можете добавить сколько угодно категорий в колонку, по умолчанию все категории в колонке будут складываться.',
-            attachTo: { element: '.add-section', on: 'top' },
-            buttons: []
-        });
-        TemplateTour.addStep({
-            title: 'Выберите категорию',
-            text: 'Выберите дополнительную категорию.',
-            attachTo: { element: '.cards-big', on: 'left' },
-            buttons: []
-        });
-        TemplateTour.addStep({
-            title: 'Колонка с категориями',
-            text: 'В этой колонке у вас теперь 2 категории, по умолчанию они будут сложены в итоговую сумму в таблицу для конкретного дня.',
-            attachTo: { element: '.lists .list:nth-child(2)', on: 'top' },
+         TemplateTour.addStep({
+            title: 'Дополнительные действия',
+            text: 'Обучение закончилось, таким же макаром вы можете добавлять колонки, и изменять шаблон.',
             buttons: [{
                 action: TemplateTour.next,
                 classes: nextButtonClass,
                 text: 'Далее'
             }]
         });
+        //TemplateTour.addStep({
+        //    title: 'Добавление категорий',
+        //    text: 'Вы можете добавить сколько угодно категорий в колонку, по умолчанию все категории в колонке будут складываться.',
+        //    attachTo: { element: '.add-section', on: 'top' },
+        //    buttons: []
+        //});
+        //TemplateTour.addStep({
+        //    title: 'Выберите категорию',
+        //    text: 'Выберите дополнительную категорию.',
+        //    attachTo: { element: '.cards-big', on: 'left' },
+        //    buttons: []
+        //});
+        //TemplateTour.addStep({
+        //    title: 'Колонка с категориями',
+        //    text: 'В этой колонке у вас теперь 2 категории, по умолчанию они будут сложены в итоговую сумму в таблицу для конкретного дня.',
+        //    attachTo: { element: '.lists .list:nth-child(2)', on: 'top' },
+        //    buttons: [{
+        //        action: TemplateTour.next,
+        //        classes: nextButtonClass,
+        //        text: 'Далее'
+        //    }]
+        //});
         TemplateTour.addStep({
             title: 'Сохранение шаблона',
             text: 'После сохранения шаблона вы сможете увидеть его на странице "Бюджета на месяц", выбрав его из списка.',

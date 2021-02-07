@@ -135,7 +135,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" asp-append-version="true"></script>
 
     <!-- Libs -->
-    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">
+    @*<link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">*@
 
     @RenderSection("Styles", required: false)
 
@@ -172,7 +172,7 @@
     <script src="~/vendor/libs/block-ui/block-ui.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/moment/moment.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/moment/Locale/ru.min.js" asp-append-version="true"></script>
-    <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js" asp-append-version="true"></script>
+    @*<script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js" asp-append-version="true"></script>*@
     <script src="~/vendor/libs/flatpickr/flatpickr.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/flatpickr/l10n/ru.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/toastr/toastr.js" asp-append-version="true"></script>
@@ -196,17 +196,17 @@
         {
             <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
 
-            @if (this.Context.Request.Path == "/" || this.Context.Request.Path == "/Budget/Month")
+            if (this.Context.Request.Path == "/" || this.Context.Request.Path.Value.Contains("/Budget/Month"))
             {
                 <script src="~/pages/_tour/budget-tour.js" asp-append-version="true"></script>
                 <script src="~/pages/_tour/add-record-tour.js" asp-append-version="true"></script>
             }
-            @if (this.Context.Request.Path == "/Section/Edit")
+            if (this.Context.Request.Path.Value.Contains("/Section/Edit"))
             {
                 <script src="~/pages/_tour/section-tour.js" asp-append-version="true"></script>
                 <script src="~/pages/_tour/add-section-tour.js" asp-append-version="true"></script>
             }
-            @if (this.Context.Request.Path == "/Template/Edit")
+            if (this.Context.Request.Path.Value.Contains("/Template/Edit"))
             {
                 <script src="~/pages/_tour/template-edit-tour.js" asp-append-version="true"></script>
             }

@@ -112,6 +112,7 @@
                                                        data-records-style="max-height: 200px; overflow-x: overlay;"
                                                        data-class="cards-small"
                                                        v-bind:is-show-filter="true"
+                                                       v-bind:is-show-change-view-mode="true"
                                                        v-on:onchoose="onChooseSection"></vue-section-component>
                             </div>
                         </div>
