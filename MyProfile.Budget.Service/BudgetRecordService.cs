@@ -550,7 +550,7 @@ namespace MyProfile.Budget.Service
                             errorLogEditIDs.Add(await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Edit", ex));
                         }
                         isEdit = true;
-                    } 
+                    }
                 }
             }
             if (histories.Count > 0)
@@ -606,22 +606,31 @@ namespace MyProfile.Budget.Service
                                       .OrderByDescending(x => x.ID)
                                       .FirstOrDefault();
 
-                if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
-                    || db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Investments)
+                if (lastAccountRecordHistory != null)
                 {
-                    db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
-
                     if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
-                        && isThisMonth
-                        && db_record.Account.IsCachback
-                        && db_record.Account.CachbackForAllPercent != null)
+                        || db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Investments)
                     {
-                        db_record.Account.CachbackBalance -= lastAccountRecordHistory.AccountCashback;
+                        db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
+
+                        if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
+                            && isThisMonth
+                            && db_record.Account.IsCachback
+                            && db_record.Account.CachbackForAllPercent != null)
+                        {
+                            db_record.Account.CachbackBalance -= lastAccountRecordHistory.AccountCashback;
+                        }
+                    }
+                    else
+                    {
+                        db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
                     }
                 }
                 else
                 {
-                    db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
+                    await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_RemoveRecord", new Exception(), "lastAccountRecordHistory is empty");
+                    //record.isAnyError = true;
+                    //record.Error = "Не удалось списать средства со счета: " + account.Name;
                 }
 
                 db_record.AccountRecordHistories.Add(new RecordHistory
@@ -663,22 +672,28 @@ namespace MyProfile.Budget.Service
                                       .OrderByDescending(x => x.ID)
                                       .FirstOrDefault();
 
-                if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
-                    || db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Investments)
+                if (lastAccountRecordHistory != null)
                 {
-                    db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
-
                     if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
-                        && isThisMonth
-                        && db_record.Account.IsCachback
-                        && db_record.Account.CachbackForAllPercent != null)
+                    || db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Investments)
                     {
-                        db_record.Account.CachbackBalance += lastAccountRecordHistory.AccountCashback;
+                        db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
+
+                        if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
+                            && isThisMonth
+                            && db_record.Account.IsCachback
+                            && db_record.Account.CachbackForAllPercent != null)
+                        {
+                            db_record.Account.CachbackBalance += lastAccountRecordHistory.AccountCashback;
+                        }
                     }
-                }
-                else
+                    else
+                    {
+                        db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
+                    }
+                }else
                 {
-                    db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
+                    await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_RecoveryRecord", new Exception(), "lastAccountRecordHistory is empty");
                 }
 
                 db_record.AccountRecordHistories.Add(new RecordHistory

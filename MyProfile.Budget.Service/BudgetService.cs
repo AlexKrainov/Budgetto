@@ -29,12 +29,12 @@ namespace MyProfile.Budget.Service
         private ReminderService reminderService;
         private CultureInfo cultureInfo;
 
-        public BudgetService(IBaseRepository repository, BudgetRecordService budgetRecordService)
+        public BudgetService(IBaseRepository repository, BudgetRecordService budgetRecordService, ReminderService reminderService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
             this.budgetRecordService = budgetRecordService;
-            this.reminderService = new ReminderService(repository);
+            this.reminderService = reminderService;
             cultureInfo = new CultureInfo(UserInfo.Current.Currency.SpecificCulture, false);
         }
         #region Budget table view
@@ -212,7 +212,7 @@ namespace MyProfile.Budget.Service
                                         Count = x.Count(),
                                         Titles = x.FirstOrDefault().Title,
                                         IsRepeat = x.Any(y => y.IsRepeat),
-                                        IsDone = x.Any( y => y.IsDone)
+                                        IsDone = x.Any(y => y.IsDone)
                                     })
                                     .ToList();
 
@@ -314,7 +314,7 @@ namespace MyProfile.Budget.Service
 
         private string SetFormatForDate(DateTime dateTime, string format, TemplateColumnType templateColumnType)
         {
-            string v ;
+            string v;
 
             if (!string.IsNullOrEmpty(format))
             {

@@ -186,7 +186,11 @@
             return isOk;
         },
         remove: function (reminder) {
-
+            if (reminder.isWasRepeat && reminder.isRepeat == false) {
+                toastr.warning("Осторожно! Если вы удалите это уведомление, удалится вся цепочка уведомлений.");
+                reminder.isWasRepeat = false;
+                return;
+            }
             ShowLoading('#reminder_' + reminder.id);
 
             return $.ajax({

@@ -15,6 +15,7 @@ namespace MyProfile.Entity.ModelView.Reminder
     {
         public bool isShowForFilter = true;
         public bool isDeleted;
+        public bool isWasRepeat;
 
         public int ID { get; set; }
         public DateTime? DateReminder { get; set; }
@@ -25,5 +26,6 @@ namespace MyProfile.Entity.ModelView.Reminder
         public string CssIcon { get; set; }
         public string DateReminderString { get; set; }
         public string RepeatEveryName { get; set; }
+        public DateTime OldDateReminder { get; set; }
     }
 }

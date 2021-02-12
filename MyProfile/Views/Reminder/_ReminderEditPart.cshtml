@@ -89,8 +89,8 @@
         <div class="form-group mt-4">
             <label class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" name="isRepeat"
-                       v-model="reminder.isRepeat"
-                       v-bind:disabled="reminder.isRepeat && reminder.id > 0">
+                       v-model="reminder.isRepeat">
+                @*v-bind:disabled="reminder.isRepeat && reminder.id > 0"*@
                 <span class="custom-control-label">Повторять</span>
             </label>
         </div>
