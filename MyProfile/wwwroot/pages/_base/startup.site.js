@@ -8,6 +8,10 @@
         $("#start-vue").css("height", "100%");
     }
 
+    //if (UserInfo.UserSettings.WebSiteTheme == "dark") {
+    //    $("#history-footer")
+    //}
+
     try {
         window.layoutHelpers.setCollapsed(
             localStorage.getItem('layoutCollapsed') === 'true',

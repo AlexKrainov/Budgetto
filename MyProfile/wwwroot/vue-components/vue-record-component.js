@@ -109,7 +109,7 @@
                             </div>
                             <div class="form-group col-12 col-sm-12 col-md-6">
                                 <vue-section-component data-search-id="searchSection"
-                                                       data-records-style="max-height: 200px; overflow-x: overlay;"
+                                                       data-records-style="max-height: 200px; overflow-x: auto;"
                                                        data-class="cards-small"
                                                        v-bind:is-show-filter="true"
                                                        v-bind:is-show-change-view-mode="true"
@@ -154,7 +154,7 @@
                     <a href="javascript:void(0)" style="position: absolute;left: 21px;" 
                         v-show="isShowHistory == false" 
                         v-on:click="showHistory(true)" >История</a>
-                    <a href="javascript:void(0)" v-show="isShowHistory == true" v-on:click="showHistory(false)">Добавить запись</a>
+                    <a href="javascript:void(0)" style="position: absolute;left: 21px;" v-show="isShowHistory == true" v-on:click="showHistory(false)">Добавить запись</a>
                     <div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="isShowCollectionElement">
                         <label class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" v-model="isShowInCollection">

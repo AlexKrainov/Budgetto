@@ -10,7 +10,7 @@
                         Всего на всех счетах
                         <i class="fas fa-info-circle cursor-help text-danger" data-toggle="tooltip" data-html="true"
                            v-show="summary.allAccountsMoney.convertError"
-                           title="Не удалось конвертировать все счета"></i>
+                           title="Не удалось конвертировать некоторые счета"></i>
                     </div>
                     <div class="text-xlarge" style="display: inline-block"
                          v-if="summary.currencySpecificCulture">
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-lg-12">
                         <span class="text-muted small">
-                            Доходы в час / день
+                            Доходы в рабочий час / день
                             <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
                                title="Из расчета для часов: <br />[Доход] / [Количество рабочих часов] <br /> Из расчета для дней: <br />[Доход] / [Количество рабочих дней]"></i>
                         </span>

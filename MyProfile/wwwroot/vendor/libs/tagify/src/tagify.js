@@ -3033,8 +3033,8 @@ Tagify.prototype = {
 
         return result;
     }
-}
+};
 
 // legacy support for changed methods names
-Tagify.prototype.removeTag = Tagify.prototype.removeTags
+Tagify.prototype.removeTag = Tagify.prototype.removeTags;
 

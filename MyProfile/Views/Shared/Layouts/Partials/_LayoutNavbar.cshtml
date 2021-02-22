@@ -26,53 +26,55 @@
 <!-- Layout navbar -->
 @*layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x @(currentUser.UserSettings.WebSiteTheme_CodeName == "dark" ? "bg-navbar-theme" : "bg-white")*@
 <nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center container-p-x bg-navbar-theme" id="layout-navbar">
+        <!-- Brand demo (see wwwroot/css/demo/demo.css) -->
+        <a href="/Budget/Month" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
+            @*<span class="app-brand-logo demo bg-primary">
+                    <img src="~/img/Logo-min.svg" />
 
-    <!-- Brand demo (see wwwroot/css/demo/demo.css) -->
-    <a asp-area="" asp-controller="Bubget" asp-action="Month" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
-        @*<span class="app-brand-logo demo bg-primary">
-                <img src="~/img/Logo-min.svg" />
-
-            </span>
-            <span class="app-brand-text demo font-weight-normal ml-2">Appwork</span>*@
-        <img src="~/img/Logo-min.png" style="width: 180px;" />
-    </a>
-
-    @if (!hideToggle)
-    {
-        <!-- Sidenav toggle (see wwwroot/css/demo/demo.css) -->
-        <div class="layout-sidenav-toggle navbar-nav d-lg-none align-items-lg-center mr-auto ml-1">
-            <a class="nav-item nav-link px-0 mr-lg-4" href="javascript:void(0)">
-                <i class="ion ion-md-menu text-large align-middle"></i>
-            </a>
-        </div>
-    }
-
-    <a class="nav-link cursor-pointer navbar-toggler" onclick="RecordVue.addRecord()" title="Добавить запись">
-        <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);"></i>
-    </a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#layout-navbar-collapse">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="navbar-collapse collapse" id="layout-navbar-collapse">
-        <!-- Divider -->
-        <hr class="d-lg-none w-100 my-2">
-
-        <!--<div class="navbar-nav align-items-lg-center">-->
-        <!-- Search -->
-        <!--<label class="nav-item navbar-text navbar-search-box p-0 active">
-                <i class="ion ion-ios-search navbar-icon align-middle"></i>
-                <span class="navbar-search-input pl-2">
-                    <input type="text" class="form-control navbar-text mx-2" placeholder="Search..." style="width:200px">
                 </span>
-            </label>
-        </div>-->
+                <span class="app-brand-text demo font-weight-normal ml-2">Appwork</span>*@
+            <img src="~/img/Logo-min.png" style="width: 180px;" />
+        </a>
+
+        @if (!hideToggle)
+        {
+            <!-- Sidenav toggle (see wwwroot/css/demo/demo.css) -->
+            <div class="layout-sidenav-toggle navbar-nav d-lg-none align-items-lg-center mr-auto ml-1">
+                <a class="nav-item nav-link px-0 mr-lg-4" href="javascript:void(0)">
+                    <i class="ion ion-md-menu text-large align-middle"></i>
+                </a>
+            </div>
+        }
+
+        <a class="nav-link cursor-pointer navbar-toggler" onclick="RecordVue.addRecord()" title="Добавить запись">
+            <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);"></i>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#layout-navbar-collapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse" id="layout-navbar-collapse">
+            <!-- Divider -->
+            <hr class="d-lg-none w-100 my-2">
+
+            <!--<div class="navbar-nav align-items-lg-center">-->
+            <!-- Search -->
+            <!--<label class="nav-item navbar-text navbar-search-box p-0 active">
+                    <i class="ion ion-ios-search navbar-icon align-middle"></i>
+                    <span class="navbar-search-input pl-2">
+                        <input type="text" class="form-control navbar-text mx-2" placeholder="Search..." style="width:200px">
+                    </span>
+                </label>
+            </div>-->
+        </div>
 
         <div class="navbar-nav align-items-lg-center ml-auto">
-
-            <a id="addRecord" class="nav-link cursor-pointer" onclick="RecordVue.addRecord();" title="Добавить запись">
-                <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
+            @*<a id="addRecord" class="nav-link cursor-pointer" onclick="RecordVue.addRecord();" title="Добавить запись">
+                    <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
+                </a>*@
+            <a id="addRecord" class="nav-link cursor-pointer btn rounded-pill btn-success py-1" onclick="RecordVue.addRecord();" title="Добавить запись" style="color: white;">
+                <i class="ion ion-md-add navbar-icon align-middle text-large" title="Добавить запись"></i><span style=" margin-left: 14px;">Добавить запись</span>
             </a>
             @if (currentUser.UserSettings.IsShowHints && hintsPages.Contains(s))
             {
@@ -81,12 +83,12 @@
                         <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
                     </a>
                     @if (this.Context.Request.Path == "/"
-                || this.Context.Request.Path.Value.Contains("/Budget/Month")
-                || this.Context.Request.Path.Value.Contains("/Budget/Year"))
+                     || this.Context.Request.Path.Value.Contains("/Budget/Month")
+                     || this.Context.Request.Path.Value.Contains("/Budget/Year"))
                     {
                         <div class="dropdown-menu dropdown-menu-right">
                             @if (this.Context.Request.Path == "/"
-                          || this.Context.Request.Path.Value.Contains("/Budget/Month"))
+                            || this.Context.Request.Path.Value.Contains("/Budget/Month"))
                             {
                                 <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-record">
                                     <i class="fas fa-route text-large"></i> &nbsp; Как добавить запись
@@ -374,6 +376,5 @@
                 </div>
             </div>
         </div>
-    </div>
 </nav>
 <!-- / Layout navbar -->

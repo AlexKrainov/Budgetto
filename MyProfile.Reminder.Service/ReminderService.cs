@@ -110,17 +110,6 @@ namespace MyProfile.Reminder.Service
                         }
                         else if (oldReminder.IsRepeat && newReminder.IsRepeat)
                         {
-                            //var totalDays = (newReminder.DateReminder - newReminder.OldDateReminder).Value.TotalDays;
-                            //var lastDateBefore = oldReminder.ReminderDates
-                            //    .Where(x => x.DateReminder < newReminder.OldDateReminder)
-                            //    .OrderByDescending(x => x.DateReminder)
-                            //    .FirstOrDefault()?.DateReminder
-                            //    ?? newReminder.OldDateReminder.Date.AddDays(-1);
-
-                            //foreach (var reminderDate in oldReminder.ReminderDates.Where(x => x.DateReminder > lastDateBefore))
-                            //{
-                            //    reminderDate.DateReminder = reminderDate.DateReminder.Date.AddDays(totalDays);
-                            //}
                             if ((newReminder.DateReminder - newReminder.OldDateReminder).Value.TotalDays > 0)
                             {
                                 await repository.DeleteAsync(await repository.GetAll<ReminderDate>(x => x.ReminderID == newReminder.ID

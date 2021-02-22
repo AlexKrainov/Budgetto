@@ -8,7 +8,7 @@
                         <div class="row">
                             <div class="col-md-4 pt-2">
                                 <h4 class="pt-3 pb-3 display-inline">История</h4>
-                                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="right" 
+                                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="right"
                                    title="В этом диалоговом окне вы видите всю историю за выбраный период и по выбранными категориями"
                                    style="display: inline-block;"
                                    class="pr-4">
@@ -104,12 +104,13 @@
                     </div>
                 </section>
 
-                <div class=" card pl-0">
+                <div class=" card pl-0" style=" margin-bottom: 50px;">
                     <ul class="list-group list-group-flush records-timeline" style=" margin-left: -5px;">
                         @await Html.PartialAsync("_Records")
                     </ul>
                 </div>
-                <div class="card-footer mt-4" v-show="records && records.length > 0">
+                <div class="card card-body mt-4" v-show="records && records.length > 0" id="history-footer"
+                     style=" position: fixed; right: 43px; top: 84%;width: 90%;z-index: 1;">
                     <div class="text-right">
                         <div style="display:inline-block" v-show="spendingInvestingMoney != 0">
                             <label class="text-muted font-weight-normal m-0">Итого инвстиций</label>

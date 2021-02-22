@@ -238,5 +238,11 @@
     "inputFiles": [
       "wwwroot/pages/_areas/user/user-settings.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/vendor/libs/flatpickr/l10n/ru.min.js",
+    "inputFiles": [
+      "wwwroot/vendor/libs/flatpickr/l10n/ru.js"
+    ]
   }
 ]
