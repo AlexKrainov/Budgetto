@@ -3,7 +3,7 @@
     <div class="modal modal-top fade" id="modal-record">
         <div class="modal-dialog modal-lg">
             <article class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header py-2">
                     <h5 class="modal-title">
                         Добавление записи
                     </h5>
@@ -703,6 +703,10 @@
                             this.$emit("afterSave", 123);
                             this.isSaving = false;
 
+                            if (isClose && this.records.length == 0) {
+                                $("#modal-record").modal('hide');
+                            }
+
                             //#region call feadback functions
 
                             if (this.after_save_callback && typeof (this.after_save_callback) === "string") {
@@ -728,9 +732,10 @@
                                     console.log(e);
                                 }
                                 // this.after_save_callback = null;
-                            } else if (typeof (this.after_save_callback) === "object" && typeof (this.after_save_callback[0]) === "function") { //Array
+                            } else if (typeof (this.after_save_callback) === "object" ) { //Array
                                 try {
                                     for (var i = 0; i < this.after_save_callback.length; i++) {
+                                        if (typeof (this.after_save_callback[i]) === "function") {
 
                                         if (this.after_save_callback_args != undefined) {
                                             this.after_save_callback[i].call(this, this.after_save_callback_args);
@@ -738,12 +743,23 @@
                                         } else {
                                             this.after_save_callback[i].call(this, result.budgetRecord.dateTimeOfPayment);
                                         }
+                                        } else if (typeof (this.after_save_callback[i]) === "string") {
+                                            let callback = window.getFunctionFromString(this.after_save_callback[i]);
+
+                                            if (this.after_save_callback_args != undefined) {
+                                                callback.call(this, this.after_save_callback_args);
+                                                this.after_save_callback_args = undefined
+                                            } else {
+                                                callback.call(this, result.budgetRecord.dateTimeOfPayment);
+                                            }
+                                        }
                                     }
 
                                 } catch (e) {
                                     console.log(e);
                                 }
                             }
+
                             //#endregion
 
                             this.isEditMode = false;

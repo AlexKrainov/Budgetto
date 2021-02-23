@@ -10,6 +10,7 @@ var AccountVue = new Vue({
             balance: 0,
             cachBackBalance: 0,
             cashBackForAllPercent: 1,
+            isCountTheBalance: true,
             //resetCashBackDate: null,
             isDeleted: false
         },
@@ -27,11 +28,11 @@ var AccountVue = new Vue({
                 this.account.cachBackBalance = 0;
             }
         },
-        "account.balance": function (newValue) {
-            if (!newValue) {
-                this.account.balance = 0;
-            }
-        },
+        //"account.balance": function (newValue) {
+        //    if (!newValue) {
+        //        this.account.balance = 0;
+        //    }
+        //},
     },
     mounted: function () {
 
@@ -64,9 +65,10 @@ var AccountVue = new Vue({
                     accountType: 1,
                     currency: {},
                     currencyID: -1,
-                    balance: 0,
+                    balance: null,
                     cachBackBalance: 0,
                     cashBackForAllPercent: 1,
+                    isCountTheBalance: true,
                     //resetCashBackDate: null,
                     isDeleted: false
                 };
@@ -132,6 +134,10 @@ var AccountVue = new Vue({
             }
 
             this.isSaving = true;
+
+            if (!this.account.balance) {
+                this.account.balance = 0;
+            }
 
             $.ajax({
                 type: "POST",

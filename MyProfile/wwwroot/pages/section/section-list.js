@@ -102,6 +102,10 @@ var AreaVue = new Vue({
                         $("#modal-area").modal("hide");
                         this.isSaving = false;
                     }
+                },
+                error: function (error) {
+                    console.log(error);
+                    this.isSaving = false;
                 }
             });
         },
@@ -227,7 +231,8 @@ var SectionVue = new Vue({
                 sectionTypeID: null,
                 hasRecords: false,
                 cssIcon: null,
-                canRemove: false
+                canRemove: false,
+                isCashback: true
             };
             this.chooseColor();
             $("#accordion2-2, #accordion2-1").removeClass("show");

@@ -52,13 +52,13 @@
                     </div>
                 </span>
                 @*<div class="form-row mt-3 ml-1">
-                        <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
-                            <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" v-model="section.isShowInCollective">
-                                <span class="custom-control-label">Показывать всей группе</span>
-                            </label>
-                        </div>
-                    </div>*@
+            <div class="form-group" style=" margin-left: 0px; margin-right: auto;">
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" v-model="section.isShowInCollective">
+                    <span class="custom-control-label">Показывать всей группе</span>
+                </label>
+            </div>
+        </div>*@
                 <div id="accordion2">
                     <div class="form-row mt-3 ">
                         <div class="form-group col mb-0">
@@ -126,14 +126,23 @@
                     </div>
 
                 </div>
+                <div class="form-group" >
+                    <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
+                        <input type="checkbox" class="custom-control-input" v-model="section.isCashback" name="isCashback">
+                        <span class="custom-control-label">Считать кешбек для этой категории</span>
+                    </label>
+                    <small class="text-muted">
+                        Для некоторых категорий банки не начисляют кешбек, например ЖКХ, налоги и тд.
+                    </small>
+                </div>
                 @*<div class="form-row mt-3 ml-1">
-                        <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                            <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" v-model="section.isShowOnSite">
-                                <span class="custom-control-label">Показывать везде на сайте</span>
-                            </label>
-                        </div>
-                    </div>*@
+            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" v-model="section.isShowOnSite">
+                    <span class="custom-control-label">Показывать везде на сайте</span>
+                </label>
+            </div>
+        </div>*@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-danger" style="position: absolute; left: 22px;"

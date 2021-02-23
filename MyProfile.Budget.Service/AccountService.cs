@@ -65,6 +65,7 @@ namespace MyProfile.Budget.Service
                     CachBackBalance = x.CachbackBalance,
                     CashBackForAllPercent = x.CachbackForAllPercent,
                     ResetCashBackDate = x.ResetCachbackDate,
+                    IsCountTheBalance = x.IsCountTheBalance,
 
                     IsShow = true,
                 })
@@ -222,6 +223,7 @@ namespace MyProfile.Budget.Service
                     CachbackBalance = account.CachBackBalance,
                     CachbackForAllPercent = account.CashBackForAllPercent,
                     ResetCachbackDate = account.ResetCashBackDate,
+                    IsCountTheBalance = account.IsCountTheBalance,
 
                     IsHide = account.IsHide,
 
@@ -280,6 +282,7 @@ namespace MyProfile.Budget.Service
                     accountDB.LastChanges = now;
                     accountDB.Name = account.Name;
                     accountDB.IsDefault = account.IsDefault;
+                    accountDB.IsCountTheBalance = account.IsCountTheBalance;
                     //accountDB.CurrencyID = account.CurrencyID;
 
                     if (accountDB.AccountType.ID != (int)AccountTypesEnum.Cash)
@@ -518,7 +521,8 @@ namespace MyProfile.Budget.Service
                 LastChanges = accountDB.LastChanges,
                 Name = accountDB.Name,
                 ResetCachbackDate = accountDB.ResetCachbackDate,
-                UserID = accountDB.UserID
+                UserID = accountDB.UserID,
+                IsCountTheBalance = accountDB.IsCountTheBalance,
             };
 
             return JsonConvert.SerializeObject(account, Formatting.Indented);

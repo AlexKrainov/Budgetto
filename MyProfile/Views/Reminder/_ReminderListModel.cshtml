@@ -20,7 +20,7 @@
                             <i class="ion ion-md-add navbar-icon align-middle" style="color:var(--success);"></i>
                         </a>
 
-                        {{ GetDateByFormat(dateTime, 'DD.MM.YYYY') }}
+                        {{ GetDateByFormat(dateTime, 'DD.MM.YYYY') }} {{ dateTimeFinish != null ? ' - ' + GetDateByFormat(dateTimeFinish, 'DD.MM.YYYY') : '' }}
                         @*<div class="navbar-collapse collapse" id="header-11">
                                 <div class="navbar-nav align-items-lg-center ml-auto">
                                     <div class="input-group w-100">

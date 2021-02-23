@@ -79,6 +79,7 @@ namespace MyProfile.Budget.Service
                             HasRecords = y.BudgetRecords.Any(q => q.IsDeleted != true),
                             IsShow_Filtered = true,
                             IsShow = true,
+                            IsCashback = y.IsCashback,
                             //CollectiveSections = y.CollectiveSections
                             //.Select(z => new BudgetSectionModelView
                             //{
@@ -111,6 +112,7 @@ namespace MyProfile.Budget.Service
                      BudgetAreaname = x.BudgetArea.Name,
                      CssBackground = x.CssBackground,
                      SectionTypeID = x.SectionTypeID,
+                     IsCashback = x.IsCashback,
                  })
                  .ToListAsync();
 
@@ -143,6 +145,7 @@ namespace MyProfile.Budget.Service
                         IsShow_Filtered = true,
                         IsShow = true,
                         SectionTypeID = x.SectionTypeID,
+                        IsCashback = x.IsCashback,
                         Tags = x.BudgetRecords.SelectMany(y => y.Tags).GroupBy(y => y.UserTag).Select(y => new TagSectionModelView { ID = y.Key.ID, Title= y.Key.Title, Count = y.Count() }).OrderByDescending(y => y.Count).ToList()
                         //CollectiveSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
                         //{
@@ -237,6 +240,7 @@ namespace MyProfile.Budget.Service
                 SectionTypeID = section.SectionTypeID,
                 IsShowInCollective = section.IsShowInCollective,
                 IsShowOnSite = section.IsShowOnSite,
+                IsCashback = section.IsCashback,
             };
             if (budgetSection.ID > 0)
             {

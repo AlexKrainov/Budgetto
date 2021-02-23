@@ -37,6 +37,10 @@ namespace MyProfile.Entity.Model
         /// Created by constructor after registration
         /// </summary>
         public bool IsCreatedByConstructor { get; set; }
+        /// <summary>
+        /// Take into account cashback
+        /// </summary>
+        public bool IsCashback { get; set; }
 
         [ForeignKey("BudgetArea")]
         public int BudgetAreaID { get; set; }

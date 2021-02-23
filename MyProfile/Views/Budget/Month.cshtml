@@ -36,7 +36,7 @@
     </environment>
 }
 
-<div id="budget-vue" v-cloak style=" margin-top: -15px;"> 
+<div id="budget-vue" v-cloak style=" margin-top: -15px;">
 
     <input type="hidden" id="templateID_hidden" value="@Model.SelectedTemplateID" />
     <input type="hidden" id="budgetDate_hidden" value="@Model.SelectedDateTime.ToString("yyyy/MM/dd")" />
@@ -78,8 +78,8 @@
         @await Html.PartialAsync("_BigChartView", "/Budget/Month")
     </div>
     <div class="card table-container">
-        <div class="card-body" style="padding-bottom:5px;">
-            <div class="card-title with-elements templates-container">
+        <div class="card-body">
+            <div class="card-title with-elements templates-container" style="margin-bottom: 0px">
                 <select id="templates" class="form-control form-control-sm" style="width: 300px"
                         v-model="templateID"
                         v-on:change="refresh('onlyTable')"
@@ -104,31 +104,44 @@
 
                 <div class="card-title-elements">
                 </div>
-                <div class="card-title-elements ml-md-auto" v-show="template && template.id">
-                    <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3">
-                        <i class="collapse-icon"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="collapse table-responsive bg-light " id="collapseFilter" v-show="template && template.id">
-                <div class="float-right">
-                    <button type="button" class="btn icon-btn borderless my-2 btn-outline-primary mr-4"
+                @*<div class="card-title-elements ml-md-auto" v-show="template && template.id">
+                        <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3">
+                            <i class="collapse-icon"></i>
+                        </a>
+                    </div>*@
+                <div class="text-right"
+                     v-show="template && template.id">
+                    <button type="button" class="btn icon-btn borderless btn-outline-primary text-big"
+                            v-on:click="showAllHistory"
+                            title="Посмотреть историю за месяц" data-toggle="tooltip" data-placement="bottom">
+                        <i class="fas fa-history"></i>
+                    </button>
+                    <button type="button" class="btn icon-btn borderless btn-outline-primary text-big"
+                            onclick="ReminderVue.showRemindersByPeriod(@Model.SelectedDateTime.Month, @Model.SelectedDateTime.Year)"
+                            title="Посмотреть напоминание за месяц" data-toggle="tooltip" data-placement="bottom">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button type="button" class="btn icon-btn borderless btn-outline-primary mr-4 text-big"
+                            title="Экспорт таблицы в excel"
+                            data-toggle="tooltip" data-placement="bottom"
                             v-on:click="toExcel"
                             v-bind:disabled="isGenerateExcel">
-                        <i class="far fa-file-excel" title="Экспорт таблицы в excel "></i>
+                        <i class="far fa-file-excel"></i>
                     </button>
-                    <button type="button" class="btn icon-btn borderless my-2"
+                    <button type="button" class="btn icon-btn borderless text-big"
                             v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-default': 'btn-outline-primary'"
                             v-on:click="pageViewSettings.isTableViewCompact = false; savePageSettings();">
                         <i class="ion ion-md-menu" title="Обычный вид таблицы"></i>
                     </button>
-                    <button type="button" class="btn icon-btn borderless my-2 mr-2"
+                    <button type="button" class="btn icon-btn borderless text-big mr-2"
                             v-bind:class="pageViewSettings.isTableViewCompact ? 'btn-outline-primary': 'btn-outline-default'"
                             v-on:click="pageViewSettings.isTableViewCompact = true; savePageSettings();">
                         <i class="ion ion-md-reorder" title="Компактный вид таблицы"></i>
                     </button>
                 </div>
             </div>
+            @*<div class="collapse table-responsive bg-light " id="collapseFilter" v-show="template && template.id">
+                </div>*@
         </div>
         <div class="callout callout-warning mx-4" v-show="!(template && template.id)">
             <p><b>Нет шаблона для отображения. Пожалуйста, <a href="/Template/Edit?periodTypeId=1">создайте шаблон</a> </b></p>

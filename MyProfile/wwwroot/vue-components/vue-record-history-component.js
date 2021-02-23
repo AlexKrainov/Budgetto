@@ -160,7 +160,7 @@
 
         edit: function (record) {
             RecordVue.recordComponent.isShowHistory = false;
-            if (BudgetVue != undefined) {
+            if (typeof (BudgetVue) != "undefined") {
                 RecordVue.editByElement(record, BudgetVue.refresh, "runtimeData");
             } else {
                 RecordVue.editByElement(record);

@@ -127,6 +127,7 @@ namespace MyProfile.Budget.Service
                     if (isSpending
                         && record.Money >= 100
                         && account.IsCachback
+                        && section.IsCashback
                         && account.CachbackForAllPercent != null)
                     {
                         recordCashback = (record.Money * account.CachbackForAllPercent ?? 1) / 100;
@@ -242,7 +243,7 @@ namespace MyProfile.Budget.Service
                                 {
                                     account.Balance -= _money;
 
-                                    if (isSpending && account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
+                                    if (isSpending && account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0 && section.IsCashback)
                                     {
                                         if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                         {
@@ -502,7 +503,7 @@ namespace MyProfile.Budget.Service
                                     {
                                         account.Balance -= _money;
 
-                                        if (isSpending && account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0)
+                                        if (isSpending && account.IsCachback && account.CachbackForAllPercent != null && recordCashback != 0 && section.IsCashback)
                                         {
                                             if (record.CurrencyID != account.CurrencyID && account.CurrencyID != currentUser.CurrencyID)
                                             {
@@ -615,6 +616,7 @@ namespace MyProfile.Budget.Service
 
                         if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
                             && isThisMonth
+                            && db_record.BudgetSection.IsCashback
                             && db_record.Account.IsCachback
                             && db_record.Account.CachbackForAllPercent != null)
                         {
@@ -681,6 +683,7 @@ namespace MyProfile.Budget.Service
 
                         if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
                             && isThisMonth
+                            && db_record.BudgetSection.IsCashback
                             && db_record.Account.IsCachback
                             && db_record.Account.CachbackForAllPercent != null)
                         {

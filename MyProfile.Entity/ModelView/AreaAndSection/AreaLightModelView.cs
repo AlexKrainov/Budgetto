@@ -20,5 +20,6 @@ namespace MyProfile.Entity.ModelView.AreaAndSection
         public string CssBackground { get; set; }
         public int? SectionTypeID { get; set; }
         public bool Selected { get; set; }
+        public bool IsCashback { get; set; }
     }
 }

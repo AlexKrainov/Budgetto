@@ -6,9 +6,9 @@
                 <div class="modal-header">
                     <h5 class="modal-title">
                         {{ account.id ? 'Редактирование счета' : 'Создание счета'  }}
-                        <span class="font-weight-light">Information</span>
+                        @*<span class="font-weight-light">Information</span>
                         <br>
-                        <small class="text-muted">We need payment information to process your order.</small>
+                        <small class="text-muted">We need payment information to process your order.</small>*@
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
                 </div>
@@ -74,26 +74,26 @@
                         </div>
                     </div>
                     @*<div class="form-group" v-show="account.accountType != 1">
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" v-model="account.isOverdraft" name="isOverdraft">
-                            <span class="custom-control-label">Подключен ли овердрафт</span>
-                        </label>
-                    </div>*@
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="account.isOverdraft" name="isOverdraft">
+                                <span class="custom-control-label">Подключен ли овердрафт</span>
+                            </label>
+                        </div>*@
                     <div class="form-group" v-show="account.accountType != 1">
                         <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
                             <input type="checkbox" class="custom-control-input" v-model="account.isCachback" name="isCachback">
                             <span class="custom-control-label">Кешбек</span>
                         </label>
-                    <small class="text-muted" v-show="account.accountType != 1 && account.isCachback">
-                        Обнуление кешбека происходит в начале каждого месяца
-                    </small>
+                        <small class="text-muted" v-show="account.accountType != 1 && account.isCachback">
+                            Обнуление кешбека происходит в начале каждого месяца
+                        </small>
                     </div>
                     @*<div class="form-group" v-show="account.accountType != 1 && account.isCachback">
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" v-model="account.isCachBackMoney" name="isCachBackMoney">
-                            <span class="custom-control-label">Кешбек конвертируется в рубли</span>
-                        </label>
-                    </div>*@
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="account.isCachBackMoney" name="isCachBackMoney">
+                                <span class="custom-control-label">Кешбек конвертируется в рубли</span>
+                            </label>
+                        </div>*@
                     <div class="form-row" v-show="account.accountType != 1 && account.isCachback">
                         <div class="form-group col">
                             <label class="form-label">Баланс кешбека</label>
@@ -103,7 +103,7 @@
                     <div class="form-group" v-show="account.accountType != 1 && account.isCachback">
                         <label class="form-label">Процент кешбека на все покупки</label>
                         <div class="form-group input-group">
-                            <input type="number" class="form-control" placeholder="" v-model="account.cashBackForAllPercent" 
+                            <input type="number" class="form-control" placeholder="" v-model="account.cashBackForAllPercent"
                                    v-bind:min="0" v-bind:max="100">
                             <div class="input-group-append">
                                 <span class="input-group-text">%</span>
@@ -136,6 +136,15 @@
                             <input type="checkbox" class="custom-control-input" v-model="account.isHide" name="isHide">
                             <span class="custom-control-label">Скрывать в виджете</span>
                         </label>
+                    </div>
+                    <div class="form-group mt-4">
+                        <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
+                            <input type="checkbox" class="custom-control-input" v-model="account.isCountTheBalance" name="isCountTheBalance">
+                            <span class="custom-control-label">Учитывать в поле "Всего на всех счетах"</span>
+                        </label>
+                        @*<small class="text-muted">
+                            Для некоторых категорий банки не считают кешбек, например ЖКХ, налоги и тд.
+                        </small>*@
                     </div>
                     @*<div class="form-row">
                             <div class="form-group col">

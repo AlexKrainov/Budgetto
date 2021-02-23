@@ -51,7 +51,7 @@ namespace MyProfile.Controllers
             return Json(new { isOk = false });
         }
 
-        [HttpPost]
+        //[HttpPost]
         public IActionResult SaveArea([FromBody] BudgetAreaModelView area)
         {
             try

@@ -4,6 +4,9 @@
         reminders: [],
         reminder: { isRepeat: false },
         dateTime: null,
+        dateTimeFinish: null,
+        month: -1,
+        year: -1,
         flatpickrReminder: {},
 
         searchText: null,
@@ -37,9 +40,19 @@
     methods: {
         showReminders: function (dateTime) {
             this.dateTime = dateTime;
+            this.month = null;
+            this.year = null;
+            this.dateTimeFinish = null;
             this.close();
 
             return this.loadTimeLine(dateTime);
+        },
+        showRemindersByPeriod: function (month, year) {
+            this.month = month;
+            this.year = year;
+            this.close();
+
+            return this.loadTimeLine();
         },
         addReminders: function (dateTime) {
             this.dateTime = dateTime;
@@ -49,14 +62,18 @@
 
             return this.loadTimeLine(dateTime);
         },
-        loadTimeLine: function (date) {
+        loadTimeLine: function () {
             return $.ajax({
                 type: "GET",
-                url: "/Reminder/LoadReminders?currentDate=" + date,
+                url: "/Reminder/LoadReminders?currentDate=" + this.dateTime + "&month=" + this.month + "&year=" + this.year,
                 contentType: "application/json",
                 dataType: 'json',
                 context: this,
                 success: function (response) {
+                    this.month = null;
+                    this.year = null;
+                    this.dateTime = response.currentDate;
+                    this.dateTimeFinish = response.dateTimeFinish;
                     this.reminders = response.data;
                     $("#modalReminderTimeLine").modal("show");
                 }
@@ -137,10 +154,11 @@
                         BudgetVue.refresh("onlyTable");
 
                         this.close();
-                    } 
+                    }
                     this.isSaving = false;
                 },
-                error: function () {
+                error: function (error) {
+                    console.log(error);
                     this.isSaving = false;
 
                 }
@@ -187,7 +205,7 @@
         },
         remove: function (reminder) {
             if (reminder.isWasRepeat && reminder.isRepeat == false) {
-                toastr.warning("Осторожно! Если вы удалите это уведомление, удалится вся цепочка уведомлений.");
+                toastr.warning("Внимание! Если вы удалите это напоминание, удалится вся цепочка напоминаний.");
                 reminder.isWasRepeat = false;
                 return;
             }

@@ -418,7 +418,7 @@ namespace MyProfile.Budget.Service
             }
             else
             {
-                var accounts = repository.GetAll<Account>(x => x.UserID == filter.UserID && x.IsDeleted != true)
+                var accounts = repository.GetAll<Account>(x => x.UserID == filter.UserID && x.IsDeleted != true && x.IsCountTheBalance)
                     .Select(x => new
                     {
                         x.Balance,

@@ -25,17 +25,39 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadReminders(DateTime currentDate)
+        public async Task<IActionResult> LoadReminders(DateTime? currentDate, int? month, int? year)
         {
             await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Reminder_Part);
 
-            return Json(new { IsOk = true, data = await reminderService.GetRimindersByDate(currentDate) });
+            if (currentDate != null)
+            {
+                return Json(new
+                {
+                    IsOk = true,
+                    data = await reminderService.GetRimindersByDate(currentDate.Value),
+                    currentDate = currentDate
+                });
+            }
+            else //if (month != null && year != null)
+            {
+                currentDate = new DateTime(year ?? DateTime.Now.Year, month ?? 1, 1);
+                var finishDate = new DateTime(year ?? DateTime.Now.Year, month ?? 12, DateTime.DaysInMonth(year ?? DateTime.Now.Year, month ?? 12), 23, 59, 59);
+
+                return Json(new
+                {
+                    IsOk = true,
+                    data = await reminderService.GetRimindersByDate(currentDate.Value, finishDate),
+                    currentDate = currentDate,
+                    dateTimeFinish = finishDate
+                });
+            }
+            //return Json(new { IsOk = true, data = await reminderService.GetRimindersByDate(currentDate.Value) });
         }
 
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit([FromBody]ReminderEditModelView reminder)
+        public async Task<IActionResult> Edit([FromBody] ReminderEditModelView reminder)
         {
             var result = await reminderService.CreateOrUpdate(reminder);
             return Json(new { IsOk = result, data = reminder });

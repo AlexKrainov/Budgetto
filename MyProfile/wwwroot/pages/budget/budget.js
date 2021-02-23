@@ -935,6 +935,24 @@
 
             return HistoryVue.showHistory(filter, currentDate);
         },
+        showAllHistory: function () {
+            let filter = {
+                sections: RecordVue.recordComponent.sectionComponent.sections.map(x => x.id),
+                isSection: true
+            };
+            if (this.periodType == PeriodTypeEnum.Month) {
+
+                filter.startDate = moment(this.budgetDate).format();
+                filter.endDate = moment(this.budgetDate).endOf("month").format();
+
+            } else if (this.periodType == PeriodTypeEnum.Year) {
+
+                filter.startDate = `${this.budgetYear}-01-01T00:00:01+00:00`;
+                filter.endDate = `${this.budgetYear}-12-31T23:59:59+00:00"`;
+            }
+
+            return HistoryVue.showHistory(filter);
+        },
         clickFooterCell: function (cellIndex) {
 
             let filter = { sections: [] };
@@ -1040,6 +1058,9 @@
                 .format(value)
                 .split(",")[0] + " ₽";
             //.replace(/\D00(?=\D*$)/, '')
+        },
+        getDateByFormat: function (date, format) {
+            return GetDateByFormat(date, format);
         },
     }
 });

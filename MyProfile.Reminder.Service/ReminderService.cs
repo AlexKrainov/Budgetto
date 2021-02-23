@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LinqKit;
+using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
@@ -23,19 +24,29 @@ namespace MyProfile.Reminder.Service
             this.userLogService = userLogService;
         }
 
-        public async Task<IList<ReminderEditModelView>> GetRimindersByDate(DateTime currentDate)
+        public async Task<IList<ReminderEditModelView>> GetRimindersByDate(DateTime? currentDate, DateTime? dateFinish = null)
         {
             var currenUserID = UserInfo.Current.ID;
+            var expression = PredicateBuilder.True<ReminderDate>();
+            expression = expression.And(x => x.Reminder.UserID == currenUserID
+                    && x.Reminder.IsDeleted == false);
+
+            if (dateFinish == null)
+            {
+                expression = expression.And(x => x.DateReminder == currentDate);
+            }
+            else
+            {
+                expression = expression.And(x => x.DateReminder >= currentDate.Value && x.DateReminder <= dateFinish.Value);
+            }
 
             var reminders = await repository
-                .GetAll<ReminderDate>(x => x.Reminder.UserID == currenUserID
-                    && x.Reminder.IsDeleted == false
-                    && x.DateReminder == currentDate)
+                .GetAll<ReminderDate>(expression)
                  .Select(x => new ReminderEditModelView
                  {
                      ID = x.ReminderID,
-                     DateReminder = currentDate, // x.DateReminder,
-                     OldDateReminder = currentDate, // x.DateReminder,
+                     DateReminder = x.DateReminder,
+                     OldDateReminder = x.DateReminder,
                      Description = x.Reminder.Description,
                      IsRepeat = x.Reminder.IsRepeat,
                      RepeatEvery = x.Reminder.RepeatEvery,
@@ -45,6 +56,7 @@ namespace MyProfile.Reminder.Service
                      isDeleted = false,
                      isWasRepeat = x.Reminder.ReminderDates.Count() > 1,
                  })
+                 .OrderBy(x => x.DateReminder)
                  .ToListAsync();
 
             for (int i = 0; i < reminders.Count; i++)

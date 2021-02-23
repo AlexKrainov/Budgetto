@@ -30,6 +30,10 @@ namespace MyProfile.Entity.Model
         public bool IsCachbackMoney { get; set; }
         public bool IsOverdraft { get; set; }
         public bool IsDefault { get; set; }
+		/// <summary>
+		/// Count this balance with all accounts.balance
+		/// </summary>
+        public bool IsCountTheBalance { get; set; }
         public bool IsHide { get; set; }
         public bool IsDeleted { get; set; }
 		public DateTime? ExpirationDate { get; set; }

@@ -258,7 +258,7 @@ var HistoryVue = new Vue({
                 RecordVue.editByElement,
                 750,
                 record,
-                [BudgetVue.refreshAfterChangeRecords, HistoryVue.showLastHistory]
+                ['BudgetVue.refreshAfterChangeRecords', 'HistoryVue.showLastHistory']
             );
         },
         remove: function (record) {

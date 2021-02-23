@@ -39,5 +39,6 @@ namespace MyProfile.Entity.ModelView
         public string CodeName { get; set; }
 		public bool IsSelected { get; set; } = true;
         public IList<TagSectionModelView> Tags { get; set; }
+        public bool IsCashback { get; set; }
     }
 }
