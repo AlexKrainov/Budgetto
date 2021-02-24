@@ -33,6 +33,8 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
                             <a class="dropdown-item" href="javascript:void(0)"
+                               v-on:click="showLimitHistory(limit.id)">Показать историю</a>
+                            <a class="dropdown-item" href="javascript:void(0)"
                                v-on:click="hideLimit(limit.id)">Скрыть с этой страницы</a>
                         </div>
                     </div>

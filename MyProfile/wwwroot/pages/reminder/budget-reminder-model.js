@@ -48,6 +48,7 @@
             return this.loadTimeLine(dateTime);
         },
         showRemindersByPeriod: function (month, year) {
+            this.dateTime = null;
             this.month = month;
             this.year = year;
             this.close();
