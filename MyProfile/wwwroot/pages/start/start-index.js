@@ -5,6 +5,8 @@
         userInfo: {
             name: null,
             workHours: 0,
+            allWorkHours: 0,
+            allWorkDays: 0,
         },
 
         //2
@@ -85,6 +87,13 @@
                     $("#userInfoName").removeClass("is-invalid");
                     canGo = true;
                     StartVue.saveUserInfo();
+
+                    $('#work-hours, #work-days').attr({
+                        "title": "", "data-original-title": ""
+                    });
+                    $('#work-hours').tooltip('dispose');
+                    $('#work-days').tooltip('dispose');
+                    $('[data-toggle="tooltip"]').tooltip('show');
                 } else {
                     $("#userInfoName").addClass("is-invalid");
                     canGo = false;
@@ -150,7 +159,6 @@
             $(".sw-btn-next").parent().removeClass("btn-group").addClass("d-inline-flex align-items-center");
             $(".sw-btn-next").removeClass("btn-secondary").addClass("btn-primary").before($("#button-skip"));
             $(".sw-btn-next").after($("#button-finish"));
-
         }, 100);
 
         //todo set timeline
@@ -166,6 +174,7 @@
         });
         $("#section-description, #choose-area, #show-on-the-main-page, #limit-comment, #goal-comment, #gaol-is-finish").hide();
         $(".layout-sidenav-toggle").remove();
+        $(".isCashback-section").remove();
     },
     methods: {
         skip: function () {
@@ -206,6 +215,7 @@
                         this.isSaving = false;
                         this.userInfo = result.userInfo;
                     }
+                    $('[data-toggle="tooltip"]').tooltip('show');
                     return true;
                 },
                 error: function (xhr, status, error) {
@@ -297,6 +307,7 @@
                 this.areas[section.areaID].sections.push(section);
             } else {
                 this.areas[section.areaID].sections.splice(this.areas[section.areaID].sections.findIndex(x => x.id == section.id), 1);
+                $('[data-toggle="tooltip"]').tooltip('dispose');
             }
         },
         selectAllSections: function () {
@@ -563,6 +574,11 @@
         selectColumn: function (column) {
             if (column.id != -7777) {
                 this.column = column;
+            }
+        },
+        removeColumnName: function (templateColumn) {
+            if (templateColumn.name == 'Новая колонка') {
+                templateColumn.name = '';
             }
         },
         templateOnSelectedSection: function (section) {

@@ -581,6 +581,12 @@ namespace MyProfile.Budget.Service
 
             cache.Remove(typeof(Entity.ModelView.Account.AccountShortViewModel).Name + "_" + currentUser.ID);
 
+            if (currentUser.IsHelpRecord)
+            {
+                currentUser.IsHelpRecord = false;
+                await UserInfo.AddOrUpdate_Authenticate(currentUser);
+            }
+
             return true;
         }
 

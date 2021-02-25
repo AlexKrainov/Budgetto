@@ -1,5 +1,4 @@
-﻿using MyProfile.Entity.ModelView.User;
-using System;
+﻿using System;
 
 namespace MyProfile.Entity.ModelView
 {
@@ -11,6 +10,10 @@ namespace MyProfile.Entity.ModelView
         public bool IsAvailable { get; set; }
         public int AllWorkHours { get; set; }
         public int AllWorkDays { get; set; }
+        /// <summary>
+        /// Doesn't have any records
+        /// </summary>
+        public bool IsHelpRecord { get; set; }
 
         public UserInfoModel()
         {

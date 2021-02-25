@@ -3,7 +3,7 @@
      v-show="limit.isShow">
     <div class="card ui-bordered custom-card-hover mb-2"
          v-bind:id="'limit_'+limit.id"
-         v-bind:class="limit.percent1 == 100 ? 'red-bottom-line' : ''">
+         v-bind:class="limit.percent1 > 100 ? 'callout-danger' : ''">
         @*<h6 class="card-header with-elements border-0 pr-0 pb-0" style="margin-left: -7px;">
                 <div class="card-header-title">{{ limit.name }}</div>
                 <div class="card-header-elements ml-auto">
@@ -33,14 +33,19 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" id="sales-dropdown-menu" style="">
                             <a class="dropdown-item" href="javascript:void(0)"
-                               v-on:click="showLimitHistory(limit.id)">Показать историю</a>
+                               v-on:click="showLimitHistory(limit.id)">Посмотреть историю</a>
                             <a class="dropdown-item" href="javascript:void(0)"
                                v-on:click="hideLimit(limit.id)">Скрыть с этой страницы</a>
                         </div>
                     </div>
                 </div>
                 <div class="mb-1 ">{{ getCurrencyValue(limit.spendedMoney) }} / {{ getCurrencyValue(limit.limitMoney) }}</div>
-                <div class="small text-muted">{{ limit.text }} {{ getCurrencyValue(limit.leftMoneyInADay) }} </div>
+                <div class="small text-muted">
+                    {{ limit.text }} {{ getCurrencyValue(limit.leftMoneyInADay) }}
+                    <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                       v-show="limit.percent1 <= 100"
+                       title="Высчитывается из расчета оставшихся дней в этом месяце.<br/> [Лимит] - [Сколько потратили] / [Количество дней, оставшихся в этом месяце]"></i>
+                </div>
             </div>
             <div class="d-flex align-items-center position-relative " style="height:60px;width: 60px;">
                 <div class="w-100 position-absolute" style="height:60px;top:0;">

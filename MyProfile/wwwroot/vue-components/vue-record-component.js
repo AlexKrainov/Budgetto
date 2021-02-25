@@ -64,16 +64,16 @@
                         <div class="form-row">
                             <div class="form-group col-12 col-sm-12 col-md-6">
                                 <div class="row records" v-for="record in records" v-show="record.isCorrect">
-                                    <div class="col-1 col-sm-1 col-md-1 px-0 pl-3 mr-2">
+                                    <div class="col-1 col-sm-1 col-md-1 px-0 pl-3 mr-2" >
                                         <span class="ui-icon ui-feed-icon-min bg-success text-white">{{record.account.currencyIcon}}</span>
-                                        <img class="ui-payment-small cursor-pointer dropdown-toggle" data-toggle="dropdown" alt=""
-                                            v-show="record.account.accountType != 1 && record.account.bankImage"
+                                        <img class="ui-payment-small cursor-pointer dropdown-toggle" data-toggle="dropdown" 
+                                            v-if="record.account.accountType != 1 && record.account.bankImage"
                                             v-bind:src="record.account.bankImage" 
-                                            v-bind:title="record.account.name">
+                                            data-placement="left" data-toggle-second="tooltip" v-bind:title="record.account.name"/>
                                         <i class="text-xlarge cursor-pointer mt-1" data-toggle="dropdown"
-                                            v-show="record.account.accountType == 1 || (record.account.accountType != 1 && !record.account.bankImage)" 
+                                            v-if="record.account.accountType == 1 || (record.account.accountType != 1 && !record.account.bankImage)" 
                                             v-bind:class="record.account.accountIcon"
-                                            v-bind:title="record.account.name"></i>
+                                            data-placement="left" data-toggle-second="tooltip" v-bind:title="record.account.name"></i>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item"
                                                href="javascript:void(0)"
@@ -378,8 +378,17 @@
                 el.money = total;
                 el.tag = item.value;
                 el.isCorrect = isCorrect;
-
             }
+
+            setTimeout(function () {
+                if (UserInfo.IsHelpRecord) {
+                    $('[data-toggle-second="tooltip"]')
+                        .attr('title', 'Для сменя счета нажмите на иконку/картинку')
+                        .tooltip('show');
+                } else {
+                    $('[data-toggle-second="tooltip"]').tooltip();
+                }
+            }, 500);
         },
         //keydownTagify: function (event) {
         //    console.log(event.detail.originalEvent.key);
@@ -732,17 +741,17 @@
                                     console.log(e);
                                 }
                                 // this.after_save_callback = null;
-                            } else if (typeof (this.after_save_callback) === "object" ) { //Array
+                            } else if (typeof (this.after_save_callback) === "object") { //Array
                                 try {
                                     for (var i = 0; i < this.after_save_callback.length; i++) {
                                         if (typeof (this.after_save_callback[i]) === "function") {
 
-                                        if (this.after_save_callback_args != undefined) {
-                                            this.after_save_callback[i].call(this, this.after_save_callback_args);
-                                            //this.after_save_callback_args = undefined
-                                        } else {
-                                            this.after_save_callback[i].call(this, result.budgetRecord.dateTimeOfPayment);
-                                        }
+                                            if (this.after_save_callback_args != undefined) {
+                                                this.after_save_callback[i].call(this, this.after_save_callback_args);
+                                                //this.after_save_callback_args = undefined
+                                            } else {
+                                                this.after_save_callback[i].call(this, result.budgetRecord.dateTimeOfPayment);
+                                            }
                                         } else if (typeof (this.after_save_callback[i]) === "string") {
                                             let callback = window.getFunctionFromString(this.after_save_callback[i]);
 
@@ -774,6 +783,8 @@
                         }
 
                         this.loadTags();
+
+                        UserInfo.IsHelpRecord = false;
 
                         return result;
                     },

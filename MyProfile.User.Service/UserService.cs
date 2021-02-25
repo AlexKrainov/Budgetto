@@ -116,7 +116,7 @@ namespace MyProfile.User.Service
                     AllWorkHours = 0,
                     AllWorkDays = 0
                 };
-            } 
+            }
             #endregion
 
             return user;
@@ -163,6 +163,7 @@ namespace MyProfile.User.Service
                      SaltPassword = x.SaltPassword,
                      Currency = x.Currency,
                      IsAvailable = x.Payment.DateFrom <= now && x.Payment.DateTo >= now,
+                     IsHelpRecord = x.BudgetRecords.Count() == 0,
                      Payment = new Payment
                      {
                          DateFrom = x.Payment.DateFrom,
@@ -211,7 +212,6 @@ namespace MyProfile.User.Service
                          IsShowConstructor = x.UserSettings.IsShowConstructor,
                          IsShowCookie = x.UserSettings.IsShowCookie,
                      },
-
                  })
                  .FirstOrDefaultAsync();
 

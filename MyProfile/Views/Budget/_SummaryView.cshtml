@@ -109,7 +109,7 @@
                         <div class="text-muted small">{{ account.name }}</div>
                         <div v-show="account.isPast == false"
                              v-bind:class="account.balance < 0 ? 'text-danger' : ''">
-                            <span class="text-xlarge">
+                            <span class="text-large">
                                 {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
                             </span>
                             <span class="float-right text-success"

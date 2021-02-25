@@ -138,6 +138,7 @@ INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (10, N'Совкомбанк', '
 INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (11, N'Росбанк', '/resources/banks/ros.svg')
 INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (12, N'Райффайзенбанк', '/resources/banks/rasf.svg')
 INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (13, N'Ситибанк', '/resources/banks/citi.svg')
+INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (2500, N'Другой банк', '/resources/banks/bank.svg')
 
 SET IDENTITY_INSERT [Banks] OFF
 GO

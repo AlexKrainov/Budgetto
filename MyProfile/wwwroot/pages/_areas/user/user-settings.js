@@ -19,9 +19,9 @@ var UserSettingsVue = new Vue({
         user: {
             userSettings: {},
             payment: {},
-            earningsPerHour: {},
             imageBase64: null
         },
+        earningsPerHour: {},
         oldTheme: "",
         oldEmail: null,
         newPassword: null,
@@ -77,6 +77,7 @@ var UserSettingsVue = new Vue({
                     UserSettingsVue.user = result.user;
                     UserSettingsVue.oldTheme = result.user.userSettings.webSiteTheme;
                     UserSettingsVue.oldEmail = result.user.email;
+                    UserSettingsVue.earningsPerHour = result.user.earningsPerHour;
 
                     UserSettingsVue.refreshCollectiveList();
                     UserSettingsVue.checkOffers();
@@ -351,7 +352,7 @@ var UserSettingsVue = new Vue({
                 type: "POST",
                 url: "/Identity/Account/SaveUserStatistic",
                 contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(this.user.earningsPerHour),
+                data: JSON.stringify(this.earningsPerHour),
                 dataType: 'json',
                 context: this,
                 success: function (response) {
@@ -373,13 +374,13 @@ var UserSettingsVue = new Vue({
         checkStatisticsForm: function () {
             let isOk = true;
 
-            if (!(this.user.earningsPerHour.allWorkHours && this.user.earningsPerHour.allWorkHours > -1)) {
+            if (!(this.earningsPerHour.allWorkHours && this.earningsPerHour.allWorkHours > -1)) {
                 isOk = false;
                 $("#work-hours").addClass("is-invalid");
             } else {
                 $("#work-hours").removeClass("is-invalid");
             }
-            if (!(this.user.earningsPerHour.allWorkDays && this.user.earningsPerHour.allWorkDays > -1)) {
+            if (!(this.earningsPerHour.allWorkDays && this.earningsPerHour.allWorkDays > -1)) {
                 isOk = false;
                 $("#work-days").addClass("is-invalid");
             } else {

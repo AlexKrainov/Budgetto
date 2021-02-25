@@ -117,6 +117,7 @@ namespace MyProfile.Identity
                 LastName = currentUser.LastName,
                 UserType = currentUser.UserType.CodeName,
                 IsAvailable = currentUser.IsAvailable,
+                IsHelpRecord = currentUser.IsHelpRecord,
                 Payment = new PaymentClientSide
                 {
                     DateFrom = currentUser.Payment.DateFrom,

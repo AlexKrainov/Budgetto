@@ -25,6 +25,7 @@ namespace MyProfile.Entity.ModelView.User
         public PaymentClientSide Payment { get; set; }
         public Guid ID { get; set; }
         public Guid UserSessionID { get; set; }
+        public bool IsHelpRecord { get; set; }
     }
 
     public class UserSettingsClientSide

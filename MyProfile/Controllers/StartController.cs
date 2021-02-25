@@ -53,6 +53,7 @@ namespace MyProfile.Controllers
         public IActionResult Index()
         {
             var currentUser = UserInfo.Current;
+
             if (currentUser.UserSettings.IsShowConstructor)
             {
                 var goals = repository.GetAll<MyProfile.Entity.Model.Goal>(x => x.UserID == currentUser.ID && x.IsCreatedByConstructor).ToList();
@@ -86,10 +87,10 @@ namespace MyProfile.Controllers
             var currentUser = UserInfo.Current;
             int allWorkHours = 0;
 
-            var userSummary =repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
-                      && x.SummaryID == (int)SummaryType.EarningsPerHour
-                      && x.IsActive
-                      && x.Value != null)
+            var userSummary = repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
+                       && x.SummaryID == (int)SummaryType.EarningsPerHour
+                       && x.IsActive
+                       && x.Value != null)
                  .FirstOrDefault();
 
             if (userSummary != null && int.TryParse(userSummary.Value, out int hours))
@@ -97,7 +98,7 @@ namespace MyProfile.Controllers
                 allWorkHours = hours;
             }
 
-            return Json(new { isOk = true, userInfo = new { name = currentUser.Name, allWorkHours } });
+            return Json(new { isOk = true, userInfo = new { name = currentUser.Name, allWorkHours, allWorkDays = 0 } });
         }
         [HttpPost]
         public async Task<IActionResult> SaveUserInfo([FromBody] UserInfoModel userInfo)
@@ -141,6 +142,7 @@ namespace MyProfile.Controllers
                             Name = section.Name,
                             SectionTypeID = section.SectionTypeID,
                             IsCreatedByConstructor = true,
+                            IsCashback = true,
                         });
                     }
 
@@ -183,7 +185,7 @@ namespace MyProfile.Controllers
 
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step2_Sections, errorLogIDs: errorLogCreateIDs);
 
-            return Json(new { isOk = true, sections =  sectionService.GetAllSectionForRecords() });
+            return Json(new { isOk = true, sections = sectionService.GetAllSectionForRecords() });
         }
 
         [HttpPost]
@@ -257,7 +259,7 @@ namespace MyProfile.Controllers
 
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step4_Limits, errorLogIDs: errorLogCreateIDs);
 
-            return Json(new { isOk = true, sections =  sectionService.GetAllSectionForRecords() });
+            return Json(new { isOk = true, sections = sectionService.GetAllSectionForRecords() });
         }
 
         [HttpPost]
@@ -283,7 +285,7 @@ namespace MyProfile.Controllers
 
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step5_Goals, errorLogIDs: errorLogCreateIDs);
 
-            return Json(new { isOk = true, sections =  sectionService.GetAllSectionForRecords() });
+            return Json(new { isOk = true, sections = sectionService.GetAllSectionForRecords() });
         }
 
         public async Task<IActionResult> Finish()
@@ -330,6 +332,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeName = "Расходы",
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -348,6 +351,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -366,6 +370,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -385,6 +390,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -403,6 +409,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -421,6 +428,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -440,6 +448,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -458,6 +467,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -477,6 +487,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -496,6 +507,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -515,6 +527,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -532,6 +545,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -549,6 +563,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -566,6 +581,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -583,6 +599,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -600,6 +617,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -618,6 +636,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -635,6 +654,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -652,6 +672,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -670,6 +691,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -687,6 +709,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
                 new BudgetSectionModelView
                 {
@@ -704,6 +727,7 @@ namespace MyProfile.Controllers
                     IsShow = true,
                     SectionTypeID = (int)SectionTypeEnum.Spendings,
                     SectionTypeName = "Расходы",
+                    IsCashback = true,
                 },
 
                //Доходы
