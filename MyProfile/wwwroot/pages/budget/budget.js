@@ -820,7 +820,7 @@
         getCellFooterActions: function (cellIndex) {
             return `
                 <span class="float-left cell-actions">
-                    <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickFooterCell(${cellIndex})"></i>
+                    <i class="fas fa-history show-history-cell-action pl-1" onclick="BudgetVue.clickFooterCell(${cellIndex})" title="Посмотреть историю"></i>
                 </span>`;
         },
         getCellValue: function (cell, cellIndex, rowIndex) {
@@ -830,12 +830,12 @@
 
                 if (rowIndex >= 0) {
                     if (values.length == 2) {
-                        return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> 
+                        return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)" title="Посмотреть историю"> 
                                 ${values[0]}
                                 <span class="money-muted">,${values[1]}</span>
                             </span> `;
                     } else {
-                        return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
+                        return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)" title="Посмотреть историю"> ${cell.value}</span>`;
                     }
                 } else {//footer
                     if (values.length == 2) {
@@ -848,7 +848,7 @@
                     }
                 }
             } else {
-                return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)"> ${cell.value}</span>`;
+                return `<span ${generalValue} onclick="BudgetVue.showHistory(${rowIndex}, ${cellIndex},'${cell.currentDate}', event)" title="Посмотреть историю"> ${cell.value}</span>`;
             }
         },
         getHeaderTitle: function (column) {

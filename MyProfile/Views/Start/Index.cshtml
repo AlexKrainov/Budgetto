@@ -100,7 +100,7 @@
                 </div>
                 <br />
                 <div class="form-row col-12 col-sm-12 col-md-4 ">
-                    <label class="form-label">Количество рабочих дней в месяце</label>
+                    <label class="form-label">Количество рабочих дней в месяце (не обязательно)</label>
                     @*<span class="text-danger">*</span>*@
                     <input id="work-days" type="number" class="form-control" min="0" max="31"
                            v-model="userInfo.allWorkDays" required
@@ -110,7 +110,7 @@
                     <small class="form-text text-muted">Нужно, чтобы посчитать ваш доход в день.</small>
                 </div>
                 <div class="form-row col-12 col-sm-12 col-md-4 mt-2">
-                    <label class="form-label">Количество рабочих часов в месяц</label>
+                    <label class="form-label">Количество рабочих часов в месяц (не обязательно)</label>
                     @*<span class="text-danger">*</span>*@
                     <input id="work-hours" type="number" class="form-control" min="0" max="744"
                            v-model="userInfo.allWorkHours" required

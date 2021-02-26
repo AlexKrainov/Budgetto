@@ -821,6 +821,17 @@ namespace MyProfile.Budget.Service
                   IsOwner = x.UserID == currentUserID,
                   UserName = x.User.Name + " " + x.User.LastName,
                   ImageLink = x.User.ImageLink,
+                  Section = new BudgetSectionModelView
+                  {
+                      SectionTypeID = x.BudgetSection.SectionTypeID,
+                      AreaID = x.BudgetSection.BudgetAreaID,
+                      AreaName = x.BudgetSection.BudgetArea.Name,
+                      Name = x.BudgetSection.Name,
+                      ID = x.BudgetSectionID,
+                      CssIcon = x.BudgetSection.CssIcon,
+                      CssBackground = x.BudgetSection.CssBackground,
+                      CssColor = x.BudgetSection.CssColor,
+                  },
                   Account = x.AccountID == null ? null : new AccountModelView
                   {
                       AccountType = x.Account.AccountTypeID,

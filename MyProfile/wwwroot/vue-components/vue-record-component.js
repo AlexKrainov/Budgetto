@@ -1,7 +1,7 @@
 ﻿Vue.component("vue-record-component", {
     template: `<div class="row" v-bind:id="id" v-bind:name="name">
     <div class="modal modal-top fade" id="modal-record">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg" style="max-width: 65rem;">
             <article class="modal-content">
                 <div class="modal-header py-2">
                     <h5 class="modal-title">
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-12 col-sm-12 col-md-6">
+                            <div class="col-12 col-sm-12 col-md-7">
                                 <div class="row records" v-for="record in records" v-show="record.isCorrect">
                                     <div class="col-1 col-sm-1 col-md-1 px-0 pl-3 mr-2" >
                                         <span class="ui-icon ui-feed-icon-min bg-success text-white">{{record.account.currencyIcon}}</span>
@@ -84,7 +84,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-5 col-sm-5 col-md-5 mb-3 mt-1 record-item">
+                                    <div class="col-5 col-sm-5 col-md-5 mb-3 mt-1 pl-0 record-item">
                                         <a href="javascript:void(0)"
                                            class="a-hover font-weight-bold font-size-large"
                                            v-bind:class="selectedRecord == record ? 'text-primary' : 'text-secondary'"
@@ -97,17 +97,29 @@
                                             <span v-on:click="selectedRecord = record">+ <i class="far fa-comment"></i></span>
                                         </span> -->
                                     </div>
-                                    <div class="col-6 col-sm-6 col-md-5 mb-3 mt-1 text-right">
-                                        <span class="text-muted">{{ record.sectionName }} </span>
-                                        <span class="fa fa-trash remove-section-icon cursor-pointer ml-1"
-                                              v-on:click="record.sectionID = -1; record.sectionName = '';"
-                                              v-show="record.sectionName"></span>
-                                        <span class="text-danger"
-                                              v-show="isErrorSelectSection && !record.sectionName"><i class="ion ion-ios-alert"></i> Не выбрана категория</span>
+                                    <div class="col-6 col-sm-6 col-md-5 mb-3 mt-1 pr-0">
+                                        <div class="cards cards-small float-right d-inline-flex align-items-center">
+                                            <div class="card-section card selected-section"
+                                                v-show="record.sectionID > 0"
+                                                v-bind:style="'color: '+ record.section.cssColor +';background-color: '+ record.section.cssBackground"> 
+                                                <div class="cards-container d-flex align-items-center">
+                                                <i class="icon-large opacity-75"
+                                                    v-bind:class="record.section.cssIcon"></i> 
+                                                    <div class="card-section-text ml-2">
+                                                        <div class="section-name">{{ record.section.name }}</div> 
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        <span class="fa fa-trash remove-section-icon cursor-pointer ml-1" style="margin-top: -5px;"
+                                              v-on:click="record.sectionID = -1; record.sectionName = ''; record.section = {}"
+                                              v-show="record.sectionID > 0"></span>
+                                        </div>
+                                        <span class="text-danger float-right"
+                                              v-show="isErrorSelectSection && record.sectionID <= 0"><i class="ion ion-ios-alert"></i> Не выбрана категория</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group col-12 col-sm-12 col-md-6">
+                            <div class="form-group col-12 col-sm-12 col-md-5">
                                 <vue-section-component data-search-id="searchSection"
                                                        data-records-style="max-height: 200px; overflow-x: auto;"
                                                        data-class="cards-small"
@@ -366,6 +378,7 @@
                     tags: [],
                     accountID: this.accountByDefault.id,
                     account: JSCopyObject(this.accountByDefault),
+                    section: {},
                 };
 
                 this.records.push(newRecords);
@@ -873,7 +886,12 @@
 
             if (record) {
                 record.sectionID = section.id;
-                record.sectionName = section.name
+                //record.sectionName = section.name;
+
+                //record.cssIcon = section.cssIcon;
+                //record.cssBackground = section.cssBackground;
+                //record.cssColor = section.cssColor;
+                record.section = section;
 
                 this.selectedRecord = record;
                 this.topTagIDsBySection = section.tags;

@@ -125,14 +125,14 @@
                     <!-- registration -->
                     <form class="my-5" method="post" v-show="registration.isShow">
                         <div class="form-group">
-                            <label class="form-label">Почта</label>
+                            <label class="form-label">Введите почту</label>
                             <input type="text" class="form-control" v-model="email" tabindex="1"
                                    v-bind:class="isValidEmail ? '' : 'is-invalid'">
                             <small class="invalid-feedback">Пожалуйста, введите корректный адрес электронной почты.</small>
                         </div>
                         <div class="form-group">
                             <label class="form-label d-flex justify-content-between align-items-end">
-                                <div>Пароль</div>
+                                <div>Придумайте пароль</div>
                                 @*<a href="javascript:void(0)" class="d-block small" v-on:click="changeView(login.id, recoveryPassword.id)">Забыли пароль?</a>*@
                             </label>
                             <div class="input-group">

@@ -757,7 +757,7 @@ html.dark-style .tagify__input::before {
 .ui-feed-icon-min {
     position: absolute;
     top: -5px;
-    right: -19px;
+    right: -4px;
     width: 16px;
     height: 15px;
     border: 1px;

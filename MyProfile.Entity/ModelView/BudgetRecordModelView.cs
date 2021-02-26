@@ -49,8 +49,9 @@ namespace MyProfile.Entity.ModelView
         public string CssColor { get; set; }
         public int? SectionTypeID { get; set; }
         public int? AccountID { get; set; }
-        public AccountModelView Account { get; set; }
         public decimal Cashback { get; set; }
+        public AccountModelView Account { get; set; }
+        public BudgetSectionModelView Section { get; set; }
     }
 
     /// <summary>

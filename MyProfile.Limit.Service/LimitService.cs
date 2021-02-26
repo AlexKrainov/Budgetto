@@ -195,19 +195,6 @@ namespace MyProfile.Limit.Service
                 totalDays = 1 + (finish - start).Days;
 
                 isThis = finish.Month == now.Month && finish.Year == now.Year;// month/year
-
-                if (isThis)
-                {
-                    text = "Примерно осталось расходов в день:";
-                }
-                else if (isPast)
-                {
-                    text = "Примерно было расходов в день:";
-                }
-                else
-                {
-                    text = "Примерно возможных расходов в день:";
-                }
             }
             else if (periodTypesEnum == PeriodTypesEnum.Year)
             {
@@ -215,25 +202,42 @@ namespace MyProfile.Limit.Service
                 totalDays = 12;
 
                 isThis = finish.Year == now.Year;// month/year
-
-                if (isThis)
-                {
-                    text = "Примерно осталось расходов в месяц:";
-                    totalDays = finish.Month - now.Month + 1;
-                }
-                else if (isPast)
-                {
-                    text = "Примерно было расходов в месяц:";
-                }
-                else
-                {
-                    text = "Примерно возможных расходов в месяц:";
-                }
             }
 
             for (int i = 0; i < limits.Count; i++)
             {
                 var limit = limits[i];
+
+                if (periodTypesEnum == PeriodTypesEnum.Month)
+                {
+                    if (isThis)
+                    {
+                        text = "Примерно осталось расходов в день:";
+                    }
+                    else if (isPast)
+                    {
+                        text = "Примерно было расходов в день:";
+                    }
+                    else
+                    {
+                        text = "Примерно возможных расходов в день:";
+                    }
+                }
+                else if (periodTypesEnum == PeriodTypesEnum.Year)
+                {
+                    if (isThis)
+                    {
+                        text = "Примерно осталось расходов в месяц:";
+                    }
+                    else if (isPast)
+                    {
+                        text = "Примерно было расходов в месяц:";
+                    }
+                    else
+                    {
+                        text = "Примерно возможных расходов в месяц:";
+                    }
+                }
 
                 var filter = new Entity.ModelView.CalendarFilterModels
                 {
