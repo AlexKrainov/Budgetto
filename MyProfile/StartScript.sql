@@ -151,5 +151,11 @@ INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpre
 VALUES (2,'SetDoneToReminderDates', 'New', 'SetDoneToReminderDates', '0 0 1 * * ?', 'Every day at 1am')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (3,'CurrencyHistoryTask', 'New', 'CurrencyHistoryTask', '0 0 * ? * *', 'Every hour')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (4,'ResetHubConnectTask', 'New', 'ResetHubConnectTask','0 0 4 * * ?', 'Every day at 4am')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (5,'NotificationLimitCheckerTask', 'New', 'NotificationLimitCheckerTask','0/30 * * ? * * *', 'Every 30 seconds')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (6,'NotificationLimitSiteTask', 'New', 'NotificationLimitSiteTask','0/17 * * ? * * *', 'Every 17 seconds')
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF

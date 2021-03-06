@@ -12,18 +12,21 @@ using LinqKit;
 using MyProfile.Budget.Service;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
+using MyProfile.Entity.ModelView.Notification.Task;
+using MyProfile.Entity.ModelView.Notification;
+using Common.Service;
 
 namespace MyProfile.Limit.Service
 {
     public class LimitService
     {
-        private IBaseRepository repository;
+        private BaseRepository repository;
         private CollectionUserService collectionUserService;
         private BudgetRecordService budgetRecordService;
         private SectionService sectionService;
         private UserLogService userLogService;
 
-        public LimitService(IBaseRepository repository,
+        public LimitService(BaseRepository repository,
             CollectionUserService collectionUserService,
             SectionService sectionService,
             BudgetRecordService budgetRecordService)
@@ -68,6 +71,53 @@ namespace MyProfile.Limit.Service
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Create);
             }
 
+            if (limit.Notifications.Any())
+            {
+                var now = DateTime.Now;
+                NotificationUpdater notificationUpdater = new NotificationUpdater(repository);
+                try
+                {
+                    var anyChanges = await notificationUpdater.CreateOrUpdate<Entity.Model.Limit>(limit.Notifications, limit.ID, currentUser.ID);
+
+                    #region Force checke
+                    if (anyChanges)
+                    {
+                        var limitNotifications = repository.GetAll<Notification>(x =>
+                                               x.NotificationTypeID == (int)NotificationType.Limit
+                                               && x.LimitID == limit.ID
+                                               && x.IsReady == false
+                                               && x.IsDone == false)
+                                               .Select(x => new TaskNotificationLimit
+                                               {
+                                                   NotificationID = x.ID,
+                                                   LimitID = x.LimitID,
+                                                   PeriodTypeID = x.Limit.PeriodTypeID,
+                                                   LimitMoney = x.Total ?? 0,
+                                                   UserID = x.UserID,
+                                                   IsAllowCollectiveBudget = x.User.IsAllowCollectiveBudget,
+                                                   SectionIDs = x.Limit.SectionGroupLimits
+                                                   .Select(y => y.BudgetSectionID)
+                                                   .ToList(),
+                                               })
+                                               .ToList();
+
+                        DateTime start = new DateTime(now.Year, now.Month, 01, 00, 00, 00);
+                        DateTime finish = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59);
+
+                        foreach (var taskNotificationLimit in limitNotifications)
+                        {
+                            await CheckLimit(start, finish, taskNotificationLimit);
+
+                        }
+                    }
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+                    await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "LimitService_UpdateOrCreate", ex);
+                }
+            }
+
             return await repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.ID == limit.ID)
                 .Select(x => new LimitModelView
                 {
@@ -93,7 +143,16 @@ namespace MyProfile.Limit.Service
                         IsShow_Filtered = true,
                         IsShow = true,
                         AreaName = y.BudgetSection.BudgetArea.Name,
-                    }).ToList()
+                    }).ToList(),
+                    Notifications = x.Notifications != null ?
+                        x.Notifications.Select(y => new NotificationUserViewModel
+                        {
+                            ID = y.ID,
+                            IsMail = y.IsMail,
+                            IsSite = y.IsSite,
+                            IsTelegram = y.IsTelegram,
+                            Price = y.Total ?? 0
+                        }).ToList() : null
                 })
                 .FirstOrDefaultAsync();
         }
@@ -138,8 +197,7 @@ namespace MyProfile.Limit.Service
             //}
             //else
             //{
-            predicate = predicate.And(x => currentUser.ID == x.UserID
-            && x.IsDeleted == false);
+            predicate = predicate.And(x => currentUser.ID == x.UserID && x.IsDeleted == false);
             //}
 
             if (expression != null) { predicate = predicate.And(expression); }
@@ -169,7 +227,16 @@ namespace MyProfile.Limit.Service
                         IsShow_Filtered = true,
                         IsShow = true,
                         AreaName = y.BudgetSection.BudgetArea.Name,
-                    })
+                    }),
+                    Notifications = x.Notifications != null ?
+                        x.Notifications.Select(y => new NotificationUserViewModel
+                        {
+                            ID = y.ID,
+                            IsMail = y.IsMail,
+                            IsSite = y.IsSite,
+                            IsTelegram = y.IsTelegram,
+                            Price = y.Total ?? 0
+                        }).ToList() : null
                 })
                 .ToListAsync();
         }
@@ -243,7 +310,8 @@ namespace MyProfile.Limit.Service
                 {
                     StartDate = start,
                     EndDate = finish,
-                    Sections = limit.Sections.Select(x => x.ID).ToList()
+                    Sections = limit.Sections.Select(x => x.ID).ToList(),
+                    UserID = currentUser.ID
                 };
 
                 filter.IsConsiderCollection = currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective;
@@ -319,6 +387,48 @@ namespace MyProfile.Limit.Service
             }
 
             return limitCharts;
+        }
+
+        public async Task CheckLimit(DateTime start, DateTime finish, TaskNotificationLimit notificationLimit)
+        {
+            var now = DateTime.Now;
+            bool isThis = false;
+
+            if (notificationLimit.PeriodTypeID == (int)PeriodTypesEnum.Month)
+            {
+                isThis = finish.Month == now.Month && finish.Year == now.Year;// month/year
+            }
+            else if (notificationLimit.PeriodTypeID == (int)PeriodTypesEnum.Year)
+            {
+                isThis = finish.Year == now.Year;// month/year
+            }
+
+            var filter = new Entity.ModelView.CalendarFilterModels
+            {
+                StartDate = start,
+                EndDate = finish,
+                Sections = notificationLimit.SectionIDs,
+                UserID = notificationLimit.UserID,
+                IsConsiderCollection = notificationLimit.IsAllowCollectiveBudget
+            };
+
+            if (filter.IsConsiderCollection)
+            {
+                filter.Sections.AddRange(await sectionService.GetCollectionSectionIDsBySectionID(filter.Sections));
+            }
+
+            var totalSpended = await budgetRecordService.GetTotalSpendsForLimitByFilter(filter);
+            var leftMoneyToSpend = notificationLimit.LimitMoney - totalSpended;
+
+            if (isThis && leftMoneyToSpend < 0)
+            {
+                //"Вы превысили лимит на";
+                var notification = repository.GetAll<Notification>(x => x.ID == notificationLimit.NotificationID)
+                                .FirstOrDefault();
+                notification.IsReady = true;
+                notification.IsReadyDateTime = now;
+                repository.Save(); //??
+            }
         }
 
         public async Task<bool> ToggleLimit(int limitID, PeriodTypesEnum periodType)

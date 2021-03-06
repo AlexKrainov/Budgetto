@@ -31,9 +31,11 @@
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="Microsoft.AspNet.SignalR.JS" Version="2.4.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.5.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.5.0" />
@@ -64,6 +66,7 @@
     <ProjectReference Include="..\MyProfile.HelpCenter.Service\MyProfile.HelpCenter.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
     <ProjectReference Include="..\MyProfile.Limit.Service\MyProfile.Limit.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Notification.Service\MyProfile.Notification.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Payment.Service\MyProfile.Payment.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Reminder.Service\MyProfile.Reminder.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Tag.Service\MyProfile.Tag.Service.csproj" />

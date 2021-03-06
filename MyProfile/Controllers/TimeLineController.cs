@@ -36,6 +36,7 @@ namespace MyProfile.Controllers
 
             filter.StartDate = new DateTime(filter.Year, 1, 1, 00, 00, 01);
             filter.EndDate = new DateTime(filter.Year, 12, 31, 23, 59, 59);
+            filter.UserID = UserInfo.Current.ID;
 
             var result = await budgetRecordService.GetBudgetRecordsGroupByDate(filter);
 
@@ -66,9 +67,10 @@ namespace MyProfile.Controllers
         public async Task<JsonResult> LoadingRecordsForCalendar([FromBody] CalendarFilterModels filter)
         {
             IList<BudgetRecordModelView> result = null;
+            filter.UserID = UserInfo.Current.ID;
             try
             {
-                    result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
+                result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
             }
             catch (Exception ex)
             {
@@ -89,7 +91,7 @@ namespace MyProfile.Controllers
 
             filter.StartDate = new DateTime(filter.StartDate.Year, filter.StartDate.Month, filter.StartDate.Day, 0, 0, 0);
             filter.EndDate = new DateTime(filter.EndDate.Year, filter.EndDate.Month, filter.EndDate.Day, 23, 59, 59);
-
+            filter.UserID = currentUser.ID;
             filter.IsConsiderCollection = currentUser.IsAllowCollectiveBudget && currentUser.UserSettings.BudgetPages_WithCollective;
 
             var result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
@@ -130,6 +132,7 @@ namespace MyProfile.Controllers
             filter.StartDate = new DateTime(date.Year, date.Month, date.Day, 00, 00, 01);
             filter.EndDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
             filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
+            filter.UserID = UserInfo.Current.ID;
 
             var result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
 

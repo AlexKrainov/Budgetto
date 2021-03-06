@@ -20,6 +20,10 @@ namespace MyProfile.Entity.Model
         AccountRemoveCachback,
         SetDoneToReminderDates,
         CurrencyHistoryTask,
+        ResetHubConnectTask,
+        NotificationLimitCheckerTask,
+        NotificationLimitSiteTask,
+
         Test,
     }
 

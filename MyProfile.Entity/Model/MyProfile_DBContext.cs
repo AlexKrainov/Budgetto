@@ -20,7 +20,6 @@ namespace MyProfile.Entity.Model
         {
             optionsBuilder.EnableSensitiveDataLogging(true);
             optionsBuilder.UseLazyLoadingProxies();
-
         }
         ////Инициализация БД начальными данными
         ////https://metanit.com/sharp/entityframeworkcore/2.14.php
@@ -254,6 +253,9 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<UserSummarySectionType> UserSummarySectionTypes { get; set; }
         public virtual DbSet<SchedulerTask> SchedulerTasks { get; set; }
         public virtual DbSet<SchedulerTaskLog> SchedulerTaskLogs { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<UserConnect> UserConnects { get; set; }
+        public virtual DbSet<HubConnect> HubConnects { get; set; }
 
     }
 }

@@ -82,14 +82,69 @@
                         </label>
                     </div>
                 }
+
+                <div class="">
+                    <div v-for="notification in limit.notifications"
+                         v-show="notification.isDeleted == false">
+                        <span class="badge badge-warning indicator"
+                              v-show="notification.id < 0">New</span>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center ui-bordered py-3 px-4 mt-3" style=" background-color: #fff;">
+                            <div>
+                                Уведомить меня
+                                <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isSite">На сайте</a>
+                                <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isMail">Почте</a>
+                                <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isTelegram">Телеграм</a><br>
+                                <small class="text-muted">Когда цена достигнет: {{ new Intl.NumberFormat("ru-RU", { style: 'currency', currency: "RUB" }).format(notification.price) }}</small>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <a data-toggle="collapse" class="d-block ml-3 collapsed" aria-expanded="false"
+                                   v-bind:href="'#notification-'+ notification.id">
+                                    <i class="collapse-icon"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card collapse" v-bind:id="'notification-'+ notification.id" style="border-color: rgb(238, 238, 238);">
+                            <div class="card-body">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="notification.isSite">
+                                    <span class="custom-control-label">На сайте</span>
+                                </label>
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="notification.isMail">
+                                    <span class="custom-control-label">Почта</span>
+                                </label>
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="notification.isTelegram">
+                                    <span class="custom-control-label">Телеграм</span>
+                                </label>
+
+                                <div class="form-group">
+                                    <label class="form-label">Когда цена достигнет</label>
+                                    <input type="number" class="form-control" v-model="notification.price">
+                                </div>
+                                <div class="form-group text-right">
+                                    <button type="button" class="btn btn-outline-danger btn-xs"
+                                            v-on:click="removeNotification(notification)">
+                                        Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-xs btn-outline-primary mt-3"
+                            v-on:click="addNotification">
+                        <span class="ion ion-md-add"></span>Добавить уведомление
+                    </button>
+                </div>
+
             </div>
             <div class="modal-footer">
                 @*<div class="form-group" style=" margin-left: 0px; margin-right: auto;" v-show="limit.id">
-            <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="isFinished" v-model="limit.isFinished" name="isFinished">
-                <span class="custom-control-label">Завершить лимит</span>
-            </label>
-        </div>*@
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="isFinished" v-model="limit.isFinished" name="isFinished">
+                            <span class="custom-control-label">Завершить лимит</span>
+                        </label>
+                    </div>*@
                 <button class="btn btn-primary" type="button"
                         v-bind:disabled="isSaving"
                         v-on:click="saveLimit">

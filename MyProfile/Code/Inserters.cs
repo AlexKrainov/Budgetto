@@ -17,9 +17,28 @@ namespace MyProfile.Code
             this.repository = repository;
             now = DateTime.Now;
 
-            InsertSummeries();
+           // InsertNotification();
         }
 
+        private void InsertNotification()
+        {
+
+            //Entity.Model.Notification notification = new Entity.Model.Notification
+            //{
+            //    UserID = Guid.Parse("0820C316-7E24-4469-1943-08D86AC5B6E8"),
+            //    Total = 5000,
+            //    LastChangeDateTime = DateTime.Now,
+            //    ExpirationDateTime = DateTime.Now,
+            //    NotificationTypeID = (int)NotificationType.Limit,
+            //    LimitNotification = new LimitNotification
+            //    {
+            //        LimitID = 13,
+            //    },
+            //};
+
+
+            //repository.Create(notification, true);
+        }
 
         private void InsertSummeries()
         {
@@ -74,7 +93,7 @@ namespace MyProfile.Code
             //        }
             //    });
             //}
-            
+
             //if (!db_summuries.Any(x => x.ID == (int)SummaryType.AllAccountsMoney))
             //{
             //    summaries.Add(new Summary

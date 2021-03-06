@@ -787,7 +787,6 @@ namespace MyProfile.Budget.Service
 
         public async Task<IList<BudgetRecordModelView>> GetBudgetRecordsByFilterAsync(CalendarFilterModels filter)
         {
-            var currentUserID = UserInfo.Current.ID;
             var expression = await getExpressionByCalendarFilterAsync(filter);
 
             return await repository
@@ -818,7 +817,7 @@ namespace MyProfile.Budget.Service
                   CssBackground = x.BudgetSection.CssBackground,
                   CssColor = x.BudgetSection.CssColor,
                   IsShowForCollection = x.IsShowForCollection,
-                  IsOwner = x.UserID == currentUserID,
+                  IsOwner = x.UserID == filter.UserID,
                   UserName = x.User.Name + " " + x.User.LastName,
                   ImageLink = x.User.ImageLink,
                   Section = new BudgetSectionModelView
@@ -1018,7 +1017,6 @@ namespace MyProfile.Budget.Service
 
         private async Task<Expression<Func<Record, bool>>> getExpressionByCalendarFilterAsync(CalendarFilterModels filter)
         {
-            Guid currentUserID = UserInfo.Current.ID;
             var expression = PredicateBuilder.True<Record>();
 
             if (filter.IsConsiderCollection)
@@ -1026,7 +1024,7 @@ namespace MyProfile.Budget.Service
                 List<Guid> allCollectiveUserIDs = await collectionUserService.GetAllCollectiveUserIDsAsync();
                 expression = expression.And(x => allCollectiveUserIDs.Contains(x.UserID));
 
-                var userIDs_withoutCurrent = allCollectiveUserIDs.Where(x => x != currentUserID).ToList();
+                var userIDs_withoutCurrent = allCollectiveUserIDs.Where(x => x != filter.UserID).ToList();
 
                 filter.Sections.AddRange(await repository.GetAll<BudgetSection>(
                     x => userIDs_withoutCurrent.Contains(x.BudgetArea.UserID ?? Guid.Parse("086d7c26-1d8d-4cc7-e776-08d7eab4d0ed"))
@@ -1034,7 +1032,7 @@ namespace MyProfile.Budget.Service
             }
             else
             {
-                expression = expression.And(x => x.UserID == currentUserID);
+                expression = expression.And(x => x.UserID == filter.UserID);
             }
 
             if (filter.IsSection)// by sections
@@ -1047,7 +1045,7 @@ namespace MyProfile.Budget.Service
             }
 
             expression = expression.And(x => filter.StartDate <= x.DateTimeOfPayment && filter.EndDate >= x.DateTimeOfPayment
-                  && (x.UserID != currentUserID ? x.IsShowForCollection : true)
+                  && (x.UserID != filter.UserID ? x.IsShowForCollection : true)
                   && x.IsDeleted == false);
             return expression;
         }

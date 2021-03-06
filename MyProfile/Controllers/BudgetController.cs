@@ -1,9 +1,7 @@
 ﻿using Common.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using MyProfile.Budget.Service;
-using MyProfile.Code;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.ModelView.TemplateModelView;
@@ -11,15 +9,13 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Reminder.Service;
 using MyProfile.Template.Service;
-using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using MyProfile.Hubs;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace MyProfile.Controllers
 {
@@ -32,6 +28,8 @@ namespace MyProfile.Controllers
         private SectionService sectionService;
         private BudgetRecordService budgetRecordService;
         private UserLogService userLogService;
+        private IHubContext<NotificationHub> hubContext;
+
         //private IOptions<ProjectConfig> config;
 
         public BudgetController(IBaseRepository repository,
@@ -40,8 +38,7 @@ namespace MyProfile.Controllers
             SectionService sectionService,
             BudgetRecordService budgetRecordService,
             UserLogService userLogService,
-            CommonService commonService,
-            ReminderService reminderService)
+            IHubContext<NotificationHub> hubContext)
         //,IOptions<ProjectConfig> config)
         {
             this.repository = repository;
@@ -50,7 +47,9 @@ namespace MyProfile.Controllers
             this.sectionService = sectionService;
             this.budgetRecordService = budgetRecordService;
             this.userLogService = userLogService;
+            this.hubContext = hubContext;
             //this.config = config;
+
         }
 
         [HttpGet]

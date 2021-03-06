@@ -54,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProfile.UserLog.Service",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProfile.Tag.Service", "MyProfile.Tag.Service\MyProfile.Tag.Service.csproj", "{FFB2C437-2402-4A7A-BD25-3D5B563D57E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProfile.Notification.Service", "MyProfile.Notification.Service\MyProfile.Notification.Service.csproj", "{B736AF77-617C-438E-8852-D428BBC9072F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -156,6 +158,10 @@ Global
 		{FFB2C437-2402-4A7A-BD25-3D5B563D57E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFB2C437-2402-4A7A-BD25-3D5B563D57E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFB2C437-2402-4A7A-BD25-3D5B563D57E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B736AF77-617C-438E-8852-D428BBC9072F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B736AF77-617C-438E-8852-D428BBC9072F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B736AF77-617C-438E-8852-D428BBC9072F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B736AF77-617C-438E-8852-D428BBC9072F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +186,7 @@ Global
 		{95A496F8-E378-42AA-9F79-51FBF59D2E4B} = {5ED48161-2D54-4561-8227-A38A0B11F91C}
 		{E63C1E51-5BC3-4003-939B-1C49565027BD} = {5ED48161-2D54-4561-8227-A38A0B11F91C}
 		{FFB2C437-2402-4A7A-BD25-3D5B563D57E6} = {5ED48161-2D54-4561-8227-A38A0B11F91C}
+		{B736AF77-617C-438E-8852-D428BBC9072F} = {5ED48161-2D54-4561-8227-A38A0B11F91C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0BFCF594-C456-498B-A0CC-0D1DD1335CDD}

@@ -34,10 +34,12 @@ namespace MyProfile.Entity.Model
 		public virtual VisibleElement VisibleElement { get; set; }
 
 		public virtual ICollection<SectionGroupLimit> SectionGroupLimits { get; set; }
+		public virtual ICollection<Notification> Notifications { get; set; }
 
 		public Limit()
 		{
 			this.SectionGroupLimits = new HashSet<SectionGroupLimit>();
+			this.Notifications = new HashSet<Notification>();
 		}
 
 	}

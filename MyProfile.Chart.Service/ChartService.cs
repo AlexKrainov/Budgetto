@@ -289,6 +289,7 @@ namespace MyProfile.Chart.Service
                                 {
                                     chartLine.Data[_data.Key] = await budgetRecordService.GetTotalSpendsForLimitByFilter(new Entity.ModelView.CalendarFilterModels
                                     {
+                                        UserID = currentUser.ID,
                                         StartDate = new DateTime(start.Year, _data.Key, 01, 00, 00, 00),
                                         EndDate = new DateTime(start.Year, _data.Key, DateTime.DaysInMonth(start.Year, _data.Key), 23, 59, 59),
                                         Sections = fieldItem.Sections.ToList()
@@ -326,7 +327,8 @@ namespace MyProfile.Chart.Service
                             {
                                 StartDate = start,
                                 EndDate = finish,
-                                Sections = fieldItem.Sections.ToList()
+                                Sections = fieldItem.Sections.ToList(),
+                                UserID = currentUser.ID,
                             })); //<-- 1100 ElapsedMilliseconds
 
                             //chartPie.Data.Add(dataGroupBySection.Where(x => fieldItem.Sections.Contains(x.Key)).Sum(y => y.Sum(p => p.Total))); //<-- 3600 ElapsedMilliseconds
@@ -394,7 +396,7 @@ namespace MyProfile.Chart.Service
                 })
                 .ToListAsync();
         }
-        
+
         public async Task<List<ChartEditModel>> GetLightChartListView(Expression<Func<Chart, bool>> expression = null)
         {
             var currentUser = UserInfo.Current;

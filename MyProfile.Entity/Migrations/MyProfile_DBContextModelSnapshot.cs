@@ -750,6 +750,26 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("HelpMenus");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.HubConnect", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ConnectionID")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DateConnect");
+
+                    b.Property<Guid>("UserConnectID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserConnectID");
+
+                    b.ToTable("HubConnects");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.IPSetting", b =>
                 {
                     b.Property<int>("ID")
@@ -879,6 +899,59 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("ChatUserID");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Notification", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("ExpirationDateTime");
+
+                    b.Property<string>("Icon")
+                        .HasMaxLength(64);
+
+                    b.Property<bool>("IsDone");
+
+                    b.Property<bool>("IsMail");
+
+                    b.Property<bool>("IsRead");
+
+                    b.Property<bool>("IsReady");
+
+                    b.Property<DateTime?>("IsReadyDateTime");
+
+                    b.Property<bool>("IsSent");
+
+                    b.Property<bool>("IsSite");
+
+                    b.Property<bool>("IsTelegram");
+
+                    b.Property<DateTime>("LastChangeDateTime");
+
+                    b.Property<int?>("LimitID");
+
+                    b.Property<int>("NotificationTypeID");
+
+                    b.Property<DateTime?>("ReadDateTime");
+
+                    b.Property<int?>("ReminderID");
+
+                    b.Property<decimal?>("Total")
+                        .HasColumnType("Money");
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LimitID");
+
+                    b.HasIndex("ReminderID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Payment", b =>
@@ -1712,6 +1785,21 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.UserConnect", b =>
+                {
+                    b.Property<Guid>("UserID");
+
+                    b.Property<string>("TelegramKey")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("TelegramLogin")
+                        .HasMaxLength(64);
+
+                    b.HasKey("UserID");
+
+                    b.ToTable("UserConnects");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.UserErrorLog", b =>
                 {
                     b.Property<int>("ID")
@@ -2284,6 +2372,14 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("UserID");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.HubConnect", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.UserConnect", "UserConnect")
+                        .WithMany("HubConnects")
+                        .HasForeignKey("UserConnectID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.PeriodType", "PeriodType")
@@ -2324,6 +2420,22 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.ChatUser", "ChatUser")
                         .WithMany()
                         .HasForeignKey("ChatUserID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Notification", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Limit", "Limit")
+                        .WithMany("Notifications")
+                        .HasForeignKey("LimitID");
+
+                    b.HasOne("MyProfile.Entity.Model.Reminder", "Reminder")
+                        .WithMany()
+                        .HasForeignKey("ReminderID");
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentHistory", b =>
@@ -2588,6 +2700,14 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.UserType", "UserType")
                         .WithMany()
                         .HasForeignKey("UserTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.UserConnect", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithOne("UserConnect")
+                        .HasForeignKey("MyProfile.Entity.Model.UserConnect", "UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

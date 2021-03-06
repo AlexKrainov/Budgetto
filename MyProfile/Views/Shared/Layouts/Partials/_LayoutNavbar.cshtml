@@ -84,12 +84,12 @@
                     <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
                 </a>
                 @if (this.Context.Request.Path == "/"
-                || this.Context.Request.Path.Value.Contains("/Budget/Month")
-                || this.Context.Request.Path.Value.Contains("/Budget/Year"))
+      || this.Context.Request.Path.Value.Contains("/Budget/Month")
+      || this.Context.Request.Path.Value.Contains("/Budget/Year"))
                 {
                     <div class="dropdown-menu dropdown-menu-right">
                         @if (this.Context.Request.Path == "/"
-                       || this.Context.Request.Path.Value.Contains("/Budget/Month"))
+             || this.Context.Request.Path.Value.Contains("/Budget/Month"))
                         {
                             <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-record">
                                 <i class="fas fa-route text-large"></i> &nbsp; Тур по добавлению записи
@@ -237,29 +237,41 @@
             </a>*@
 
 
-        @*<div class="navbar-notifications nav-item dropdown mr-lg-3">
-                <a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">
-                    <i class="ion ion-md-notifications-outline navbar-icon align-middle"></i>
-                    <span class="badge badge-primary badge-dot indicator"></span>
-                    <span class="d-lg-none align-middle">&nbsp; Notifications</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <div class="bg-primary text-center text-white font-weight-bold p-3">
-                        4 New Notifications
-                    </div>
-                    <div class="list-group list-group-flush">
-                        <a href="javascript:void(0)" class="list-group-item list-group-item-action media d-flex align-items-center">
-                            <div class="ui-icon ui-icon-sm ion ion-md-home bg-secondary border-0 text-white"></div>
-                            <div class="media-body line-height-condenced ml-3">
-                                <div class="text-body">Login from 192.168.1.1</div>
-                                <div class="text-light small mt-1">
-                                    Aliquam ex eros, imperdiet vulputate hendrerit et.
-                                </div>
-                                <div class="text-light small mt-1">12h ago</div>
+        <div class="navbar-notifications nav-item dropdown mr-lg-3" id="notification-vue">
+            <a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown"
+               v-on:click="openNotification">
+                <i class="ion ion-md-notifications-outline navbar-icon align-middle"></i>
+                @*<span class="badge badge-primary badge-dot indicator"
+                    v-show="anyNew"></span>*@
+                <span class="badge badge-primary indicator"
+                      v-show="anyNew">{{ notifications.filter(x => x.isRead == false).length }}</span>
+                <span class="d-lg-none align-middle">&nbsp; Уведомления</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <div class="bg-primary text-center text-white font-weight-bold p-3">
+                    <span style="visibility: hidden;">
+                        12 новых уведомления
+                    </span>
+                </div>
+                <div class="list-group list-group-flush" style="max-height: 400px; overflow-x: auto;">
+                    <a href="javascript:void(0)" class="list-group-item list-group-item-action media d-flex align-items-center"
+                       v-for="notification in notifications">
+                        <div class="ui-icon ui-icon-sm border-0 text-white"
+                             v-bind:class="[notification.icon, notification.color ]"></div>
+                        <div class="media-body line-height-condenced ml-3">
+                            <div class="text-body">
+                                {{ notification.title }}
+                                <span href="javascript:void(0)" class="badge badge-primary ml-2"
+                                      v-show="notification.isRead == false">Новая</span>
                             </div>
-                        </a>
+                            <div class="text-light small mt-1"
+                                 v-html="notification.message">
+                            </div>
+                            <div class="text-light small mt-1">{{ getDateByFormat(notification.readyDateTime, 'DD.MM.YYYY HH:mm') }}</div>
+                        </div>
+                    </a>
 
-                        <a href="javascript:void(0)" class="list-group-item list-group-item-action media d-flex align-items-center">
+                    @*<a href="javascript:void(0)" class="list-group-item list-group-item-action media d-flex align-items-center">
                             <div class="ui-icon ui-icon-sm ion ion-md-person-add bg-info border-0 text-white"></div>
                             <div class="media-body line-height-condenced ml-3">
                                 <div class="text-body">You have <strong>4</strong> new followers</div>
@@ -290,12 +302,20 @@
                                     20h ago
                                 </div>
                             </div>
-                        </a>
-                    </div>
-
-                    <a href="javascript:void(0)" class="d-block text-center text-light small p-2 my-1">Show all notifications</a>
+                        </a>*@
                 </div>
-            </div>*@
+
+                <a href="javascript:void(0)" class="d-block text-center text-light small p-2 my-1"
+                   v-show="isSaving">
+                    <span class="spinner-border" role="status" aria-hidden="true"></span>
+                </a>
+                <a href="javascript:void(0)" class="d-block text-center text-light small p-2 my-1"
+                   v-on:click="take += 10; load(take);"
+                   v-show="isSaving == false">
+                    Загрузить еще
+                </a>
+            </div>
+        </div>
 
         @*<div class="navbar-messages nav-item dropdown mr-lg-3">
                 <a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">

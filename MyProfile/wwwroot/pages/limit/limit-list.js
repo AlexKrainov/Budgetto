@@ -6,7 +6,7 @@ var LimitListVue = new Vue({
         activeLimitPeriodTypeID: -1,
 
         //edit
-        limit: { periodName: '', periodTypeID: -1 },
+        limit: { periodName: '', periodTypeID: -1, notifications: [] },
         //flatpickrStart: {},
         //flatpickrEnd: {},
         msnry: {},
@@ -14,6 +14,7 @@ var LimitListVue = new Vue({
         sections: [],
         periodTypes: [],
         isSaving: false,
+        numberID: -1,
     },
     watch: {
         //'limit.periodTypeID': function (newValue, oldValue) {
@@ -43,8 +44,13 @@ var LimitListVue = new Vue({
     },
     methods: {
         load: function () {
-            return sendAjax("/Limit/GetLimits", null, "GET")
-                .then(function (result) {
+            return $.ajax({
+                type: "GET",
+                url: "/Limit/GetLimits",
+                contentType: "application/json",
+                dataType: 'json',
+                context: this,
+                success: function (result) {
                     if (result.isOk == true) {
                         LimitListVue.limits = result.limits;
 
@@ -60,7 +66,11 @@ var LimitListVue = new Vue({
                             });
                         }, 100);
                     }
-                });
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
         },
         loadSections: function () {
             return sendAjax("/Section/GetAllSectionByPerson", null, "GET")
@@ -86,7 +96,7 @@ var LimitListVue = new Vue({
             if (limit) {
                 this.limit = JSCopyObject(limit);
             } else {
-                this.limit = { periodName: '', periodTypeID: -1, isShowOnDashboard: true };
+                this.limit = { periodName: '', periodTypeID: -1, isShowOnDashboard: true, notifications: [] };
 
                 $("#limitSections").val(null).select2();
 
@@ -179,7 +189,7 @@ var LimitListVue = new Vue({
         //    this.flatpickrEnd = flatpickr('#date-to', GetFlatpickrRuConfig_Month(this.limit.dateEnd));
         //},
         closeEditModal: function () {
-            this.limit = { periodName: '', periodTypeID: -1 };
+            this.limit = { periodName: '', periodTypeID: -1, notifications: [] };
         },
         remove: function (limit) {
             ShowLoading('#limit_' + limit.id);
@@ -239,6 +249,26 @@ var LimitListVue = new Vue({
                     HideLoading('#limit_' + this);
                 }
             });
+        },
+        addNotification: function () {
+            this.numberID -= 1;
+            this.limit.notifications.push(
+                {
+                    isSite: false,
+                    isMail: false,
+                    isTelegram: false,
+                    price: this.limit.total,
+                    id: this.numberID,
+                    isDeleted: false
+                });
+        },
+        removeNotification: function (notification) {
+            if (notification.id < 0) {
+                let index = this.limit.notifications.findIndex(x => x.id == notification.id);
+                this.limit.notifications.splice(index, 1);
+            } else {
+                notification.isDeleted = true;
+            }
         }
     }
 });

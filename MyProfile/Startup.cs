@@ -30,6 +30,10 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using MyProfile.Code.Sheduler.Shedulers;
+using MyProfile.Hubs;
+using MyProfile.Code.Hubs;
+using MyProfile.Models;
+using MyProfile.Notification.Service;
 
 namespace MyProfile
 {
@@ -79,8 +83,11 @@ namespace MyProfile
             services.AddTransient<CommonService>();
             services.AddTransient<UserLogService>();
             services.AddTransient<CurrencyService>();
+            services.AddTransient<NotificationService>();
 
             #endregion
+
+            services.AddSingleton<IUserConnectionManagerOLD, UserConnectionManagerOLD>();
 
             #region Task Schedulers
 
@@ -100,8 +107,14 @@ namespace MyProfile
             services.AddTransient<SetDoneReminderTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(SetDoneReminderTask),
-                 cronExpression: "0 0 1 * * ?")); //Every day At 12:00 AM
+                 cronExpression: "0 0 1 * * ?")); //Every day At 01:00 AM
             CronExpression.ValidateExpression("0 0 1 * * ?");
+
+            services.AddTransient<ResetHubConnectTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(ResetHubConnectTask),
+                 cronExpression: "0 0 4 * * ?")); //Every day At 04:00 AM
+            CronExpression.ValidateExpression("0 0 4 * * ?");
 
             if (PublishSettings.IsOnlyProdTask)
             {
@@ -111,6 +124,20 @@ namespace MyProfile
                      cronExpression: "0 0 * ? * *")); //Every 1 hour
                 CronExpression.ValidateExpression("0 0 * ? * *");
             }
+
+            //ToDo: сделать проверку за 30 секунд до отправке уведомления 
+            services.AddTransient<LimitCheckerTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(LimitCheckerTask),
+                 cronExpression: "0/10 * * ? * * *")); //Every 30 seconds
+            CronExpression.ValidateExpression("0/10 * * ? * * *");
+
+            services.AddTransient<NotificationOnSiteTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NotificationOnSiteTask),
+                 cronExpression: "0/7 * * ? * * *")); //Every 17 seconds
+            CronExpression.ValidateExpression("0/7 * * ? * * *");
+
             //"0 */5 * ? * *" - Every 5 minutes
             //0 0 1 2 * ? * - At 01:00 AM, on day 2 of the month
 
@@ -158,6 +185,8 @@ namespace MyProfile
             services
                 .AddMvc()
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -205,6 +234,15 @@ namespace MyProfile
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Budget}/{action=Month}/{id?}");
+            });
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<NotificationHub>("/NotificationHub");
+            });
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<NotificationUserHub>("/NotificationUserHub");
             });
 
             DBContextStorage.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());

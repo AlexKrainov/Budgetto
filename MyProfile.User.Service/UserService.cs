@@ -137,7 +137,7 @@ namespace MyProfile.User.Service
                 predicate = predicate.And(x => x.Email == email);
             }
 
-            UserInfoModel user = await repository.GetAll<Entity.Model.User>(predicate)
+            UserInfoModel user = await repository.GetAll(predicate)
                  .Select(x => new UserInfoModel
                  {
                      ID = x.ID,
@@ -212,6 +212,11 @@ namespace MyProfile.User.Service
                          IsShowConstructor = x.UserSettings.IsShowConstructor,
                          IsShowCookie = x.UserSettings.IsShowCookie,
                      },
+                     UserConnect = new UserConnect
+                     {
+                         TelegramKey = x.UserConnect != null ? x.UserConnect.TelegramKey : null,
+                         TelegramLogin = x.UserConnect != null ? x.UserConnect.TelegramLogin : null,
+                     }
                  })
                  .FirstOrDefaultAsync();
 
@@ -225,6 +230,18 @@ namespace MyProfile.User.Service
                 {
                     user.SaltPassword = null;
                     user.HashPassword = null;
+                }
+
+                if (string.IsNullOrEmpty(user.UserConnect.TelegramLogin))
+                {
+                    user.UserConnect.TelegramLogin = GetTelegramLogin();
+
+                    var userDB = repository.GetAll<Entity.Model.User>(x => x.ID == user.ID).FirstOrDefault();
+                    userDB.UserConnect = new UserConnect
+                    {
+                        TelegramLogin = user.UserConnect.TelegramLogin
+                    };
+                    await repository.UpdateAsync(userDB, true);
                 }
             }
             return user;
@@ -249,7 +266,7 @@ namespace MyProfile.User.Service
             var now = DateTime.Now.ToUniversalTime();
             var passwordSalt = passwordService.GenerateSalt();
             var passwordHash = passwordService.GenerateHashSHA256(password, passwordSalt);
-            // var newUserID = Guid.NewGuid();
+            string telegramLogin = GetTelegramLogin();
 
             var newUser = new Entity.Model.User
             {
@@ -323,6 +340,10 @@ namespace MyProfile.User.Service
                         }
                     }
                 },
+                UserConnect = new UserConnect
+                {
+                    TelegramLogin = telegramLogin
+                },
                 UserTypeID = (int)UserTypeEnum.User,
             };
             await repository.CreateAsync(newUser, true);
@@ -330,6 +351,17 @@ namespace MyProfile.User.Service
             return 1;
         }
 
+        private string GetTelegramLogin()
+        {
+            Random random = new Random();
+            var telegramLogin = "telegram_" + random.Next(99, 999999);
+
+            if (repository.Any<UserConnect>(x => x.TelegramLogin == telegramLogin))
+            {
+                return GetTelegramLogin();
+            }
+            return telegramLogin;
+        }
 
         public async Task<bool> UpdatePassword(string newPassword, Guid userID)
         {

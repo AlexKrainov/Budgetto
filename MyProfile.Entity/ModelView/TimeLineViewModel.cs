@@ -34,6 +34,7 @@ namespace MyProfile.Entity.ModelView
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsConsiderCollection { get; set; } = true;
+        public Guid UserID { get; set; }
         /// <summary>
         /// Search records by section or tags
         /// </summary>

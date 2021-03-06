@@ -212,6 +212,8 @@
                 <script src="~/pages/_tour/template-edit-tour.js" asp-append-version="true"></script>
             }
         }
+        <script src="https://unpkg.com/@@microsoft/signalr@3.1.0/dist/browser/signalr.min.js"></script>
+        <script src="~/pages/_base/hug-notification.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/pages/_base/global.functions.site.min.js" asp-append-version="true"></script>
@@ -247,6 +249,9 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
+
+
+    @*<script src="~/vendor/libs/signalr/signalr.min.js"></script>*@
     <script>
         if (document.getElementsByClassName("page-settings").length == 1) {
             var script = document.createElement('script');
@@ -258,7 +263,11 @@
             || document.location.href.indexOf("testapi.budgetto.org") != -1) {
             Vue.config.devtools = true;
         }
+
+
+
     </script>
+    <button type="button" class="btn btn-danger" onclick="click()" style=" position: absolute; left: 300px;">Send</button>
     @*<script src="~/js/base/user.js" asp-append-version="true"></script>*@
 </body>
 </html>

@@ -51,6 +51,7 @@ namespace MyProfile.Entity.Model
 
         public virtual CollectiveBudgetUser CollectiveBudgetUser { get; set; }
         public virtual UserSettings UserSettings { get; set; }
+        public virtual UserConnect UserConnect { get; set; }
         public virtual UserType UserType { get; set; }
         public virtual Currency Currency { get; set; }
         public virtual Resource Resource { get; set; }
