@@ -5,6 +5,7 @@ SET IDENTITY_INSERT [dbo].[UserTypes] ON
 INSERT [dbo].[UserTypes] ([ID], [CodeName]) VALUES (1, N'User')
 INSERT [dbo].[UserTypes] ([ID], [CodeName]) VALUES (2, N'Admin')
 INSERT [dbo].[UserTypes] ([ID], [CodeName]) VALUES (3, N'Tester')
+INSERT [dbo].[UserTypes] ([ID], [CodeName]) VALUES (4, N'TelegramBot')
 SET IDENTITY_INSERT [dbo].[UserTypes] OFF
 GO
 
@@ -154,8 +155,10 @@ VALUES (3,'CurrencyHistoryTask', 'New', 'CurrencyHistoryTask', '0 0 * ? * *', 'E
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (4,'ResetHubConnectTask', 'New', 'ResetHubConnectTask','0 0 4 * * ?', 'Every day at 4am')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
-VALUES (5,'NotificationLimitCheckerTask', 'New', 'NotificationLimitCheckerTask','0/30 * * ? * * *', 'Every 30 seconds')
+VALUES (5,'NotificationLimitCheckerTask', 'New', 'NotificationLimitCheckerTask','0 * * ? * *', 'Every minuts')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
-VALUES (6,'NotificationLimitSiteTask', 'New', 'NotificationLimitSiteTask','0/17 * * ? * * *', 'Every 17 seconds')
+VALUES (6,'NotificationLimitSiteTask', 'New', 'NotificationSiteTask','0/17 * * ? * * *', 'Every 17 seconds')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (7,'NotificationTelegramTask', 'New', 'NotificationTelegramTask','0 * * ? * *', 'Every minuts')
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF

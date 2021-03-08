@@ -33,7 +33,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
             {
                 var repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
 
-                base.BaseExecute(repository, TaskType.NotificationLimitSiteTask, _execute);
+                base.BaseExecute(repository, TaskType.NotificationSiteTask, _execute);
             }
             return Task.CompletedTask;
         }
@@ -49,23 +49,32 @@ namespace MyProfile.Code.Sheduler.Shedulers
                 try
                 {
                     var limitNotifications = repository.GetAll<MyProfile.Entity.Model.Notification>(x =>
-                          x.LimitID != null
+                           x.IsSite
                           && x.IsReady == true
-                          && x.IsSent == false)
+                          && x.IsSentOnSite == false)
                        .Select(x => new NotificationViewModel
                        {
                            NotificationID = x.ID,
                            NotificationTypeID = x.NotificationTypeID,
-                           Total = x.Total,
-                           //UserID = x.UserID,
                            UserConnectionIDs = x.User.UserConnect.HubConnects
                                 .Select(y => y.ConnectionID)
                                 .ToList(),
                            IsRead = false,
                            ReadyDateTime = x.IsReadyDateTime,
-                           Name = x.LimitID != null ? x.Limit.Name : x.ReminderID != null ? x.Reminder.Title : "",
-                           //Hidden
+                           Name = x.LimitID != null
+                                    ? x.Limit.Name
+                                    : x.ReminderID != null
+                                        ? x.Reminder.Title
+                                        : x.TelegramAccountID != null
+                                            ? x.TelegramAccount.Username + " " + x.TelegramAccount.TelegramID
+                                            : "",
+                           //Limit
+                           Total = x.Total,
                            SpecificCulture = x.User.Currency.SpecificCulture,
+
+                           //Reminder
+                           ExpirationDateTime = x.ExpirationDateTime,
+                           Icon = x.Icon,
                        })
                        .ToList();
 
@@ -86,15 +95,20 @@ namespace MyProfile.Code.Sheduler.Shedulers
                         }
                         var dbNotification = repository.GetAll<Entity.Model.Notification>(x => x.ID == notification.NotificationID)
                             .FirstOrDefault();
-                        dbNotification.IsSent = true;
-                        dbNotification.IsDone = true;
+                        dbNotification.IsSentOnSite = true;
+                        dbNotification.IsDone = dbNotification.IsSite == dbNotification.IsSentOnSite && dbNotification.IsMail == dbNotification.IsSentOnMail && dbNotification.IsTelegram == dbNotification.IsSentOnTelegram;
                         repository.Save();
                         items += 1;
                     }
                 }
                 catch (Exception ex)
                 {
-
+                    repository.Create(new ErrorLog
+                    {
+                        ErrorText = ex.Message,
+                        CurrentDate = DateTime.Now.ToUniversalTime(),
+                        Where = "NotificationOnSiteTask._execute",
+                    }, true);
                 }
                 return items;
             }

@@ -145,7 +145,7 @@
                                     <textarea class="form-control" id="selectedRecord"
                                               v-model="selectedRecord.description"></textarea>
                                 </div>
-                            <small class="text-muted">Чтобы добавить тег начинайте вводить ! или # </small>
+                            <small class="text-muted">Чтобы добавить <b>тег </b>начинайте вводить <b>!</b> или <b>#</b>. После ввода нужного слова или словосочетания нажмите <b>Enter</b></small>
                             <br />
                             <a href="javascript:void(0)" class="pr-2 text-decoration-hover"
                                 v-for="tag in topTagIDsBySection"
@@ -796,6 +796,7 @@
                         }
 
                         this.loadTags();
+                        this.checker();
 
                         UserInfo.IsHelpRecord = false;
 
@@ -994,6 +995,21 @@
                     if (response.isOk) {
                         this.userTags = response.tags;
                     }
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        },
+        checker: function () {
+            return $.ajax({
+                type: "GET",
+                url: "/Common/Checker",
+                contentType: 'application/json; charset=utf-8',
+                //dataType: 'json',
+                //context: this,
+                success: function (response) {
                     return response;
                 },
                 error: function (xhr, status, error) {

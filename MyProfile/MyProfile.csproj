@@ -51,6 +51,7 @@
     <PackageReference Include="Quartz" Version="3.2.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="Telegram.Bot" Version="15.7.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -74,6 +75,7 @@
     <ProjectReference Include="..\MyProfile.ToDoList.Service\MyProfile.ToDoList.Service.csproj" />
     <ProjectReference Include="..\MyProfile.User.Service\MyProfile.User.Service.csproj" />
     <ProjectReference Include="..\MyProfile.UserLog.Service\MyProfile.UserLog.Service.csproj" />
+    <ProjectReference Include="..\Telegram.Service\Telegram.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -117,6 +119,7 @@
     <Folder Include="Areas\Help\Models\" />
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Areas\Identity\Models\" />
+    <Folder Include="Code\Telegram\" />
     <Folder Include="wwwroot\img\chart\" />
     <Folder Include="wwwroot\img\logo\" />
     <Folder Include="wwwroot\resources\feedback\" />

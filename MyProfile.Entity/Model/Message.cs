@@ -12,7 +12,7 @@ namespace MyProfile.Entity.Model
 		public int ID { get; set; }
 		public string Text { get; set; }
 		public DateTime DateCreate { get; set; }
-		public DateTime DateEdit { get; set; }
+		public DateTime? DateEdit { get; set; }
 		public bool IsDeleted { get; set; }
 
 		[ForeignKey("Chat")]

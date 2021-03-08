@@ -21,10 +21,14 @@ namespace MyProfile.Entity.Model
         [ForeignKey("Chat")]
 		public int ChatID { get; set; }
 		[ForeignKey("User")]
-		public Guid UserID { get; set; }
+		public Guid? UserID { get; set; }
+		[ForeignKey("TelegramAccount")]
+		public int? TelegramAccountID { get; set; }
+
 
 		public virtual User User { get; set; }
 		public virtual Chat Chat { get; set; }
+		public virtual TelegramAccount TelegramAccount { get; set; }
 
 	}
 }

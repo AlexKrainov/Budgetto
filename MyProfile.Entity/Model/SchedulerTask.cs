@@ -22,7 +22,8 @@ namespace MyProfile.Entity.Model
         CurrencyHistoryTask,
         ResetHubConnectTask,
         NotificationLimitCheckerTask,
-        NotificationLimitSiteTask,
+        NotificationSiteTask,
+        NotificationTelegramTask,
 
         Test,
     }

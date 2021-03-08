@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210308144912_113")]
+    partial class _113
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1592,12 +1594,16 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Title")
                         .HasMaxLength(512);
 
+                    b.Property<Guid?>("UserConnectID");
+
                     b.Property<Guid?>("UserID");
 
                     b.Property<string>("Username")
                         .HasMaxLength(512);
 
                     b.HasKey("ID");
+
+                    b.HasIndex("UserConnectID");
 
                     b.HasIndex("UserID");
 
@@ -2673,6 +2679,10 @@ namespace MyProfile.Entity.Migrations
                 {
                     b.HasOne("MyProfile.Entity.Model.UserConnect", "UserConnect")
                         .WithMany("TelegramAccounts")
+                        .HasForeignKey("UserConnectID");
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserID");
                 });
 

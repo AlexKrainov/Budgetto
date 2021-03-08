@@ -14,6 +14,7 @@ namespace Common.Service
         public const string SiteName = "testmybudget.ru";
         public const bool IsOnlyProdTask = false;
 #endif
+        public const string TelegramApi = "1661757766:AAESOVnmDrT2ZKjZ7NUZG7R8wnw3Amm0c_w";
 
     }
 }

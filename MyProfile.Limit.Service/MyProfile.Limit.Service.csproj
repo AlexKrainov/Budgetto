@@ -8,6 +8,7 @@
     <ProjectReference Include="..\MyProfile.Budget.Service\MyProfile.Budget.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
     <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
+    <ProjectReference Include="..\MyProfile.Notification.Service\MyProfile.Notification.Service.csproj" />
   </ItemGroup>
 
 </Project>

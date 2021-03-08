@@ -4,7 +4,7 @@
         data: {
             notifications: [],
             anyNew: false,
-            skip: 0,
+            isEndLoadNotification: false,
 
             hubConnection: null,
             isSaving: false,
@@ -34,7 +34,10 @@
             //.catch(function (err) {
             //    return console.error(err.toString());
             //});
-            this.load(10);
+            setTimeout(
+                this.load.bind(this, 10),
+                5000 // 10 sec
+            )
         },
         methods: {
             load: function (take) {
@@ -42,13 +45,13 @@
 
                 return $.ajax({
                     type: "GET",
-                    url: "/Notification/GetLast?skip=" + this.skip + "&take=" + take,
+                    url: "/Notification/GetLast?skip=" + this.notifications.length + "&take=" + take,
                     contentType: "application/json",
                     dataType: 'json',
                     context: this,
                     success: function (result) {
                         if (result.isOk == true) {
-                            this.skip += take;
+                            this.isEndLoadNotification = result.notifications.length == 0;
                             this.notifications = this.notifications.concat(result.notifications);
 
                             this.anyNew = this.notifications.some(x => x.isRead == false);

@@ -35,9 +35,9 @@ namespace MyProfile.Code.Sheduler.Shedulers
             using (var scope = _scopeFactory.CreateScope())
             {
                 var repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
-                var limitService = scope.ServiceProvider.GetRequiredService<NotificationService>();
+                var limitService = scope.ServiceProvider.GetRequiredService<LimitService>();
 
-                base.BaseExecute(repository, TaskType.NotificationLimitCheckerTask, limitService.CheckLimits);
+                base.BaseExecute(repository, TaskType.NotificationLimitCheckerTask, limitService.CheckLimitNotifications);
             }
             return Task.CompletedTask;
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210307154325_108")]
+    partial class _108
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -892,7 +894,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime>("DateCreate");
 
-                    b.Property<DateTime?>("DateEdit");
+                    b.Property<DateTime>("DateEdit");
 
                     b.Property<bool>("IsDeleted");
 
@@ -928,11 +930,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("IsReadyDateTime");
 
-                    b.Property<bool>("IsSentOnMail");
-
-                    b.Property<bool>("IsSentOnSite");
-
-                    b.Property<bool>("IsSentOnTelegram");
+                    b.Property<bool>("IsSent");
 
                     b.Property<bool>("IsSite");
 
@@ -1587,10 +1585,12 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Status")
                         .HasMaxLength(32);
 
-                    b.Property<long>("TelegramID");
+                    b.Property<int>("TelegramID");
 
                     b.Property<string>("Title")
                         .HasMaxLength(512);
+
+                    b.Property<Guid?>("UserConnectUserID");
 
                     b.Property<Guid?>("UserID");
 
@@ -1598,6 +1598,8 @@ namespace MyProfile.Entity.Migrations
                         .HasMaxLength(512);
 
                     b.HasKey("ID");
+
+                    b.HasIndex("UserConnectUserID");
 
                     b.HasIndex("UserID");
 
@@ -2199,7 +2201,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("CodeName")
                         .IsRequired()
-                        .HasMaxLength(32);
+                        .HasMaxLength(8);
 
                     b.HasKey("ID");
 
@@ -2671,8 +2673,12 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.TelegramAccount", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.UserConnect", "UserConnect")
+                    b.HasOne("MyProfile.Entity.Model.UserConnect")
                         .WithMany("TelegramAccounts")
+                        .HasForeignKey("UserConnectUserID");
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserID");
                 });
 

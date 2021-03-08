@@ -6,6 +6,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Currency;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Limit.Service;
 using MyProfile.Tag.Service;
 using MyProfile.UserLog.Service;
 using Newtonsoft.Json;
@@ -31,13 +32,15 @@ namespace MyProfile.Controllers
         private UserLogService userLogService;
         private CurrencyService currencyService;
         private IMemoryCache cache;
+        private LimitService limitService;
 
         public CommonController(IBaseRepository repository,
             CommonService commonService,
             TagService tagService,
             UserLogService userLogService,
             CurrencyService currencyService,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            LimitService limitService)
         {
             this.repository = repository;
             this.commonService = commonService;
@@ -45,6 +48,7 @@ namespace MyProfile.Controllers
             this.userLogService = userLogService;
             this.currencyService = currencyService;
             this.cache = cache;
+            this.limitService = limitService;
         }
 
         public IActionResult Index()
@@ -70,6 +74,20 @@ namespace MyProfile.Controllers
         public JsonResult GetUserTags()
         {
             return Json(new { isOk = true, tags = tagService.GetUserTags() });
+        }
+
+        /// <summary>
+        /// Check after add, edit record
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<JsonResult> Checker()
+        {
+            var currentUser = UserInfo.Current;
+
+            await limitService.CheckLimitNotificationsAsync(null, currentUser.ID);
+
+            return Json(new { isOk = true });
         }
 
 

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Telegram.Bot;
+using Telegram.Bot.Args;
 
 namespace MyProfile.Controllers
 {
@@ -18,11 +20,12 @@ namespace MyProfile.Controllers
 
         public IActionResult GetLast(int skip, int take)
         {
-            return Json(new { isOk = true, notifications = notificationService.GetLastNotification(skip,take) });
+            var notifications = notificationService.GetLastNotification(skip, take);
+            return Json(new { isOk = true, notifications });
         }
-        
+
         [HttpPost]
-        public IActionResult SetFlagRead([FromBody]List<int> IDs)
+        public IActionResult SetFlagRead([FromBody] List<int> IDs)
         {
             notificationService.SetRead(IDs);
             return Json(new { isOk = true });

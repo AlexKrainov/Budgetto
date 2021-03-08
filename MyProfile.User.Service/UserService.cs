@@ -214,7 +214,7 @@ namespace MyProfile.User.Service
                      },
                      UserConnect = new UserConnect
                      {
-                         TelegramKey = x.UserConnect != null ? x.UserConnect.TelegramKey : null,
+                         // TelegramKey = x.UserConnect != null ? x.UserConnect.TelegramKey : null,
                          TelegramLogin = x.UserConnect != null ? x.UserConnect.TelegramLogin : null,
                      }
                  })
@@ -246,8 +246,6 @@ namespace MyProfile.User.Service
             }
             return user;
         }
-
-
 
         public async Task<UserInfoModel> AuthenticateOrUpdateUserInfo(UserInfoModel user, string userActionType)
         {

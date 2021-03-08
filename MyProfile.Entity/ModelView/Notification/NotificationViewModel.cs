@@ -22,5 +22,12 @@ namespace MyProfile.Entity.ModelView.Notification
         [JsonIgnore]
         public string SpecificCulture { get; set; }
         public DateTime? ReadyDateTime { get; set; }
+        public List<TelegramAccountModelView> TelegramAccounts { get; set; }
+    }
+    public class TelegramAccountModelView
+    {
+        public int ChatID { get; set; }
+        public int TelegramBotChatUserID { get; set; }
+        public string TelegramID { get; set; }
     }
 }

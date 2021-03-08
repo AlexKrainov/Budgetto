@@ -61,6 +61,7 @@
         public const string Limit_Edit = "Limit_Edit";
         public const string Limit_Delete = "Limit_Delete";
         public const string Limit_Toggle = "Limit_Toggle";
+        public const string Limit_Notification = "Limit_Notification";
 
         public const string Goal_Create = "Goal_Create";
         public const string Goal_Edit = "Goal_Edit";

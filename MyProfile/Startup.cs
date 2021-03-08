@@ -34,6 +34,7 @@ using MyProfile.Hubs;
 using MyProfile.Code.Hubs;
 using MyProfile.Models;
 using MyProfile.Notification.Service;
+using Telegram.Service;
 
 namespace MyProfile
 {
@@ -84,10 +85,11 @@ namespace MyProfile
             services.AddTransient<UserLogService>();
             services.AddTransient<CurrencyService>();
             services.AddTransient<NotificationService>();
+            services.AddTransient<TelegramService>();
 
             #endregion
 
-            services.AddSingleton<IUserConnectionManagerOLD, UserConnectionManagerOLD>();
+            //services.AddSingleton<IUserConnectionManagerOLD, UserConnectionManagerOLD>();
 
             #region Task Schedulers
 
@@ -110,12 +112,6 @@ namespace MyProfile
                  cronExpression: "0 0 1 * * ?")); //Every day At 01:00 AM
             CronExpression.ValidateExpression("0 0 1 * * ?");
 
-            services.AddTransient<ResetHubConnectTask>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(ResetHubConnectTask),
-                 cronExpression: "0 0 4 * * ?")); //Every day At 04:00 AM
-            CronExpression.ValidateExpression("0 0 4 * * ?");
-
             if (PublishSettings.IsOnlyProdTask)
             {
                 services.AddTransient<CurrencyHistoryTask>();
@@ -125,18 +121,31 @@ namespace MyProfile
                 CronExpression.ValidateExpression("0 0 * ? * *");
             }
 
+            //Remove all connectionID for the day
+            services.AddTransient<ResetHubConnectTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(ResetHubConnectTask),
+                 cronExpression: "0 0 4 * * ?")); //Every day At 04:00 AM
+            CronExpression.ValidateExpression("0 0 4 * * ?");
+
             //ToDo: сделать проверку за 30 секунд до отправке уведомления 
             services.AddTransient<LimitCheckerTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(LimitCheckerTask),
-                 cronExpression: "0/10 * * ? * * *")); //Every 30 seconds
-            CronExpression.ValidateExpression("0/10 * * ? * * *");
+                 cronExpression: "0 * * ? * *")); //Every 1 minute
+            CronExpression.ValidateExpression("0 * * ? * *");
 
             services.AddTransient<NotificationOnSiteTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(NotificationOnSiteTask),
-                 cronExpression: "0/7 * * ? * * *")); //Every 17 seconds
-            CronExpression.ValidateExpression("0/7 * * ? * * *");
+                 cronExpression: "0/17 * * ? * * *")); //Every 17 seconds
+            CronExpression.ValidateExpression("0/17 * * ? * * *");
+
+            services.AddTransient<NotificationOnTelegramTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NotificationOnTelegramTask),
+                 cronExpression: "0 * * ? * *")); //Every 1 minute
+            CronExpression.ValidateExpression("0 * * ? * *");
 
             //"0 */5 * ? * *" - Every 5 minutes
             //0 0 1 2 * ? * - At 01:00 AM, on day 2 of the month
@@ -253,7 +262,10 @@ namespace MyProfile
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var repository = serviceScope.ServiceProvider.GetRequiredService<BaseRepository>();
+                var telegramService = serviceScope.ServiceProvider.GetRequiredService<TelegramService>();
                 Inserters inserters = new Inserters(repository);
+
+                telegramService.Start();
             }
         }
     }
