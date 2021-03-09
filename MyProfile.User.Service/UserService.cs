@@ -76,6 +76,7 @@ namespace MyProfile.User.Service
                     DateTo = currentUser.Payment.DateTo,
                     Tariff = currentUser.Payment.Tariff
                 },
+                TelegramLogin = currentUser.UserConnect.TelegramLogin,
             };
 
             #region Get Work hours and work days
@@ -117,6 +118,18 @@ namespace MyProfile.User.Service
                     AllWorkDays = 0
                 };
             }
+            #endregion
+
+            #region TelegramAccounts
+            user.TelegramAccounts = repository.GetAll<TelegramAccount>(x => x.UserID == currentUser.ID)
+                .Select(x => new TelegramAccountClientSide
+                {
+                    TelegramID = x.TelegramID,
+                    Username = x.Username,
+                    StatusID = x.StatusID,
+                    StatusName = x.Status.Name
+                })
+                .ToList();
             #endregion
 
             return user;
@@ -214,7 +227,6 @@ namespace MyProfile.User.Service
                      },
                      UserConnect = new UserConnect
                      {
-                         // TelegramKey = x.UserConnect != null ? x.UserConnect.TelegramKey : null,
                          TelegramLogin = x.UserConnect != null ? x.UserConnect.TelegramLogin : null,
                      }
                  })

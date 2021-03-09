@@ -33,7 +33,13 @@ namespace MyProfile.Notification.Service
                      ExpirationDateTime = x.ExpirationDateTime,
                      IsRead = x.IsRead,
                      ReadyDateTime = x.IsReadyDateTime,
-                     Name = x.LimitID != null ? x.Limit.Name : x.ReminderID != null ? x.Reminder.Title : "",
+                     Name = x.LimitID != null
+                                    ? x.Limit.Name
+                                    : x.ReminderID != null
+                                        ? x.Reminder.Title
+                                        : x.TelegramAccountID != null
+                                            ? x.TelegramAccount.Username + " " + x.TelegramAccount.TelegramID
+                                            : "",
                      //Hidden
                      SpecificCulture = x.User.Currency.SpecificCulture,
                  })

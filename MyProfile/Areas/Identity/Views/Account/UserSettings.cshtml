@@ -46,8 +46,9 @@
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-change-password">Смена пароля</a>
                 @*<a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#collective-budget">Коллективные настройки</a>*@
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-statistic">Учет рабочего времени</a>
+                <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-connection">Подключения</a>
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
-           || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+          || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#admin-menu-budget">МЕНЮ АДМИНА</a>
                 }
@@ -67,11 +68,14 @@
                 <div class="tab-pane fade" id="user-statistic">
                     @await Html.PartialAsync("_UserSettings_StatisticSettings")
                 </div>
+                <div class="tab-pane fade" id="user-connection">
+                    @await Html.PartialAsync("_UserSettings_Connection")
+                </div>
                 @*<div class="tab-pane fade" id="collective-budget">
-                        @await Html.PartialAsync("_UserSettings_CollectiveBudget")
-                    </div>*@
+            @await Html.PartialAsync("_UserSettings_CollectiveBudget")
+        </div>*@
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
-              || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+             || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <div class="tab-pane fade" id="admin-menu-budget">
                         @await Html.PartialAsync("_UserSettings_AdminSettings")

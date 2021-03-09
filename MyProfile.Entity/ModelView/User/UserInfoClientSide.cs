@@ -26,6 +26,9 @@ namespace MyProfile.Entity.ModelView.User
         public Guid ID { get; set; }
         public Guid UserSessionID { get; set; }
         public bool IsHelpRecord { get; set; }
+
+        public string TelegramLogin { get; set; }
+        public List<TelegramAccountClientSide> TelegramAccounts { get; set; }
     }
 
     public class UserSettingsClientSide
@@ -74,5 +77,13 @@ namespace MyProfile.Entity.ModelView.User
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public string Tariff { get; set; }
+    }
+
+    public class TelegramAccountClientSide
+    {
+        public long TelegramID { get; set; }
+        public string Username { get; set; }
+        public int StatusID { get; set; }
+        public string StatusName { get; set; }
     }
 }

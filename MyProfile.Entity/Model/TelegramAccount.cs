@@ -6,20 +6,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-    public static class TelegramStatus
-    {
-        public static readonly string New = "New";
-        public static readonly string Connected = "Connected";
-        public static readonly string Locked = "Locked";
-
-    }
     public class TelegramAccount
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        [MaxLength(32)]
-        public string Status { get; set; }
         public long TelegramID { get; set; }
         [MaxLength(512)]
         public string Username { get; set; }
@@ -42,8 +33,11 @@ namespace MyProfile.Entity.Model
         /// </summary>
         [ForeignKey("UserConnect")]
         public Guid? UserID { get; set; }
-        
+        [ForeignKey("Status")]
+        public int StatusID { get; set; }
+
         public virtual UserConnect UserConnect { get; set; }
+        public virtual TelegramAccountStatus Status { get; set; }
 
         public virtual IEnumerable<Notification> Notifications { get; set; }
         public virtual IEnumerable<ChatUser> ChatUsers { get; set; }

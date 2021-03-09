@@ -25,6 +25,8 @@ var UserSettingsVue = new Vue({
         oldTheme: "",
         oldEmail: null,
         newPassword: null,
+        telegramLogin: "",
+        telegramAccounts: [],
 
         //Collective tab
         collectiveSearchedUser: {},
@@ -78,9 +80,15 @@ var UserSettingsVue = new Vue({
                     UserSettingsVue.oldTheme = result.user.userSettings.webSiteTheme;
                     UserSettingsVue.oldEmail = result.user.email;
                     UserSettingsVue.earningsPerHour = result.user.earningsPerHour;
+                    UserSettingsVue.telegramAccounts = result.user.telegramAccounts;
+                    UserSettingsVue.telegramLogin = result.user.telegramLogin;
 
                     UserSettingsVue.refreshCollectiveList();
                     UserSettingsVue.checkOffers();
+
+                    setTimeout(function () {
+                        $('[data-toggle="tooltip"]').tooltip();
+                    }, 500);
                 });
         },
         resendConfirmEmail: function () {

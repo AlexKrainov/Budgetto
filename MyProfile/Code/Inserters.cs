@@ -19,6 +19,54 @@ namespace MyProfile.Code
             now = DateTime.Now;
 
             CreateTelegramBotAccount();
+            CreateTelegramAccountStatus();
+        }
+
+        private void CreateTelegramAccountStatus()
+        {
+            List<TelegramAccountStatus> statuses = new List<TelegramAccountStatus>();
+
+            if (!repository.Any<TelegramAccountStatus>(x => x.ID == (int)TelegramAccountStatusEnum.New))
+            {
+                statuses.Add(new TelegramAccountStatus
+                {
+                    //ID = (int)TelegramAccountStatusEnum.New,
+                    Name = "Новый",
+                    CodeName = Enum.GetName(typeof(TelegramAccountStatusEnum), TelegramAccountStatusEnum.New),
+                });
+            }
+            if (!repository.Any<TelegramAccountStatus>(x => x.ID == (int)TelegramAccountStatusEnum.Connected))
+            {
+                statuses.Add(new TelegramAccountStatus
+                {
+                    //ID = (int)TelegramAccountStatusEnum.Connected,
+                    Name = "Подключен",
+                    CodeName = Enum.GetName(typeof(TelegramAccountStatusEnum), TelegramAccountStatusEnum.Connected),
+                });
+            }
+            if (!repository.Any<TelegramAccountStatus>(x => x.ID == (int)TelegramAccountStatusEnum.InPause))
+            {
+                statuses.Add(new TelegramAccountStatus
+                {
+                    //ID = (int)TelegramAccountStatusEnum.InPause,
+                    Name = "На паузе",
+                    CodeName = Enum.GetName(typeof(TelegramAccountStatusEnum), TelegramAccountStatusEnum.InPause),
+                });
+            }
+            if (!repository.Any<TelegramAccountStatus>(x => x.ID == (int)TelegramAccountStatusEnum.Locked))
+            {
+                statuses.Add(new TelegramAccountStatus
+                {
+                    //ID = (int)TelegramAccountStatusEnum.Locked,
+                    Name = "Заблокирован",
+                    CodeName = Enum.GetName(typeof(TelegramAccountStatusEnum), TelegramAccountStatusEnum.Locked),
+                });
+            }
+
+            if (statuses.Count > 0)
+            {
+                repository.CreateRange(statuses, true);
+            }
         }
 
         private void CreateTelegramBotAccount()

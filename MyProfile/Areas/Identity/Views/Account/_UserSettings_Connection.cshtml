@@ -1,0 +1,63 @@
+﻿<div class="card-body pb-2">
+
+    <h6 class="mb-2">Telegram</h6>
+    <br />
+
+    <div class="form-row">
+        <div class="form-group col">
+            <label class="form-label">Ваш код для получения уведомлений через телеграм</label>
+            <input type="text" class="form-control" v-model="telegramLogin" disabled>
+            <small class="form-text text-muted">
+                Найдите в телеграме бота: @@Budgetto_bot и напишите ему ваш код.
+            </small>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col">
+            <label class="form-label">Подключенные аккаунты</label>
+            <div class="d-flex flex-wrap justify-content-between align-items-center ui-bordered py-3 px-4 bg-lighter"
+                 v-for="account in telegramAccounts">
+                <div>
+                    <img src="~/img/another-logo/telegram_logo.png" class="ui-w-40 rounded-circle mr-2" alt="">
+                    <strong>{{ account.username }}</strong> &nbsp;
+                    <div class="btn-group ml-2">
+                        <button type="button" class="btn icon-btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        </button>
+                        <div class="dropdown-menu" style="">
+                            <a class="dropdown-item" href="javascript:void(0)" data-toggle="tooltip" data-html="true"
+                               title="Не высылать уведомления на этот телеграм аккаунт"
+                               v-show="account.statusID == 2">Поставить на паузу</a>
+                            <a class="dropdown-item" href="javascript:void(0)" data-toggle="tooltip" data-html="true"
+                               title="Этот телеграм-аккаунт снова начнет получать уведомления"
+                               v-show="account.statusID == 3">Снять с паузы</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="javascript:void(0)">Удалить из рассылки</a>
+                        </div>
+                    </div>
+                    <small class="text-muted" style="display: block; margin-left: 45px; margin-top: -11px;">{{ account.telegramID }}</small>
+                </div>
+                <div class="d-flex flex-wrap align-items-center">
+                    Статус:&nbsp;
+                    <a href="javascript:void(0)" class="badge badge-success" v-show="account.statusID == 2">{{ account.statusName }}</a>
+                    <a href="javascript:void(0)" class="badge badge-warning" v-show="account.statusID == 3">{{ account.statusName }}</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
+<div class="card-footer">
+    <div class="text-left">
+        @*<button type="button" class="btn btn-primary"
+                    v-on:click="saveUserStatistics"
+                    v-bind:disabled="isSaving">
+                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                Сохранить
+            </button>*@
+    </div>
+</div>

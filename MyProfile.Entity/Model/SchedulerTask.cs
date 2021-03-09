@@ -17,13 +17,14 @@ namespace MyProfile.Entity.Model
     public enum TaskType
     {
         Undefined = 0,
-        AccountRemoveCachback,
-        SetDoneToReminderDates,
-        CurrencyHistoryTask,
-        ResetHubConnectTask,
-        NotificationLimitCheckerTask,
-        NotificationSiteTask,
-        NotificationTelegramTask,
+        AccountRemoveCachback = 1,
+        SetDoneToReminderDates = 2,
+        CurrencyHistoryTask = 3,
+        ResetHubConnectTask = 4,
+        NotificationLimitCheckerTask = 5,
+        NotificationSiteTask = 6,
+        NotificationTelegramTask = 7,
+        NotificationMailTask = 8,
 
         Test,
     }

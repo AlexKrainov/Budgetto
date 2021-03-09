@@ -86,6 +86,7 @@ namespace MyProfile
             services.AddTransient<CurrencyService>();
             services.AddTransient<NotificationService>();
             services.AddTransient<TelegramService>();
+            services.AddTransient<NotificationEmailService>();
 
             #endregion
 
@@ -144,6 +145,12 @@ namespace MyProfile
             services.AddTransient<NotificationOnTelegramTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(NotificationOnTelegramTask),
+                 cronExpression: "0 * * ? * *")); //Every 1 minute
+            CronExpression.ValidateExpression("0 * * ? * *"); 
+            
+            services.AddTransient<NotificationOnMailTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NotificationOnMailTask),
                  cronExpression: "0 * * ? * *")); //Every 1 minute
             CronExpression.ValidateExpression("0 * * ? * *");
 

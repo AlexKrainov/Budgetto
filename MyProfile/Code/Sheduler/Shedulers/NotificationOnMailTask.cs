@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Email.Service;
+using Microsoft.Extensions.DependencyInjection;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Notification;
 using MyProfile.Entity.Repository;
@@ -13,12 +14,12 @@ namespace MyProfile.Code.Sheduler.Shedulers
     /// <summary>
     /// Send all [IsReady] Notification to user who are connect (online) on the web site
     /// </summary>
-    public class NotificationOnTelegramTask : BaseTaskJob, IJob
+    public class NotificationOnMailTask : BaseTaskJob, IJob
     {
         private IServiceScopeFactory _scopeFactory;
         private int items;
 
-        public NotificationOnTelegramTask(IServiceScopeFactory scopeFactory) :
+        public NotificationOnMailTask(IServiceScopeFactory scopeFactory) :
             base(scopeFactory)
         {
             _scopeFactory = scopeFactory;
@@ -30,7 +31,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
             {
                 var repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
 
-                base.BaseExecute(repository, TaskType.NotificationTelegramTask, _execute);
+                base.BaseExecute(repository, TaskType.NotificationMailTask, _execute);
             }
             return Task.CompletedTask;
         }
@@ -40,26 +41,22 @@ namespace MyProfile.Code.Sheduler.Shedulers
             using (var scope = _scopeFactory.CreateScope())
             {
                 var repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
-                var telegramService = scope.ServiceProvider.GetRequiredService<TelegramService>();
+                var emailService = scope.ServiceProvider.GetRequiredService<NotificationEmailService>();
 
                 try
                 {
                     var notifications = repository.GetAll<MyProfile.Entity.Model.Notification>(x =>
-                          x.IsTelegram
+                          x.IsMail
                           && x.IsReady == true
-                          && x.IsSentOnTelegram == false)
+                          && x.IsSentOnMail == false
+                          && x.User.IsConfirmEmail)
                        .Select(x => new NotificationViewModel
                        {
                            NotificationID = x.ID,
                            NotificationTypeID = x.NotificationTypeID,
-                           TelegramAccounts = x.User.UserConnect.TelegramAccounts
-                                .Where(y => y.StatusID == (int)TelegramAccountStatusEnum.Connected)
-                                .Select(y => new TelegramAccountModelView
-                                {
-                                    ChatID = y.ChatUsers.FirstOrDefault().ChatID,
-                                    TelegramID = y.TelegramID.ToString()
-                                })
-                                .ToList(),
+                           UserID = x.UserID,
+                           Email = x.User.Email,
+                           
                            IsRead = false,
                            ReadyDateTime = x.IsReadyDateTime,
                            Name = x.LimitID != null ? x.Limit.Name : x.ReminderID != null ? x.Reminder.Title : "",
@@ -67,6 +64,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                            //Limit
                            Total = x.Total,
                            SpecificCulture = x.User.Currency.SpecificCulture,
+                           LimitID = x.LimitID,
 
                            //Reminder
                            ExpirationDateTime = x.ExpirationDateTime,
@@ -78,13 +76,13 @@ namespace MyProfile.Code.Sheduler.Shedulers
                     {
                         try
                         {
-                            bool isSent = telegramService.SendNotification(notification).Result;
+                            bool isSent = emailService.SendNotification(notification).Result;
 
                             if (isSent)
                             {
                                 var dbNotification = repository.GetAll<Entity.Model.Notification>(x => x.ID == notification.NotificationID)
                                                        .FirstOrDefault();
-                                dbNotification.IsSentOnTelegram = true;
+                                dbNotification.IsSentOnMail = true;
                                 dbNotification.IsDone = dbNotification.IsSite == dbNotification.IsSentOnSite && dbNotification.IsMail == dbNotification.IsSentOnMail && dbNotification.IsTelegram == dbNotification.IsSentOnTelegram;
                                 repository.Save();
                                 items += 1;

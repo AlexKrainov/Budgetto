@@ -182,6 +182,10 @@ namespace MyProfile.Entity.Model
              .Property(b => b.IsVisible)
              .HasDefaultValue(true);
 
+            modelBuilder.Entity<TelegramAccount>()
+            .Property(b => b.StatusID)
+            .HasDefaultValue((int)TelegramAccountStatusEnum.New);
+
             #endregion
         }
 
@@ -256,6 +260,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<UserConnect> UserConnects { get; set; }
         public virtual DbSet<HubConnect> HubConnects { get; set; }
+        public virtual DbSet<TelegramAccount> TelegramAccounts { get; set; }
+        public virtual DbSet<TelegramAccountStatus> TelegramAccountStatuses { get; set; }
 
     }
 }

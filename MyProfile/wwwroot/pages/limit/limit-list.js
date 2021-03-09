@@ -110,6 +110,10 @@ var LimitListVue = new Vue({
                 $("#limitSections").select2();
             }
 
+            setTimeout(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            }, 1000);
+
             //find limit by id 
             $("#modal-limit").modal("show");
         },
@@ -177,6 +181,29 @@ var LimitListVue = new Vue({
             } else {
                 isOk = false;
                 $("[name=limitMoney]").addClass("is-invalid");
+            }
+
+            if (this.limit.notifications && this.limit.notifications.length > 0) {
+                //if (this.limit.notifications.some(x => x.isMail == false && x.isSite == false && x.isTelegram == false && x.isDeleted == false)
+                //    || this.limit.notifications.some(x => (x.price * 1) <= 0 && x.isDeleted == false)) {
+
+                for (var i = 0; i < this.limit.notifications.length; i++) {
+                    let notification = this.limit.notifications[i];
+                    if ((notification.isMail == false && notification.isSite == false && notification.isTelegram == false && notification.isDeleted == false)
+                        || ((notification.price * 1) <= 0 && notification.isDeleted == false)) {
+
+                        $("#errorborder_" + notification.id).addClass("border-danger");
+                        $("#texterror_" + notification.id).show();
+                        isOk = false;
+                    } else {
+
+                        $("#errorborder_" + notification.id).removeClass("border-danger");
+                        $("#texterror_" + notification.id).hide();
+                    }
+                }
+                //} else {
+
+                //}
             }
 
             if (isOk == false && e) {
@@ -257,10 +284,15 @@ var LimitListVue = new Vue({
                     isSite: false,
                     isMail: false,
                     isTelegram: false,
-                    price: this.limit.total,
+                    price: this.limit.limitMoney,
                     id: this.numberID,
                     isDeleted: false
                 });
+
+            setTimeout(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                $("#notification-" + LimitListVue.numberID).addClass("show");
+            }, 500);
         },
         removeNotification: function (notification) {
             if (notification.id < 0) {

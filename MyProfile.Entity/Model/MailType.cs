@@ -13,7 +13,9 @@ namespace MyProfile.Entity.Model
         EmailUpdate = 2,
         PasswordReset = 3,
         LoginLimitEnter = 4,
-        ResendByUser = 5
+        ResendByUser = 5,
+        NotificationLimit = 6,
+        NotificationReminder = 7,
     }
 
     public class MailType

@@ -48,6 +48,8 @@ INSERT [MailTypes] ([ID], [CodeName]) VALUES (2, N'EmailUpdate')
 INSERT [MailTypes] ([ID], [CodeName]) VALUES (3, N'PasswordReset')
 INSERT [MailTypes] ([ID], [CodeName]) VALUES (4, N'LoginLimitEnter')
 INSERT [MailTypes] ([ID], [CodeName]) VALUES (5, N'ResendByUser')
+INSERT [MailTypes] ([ID], [CodeName]) VALUES (6, N'NotificationLimit')
+INSERT [MailTypes] ([ID], [CodeName]) VALUES (7, N'NotificationReminder')
 SET IDENTITY_INSERT [MailTypes] OFF
 GO
 
@@ -160,5 +162,7 @@ INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpre
 VALUES (6,'NotificationLimitSiteTask', 'New', 'NotificationSiteTask','0/17 * * ? * * *', 'Every 17 seconds')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (7,'NotificationTelegramTask', 'New', 'NotificationTelegramTask','0 * * ? * *', 'Every minuts')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (8,'NotificationMailTask', 'New', 'NotificationMailTask','0 * * ? * *', 'Every minuts')
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF

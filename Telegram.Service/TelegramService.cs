@@ -105,7 +105,7 @@ namespace Telegram.Service
                             var dbTelegramAccount = await repository.GetAll<TelegramAccount>(x => x.ID == telegramUser.TelegramAccountID)
                                 .FirstOrDefaultAsync();
                             dbTelegramAccount.UserID = telegramUser.UserID = userConnect.UserID;
-                            dbTelegramAccount.Status = telegramUser.Status = TelegramStatus.Connected;
+                            dbTelegramAccount.StatusID = telegramUser.StatusID = (int)TelegramAccountStatusEnum.Connected;
                             dbTelegramAccount.UserID = userConnect.UserID;
                             telegramUser.UserName = userConnect.User.Name;
 
@@ -150,7 +150,7 @@ namespace Telegram.Service
                         answer = StartAnswer();
                         break;
                     case "/help":
-                        if (telegramUser.Status == TelegramStatus.Connected)
+                        if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected)
                         {
                             answer = HelpAnswerFull();
                         }
@@ -242,7 +242,7 @@ namespace Telegram.Service
                     LanguageCode = message.From.LanguageCode,
                     TelegramID = message.From.Id,
                     LastName = message.From.LastName,
-                    Status = TelegramStatus.New,
+                    StatusID = (int)TelegramAccountStatusEnum.New,
                     Username = message.From.Username,
                 }, true);
 
@@ -258,7 +258,7 @@ namespace Telegram.Service
                     ChatType = (int)ChatType.UserToTelegramBot,
                     DateCreate = now,
                     DateEdit = now,
-                    Title = "Пользователь с Budgetton_bot(Telegram)",
+                    Title = "Пользователь с Budgetto_bot (Telegram)",
                     ChatUsers = new List<ChatUser> {
                         new ChatUser
                         {
@@ -282,7 +282,7 @@ namespace Telegram.Service
             return new TelegramUserModelView
             {
                 TelegramAccountID = dbuser.ID,
-                Status = dbuser.Status,
+                StatusID = dbuser.StatusID,
                 TelegramLogin = dbuser.UserConnect != null ? dbuser.UserConnect.TelegramLogin : null,
                 UserID = dbuser.UserID,
                 ChatID = dbuser.ChatUsers.FirstOrDefault().ChatID,
