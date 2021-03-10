@@ -3,6 +3,7 @@ using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Account;
 using MyProfile.Entity.Repository;
+using MyProfile.Identity;
 using MyProfile.UserLog.Service;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,7 @@ namespace MyProfile.Controllers
                 finish = new DateTime(year, 12, 31, 23, 59, 59);
             }
 
-            accounts = accountService.GetAcounts(); // current data of accounts (month is now or year is now)
+            accounts = accountService.GetAcounts(UserInfo.Current.ID); // current data of accounts (month is now or year is now)
             bool isPast = now >= start && now >= finish;
 
             if (isPast)
@@ -71,7 +72,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public JsonResult GetShortAccounts()
         {
-            var accounts = accountService.GetShortAccounts();
+            var accounts = accountService.GetShortAccounts(UserInfo.Current.ID);
             return Json(new
             {
                 isOk = true,

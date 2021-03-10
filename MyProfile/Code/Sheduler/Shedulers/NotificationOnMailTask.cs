@@ -56,9 +56,6 @@ namespace MyProfile.Code.Sheduler.Shedulers
                            NotificationTypeID = x.NotificationTypeID,
                            UserID = x.UserID,
                            Email = x.User.Email,
-                           
-                           IsRead = false,
-                           ReadyDateTime = x.IsReadyDateTime,
                            Name = x.LimitID != null ? x.Limit.Name : x.ReminderID != null ? x.Reminder.Title : "",
 
                            //Limit

@@ -85,5 +85,6 @@ namespace MyProfile.Entity.ModelView.User
         public string Username { get; set; }
         public int StatusID { get; set; }
         public string StatusName { get; set; }
+        public int ID { get; set; }
     }
 }

@@ -48,11 +48,11 @@ namespace MyProfile.Controllers
 
             if (currentUser.UserSettings.LimitPage_Show_IsFinished)
             {
-                return Json(new { isOk = true, limits = await limitService.GetLimitListView() });
+                return Json(new { isOk = true, limits = await limitService.GetLimitListView(currentUser.ID) });
             }
             else
             {
-                return Json(new { isOk = true, limits = await limitService.GetLimitListView(x => x.IsFinished == false) });
+                return Json(new { isOk = true, limits = await limitService.GetLimitListView(currentUser.ID, x => x.IsFinished == false) });
             }
         }
 
@@ -132,7 +132,7 @@ namespace MyProfile.Controllers
         {
             bool isShow = await limitService.ToggleLimit(id, periodType);
 
-            return Json(new { isOk = true , isShow });
+            return Json(new { isOk = true, isShow });
         }
 
     }

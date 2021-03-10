@@ -97,7 +97,11 @@
                 }
             },
             receive: function (notification) {
-                toastr.warning(notification.message, notification.title);
+                if (notification.notifyType == "warning") {
+                    toastr.warning(notification.message, notification.title);
+                } else if (notification.notifyType == "success") {
+                    toastr.success(notification.message, notification.title);
+                }
 
                 this.anyNew = true;
                 let index = this.notifications.findIndex(x => x.notificationID == notification.notificationID);

@@ -27,10 +27,8 @@ namespace MyProfile.Budget.Service
             this.userLogService = userLogService;
         }
 
-        public List<AccountViewModel> GetAcounts()
+        public List<AccountViewModel> GetAcounts(Guid currentUserID)
         {
-            var currentUserID = UserInfo.Current.ID;
-
             return repository.GetAll<Account>(x => x.UserID == currentUserID && x.IsDeleted == false)
                 .Select(x => new AccountViewModel
                 {
@@ -164,10 +162,9 @@ namespace MyProfile.Budget.Service
             repository.Save();
         }
 
-        public List<AccountShortViewModel> GetShortAccounts()
+        public List<AccountShortViewModel> GetShortAccounts(Guid currentUserID)
         {
             List<AccountShortViewModel> accounts;
-            var currentUserID = UserInfo.Current.ID;
 
             if (cache.TryGetValue(typeof(AccountShortViewModel).Name + "_" + currentUserID, out accounts) == false)
             {

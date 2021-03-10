@@ -155,9 +155,8 @@ namespace MyProfile.Limit.Service
             return false;
         }
 
-        public async Task<List<LimitModelView>> GetLimitListView(Expression<Func<Entity.Model.Limit, bool>> expression = null)
+        public async Task<List<LimitModelView>> GetLimitListView(Guid userID, Expression<Func<Entity.Model.Limit, bool>> expression = null)
         {
-            var currentUser = UserInfo.Current;
             var predicate = PredicateBuilder.True<Entity.Model.Limit>();
 
             //if (currentUser.UserSettings.LimitPage_IsShow_Collective)
@@ -172,7 +171,7 @@ namespace MyProfile.Limit.Service
             //}
             //else
             //{
-            predicate = predicate.And(x => currentUser.ID == x.UserID && x.IsDeleted == false);
+            predicate = predicate.And(x => userID == x.UserID && x.IsDeleted == false);
             //}
 
             if (expression != null) { predicate = predicate.And(expression); }
@@ -189,7 +188,7 @@ namespace MyProfile.Limit.Service
                     PeriodTypeID = x.PeriodTypeID,
                     IsShowInCollective = x.VisibleElement.IsShowInCollective,
                     IsFinished = x.IsFinished,
-                    IsOwner = currentUser.ID == x.UserID,
+                    IsOwner = userID == x.UserID,
                     UserName = x.User.Name + " " + x.User.LastName,
                     ImageLink = x.User.ImageLink,
                     Sections = x.SectionGroupLimits.Select(y => new Entity.ModelView.BudgetSectionModelView
@@ -227,7 +226,7 @@ namespace MyProfile.Limit.Service
             bool isThis = false;
             bool isPast = start < now && finish < now;// month/year
             bool isFuture = start > now && finish > now;// month/year
-            var limits = await GetLimitListView(x =>
+            var limits = await GetLimitListView(currentUser.ID, x =>
                 x.PeriodTypeID == (int)periodTypesEnum
                 && x.VisibleElement.IsShowOnDashboards);
 

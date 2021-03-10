@@ -1,4 +1,6 @@
 ﻿using MyProfile.Entity.ModelView.Notification;
+using System.Globalization;
+using System.Text;
 
 namespace Telegram.Service
 {
@@ -21,7 +23,7 @@ namespace Telegram.Service
 $@"Добрый день, <strong>{name}</strong>!👋
 <strong>Ваш бот активирован!</strong>🎉🎉🎉
 
-Вы начнете получать ваши настроенные уведомления на телеграм прямо здесь.👇
+Вы начнете получать ваши настроенные уведомления в телеграм прямо здесь.👇
 Спасибо что вы с нами 😉";
         }
 
@@ -59,17 +61,56 @@ $@"Добрый день, <strong>{name}</strong>!👋
             return
 @"Доступные команды: 📃
 /accounts - Баланс всех счетов 
-/limits - Лимиты
-/goals - Цели
-/reminders - Напоминания
-/earning - Доходы
-/spending - Расходы
-/invest - Ивестировано
+
+/stop - перестать получать уведомления
 
 /USD - курсы доллара на сегодня
 /EUR - курсы евро на сегодня";
         }
+///limits - Лимиты
+///goals - Цели
+///reminders - Напоминания
+///earning - Доходы
+///spending - Расходы
+///invest - Ивестировано
 
+        private string GetAccountsAnswer(System.Collections.Generic.List<MyProfile.Entity.ModelView.Account.AccountViewModel> accounts, Model.TelegramUserModelView telegramUser)
+        {
+            StringBuilder s = new StringBuilder();
+            s.AppendLine("Ваши счета:");
+            s.AppendLine("");
+
+            foreach (var account in accounts)
+            {
+                NumberFormatInfo numberFormatInfo = new CultureInfo(account.Currency.specificCulture, false).NumberFormat;
+                numberFormatInfo.CurrencyDecimalDigits = 0;
+
+                var m = account.Balance.ToString("C", numberFormatInfo);
+
+                if (account.AccountType == MyProfile.Entity.Model.AccountTypesEnum.Cash)
+                {
+                    s.AppendLine($"{m} - {account.Name}({account.AccountTypeName}) 💵");
+                }else
+                {
+                    s.AppendLine($"{m} - {account.Name}({account.BankName}) 💳");
+                }
+            }
+
+            return s.ToString();
+//@"Доступные команды в этом режиме: 📃
+///USD - курсы доллара на сегодня 💳
+///EUR - курсы евро на сегодня 💵 📈 💰 ";
+        }
+
+        private string Stop(string name)
+        {
+            return
+$@"Теперь вы <b>не будете</b> получать уведомления от аккаунта <strong>{name}</strong>
+
+Доступные команды в этом режиме: 📃
+/USD - курсы доллара на сегодня
+/EUR - курсы евро на сегодня";
+        }
 
 
 

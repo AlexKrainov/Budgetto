@@ -109,13 +109,13 @@
                 this.isNew = false;
                 this.reminder = JSCopyObject(reminder);
 
-                let config = GetFlatpickrRuConfig(this.reminder.dateReminder);
+                let config = GetFlatpickrRuConfigWithTime(this.reminder.dateReminder);
                 this.flatpickrReminder = flatpickr('#reminderDateReminder', config);
             } else {
                 this.isNew = true;
                 this.reminder.dateReminder = this.dateTime;
 
-                let config = GetFlatpickrRuConfig(this.dateTime);
+                let config = GetFlatpickrRuConfigWithTime(this.dateTime);
                 this.flatpickrReminder = flatpickr('#reminderDateReminder', config);
             }
 

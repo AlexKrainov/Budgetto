@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyProfile.Identity;
 using MyProfile.Notification.Service;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Args;
 
 namespace MyProfile.Controllers
 {
@@ -20,7 +16,10 @@ namespace MyProfile.Controllers
 
         public IActionResult GetLast(int skip, int take)
         {
-            var notifications = notificationService.GetLastNotification(skip, take);
+            var notifications = notificationService.GetLastNotification(skip, take, x =>
+                    x.IsReady
+                    && x.IsSentOnSite
+                    && x.UserID == UserInfo.Current.ID);
             return Json(new { isOk = true, notifications });
         }
 

@@ -48,39 +48,14 @@ namespace MyProfile.Code.Sheduler.Shedulers
 
                 try
                 {
-                    var limitNotifications = repository.GetAll<MyProfile.Entity.Model.Notification>(x =>
-                           x.IsSite
-                          && x.IsReady == true
-                          && x.IsSentOnSite == false)
-                       .Select(x => new NotificationViewModel
-                       {
-                           NotificationID = x.ID,
-                           NotificationTypeID = x.NotificationTypeID,
-                           UserConnectionIDs = x.User.UserConnect.HubConnects
-                                .Select(y => y.ConnectionID)
-                                .ToList(),
-                           IsRead = false,
-                           ReadyDateTime = x.IsReadyDateTime,
-                           Name = x.LimitID != null
-                                    ? x.Limit.Name
-                                    : x.ReminderID != null
-                                        ? x.Reminder.Title
-                                        : x.TelegramAccountID != null
-                                            ? x.TelegramAccount.Username + " " + x.TelegramAccount.TelegramID
-                                            : "",
-                           //Limit
-                           Total = x.Total,
-                           SpecificCulture = x.User.Currency.SpecificCulture,
+                    var notifications = notificationService.GetLastNotification(0, 100,
+                        x => x.IsSite
+                           && x.IsReady == true
+                           && x.IsSentOnSite == false);
 
-                           //Reminder
-                           ExpirationDateTime = x.ExpirationDateTime,
-                           Icon = x.Icon,
-                       })
-                       .ToList();
-
-                    foreach (var notification in limitNotifications)
+                    foreach (var notification in notifications)
                     {
-                        notificationService.GetMessage(notification);
+                        //notificationService.GetMessage(notification);
 
                         foreach (var connectionID in notification.UserConnectionIDs)
                         {
@@ -91,6 +66,12 @@ namespace MyProfile.Code.Sheduler.Shedulers
                             }
                             catch (Exception ex)
                             {
+                                repository.Create(new ErrorLog
+                                {
+                                    ErrorText = ex.Message,
+                                    CurrentDate = DateTime.Now.ToUniversalTime(),
+                                    Where = "NotificationOnSiteTask._execute.Receive",
+                                }, true);
                             }
                         }
                         var dbNotification = repository.GetAll<Entity.Model.Notification>(x => x.ID == notification.NotificationID)

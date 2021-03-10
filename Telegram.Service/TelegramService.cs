@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Notification;
 using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
+using MyProfile.Goal.Service;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -69,9 +71,11 @@ namespace Telegram.Service
             //var me = botClient.GetMeAsync().Result;
 
             botClient.OnMessage += Bot_OnMessage;
+            botClient.OnMessageEdited += Bot_OnMessage;
 
             botClient.StartReceiving();
         }
+
 
         private async void Bot_OnMessage(object sender, MessageEventArgs e)
         {
@@ -95,7 +99,7 @@ namespace Telegram.Service
                 #region Authorization telegram account
                 if (text.StartsWith("telegram_"))
                 {
-                    if (telegramUser.UserID == null)
+                    if (telegramUser.StatusID != (int)TelegramAccountStatusEnum.Connected)//telegramUser.UserID == null)
                     {
                         var userConnect = await repository.GetAll<UserConnect>(x => x.TelegramLogin == text)
                             .FirstOrDefaultAsync();
@@ -106,7 +110,7 @@ namespace Telegram.Service
                                 .FirstOrDefaultAsync();
                             dbTelegramAccount.UserID = telegramUser.UserID = userConnect.UserID;
                             dbTelegramAccount.StatusID = telegramUser.StatusID = (int)TelegramAccountStatusEnum.Connected;
-                            dbTelegramAccount.UserID = userConnect.UserID;
+                            dbTelegramAccount.DateEdit = now;
                             telegramUser.UserName = userConnect.User.Name;
 
                             repository.Create(new Notification
@@ -114,6 +118,7 @@ namespace Telegram.Service
                                 IsReady = true,
                                 IsSite = true,
                                 LastChangeDateTime = now,
+                                IsReadyDateTime = DateTime.Now,
                                 NotificationTypeID = (int)NotificationType.Telegram,
                                 TelegramAccountID = dbTelegramAccount.ID,
                                 UserID = userConnect.UserID,
@@ -141,14 +146,11 @@ namespace Telegram.Service
                          parseMode: ParseMode.Html
                        );
                     return;
-                } 
+                }
                 #endregion
 
                 switch (text)
                 {
-                    case "/start":
-                        answer = StartAnswer();
-                        break;
                     case "/help":
                         if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected)
                         {
@@ -168,6 +170,61 @@ namespace Telegram.Service
 
                         answer = z.Rate.ToString("C", numberFormatInfo);
                         break;
+                    case "/stop":
+                        answer = Stop(telegramUser.UserName);
+
+                        var account = await repository.GetAll<TelegramAccount>(x => x.ID == telegramUser.TelegramAccountID
+                                && x.StatusID != (int)TelegramAccountStatusEnum.Locked)
+                            .FirstOrDefaultAsync();
+                        account.StatusID = (int)TelegramAccountStatusEnum.Locked;
+                        account.DateEdit = now;
+                        await repository.SaveAsync();
+
+                        break;
+                    case "/accounts":
+                        if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected
+                            || telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
+                        {
+                            var accountService = scope.ServiceProvider.GetRequiredService<AccountService>();
+
+                            var accounts = accountService.GetAcounts(telegramUser.UserID ?? Guid.NewGuid());
+
+                            answer = GetAccountsAnswer(accounts, telegramUser);
+                        }
+                        else
+                        {
+                            answer = CommandNotRecognized();
+                        }
+                        break;
+                    //case "/goals":
+                    //    if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected
+                    //        || telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
+                    //    {
+                    //        var goalService = scope.ServiceProvider.GetRequiredService<GoalService>();
+
+                    //        var goals = goalService.get
+
+                    //        answer = GetAccountsAnswer(accounts, telegramUser);
+                    //    }
+                    //    else
+                    //    {
+                    //        answer = CommandNotRecognized();
+                    //    }
+                    //    break;
+                    case "/start":
+                        if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected)
+                        {
+                            answer = HelpAnswerFull();
+                        }
+                        else if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
+                        {
+                            answer = HelpAnswerSmall();
+                        }
+                        else
+                        {
+                            answer = StartAnswer();
+                        }
+                        break;
                     default:
                         answer = CommandNotRecognized();
                         break;
@@ -185,6 +242,16 @@ namespace Telegram.Service
 
         }
 
+        public async Task SetNewStatus(int accountID, TelegramAccountStatusEnum newStatusID)
+        {
+            var dbTelegramAccount = await repository.GetAll<TelegramAccount>(x => x.ID == accountID)
+                                .FirstOrDefaultAsync();
+            dbTelegramAccount.StatusID = (int)newStatusID;
+            dbTelegramAccount.DateEdit = now;
+
+            await repository.SaveAsync();
+            return;
+        }
 
         private async Task SaveMessages(TelegramUserModelView telegramUser, Bot.Types.Message message, string answer)
         {
@@ -275,7 +342,9 @@ namespace Telegram.Service
 
             }
 
-            var dbuser = await repository.GetAll<TelegramAccount>(x => x.TelegramID == message.From.Id).FirstOrDefaultAsync();
+            var dbuser = await repository.GetAll<TelegramAccount>(x =>
+                    x.TelegramID == message.From.Id)
+                .FirstOrDefaultAsync();
             dbuser.LastDateConnect = now;
             await repository.SaveAsync();
 
@@ -314,13 +383,16 @@ namespace Telegram.Service
 
                 foreach (var telegramAccount in notification.TelegramAccounts)
                 {
-                    await botClient.SendTextMessageAsync(
-                            chatId: new Bot.Types.ChatId(long.Parse(telegramAccount.TelegramID)),
-                            text: answer,
-                            parseMode: ParseMode.Html
-                            );
+                    if (telegramAccount.StatusID == (int)TelegramAccountStatusEnum.Connected)
+                    {
+                        await botClient.SendTextMessageAsync(
+                                           chatId: new Bot.Types.ChatId(long.Parse(telegramAccount.TelegramID)),
+                                           text: answer,
+                                           parseMode: ParseMode.Html
+                                           );
 
-                    await SaveMessageFromTelegramBot(telegramAccount.ChatID, answer);
+                        await SaveMessageFromTelegramBot(telegramAccount.ChatID, answer);
+                    }
                     isSent = true;
                 }
                 return isSent;

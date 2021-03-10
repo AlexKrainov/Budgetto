@@ -401,6 +401,31 @@ var UserSettingsVue = new Vue({
             return isOk;
         },
 
+        //User connect
+        setTelegramStatus: function (accountid, statusid) {
+            this.isSaving = true;
+            return $.ajax({
+                type: "GET",
+                url: "/Identity/Account/SetTelegramStatus?newstatusid=" + statusid + "&accountid=" + accountid,
+                context: this,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.isOk) {
+                        let index = this.telegramAccounts.findIndex(x => x.id == accountid);
+                        this.telegramAccounts[index].statusID = statusid;
+                    }
+
+                    this.isSaving = false;
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    this.isSaving = false;
+                    console.log(error);
+                }
+            });
+        },
+
         //Testing
         generatedRecords: function () {
             if (confirm("Вы уверены, что хотите сгенерировать данные ?")) {

@@ -217,6 +217,19 @@ function GetFlatpickrRuConfig(date, minDate, maxDate) {
         maxDate: maxDate,
     };
 }
+function GetFlatpickrRuConfigWithTime(date, minDate, maxDate) {
+    return {
+        altInput: true,
+        locale: "ru",
+        dateFormat: 'Y/m/d H:i',
+        defaultDate: date,
+        minDate: minDate,
+        maxDate: maxDate,
+        enableTime: true,
+        time_24hr: true,
+        amPM: ["",""]
+    };
+}
 
 function ShowLoading(selector) {
     var overlayBg = themeSettings.isDarkStyle()

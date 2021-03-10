@@ -11,7 +11,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common.Service\Common.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.Budget.Service\MyProfile.Budget.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
+    <ProjectReference Include="..\MyProfile.Goal.Service\MyProfile.Goal.Service.csproj" />
   </ItemGroup>
 
 </Project>

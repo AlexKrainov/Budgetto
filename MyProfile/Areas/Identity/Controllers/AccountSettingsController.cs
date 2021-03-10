@@ -145,6 +145,17 @@ namespace MyProfile.Areas.Identity.Controllers
         }
 
         #endregion
+
+        #region User connect
+
+        [HttpGet]
+        public async Task<IActionResult> SetTelegramStatus(int accountID, TelegramAccountStatusEnum newStatusID)
+        {
+            await telegramService.SetNewStatus(accountID, newStatusID);
+
+            return Json(new { isOk = true });
+        }
+        #endregion
     }
 
 }

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Login;
@@ -13,9 +12,8 @@ using MyProfile.Identity;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
 using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Telegram.Service;
 
 namespace MyProfile.Areas.Identity.Controllers
 {
@@ -29,13 +27,15 @@ namespace MyProfile.Areas.Identity.Controllers
         private UserEmailService userEmailService;
         private CollectionUserService collectionUserService;
         private SummaryService summaryService;
+        private TelegramService telegramService;
 
         public AccountController(IBaseRepository repository,
             UserLogService userLogService,
             UserService userService,
             UserEmailService userConfirmEmailService,
             CollectionUserService collectionUserService,
-            SummaryService summaryService)
+            SummaryService summaryService,
+            TelegramService telegramService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
@@ -43,6 +43,7 @@ namespace MyProfile.Areas.Identity.Controllers
             this.userEmailService = userConfirmEmailService;
             this.collectionUserService = collectionUserService;
             this.summaryService = summaryService;
+            this.telegramService = telegramService;
         }
 
         /// <summary>

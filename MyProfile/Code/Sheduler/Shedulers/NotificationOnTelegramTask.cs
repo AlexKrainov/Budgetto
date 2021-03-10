@@ -53,15 +53,14 @@ namespace MyProfile.Code.Sheduler.Shedulers
                            NotificationID = x.ID,
                            NotificationTypeID = x.NotificationTypeID,
                            TelegramAccounts = x.User.UserConnect.TelegramAccounts
-                                .Where(y => y.StatusID == (int)TelegramAccountStatusEnum.Connected)
+                                //.Where(y => y.StatusID == (int)TelegramAccountStatusEnum.Connected)
                                 .Select(y => new TelegramAccountModelView
                                 {
                                     ChatID = y.ChatUsers.FirstOrDefault().ChatID,
-                                    TelegramID = y.TelegramID.ToString()
+                                    TelegramID = y.TelegramID.ToString(),
+                                    StatusID = y.StatusID
                                 })
                                 .ToList(),
-                           IsRead = false,
-                           ReadyDateTime = x.IsReadyDateTime,
                            Name = x.LimitID != null ? x.Limit.Name : x.ReminderID != null ? x.Reminder.Title : "",
 
                            //Limit

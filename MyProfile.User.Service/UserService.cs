@@ -121,11 +121,12 @@ namespace MyProfile.User.Service
             #endregion
 
             #region TelegramAccounts
-            user.TelegramAccounts = repository.GetAll<TelegramAccount>(x => x.UserID == currentUser.ID)
+            user.TelegramAccounts = repository.GetAll<TelegramAccount>(x => x.UserID == currentUser.ID && (x.StatusID == (int)TelegramAccountStatusEnum.Connected || x.StatusID == (int)TelegramAccountStatusEnum.InPause))
                 .Select(x => new TelegramAccountClientSide
                 {
+                    ID = x.ID,
                     TelegramID = x.TelegramID,
-                    Username = x.Username,
+                    Username = x.Username != null ? x.Username : x.LastName != null ? x.FirstName + " " + x.LastName : x.FirstName,
                     StatusID = x.StatusID,
                     StatusName = x.Status.Name
                 })

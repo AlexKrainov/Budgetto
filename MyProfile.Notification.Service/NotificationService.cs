@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MyProfile.Notification.Service
@@ -20,37 +21,47 @@ namespace MyProfile.Notification.Service
             this.repository = repository;
         }
 
-        public List<NotificationViewModel> GetLastNotification(int skip, int take)
+        public List<NotificationViewModel> GetLastNotification(int skip, int take, Expression<Func<Notification, bool>> expression = null)
         {
             var currentUser = UserInfo.Current;
-            var notifications = repository.GetAll<Notification>(x =>
-                x.IsReady && x.IsSentOnSite && x.UserID == currentUser.ID)
+            var notifications = repository.GetAll(expression)
                  .Select(x => new NotificationViewModel
                  {
                      NotificationID = x.ID,
                      NotificationTypeID = x.NotificationTypeID,
-                     Total = x.Total,
-                     ExpirationDateTime = x.ExpirationDateTime,
                      IsRead = x.IsRead,
+                     ReadDateTime = x.ReadDateTime,
                      ReadyDateTime = x.IsReadyDateTime,
+                     UserConnectionIDs = x.User.UserConnect.HubConnects
+                                .Select(y => y.ConnectionID)
+                                .ToList(),
+
                      Name = x.LimitID != null
                                     ? x.Limit.Name
                                     : x.ReminderID != null
                                         ? x.Reminder.Title
                                         : x.TelegramAccountID != null
-                                            ? x.TelegramAccount.Username + " " + x.TelegramAccount.TelegramID
+                                            ? x.TelegramAccount.TelegramID.ToString()
                                             : "",
-                     //Hidden
+
+                     TelegramName = x.TelegramAccountID != null ? x.TelegramAccount.LastName != null ? x.TelegramAccount.FirstName + " " + x.TelegramAccount.LastName : x.TelegramAccount.FirstName : null,
+                     TelegramUserName = x.TelegramAccountID != null ? x.TelegramAccount.Username : null,
+                     //Limit
+                     Total = x.Total,
                      SpecificCulture = x.User.Currency.SpecificCulture,
+
+                     //Reminder
+                     ExpirationDateTime = x.ExpirationDateTime,
+                     Icon = x.Icon,
                  })
                  .OrderByDescending(x => x.ReadyDateTime)
                  .Skip(skip)
                  .Take(take)
                  .ToList();
 
-            foreach (var notification in notifications)
+            for (int i = 0; i < notifications.Count; i++)
             {
-                GetMessage(notification);
+                GetMessage(notifications[i]);
             }
 
             return notifications;
@@ -82,15 +93,17 @@ namespace MyProfile.Notification.Service
                     notification.Message = "Цена достигла <strong>" + (notification.Total ?? 0).ToString("C", numberFormatInfo) + "</strong>";
                     notification.Color = "bg-danger";
                     notification.Icon = "lnr lnr-frame-expand";
+                    notification.NotifyType = "warning";
                     break;
                 case (int)NotificationType.Reminder:
                     break;
                 case (int)NotificationType.Telegram:
-                   
+
                     notification.Title = $"Телеграм уведомление";
-                    notification.Message = $"Ваш аккаунт ({notification.Name}) подключен к телеграм боту <b>Budgetto_bot</b>. Теперь вы можете получать все уведомления и телегреме.";
-                    notification.Color = "bg-warning";
-                    notification.Icon = "fab fa-telegram";
+                    notification.Message = $"Ваш аккаунт <b>{ (string.IsNullOrEmpty(notification.TelegramUserName) ? notification.TelegramName + " " + notification.Name : notification.TelegramUserName + " " + notification.Name) }</b> подключен к телеграм боту <b>Budgetto_bot</b>. Теперь вы можете получать все уведомления в телегреме.";
+                    notification.Color = "bg-primary";
+                    notification.Icon = "fab fa-telegram-plane";
+                    notification.NotifyType = "success";
                     break;
                 default:
                     break;
@@ -191,9 +204,12 @@ namespace MyProfile.Notification.Service
                         dbNotification.LastChangeDateTime = now;
                         dbNotification.IsReady = false;
                         dbNotification.IsSentOnSite = false;
+                        dbNotification.IsSentOnTelegram = false;
+                        dbNotification.IsSentOnMail = false;
                         dbNotification.IsDone = false;
                         dbNotification.IsRead = false;
                         dbNotification.ReadDateTime = null;
+                        dbNotification.IsReadyDateTime = null;
 
                         if (typeof(T) == typeof(Limit))
                         {

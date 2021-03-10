@@ -23,7 +23,12 @@ namespace MyProfile.Entity.Model
         public bool IsDeleted { get; set; }
         [MaxLength(32)]
         public string CssIcon { get; set; }
-        public bool IsReminderByMail { get; set; }
+        /// <summary>
+        /// How much time from UTC
+        /// </summary>
+        public int OffSet { get; set; }
+        [MaxLength(64)]
+        public string TimeZone { get; set; }
 
         [ForeignKey("User")]
         public Guid UserID { get; set; }

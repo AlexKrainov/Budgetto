@@ -182,7 +182,7 @@ namespace MyProfile.Budget.Service
 
             UserSummary userSummary = new UserSummary
             {
-                Name = oldUserSummary.Name,
+                Name = oldUserSummary?.Name ?? "Доходы в час",
                 Value = JsonConvert.SerializeObject(new EarningsPerHourItem { WorkHours = allWorkHours, WorkDays = allWorkDays }),
                 CurrentDate = now,
                 IsActive = true,
