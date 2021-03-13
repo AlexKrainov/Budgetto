@@ -25,6 +25,7 @@ namespace MyProfile.Entity.Model
         NotificationSiteTask = 6,
         NotificationTelegramTask = 7,
         NotificationMailTask = 8,
+        NotificationReminderCheckerTask = 9,
 
         Test,
     }
@@ -51,12 +52,12 @@ namespace MyProfile.Entity.Model
         public string Comment { get; set; }
 
 
-        public virtual ICollection<SchedulerTaskLog> TaskLogs { get; set; }
+        //public virtual ICollection<SchedulerTaskLog> TaskLogs { get; set; }
 
-        public SchedulerTask()
-        {
-            this.TaskLogs = new HashSet<SchedulerTaskLog>();
-        }
+        //public SchedulerTask()
+        //{
+        //    this.TaskLogs = new HashSet<SchedulerTaskLog>();
+        //}
 
     }
 }

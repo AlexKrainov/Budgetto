@@ -18,12 +18,12 @@ namespace MyProfile.Code.Sheduler.Shedulers
     /// <summary>
     /// Проверяем не превисил ли пользователь лимит по тратам
     /// </summary>
-    public class LimitCheckerTask : BaseTaskJob, IJob
+    public class CheckerReminderTask : BaseTaskJob, IJob
     {
         private IServiceScopeFactory _scopeFactory;
         private int _checkLimits = 0;
 
-        public LimitCheckerTask(IServiceScopeFactory scopeFactory) :
+        public CheckerReminderTask(IServiceScopeFactory scopeFactory) :
             base(scopeFactory)
         {
             _scopeFactory = scopeFactory;
@@ -35,9 +35,9 @@ namespace MyProfile.Code.Sheduler.Shedulers
             using (var scope = _scopeFactory.CreateScope())
             {
                 var repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
-                var limitService = scope.ServiceProvider.GetRequiredService<LimitService>();
+                var reminderService = scope.ServiceProvider.GetRequiredService<ReminderService>();
 
-                base.BaseExecute(repository, TaskType.NotificationLimitCheckerTask, limitService.CheckLimitNotifications);
+                base.BaseExecute(repository, TaskType.NotificationReminderCheckerTask, reminderService.CheckReminderNotifications);
             }
             return Task.CompletedTask;
         }

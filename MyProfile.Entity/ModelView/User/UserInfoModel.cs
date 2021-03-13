@@ -14,6 +14,7 @@ namespace MyProfile.Entity.ModelView
         /// Doesn't have any records
         /// </summary>
         public bool IsHelpRecord { get; set; }
+        public string TimeZoneClient { get; set; }
 
         public UserInfoModel()
         {

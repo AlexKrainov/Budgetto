@@ -48,6 +48,8 @@ namespace MyProfile.Entity.Model
         public int CurrencyID { get; set; }
         [ForeignKey("Resource")]
         public int? ResourceID { get; set; }
+        [ForeignKey("OlsonTZ")]
+        public int? OlsonTZID { get; set; }
 
         public virtual CollectiveBudgetUser CollectiveBudgetUser { get; set; }
         public virtual UserSettings UserSettings { get; set; }
@@ -56,6 +58,7 @@ namespace MyProfile.Entity.Model
         public virtual Currency Currency { get; set; }
         public virtual Resource Resource { get; set; }
         public virtual Payment Payment { get; set; }
+        public virtual OlsonTZID OlsonTZ { get; set; }
 
         public virtual IEnumerable<BudgetArea> BudgetAreas { get; set; }
         public virtual IEnumerable<Record> BudgetRecords { get; set; }

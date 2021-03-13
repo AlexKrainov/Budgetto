@@ -103,5 +103,11 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, bankCurrencyData = await currencyService.GetRateByCodeAsync(date, charCode, UserInfo.Current.UserSessionID) });
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetTimeZone()
+        {
+            return Json(new { isOk = true, timezone = commonService.GetTimeZones() });
+        }
+
     }
 }

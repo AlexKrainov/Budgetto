@@ -105,6 +105,7 @@ namespace MyProfile.Controllers
         {
             var currentUser = UserInfo.Current;
             currentUser.Name = userInfo.Name;
+            currentUser.TimeZoneClient = userInfo.TimeZoneClient;
 
             await userService.UpdateUser(currentUser);
             await summaryService.SetWorkHoursAsync(userInfo.AllWorkHours, userInfo.AllWorkDays);

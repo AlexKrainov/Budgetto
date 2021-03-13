@@ -17,6 +17,6 @@ namespace MyProfile.Entity.ModelView.Limit
         public bool IsShowInCollective { get; set; }
         public bool IsShowOnDashboard { get; set; }
         public bool IsShow { get; set; } = true;
-        public IEnumerable<NotificationUserViewModel> Notifications { get; set; } = new List<NotificationUserViewModel>();
+        public List<NotificationUserViewModel> Notifications { get; set; } = new List<NotificationUserViewModel>();
     }
 }

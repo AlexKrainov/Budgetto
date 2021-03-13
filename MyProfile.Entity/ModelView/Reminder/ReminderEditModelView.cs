@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyProfile.Entity.ModelView.Notification;
+using System;
+using System.Collections.Generic;
 
 namespace MyProfile.Entity.ModelView.Reminder
 {
@@ -27,5 +29,10 @@ namespace MyProfile.Entity.ModelView.Reminder
         public string DateReminderString { get; set; }
         public string RepeatEveryName { get; set; }
         public DateTime OldDateReminder { get; set; }
+        public int OffSetClient { get; set; }
+        public string TimeZoneClient { get; set; }
+        public int? OlzonTZID { get; set; }
+        public List<NotificationUserViewModel> Notifications { get; set; }
+        public int ReminderDateID { get; set; }
     }
 }

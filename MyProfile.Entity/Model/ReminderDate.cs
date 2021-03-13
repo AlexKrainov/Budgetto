@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,8 +15,14 @@ namespace MyProfile.Entity.Model
 
 		[ForeignKey("Reminder")]
 		public int ReminderID { get; set; }
-		
+
 		public virtual Reminder Reminder { get; set; }
-		
+
+		public virtual IEnumerable<Notification> Notifications { get; set; }
+
+		public ReminderDate()
+        {
+			this.Notifications = new HashSet<Notification>();
+		}
 	}
 }

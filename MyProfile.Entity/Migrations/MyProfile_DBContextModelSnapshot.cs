@@ -907,6 +907,32 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.MyTimeZone", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Abreviatura")
+                        .HasMaxLength(8);
+
+                    b.Property<bool>("IsDST");
+
+                    b.Property<decimal>("UTCOffsetHours");
+
+                    b.Property<int>("UTCOffsetMinutes");
+
+                    b.Property<string>("WindowsDisplayName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("WindowsTimezoneID")
+                        .HasMaxLength(64);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("TimeZones");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Notification", b =>
                 {
                     b.Property<int>("ID")
@@ -914,9 +940,6 @@ namespace MyProfile.Entity.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("ExpirationDateTime");
-
-                    b.Property<string>("Icon")
-                        .HasMaxLength(64);
 
                     b.Property<bool>("IsDone");
 
@@ -927,6 +950,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<bool>("IsReady");
 
                     b.Property<DateTime?>("IsReadyDateTime");
+
+                    b.Property<bool>("IsRepeat");
 
                     b.Property<bool>("IsSentOnMail");
 
@@ -946,7 +971,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("ReadDateTime");
 
-                    b.Property<int?>("ReminderID");
+                    b.Property<int?>("ReminderDateID");
 
                     b.Property<int?>("TelegramAccountID");
 
@@ -961,13 +986,31 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasIndex("LimitID");
 
-                    b.HasIndex("ReminderID");
+                    b.HasIndex("ReminderDateID");
 
                     b.HasIndex("TelegramAccountID");
 
                     b.HasIndex("UserID");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.OlsonTZID", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(128);
+
+                    b.Property<int>("TimeZoneID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TimeZoneID");
+
+                    b.ToTable("OlsonTZIDs");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Payment", b =>
@@ -1261,12 +1304,17 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<bool>("IsReminderByMail");
-
                     b.Property<bool>("IsRepeat");
+
+                    b.Property<int>("OffSetClient");
+
+                    b.Property<int?>("OlsonTZID");
 
                     b.Property<string>("RepeatEvery")
                         .HasMaxLength(16);
+
+                    b.Property<string>("TimeZoneClient")
+                        .HasMaxLength(64);
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -1275,6 +1323,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<Guid>("UserID");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("OlsonTZID");
 
                     b.HasIndex("UserID");
 
@@ -1839,6 +1889,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<int?>("OlsonTZID");
+
                     b.Property<int>("PaymentID");
 
                     b.Property<int?>("ResourceID");
@@ -1854,6 +1906,8 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("CurrencyID");
+
+                    b.HasIndex("OlsonTZID");
 
                     b.HasIndex("PaymentID")
                         .IsUnique();
@@ -2508,9 +2562,9 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("Notifications")
                         .HasForeignKey("LimitID");
 
-                    b.HasOne("MyProfile.Entity.Model.Reminder", "Reminder")
-                        .WithMany()
-                        .HasForeignKey("ReminderID");
+                    b.HasOne("MyProfile.Entity.Model.ReminderDate", "ReminderDate")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ReminderDateID");
 
                     b.HasOne("MyProfile.Entity.Model.TelegramAccount", "TelegramAccount")
                         .WithMany("Notifications")
@@ -2519,6 +2573,14 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.OlsonTZID", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.MyTimeZone", "TimeZone")
+                        .WithMany("OlsonTZIDs")
+                        .HasForeignKey("TimeZoneID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -2602,6 +2664,10 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Reminder", b =>
                 {
+                    b.HasOne("MyProfile.Entity.Model.OlsonTZID", "OlsonTZ")
+                        .WithMany()
+                        .HasForeignKey("OlsonTZID");
+
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("Reminders")
                         .HasForeignKey("UserID")
@@ -2632,7 +2698,7 @@ namespace MyProfile.Entity.Migrations
             modelBuilder.Entity("MyProfile.Entity.Model.SchedulerTaskLog", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.SchedulerTask", "Task")
-                        .WithMany("TaskLogs")
+                        .WithMany()
                         .HasForeignKey("TaskID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -2783,6 +2849,10 @@ namespace MyProfile.Entity.Migrations
                         .WithMany()
                         .HasForeignKey("CurrencyID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.OlsonTZID", "OlsonTZ")
+                        .WithMany()
+                        .HasForeignKey("OlsonTZID");
 
                     b.HasOne("MyProfile.Entity.Model.Payment", "Payment")
                         .WithOne("User")

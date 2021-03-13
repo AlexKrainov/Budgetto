@@ -23,7 +23,6 @@ namespace MyProfile.Notification.Service
 
         public List<NotificationViewModel> GetLastNotification(int skip, int take, Expression<Func<Notification, bool>> expression = null)
         {
-            var currentUser = UserInfo.Current;
             var notifications = repository.GetAll(expression)
                  .Select(x => new NotificationViewModel
                  {
@@ -32,14 +31,15 @@ namespace MyProfile.Notification.Service
                      IsRead = x.IsRead,
                      ReadDateTime = x.ReadDateTime,
                      ReadyDateTime = x.IsReadyDateTime,
+                     UserUTCOffsetMinutes = x.User.OlsonTZID != null ? x.User.OlsonTZ.TimeZone.UTCOffsetMinutes : 180,
                      UserConnectionIDs = x.User.UserConnect.HubConnects
                                 .Select(y => y.ConnectionID)
                                 .ToList(),
 
                      Name = x.LimitID != null
                                     ? x.Limit.Name
-                                    : x.ReminderID != null
-                                        ? x.Reminder.Title
+                                    : x.ReminderDateID != null
+                                        ? x.ReminderDate.Reminder.Title
                                         : x.TelegramAccountID != null
                                             ? x.TelegramAccount.TelegramID.ToString()
                                             : "",
@@ -52,7 +52,8 @@ namespace MyProfile.Notification.Service
 
                      //Reminder
                      ExpirationDateTime = x.ExpirationDateTime,
-                     Icon = x.Icon,
+                     ReminderUTCOffsetMinutes = x.ReminderDateID != null ? x.ReminderDate.Reminder.OlsonTZ.TimeZone.UTCOffsetMinutes : 0,
+                     Icon = x.ReminderDateID != null ? x.ReminderDate.Reminder.CssIcon : null,
                  })
                  .OrderByDescending(x => x.ReadyDateTime)
                  .Skip(skip)
@@ -61,6 +62,11 @@ namespace MyProfile.Notification.Service
 
             for (int i = 0; i < notifications.Count; i++)
             {
+                if (notifications[i].ReadyDateTime.HasValue)
+                {
+                    notifications[i].ReadyDateTime = notifications[i].ReadyDateTime.Value.AddMinutes(notifications[i].UserUTCOffsetMinutes);
+                }
+
                 GetMessage(notifications[i]);
             }
 
@@ -69,7 +75,7 @@ namespace MyProfile.Notification.Service
 
         public void SetRead(List<int> ids)
         {
-            var now = DateTime.Now;
+            var now = DateTime.Now.ToUniversalTime();
             var notifications = repository.GetAll<Entity.Model.Notification>(x => x.IsRead == false && x.IsSentOnSite && ids.Contains(x.ID)).ToList();
 
             for (int i = 0; i < notifications.Count; i++)
@@ -83,22 +89,28 @@ namespace MyProfile.Notification.Service
 
         public void GetMessage(NotificationViewModel notification)
         {
-            NumberFormatInfo numberFormatInfo = new CultureInfo(notification.SpecificCulture, false).NumberFormat;
-            numberFormatInfo.CurrencyDecimalDigits = 0;
-
             switch (notification.NotificationTypeID)
             {
                 case (int)NotificationType.Limit:
-                    notification.Title = $"Лимит '{ notification.Name }'";
-                    notification.Message = "Цена достигла <strong>" + (notification.Total ?? 0).ToString("C", numberFormatInfo) + "</strong>";
+                    NumberFormatInfo numberFormatInfo = new CultureInfo(notification.SpecificCulture, false).NumberFormat;
+                    numberFormatInfo.CurrencyDecimalDigits = 0;
+
+                    notification.Title = $"'{ notification.Name }' Цена достигла <strong>" + (notification.Total ?? 0).ToString("C", numberFormatInfo) + "</strong>";
+                    notification.Message = "Лимит";
                     notification.Color = "bg-danger";
                     notification.Icon = "lnr lnr-frame-expand";
                     notification.NotifyType = "warning";
                     break;
                 case (int)NotificationType.Reminder:
+                    DateTime expirationDateTime = notification.ExpirationDateTime.Value.AddMinutes(notification.ReminderUTCOffsetMinutes);
+
+                    notification.Title = "Напоминание";
+                    notification.Message = $"'{ notification.Name }' <strong>" + expirationDateTime.ToString("dd MM yyyy HH:mm") + "</strong>";
+                    notification.Color = "bg-primary";
+                    //notification.Icon = "lnr lnr-frame-expand";
+                    notification.NotifyType = "success";
                     break;
                 case (int)NotificationType.Telegram:
-
                     notification.Title = $"Телеграм уведомление";
                     notification.Message = $"Ваш аккаунт <b>{ (string.IsNullOrEmpty(notification.TelegramUserName) ? notification.TelegramName + " " + notification.Name : notification.TelegramUserName + " " + notification.Name) }</b> подключен к телеграм боту <b>Budgetto_bot</b>. Теперь вы можете получать все уведомления в телегреме.";
                     notification.Color = "bg-primary";
@@ -120,9 +132,9 @@ namespace MyProfile.Notification.Service
         /// <param name="objectID">Limit, Reminder and etc.</param>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public async Task<bool> CreateOrUpdate<T>(IEnumerable<NotificationUserViewModel> notifications, int objectID, Guid userID)
+        public async Task<bool> CreateOrUpdate<T>(List<NotificationUserViewModel> notifications, int objectID, Guid userID)
         {
-            var now = DateTime.Now;
+            var now = DateTime.Now.ToUniversalTime();
             bool anyChanges = false;
 
             #region Delete
@@ -148,7 +160,7 @@ namespace MyProfile.Notification.Service
                     var newNotification = new Notification
                     {
                         UserID = userID,
-                        Icon = notification.Icon,
+                        //Icon = notification.Icon,
                         IsMail = notification.IsMail,
                         IsSite = notification.IsSite,
                         IsTelegram = notification.IsTelegram,
@@ -156,7 +168,6 @@ namespace MyProfile.Notification.Service
 
                         Total = notification.Price,
 
-                        ExpirationDateTime = notification.ExpirationDateTime,
                     };
 
                     if (typeof(T) == typeof(Limit))
@@ -164,10 +175,12 @@ namespace MyProfile.Notification.Service
                         newNotification.LimitID = objectID;
                         newNotification.NotificationTypeID = (int)NotificationType.Limit;
                     }
-                    else if (typeof(T) == typeof(Reminder))
+                    else if (typeof(T) == typeof(ReminderDate))
                     {
-                        newNotification.ReminderID = objectID;
+                        newNotification.ReminderDateID = objectID;
                         newNotification.NotificationTypeID = (int)NotificationType.Reminder;
+                        newNotification.ExpirationDateTime = notification.ExpirationDateTime.Value.ToUniversalTime();
+                        newNotification.IsRepeat = notification.IsRepeat;
                     }
 
                     newNotifications.Add(newNotification);
@@ -185,6 +198,12 @@ namespace MyProfile.Notification.Service
             {
                 foreach (var notification in notifications.Where(x => x.IsDeleted == false && x.ID > 0))
                 {
+                    DateTime? expirationDateTime = null;
+                    if (notification.ExpirationDateTime.HasValue)
+                    {
+                        expirationDateTime = notification.ExpirationDateTime.Value.ToUniversalTime();
+                    }
+
                     //we are tring to find any changes
                     var dbNotification = repository.GetAll<Notification>(x =>
                         x.ID == notification.ID
@@ -192,7 +211,7 @@ namespace MyProfile.Notification.Service
                             || x.IsTelegram != notification.IsTelegram
                             || x.IsSite != notification.IsSite
                             || x.Total != notification.Price
-                            || x.ExpirationDateTime != notification.ExpirationDateTime)
+                            || x.ExpirationDateTime != expirationDateTime)
                     ).FirstOrDefault();
 
                     if (dbNotification != null)
@@ -200,7 +219,7 @@ namespace MyProfile.Notification.Service
                         dbNotification.IsMail = notification.IsMail;
                         dbNotification.IsSite = notification.IsSite;
                         dbNotification.IsTelegram = notification.IsTelegram;
-                        dbNotification.Icon = notification.Icon;
+                        //dbNotification.Icon = notification.Icon;
                         dbNotification.LastChangeDateTime = now;
                         dbNotification.IsReady = false;
                         dbNotification.IsSentOnSite = false;
@@ -211,13 +230,12 @@ namespace MyProfile.Notification.Service
                         dbNotification.ReadDateTime = null;
                         dbNotification.IsReadyDateTime = null;
 
-                        if (typeof(T) == typeof(Limit))
+                        dbNotification.Total = notification.Price;
+
+                        if (notification.ExpirationDateTime.HasValue)
                         {
-                            dbNotification.Total = notification.Price;
-                        }
-                        else if (typeof(T) == typeof(Reminder))
-                        {
-                            dbNotification.ExpirationDateTime = notification.ExpirationDateTime;
+                            dbNotification.ExpirationDateTime = notification.ExpirationDateTimeUTC;
+                            dbNotification.IsRepeat = notification.IsRepeat;
                         }
 
                         await repository.SaveAsync();

@@ -61,15 +61,16 @@ namespace MyProfile.Code.Sheduler.Shedulers
                                     StatusID = y.StatusID
                                 })
                                 .ToList(),
-                           Name = x.LimitID != null ? x.Limit.Name : x.ReminderID != null ? x.Reminder.Title : "",
+                           Name = x.LimitID != null ? x.Limit.Name : x.ReminderDateID != null ? x.ReminderDate.Reminder.Title : "",
 
                            //Limit
                            Total = x.Total,
                            SpecificCulture = x.User.Currency.SpecificCulture,
 
                            //Reminder
-                           ExpirationDateTime = x.ExpirationDateTime,
-                           Icon = x.Icon,
+                           ExpirationDateTime = x.ReminderDateID != null ? x.ReminderDate.DateReminder : x.ExpirationDateTime,
+                           ReminderUTCOffsetMinutes = x.ReminderDateID != null ? x.ReminderDate.Reminder.OlsonTZ.TimeZone.UTCOffsetMinutes : 0,
+                           Icon = x.ReminderDateID != null ? x.ReminderDate.Reminder.CssIcon : null,
                        })
                        .ToList();
 

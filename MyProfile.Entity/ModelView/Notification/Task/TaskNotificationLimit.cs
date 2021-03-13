@@ -14,4 +14,14 @@ namespace MyProfile.Entity.ModelView.Notification.Task
         public Guid UserID { get; set; }
         public bool IsAllowCollectiveBudget { get; set; }
     }
+
+    public class TaskNotificationReminder
+    {
+        public int NotificationID { get; set; }
+        public int ReminderDateID { get; set; }
+        public bool IsRepeat { get; set; }
+        public Guid UserID { get; set; }
+        public DateTime? ExpirationDateTime { get; set; }
+        public int UTCOffsetMinutes { get; set; }
+    }
 }

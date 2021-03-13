@@ -111,6 +111,10 @@ namespace Email.Service
                     mailLog.MailTypeID = (int)MailTypeEnum.NotificationLimit;
                     mailLog.Code = notification.LimitID ?? 0;
                     break;
+                case (int)NotificationType.Reminder:
+                    mailLog.MailTypeID = (int)MailTypeEnum.NotificationReminder;
+                    mailLog.Code = notification.ReminderDateID ?? 0;
+                    break;
                 default:
                     break;
             }
@@ -133,7 +137,19 @@ namespace Email.Service
                         body = body.Replace("${LimitName}", notification.Name);
                         body = body.Replace("${LimitPrice}", notification.Total?.ToString("C", numberFormatInfo));
 
-                        await _emailSender.SendEmailAsync("ialexkrainov2@gmail.com", "Уведомление по лимиту", body);
+                        await _emailSender.SendEmailAsync("ialexkrainov2@gmail.com", "Уведомление по лимиту: " + notification.Name, body);
+                        break;
+                    case (int)NotificationType.Reminder:
+
+                        using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\template\\notification\\Reminder.html"))
+                        {
+                            body = reader.ReadToEnd();
+                        }
+
+                        body = body.Replace("${ReminderName}", notification.Name);
+                        body = body.Replace("${ReminderDate}", notification.ExpirationDateTime.Value.AddMinutes(notification.ReminderUTCOffsetMinutes).ToString("dd MM yyyy HH:mm"));
+
+                        await _emailSender.SendEmailAsync("ialexkrainov2@gmail.com", "Напоминание: " + notification.Name, body);
                         break;
                     default:
                         break;

@@ -2,17 +2,20 @@
     el: "#reminder-vue",
     data: {
         reminders: [],
-        reminder: { isRepeat: false },
+        reminder: { isRepeat: false, notifications: [] },
         dateTime: null,
         dateTimeFinish: null,
         month: -1,
         year: -1,
         flatpickrReminder: {},
+        timezones: [],
 
         searchText: null,
         isSaving: false,
         isShowModal: false,
         isNew: true,
+        isPast: false,
+        numberID: -1,
     },
     watch: {
         //searchText: function (newValue, oldValue) {
@@ -33,6 +36,9 @@
             if (this.reminder.isRepeat && this.reminder.repeatEvery == undefined) {
                 this.reminder.repeatEvery = "Month";
             }
+        },
+        dateTime: function (newValue) {
+            this.isPast = moment() > moment(newValue);
         }
     },
     mounted: function () {
@@ -59,9 +65,18 @@
             this.dateTime = dateTime;
             // this.close();
 
-            this.edit();
+            if (this.timezones.length == 0) {
+                this.loadTimezone()
+                    .then(function () {
+                        this.edit();
 
-            return this.loadTimeLine(dateTime);
+                        this.loadTimeLine(dateTime);
+                    });
+            } else {
+                this.edit();
+
+                this.loadTimeLine(dateTime);
+            }
         },
         loadTimeLine: function () {
             return $.ajax({
@@ -77,8 +92,25 @@
                     this.dateTimeFinish = response.dateTimeFinish;
                     this.reminders = response.data;
                     $("#modalReminderTimeLine").modal("show");
+
+                    this.loadTimezone();
                 }
             });
+        },
+        loadTimezone: function () {
+            if (this.timezones.length == 0) {
+                return $.ajax({
+                    type: "GET",
+                    url: "/Common/GetTimeZone",
+                    contentType: "application/json",
+                    dataType: 'json',
+                    context: this,
+                    success: function (response) {
+                        this.timezones = response.timezone;
+                    }
+                });
+            }
+            return null; //Promise.resolve()
         },
         chooseReminderIcon: function (cssIcon) {
             $(".reminder-icons i").removeClass("active");
@@ -104,22 +136,48 @@
             this.reminder.cssIcon = null;
             this.reminder.isRepeat = false;
             this.reminder.repeatEvery = null;
+            this.reminder.notifications = [];
 
             if (reminder) {
                 this.isNew = false;
                 this.reminder = JSCopyObject(reminder);
+                this.reminder.offSetClient = new Date().getTimezoneOffset();
+                this.reminder.timeZoneClient = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
                 let config = GetFlatpickrRuConfigWithTime(this.reminder.dateReminder);
-                this.flatpickrReminder = flatpickr('#reminderDateReminder', config);
+                flatpickr('#reminderDateReminder', config);
+
+                setTimeout(function () {
+                    for (var i = 0; i < ReminderVue.reminder.notifications.length; i++) {
+                        console.log(ReminderVue.reminder.notifications[i].expirationDateTime);
+                        flatpickr('#expirationDateTime_' + ReminderVue.reminder.notifications[i].id,
+                            GetFlatpickrRuConfigWithTime(ReminderVue.reminder.notifications[i].expirationDateTime));
+                    }
+
+                }, 1000);
             } else {
                 this.isNew = true;
+                this.dateTime = this.dateTime.replace("T00", "T" + new Date().getHours())
                 this.reminder.dateReminder = this.dateTime;
+                this.reminder.offSetClient = new Date().getTimezoneOffset();
+                this.reminder.timeZoneClient = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                this.reminder.olzonTZID = this.getTimeZoneID(this.reminder.timeZoneClient);
 
                 let config = GetFlatpickrRuConfigWithTime(this.dateTime);
-                this.flatpickrReminder = flatpickr('#reminderDateReminder', config);
+                flatpickr('#reminderDateReminder', config);
             }
 
             this.chooseReminderIcon(this.reminder.cssIcon);
+        },
+        getTimeZoneID: function (timezone) {
+            let index = this.timezones.findIndex(x => x.olzonTZName == timezone);
+
+            if (index != -1) {
+                return this.timezones[index].olzonTZID;
+            } else {
+                index = this.timezones.findIndex(x => x.olzonTZName == "Europe/Moscow");
+                return this.timezones[index].olzonTZID;
+            }
         },
         close: function () {
             this.isShowModal = false;
@@ -202,6 +260,29 @@
                 $("#repeatType").removeClass("is-invalid");
             }
 
+            if (this.reminder.notifications && this.reminder.notifications.length > 0) {
+                //if (this.reminder.notifications.some(x => x.isMail == false && x.isSite == false && x.isTelegram == false && x.isDeleted == false)
+                //    || this.reminder.notifications.some(x => (x.expirationDateTime * 1) <= 0 && x.isDeleted == false)) {
+
+                for (var i = 0; i < this.reminder.notifications.length; i++) {
+                    let notification = this.reminder.notifications[i];
+                    if ((notification.isMail == false && notification.isSite == false && notification.isTelegram == false && notification.isDeleted == false)
+                        || (!notification.expirationDateTime && notification.isDeleted == false)) {
+
+                        $("#errorborder_" + notification.id).addClass("border-danger");
+                        $("#texterror_" + notification.id).show();
+                        isOk = false;
+                    } else {
+
+                        $("#errorborder_" + notification.id).removeClass("border-danger");
+                        $("#texterror_" + notification.id).hide();
+                    }
+                }
+                //} else {
+
+                //}
+            }
+
             return isOk;
         },
         remove: function (reminder) {
@@ -253,6 +334,37 @@
         GetDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },
+        addNotification: function () {
+            this.numberID -= 1;
+            this.reminder.notifications.push(
+                {
+                    isSite: false,
+                    isMail: false,
+                    isTelegram: false,
+                    expirationDateTime: this.reminder.dateReminder,
+                    id: this.numberID,
+                    isDeleted: false
+                });
+            console.log(this.reminder.dateReminder);
+
+            setTimeout(function () {
+                let index = ReminderVue.reminder.notifications.findIndex(x => x.id == ReminderVue.numberID);
+
+                flatpickr('#expirationDateTime_' + ReminderVue.reminder.notifications[index].id,
+                    GetFlatpickrRuConfigWithTime(ReminderVue.reminder.notifications[index].expirationDateTime, new Date));
+
+                $('[data-toggle="tooltip"]').tooltip();
+                $("#notification-" + ReminderVue.reminder.notifications[index].id).addClass("show");
+            }, 300);
+        },
+        removeNotification: function (notification) {
+            if (notification.id < 0) {
+                let index = this.reminder.notifications.findIndex(x => x.id == notification.id);
+                this.reminder.notifications.splice(index, 1);
+            } else {
+                notification.isDeleted = true;
+            }
+        }
     }
 });
 

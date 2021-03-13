@@ -130,9 +130,15 @@ namespace MyProfile
             CronExpression.ValidateExpression("0 0 4 * * ?");
 
             //ToDo: сделать проверку за 30 секунд до отправке уведомления 
-            services.AddTransient<LimitCheckerTask>();
+            services.AddTransient<CheckerLimitTask>();
             services.AddSingleton(new JobSchedule(
-                jobType: typeof(LimitCheckerTask),
+                jobType: typeof(CheckerLimitTask),
+                 cronExpression: "0 * * ? * *")); //Every 1 minute
+            CronExpression.ValidateExpression("0 * * ? * *");
+            
+            services.AddTransient<CheckerReminderTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(CheckerReminderTask),
                  cronExpression: "0 * * ? * *")); //Every 1 minute
             CronExpression.ValidateExpression("0 * * ? * *");
 
@@ -270,7 +276,8 @@ namespace MyProfile
             {
                 var repository = serviceScope.ServiceProvider.GetRequiredService<BaseRepository>();
                 var telegramService = serviceScope.ServiceProvider.GetRequiredService<TelegramService>();
-                Inserters inserters = new Inserters(repository);
+                Inserters inserters = new Inserters(repository, app.ApplicationServices.GetRequiredService<Microsoft.AspNetCore.Hosting.IHostingEnvironment>()
+                    , app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 
                 telegramService.Start();
             }

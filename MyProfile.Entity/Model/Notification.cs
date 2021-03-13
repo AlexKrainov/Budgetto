@@ -44,24 +44,26 @@ namespace MyProfile.Entity.Model
         /// </summary>
         public DateTime? ExpirationDateTime { get; set; }
         /// <summary>
+        /// Reminder
+        /// </summary>
+        public bool IsRepeat { get; set; }
+        /// <summary>
         /// Telegram
         /// </summary>
         public string Value { get; set; }
-        [MaxLength(64)]
-        public string Icon { get; set; }
 
         [ForeignKey("User")]
         public Guid UserID { get; set; }
         [ForeignKey("Limit")]
         public int? LimitID { get; set; }
-        [ForeignKey("Reminder")]
-        public int? ReminderID { get; set; }
+        [ForeignKey("ReminderDate")]
+        public int? ReminderDateID { get; set; }
         [ForeignKey("TelegramAccount")]
         public int? TelegramAccountID { get; set; }
 
         public virtual User User { get; set; }
         public virtual Limit Limit{ get; set; }
-        public virtual Reminder Reminder { get; set; }
+        public virtual ReminderDate ReminderDate { get; set; }
         /// <summary>
         /// Notify when the user has connect to telegram bot
         /// </summary>

@@ -164,5 +164,7 @@ INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpre
 VALUES (7,'NotificationTelegramTask', 'New', 'NotificationTelegramTask','0 * * ? * *', 'Every minuts')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (8,'NotificationMailTask', 'New', 'NotificationMailTask','0 * * ? * *', 'Every minuts')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
+VALUES (9,'NotificationReminderCheckerTask', 'New', 'NotificationReminderCheckerTask','0 */5 * ? * *', 'Every 5 minuts')
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF

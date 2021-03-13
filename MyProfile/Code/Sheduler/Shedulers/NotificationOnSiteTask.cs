@@ -55,8 +55,6 @@ namespace MyProfile.Code.Sheduler.Shedulers
 
                     foreach (var notification in notifications)
                     {
-                        //notificationService.GetMessage(notification);
-
                         foreach (var connectionID in notification.UserConnectionIDs)
                         {
                             try

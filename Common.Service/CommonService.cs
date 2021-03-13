@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -84,6 +86,31 @@ namespace Common.Service
                 }
             });
             return z;
+        }
+
+        public List<TimeZoneClientModelView> GetTimeZones()
+        {
+            List<TimeZoneClientModelView> timezones;
+
+            if (cache.TryGetValue(typeof(TimeZoneClientModelView).Name, out timezones) == false)
+            {
+                timezones = repository.GetAll<OlsonTZID>()
+                 .Select(x => new TimeZoneClientModelView
+                 {
+                     OlzonTZID = x.ID,
+                     TimeZoneID = x.TimeZoneID,
+                     IsDST = x.TimeZone.IsDST,
+                     OlzonTZName = x.Name,
+                     WindowsTimezoneID = x.TimeZone.WindowsTimezoneID,
+                     UtcOffset = x.TimeZone.UTCOffsetHours,
+                     WindowsDisplayName = x.TimeZone.WindowsDisplayName,
+                     Abreviature = x.TimeZone.Abreviatura,
+                 })
+                 .ToList();
+
+                cache.Set(typeof(TimeZoneClientModelView).Name, timezones, DateTime.Now.AddDays(15));
+            }
+            return timezones;
         }
     }
 }

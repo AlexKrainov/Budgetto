@@ -67,12 +67,12 @@ $@"Добрый день, <strong>{name}</strong>!👋
 /USD - курсы доллара на сегодня
 /EUR - курсы евро на сегодня";
         }
-///limits - Лимиты
-///goals - Цели
-///reminders - Напоминания
-///earning - Доходы
-///spending - Расходы
-///invest - Ивестировано
+        ///limits - Лимиты
+        ///goals - Цели
+        ///reminders - Напоминания
+        ///earning - Доходы
+        ///spending - Расходы
+        ///invest - Ивестировано
 
         private string GetAccountsAnswer(System.Collections.Generic.List<MyProfile.Entity.ModelView.Account.AccountViewModel> accounts, Model.TelegramUserModelView telegramUser)
         {
@@ -90,16 +90,17 @@ $@"Добрый день, <strong>{name}</strong>!👋
                 if (account.AccountType == MyProfile.Entity.Model.AccountTypesEnum.Cash)
                 {
                     s.AppendLine($"{m} - {account.Name}({account.AccountTypeName}) 💵");
-                }else
+                }
+                else
                 {
                     s.AppendLine($"{m} - {account.Name}({account.BankName}) 💳");
                 }
             }
 
             return s.ToString();
-//@"Доступные команды в этом режиме: 📃
-///USD - курсы доллара на сегодня 💳
-///EUR - курсы евро на сегодня 💵 📈 💰 ";
+            //@"Доступные команды в этом режиме: 📃
+            ///USD - курсы доллара на сегодня 💳
+            ///EUR - курсы евро на сегодня 💵 📈 💰 ";
         }
 
         private string Stop(string name)
@@ -127,7 +128,14 @@ $@"🔔 Уведомление по лимиту: <b>{notification.Name}</b>
 
 Хорошего дня 😀";
         }
+        private string GetReminderNotification(NotificationViewModel notification, string date)
+        {
+            return
+$@"⏰ Напоминание: <b>{notification.Name}</b>
+Дата: <b>{date}</b>
 
+Хорошего дня 😀";
+        }
         #endregion
     }
 }

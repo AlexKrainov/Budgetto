@@ -119,6 +119,14 @@
     <Compile Remove="Migrations\20210227184633_100.Designer.cs" />
     <Compile Remove="Migrations\20210309183709_115.cs" />
     <Compile Remove="Migrations\20210309183709_115.Designer.cs" />
+    <Compile Remove="Migrations\20210311091034_117.cs" />
+    <Compile Remove="Migrations\20210311091034_117.Designer.cs" />
+    <Compile Remove="Migrations\20210311091829_117.cs" />
+    <Compile Remove="Migrations\20210311091829_117.Designer.cs" />
+    <Compile Remove="Migrations\20210311151106_122.cs" />
+    <Compile Remove="Migrations\20210311151106_122.Designer.cs" />
+    <Compile Remove="Migrations\20210312123918_123.cs" />
+    <Compile Remove="Migrations\20210312123918_123.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

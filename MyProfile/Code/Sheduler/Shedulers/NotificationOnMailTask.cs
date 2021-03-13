@@ -56,7 +56,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                            NotificationTypeID = x.NotificationTypeID,
                            UserID = x.UserID,
                            Email = x.User.Email,
-                           Name = x.LimitID != null ? x.Limit.Name : x.ReminderID != null ? x.Reminder.Title : "",
+                           Name = x.LimitID != null ? x.Limit.Name : x.ReminderDateID != null ? x.ReminderDate.Reminder.Title : "",
 
                            //Limit
                            Total = x.Total,
@@ -64,8 +64,9 @@ namespace MyProfile.Code.Sheduler.Shedulers
                            LimitID = x.LimitID,
 
                            //Reminder
-                           ExpirationDateTime = x.ExpirationDateTime,
-                           Icon = x.Icon,
+                           ExpirationDateTime = x.ReminderDateID != null ? x.ReminderDate.DateReminder : x.ExpirationDateTime,
+                           ReminderUTCOffsetMinutes = x.ReminderDateID != null ? x.ReminderDate.Reminder.OlsonTZ.TimeZone.UTCOffsetMinutes : 0,
+                           Icon = x.ReminderDateID != null ? x.ReminderDate.Reminder.CssIcon : null,
                        })
                        .ToList();
 

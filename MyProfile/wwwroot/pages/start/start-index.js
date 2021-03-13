@@ -214,6 +214,7 @@
                     if (result.isOk) {
                         this.isSaving = false;
                         this.userInfo = result.userInfo;
+                        this.userInfo.timeZoneClient = Intl.DateTimeFormat().resolvedOptions().timeZone;
                     }
                     $('[data-toggle="tooltip"]').tooltip('show');
                     return true;

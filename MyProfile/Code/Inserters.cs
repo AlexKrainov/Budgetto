@@ -1,8 +1,12 @@
-﻿using MyProfile.Entity.Model;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.User.Service.PasswordWorker;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,16 +14,62 @@ namespace MyProfile.Code
 {
     public class Inserters
     {
-        private BaseRepository repository;
         private DateTime now;
+        private IBaseRepository repository;
+        private IHostingEnvironment hostingEnvironment;
+        private IHttpContextAccessor httpContextAccessor;
 
-        public Inserters(BaseRepository repository)
+        public Inserters(
+            IBaseRepository repository,
+            IHostingEnvironment hostingEnvironment,
+            IHttpContextAccessor httpContextAccessor)
         {
             this.repository = repository;
+            this.hostingEnvironment = hostingEnvironment;
+            this.httpContextAccessor = httpContextAccessor;
             now = DateTime.Now;
 
             CreateTelegramBotAccount();
             CreateTelegramAccountStatus();
+            LoadTimeZone();
+        }
+
+        private void LoadTimeZone()
+        {
+            if (repository.GetAll<MyTimeZone>().Any() == false)
+            {
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\resources\\timezone.json"))
+                {
+                    List<TimeZoneLoad> timezons = (List<TimeZoneLoad>)JsonConvert.DeserializeObject<List<TimeZoneLoad>>(reader.ReadToEnd());
+                    List<MyTimeZone> dbTimeZone = new List<MyTimeZone>();
+
+                    foreach (var tz in timezons)
+                    {
+                        MyTimeZone myTimeZone = new MyTimeZone
+                        {
+                            Abreviatura = tz.abbr,
+                            IsDST = tz.isdst,
+                            UTCOffsetHours = tz.offset,
+                            UTCOffsetMinutes = int.Parse((tz.offset * 60).ToString().Replace(".0","")),
+                            WindowsDisplayName = tz.text,
+                            WindowsTimezoneID = tz.value
+                        };
+
+                        var olsonTZIDs = new List<OlsonTZID>();
+                        for (int i = 0; i < tz.utc.Count; i++)
+                        {
+                            olsonTZIDs.Add(new OlsonTZID
+                            {
+                                Name = tz.utc[i]
+                            });
+
+                        }
+                        myTimeZone.OlsonTZIDs = olsonTZIDs;
+                        dbTimeZone.Add(myTimeZone);
+                    }
+                    repository.CreateRange(dbTimeZone, true);
+                }
+            }
         }
 
         private void CreateTelegramAccountStatus()
@@ -265,6 +315,16 @@ namespace MyProfile.Code
                 repository.CreateRange(summaries);
                 repository.Save();
             }
+        }
+
+        public class TimeZoneLoad
+        {
+            public string value { get; set; }
+            public string abbr { get; set; }
+            public decimal offset { get; set; }
+            public bool isdst { get; set; }
+            public string text { get; set; }
+            public List<string> utc { get; set; }
         }
     }
 }

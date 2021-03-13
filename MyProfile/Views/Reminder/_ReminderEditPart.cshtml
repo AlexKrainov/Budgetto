@@ -77,11 +77,22 @@
             <small class="invalid-feedback" id="reminderIcons">Обязательное поле</small>
         </div>
 
-        <div class="form-group">
-            <label class="form-label">Дата</label>
-            <span class="text-danger">*</span>
-            <input type="text" class="form-control" id="reminderDateReminder" v-model="reminder.dateReminder">
-            <small class="invalid-feedback">Обязательное поле</small>
+        <div class="form-row">
+            <div class="form-group col-md-7">
+                <label class="form-label">Дата</label>
+                <span class="text-danger">*</span>
+                <input type="text" class="form-control" id="reminderDateReminder" v-model="reminder.dateReminder">
+                <small class="invalid-feedback">Обязательное поле</small>
+            </div>
+            <div class="form-group col-md-5">
+                <label class="form-label">Тайм зона</label>
+                <select class="custom-select" v-model="reminder.olzonTZID">
+                    <option v-for="timezone in timezones"
+                            v-bind:value="timezone.olzonTZID">
+                        {{ timezone.title }}
+                    </option>
+                </select>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-label">Описание</label>
@@ -105,6 +116,72 @@
             </select>
         </div>
 
+        <div class="">
+            <div v-for="notification in reminder.notifications"
+                 v-show="notification.isDeleted == false">
+                <span class="badge  "
+                      v-show="notification.id < 0">New</span>
+                <div class="d-flex flex-wrap justify-content-between align-items-center ui-bordered py-3 px-4 mt-3 bg-lighter"
+                     v-bind:id="'errorborder_' + notification.id">
+                    <div>
+                        Уведомить меня
+                        <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isSite">На сайте</a>
+                        <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isMail">Почте</a>
+                        <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isTelegram">Телеграм</a>
+                        <br>
+                        <small class="text-muted">Когда дата достигнет: <b>{{ GetDateByFormat(notification.expirationDateTime,'DD MMM YYYY HH:mm') }}</b></small>
+                        <br />
+                        <small v-bind:id="'texterror_' + notification.id" class="text-danger" style="display: none">
+                            Должен быть выбран хотя бы один вариант.
+                        </small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <a data-toggle="collapse" class="d-block ml-3 collapsed" aria-expanded="false"
+                           v-bind:href="'#notification-'+ notification.id">
+                            <i class="collapse-icon"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card collapse bg-lighter" v-bind:id="'notification-'+ notification.id">
+                    <div class="card-body">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" v-model="notification.isSite" v-bind:disabled="isPast">
+                            <span class="custom-control-label">На сайте</span>
+                        </label>
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" v-model="notification.isMail" v-bind:disabled="isPast">
+                            <span class="custom-control-label">Почта</span>
+                        </label>
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" v-model="notification.isTelegram" v-bind:disabled="isPast">
+                            <span class="custom-control-label">
+                                Телеграм
+                                <i class="fas fa-info-circle cursor-help text-muted text-tiny" data-toggle="tooltip" data-html="true"
+                                   title="Для получении уведомлений в телеграм, напишите боту @@Budgetto_bot ваш код @MyProfile.Identity.UserInfo.Current.UserConnect.TelegramLogin"></i>
+                            </span>
+                        </label>
+
+                        <div class="form-group">
+                            <label class="form-label">Когда сумма достигнет</label>
+                            <input type="text" class="form-control" v-bind:id="'expirationDateTime_' + notification.id"
+                                   v-model="notification.expirationDateTime"
+                                   v-bind:disabled="isPast">
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-outline-danger btn-xs"
+                                    v-on:click="removeNotification(notification)">
+                                Удалить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-xs btn-outline-primary mt-3"
+                    v-on:click="addNotification"
+                    v-show="isPast == false">
+                <span class="ion ion-md-add"></span>Добавить уведомление
+            </button>
+        </div>
     </div>
     <div class="card-footer">
         <button class="btn btn-primary" type="button"

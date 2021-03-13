@@ -24,7 +24,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
 
         internal void BaseExecute(BaseRepository repository, TaskType taskType, Func<int> _service)
         {
-            var now = TimeZoner.GetCurrentDateTimeWithRusTimeZone();
+            var now = TimeZoner.GetCurrentDateTimeUTC();
 
             var task = repository.GetAll<SchedulerTask>(x => x.ID == (int)taskType).FirstOrDefault();
 
@@ -51,7 +51,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                             TaskID = (int)taskType,
                             ChangedItems = changedCounts,
                             Start = now,
-                            End = TimeZoner.GetCurrentDateTimeWithRusTimeZone(),
+                            End = TimeZoner.GetCurrentDateTimeUTC(),
                         }, true);
                     }
                     catch (Exception ex)
@@ -65,7 +65,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                             Comment = ex.Message,
                             ChangedItems = -1,
                             Start = now,
-                            End = TimeZoner.GetCurrentDateTimeWithRusTimeZone(),
+                            End = TimeZoner.GetCurrentDateTimeUTC(),
                         }, true);
                     }
                 }

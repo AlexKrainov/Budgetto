@@ -178,6 +178,7 @@ namespace MyProfile.User.Service
                      Currency = x.Currency,
                      IsAvailable = x.Payment.DateFrom <= now && x.Payment.DateTo >= now,
                      IsHelpRecord = x.BudgetRecords.Count() == 0,
+                     TimeZoneClient = x.OlsonTZID != null ? x.OlsonTZ.Name : null,
                      Payment = new Payment
                      {
                          DateFrom = x.Payment.DateFrom,
@@ -426,6 +427,16 @@ namespace MyProfile.User.Service
             dbUser.LastName = user.LastName = userInfoModel.LastName?.Trim();
             dbUser.Email = user.Email = userInfoModel.Email;
 
+            if (dbUser.OlsonTZ?.Name != userInfoModel.TimeZoneClient && !string.IsNullOrEmpty(userInfoModel.TimeZoneClient))
+            {
+                var olsonTZID = await repository.GetAll<OlsonTZID>(x => x.Name == userInfoModel.TimeZoneClient).FirstOrDefaultAsync();
+                if (olsonTZID != null)
+                {
+                    dbUser.OlsonTZID = user.OlsonTZID = olsonTZID.ID;
+                    user.TimeZoneClient = olsonTZID.Name;
+                }
+            }
+
 
             if (!string.IsNullOrEmpty(userInfoModel.ImageBase64))
             {
@@ -485,6 +496,7 @@ namespace MyProfile.User.Service
 
             return new Tuple<UserInfoModel, string>(userInfoModel, errorMessage);
         }
+
 
         public async Task<int> UpdateUserSettings(UserSettingsModelView userSettings)
         {

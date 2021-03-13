@@ -262,6 +262,9 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<HubConnect> HubConnects { get; set; }
         public virtual DbSet<TelegramAccount> TelegramAccounts { get; set; }
         public virtual DbSet<TelegramAccountStatus> TelegramAccountStatuses { get; set; }
+        public virtual DbSet<MyTimeZone> TimeZones { get; set; }
+        public virtual DbSet<OlsonTZID> OlsonTZIDs { get; set; }
+        
 
     }
 }

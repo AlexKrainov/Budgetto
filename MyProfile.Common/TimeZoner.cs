@@ -10,5 +10,10 @@ namespace MyProfile.Common
         {
             return TimeZoneInfo.ConvertTimeFromUtc(DateTime.Now.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time"));
         }
+
+        public static DateTime GetCurrentDateTimeUTC()
+        {
+            return DateTime.Now.ToUniversalTime();
+        }
     }
 }

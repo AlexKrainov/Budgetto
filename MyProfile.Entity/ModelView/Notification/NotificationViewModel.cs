@@ -51,6 +51,9 @@ namespace MyProfile.Entity.ModelView.Notification
         public DateTime? ExpirationDateTime { get; set; }
         public string Icon { get; set; }
         public DateTime? ReadDateTime { get; set; }
+        public int? ReminderDateID { get; set; }
+        public int ReminderUTCOffsetMinutes { get; set; }
+        public int UserUTCOffsetMinutes { get; set; }
         #endregion
     }
 

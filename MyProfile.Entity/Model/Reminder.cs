@@ -26,14 +26,17 @@ namespace MyProfile.Entity.Model
         /// <summary>
         /// How much time from UTC
         /// </summary>
-        public int OffSet { get; set; }
+        public int OffSetClient { get; set; }
         [MaxLength(64)]
-        public string TimeZone { get; set; }
+        public string TimeZoneClient { get; set; }
 
         [ForeignKey("User")]
         public Guid UserID { get; set; }
+        [ForeignKey("OlsonTZ")]
+        public int? OlsonTZID { get; set; }
 
         public virtual User User { get; set; }
+        public virtual OlsonTZID OlsonTZ { get; set; }
 
         public virtual IEnumerable<ReminderDate> ReminderDates { get; set; }
 

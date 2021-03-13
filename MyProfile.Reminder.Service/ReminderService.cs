@@ -1,8 +1,12 @@
-﻿using LinqKit;
+﻿using Common.Service;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.Notification;
 using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Notification.Service;
 using MyProfile.UserLog.Service;
 using System;
 using System.Collections.Generic;
@@ -13,40 +17,55 @@ namespace MyProfile.Reminder.Service
 {
     using Reminder = MyProfile.Entity.Model.Reminder;
     using ReminderDate = MyProfile.Entity.Model.ReminderDate;
-    public class ReminderService
+    using Notification = MyProfile.Entity.Model.Notification;
+    public partial class ReminderService
     {
         private IBaseRepository repository;
         private UserLogService userLogService;
+        private CommonService commonService;
+        private NotificationService notificationService;
 
-        public ReminderService(IBaseRepository baseRepository, UserLogService userLogService)
+        public ReminderService(IBaseRepository baseRepository, UserLogService userLogService, CommonService commonService, NotificationService notificationService)
         {
             this.repository = baseRepository;
             this.userLogService = userLogService;
+            this.commonService = commonService;
+            this.notificationService = notificationService;
         }
 
-        public async Task<IList<ReminderEditModelView>> GetRimindersByDate(DateTime? currentDate, DateTime? dateFinish = null)
+       
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="currentDate"></param>
+        /// <param name="dateFinish">For period</param>
+        /// <returns></returns>
+        public async Task<IList<ReminderEditModelView>> GetRimindersByDate(DateTime currentDate, DateTime? dateFinish = null)
         {
+            var moscowOlzonTZID = commonService.GetTimeZones().FirstOrDefault(x => x.OlzonTZName == "Europe/Moscow").OlzonTZID;
             var currenUserID = UserInfo.Current.ID;
             var expression = PredicateBuilder.True<ReminderDate>();
             expression = expression.And(x => x.Reminder.UserID == currenUserID
                     && x.Reminder.IsDeleted == false);
 
-            if (dateFinish == null)
+            var start = currentDate.ToUniversalTime();
+            var finish = start.AddDays(1);
+
+            if (dateFinish != null)
             {
-                expression = expression.And(x => x.DateReminder == currentDate);
+                finish = dateFinish.Value.ToUniversalTime();
             }
-            else
-            {
-                expression = expression.And(x => x.DateReminder >= currentDate.Value && x.DateReminder <= dateFinish.Value);
-            }
+
+            expression = expression.And(x => x.DateReminder >= start && x.DateReminder <= finish);
 
             var reminders = await repository
                 .GetAll<ReminderDate>(expression)
                  .Select(x => new ReminderEditModelView
                  {
                      ID = x.ReminderID,
+                     ReminderDateID = x.ID,
                      DateReminder = x.DateReminder,
-                     OldDateReminder = x.DateReminder,
                      Description = x.Reminder.Description,
                      IsRepeat = x.Reminder.IsRepeat,
                      RepeatEvery = x.Reminder.RepeatEvery,
@@ -55,12 +74,34 @@ namespace MyProfile.Reminder.Service
                      isShowForFilter = true,
                      isDeleted = false,
                      isWasRepeat = x.Reminder.ReminderDates.Count() > 1,
+                     OffSetClient = x.Reminder.OlsonTZID != null ? x.Reminder.OlsonTZ.TimeZone.UTCOffsetMinutes : 180,
+                     OlzonTZID = x.Reminder.OlsonTZID,
+                     Notifications = x.Notifications != null ?
+                        x.Notifications.Select(y => new NotificationUserViewModel
+                        {
+                            ID = y.ID,
+                            IsMail = y.IsMail,
+                            IsSite = y.IsSite,
+                            IsTelegram = y.IsTelegram,
+                            ExpirationDateTime = y.ExpirationDateTime.Value.AddMinutes(x.Reminder.OlsonTZ.TimeZone.UTCOffsetMinutes),
+                            IsRepeat = y.IsRepeat
+                        }).ToList() : null
                  })
                  .OrderBy(x => x.DateReminder)
                  .ToListAsync();
 
             for (int i = 0; i < reminders.Count; i++)
             {
+                if (reminders[i].OlzonTZID == null)//old version
+                {
+                    reminders[i].DateReminder = reminders[i].OldDateReminder = reminders[i].DateReminder.Value.AddHours(10);// set 10:00
+                    reminders[i].OlzonTZID = moscowOlzonTZID;
+                }
+                else
+                {
+                    reminders[i].DateReminder = reminders[i].OldDateReminder = reminders[i].DateReminder.Value.AddMinutes(reminders[i].OffSetClient);
+                }
+
                 reminders[i].DateReminderString = reminders[i].DateReminder.Value.ToString("dd.MM.yyyy");
                 reminders[i].RepeatEveryName = LocalizatoinRepeat(reminders[i].RepeatEvery);
             }
@@ -96,6 +137,7 @@ namespace MyProfile.Reminder.Service
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
+            var newDateReminder = newReminder.DateReminder.Value.ToUniversalTime();
 
             try
             {
@@ -113,21 +155,26 @@ namespace MyProfile.Reminder.Service
                         newReminder.RepeatEvery = null;
                     }
 
-                    if (!oldReminder.ReminderDates.Any(x => x.DateReminder.Date == newReminder.DateReminder.Value.Date))
+                    if (!oldReminder.ReminderDates.Any(x => x.DateReminder == newDateReminder))
                     {
                         if (newReminder.IsRepeat == false && oldReminder.IsRepeat == false)
                         {
-                            oldReminder.ReminderDates.FirstOrDefault(x => x.DateReminder.Date == newReminder.OldDateReminder.Date).IsDone = now.Date > newReminder.DateReminder.Value;
-                            oldReminder.ReminderDates.FirstOrDefault(x => x.DateReminder.Date == newReminder.OldDateReminder.Date).DateReminder = newReminder.DateReminder.Value;
+                            oldReminder.ReminderDates.FirstOrDefault(x => x.ID == newReminder.ReminderDateID).IsDone = now > newDateReminder;
+                            oldReminder.ReminderDates.FirstOrDefault(x => x.ID == newReminder.ReminderDateID).DateReminder = newDateReminder;
+                            await notificationService.CreateOrUpdate<ReminderDate>(newReminder.Notifications, newReminder.ReminderDateID, currentUser.ID);
                         }
                         else if (oldReminder.IsRepeat && newReminder.IsRepeat)
                         {
-                            if ((newReminder.DateReminder - newReminder.OldDateReminder).Value.TotalDays > 0)
+                            if ((newReminder.DateReminder - newReminder.OldDateReminder).Value.TotalMilliseconds != 0)
                             {
-                                await repository.DeleteAsync(await repository.GetAll<ReminderDate>(x => x.ReminderID == newReminder.ID
-                                                      && x.Reminder.UserID == currentUser.ID
-                                                      && x.Reminder.IsDeleted == false
-                                                      && x.DateReminder.Date == newReminder.OldDateReminder.Date).FirstOrDefaultAsync(), true);
+                                //await repository.DeleteAsync(await repository.GetAll<ReminderDate>(x => x.ReminderID == newReminder.ID
+                                //                      && x.Reminder.UserID == currentUser.ID
+                                //                      && x.Reminder.IsDeleted == false
+                                //                      && x.ID == newReminder.ReminderDateID).FirstOrDefaultAsync(), true);
+                                oldReminder.ReminderDates.FirstOrDefault(x => x.ID == newReminder.ReminderDateID).IsDone = now > newDateReminder;
+                                oldReminder.ReminderDates.FirstOrDefault(x => x.ID == newReminder.ReminderDateID).DateReminder = newDateReminder;
+
+                                await notificationService.CreateOrUpdate<ReminderDate>(newReminder.Notifications, newReminder.ReminderDateID, currentUser.ID);
                             }
                             isCreateCurrentReminderDate = true;
                         }
@@ -135,16 +182,16 @@ namespace MyProfile.Reminder.Service
                         {
                             if (newReminder.IsRepeat)
                             {
-                                oldReminder.ReminderDates.FirstOrDefault().DateReminder = newReminder.DateReminder.Value;
-                                oldReminder.ReminderDates.FirstOrDefault().IsDone = now.Date > newReminder.DateReminder.Value;
+                                oldReminder.ReminderDates.FirstOrDefault().DateReminder = newDateReminder;
+                                oldReminder.ReminderDates.FirstOrDefault().IsDone = now > newDateReminder;
                             }
                             else //if newReminder.IsRepeat == false
                             {
-                                var tmp = oldReminder.ReminderDates.FirstOrDefault(x => x.DateReminder.Date == newReminder.OldDateReminder.Date);
+                                var tmp = oldReminder.ReminderDates.FirstOrDefault(x => x.DateReminder.ToUniversalTime() == newReminder.OldDateReminder.ToUniversalTime());
                                 tmp.DateReminder = newReminder.DateReminder ?? newReminder.OldDateReminder.Date;
                                 tmp.IsDone = now.Date > newReminder.DateReminder.Value;
 
-                                dateRemoveFrom = newReminder.OldDateReminder.Date;
+                                dateRemoveFrom = newReminder.OldDateReminder.ToUniversalTime();
                             }
                         }
                     }
@@ -155,12 +202,12 @@ namespace MyProfile.Reminder.Service
                         await repository.DeleteRangeAsync(await repository.GetAll<ReminderDate>(x => x.ReminderID == newReminder.ID
                             && x.Reminder.UserID == currentUser.ID
                             && x.Reminder.IsDeleted == false
-                            && x.DateReminder > (dateRemoveFrom ?? newReminder.DateReminder)).ToListAsync(), true);
+                            && x.DateReminder > (dateRemoveFrom ?? newDateReminder)).ToListAsync(), true);
                     }
                     else if (newReminder.IsRepeat && oldReminder.IsRepeat == false)
                     {
                         var tmp = oldReminder.ReminderDates.ToList();
-                        tmp.AddRange(GetReminderDates(newReminder, isCreateCurrentReminderDate: false));
+                        tmp.AddRange(GetReminderDates(newReminder, currentUser.ID, isCreateCurrentReminderDate: false));
                         oldReminder.ReminderDates = tmp;
                     }
                     else if (newReminder.IsRepeat
@@ -170,22 +217,26 @@ namespace MyProfile.Reminder.Service
                         await repository.DeleteRangeAsync(await repository.GetAll<ReminderDate>(x => x.ReminderID == newReminder.ID
                             && x.Reminder.UserID == currentUser.ID
                             && x.Reminder.IsDeleted == false
-                            && x.DateReminder > newReminder.DateReminder).ToListAsync(), true);
+                            && x.DateReminder > newDateReminder).ToListAsync(), true);
 
                         var tmp = oldReminder.ReminderDates.ToList();
-                        tmp.AddRange(GetReminderDates(newReminder, isCreateCurrentReminderDate: isCreateCurrentReminderDate));
+                        tmp.AddRange(GetReminderDates(newReminder, currentUser.ID, isCreateCurrentReminderDate: isCreateCurrentReminderDate));
                         oldReminder.ReminderDates = tmp;
                     }
 
                     oldReminder.Title = newReminder.Title;
                     oldReminder.Description = newReminder.Description;
-                    oldReminder.DateReminder = newReminder.DateReminder;
+                    oldReminder.DateReminder = newDateReminder;
                     oldReminder.DateEdit = now;
                     oldReminder.IsRepeat = newReminder.IsRepeat;
                     oldReminder.RepeatEvery = newReminder.RepeatEvery;
-                    oldReminder.CssIcon = newReminder.CssIcon ?? "pe-7s-bell";
+                    oldReminder.CssIcon = newReminder.CssIcon ?? "pe-7s-alarm";
+                    oldReminder.OffSetClient = newReminder.OffSetClient;
+                    oldReminder.TimeZoneClient = newReminder.TimeZoneClient;
+                    oldReminder.OlsonTZID = newReminder.OlzonTZID;
 
                     await repository.UpdateAsync(oldReminder, true);
+                    await notificationService.CreateOrUpdate<ReminderDate>(newReminder.Notifications, newReminder.ReminderDateID, currentUser.ID);
                     await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Edit);
                 }
                 else
@@ -197,17 +248,19 @@ namespace MyProfile.Reminder.Service
 
                     reminder.Title = newReminder.Title;
                     reminder.Description = newReminder.Description;
-                    reminder.DateReminder = newReminder.DateReminder;
+                    reminder.DateReminder = newReminder.DateReminder.Value.ToUniversalTime();
                     reminder.IsRepeat = newReminder.IsRepeat;
                     reminder.RepeatEvery = newReminder.RepeatEvery;
-                    reminder.CssIcon = newReminder.CssIcon ?? "pe-7s-bell";
-                    reminder.ReminderDates = GetReminderDates(newReminder);
+                    reminder.CssIcon = newReminder.CssIcon ?? "pe-7s-alarm";
+                    reminder.OffSetClient = newReminder.OffSetClient;
+                    reminder.TimeZoneClient = newReminder.TimeZoneClient;
+                    reminder.OlsonTZID = newReminder.OlzonTZID;
+                    reminder.ReminderDates = GetReminderDates(newReminder, currentUser.ID);
 
                     await repository.CreateAsync(reminder, true);
                     await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Create);
 
                     newReminder.ID = reminder.ID;
-
                 }
             }
             catch (Exception ex)
@@ -234,6 +287,9 @@ namespace MyProfile.Reminder.Service
 
         public IQueryable<ReminderShortModelView> GetRemindersByDateRange(DateTime from, DateTime to, Guid currentUserID)
         {
+            from = from.ToUniversalTime();
+            to = to.ToUniversalTime();
+
             return repository
                 .GetAll<ReminderDate>(x => x.Reminder.UserID == currentUserID
                 && x.Reminder.IsDeleted == false
@@ -249,23 +305,6 @@ namespace MyProfile.Reminder.Service
                     IsRepeat = x.Reminder.IsRepeat,
                     IsDone = x.IsDone,
                 });
-
-            //return repository
-            //    .GetAll<Reminder>(x => x.UserID == currenUserID
-            //        && x.IsDeleted == false
-            //        && x.DateReminder != null
-            //        && x.ReminderDates != null
-            //        && x.ReminderDates.Any(y => y.DateReminder >= from && y.DateReminder <= to))
-            //     .Select(x => new ReminderShortModelView
-            //     {
-            //         ReminderID = x.ID,
-            //         Description = x.Description,
-            //         Title = x.Title,
-            //         CssIcon = x.CssIcon,
-            //         DateReminder = x.ReminderDates
-            //            .FirstOrDefault(y => y.DateReminder >= from && y.DateReminder <= to)
-            //            .DateReminder.Date
-            //     });
         }
 
         public async Task<bool> RemoveOrRecovery(ReminderEditModelView reminderEdit, bool isDelete)
@@ -294,31 +333,60 @@ namespace MyProfile.Reminder.Service
             return true;
         }
 
-
-
-        public List<ReminderDate> GetReminderDates(ReminderEditModelView reminderEdit, bool isCreateCurrentReminderDate = true)
+        public List<ReminderDate> GetReminderDates(ReminderEditModelView reminderEdit, Guid userID, bool isCreateCurrentReminderDate = true)
         {
             var now = DateTime.Now.ToUniversalTime();
-            var dateReminder = reminderEdit.DateReminder.Value;
+            var dateReminder = reminderEdit.DateReminder.Value.ToUniversalTime();
             List<ReminderDate> reminderDates = new List<ReminderDate>();
+            DateTime? IsReadyDateTime = null;
 
             if (isCreateCurrentReminderDate)
             {
-                reminderDates.Add(new ReminderDate
+                var reminderDate = new ReminderDate
                 {
                     DateReminder = dateReminder,
                     IsDone = now.Date > dateReminder,
                     ReminderID = reminderEdit.ID
-                });
+                };
+
+                List<Notification> notifications = new List<Notification>();
+                foreach (var notification in reminderEdit.Notifications)
+                {
+                    IsReadyDateTime = null;
+                    if (now >= notification.ExpirationDateTimeUTC)
+                    {
+                        IsReadyDateTime = now;
+                    }
+
+                    notifications.Add(new Notification
+                    {
+                        IsMail = notification.IsMail,
+                        IsSite = notification.IsSite,
+                        IsTelegram = notification.IsTelegram,
+                        ExpirationDateTime = notification.ExpirationDateTimeUTC,
+                        IsRepeat = notification.IsRepeat,
+                        NotificationTypeID = (int)NotificationType.Reminder,
+                        UserID = userID,
+                        LastChangeDateTime = now,
+
+                        IsReady = now >= notification.ExpirationDateTimeUTC,
+                        IsReadyDateTime = IsReadyDateTime
+                    });
+                }
+                reminderDate.Notifications = notifications;
+
+                reminderDates.Add(reminderDate);
             }
 
             if (reminderEdit.IsRepeat && reminderEdit.DateReminder != null)
             {
+                reminderEdit.DateReminder = reminderEdit.DateReminder.Value.ToUniversalTime();
                 if (reminderEdit.RepeatEvery == Enum.GetName(typeof(RepeatEveryType), RepeatEveryType.Day))
                 {
                     for (int i = 1; i < 765; i++)
                     {
                         dateReminder = reminderEdit.DateReminder.Value.AddDays(i);
+
                         reminderDates.Add(new ReminderDate
                         {
                             DateReminder = dateReminder,
@@ -355,7 +423,7 @@ namespace MyProfile.Reminder.Service
                 }
                 else if (reminderEdit.RepeatEvery == Enum.GetName(typeof(RepeatEveryType), RepeatEveryType.Year))
                 {
-                    for (int i = 1; i < 10; i++)
+                    for (int i = 1; i < 4; i++)
                     {
                         dateReminder = reminderEdit.DateReminder.Value.AddYears(i);
                         reminderDates.Add(new ReminderDate

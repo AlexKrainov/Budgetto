@@ -222,12 +222,12 @@ function GetFlatpickrRuConfigWithTime(date, minDate, maxDate) {
         altInput: true,
         locale: "ru",
         dateFormat: 'Y/m/d H:i',
+        altFormat: "d F Y H:i",
         defaultDate: date,
         minDate: minDate,
         maxDate: maxDate,
         enableTime: true,
         time_24hr: true,
-        amPM: ["",""]
     };
 }
 
