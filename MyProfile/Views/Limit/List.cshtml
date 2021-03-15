@@ -182,7 +182,7 @@
         </div>
     </div>
     <hr class="border-light mt-2 mb-4">
-    @await Html.PartialAsync("_EditLimit")
+    @await Html.PartialAsync("_EditLimit", new MyProfile.Entity.ModelView.Limit.EditLimitModel { IsShowNotifications = true })
 </section>
 
 @*@await Html.PartialAsync(@"../Settings/Settings.cshtml", "Limit/List")*@

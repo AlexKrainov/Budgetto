@@ -23,5 +23,6 @@ namespace MyProfile.Entity.ModelView.Notification
             }
         }
         public bool IsRepeat { get; set; }
+        public int RepeatMinutes { get; set; }
     }
 }

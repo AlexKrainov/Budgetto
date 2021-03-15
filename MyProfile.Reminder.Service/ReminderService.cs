@@ -339,6 +339,8 @@ namespace MyProfile.Reminder.Service
             var dateReminder = reminderEdit.DateReminder.Value.ToUniversalTime();
             List<ReminderDate> reminderDates = new List<ReminderDate>();
             DateTime? IsReadyDateTime = null;
+            DateTime expirationDateTimeUTC;
+            List<Notification> notifications;
 
             if (isCreateCurrentReminderDate)
             {
@@ -349,7 +351,7 @@ namespace MyProfile.Reminder.Service
                     ReminderID = reminderEdit.ID
                 };
 
-                List<Notification> notifications = new List<Notification>();
+                notifications = new List<Notification>();
                 foreach (var notification in reminderEdit.Notifications)
                 {
                     IsReadyDateTime = null;
@@ -387,12 +389,51 @@ namespace MyProfile.Reminder.Service
                     {
                         dateReminder = reminderEdit.DateReminder.Value.AddDays(i);
 
-                        reminderDates.Add(new ReminderDate
+                        //reminderDates.Add(new ReminderDate
+                        //{
+                        //    DateReminder = dateReminder,
+                        //    IsDone = now.Date > dateReminder,
+                        //    ReminderID = reminderEdit.ID,
+                        //});
+
+                        var reminderDate = new ReminderDate
                         {
                             DateReminder = dateReminder,
                             IsDone = now.Date > dateReminder,
-                            ReminderID = reminderEdit.ID,
-                        });
+                            ReminderID = reminderEdit.ID
+                        };
+
+                        notifications = new List<Notification>();
+                        foreach (var notification in reminderEdit.Notifications)
+                        {
+                            if (notification.IsRepeat)
+                            {
+                                expirationDateTimeUTC = notification.ExpirationDateTimeUTC.Value.AddDays(i);
+                                IsReadyDateTime = null;
+                                if (now >= expirationDateTimeUTC)
+                                {
+                                    IsReadyDateTime = now;
+                                }
+
+                                notifications.Add(new Notification
+                                {
+                                    IsMail = notification.IsMail,
+                                    IsSite = notification.IsSite,
+                                    IsTelegram = notification.IsTelegram,
+                                    ExpirationDateTime = expirationDateTimeUTC,
+                                    IsRepeat = notification.IsRepeat,
+                                    NotificationTypeID = (int)NotificationType.Reminder,
+                                    UserID = userID,
+                                    LastChangeDateTime = now,
+
+                                    IsReady = now >= expirationDateTimeUTC,
+                                    IsReadyDateTime = IsReadyDateTime
+                                }); 
+                            }
+                        }
+                        reminderDate.Notifications = notifications;
+
+                        reminderDates.Add(reminderDate);
                     }
                 }
                 else
@@ -401,24 +442,92 @@ namespace MyProfile.Reminder.Service
                     for (int i = 1; i < 100; i++)
                     {
                         dateReminder = reminderEdit.DateReminder.Value.AddDays(i * 7);
-                        reminderDates.Add(new ReminderDate
+                        
+                        var reminderDate = new ReminderDate
                         {
                             DateReminder = dateReminder,
                             IsDone = now.Date > dateReminder,
                             ReminderID = reminderEdit.ID
-                        });
+                        };
+
+                        notifications = new List<Notification>();
+                        foreach (var notification in reminderEdit.Notifications)
+                        {
+                            if (notification.IsRepeat)
+                            {
+                                expirationDateTimeUTC = notification.ExpirationDateTimeUTC.Value.AddDays(i * 7);
+                                IsReadyDateTime = null;
+                                if (now >= expirationDateTimeUTC)
+                                {
+                                    IsReadyDateTime = now;
+                                }
+
+                                notifications.Add(new Notification
+                                {
+                                    IsMail = notification.IsMail,
+                                    IsSite = notification.IsSite,
+                                    IsTelegram = notification.IsTelegram,
+                                    ExpirationDateTime = expirationDateTimeUTC,
+                                    IsRepeat = notification.IsRepeat,
+                                    NotificationTypeID = (int)NotificationType.Reminder,
+                                    UserID = userID,
+                                    LastChangeDateTime = now,
+
+                                    IsReady = now >= expirationDateTimeUTC,
+                                    IsReadyDateTime = IsReadyDateTime
+                                });
+                            }
+                        }
+                        reminderDate.Notifications = notifications;
+
+                        reminderDates.Add(reminderDate);
                     }
                 }
                 else if (reminderEdit.RepeatEvery == Enum.GetName(typeof(RepeatEveryType), RepeatEveryType.Month))
                 {
                     for (int i = 1; i < 24; i++)
                     {
-                        reminderDates.Add(new ReminderDate
+                        dateReminder = reminderEdit.DateReminder.Value.AddMonths(i);
+                        
+                        var reminderDate = new ReminderDate
                         {
-                            DateReminder = reminderEdit.DateReminder.Value.AddMonths(i),
+                            DateReminder = dateReminder,
                             IsDone = now.Date > dateReminder,
                             ReminderID = reminderEdit.ID
-                        });
+                        };
+
+                        notifications = new List<Notification>();
+                        foreach (var notification in reminderEdit.Notifications)
+                        {
+                            if (notification.IsRepeat)
+                            {
+                                expirationDateTimeUTC = notification.ExpirationDateTimeUTC.Value.AddMonths(i);
+                                IsReadyDateTime = null;
+                                if (now >= expirationDateTimeUTC)
+                                {
+                                    IsReadyDateTime = now;
+                                }
+
+                                notifications.Add(new Notification
+                                {
+                                    IsMail = notification.IsMail,
+                                    IsSite = notification.IsSite,
+                                    IsTelegram = notification.IsTelegram,
+                                    ExpirationDateTime = expirationDateTimeUTC,
+                                    IsRepeat = notification.IsRepeat,
+                                    NotificationTypeID = (int)NotificationType.Reminder,
+                                    UserID = userID,
+                                    LastChangeDateTime = now,
+
+                                    IsReady = now >= expirationDateTimeUTC,
+                                    IsReadyDateTime = IsReadyDateTime
+                                });
+                            }
+                        }
+                        reminderDate.Notifications = notifications;
+
+                        reminderDates.Add(reminderDate);
+
                     }
                 }
                 else if (reminderEdit.RepeatEvery == Enum.GetName(typeof(RepeatEveryType), RepeatEveryType.Year))
@@ -426,12 +535,45 @@ namespace MyProfile.Reminder.Service
                     for (int i = 1; i < 4; i++)
                     {
                         dateReminder = reminderEdit.DateReminder.Value.AddYears(i);
-                        reminderDates.Add(new ReminderDate
+
+                        var reminderDate = new ReminderDate
                         {
                             DateReminder = dateReminder,
                             IsDone = now.Date > dateReminder,
                             ReminderID = reminderEdit.ID
-                        });
+                        };
+
+                        notifications = new List<Notification>();
+                        foreach (var notification in reminderEdit.Notifications)
+                        {
+                            if (notification.IsRepeat)
+                            {
+                                expirationDateTimeUTC = notification.ExpirationDateTimeUTC.Value.AddYears(i);
+                                IsReadyDateTime = null;
+                                if (now >= expirationDateTimeUTC)
+                                {
+                                    IsReadyDateTime = now;
+                                }
+
+                                notifications.Add(new Notification
+                                {
+                                    IsMail = notification.IsMail,
+                                    IsSite = notification.IsSite,
+                                    IsTelegram = notification.IsTelegram,
+                                    ExpirationDateTime = expirationDateTimeUTC,
+                                    IsRepeat = notification.IsRepeat,
+                                    NotificationTypeID = (int)NotificationType.Reminder,
+                                    UserID = userID,
+                                    LastChangeDateTime = now,
+
+                                    IsReady = now >= expirationDateTimeUTC,
+                                    IsReadyDateTime = IsReadyDateTime
+                                });
+                            }
+                        }
+                        reminderDate.Notifications = notifications;
+
+                        reminderDates.Add(reminderDate);
                     }
                 }
             }

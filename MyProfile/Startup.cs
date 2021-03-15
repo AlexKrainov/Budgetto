@@ -135,7 +135,8 @@ namespace MyProfile
                 jobType: typeof(CheckerLimitTask),
                  cronExpression: "0 * * ? * *")); //Every 1 minute
             CronExpression.ValidateExpression("0 * * ? * *");
-            
+
+            //'0 */5 * ? * *', 'Every 5 minuts'
             services.AddTransient<CheckerReminderTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(CheckerReminderTask),
@@ -154,6 +155,7 @@ namespace MyProfile
                  cronExpression: "0 * * ? * *")); //Every 1 minute
             CronExpression.ValidateExpression("0 * * ? * *"); 
             
+
             services.AddTransient<NotificationOnMailTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(NotificationOnMailTask),

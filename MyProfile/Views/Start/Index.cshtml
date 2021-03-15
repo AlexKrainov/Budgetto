@@ -299,7 +299,7 @@
                                 v-on:click="editLimit(null)">
                             Добавить лимит
                         </button>
-                        @await Html.PartialAsync("~/Views/Limit/_EditLimit.cshtml")
+                        @await Html.PartialAsync("~/Views/Limit/_EditLimit.cshtml", new MyProfile.Entity.ModelView.Limit.EditLimitModel { IsShowNotifications = false })
                         <div class="callout callout-danger mt-3" v-show="errorMessage">
                             <button type="button" class="close" data-dismiss="alert" v-on:click="errorMessage = null">×</button>
                             {{ errorMessage }}

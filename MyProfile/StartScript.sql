@@ -16,7 +16,7 @@ INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES 
 INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (3, N'Круговая диаграмма', N'pie', 1, 0)
 INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (4, N'Кольцевая диаграмма', N'doughnut', 1, 0)
 INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (5, N'Линейный график', N'bubble', 1, 0)
-INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsBig]) VALUES (6, N'Столбчатый график', N'bar', 1, 1)
+INSERT [dbo].[ChartTypes] ([ID], [Name], [CodeName], [IsUsing], [IsB	ig]) VALUES (6, N'Столбчатый график', N'bar', 1, 1)
 SET IDENTITY_INSERT [dbo].[ChartTypes] OFF
 GO
 
@@ -159,7 +159,7 @@ VALUES (4,'ResetHubConnectTask', 'New', 'ResetHubConnectTask','0 0 4 * * ?', 'Ev
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (5,'NotificationLimitCheckerTask', 'New', 'NotificationLimitCheckerTask','0 * * ? * *', 'Every minuts')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
-VALUES (6,'NotificationLimitSiteTask', 'New', 'NotificationSiteTask','0/17 * * ? * * *', 'Every 17 seconds')
+VALUES (6,'NotificationSiteTask', 'New', 'NotificationSiteTask','0/17 * * ? * * *', 'Every 17 seconds')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (7,'NotificationTelegramTask', 'New', 'NotificationTelegramTask','0 * * ? * *', 'Every minuts')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])

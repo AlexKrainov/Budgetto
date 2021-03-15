@@ -776,3 +776,7 @@ html.dark-style .tagify__input::before {
 .card-footer {
     padding: 15px !important;
 }
+
+.just-cursor {
+    cursor: context-menu;
+}

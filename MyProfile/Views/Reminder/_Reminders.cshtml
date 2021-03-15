@@ -29,6 +29,10 @@
                 </span>
             </h5>
             <div>{{ _reminder.description }}</div>
+            <button type="button" class="btn btn-primary btn-xs" 
+                    v-show="_reminder.notifications.length > 0">
+                Напоминаний <span class="badge">{{ _reminder.notifications.length }}</span>
+            </button>
         </div>
     </div>
     <div class="media flex-wrap" v-show="_reminder.isDeleted">
@@ -36,7 +40,7 @@
             <i class="reminder-icon" v-bind:class="_reminder.cssIcon"></i>
         </div>
         <div class="media-body ml-sm-4">
-            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" 
+            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer"
                v-on:click="recovery(_reminder)"></i>
             <h5 class="mb-2 pr-4">
                 <div class="text-muted small float-right deleted-item">

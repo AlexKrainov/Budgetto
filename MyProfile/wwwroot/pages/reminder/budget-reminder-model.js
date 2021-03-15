@@ -39,7 +39,7 @@
         },
         dateTime: function (newValue) {
             this.isPast = moment() > moment(newValue);
-        }
+        },
     },
     mounted: function () {
     },
@@ -130,7 +130,9 @@
         edit: function (reminder) {
             this.isShowModal = true;
 
-            this.reminder.id = -1;
+            this.reminder = { isRepeat: false, notifications: [] },
+
+                this.reminder.id = -1;
             this.reminder.title = null;
             this.reminder.description = null;
             this.reminder.cssIcon = null;
@@ -145,13 +147,18 @@
                 this.reminder.timeZoneClient = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
                 let config = GetFlatpickrRuConfigWithTime(this.reminder.dateReminder);
+                //config.onChange = this.onChangeDateTime;
                 flatpickr('#reminderDateReminder', config);
 
                 setTimeout(function () {
                     for (var i = 0; i < ReminderVue.reminder.notifications.length; i++) {
-                        console.log(ReminderVue.reminder.notifications[i].expirationDateTime);
-                        flatpickr('#expirationDateTime_' + ReminderVue.reminder.notifications[i].id,
-                            GetFlatpickrRuConfigWithTime(ReminderVue.reminder.notifications[i].expirationDateTime));
+                        if (moment(ReminderVue.reminder.notifications[i].expirationDateTime) < moment()) {
+                            flatpickr('#expirationDateTime_' + ReminderVue.reminder.notifications[i].id,
+                                GetFlatpickrRuConfigWithTime(ReminderVue.reminder.notifications[i].expirationDateTime));
+                        } else {
+                            flatpickr('#expirationDateTime_' + ReminderVue.reminder.notifications[i].id,
+                                GetFlatpickrRuConfigWithTime(ReminderVue.reminder.notifications[i].expirationDateTime), new Date);
+                        }
                     }
 
                 }, 1000);
@@ -164,11 +171,15 @@
                 this.reminder.olzonTZID = this.getTimeZoneID(this.reminder.timeZoneClient);
 
                 let config = GetFlatpickrRuConfigWithTime(this.dateTime);
+                config.onChange = this.onChangeDateTime;
                 flatpickr('#reminderDateReminder', config);
             }
 
             this.chooseReminderIcon(this.reminder.cssIcon);
         },
+        //onChangeDateTime: function (selectedDates, dateStr, instance) {
+        //    this.isPast = moment() > moment(dateStr);
+        //},
         getTimeZoneID: function (timezone) {
             let index = this.timezones.findIndex(x => x.olzonTZName == timezone);
 
@@ -301,9 +312,11 @@
                 contentType: "application/json",
                 dataType: 'json',
                 success: function (response) {
-                    reminder.isDeleted = response.isDeleted;
+                    let index = this.reminders.findIndex(x => x.id == response.data.id);
+                    this.reminders[index].isDeleted = response.isDeleted;
+                    //reminder.isDeleted = response.isDeleted;
                     //bug, don't change view removed/recovered
-                    ReminderVue.$forceUpdate();
+                    //ReminderVue.$forceUpdate();
 
                     if (this.reminder.id == reminder.id) {
                         this.close();
@@ -325,7 +338,9 @@
                 contentType: "application/json",
                 dataType: 'json',
                 success: function (response) {
-                    reminder.isDeleted = !response.isRecovery;
+                    let index = this.reminders.findIndex(x => x.id == response.data.id);
+                    this.reminders[index].isDeleted = !response.isRecovery;
+                    //reminder.isDeleted = !response.isRecovery;
                     HideLoading('#reminder_' + reminder.id);
                     BudgetVue.refresh("onlyTable");
                 }
@@ -343,19 +358,27 @@
                     isTelegram: false,
                     expirationDateTime: this.reminder.dateReminder,
                     id: this.numberID,
-                    isDeleted: false
+                    isDeleted: false,
+                    isRepeat: this.reminder.isRepeat,
+                    repeatMinutes: 0,
                 });
-            console.log(this.reminder.dateReminder);
 
             setTimeout(function () {
                 let index = ReminderVue.reminder.notifications.findIndex(x => x.id == ReminderVue.numberID);
 
-                flatpickr('#expirationDateTime_' + ReminderVue.reminder.notifications[index].id,
-                    GetFlatpickrRuConfigWithTime(ReminderVue.reminder.notifications[index].expirationDateTime, new Date));
+                let config = GetFlatpickrRuConfigWithTime(ReminderVue.reminder.notifications[index].expirationDateTime, new Date);
+                config.onChange = function (selectedDates, dateStr, instance) {
+                    let duration = moment.duration(moment(dateStr).diff(moment(ReminderVue.reminder.dateReminder)));
+                    let notificationID = instance.element.id.replace('expirationDateTime_', '') * 1;
+                    let index = ReminderVue.reminder.notifications.findIndex(x => x.id == notificationID);
+                    
+                    ReminderVue.reminder.notifications[index].repeatMinutes = Math.round(duration.asMinutes() * -10) / 10;
+                };
+                flatpickr('#expirationDateTime_' + ReminderVue.reminder.notifications[index].id, config);
 
                 $('[data-toggle="tooltip"]').tooltip();
                 $("#notification-" + ReminderVue.reminder.notifications[index].id).addClass("show");
-            }, 300);
+            }, 300);//300
         },
         removeNotification: function (notification) {
             if (notification.id < 0) {
@@ -364,7 +387,10 @@
             } else {
                 notification.isDeleted = true;
             }
-        }
+        },
+        //getMinutesFormat: function (notification) {
+        //    return moment.utc().startOf('minutes').add({ minutes: notification.repeatMinutes }).format('H:mm');
+        //}
     }
 });
 

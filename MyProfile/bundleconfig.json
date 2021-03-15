@@ -244,5 +244,11 @@
     "inputFiles": [
       "wwwroot/vendor/libs/flatpickr/l10n/ru.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_base/hug-notification.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_base/hug-notification.js"
+    ]
   }
 ]

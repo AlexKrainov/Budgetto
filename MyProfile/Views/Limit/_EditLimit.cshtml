@@ -1,4 +1,4 @@
-﻿
+﻿@model MyProfile.Entity.ModelView.Limit.EditLimitModel
 
 <div class="modal modal-top fade" id="modal-limit">
     <div class="modal-dialog">
@@ -85,67 +85,70 @@
                     </div>
                 }
 
-                <div class="">
-                    <div v-for="notification in limit.notifications"
-                         v-show="notification.isDeleted == false">
-                        <span class="badge badge-warning indicator"
-                              v-show="notification.id < 0">New</span>
-                        <div class="d-flex flex-wrap justify-content-between align-items-center ui-bordered py-3 px-4 mt-3 bg-white"
-                             v-bind:id="'errorborder_' + notification.id">
-                            <div>
-                                Уведомить меня
-                                <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isSite">На сайте</a>
-                                <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isMail">Почте</a>
-                                <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isTelegram">Телеграм</a>
-                                <br>
-                                <small class="text-muted">Когда сумма достигнет: {{ new Intl.NumberFormat("ru-RU", { style: 'currency', currency: "RUB" }).format(notification.price) }}</small>
-                                <br />
-                                <small v-bind:id="'texterror_' + notification.id" class="text-danger" style="display: none">Должен быть выбран хотя бы один вариант и сумма должна быть больше 0.</small>
+                @if (Model.IsShowNotifications)
+                {
+                    <div class="">
+                        <div v-for="notification in limit.notifications"
+                             v-show="notification.isDeleted == false">
+                            <span class="badge badge-warning indicator"
+                                  v-show="notification.id < 0">New</span>
+                            <div class="d-flex flex-wrap justify-content-between align-items-center ui-bordered py-3 px-4 mt-3 bg-white"
+                                 v-bind:id="'errorborder_' + notification.id">
+                                <div>
+                                    Уведомить меня
+                                    <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isSite">На сайте</a>
+                                    <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isMail">Почте</a>
+                                    <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isTelegram">Телеграм</a>
+                                    <br>
+                                    <small class="text-muted">Когда сумма достигнет: {{ new Intl.NumberFormat("ru-RU", { style: 'currency', currency: "RUB" }).format(notification.price) }}</small>
+                                    <br />
+                                    <small v-bind:id="'texterror_' + notification.id" class="text-danger" style="display: none">Должен быть выбран хотя бы один вариант и сумма должна быть больше 0.</small>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <a data-toggle="collapse" class="d-block ml-3 collapsed" aria-expanded="false"
+                                       v-bind:href="'#notification-'+ notification.id">
+                                        <i class="collapse-icon"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="d-flex align-items-center">
-                                <a data-toggle="collapse" class="d-block ml-3 collapsed" aria-expanded="false"
-                                   v-bind:href="'#notification-'+ notification.id">
-                                    <i class="collapse-icon"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="card collapse" v-bind:id="'notification-'+ notification.id" style="border-color: rgb(238, 238, 238);">
-                            <div class="card-body">
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" v-model="notification.isSite">
-                                    <span class="custom-control-label">На сайте</span>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" v-model="notification.isMail">
-                                    <span class="custom-control-label">Почта</span>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" v-model="notification.isTelegram">
-                                    <span class="custom-control-label">
-                                        Телеграм
-                                        <i class="fas fa-info-circle cursor-help text-muted text-tiny" data-toggle="tooltip" data-html="true"
-                                           title="Для получении уведомлений в телеграм, напишите боту @@Budgetto_bot ваш код @MyProfile.Identity.UserInfo.Current.UserConnect.TelegramLogin"></i>
-                                    </span>
-                                </label>
+                            <div class="card collapse" v-bind:id="'notification-'+ notification.id" style="border-color: rgb(238, 238, 238);">
+                                <div class="card-body">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" v-model="notification.isSite">
+                                        <span class="custom-control-label">На сайте</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" v-model="notification.isMail">
+                                        <span class="custom-control-label">Почта</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" v-model="notification.isTelegram">
+                                        <span class="custom-control-label">
+                                            Телеграм
+                                            <i class="fas fa-info-circle cursor-help text-muted text-tiny" data-toggle="tooltip" data-html="true"
+                                               title="Для получении уведомлений в телеграм, напишите боту @@Budgetto_bot ваш код @MyProfile.Identity.UserInfo.Current.UserConnect.TelegramLogin"></i>
+                                        </span>
+                                    </label>
 
-                                <div class="form-group">
-                                    <label class="form-label">Когда сумма достигнет</label>
-                                    <input type="number" class="form-control" v-model="notification.price">
-                                </div>
-                                <div class="form-group text-right">
-                                    <button type="button" class="btn btn-outline-danger btn-xs"
-                                            v-on:click="removeNotification(notification)">
-                                        Удалить
-                                    </button>
+                                    <div class="form-group">
+                                        <label class="form-label">Когда сумма достигнет</label>
+                                        <input type="number" class="form-control" v-model="notification.price">
+                                    </div>
+                                    <div class="form-group text-right">
+                                        <button type="button" class="btn btn-outline-danger btn-xs"
+                                                v-on:click="removeNotification(notification)">
+                                            Удалить
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <button type="button" class="btn btn-xs btn-outline-primary mt-3"
+                                v-on:click="addNotification">
+                            <span class="ion ion-md-add"></span>Добавить уведомление
+                        </button>
                     </div>
-                    <button type="button" class="btn btn-xs btn-outline-primary mt-3"
-                            v-on:click="addNotification">
-                        <span class="ion ion-md-add"></span>Добавить уведомление
-                    </button>
-                </div>
+                }
 
             </div>
             <div class="modal-footer">
