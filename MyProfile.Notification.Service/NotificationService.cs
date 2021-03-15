@@ -95,7 +95,7 @@ namespace MyProfile.Notification.Service
                     NumberFormatInfo numberFormatInfo = new CultureInfo(notification.SpecificCulture, false).NumberFormat;
                     numberFormatInfo.CurrencyDecimalDigits = 0;
 
-                    notification.Title = $"'{ notification.Name }' Цена достигла <strong>" + (notification.Total ?? 0).ToString("C", numberFormatInfo) + "</strong>";
+                    notification.Title = $"По лимиту '{ notification.Name }' достигнуто значение<strong> " + (notification.Total ?? 0).ToString("C", numberFormatInfo) + "</strong>";
                     notification.Message = "Лимит";
                     notification.Color = "bg-danger";
                     notification.Icon = "lnr lnr-frame-expand";
@@ -111,8 +111,8 @@ namespace MyProfile.Notification.Service
                     notification.NotifyType = "success";
                     break;
                 case (int)NotificationType.Telegram:
-                    notification.Title = $"Телеграм уведомление";
-                    notification.Message = $"Ваш аккаунт <b>{ (string.IsNullOrEmpty(notification.TelegramUserName) ? notification.TelegramName + " " + notification.Name : notification.TelegramUserName + " " + notification.Name) }</b> подключен к телеграм боту <b>Budgetto_bot</b>. Теперь вы можете получать все уведомления в телегреме.";
+                    notification.Title = $"Telegram уведомления";
+                    notification.Message = $"Ваш аккаунт <b>{ (string.IsNullOrEmpty(notification.TelegramUserName) ? notification.TelegramName + " " + notification.Name : notification.TelegramUserName + " " + notification.Name) }</b> подключен к Telegram-боту <b>Budgetto_bot</b>. Теперь вы можете получать все уведомления в Telegram.";
                     notification.Color = "bg-primary";
                     notification.Icon = "fab fa-telegram-plane";
                     notification.NotifyType = "success";

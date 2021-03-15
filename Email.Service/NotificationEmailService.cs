@@ -137,7 +137,7 @@ namespace Email.Service
                         body = body.Replace("${LimitName}", notification.Name);
                         body = body.Replace("${LimitPrice}", notification.Total?.ToString("C", numberFormatInfo));
 
-                        await _emailSender.SendEmailAsync("ialexkrainov2@gmail.com", "Уведомление по лимиту: " + notification.Name, body);
+                        await _emailSender.SendEmailAsync(notification.Email, "Уведомление по лимиту: " + notification.Name, body);
                         break;
                     case (int)NotificationType.Reminder:
 
@@ -149,7 +149,7 @@ namespace Email.Service
                         body = body.Replace("${ReminderName}", notification.Name);
                         body = body.Replace("${ReminderDate}", notification.ExpirationDateTime.Value.AddMinutes(notification.ReminderUTCOffsetMinutes).ToString("dd MM yyyy HH:mm"));
 
-                        await _emailSender.SendEmailAsync("ialexkrainov2@gmail.com", "Напоминание: " + notification.Name, body);
+                        await _emailSender.SendEmailAsync(notification.Email, "Напоминание: " + notification.Name, body);
                         break;
                     default:
                         break;

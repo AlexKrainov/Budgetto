@@ -259,8 +259,7 @@
                         <div class="ui-icon ui-icon-sm border-0 text-white"
                              v-bind:class="[notification.icon, notification.color ]"></div>
                         <div class="media-body line-height-condenced ml-3">
-                            <div class="text-body">
-                                {{ notification.title }}
+                            <div class="text-body" v-html="notification.title">
                                 <span href="javascript:void(0)" class="badge badge-primary ml-2"
                                       v-show="notification.isRead == false">Новая</span>
                             </div>

@@ -96,9 +96,9 @@
                                  v-bind:id="'errorborder_' + notification.id">
                                 <div>
                                     Уведомить меня
-                                    <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isSite">На сайте</a>
-                                    <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isMail">Почте</a>
-                                    <a href="javascript:void(0)" class="badge badge-primary ml-2" v-show="notification.isTelegram">Телеграм</a>
+                                    <a href="javascript:void(0)" class="badge badge-primary ml-2 just-cursor" v-show="notification.isSite">На сайте</a>
+                                    <a href="javascript:void(0)" class="badge badge-primary ml-2 just-cursor" v-show="notification.isMail">По почте</a>
+                                    <a href="javascript:void(0)" class="badge badge-primary ml-2 just-cursor" v-show="notification.isTelegram">В Telegram</a>
                                     <br>
                                     <small class="text-muted">Когда сумма достигнет: {{ new Intl.NumberFormat("ru-RU", { style: 'currency', currency: "RUB" }).format(notification.price) }}</small>
                                     <br />
@@ -119,14 +119,14 @@
                                     </label>
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" v-model="notification.isMail">
-                                        <span class="custom-control-label">Почта</span>
+                                        <span class="custom-control-label">По почте</span>
                                     </label>
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" v-model="notification.isTelegram">
                                         <span class="custom-control-label">
-                                            Телеграм
+                                            В Telegram
                                             <i class="fas fa-info-circle cursor-help text-muted text-tiny" data-toggle="tooltip" data-html="true"
-                                               title="Для получении уведомлений в телеграм, напишите боту @@Budgetto_bot ваш код @MyProfile.Identity.UserInfo.Current.UserConnect.TelegramLogin"></i>
+                                               title="Для получении уведомлений в Telegram, напишите боту @@Budgetto_bot ваш код @MyProfile.Identity.UserInfo.Current.UserConnect.TelegramLogin"></i>
                                         </span>
                                     </label>
 

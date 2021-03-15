@@ -378,7 +378,7 @@ namespace Telegram.Service
                         answer = GetLimitNotification(notification, notification.Total?.ToString("C", numberFormatInfo));
                         break;
                     case (int)NotificationType.Reminder:
-                        answer = GetReminderNotification(notification, notification.ExpirationDateTime.Value.AddMinutes(notification.ReminderUTCOffsetMinutes).ToString("dd MM yyyy HH:mm"));
+                        answer = GetReminderNotification(notification, notification.ExpirationDateTime.Value.AddMinutes(notification.ReminderUTCOffsetMinutes).ToString("dd.MM.yyyy HH:mm"));
                         break;
                     default:
                         break;
