@@ -33,7 +33,7 @@ namespace MyProfile.Reminder.Service
             this.notificationService = notificationService;
         }
 
-       
+
 
         /// <summary>
         /// 
@@ -138,6 +138,7 @@ namespace MyProfile.Reminder.Service
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
             var newDateReminder = newReminder.DateReminder.Value.ToUniversalTime();
+            bool isNotificationChange = false;
 
             try
             {
@@ -161,7 +162,9 @@ namespace MyProfile.Reminder.Service
                         {
                             oldReminder.ReminderDates.FirstOrDefault(x => x.ID == newReminder.ReminderDateID).IsDone = now > newDateReminder;
                             oldReminder.ReminderDates.FirstOrDefault(x => x.ID == newReminder.ReminderDateID).DateReminder = newDateReminder;
+
                             await notificationService.CreateOrUpdate<ReminderDate>(newReminder.Notifications, newReminder.ReminderDateID, currentUser.ID);
+                            isNotificationChange = true;
                         }
                         else if (oldReminder.IsRepeat && newReminder.IsRepeat)
                         {
@@ -175,6 +178,7 @@ namespace MyProfile.Reminder.Service
                                 oldReminder.ReminderDates.FirstOrDefault(x => x.ID == newReminder.ReminderDateID).DateReminder = newDateReminder;
 
                                 await notificationService.CreateOrUpdate<ReminderDate>(newReminder.Notifications, newReminder.ReminderDateID, currentUser.ID);
+                                isNotificationChange = true;
                             }
                             isCreateCurrentReminderDate = true;
                         }
@@ -209,6 +213,10 @@ namespace MyProfile.Reminder.Service
                         var tmp = oldReminder.ReminderDates.ToList();
                         tmp.AddRange(GetReminderDates(newReminder, currentUser.ID, isCreateCurrentReminderDate: false));
                         oldReminder.ReminderDates = tmp;
+                        if (newReminder.Notifications != null && newReminder.Notifications.Count() > 0)
+                        {
+                            isNotificationChange = true;
+                        }
                     }
                     else if (newReminder.IsRepeat
                         && oldReminder.IsRepeat
@@ -222,6 +230,11 @@ namespace MyProfile.Reminder.Service
                         var tmp = oldReminder.ReminderDates.ToList();
                         tmp.AddRange(GetReminderDates(newReminder, currentUser.ID, isCreateCurrentReminderDate: isCreateCurrentReminderDate));
                         oldReminder.ReminderDates = tmp;
+
+                        if (newReminder.Notifications != null && newReminder.Notifications.Count() > 0)
+                        {
+                            isNotificationChange = true;
+                        }
                     }
 
                     oldReminder.Title = newReminder.Title;
@@ -238,6 +251,11 @@ namespace MyProfile.Reminder.Service
                     await repository.UpdateAsync(oldReminder, true);
                     await notificationService.CreateOrUpdate<ReminderDate>(newReminder.Notifications, newReminder.ReminderDateID, currentUser.ID);
                     await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Edit);
+
+                    if (isNotificationChange)
+                    {
+                        await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Notification);
+                    }
                 }
                 else
                 {
@@ -259,7 +277,10 @@ namespace MyProfile.Reminder.Service
 
                     await repository.CreateAsync(reminder, true);
                     await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Create);
-
+                    if (newReminder.Notifications != null && newReminder.Notifications.Count() > 0)
+                    {
+                        await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Notification);
+                    }
                     newReminder.ID = reminder.ID;
                 }
             }
@@ -428,7 +449,7 @@ namespace MyProfile.Reminder.Service
 
                                     IsReady = now >= expirationDateTimeUTC,
                                     IsReadyDateTime = IsReadyDateTime
-                                }); 
+                                });
                             }
                         }
                         reminderDate.Notifications = notifications;
@@ -442,7 +463,7 @@ namespace MyProfile.Reminder.Service
                     for (int i = 1; i < 100; i++)
                     {
                         dateReminder = reminderEdit.DateReminder.Value.AddDays(i * 7);
-                        
+
                         var reminderDate = new ReminderDate
                         {
                             DateReminder = dateReminder,
@@ -488,7 +509,7 @@ namespace MyProfile.Reminder.Service
                     for (int i = 1; i < 24; i++)
                     {
                         dateReminder = reminderEdit.DateReminder.Value.AddMonths(i);
-                        
+
                         var reminderDate = new ReminderDate
                         {
                             DateReminder = dateReminder,

@@ -5,7 +5,7 @@ namespace MyProfile.Entity.ModelView.Account
     public class AccountShortViewModel
 	{
         public int ID { get; set; }
-        public AccountTypesEnum AccountType { get; set; }
+        public AccountTypes AccountType { get; set; }
 		public string Name { get; set; }
 		public bool IsDefault { get; set; }
 

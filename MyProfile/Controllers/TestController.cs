@@ -51,14 +51,6 @@ namespace MyProfile.Controllers
                    x.SectionTypeID,
                })
                .ToListAsync();
-            var sectionInvestments = await repository
-               .GetAll<BudgetSection>(x => x.BudgetArea.UserID == currentUser.ID && x.SectionTypeID == (int)SectionTypeEnum.Investments)
-               .Select(x => new
-               {
-                   x.ID,
-                   x.SectionTypeID,
-               })
-               .ToListAsync();
 
             Random random = new Random();
             var records = new List<Record>();
@@ -95,30 +87,6 @@ namespace MyProfile.Controllers
                     records.Add(new Record
                     {
                         BudgetSectionID = sectionEarnings[randomSection].ID,
-                        DateTimeCreate = now,
-                        DateTimeEdit = now,
-                        DateTimeOfPayment = nowMinus2years.AddDays(day),
-                        Description = null,
-                        IsHide = false,
-                        UserID = currentUser.ID,
-                        Total = randomValue,
-                        RawData = randomValue.ToString(),
-                        CurrencyID = 1,
-                        CurrencyNominal = 1,
-                        IsShowForCollection = true,
-                    });
-                }
-
-                int randomInvestings = random.Next(0, 12);
-                if (randomInvestings == 4)
-                {
-                    randomValue = random.Next(20000, 40000);
-
-                    randomSection = random.Next(0, sectionInvestments.Count);
-
-                    records.Add(new Record
-                    {
-                        BudgetSectionID = sectionInvestments[randomSection].ID,
                         DateTimeCreate = now,
                         DateTimeEdit = now,
                         DateTimeOfPayment = nowMinus2years.AddDays(day),

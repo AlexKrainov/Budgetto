@@ -56,6 +56,11 @@ namespace MyProfile.Controllers
             return View();
         }
 
+        public IActionResult ParsingTable()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public JsonResult Load([FromBody] List<Month1> months)

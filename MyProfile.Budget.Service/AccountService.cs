@@ -27,54 +27,153 @@ namespace MyProfile.Budget.Service
             this.userLogService = userLogService;
         }
 
-        public List<AccountViewModel> GetAcounts(Guid currentUserID)
+        public List<MainAccountModelView> GetMainAccounts(Guid currentUserID)
         {
-            return repository.GetAll<Account>(x => x.UserID == currentUserID && x.IsDeleted == false)
-                .Select(x => new AccountViewModel
-                {
-                    ID = x.ID,
-                    Name = x.Name,
-                    Balance = x.Balance,
-                    Description = x.Description,
-                    IsDefault = x.IsDefault,
-                    IsHide = x.IsHide,
-                    AccountType = (AccountTypesEnum)x.AccountTypeID,
-                    AccountTypeName = x.AccountType.Name,
-                    AccountIcon = x.AccountType.Icon,
-                    CurrencyID = x.CurrencyID ?? 0,
-                    CurrencyIcon = x.Currency.Icon,
-                    Currency = new Entity.ModelView.Currency.CurrencyClientModelView
+            var now = DateTime.Now.ToUniversalTime();
+
+            var mainAccounts = repository.GetAll<Account>(x => x.UserID == currentUserID && x.IsDeleted == false && x.ParentAccountID == null)
+            .Select(y => new MainAccountModelView
+            {
+                ID = y.ID,
+                Name = y.Name,
+                BankID = y.BankID,
+                BankLogo = y.Bank != null ? y.Bank.LogoRectangle : null,
+                BankName = y.Bank != null ? y.Bank.Name : null,
+                BankTypeID = y.Bank != null ? y.Bank.BankTypeID : null,
+                Description = y.Description,
+                AccountType = (AccountTypes)y.AccountTypeID,
+                AccountIcon = y.AccountType.Icon,
+
+                IsShow = true,
+
+                Accounts = y.ChildAccounts
+                    .Where(x => x.IsDeleted == false)
+                    .Select(x => new AccountViewModel
                     {
-                        id = x.CurrencyID ?? 0,
-                        codeName = x.Currency.CodeName,
-                        specificCulture = x.Currency.SpecificCulture,
-                        icon = x.Currency.Icon,
-                    },
+                        ID = x.ID,
+                        ParentID = x.ParentAccountID,
+                        Name = x.Name,
+                        Balance = x.Balance,
+                        Description = x.Description,
+                        IsDefault = x.IsDefault,
+                        IsHide = x.IsHide,
+                        AccountType = (AccountTypes)x.AccountTypeID,
+                        AccountTypeName = x.AccountType.Name,
+                        AccountIcon = x.AccountType.Icon,
+                        CurrencyID = x.CurrencyID ?? 0,
+                        CurrencyIcon = x.Currency.Icon,
+                        Currency = new Entity.ModelView.Currency.CurrencyClientModelView
+                        {
+                            id = x.CurrencyID ?? 0,
+                            codeName = x.Currency.CodeName,
+                            specificCulture = x.Currency.SpecificCulture,
+                            icon = x.Currency.Icon,
+                        },
 
-                    BankID = x.BankID,
-                    BankName = x.Bank != null ? x.Bank.Name : "",
-                    BankImage = x.Bank != null ? x.Bank.ImageSrc : "",
-                    ExpirationDate = x.ExpirationDate,
-                    InterestRate = x.InterestRate,
-                    IsOverdraft = x.IsOverdraft,
+                        BankID = x.BankID,
+                        BankName = x.Bank != null ? x.Bank.Name : "",
+                        BankLogo = x.Bank != null ? x.Bank.LogoRectangle : "",
+                        BankTypeID = x.Bank != null ? x.Bank.BankTypeID : null,
+                        DateStart = x.DateStart,
+                        ExpirationDate = x.ExpirationDate,
+                        InterestRate = x.InterestRate,
+                        IsOverdraft = x.IsOverdraft,
 
-                    IsCachback = x.IsCachback,
-                    IsCachBackMoney = x.IsCachbackMoney,
-                    CachBackBalance = x.CachbackBalance,
-                    CashBackForAllPercent = x.CachbackForAllPercent,
-                    ResetCashBackDate = x.ResetCachbackDate,
-                    IsCountTheBalance = x.IsCountTheBalance,
+                        IsCachback = x.IsCachback,
+                        IsCachBackMoney = x.IsCachbackMoney,
+                        CachBackBalance = x.CachbackBalance,
+                        CashBackForAllPercent = x.CachbackForAllPercent,
+                        ResetCashBackDate = x.ResetCachbackDate,
+                        IsCountTheBalance = x.IsCountTheBalance,
 
-                    IsShow = true,
-                })
-                .OrderByDescending(x => x.IsDefault)
-                .ThenBy(x => x.IsHide)
-                .ThenBy(x => x.AccountType == AccountTypesEnum.Cash)
-                .ThenBy(x => x.AccountType == AccountTypesEnum.Installment)
-                .ThenBy(x => x.AccountType == AccountTypesEnum.Credit)
-                .ThenBy(x => x.AccountType == AccountTypesEnum.Debed)
-                .ToList();
+                        IsShow = true,
+                        IsCash = x.AccountTypeID == (int)AccountTypes.Cash,
+                    })
+                    .OrderByDescending(x => x.IsDefault)
+                    .ThenBy(x => x.IsHide)
+                    .ThenBy(x => x.ID)
+                    .ThenBy(x => x.AccountType == AccountTypes.Cash)
+                    .ThenBy(x => x.AccountType == AccountTypes.Installment)
+                    .ThenBy(x => x.AccountType == AccountTypes.Credit)
+                    .ThenBy(x => x.AccountType == AccountTypes.Debed)
+                    .ToList()
+            })
+            .OrderBy(x => x.ID)
+            .ToList();
+
+            for (int y = 0; y < mainAccounts.Count; y++)
+            {
+                for (int i = 0; i < mainAccounts[y].Accounts.Count; i++)
+                {
+                    var account = mainAccounts[y].Accounts[i];
+
+                    if (account.AccountType == AccountTypes.InvestmentsIIS
+                        && account.DateStart.HasValue
+                        && account.ExpirationDate.HasValue)
+                    {
+                        var allDays = (account.ExpirationDate.Value - account.DateStart.Value).TotalDays;
+                        var leftDays = (account.ExpirationDate.Value - now).TotalDays;
+                        account.Percent = 100 - Math.Round(leftDays / allDays * 100, 2);
+                    }
+                }
+            }
+
+            return mainAccounts;
         }
+
+        public List<AccountViewModel> GetAccountsWithoutParant(Guid currentUserID)
+        {
+            return repository.GetAll<Account>(x => x.UserID == currentUserID && x.IsDeleted == false && x.ParentAccountID != null)
+                  .Select(x => new AccountViewModel
+                  {
+                      ID = x.ID,
+                      ParentID = x.ParentAccountID,
+                      Name = x.Name,
+                      Balance = x.Balance,
+                      Description = x.Description,
+                      IsDefault = x.IsDefault,
+                      IsHide = x.IsHide,
+                      AccountType = (AccountTypes)x.AccountTypeID,
+                      AccountTypeName = x.AccountType.Name,
+                      AccountIcon = x.AccountType.Icon,
+                      CurrencyID = x.CurrencyID ?? 0,
+                      CurrencyIcon = x.Currency.Icon,
+                      Currency = new Entity.ModelView.Currency.CurrencyClientModelView
+                      {
+                          id = x.CurrencyID ?? 0,
+                          codeName = x.Currency.CodeName,
+                          specificCulture = x.Currency.SpecificCulture,
+                          icon = x.Currency.Icon,
+                      },
+
+                      BankID = x.BankID,
+                      BankName = x.Bank != null ? x.Bank.Name : "",
+                      BankLogo = x.Bank != null ? x.Bank.LogoRectangle : "",
+                      BankTypeID = x.Bank != null ? x.Bank.BankTypeID : null,
+                      DateStart = x.DateStart,
+                      ExpirationDate = x.ExpirationDate,
+                      InterestRate = x.InterestRate,
+                      IsOverdraft = x.IsOverdraft,
+
+                      IsCachback = x.IsCachback,
+                      IsCachBackMoney = x.IsCachbackMoney,
+                      CachBackBalance = x.CachbackBalance,
+                      CashBackForAllPercent = x.CachbackForAllPercent,
+                      ResetCashBackDate = x.ResetCachbackDate,
+                      IsCountTheBalance = x.IsCountTheBalance,
+
+                      IsShow = true,
+                      IsCash = x.AccountTypeID == (int)AccountTypes.Cash,
+                  })
+                  .OrderByDescending(x => x.IsDefault)
+                  .ThenBy(x => x.IsHide)
+                  .ThenBy(x => x.AccountType == AccountTypes.Cash)
+                  .ThenBy(x => x.AccountType == AccountTypes.Installment)
+                  .ThenBy(x => x.AccountType == AccountTypes.Credit)
+                  .ThenBy(x => x.AccountType == AccountTypes.Debed)
+                  .ToList();
+        }
+
 
         /// <summary>
         /// Get all money by section type for the period
@@ -83,39 +182,57 @@ namespace MyProfile.Budget.Service
         /// <param name="finish"></param>
         /// <param name="accounts"></param>
         /// <returns></returns>
-        public void GetAcountsAllMoneyByPeriod(DateTime start, DateTime finish, List<AccountViewModel> accounts)
+        public void GetAcountsAllMoneyByPeriod(DateTime start, DateTime finish, List<MainAccountModelView> mainAccounts)
         {
             var currentUser = UserInfo.Current;
 
             var records = repository.GetAll<Record>(x => x.UserID == currentUser.ID
-             && x.IsDeleted == false
-             && x.AccountID != null
-             && x.DateTimeOfPayment >= start && x.DateTimeOfPayment <= finish
-             && x.AccountRecordHistories.Count > 0)
-                  .Select(x => x.AccountRecordHistories
-                                      .OrderByDescending(x => x.ID)
-                                      .FirstOrDefault())
-                  .Select(x => new
-                  {
-                      x.ID,
-                      x.AccountID,
-                      x.Section.SectionTypeID,
-                      x.DateTimeOfPayment,
-                      x.AccountTotal,
-                      x.AccountCashback
-                  })
-                  .ToList();
+                 && x.IsDeleted == false
+                 && x.AccountID != null
+                 && x.DateTimeOfPayment >= start && x.DateTimeOfPayment <= finish
+                 && x.AccountRecordHistories.Count > 0)
+                      .Select(x => x.AccountRecordHistories
+                                          .OrderByDescending(x => x.ID)
+                                          .FirstOrDefault())
+                      .Select(x => new
+                      {
+                          x.ID,
+                          x.AccountID,
+                          x.Section.SectionTypeID,
+                          x.DateTimeOfPayment,
+                          x.AccountTotal,
+                          x.AccountCashback
+                      })
+                      .ToList();
 
-            foreach (var account in accounts)
+            var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
+                    && x.Account.IsDeleted == false
+                    && x.ActionType == AccountHistoryActionType.MoveMoney
+                    && x.CurrentDate >= start && x.CurrentDate <= finish)
+                .Select(x => new
+                {
+                    x.AccountID,
+                    x.Account2ID,
+                    x.Actions,
+                    x.ValueFrom,
+                    x.ValueTo
+                })
+                .ToList();
+
+            foreach (var mainAccount in mainAccounts)
             {
-                account.IsPast = true;
-                //account.Balance += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
+                foreach (var account in mainAccount.Accounts)
+                {
+                    account.IsPast = true;
 
-                account.BalanceSpendings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
-                account.BalanceEarnings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Earnings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
-                account.BalanceInvestments += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Investments && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
+                    //if (account.BankTypeID == (int)BankTypes.Bank)
+                    account.BalanceSpendings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
+                    account.BalanceEarnings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Earnings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
+                    account.BalancePastCachback += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountCashback);
 
-                account.BalancePastCachback += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountCashback);
+                    account.Input = accountHistories.Where(x => x.AccountID == account.ID && x.Actions == "input").Sum(x => x.ValueTo);
+                    account.Output = accountHistories.Where(x => x.AccountID == account.ID && x.Actions == "output").Sum(x => x.ValueFrom);
+                }
             }
         }
 
@@ -126,35 +243,46 @@ namespace MyProfile.Budget.Service
 
             var accountFrom = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.IsDeleted == false && x.ID == transfer.AccountFromID).FirstOrDefault();
             var accountTo = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.IsDeleted == false && x.ID == transfer.AccountToID).FirstOrDefault();
-
+            //input, output
             AccountHistory accountHistoryFrom = new AccountHistory
             {
-                OldAccountStateJson = Serialize(accountFrom),
                 CurrentDate = now,
                 ActionType = AccountHistoryActionType.MoveMoney,
-                Value = "-" + transfer.Value.ToString()
+                Account2ID = transfer.AccountToID,
+                OldBalance = accountFrom.Balance,
+                Comment = transfer.Comment,
+                ValueFrom = transfer.Value,
+                ValueTo = transfer.EndValue,
+                Actions = "output",
+                CurrencyValue = transfer.CurrencyValue
             };
 
             AccountHistory accountHistoryTo = new AccountHistory
             {
-                OldAccountStateJson = Serialize(accountTo),
                 CurrentDate = now,
                 ActionType = AccountHistoryActionType.MoveMoney,
-                Value = "+" + transfer.Value.ToString()
+                Account2ID = transfer.AccountFromID,
+                OldBalance = accountTo.Balance,
+                Comment = transfer.Comment,
+                ValueFrom = transfer.Value,
+                ValueTo = transfer.EndValue,
+                Actions = "input",
+                CurrencyValue = transfer.CurrencyValue
             };
 
             if (transfer.Value > 0
+                && transfer.EndValue > 0
                 && accountFrom != null
                 && accountTo != null)
             {
                 accountFrom.Balance -= transfer.Value;
-                accountTo.Balance += transfer.Value;
+                accountTo.Balance += transfer.EndValue;
             }
 
-            accountHistoryFrom.NewAccountStateJson = Serialize(accountFrom);
-            accountFrom.AccountHistories.Add(accountHistoryFrom);
+            accountHistoryFrom.NewBalance = accountFrom.Balance;
+            accountHistoryTo.NewBalance = accountTo.Balance;
 
-            accountHistoryTo.NewAccountStateJson = Serialize(accountTo);
+            accountFrom.AccountHistories.Add(accountHistoryFrom);
             accountTo.AccountHistories.Add(accountHistoryTo);
 
             userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Account_TransferMoney);
@@ -168,13 +296,13 @@ namespace MyProfile.Budget.Service
 
             if (cache.TryGetValue(typeof(AccountShortViewModel).Name + "_" + currentUserID, out accounts) == false)
             {
-                accounts = repository.GetAll<Account>(x => x.UserID == currentUserID)
+                accounts = repository.GetAll<Account>(x => x.UserID == currentUserID && x.ParentAccountID != null)
                  .Select(x => new AccountShortViewModel
                  {
                      ID = x.ID,
                      Name = x.Name,
                      IsDefault = x.IsDefault,
-                     AccountType = (AccountTypesEnum)x.AccountTypeID,
+                     AccountType = (AccountTypes)x.AccountTypeID,
                      AccountIcon = x.AccountType.Icon,
                      CurrencyID = x.CurrencyID,
                      CurrencySpecificCulture = x.Currency.SpecificCulture,
@@ -183,7 +311,7 @@ namespace MyProfile.Budget.Service
 
                      BankID = x.BankID,
                      BankName = x.Bank != null ? x.Bank.Name : "",
-                     BankImage = x.Bank != null ? x.Bank.ImageSrc : "",
+                     BankImage = x.Bank != null ? x.Bank.LogoCircle : "",
 
                      IsDeleted = x.IsDeleted
                  })
@@ -201,8 +329,19 @@ namespace MyProfile.Budget.Service
 
             if (account.ID <= 0)
             {
+                if (account.IsCash)
+                {
+                    account.AccountType = AccountTypes.Cash;
+                }
+                else if (account.AccountType == AccountTypes.Undefined)
+                {
+                    var bankTypes = GetBankTypesAndAcountTypes();
+                    account.AccountType = (AccountTypes)bankTypes.FirstOrDefault(x => x.ID == account.BankTypeID).AccountTypes.FirstOrDefault().ID;
+                }
+
                 Account accountDB = new Account
                 {
+                    ParentAccountID = account.ParentID,
                     Name = account.Name,
                     AccountTypeID = (int)account.AccountType,
                     Balance = account.Balance,
@@ -211,6 +350,7 @@ namespace MyProfile.Budget.Service
                     Description = account.Description,
 
                     BankID = account.BankID,
+                    DateStart = account.DateStart,
                     ExpirationDate = account.ExpirationDate,
                     InterestRate = account.InterestRate,
                     IsOverdraft = account.IsOverdraft,
@@ -225,6 +365,7 @@ namespace MyProfile.Budget.Service
                     IsHide = account.IsHide,
 
                     DateCreate = now,
+                    LastChanges = now,
                     CurrencyID = account.CurrencyID,
                 };
 
@@ -245,11 +386,8 @@ namespace MyProfile.Budget.Service
                         ActionType = AccountHistoryActionType.Create
                     };
                     accountDB.AccountHistories.Add(accountHistory);
-
                     repository.Create(accountDB, true);
-
                     UpdateIsDefaultAccount(accountDB);
-
                     account.ID = accountDB.ID;
                 }
                 catch (Exception ex)
@@ -266,11 +404,15 @@ namespace MyProfile.Budget.Service
 
                 if (accountDB != null)
                 {
+                    //string newValue, oldValue;
+                    string actions = GetEditActions(accountDB, account);//, newValue, oldValue);
+
                     AccountHistory accountHistory = new AccountHistory
                     {
                         OldAccountStateJson = Serialize(accountDB),
                         CurrentDate = now,
-                        ActionType = AccountHistoryActionType.Edit
+                        ActionType = AccountHistoryActionType.Edit,
+                        Actions = actions,
                     };
                     //accountDB.AccountTypeID = (int)account.AccountType;
                     accountDB.Balance = account.Balance;
@@ -280,15 +422,17 @@ namespace MyProfile.Budget.Service
                     accountDB.Name = account.Name;
                     accountDB.IsDefault = account.IsDefault;
                     accountDB.IsCountTheBalance = account.IsCountTheBalance;
+
                     //accountDB.CurrencyID = account.CurrencyID;
 
-                    if (accountDB.AccountType.ID != (int)AccountTypesEnum.Cash)
+                    if (accountDB.AccountType.ID != (int)AccountTypes.Cash)
                     {
                         accountDB.BankID = account.BankID;
                         accountDB.IsCachback = account.IsCachback;
                         accountDB.IsCachbackMoney = account.IsCachBackMoney;
                         accountDB.CachbackBalance = account.CachBackBalance;
                         accountDB.CachbackForAllPercent = account.CashBackForAllPercent;
+                        accountDB.DateStart = account.DateStart;
                         accountDB.ExpirationDate = account.ExpirationDate;
                         accountDB.IsOverdraft = account.IsOverdraft;
                         accountDB.InterestRate = account.InterestRate;
@@ -335,6 +479,95 @@ namespace MyProfile.Budget.Service
             cache.Remove(typeof(AccountShortViewModel).Name + "_" + currentUser.ID);
 
             return account;
+        }
+
+        /// <summary>
+        /// check parameters
+        /// </summary>
+        /// <param name="accountDB"></param>
+        /// <param name="account"></param>
+        /// <param name="newValue"></param>
+        /// <param name="oldValue"></param>
+        /// <returns></returns>
+        private string GetEditActions(Account oldAccount, AccountViewModel newAccount)//, string newValue, string oldValue)
+        {
+            StringBuilder actions = new StringBuilder();
+
+            if (oldAccount.Name != newAccount.Name)
+            {
+                actions.Append("Name,");
+                //newValue = $"Name: '{newAccount.Name}'";
+                //oldValue = $"Name: '{oldAccount.Name}'";
+            }
+
+            if (oldAccount.Balance != newAccount.Balance)
+            {
+                actions.Append("Balance,");
+            }
+            if (oldAccount.CachbackBalance != newAccount.CachBackBalance)
+            {
+                actions.Append("CachbackBalance,");
+            }
+            if (oldAccount.CachbackForAllPercent != newAccount.CashBackForAllPercent)
+            {
+                actions.Append("Balance,");
+            }
+            if (oldAccount.CurrencyID != newAccount.CurrencyID)
+            {
+                actions.Append("CurrencyID,");
+            }
+            if (oldAccount.Description != newAccount.Description)
+            {
+                actions.Append("Description,");
+            }
+            if (oldAccount.ExpirationDate != newAccount.ExpirationDate)
+            {
+                actions.Append("ExpirationDate,");
+            }
+            if (oldAccount.InterestRate != newAccount.InterestRate)
+            {
+                actions.Append("InterestRate,");
+            }
+            if (oldAccount.IsCachback != newAccount.IsCachback)
+            {
+                actions.Append("IsCachback,");
+            }
+            if (oldAccount.IsCachbackMoney != newAccount.IsCachBackMoney)
+            {
+                actions.Append("IsCachbackMoney,");
+            }
+            if (oldAccount.IsCountTheBalance != newAccount.IsCountTheBalance)
+            {
+                actions.Append("IsCountTheBalance,");
+            }
+            if (oldAccount.IsDefault != newAccount.IsDefault)
+            {
+                actions.Append("IsDefault,");
+            }
+            if (oldAccount.IsHide != newAccount.IsHide)
+            {
+                actions.Append("IsHide,");
+            }
+            if (oldAccount.IsOverdraft != newAccount.IsOverdraft)
+            {
+                actions.Append("IsOverdraft,");
+            }
+            if (oldAccount.PaymentSystemID != newAccount.PaymentSystemID)
+            {
+                actions.Append("PaymentSystemID,");
+            }
+            if (oldAccount.ResetCachbackDate != newAccount.ResetCachbackDate)
+            {
+                actions.Append("ResetCachbackDate,");
+            }
+            if (oldAccount.DateStart != newAccount.DateStart)
+            {
+                actions.Append("DateStart,");
+            }
+
+            //newValue = $"{{ {newValue} }}";
+            //oldValue = $"{{ {oldValue} }}";
+            return actions.ToString();
         }
 
         public bool ShowHide(AccountViewModel account)
@@ -428,7 +661,7 @@ namespace MyProfile.Budget.Service
                 {
                     CurrentDate = now,
                     ActionType = AccountHistoryActionType.ResetCacback,
-                    Value = accounts[i].CachbackBalance.ToString()
+                    CachbackBalance = accounts[i].CachbackBalance
                 };
 
                 accounts[i].CachbackBalance = 0;
@@ -436,7 +669,7 @@ namespace MyProfile.Budget.Service
 
             }
             repository.Save();
-            
+
             return accounts.Count;
         }
 
@@ -469,7 +702,7 @@ namespace MyProfile.Budget.Service
                     var accountDB = repository.GetAll<Account>(x =>
                                         x.UserID == account.UserID
                                         && x.IsDeleted == false
-                                        && x.AccountTypeID == (int)AccountTypesEnum.Cash)
+                                        && x.AccountTypeID == (int)AccountTypes.Cash)
                                            .FirstOrDefault();
 
                     if (accountDB != null)
@@ -525,46 +758,89 @@ namespace MyProfile.Budget.Service
             return JsonConvert.SerializeObject(account, Formatting.Indented);
         }
 
-        public List<AccountTypeModelView> GetAcountTypes()
+        public List<ShortBankTypeModelView> GetBankTypesAndAcountTypes()
         {
-            List<AccountTypeModelView> accountTypes;
+            List<ShortBankTypeModelView> accountTypes;
 
-            if (cache.TryGetValue(typeof(AccountTypeModelView).Name, out accountTypes) == false)
+            if (cache.TryGetValue(typeof(ShortBankTypeModelView).Name, out accountTypes) == false)
             {
-                accountTypes = repository.GetAll<AccountType>()
-                .Select(x => new AccountTypeModelView
-                {
-                    ID = x.ID,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Icon = x.Icon,
-                    accountType = (AccountTypesEnum)x.ID
-                })
-                .Take(2)
-                .ToList();
+                accountTypes = repository.GetAll<BankType>()
+                    .Where(x => x.IsVisible)
+                    .Select(x => new ShortBankTypeModelView
+                    {
+                        ID = x.ID,
+                        Name = x.Name,
+                        CodeName = x.CodeName,
+                        AccountTypes = x.AccountTypes
+                            .Where(y => y.IsVisible)
+                            .Select(y => new AccountTypeModelView
+                            {
+                                ID = y.ID,
+                                Name = y.Name,
+                                Description = y.Description,
+                                Icon = y.Icon
+                            })
+                            .ToList()
+                    })
+                    .ToList();
 
-                cache.Set(typeof(AccountTypeModelView).Name, accountTypes, DateTime.Now.AddDays(15));
+                cache.Set(typeof(ShortBankTypeModelView).Name, accountTypes, DateTime.Now.AddDays(15));
             }
 
             return accountTypes;
         }
 
-        public List<BankModelView> GetBanks()
+        public List<BankTypeModelView> BankTypesAndBanks()
         {
-            List<BankModelView> banks;
+            List<BankTypeModelView> banks;
 
-            if (cache.TryGetValue(typeof(BankModelView).Name, out banks) == false)
+            if (cache.TryGetValue(typeof(BankTypeModelView).Name, out banks) == false)
+            {
+                banks = repository.GetAll<BankType>()
+                    .Where(x => x.IsVisible)
+                    .Select(y => new BankTypeModelView
+                    {
+                        ID = y.ID,
+                        CodeName = y.CodeName,
+                        Name = y.Name,
+
+                        Banks = y.Banks
+                            .OrderBy(x => x.Raiting)
+                            .Select(x => new ShortBankModelView
+                            {
+                                ID = x.ID,
+                                Name = x.Name,
+                                LogoCircle = x.LogoCircle,
+                                LogoRectangle = x.LogoRectangle,
+                                BankTypeID = x.BankTypeID,
+                            })
+                            .ToList()
+                    })
+                    .ToList();
+
+                cache.Set(typeof(BankTypeModelView).Name, banks, DateTime.Now.AddDays(15));
+            }
+
+            return banks;
+        }
+
+        public List<ShortBankModelView> GetBanks()
+        {
+            List<ShortBankModelView> banks;
+
+            if (cache.TryGetValue(typeof(ShortBankModelView).Name, out banks) == false)
             {
                 banks = repository.GetAll<Bank>()
-                .Select(x => new BankModelView
+                .Select(x => new ShortBankModelView
                 {
                     ID = x.ID,
                     Name = x.Name,
-                    ImageSrc = x.ImageSrc,
+                    LogoCircle = x.LogoCircle,
+                    LogoRectangle = x.LogoRectangle,
                 })
                 .ToList();
 
-                cache.Set(typeof(BankModelView).Name, banks, DateTime.Now.AddDays(15));
+                cache.Set(typeof(ShortBankModelView).Name, banks, DateTime.Now.AddDays(15));
             }
 
             return banks;

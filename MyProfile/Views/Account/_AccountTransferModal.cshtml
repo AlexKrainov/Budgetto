@@ -50,7 +50,7 @@
                             <span class=" btn btn-secondary ion ion-md-arrow-round-forward"></span>
                         </span>
                         <select class="form-control" v-model="accountTo">
-                            <option value="-1" v-show="showEmpty" ></option>
+                            <option value="-1" v-show="showEmpty"></option>
                             <option v-for="account in accountsTo"
                                     v-bind:value="account"
                                     v-bind:selected="account.isSelected"
@@ -61,7 +61,7 @@
                         </select>
                     </div>
                     <div class="form-row mt-2">
-                        <div class="col-md-4">
+                        <div v-bind:class="accountTo.currencyID != accountFrom.currencyID ? 'col-md-5' : 'col-md-4'">
                             <label class="form-label">Баланс 1 счета</label>
                             <div class="input-group">
                                 <input type="number" class="form-control" required disabled v-bind:value="accountFrom.balance" />
@@ -70,17 +70,39 @@
                                 </span>
                             </div>
                             <small class="form-text text-muted" v-show="newValueFrom != null">
-                                Новый баланс: {{ getCurrencyValue(newValueFrom) }}
+                                Новый баланс: {{ getCurrencyValue(accountFrom, newValueFrom) }}
                             </small>
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Сумма для перевода</label>
-                            <input type="number" class="form-control" required v-model="value" placeholder="Введите сумму для перевода" min="0"
+                        <div class="col-md-4" v-show="accountTo.currencyID == accountFrom.currencyID">
+                            <label class="form-label" v-show="accountTo.currencyID == accountFrom.currencyID">Сумма для перевода</label>
+                            <label class="form-label" v-show="accountTo.currencyID != accountFrom.currencyID">Сумма для конвертации</label>
+                            <input type="number" class="form-control" required min="0"
                                    v-bind:disabled="showEmpty"
-                                   />
+                                   v-model="value" />
+                            <span class="input-group-append"
+                                  v-show="accountTo.currencyID != accountFrom.currencyID ">
+                                <span class="input-group-text" style="background: #f5f5f5;">{{ accountFrom.currencyIcon }}</span>
+                            </span>
                         </div>
+                        <div class="col-md-2" v-show="accountTo.currencyID != accountFrom.currencyID">
 
-                        <div class="col-md-4">
+                        </div>
+                        @*<div class="col-md-2" v-show="accountTo.currencyID != accountFrom.currencyID">
+                                <label class="form-label">Конвертировать по курсу</label>
+                                <input type="number" class="form-control" min="0"
+                                       v-bind:disabled="showEmpty"
+                                       v-model="currencyValue" />
+                            </div>
+                            <div class="col-md-2" v-show="accountTo.currencyID != accountFrom.currencyID">
+                                <label class="form-label">Сумма после конвертации</label>
+                                <input type="number" class="form-control" min="0" disabled="disabled"
+                                       v-model="endValue" />
+                                <span class="input-group-append">
+                                    <span class="input-group-text" style="background: #f5f5f5;">{{ accountTo.currencyIcon }}</span>
+                                </span>
+                            </div>*@
+
+                        <div v-bind:class="accountTo.currencyID != accountFrom.currencyID ? 'col-md-5' : 'col-md-4'">
                             <label class="form-label">Баланс 2 счета</label>
                             <div class="input-group">
                                 <input type="number" class="form-control" required disabled v-bind:value="accountTo.balance" />
@@ -89,8 +111,56 @@
                                 </span>
                             </div>
                             <small class="form-text text-muted float-right" v-show="newValueTo != null">
-                                Новый баланс: {{ getCurrencyValue(newValueTo) }}
+                                Новый баланс: {{ getCurrencyValue(accountTo, newValueTo) }}
                             </small>
+                        </div>
+                    </div>
+
+                    <div class="form-row"
+                         v-show="accountTo.currencyID != accountFrom.currencyID">
+                        <div class="col-md-1">
+
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Сумма для конвертации</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" required min="0"
+                                       v-bind:disabled="showEmpty"
+                                       v-model="value" />
+                                <span class="input-group-append"
+                                      v-show="accountTo.currencyID != accountFrom.currencyID ">
+                                    <span class="input-group-text" style="background: #f5f5f5;">{{ accountFrom.currencyIcon }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Курс</label>
+                            <input type="number" class="form-control" min="0"
+                                   v-bind:disabled="showEmpty"
+                                   v-model="currencyValue" />
+                            @*<small class="form-text text-muted float-right" >
+                                Конвертировать по курсу
+                            </small>*@
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Сумма после конвертации</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" min="0" disabled="disabled"
+                                       v-model="endValue" />
+                                <span class="input-group-append">
+                                    <span class="input-group-text" style="background: #f5f5f5;">{{ accountTo.currencyIcon }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col mb-0 mt-2">
+                            <label class="form-label">Дополнительная информация</label>
+                            <textarea class="form-control" v-model="comment" placeholder=""></textarea>
                         </div>
                     </div>
                 </div>

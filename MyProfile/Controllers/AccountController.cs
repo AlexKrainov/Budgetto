@@ -33,10 +33,17 @@ namespace MyProfile.Controllers
         [HttpGet]
         public JsonResult GetEnvironment()
         {
-            var accountTypes = accountService.GetAcountTypes();
-            var banks = accountService.GetBanks();
+            var bankTypes = accountService.GetBankTypesAndAcountTypes();
+            
+            return Json(new { isOk = true, bankTypes });
+        }
+        
+        [HttpGet]
+        public JsonResult GetEnvironmentForMain()
+        {
+            var bankTypes = accountService.BankTypesAndBanks();
 
-            return Json(new { isOk = true, accountTypes, banks });
+            return Json(new { isOk = true, bankTypes });
         }
 
         [HttpGet]
@@ -45,7 +52,7 @@ namespace MyProfile.Controllers
             DateTime start;
             DateTime finish;
             DateTime now = DateTime.Now;
-            List<AccountViewModel> accounts = new List<AccountViewModel>();
+            List<MainAccountModelView> mainAccounts = new List<MainAccountModelView>();
 
             if (date.HasValue)
             {
@@ -58,15 +65,15 @@ namespace MyProfile.Controllers
                 finish = new DateTime(year, 12, 31, 23, 59, 59);
             }
 
-            accounts = accountService.GetAcounts(UserInfo.Current.ID); // current data of accounts (month is now or year is now)
+            mainAccounts = accountService.GetMainAccounts(UserInfo.Current.ID); // current data of accounts (month is now or year is now)
             bool isPast = now >= start && now >= finish;
 
             if (isPast)
             {
-                accountService.GetAcountsAllMoneyByPeriod(start, finish, accounts);
+                accountService.GetAcountsAllMoneyByPeriod(start, finish, mainAccounts);
             }
 
-            return Json(new { isOk = true, accounts = accounts, isPast });
+            return Json(new { isOk = true, accounts = mainAccounts, isPast });
         }
 
         [HttpGet]
@@ -87,6 +94,7 @@ namespace MyProfile.Controllers
             var newAccount = accountService.Save(account);
             return Json(new { isOk = true, account = newAccount });
         }
+        
         [HttpPost]
         public JsonResult RemoveOrRecovery([FromBody] AccountViewModel account)
         {

@@ -11,8 +11,7 @@
 
         //2
         areas: [{ id: 0, name: "Расходы", codeName: "Spendings", sections: [] },
-        { id: 1, name: "Доходы", codeName: "Earnings", sections: [] },
-        { id: 2, name: "Инвестиции", codename: "Investments", sections: [] }], //2
+        { id: 1, name: "Доходы", codeName: "Earnings", sections: [] }], //2
         sectionSource: [],//2
         section: {}, //2
         userSectionSource: [],//2

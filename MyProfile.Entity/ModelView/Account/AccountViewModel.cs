@@ -9,7 +9,8 @@ namespace MyProfile.Entity.ModelView.Account
     public class AccountViewModel
     {
         public int ID { get; set; }
-        public AccountTypesEnum AccountType { get; set; }
+        public int? ParentID { get; set; }
+        public AccountTypes AccountType { get; set; }
         public string Name { get; set; }
         public decimal Balance { get; set; }
         public decimal CachBackBalance { get; set; }
@@ -25,12 +26,15 @@ namespace MyProfile.Entity.ModelView.Account
         public bool IsDefault { get; set; }
         public bool IsHide { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsCash { get; set; }
         public DateTime? ExpirationDate { get; set; }
         public DateTime? ResetCashBackDate { get; set; }
 
         public int CurrencyID { get; set; } = 1;// ruble
         public int? BankID { get; set; }
-        public string BankImage { get; set; }
+        public int? BankTypeID { get; set; }
+
+        public string BankLogo { get; set; }
         public string BankName { get; set; }
         public string AccountIcon { get; set; }
         public string AccountTypeName { get; set; }
@@ -52,5 +56,11 @@ namespace MyProfile.Entity.ModelView.Account
         public decimal BalanceSpendings { get; set; }
         public decimal BalancePastCachback { get; set; }
         public bool IsCountTheBalance { get; set; }
+        public int? PaymentSystemID { get; set; }
+        public DateTime? ResetCachbackDate { get; set; }
+        public DateTime? DateStart { get; set; }
+        public double? Percent { get; set; }
+        public decimal? Input { get; set; }
+        public decimal? Output { get; set; }
     }
 }

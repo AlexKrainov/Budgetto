@@ -89,7 +89,6 @@ namespace MyProfile.Budget.Service
             List<Account> accounts = new List<Account>();
             List<SectionLightModelView> sections = (await sectionService.GetAllSectionByUser()).ToList();
             bool isSpending = false;
-            bool isInvesting = false;
             CurrencyRateHistory accountCurrency;
             List<RecordHistory> histories = new List<RecordHistory>();
             RecordHistory history;
@@ -115,7 +114,6 @@ namespace MyProfile.Budget.Service
                 try
                 {
                     isSpending = section?.SectionTypeID == (int?)SectionTypeEnum.Spendings;
-                    isInvesting = section?.SectionTypeID == (int?)SectionTypeEnum.Investments;
 
                     if (account == null)
                     {
@@ -239,7 +237,7 @@ namespace MyProfile.Budget.Service
                                     }
                                 }
 
-                                if (isSpending || isInvesting)
+                                if (isSpending)
                                 {
                                     account.Balance -= _money;
 
@@ -405,7 +403,7 @@ namespace MyProfile.Budget.Service
                                         }
                                     }
 
-                                    if (isSpending || isInvesting)//new section type
+                                    if (isSpending)//new section type
                                     {
                                         account.Balance -= _money;
 
@@ -499,7 +497,7 @@ namespace MyProfile.Budget.Service
                                         }
                                     }
 
-                                    if (isSpending || isInvesting)// new section type
+                                    if (isSpending)// new section type
                                     {
                                         account.Balance -= _money;
 
@@ -615,8 +613,7 @@ namespace MyProfile.Budget.Service
 
                 if (lastAccountRecordHistory != null)
                 {
-                    if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
-                        || db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Investments)
+                    if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings)
                     {
                         db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
 
@@ -682,8 +679,7 @@ namespace MyProfile.Budget.Service
 
                 if (lastAccountRecordHistory != null)
                 {
-                    if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings
-                    || db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Investments)
+                    if (db_record.BudgetSection.SectionTypeID == (int)SectionTypeEnum.Spendings)
                     {
                         db_record.Account.Balance -= lastAccountRecordHistory.AccountTotal;
 
@@ -834,7 +830,7 @@ namespace MyProfile.Budget.Service
                   Account = x.AccountID == null ? null : new AccountModelView
                   {
                       AccountType = x.Account.AccountTypeID,
-                      BankImage = x.Account.Bank != null ? x.Account.Bank.ImageSrc : null,
+                      BankImage = x.Account.Bank != null ? x.Account.Bank.LogoCircle : null,
                       Name = x.Account.Name,
                       AccountIcon = x.Account.AccountType.Icon,
                       CurrencyIcon = x.Account.Currency.Icon,
@@ -891,7 +887,7 @@ namespace MyProfile.Budget.Service
                   Account = x.AccountID == null ? null : new AccountModelView
                   {
                       AccountType = x.Account.AccountTypeID,
-                      BankImage = x.Account.Bank != null ? x.Account.Bank.ImageSrc : null,
+                      BankImage = x.Account.Bank != null ? x.Account.Bank.LogoCircle : null,
                       Name = x.Account.Name,
                       AccountIcon = x.Account.AccountType.Icon,
                       CurrencyIcon = x.Account.Currency.Icon,
@@ -945,7 +941,7 @@ namespace MyProfile.Budget.Service
                   Account = x.AccountID == null ? null : new AccountModelView
                   {
                       AccountType = x.Account.AccountTypeID,
-                      BankImage = x.Account.Bank != null ? x.Account.Bank.ImageSrc : null,
+                      BankImage = x.Account.Bank != null ? x.Account.Bank.LogoCircle : null,
                       Name = x.Account.Name,
                       AccountIcon = x.Account.AccountType.Icon
                   },

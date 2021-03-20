@@ -573,21 +573,35 @@
         },
         //Accounts
         loadAccounts: BudgetMethods.loadAccounts,
-        editAccount: function (account) {
+        editMainAccount: function (account, isCash) {
             if (account == undefined) {
-                AccountVue.edit(undefined);
+                MainAccountVue.edit(undefined, isCash);
             } else {
-                AccountVue.edit(JSCopyObject(account));
+                MainAccountVue.edit(JSCopyObject(account), isCash);
+            }
+        },
+        editAccount: function (account, mainAccount) {
+            if (account == undefined) {
+                AccountVue.edit(undefined, mainAccount);
+            } else {
+                AccountVue.edit(JSCopyObject(account), mainAccount);
             }
         },
         removeOrRecoveryAccount: function (account) {
             AccountVue.removeOrRecovery(account);
         },
+        removeOrRecoveryMainAccount: function (account) {
+            MainAccountVue.removeOrRecovery(account);
+        },
         showHideAccount: function (account, isHide) {
             return AccountVue.showHide(account, isHide);
         },
         transferMoney: function (accountID) {
-            AccountTransferVue.transferMoney(this.accounts, accountID);
+            let accounts = [];
+            for (var i = 0; i < this.accounts.length; i++) {
+                accounts = accounts.concat(this.accounts[i].accounts);
+            }
+            AccountTransferVue.transferMoney(accounts, accountID);
         },
 
         //resize and refresh
@@ -1048,8 +1062,8 @@
             let title = ""
             if (sectionTypeEnum == SectionTypeEnum.Earnings) {
                 title += "Доходы за";
-            } else if (sectionTypeEnum == SectionTypeEnum.Investments) {
-                title += "Инвестиции за ";
+            //} else if (sectionTypeEnum == SectionTypeEnum.Investments) {
+            //    title += "Инвестиции за ";
             } else if (sectionTypeEnum == SectionTypeEnum.Spendings) {
                 title += "Расходы за ";
             }

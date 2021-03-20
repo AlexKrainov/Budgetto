@@ -186,6 +186,7 @@ namespace MyProfile.Entity.Model
             .Property(b => b.StatusID)
             .HasDefaultValue((int)TelegramAccountStatusEnum.New);
 
+            
             #endregion
         }
 
@@ -264,7 +265,10 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<TelegramAccountStatus> TelegramAccountStatuses { get; set; }
         public virtual DbSet<MyTimeZone> TimeZones { get; set; }
         public virtual DbSet<OlsonTZID> OlsonTZIDs { get; set; }
-        
+        public virtual DbSet<PaymentSystem> PaymentSystems { get; set; }
+        public virtual DbSet<BankType> BankTypes { get; set; }
+
+
 
     }
 }

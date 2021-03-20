@@ -152,6 +152,7 @@ namespace MyProfile.Areas.Identity.Controllers
         public async Task<IActionResult> SetTelegramStatus(int accountID, TelegramAccountStatusEnum newStatusID)
         {
             await telegramService.SetNewStatus(accountID, newStatusID);
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.User_Connection_ChangeStatus);
 
             return Json(new { isOk = true });
         }

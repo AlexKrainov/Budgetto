@@ -11,10 +11,36 @@ namespace MyProfile.Entity.Model
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
 		[Required]
-		[MaxLength(32)]
+		[MaxLength(512)]
 		public string Name { get; set; }
-		public string ImageSrc { get; set; }
-		
+		[MaxLength(512)]
+		public string NameEn { get; set; }
+		[MaxLength(512)]
+		public string LogoCircle { get; set; }
+		[MaxLength(512)]
+		public string LogoRectangle { get; set; }
+		[MaxLength(512)]
+		public string URL { get; set; }	
+		[MaxLength(512)]
+		public string Tels { get; set; }
+        public int Raiting { get; set; }
+		[MaxLength(256)]
+		public string Licence { get; set; }
+		[MaxLength(128)]
+		public string Region { get; set; }
+		[MaxLength(16)]
+		/// <summary>
+		/// For banki.ru
+		/// </summary>
+		public string bankiruID { get; set; }
+		[MaxLength(16)]
+		public string BrandColor { get; set; }
+
+
+        [ForeignKey("BankType")]
+		public int? BankTypeID { get; set; }
+
+		public virtual BankType BankType { get; set; }
 
 		public virtual ICollection<Account> Accounts { get; set; }
 

@@ -1,17 +1,13 @@
-﻿using Common.Service;
-using Email.Service.EmailEnvironment;
+﻿using Email.Service.EmailEnvironment;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Notification;
 using MyProfile.Entity.Repository;
-using MyProfile.Identity;
 using MyProfile.UserLog.Service;
 using System;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Email.Service
@@ -36,63 +32,6 @@ namespace Email.Service
             this.hostingEnvironment = hostingEnvironment;
             this.httpContextAccessor = httpContextAccessor;
             this.userLogService = userLogService;
-        }
-
-        public async Task<Guid> ConfirmEmail(User user, Guid userSessionID, MailTypeEnum mailTypeEnum, string returnUrl = null)
-        {
-            // user.Email = "ialexkrainov2@gmail.com";
-            string body = string.Empty;
-            string templatePath = "";
-            Random random = new Random();
-
-            switch (mailTypeEnum)
-            {
-                case MailTypeEnum.Registration:
-                    templatePath = @"\\template\\RegistrationAccount.html";
-                    break;
-                case MailTypeEnum.EmailUpdate:
-                case MailTypeEnum.ResendByUser:
-                    templatePath = @"\\template\\EmailUpdate.html";
-                    break;
-                default:
-                    break;
-            }
-
-            MailLog mailLog = new MailLog
-            {
-                ID = Guid.NewGuid(),
-                IsSuccessful = true,
-                MailTypeID = (int)mailTypeEnum,
-                SentDateTime = DateTime.Now.ToUniversalTime(),
-                UserID = user.ID,
-                Email = user.Email,
-                Code = (random.Next(1000, 9999)),
-            };
-
-            try
-            {
-                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + templatePath))
-                {
-                    body = reader.ReadToEnd();
-                }
-                body = body.Replace("${Code}", mailLog.Code.ToString());
-                body = body.Replace("${link}", $"https://{PublishSettings.SiteName}/Identity/Account/Login?id={userSessionID}&email={mailLog.Email}&mid={mailLog.ID}{(string.IsNullOrEmpty(returnUrl) ? "" : "&ReturnUrl=" + returnUrl)}");
-
-                await _emailSender.SendEmailAsync(user.Email, "Подтверждение почты", body);
-            }
-            catch (Exception ex)
-            {
-                mailLog.IsSuccessful = false;
-                mailLog.Comment = ex.Message;
-
-                await repository.CreateAsync(mailLog, true);
-                await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_ConfirmEmail, comment: ex.Message);
-                return Guid.Empty;
-            }
-
-            await repository.CreateAsync(mailLog, true);
-            await userLogService.CreateUserLogAsync(userSessionID, UserLogActionType.Email_ConfirmEmail);
-            return mailLog.ID;
         }
 
         public async Task<bool> SendNotification(NotificationViewModel notification)

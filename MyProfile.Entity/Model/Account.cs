@@ -36,7 +36,16 @@ namespace MyProfile.Entity.Model
         public bool IsCountTheBalance { get; set; }
         public bool IsHide { get; set; }
         public bool IsDeleted { get; set; }
-		public DateTime? ExpirationDate { get; set; }
+		/// <summary>
+		/// Start period
+		/// </summary>
+        public DateTime? DateStart { get; set; }
+		/// <summary>
+		/// End period
+		/// </summary>
+        public DateTime? ExpirationDate { get; set; }
+
+
 		public DateTime? ResetCachbackDate { get; set; }
 		public DateTime DateCreate { get; set; }
 		public DateTime LastChanges { get; set; }
@@ -49,22 +58,30 @@ namespace MyProfile.Entity.Model
 		public int? CurrencyID { get; set; }
 		[ForeignKey("Bank")]
 		public int? BankID { get; set; }
+		[ForeignKey("PaymentSystem")]
+		public int? PaymentSystemID { get; set; }
+		[ForeignKey("ParentAccount")]
+		public int? ParentAccountID { get; set; }
 
 
 		public virtual User User { get; set; }
 		public virtual AccountType AccountType { get; set; }
 		public virtual Currency Currency { get; set; }
 		public virtual Bank Bank { get; set; }
+		public virtual PaymentSystem PaymentSystem { get; set; }
+		public virtual Account ParentAccount { get; set; }
 
 		public virtual ICollection<Record> BudgetRecords { get; set; }
         public virtual ICollection<RecordHistory> RecordHistories { get; set; }
         public virtual ICollection<AccountHistory> AccountHistories { get; set; }
+		public virtual ICollection<Account> ChildAccounts { get; set; }
 
-        public Account()
+		public Account()
 		{
 			this.BudgetRecords = new HashSet<Record>();
             this.RecordHistories = new HashSet<RecordHistory>();
             this.AccountHistories = new HashSet<AccountHistory>();
+            this.ChildAccounts = new HashSet<Account>();
         }
 
 	}

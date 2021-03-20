@@ -60,10 +60,25 @@
                 </span>
             </div>
         </div>
+        <div class="col-md-4 px-1">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
+                    <i class="ion ion-md-add navbar-icon pr-2"></i>
+                    Добавить наличные/организацию
+                </button>
+                <div class="dropdown-menu" style="">
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, true)">Добавить наличные</a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, false)">Добавить организацию</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row summary-view">
         @await Html.PartialAsync("_SummaryView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+    </div>
+    <div class="row accounts-view" id="accounts-view">
+        @await Html.PartialAsync("_AccountsView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
     </div>
     <div class="row total-view">
         @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
@@ -161,6 +176,7 @@
 </div>
 @await Html.PartialAsync("../Goal/_GoalAddMoney.cshtml")
 @await Html.PartialAsync("../Account/_AccountModal.cshtml")
+@await Html.PartialAsync("../Account/_MainAccountModal.cshtml")
 @await Html.PartialAsync("../Account/_AccountTransferModal.cshtml")
 
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Month")

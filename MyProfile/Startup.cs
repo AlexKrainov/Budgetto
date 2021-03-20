@@ -136,12 +136,11 @@ namespace MyProfile
                  cronExpression: "0 * * ? * *")); //Every 1 minute
             CronExpression.ValidateExpression("0 * * ? * *");
 
-            //'0 */5 * ? * *', 'Every 5 minuts'
             services.AddTransient<CheckerReminderTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(CheckerReminderTask),
-                 cronExpression: "0 * * ? * *")); //Every 1 minute
-            CronExpression.ValidateExpression("0 * * ? * *");
+                 cronExpression: "0 */5 * ? * *")); //Every 5 minuts
+            CronExpression.ValidateExpression("0 */5 * ? * *");
 
             services.AddTransient<NotificationOnSiteTask>();
             services.AddSingleton(new JobSchedule(
@@ -155,7 +154,6 @@ namespace MyProfile
                  cronExpression: "0 * * ? * *")); //Every 1 minute
             CronExpression.ValidateExpression("0 * * ? * *"); 
             
-
             services.AddTransient<NotificationOnMailTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(NotificationOnMailTask),

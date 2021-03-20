@@ -36,8 +36,8 @@
             //});
             setTimeout(
                 this.load.bind(this, 10),
-                5000 // 10 sec
-            )
+                3100
+            );
         },
         methods: {
             load: function (take) {

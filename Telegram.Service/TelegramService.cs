@@ -83,161 +83,174 @@ namespace Telegram.Service
 
             using (var scope = scopeFactory.CreateScope())
             {
-                #region initialization
-                repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
-                cache = scope.ServiceProvider.GetRequiredService<IMemoryCache>();
-
-                telegramBotUser = GetTelegramBotUser();
-                botClient = new TelegramBotClient(PublishSettings.TelegramApi);
-
-                now = DateTime.Now.ToUniversalTime();
-                string answer = string.Empty;
-
-                var telegramUser = await GetOrCreateTelegramAccount(e.Message);
-                #endregion
-
-                #region Authorization telegram account
-                if (text.StartsWith("telegram_"))
+                try
                 {
-                    if (telegramUser.StatusID != (int)TelegramAccountStatusEnum.Connected)//telegramUser.UserID == null)
+                    #region initialization
+                    repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
+                    cache = scope.ServiceProvider.GetRequiredService<IMemoryCache>();
+
+                    telegramBotUser = GetTelegramBotUser();
+                    botClient = new TelegramBotClient(PublishSettings.TelegramApi);
+
+                    now = DateTime.Now.ToUniversalTime();
+                    string answer = string.Empty;
+
+                    var telegramUser = await GetOrCreateTelegramAccount(e.Message);
+                    #endregion
+
+                    #region Authorization telegram account
+                    if (text.StartsWith("telegram_"))
                     {
-                        var userConnect = await repository.GetAll<UserConnect>(x => x.TelegramLogin == text)
-                            .FirstOrDefaultAsync();
-
-                        if (userConnect != null)
+                        if (telegramUser.StatusID != (int)TelegramAccountStatusEnum.Connected)//telegramUser.UserID == null)
                         {
-                            var dbTelegramAccount = await repository.GetAll<TelegramAccount>(x => x.ID == telegramUser.TelegramAccountID)
+                            var userConnect = await repository.GetAll<UserConnect>(x => x.TelegramLogin == text)
                                 .FirstOrDefaultAsync();
-                            dbTelegramAccount.UserID = telegramUser.UserID = userConnect.UserID;
-                            dbTelegramAccount.StatusID = telegramUser.StatusID = (int)TelegramAccountStatusEnum.Connected;
-                            dbTelegramAccount.DateEdit = now;
-                            telegramUser.UserName = userConnect.User.Name;
 
-                            repository.Create(new Notification
+                            if (userConnect != null)
                             {
-                                IsReady = true,
-                                IsSite = true,
-                                LastChangeDateTime = now,
-                                IsReadyDateTime = DateTime.Now,
-                                NotificationTypeID = (int)NotificationType.Telegram,
-                                TelegramAccountID = dbTelegramAccount.ID,
-                                UserID = userConnect.UserID,
-                            });
+                                var dbTelegramAccount = await repository.GetAll<TelegramAccount>(x => x.ID == telegramUser.TelegramAccountID)
+                                    .FirstOrDefaultAsync();
+                                dbTelegramAccount.UserID = telegramUser.UserID = userConnect.UserID;
+                                dbTelegramAccount.StatusID = telegramUser.StatusID = (int)TelegramAccountStatusEnum.Connected;
+                                dbTelegramAccount.DateEdit = now;
+                                telegramUser.UserName = userConnect.User.Name;
 
-                            await repository.SaveAsync();
+                                repository.Create(new Notification
+                                {
+                                    IsReady = true,
+                                    IsSite = true,
+                                    LastChangeDateTime = now,
+                                    IsReadyDateTime = DateTime.Now,
+                                    NotificationTypeID = (int)NotificationType.Telegram,
+                                    TelegramAccountID = dbTelegramAccount.ID,
+                                    UserID = userConnect.UserID,
+                                });
 
-                            answer = GoodAuthorizationAnswer(telegramUser.UserName);
+                                await repository.SaveAsync();
+
+                                answer = GoodAuthorizationAnswer(telegramUser.UserName);
+                            }
+                            else
+                            {
+                                answer = BadAuthorizationAnswer();
+                            }
                         }
                         else
                         {
-                            answer = BadAuthorizationAnswer();
+                            //Вы подключили еще один аккаунт
+                            answer = AlreadyConnected();
                         }
+
+                        await SaveMessages(telegramUser, e.Message, answer);
+                        await botClient.SendTextMessageAsync(
+                             chatId: e.Message.Chat,
+                             text: answer,
+                             parseMode: ParseMode.Html
+                           );
+                        return;
                     }
-                    else
+                    #endregion
+
+                    switch (text)
                     {
-                        //Вы подключили еще один аккаунт
-                        answer = AlreadyConnected();
+                        case "/help":
+                            if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected)
+                            {
+                                answer = HelpAnswerFull();
+                            }
+                            else
+                            {
+                                answer = HelpAnswerSmall();
+                            }
+                            break;
+                        case "/USD":
+                        case "/EUR":
+                            var currencyService = scope.ServiceProvider.GetRequiredService<CurrencyService>();
+                            var z = await currencyService.GetRateByCodeAsync(now, text.Replace("/", ""));
+                            NumberFormatInfo numberFormatInfo = new CultureInfo("ru-RU", false).NumberFormat;
+                            numberFormatInfo.CurrencyDecimalDigits = 2;
+
+                            answer = z.Rate.ToString("C", numberFormatInfo);
+                            break;
+                        case "/stop":
+                            answer = Stop(telegramUser.UserName);
+
+                            var account = await repository.GetAll<TelegramAccount>(x => x.ID == telegramUser.TelegramAccountID
+                                    && x.StatusID != (int)TelegramAccountStatusEnum.Locked)
+                                .FirstOrDefaultAsync();
+                            account.StatusID = (int)TelegramAccountStatusEnum.Locked;
+                            account.DateEdit = now;
+                            await repository.SaveAsync();
+
+                            break;
+                        case "/accounts":
+                            if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected
+                                || telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
+                            {
+                                var accountService = scope.ServiceProvider.GetRequiredService<AccountService>();
+
+                                var accounts = accountService.GetAccountsWithoutParant(telegramUser.UserID ?? Guid.NewGuid());
+
+                                answer = GetAccountsAnswer(accounts, telegramUser);
+                            }
+                            else
+                            {
+                                answer = CommandNotRecognized();
+                            }
+                            break;
+                        //case "/goals":
+                        //    if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected
+                        //        || telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
+                        //    {
+                        //        var goalService = scope.ServiceProvider.GetRequiredService<GoalService>();
+
+                        //        var goals = goalService.get
+
+                        //        answer = GetAccountsAnswer(accounts, telegramUser);
+                        //    }
+                        //    else
+                        //    {
+                        //        answer = CommandNotRecognized();
+                        //    }
+                        //    break;
+                        case "/start":
+                            if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected)
+                            {
+                                answer = HelpAnswerFull();
+                            }
+                            else if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
+                            {
+                                answer = HelpAnswerSmall();
+                            }
+                            else
+                            {
+                                answer = StartAnswer();
+                            }
+                            break;
+                        default:
+                            answer = CommandNotRecognized();
+                            break;
                     }
 
                     await SaveMessages(telegramUser, e.Message, answer);
+
                     await botClient.SendTextMessageAsync(
                          chatId: e.Message.Chat,
                          text: answer,
                          parseMode: ParseMode.Html
                        );
-                    return;
                 }
-                #endregion
-
-                switch (text)
+                catch (Exception ex)
                 {
-                    case "/help":
-                        if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected)
-                        {
-                            answer = HelpAnswerFull();
-                        }
-                        else
-                        {
-                            answer = HelpAnswerSmall();
-                        }
-                        break;
-                    case "/USD":
-                    case "/EUR":
-                        var currencyService = scope.ServiceProvider.GetRequiredService<CurrencyService>();
-                        var z = await currencyService.GetRateByCodeAsync(now, text.Replace("/", ""));
-                        NumberFormatInfo numberFormatInfo = new CultureInfo("ru-RU", false).NumberFormat;
-                        numberFormatInfo.CurrencyDecimalDigits = 2;
-
-                        answer = z.Rate.ToString("C", numberFormatInfo);
-                        break;
-                    case "/stop":
-                        answer = Stop(telegramUser.UserName);
-
-                        var account = await repository.GetAll<TelegramAccount>(x => x.ID == telegramUser.TelegramAccountID
-                                && x.StatusID != (int)TelegramAccountStatusEnum.Locked)
-                            .FirstOrDefaultAsync();
-                        account.StatusID = (int)TelegramAccountStatusEnum.Locked;
-                        account.DateEdit = now;
-                        await repository.SaveAsync();
-
-                        break;
-                    case "/accounts":
-                        if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected
-                            || telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
-                        {
-                            var accountService = scope.ServiceProvider.GetRequiredService<AccountService>();
-
-                            var accounts = accountService.GetAcounts(telegramUser.UserID ?? Guid.NewGuid());
-
-                            answer = GetAccountsAnswer(accounts, telegramUser);
-                        }
-                        else
-                        {
-                            answer = CommandNotRecognized();
-                        }
-                        break;
-                    //case "/goals":
-                    //    if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected
-                    //        || telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
-                    //    {
-                    //        var goalService = scope.ServiceProvider.GetRequiredService<GoalService>();
-
-                    //        var goals = goalService.get
-
-                    //        answer = GetAccountsAnswer(accounts, telegramUser);
-                    //    }
-                    //    else
-                    //    {
-                    //        answer = CommandNotRecognized();
-                    //    }
-                    //    break;
-                    case "/start":
-                        if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.Connected)
-                        {
-                            answer = HelpAnswerFull();
-                        }
-                        else if (telegramUser.StatusID == (int)TelegramAccountStatusEnum.InPause)
-                        {
-                            answer = HelpAnswerSmall();
-                        }
-                        else
-                        {
-                            answer = StartAnswer();
-                        }
-                        break;
-                    default:
-                        answer = CommandNotRecognized();
-                        break;
+                    // ToDo: send email and write to the ErrorLogs
+                    await repository.CreateAsync(new ErrorLog
+                    {
+                        ErrorText = ex.Message,
+                        CurrentDate = DateTime.Now.ToUniversalTime(),
+                        Where = "TelegramService.Bot_OnMessage",
+                        Comment = $"{{TelegramID:{e.Message.From.Id}, Text:{e.Message.Text}, FirstName:{e.Message.From.FirstName} }}"
+                    }, true);
                 }
-
-                await SaveMessages(telegramUser, e.Message, answer);
-
-                await botClient.SendTextMessageAsync(
-                     chatId: e.Message.Chat,
-                     text: answer,
-                     parseMode: ParseMode.Html
-                   );
-
             }
 
         }
@@ -248,7 +261,7 @@ namespace Telegram.Service
                                 .FirstOrDefaultAsync();
             dbTelegramAccount.StatusID = (int)newStatusID;
             dbTelegramAccount.DateEdit = now;
-
+            
             await repository.SaveAsync();
             return;
         }

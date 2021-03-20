@@ -99,6 +99,7 @@
         public const string Reminder_Create = "Reminder_Create";
         public const string Reminder_Edit = "Reminder_Edit";
         public const string Reminder_Delete = "Reminder_Delete";
+        public const string Reminder_Notification = "Reminder_Notification";
 
         public const string ToDoListFolder_Create = "ToDoListFolder_Create";
         public const string ToDoListFolder_Edit = "ToDoListFolder_Edit";
@@ -120,6 +121,7 @@
         public const string User_CookieOff = "User_CookieOff";
         public const string User_AutoAuthorization = "User_AutoAuthorization";
         public const string User_LeaveSite = "User_LeaveSite";
+        public const string User_Connection_ChangeStatus = "User_Connection_ChangeStatus";
 
         public const string Document_CookiePolicy = "Document_CookiePolicy";
         public const string Document_PersonalDataProcessingPolicy = "Document_PersonalDataProcessingPolicy";

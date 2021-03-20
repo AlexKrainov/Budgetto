@@ -87,7 +87,7 @@ $@"Добрый день, <strong>{name}</strong>!👋
 
                 var m = account.Balance.ToString("C", numberFormatInfo);
 
-                if (account.AccountType == MyProfile.Entity.Model.AccountTypesEnum.Cash)
+                if (account.AccountType == MyProfile.Entity.Model.AccountTypes.Cash)
                 {
                     s.AppendLine($"{m} - {account.Name}({account.AccountTypeName}) 💵");
                 }

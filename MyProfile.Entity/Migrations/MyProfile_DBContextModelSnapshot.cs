@@ -41,6 +41,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime>("DateCreate");
 
+                    b.Property<DateTime?>("DateStart");
+
                     b.Property<string>("Description")
                         .HasMaxLength(264);
 
@@ -68,6 +70,10 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
+                    b.Property<int?>("ParentAccountID");
+
+                    b.Property<int?>("PaymentSystemID");
+
                     b.Property<DateTime?>("ResetCachbackDate");
 
                     b.Property<Guid>("UserID");
@@ -80,6 +86,10 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasIndex("CurrencyID");
 
+                    b.HasIndex("ParentAccountID");
+
+                    b.HasIndex("PaymentSystemID");
+
                     b.HasIndex("UserID");
 
                     b.ToTable("Accounts");
@@ -91,20 +101,43 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Account2ID");
+
                     b.Property<int>("AccountID");
 
                     b.Property<string>("ActionType")
                         .IsRequired()
                         .HasMaxLength(16);
 
+                    b.Property<string>("Actions")
+                        .HasMaxLength(1024);
+
+                    b.Property<decimal?>("CachbackBalance")
+                        .HasColumnType("Money");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(2048);
+
+                    b.Property<decimal?>("CurrencyValue")
+                        .HasColumnType("Money");
+
                     b.Property<DateTime>("CurrentDate");
 
                     b.Property<string>("NewAccountStateJson");
 
+                    b.Property<decimal?>("NewBalance")
+                        .HasColumnType("Money");
+
                     b.Property<string>("OldAccountStateJson");
 
-                    b.Property<string>("Value")
-                        .HasMaxLength(32);
+                    b.Property<decimal?>("OldBalance")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal?>("ValueFrom")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal?>("ValueTo")
+                        .HasColumnType("Money");
 
                     b.HasKey("ID");
 
@@ -119,6 +152,8 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("BankTypeID");
+
                     b.Property<string>("CodeName")
                         .IsRequired()
                         .HasMaxLength(16);
@@ -129,11 +164,17 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Icon")
                         .HasMaxLength(64);
 
+                    b.Property<bool>("IsPaymentSystem");
+
+                    b.Property<bool>("IsVisible");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(24);
+                        .HasMaxLength(64);
 
                     b.HasKey("ID");
+
+                    b.HasIndex("BankTypeID");
 
                     b.ToTable("AccountTypes");
                 });
@@ -144,15 +185,67 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImageSrc");
+                    b.Property<int?>("BankTypeID");
+
+                    b.Property<string>("BrandColor")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("Licence")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("LogoCircle")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("LogoRectangle")
+                        .HasMaxLength(512);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(32);
+                        .HasMaxLength(512);
+
+                    b.Property<string>("NameEn")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("Raiting");
+
+                    b.Property<string>("Region")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Tels")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("URL")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("bankiruID")
+                        .HasMaxLength(16);
 
                     b.HasKey("ID");
 
+                    b.HasIndex("BankTypeID");
+
                     b.ToTable("Banks");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.BankType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(16);
+
+                    b.Property<bool>("IsVisible");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("BankTypes");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetArea", b =>
@@ -1060,6 +1153,30 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("PaymentID");
 
                     b.ToTable("PaymentHistories");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.PaymentSystem", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(16);
+
+                    b.Property<bool>("IsVisible");
+
+                    b.Property<string>("Logo")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(24);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PaymentSystems");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PeriodType", b =>
@@ -2318,6 +2435,14 @@ namespace MyProfile.Entity.Migrations
                         .WithMany()
                         .HasForeignKey("CurrencyID");
 
+                    b.HasOne("MyProfile.Entity.Model.Account", "ParentAccount")
+                        .WithMany("ChildAccounts")
+                        .HasForeignKey("ParentAccountID");
+
+                    b.HasOne("MyProfile.Entity.Model.PaymentSystem", "PaymentSystem")
+                        .WithMany("Accounts")
+                        .HasForeignKey("PaymentSystemID");
+
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("Accounts")
                         .HasForeignKey("UserID")
@@ -2330,6 +2455,20 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("AccountHistories")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.AccountType", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.BankType", "BankType")
+                        .WithMany("AccountTypes")
+                        .HasForeignKey("BankTypeID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Bank", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.BankType", "BankType")
+                        .WithMany("Banks")
+                        .HasForeignKey("BankTypeID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetArea", b =>

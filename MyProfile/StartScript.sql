@@ -66,7 +66,6 @@ SET IDENTITY_INSERT [dbo].[SectionTypes] ON
 
 INSERT [dbo].[SectionTypes] ([ID], [Name], [CodeName]) VALUES (1, N'Доходы', N'Earnings')
 INSERT [dbo].[SectionTypes] ([ID], [Name], [CodeName]) VALUES (2, N'Расходы', N'Spendings')
-INSERT [dbo].[SectionTypes] ([ID], [Name], [CodeName]) VALUES (3, N'Инвестиции', N'Investments') 
 SET IDENTITY_INSERT [dbo].[SectionTypes] OFF
 GO
 
@@ -119,29 +118,66 @@ GO
 
 SET IDENTITY_INSERT [AccountTypes] ON 
 
-INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (1, N'Наличные', N'Cash', 'ion ion-ios-cash')
-INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (2, N'Дебетовый счет', N'Debed', 'fas fa-credit-card')
-INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (3, N'Кредитный счет', N'Credit', 'fas fa-credit-card')
-INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon]) VALUES (4, N'Карта рассрочки', N'Installment', 'fas fa-credit-card')
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (1, N'Наличные', N'Cash', 'pe-7s-cash', 1,0, null)
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (2, N'Дебетовый счет', N'Debed', 'pe-7s-credit',1,1,1)
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (3, N'Кредитный счет', N'Credit', 'pe-7s-credit',0,1,1)
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (4, N'Карта рассрочки', N'Installment', 'pe-7s-credit',0,1,1)
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (5, N'Электронный кошелек', N'OnlineWallet', 'pe-7s-wallet',0,1, 3)
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (6, N'Брокерский счет', N'Investments', 'pe-7s-culture',1,0,2)
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (7, N'Вклад', N'Deposit', 'pe-7s-credit',0,0,1)
+INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (8, N'Брокерский счет (ИИС)', N'InvestmentsIIS', 'pe-7s-culture',1,0,2)
 SET IDENTITY_INSERT [AccountTypes] OFF
 GO
 
-SET IDENTITY_INSERT [Banks] ON 
+SET IDENTITY_INSERT [BankTypes] ON 
 
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (1, N'Сбер', '/resources/banks/sber.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (2, N'ВТБ', '/resources/banks/vtb.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (3, N'Газпромбанк', '/resources/banks/gasprom.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (4, N'Альфа-Банк', '/resources/banks/alfa-logo.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (5, N'Банк Открытие', '/resources/banks/open.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (6, N'Тинькофф Банк', '/resources/banks/tinkoff-bank.png')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (7, N'Национальный Клиринговый Центр', '/resources/banks/moex.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (8, N'Россельхозбанк', '/resources/banks/rosselhoz.jfif')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (9, N'Московский Кредитный Банк', '/resources/banks/mkb.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (10, N'Совкомбанк', '/resources/banks/sovkombank.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (11, N'Росбанк', '/resources/banks/ros.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (12, N'Райффайзенбанк', '/resources/banks/rasf.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (13, N'Ситибанк', '/resources/banks/citi.svg')
-INSERT [Banks] ([ID], [Name], [ImageSrc]) VALUES (2500, N'Другой банк', '/resources/banks/bank.svg')
+INSERT [BankTypes] ([ID], [Name], [CodeName], [IsVisible]) VALUES (1, N'Банк', N'Bank', 1)
+INSERT [BankTypes] ([ID], [Name], [CodeName], [IsVisible]) VALUES (2, N'Брокер', N'Broker', 1)
+INSERT [BankTypes] ([ID], [Name], [CodeName], [IsVisible]) VALUES (3, N'Электронный кошелек', N'OnlineWallet', 0)
+INSERT [BankTypes] ([ID], [Name], [CodeName], [IsVisible]) VALUES (4, N'Микрозаймы', N'Microloans', 0)
+INSERT [BankTypes] ([ID], [Name], [CodeName], [IsVisible]) VALUES (5, N'Форех', N'Forex', 0)
+SET IDENTITY_INSERT [BankTypes] OFF
+GO
+SET IDENTITY_INSERT BankTypeAccountTypes ON 
+INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (1,1,2)
+INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (2,1,3)
+INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (3,1,4)
+INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (4,1,7)
+INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (5,2,6)
+INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (6,2,8)
+SET IDENTITY_INSERT BankTypeAccountTypes OFF
+GO
+
+SET IDENTITY_INSERT [Banks] ON 
+--debed
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (1, N'Сбер', '/resources/banks/sber_circle.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (2, N'ВТБ', '/resources/banks/vtb.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (3, N'Газпромбанк', '/resources/banks/gasprom.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (4, N'Альфа-Банк', '/resources/banks/alfa-logo.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (5, N'Банк Открытие', '/resources/banks/open.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (6, N'Тинькофф Банк', '/resources/banks/tinkoff-bank.png',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (7, N'Национальный Клиринговый Центр', '/resources/banks/moex.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (8, N'Россельхозбанк', '/resources/banks/rosselhoz.jfif',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (9, N'Московский Кредитный Банк', '/resources/banks/mkb.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (10, N'Совкомбанк', '/resources/banks/sovkombank.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (11, N'Росбанк', '/resources/banks/ros.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (12, N'Райффайзенбанк', '/resources/banks/rasf.svg',1)
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (13, N'Ситибанк', '/resources/banks/citi.svg',1)
+--Investments									
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'БКС', '/resources/banks/bcs_circle.svg','/resources/banks/bcs_rectangle.svg',2, '#016ef2')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'Тинькофф Инвестиции','/resources/banks/tinkoff_circle.svg', '/resources/banks/tinkoff_bank.svg',2, '#ffdd2d')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'Интерактив брокер', '/resources/banks/ib_circle.png', '/resources/banks/ib_rectangle.png',2, '#DB1222')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'Атон', null, '/resources/banks/aton_rectangle.png',2, '#d8003f')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'Финам', '/resources/banks/finam_circle.png', '/resources/banks/finame_rectangle.png',2, '#FFCB3F')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'Фридом Финанс', '/resources/banks/freedom_finance_circle.svg', '/resources/banks/freedom_finance_rectangle.png',2, '#00b32e')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'Сбер', '/resources/banks/sber_circle.svg', '/resources/banks/sber_rectangle.svg', 2,'#21A038')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'ВТБ', '/resources/banks/vtb_circle.svg', '/resources/banks/vtb_rectangle.svg',2, '#009fdf')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'Газпромбанк', '/resources/banks/gasprom_circle.svg', '/resources/banks/gasprom_rectangle.svg',2, '#0d356c')
+INSERT [Banks] ([Name], [LogoCircle],[LogoRectangle], [BankTypeID], [BorderColor]) VALUES (N'Банк Открытие', '/resources/banks/open_circle.svg', '/resources/banks/open_broker_rectangle.svg',2, '#09ccff')
+
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (2000, N'Другой брокер', '/resources/banks/bank.svg', 2)
+											 
+INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (2500, N'Другой банк', '/resources/banks/bank.svg', 1)
 
 SET IDENTITY_INSERT [Banks] OFF
 GO
@@ -168,3 +204,12 @@ INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpre
 VALUES (9,'NotificationReminderCheckerTask', 'New', 'NotificationReminderCheckerTask','0 */5 * ? * *', 'Every 5 minuts')
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF
+
+SET IDENTITY_INSERT [TelegramAccountStatuses] ON 
+INSERT INTO TelegramAccountStatuses ( ID, Name, CodeName) Values (1,'Новый','New')
+INSERT INTO TelegramAccountStatuses ( ID, Name, CodeName) Values (2,'Подключен','Connected')
+INSERT INTO TelegramAccountStatuses ( ID, Name, CodeName) Values (3,'На паузе','InPause')
+INSERT INTO TelegramAccountStatuses ( ID, Name, CodeName) Values (4,'Заблокирован','Locked')
+
+
+SET IDENTITY_INSERT [TelegramAccountStatuses] OFF

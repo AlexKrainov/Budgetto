@@ -63,10 +63,25 @@
                 </span>
             </div>
         </div>
+        <div class="col-md-4 px-1">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
+                    <i class="ion ion-md-add navbar-icon pr-2"></i>
+                    Добавить наличные/организацию
+                </button>
+                <div class="dropdown-menu" style="">
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, true)">Добавить наличные</a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, false)">Добавить организацию</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row summary-view">
         @await Html.PartialAsync("_SummaryView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+    </div>
+    <div class="row accounts-view" id="accounts-view">
+        @await Html.PartialAsync("_AccountsView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
     </div>
     <div class="row total-view">
         @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Year)
@@ -82,7 +97,7 @@
     </div>
     <div class="card table-container">
         <div class="card-body" style="margin-bottom: 0px">
-            <div class="card-title with-elements"  style="margin-bottom: 0px">
+            <div class="card-title with-elements" style="margin-bottom: 0px">
                 <select class="form-control form-control-sm" data-style="btn-default" style="width: 300px"
                         v-model="templateID"
                         v-on:change="refresh('onlyTable')"
@@ -111,10 +126,10 @@
                         <i class="fas fa-history"></i>
                     </button>
                     @*<button type="button" class="btn icon-btn borderless btn-outline-primary text-big"
-                            onclick="ReminderVue.showRemindersByPeriod(@Model.SelectedDateTime.Month, @Model.SelectedDateTime.Year)"
-                            title="Посмотреть напоминание за месяц" data-toggle="tooltip" data-placement="bottom">
-                        <i class="ion ion-ios-alarm text-big"></i>
-                    </button>*@
+                                onclick="ReminderVue.showRemindersByPeriod(@Model.SelectedDateTime.Month, @Model.SelectedDateTime.Year)"
+                                title="Посмотреть напоминание за месяц" data-toggle="tooltip" data-placement="bottom">
+                            <i class="ion ion-ios-alarm text-big"></i>
+                        </button>*@
                     <button type="button" class="btn icon-btn borderless btn-outline-primary mr-4 text-big"
                             title="Экспорт таблицы в Excel"
                             data-toggle="tooltip" data-placement="bottom"
@@ -135,8 +150,8 @@
                 </div>
             </div>
             @*<div class="collapse table-responsive bg-light " id="collapseFilter" v-show="template && template.id">
-                
-            </div>*@
+
+                </div>*@
         </div>
         <div class="callout callout-warning mx-4" v-show="!(template && template.id)">
             <p><b>Нет шаблона для отображения. Пожалуйста, <a href="/Template/Edit?periodTypeId=3">создайте шаблон</a></b></p>
@@ -154,6 +169,7 @@
 
 @await Html.PartialAsync("../Goal/_GoalAddMoney.cshtml")
 @await Html.PartialAsync("../Account/_AccountModal.cshtml")
+@await Html.PartialAsync("../Account/_MainAccountModal.cshtml")
 @await Html.PartialAsync("../Account/_AccountTransferModal.cshtml")
 
 @await Html.PartialAsync(@"../Settings/Settings.cshtml", "Budget/Year")

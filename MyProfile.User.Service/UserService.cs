@@ -236,16 +236,6 @@ namespace MyProfile.User.Service
 
             if (user != null)
             {
-                if (password != null && user.HashPassword != passwordService.GenerateHashSHA256(password, user.SaltPassword))
-                {
-                    user = null;
-                }
-                else
-                {
-                    user.SaltPassword = null;
-                    user.HashPassword = null;
-                }
-
                 if (string.IsNullOrEmpty(user.UserConnect.TelegramLogin))
                 {
                     user.UserConnect.TelegramLogin = GetTelegramLogin();
@@ -256,6 +246,16 @@ namespace MyProfile.User.Service
                         TelegramLogin = user.UserConnect.TelegramLogin
                     };
                     await repository.UpdateAsync(userDB, true);
+                }
+
+                if (password != null && user.HashPassword != passwordService.GenerateHashSHA256(password, user.SaltPassword))
+                {
+                    user = null;
+                }
+                else
+                {
+                    user.SaltPassword = null;
+                    user.HashPassword = null;
                 }
             }
             return user;
@@ -329,12 +329,21 @@ namespace MyProfile.User.Service
                 Accounts = new List<Account>{
                     new Account
                     {
-                        AccountTypeID = (int)AccountTypesEnum.Cash,
+                        AccountTypeID = (int)AccountTypes.Cash,
                         Balance = 0,
                         CurrencyID = 1, //Rubles
                         DateCreate = now,
-                        IsDefault = true,
-                        Name = "Наличные",
+                        IsDefault = false,
+                        Name = "Все наличные",
+                        ChildAccounts = new List<Account>{new Account
+                        {
+                            AccountTypeID = (int)AccountTypes.Cash,
+                            Balance = 0,
+                            CurrencyID = 1, //Rubles
+                            DateCreate = now,
+                            IsDefault = true,
+                            Name = "Наличные",
+                        } }
                     }
                 },
                 UserSummaries = new List<UserSummary> {

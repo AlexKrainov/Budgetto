@@ -88,9 +88,8 @@
 
             </div>
         </div>
-        <div id="accounts-view" class="row no-gutters row-bordered" style="overflow: inherit; border-top: 1px solid lightgray;"
+        @*<div id="accounts-view" class="row no-gutters row-bordered" style="overflow: inherit; border-top: 1px solid lightgray;"
              v-show="accounts && accounts.length > 0 && accounts[0].isShow">
-            @*&& accounts.some(x => x.isShow)*@
             <div style=" border: 1px solid;" v-for="account in accounts"
                  v-bind:id="'account_'+ account.id"
                  v-bind:class="[account.isHide ? 'col-lg-1 border-light' : 'col-lg-3 border-light', account.isDeleted ? 'deleted-item': '' ]">
@@ -214,6 +213,6 @@
                           v-on:click="editAccount(undefined)"></span>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 </div>
