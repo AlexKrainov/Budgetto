@@ -115,14 +115,14 @@
                     </a>
                     <div class="d-inline-flex align-items-center align-middle float-right ml-1">
                         <span class="px-1 ml-2 ml-lg-0">
-                            <span class="fas fa-eye text-primary cursor-pointer" title="Показывать на главной странице"
+                            <span class="fas fa-eye text-primary cursor-pointer" title="Показывать на главной странице" data-toggle="tooltip"
                                   v-show="limit.isShowOnDashboard"
                                   v-on:click="toggleLimit(limit.id)"></span>
-                            <span class="fas fa-eye-slash text-secondary cursor-pointer" title="Не показывать на главной странице"
+                            <span class="fas fa-eye-slash text-secondary cursor-pointer" title="Не показывать на главной странице" data-toggle="tooltip"
                                   v-show="limit.isShowOnDashboard == false"
                                   v-on:click="toggleLimit(limit.id)"></span>
-                            @*<span class="fas fa-users text-primary" title="Эту папку выдят все" v-show="area.isShowInCollective"></span>
-                                <span class="fas fa-users-slash text-secondary" title="Эту папку выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
+                            @*<span class="fas fa-users text-primary" title="Эту группу выдят все" v-show="area.isShowInCollective"></span>
+                                <span class="fas fa-users-slash text-secondary" title="Эту группу выдите только вы" v-show="area.isShowInCollective == false"> </span>*@
                         </span>
                     </div>
                     @if (MyProfile.Identity.UserInfo.Current.IsAllowCollectiveBudget)

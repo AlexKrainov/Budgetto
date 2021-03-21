@@ -141,7 +141,7 @@ namespace MyProfile.Code
 
                 foreach (var userID in userIDs)
                 {
-                    var accounts = repository.GetAll<Account>(x => x.UserID == userID)
+                    var accounts = repository.GetAll<Account>(x => x.UserID == userID && x.IsDeleted == false)
                         .Select(x => x.BankID)
                         .GroupBy(x => x)
                         .ToList();
@@ -167,7 +167,7 @@ namespace MyProfile.Code
 
                         repository.Create(parentAccount, true);
 
-                        var accountsForUpdate = repository.GetAll<Account>(x => x.UserID == userID && x.BankID == account.Key && x.ID != parentAccount.ID).ToList();
+                        var accountsForUpdate = repository.GetAll<Account>(x => x.UserID == userID && x.BankID == account.Key && x.ID != parentAccount.ID && x.IsDeleted == false).ToList();
                         foreach (var item in accountsForUpdate)
                         {
                             item.ParentAccountID = parentAccount.ID;

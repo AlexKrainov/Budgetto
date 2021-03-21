@@ -45,6 +45,7 @@ namespace MyProfile.Budget.Service
                 AccountIcon = y.AccountType.Icon,
 
                 IsShow = true,
+                IsHideCurrentAccount = y.IsHide,
 
                 Accounts = y.ChildAccounts
                     .Where(x => x.IsDeleted == false)
@@ -56,7 +57,7 @@ namespace MyProfile.Budget.Service
                         Balance = x.Balance,
                         Description = x.Description,
                         IsDefault = x.IsDefault,
-                        IsHide = x.IsHide,
+                        IsHideCurrentAccount = x.IsHide,
                         AccountType = (AccountTypes)x.AccountTypeID,
                         AccountTypeName = x.AccountType.Name,
                         AccountIcon = x.AccountType.Icon,
@@ -90,7 +91,7 @@ namespace MyProfile.Budget.Service
                         IsCash = x.AccountTypeID == (int)AccountTypes.Cash,
                     })
                     .OrderByDescending(x => x.IsDefault)
-                    .ThenBy(x => x.IsHide)
+                    .ThenBy(x => x.IsHideCurrentAccount)
                     .ThenBy(x => x.ID)
                     .ThenBy(x => x.AccountType == AccountTypes.Cash)
                     .ThenBy(x => x.AccountType == AccountTypes.Installment)
@@ -132,7 +133,7 @@ namespace MyProfile.Budget.Service
                       Balance = x.Balance,
                       Description = x.Description,
                       IsDefault = x.IsDefault,
-                      IsHide = x.IsHide,
+                      IsHideCurrentAccount = x.IsHide,
                       AccountType = (AccountTypes)x.AccountTypeID,
                       AccountTypeName = x.AccountType.Name,
                       AccountIcon = x.AccountType.Icon,
@@ -166,7 +167,7 @@ namespace MyProfile.Budget.Service
                       IsCash = x.AccountTypeID == (int)AccountTypes.Cash,
                   })
                   .OrderByDescending(x => x.IsDefault)
-                  .ThenBy(x => x.IsHide)
+                  .ThenBy(x => x.IsHideCurrentAccount)
                   .ThenBy(x => x.AccountType == AccountTypes.Cash)
                   .ThenBy(x => x.AccountType == AccountTypes.Installment)
                   .ThenBy(x => x.AccountType == AccountTypes.Credit)
@@ -212,7 +213,7 @@ namespace MyProfile.Budget.Service
                 .Select(x => new
                 {
                     x.AccountID,
-                    x.Account2ID,
+                    x.AccountID2,
                     x.Actions,
                     x.ValueFrom,
                     x.ValueTo
@@ -248,7 +249,7 @@ namespace MyProfile.Budget.Service
             {
                 CurrentDate = now,
                 ActionType = AccountHistoryActionType.MoveMoney,
-                Account2ID = transfer.AccountToID,
+                AccountID2 = transfer.AccountToID,
                 OldBalance = accountFrom.Balance,
                 Comment = transfer.Comment,
                 ValueFrom = transfer.Value,
@@ -261,7 +262,7 @@ namespace MyProfile.Budget.Service
             {
                 CurrentDate = now,
                 ActionType = AccountHistoryActionType.MoveMoney,
-                Account2ID = transfer.AccountFromID,
+                AccountID2 = transfer.AccountFromID,
                 OldBalance = accountTo.Balance,
                 Comment = transfer.Comment,
                 ValueFrom = transfer.Value,
@@ -362,7 +363,7 @@ namespace MyProfile.Budget.Service
                     ResetCachbackDate = account.ResetCashBackDate,
                     IsCountTheBalance = account.IsCountTheBalance,
 
-                    IsHide = account.IsHide,
+                    IsHide = account.IsHideCurrentAccount,
 
                     DateCreate = now,
                     LastChanges = now,
@@ -417,7 +418,7 @@ namespace MyProfile.Budget.Service
                     //accountDB.AccountTypeID = (int)account.AccountType;
                     accountDB.Balance = account.Balance;
                     accountDB.Description = account.Description;
-                    accountDB.IsHide = account.IsHide;
+                    accountDB.IsHide = account.IsHideCurrentAccount;
                     accountDB.LastChanges = now;
                     accountDB.Name = account.Name;
                     accountDB.IsDefault = account.IsDefault;
@@ -544,7 +545,7 @@ namespace MyProfile.Budget.Service
             {
                 actions.Append("IsDefault,");
             }
-            if (oldAccount.IsHide != newAccount.IsHide)
+            if (oldAccount.IsHide != newAccount.IsHideCurrentAccount)
             {
                 actions.Append("IsHide,");
             }
@@ -570,33 +571,32 @@ namespace MyProfile.Budget.Service
             return actions.ToString();
         }
 
-        public bool ShowHide(AccountViewModel account)
+        public bool ToggleShowHide(int accountID)
         {
             var now = DateTime.Now.ToUniversalTime();
             var currentUser = UserInfo.Current;
-            var accountDB = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.ID == account.ID).FirstOrDefault();
+            var accountDB = repository.GetAll<Account>(x => x.UserID == currentUser.ID && x.ID == accountID).FirstOrDefault();
 
             try
             {
                 AccountHistory accountHistory = new AccountHistory
                 {
-                    OldAccountStateJson = Serialize(accountDB),
                     CurrentDate = now,
-                    ActionType = AccountHistoryActionType.ShowHide
+                    ActionType = AccountHistoryActionType.Toggle,
+                    Actions = !accountDB.IsHide ? "hide" : "show",
                 };
-                accountDB.IsHide = !account.IsHide;
+                accountDB.IsHide = !accountDB.IsHide;
                 accountDB.LastChanges = now;
-                accountHistory.NewAccountStateJson = Serialize(accountDB);
                 accountDB.AccountHistories.Add(accountHistory);
 
                 repository.Update(accountDB, true);
             }
             catch (Exception ex)
             {
-                userLogService.CreateErrorLog(currentUser.UserSessionID, "AccountService.ShowHide", ex, account.IsDeleted ? UserLogActionType.Account_Delete : UserLogActionType.Account_Recovery);
+                userLogService.CreateErrorLog(currentUser.UserSessionID, "AccountService.ShowHide", ex, UserLogActionType.Account_Toggle);
             }
 
-            return account.IsHide;
+            return accountDB.IsHide;
         }
 
         public bool RemoveOrRecovery(AccountViewModel account, ref int accountIDWithIsDefault)

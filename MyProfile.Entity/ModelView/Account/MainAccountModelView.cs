@@ -35,5 +35,6 @@ namespace MyProfile.Entity.ModelView.Account
         public List<AccountViewModel> Accounts { get; set; }
         public int? BankTypeID { get; set; }
         public bool IsShow { get; set; }
+        public bool IsHideCurrentAccount { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace MyProfile.Entity.Model
     {
         public static readonly string Create = "Create";
         public static readonly string Edit = "Edit";
-        public static readonly string ShowHide = "ShowHide";
+        public static readonly string Toggle = "Toggle";
         public static readonly string Delete = "Delete";
         public static readonly string Recovery = "Recovery";
         public static readonly string MoveMoney = "MoveMoney";
@@ -49,12 +49,14 @@ namespace MyProfile.Entity.Model
 
         [ForeignKey("Account")]
         public int AccountID { get; set; }
+        [ForeignKey("Account2")]
         /// <summary>
         /// Second account with action, for transfer money
         /// </summary>
-        public int? Account2ID { get; set; }
+        public int? AccountID2 { get; set; }
 
         public virtual Account Account { get; set; }
+        public virtual Account Account2 { get; set; }
 
     }
 }

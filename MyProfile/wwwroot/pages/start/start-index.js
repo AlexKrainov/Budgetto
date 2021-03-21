@@ -92,7 +92,7 @@
                     });
                     $('#work-hours').tooltip('dispose');
                     $('#work-days').tooltip('dispose');
-                    $('[data-toggle="tooltip"]').tooltip('show');
+                   // $('[data-toggle="tooltip"]').tooltip('show');
                 } else {
                     $("#userInfoName").addClass("is-invalid");
                     canGo = false;
@@ -215,7 +215,7 @@
                         this.userInfo = result.userInfo;
                         this.userInfo.timeZoneClient = Intl.DateTimeFormat().resolvedOptions().timeZone;
                     }
-                    $('[data-toggle="tooltip"]').tooltip('show');
+                    //$('[data-toggle="tooltip"]').tooltip('show');
                     return true;
                 },
                 error: function (xhr, status, error) {

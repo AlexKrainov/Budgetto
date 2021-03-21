@@ -186,7 +186,16 @@ namespace MyProfile.Entity.Model
             .Property(b => b.StatusID)
             .HasDefaultValue((int)TelegramAccountStatusEnum.New);
 
-            
+            modelBuilder.Entity<Account>()
+                   .HasMany(x => x.AccountHistories)
+                   .WithOne(x => x.Account)
+                   .HasForeignKey(x => x.AccountID);
+
+            modelBuilder.Entity<Account>()
+                   .HasMany(x => x.AccountHistories2)
+                   .WithOne(x => x.Account2)
+                   .HasForeignKey(x => x.AccountID2);
+
             #endregion
         }
 

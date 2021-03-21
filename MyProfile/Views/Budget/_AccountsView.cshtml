@@ -1,9 +1,9 @@
 ﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4 px-1"
      v-for="mainAccount in accounts"
-     v-show="mainAccount.isShow">
+     v-show="mainAccount.isShow && mainAccount.isHideCurrentAccount == false">
     <div class="card mb-1"
          v-bind:id="'main_account_'+ mainAccount.id"
-         v-bind:class="[mainAccount.isDeleted ? 'deleted-item': '', mainAccount.bankTypeID == 1 ? 'border-primary' : mainAccount.bankTypeID == 2 ? 'border-secondary' : '' ]">
+         v-bind:class="[mainAccount.isDeleted ? 'deleted-item': '', mainAccount.bankTypeID == 1 || mainAccount.bankTypeID == null ? 'hover-border-primary' : mainAccount.bankTypeID == 2 ? 'hover-border-secondary' : '' ]">
         <div class="media align-items-center"
              v-bind:class="mainAccount.isCash ? 'p-1 pl-2' : ''">
             <img class="ui-w-120" alt=""
@@ -16,7 +16,8 @@
                   v-bind:class="mainAccount.accountIcon"></span>
             <div class="media-body">
                 <a href="javascript:void(0)" class="d-block text-body text-large">{{ mainAccount.name }}</a>
-                <div class="text-muted small" v-show="mainAccount.bankName != null && mainAccount.bankName != mainAccount.name">{{ mainAccount.bankName }}</div>
+                <span class="small" v-show="mainAccount.bankName != null && mainAccount.bankName != mainAccount.name"><span class="text-muted">Банк: </span>{{ mainAccount.bankName }}</span>
+                <span class="small" v-show="mainAccount.accounts.filter(x => x.isHideCurrentAccount).length"><span class="text-muted">Скрытых: </span>{{ mainAccount.accounts.filter(x => x.isHideCurrentAccount).length }}</span>
                 @*<small>
                         <span class="text-muted">Color:</span>
                         <span class="ui-product-color ui-product-color-sm align-text-bottom" style="background:#e81e2c;"></span> &nbsp;
@@ -43,13 +44,13 @@
                    v-on:click="editAccount(null, mainAccount)">Добавить счет</a>
                 <a class="dropdown-item" href="javascript:void(0)"
                    v-show="mainAccount.accountType == 1"
-                   v-on:click="editMainAccount(mainAccount)">Редактировать папку наличных</a>
+                   v-on:click="editMainAccount(mainAccount)">Редактировать группу наличных</a>
                 <a class="dropdown-item" href="javascript:void(0)"
                    v-show="mainAccount.accountType != 1"
                    v-on:click="editMainAccount(mainAccount)">Редактировать организацию</a>
                 <a class="dropdown-item text-danger" href="javascript:void(0)"
                    v-show="mainAccount.accounts.length == 0"
-                   v-on:click="removeOrRecoveryMainAccount(mainAccount)">Удалить папку наличных</a>
+                   v-on:click="removeOrRecoveryMainAccount(mainAccount)">Удалить группу наличных</a>
                 @*<a class="dropdown-item" href="javascript:void(0)"
                     v-on:click="showHideAccount(account, true)">Скрыть счет</a>
                 *@
@@ -59,7 +60,8 @@
             <section v-for="account in mainAccount.accounts"
                      v-bind:class="[account.isDeleted ? 'deleted-item': '' ]">
                 <div class="card card-condenced mt-2"
-                     v-if="account.accountType == 1">
+                     v-if="account.accountType == 1"
+                     v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
                         <div class="media-body ml-2">
                             <span data-toggle="tooltip" title=""
@@ -107,8 +109,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card card-condenced mt-2 border-primary"
-                     v-else-if="account.accountType == 2">
+                <div class="card card-condenced mt-2"
+                     v-else-if="account.accountType == 2"
+                     v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
                         <div class="media-body ml-2">
                             <span data-toggle="tooltip" title=""
@@ -163,8 +166,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card card-condenced mt-2 border-primary"
-                     v-else-if="account.accountType == 3">
+                @*<div class="card card-condenced mt-2"
+                     v-else-if="account.accountType == 3"
+                     v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
                         <div class="media-body ml-2">
                             <span class="text-muted small">Моя кредитка</span>
@@ -200,8 +204,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card card-condenced mt-2 border-primary"
-                     v-else-if="account.accountType == 7">
+                <div class="card card-condenced mt-2"
+                     v-else-if="account.accountType == 7"
+                     v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
                         <div class="media-body ml-2">
                             <span class="text-muted small">Мой вклад</span>
@@ -235,10 +240,11 @@
                         </div>
 
                     </div>
-                </div>
+                </div>*@
                 @*Investing*@
-                <div class="card card-condenced mt-2 border-secondary"
-                     v-else-if="account.accountType == 6 || account.accountType == 8">
+                <div class="card card-condenced mt-2"
+                     v-else-if="account.accountType == 6 || account.accountType == 8"
+                     v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
                         <div class="media-body ml-2">
                             <span class="text-muted small">{{ account.name }}</span>

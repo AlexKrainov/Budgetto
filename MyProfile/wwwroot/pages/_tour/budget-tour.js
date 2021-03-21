@@ -69,8 +69,8 @@ $(function () {
             }]
         });
         BudgetTour.addStep({
-            title: 'Панель счетов',
-            text: `Вы можете добавлять, редактировать, скрывать счета, а также переводить деньги между счетами.`,
+            title: 'Виджеты наличных/организаций',
+            text: `Вы можете добавлять, редактировать, скрывать наличные/счета, а также переводить деньги между счетами.`,
             attachTo: { element: '#accounts-view', on: 'bottom' },
             buttons: [{
                 action: BudgetTour.back,
@@ -83,8 +83,22 @@ $(function () {
             }]
         });
         BudgetTour.addStep({
+            title: 'Кнопка добавления',
+            text: `Через эту кнопку можно добавлять группу наличных/организации(банки, брокеры) и т.д.`,
+            attachTo: { element: '#add-main-account', on: 'bottom' },
+            buttons: [{
+                action: BudgetTour.back,
+                classes: backButtonClass,
+                text: 'Назад'
+            }, {
+                action: BudgetTour.next,
+                classes: nextButtonClass,
+                text: 'Далее'
+            }]
+        });
+        BudgetTour.addStep({
             title: 'Виджеты доходов, расходов и инвестиций',
-            text: `На сайте присутствуют 3 основных типа категорий. В этих виджетах отображаются все ваши внесенные данные за выбранный месяц.`,
+            text: `В этих виджетах отображаются все ваши внесенные данные за выбранный месяц.`,
             attachTo: { element: '.total-view', on: 'bottom' },
             buttons: [{
                 action: BudgetTour.back,
@@ -127,7 +141,7 @@ $(function () {
         });
         BudgetTour.addStep({
             title: 'Категории',
-            text: `Здесь можно создавать, редактировать, удалять и группировать категории по папкам.`,
+            text: `Здесь можно создавать, редактировать, удалять и группировать категории по группам.`,
             attachTo: { element: 'a[href="/Section/Edit"]', on: 'right' },
             buttons: [{
                 action: BudgetTour.back,
@@ -182,8 +196,22 @@ $(function () {
             }]
         });
         BudgetTour.addStep({
-            title: 'Окончание тура',
-            text: `Здорово! Вы ознакомились с базовыми функциями программы. Посмотреть этот тур и другие вы можете, нажав на символ "?" в правом верхнем углу экрана.`,
+            title: 'Подсказки для страницы',
+            text: `Тут вы можете увидеть все подсказки по странице. Для каждой страницы свои подсказки.`,
+            attachTo: { element: '#help-container a', on: 'bottom' },
+            buttons: [{
+                action: BudgetTour.back,
+                classes: backButtonClass,
+                text: 'Назад'
+            }, {
+                action: BudgetTour.next,
+                classes: nextButtonClass,
+                text: 'Далее'
+            }]
+        });
+        BudgetTour.addStep({
+            title: 'Готово!',
+            text: `Вы ознакомились с базовыми функциями программы. `,
             //attachTo: { element: '.theme-settings-open-btn2 i', on: 'left' },
             buttons: [{
                 action: BudgetTour.back,

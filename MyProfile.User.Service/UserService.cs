@@ -282,7 +282,7 @@ namespace MyProfile.User.Service
 
             var newUser = new Entity.Model.User
             {
-                //ID = newUserID,
+                ID = Guid.NewGuid(),
                 DateCreate = now,
                 Email = email,
                 IsAllowCollectiveBudget = false,
@@ -326,26 +326,7 @@ namespace MyProfile.User.Service
                         }
                     }
                 },
-                Accounts = new List<Account>{
-                    new Account
-                    {
-                        AccountTypeID = (int)AccountTypes.Cash,
-                        Balance = 0,
-                        CurrencyID = 1, //Rubles
-                        DateCreate = now,
-                        IsDefault = false,
-                        Name = "Все наличные",
-                        ChildAccounts = new List<Account>{new Account
-                        {
-                            AccountTypeID = (int)AccountTypes.Cash,
-                            Balance = 0,
-                            CurrencyID = 1, //Rubles
-                            DateCreate = now,
-                            IsDefault = true,
-                            Name = "Наличные",
-                        } }
-                    }
-                },
+
                 UserSummaries = new List<UserSummary> {
                     new  UserSummary
                     {
@@ -367,6 +348,29 @@ namespace MyProfile.User.Service
                 },
                 UserTypeID = (int)UserTypeEnum.User,
             };
+
+            newUser.Accounts = new List<Account>{
+                    new Account
+                    {
+                        UserID = newUser.ID,
+                        AccountTypeID = (int)AccountTypes.Cash,
+                        Balance = 0,
+                        CurrencyID = 1, //Rubles
+                        DateCreate = now,
+                        IsDefault = false,
+                        Name = "Все наличные",
+                        ChildAccounts = new List<Account>{new Account
+                        {
+                            UserID = newUser.ID,
+                            AccountTypeID = (int)AccountTypes.Cash,
+                            Balance = 0,
+                            CurrencyID = 1, //Rubles
+                            DateCreate = now,
+                            IsDefault = true,
+                            Name = "Наличные",
+                        } }
+                    }
+                };
             await repository.CreateAsync(newUser, true);
 
             return 1;

@@ -780,3 +780,12 @@ html.dark-style .tagify__input::before {
 .just-cursor {
     cursor: context-menu;
 }
+
+
+.hover-border-primary:hover {
+    border-color: #26B4FF !important;
+}
+
+.hover-border-secondary:hover {
+    border-color: #8897AA !important;
+}

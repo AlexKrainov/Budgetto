@@ -11,7 +11,7 @@ $(function () {
         var isRtl = $('html').attr('dir') === 'rtl';
 
         AddSectionTour.addStep({
-            title: 'Выбор папки',
+            title: 'Выбор группы категорий',
             text: 'Для создании категории нажмите "показать категории".',
             attachTo: { element: '.show-sections', on: 'left' },
             buttons: [{

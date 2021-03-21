@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210321080420_134")]
+    partial class _134
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,8 +144,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("AccountID");
-
-                    b.HasIndex("AccountID2");
 
                     b.ToTable("AccountHistories");
                 });
@@ -2457,10 +2457,6 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("AccountHistories")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.Account", "Account2")
-                        .WithMany("AccountHistories2")
-                        .HasForeignKey("AccountID2");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.AccountType", b =>

@@ -3,17 +3,17 @@
         <form class="modal-content" v-on:submit="checkForm">
             <div class="modal-header">
                 <h5 class="modal-title" v-show="area.id == undefined">
-                    Создание папки
+                    Создание группы категорий
                 </h5>
                 <h5 class="modal-title" v-show="area.id">
-                    Редактирование папки
+                    Редактирование группы категорий
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group col">
-                        <label class="form-label">Название папки</label>
+                        <label class="form-label">Название</label>
                         <span class="text-danger">*</span>
                         <input id="area-name" type="text" class="form-control" placeholder="Регулярные траты, ремонт в ванной ..."
                                v-model="area.name" required>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col mb-0">
-                        <label class="form-label">Описание папки</label>
+                        <label class="form-label">Описание </label>
                         <textarea class="form-control" v-model="area.description" placeholder="Описание"></textarea>
                     </div>
                 </div>

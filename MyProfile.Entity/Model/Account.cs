@@ -74,6 +74,7 @@ namespace MyProfile.Entity.Model
 		public virtual ICollection<Record> BudgetRecords { get; set; }
         public virtual ICollection<RecordHistory> RecordHistories { get; set; }
         public virtual ICollection<AccountHistory> AccountHistories { get; set; }
+        public virtual ICollection<AccountHistory> AccountHistories2 { get; set; }
 		public virtual ICollection<Account> ChildAccounts { get; set; }
 
 		public Account()
@@ -81,6 +82,7 @@ namespace MyProfile.Entity.Model
 			this.BudgetRecords = new HashSet<Record>();
             this.RecordHistories = new HashSet<RecordHistory>();
             this.AccountHistories = new HashSet<AccountHistory>();
+            this.AccountHistories2 = new HashSet<AccountHistory>();
             this.ChildAccounts = new HashSet<Account>();
         }
 

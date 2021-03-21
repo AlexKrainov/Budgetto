@@ -24,7 +24,7 @@ namespace MyProfile.Entity.ModelView.Account
         public bool IsCachBackMoney { get; set; }
         public bool IsOverdraft { get; set; }
         public bool IsDefault { get; set; }
-        public bool IsHide { get; set; }
+        public bool IsHideCurrentAccount { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsCash { get; set; }
         public DateTime? ExpirationDate { get; set; }

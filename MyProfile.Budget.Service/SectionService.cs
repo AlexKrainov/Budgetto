@@ -122,12 +122,12 @@ namespace MyProfile.Budget.Service
             return sections;
         }
 
-        public IEnumerable<BudgetSectionModelView> GetAllSectionForRecords()
+        public IEnumerable<BudgetSectionModelView> GetAllSectionForRecords(bool withoutCache = false)
         {
             var currentUserID = UserInfo.Current.ID;
             List<BudgetSectionModelView> sections;
 
-            if (cache.TryGetValue(typeof(BudgetSection).Name + "_" + currentUserID, out sections) == false)
+            if (withoutCache || cache.TryGetValue(typeof(BudgetSection).Name + "_" + currentUserID, out sections) == false)
             {
                 sections = repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == currentUserID && x.IsShowOnSite)
                     .OrderByDescending(x => x.BudgetRecords.Count())

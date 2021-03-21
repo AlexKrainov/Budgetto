@@ -36,8 +36,8 @@ namespace MyProfile.Budget.Service
             var sections = sectionService.GetAllSectionForRecords();
 
             TotalModelView spendingData = new TotalModelView { IsShow = currentUser.UserSettings.Year_SpendingWidget };
-            TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.    Year_EarningWidget };
-            TotalModelView investinData = new TotalModelView { IsShow = currentUser.UserSettings.Year_InvestingWidget };
+            TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.Year_EarningWidget };
+            TotalModelView investingData = new TotalModelView { IsShow = currentUser.UserSettings.Year_InvestingWidget };
 
             if (currentUser.UserSettings.Year_SpendingWidget)
             {
@@ -122,45 +122,53 @@ namespace MyProfile.Budget.Service
 
             if (currentUser.UserSettings.Year_InvestingWidget)
             {
-                //var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Investments);
+                var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
+                    && x.Account.Bank.BankTypeID == (int)BankTypes.Broker
+                    && x.Account.IsDeleted == false
+                    && x.ActionType == AccountHistoryActionType.MoveMoney
+                    && x.CurrentDate >= from && x.CurrentDate <= to)
+                .Select(x => new
+                {
+                    x.AccountID,
+                    x.AccountID2,
+                    x.Actions,
+                    x.ValueFrom,
+                    x.ValueTo
+                })
+                .ToList();
 
-                //var thisYear = tuple.Item1.Sum();
-                //var lastYear = GetChartTotalByMonth(from.AddYears(-1), to.AddYears(-1), SectionTypeEnum.Investments).Item1.Sum();
+                var tuple = GetChartInvestingTotalByMonth(from, to);
 
-                //investinData.data = tuple.Item1.ToArray();
-                //investinData.labels = tuple.Item2.ToArray();
-                //investinData.Name = "Инвестиции";
-                //investinData.SectionTypeEnum = SectionTypeEnum.Investments;
-                //investinData.Total = (thisYear).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
-                //investinData.Sections = sections
-                //  .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Investments)
-                //  .Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
-                //  {
-                //      ID = x.ID,
-                //      Name = x.Name
-                //  })
-                //  .ToList();
+                investingData.data = tuple.Item1.ToArray();
+                investingData.labels = tuple.Item2.ToArray();
 
-                ////if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
-                ////{
-                //if (lastYear == decimal.Zero)
-                //{
-                //    investinData.Percent = 100;
-                //}
-                //else
-                //{
-                //    investinData.Percent = Math.Round(((thisYear - lastYear) / lastYear * 100), 1);
-                //}
-                //investinData.IsGood = investinData.Percent > 0;
+                decimal input = accountHistories.Where(x => x.Actions == "input").Sum(x => x.ValueTo) ?? 0;
+                decimal output = accountHistories.Where(x => x.Actions == "output").Sum(x => x.ValueFrom) ?? 0;
 
-                //if (investinData.Percent < 0)
-                //{
-                //    investinData.Percent *= -1;
-                //}
-                //// }
+                investingData.Name = "Инвестиции";
+                //investingData.SectionTypeEnum = SectionTypeEnum.Investments;
+                investingData.Total = (input - output).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+
+                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                {
+                    if (investingData.data[10] == decimal.Zero)
+                    {
+                        investingData.Percent = 100;
+                    }
+                    else
+                    {
+                        investingData.Percent = Math.Round(((investingData.data[11] - investingData.data[10]) / investingData.data[10] * 100), 1);
+                    }
+                    investingData.IsGood = investingData.Percent > 0;
+
+                    if (investingData.Percent < 0)
+                    {
+                        investingData.Percent *= -1;
+                    }
+                }
             }
 
-            return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investinData);
+            return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investingData);
         }
 
         public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByMonth(DateTime to)
@@ -249,42 +257,90 @@ namespace MyProfile.Budget.Service
 
             if (currentUser.UserSettings.Month_InvestingWidget)
             {
-                //var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Investments);
+                var from2 = to.AddMonths(-1);
 
-                //investingData.data = tuple.Item1.ToArray();
-                //investingData.labels = tuple.Item2.ToArray();
-                //investingData.Name = "Инвестиции";
+                var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
+                    && x.Account.Bank.BankTypeID == (int)BankTypes.Broker
+                    && x.Account.IsDeleted == false
+                    && x.ActionType == AccountHistoryActionType.MoveMoney
+                    && x.CurrentDate >= from2 && x.CurrentDate <= to)
+                .Select(x => new
+                {
+                    x.AccountID,
+                    x.AccountID2,
+                    x.Actions,
+                    x.ValueFrom,
+                    x.ValueTo
+                })
+                .ToList();
+                
+                var tuple = GetChartInvestingTotalByMonth(from, to);
+
+                investingData.data = tuple.Item1.ToArray();
+                investingData.labels = tuple.Item2.ToArray();
+
+                decimal input = accountHistories.Where(x => x.Actions == "input").Sum(x => x.ValueTo) ?? 0;
+                decimal output = accountHistories.Where(x => x.Actions == "output").Sum(x => x.ValueFrom) ?? 0;
+
+                investingData.Name = "Инвестиции";
                 //investingData.SectionTypeEnum = SectionTypeEnum.Investments;
-                //investingData.Total = (tuple.Item1[tuple.Item1.Count - 1]).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
-                //investingData.Sections = sections
-                //   .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Investments)
-                //   .Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
-                //   {
-                //       ID = x.ID,
-                //       Name = x.Name
-                //   })
-                //   .ToList();
+                investingData.Total = (input - output).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
-                //if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
-                //{
-                //    if (investingData.data[10] == decimal.Zero)
-                //    {
-                //        investingData.Percent = 100;
-                //    }
-                //    else
-                //    {
-                //        investingData.Percent = Math.Round(((investingData.data[11] - investingData.data[10]) / investingData.data[10] * 100), 1);
-                //    }
-                //    investingData.IsGood = earningData.Percent > 0;
+                if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
+                {
+                    if (investingData.data[10] == decimal.Zero)
+                    {
+                        investingData.Percent = 100;
+                    }
+                    else
+                    {
+                        investingData.Percent = Math.Round(((investingData.data[11] - investingData.data[10]) / investingData.data[10] * 100), 1);
+                    }
+                    investingData.IsGood = investingData.Percent > 0;
 
-                //    if (investingData.Percent < 0)
-                //    {
-                //        investingData.Percent *= -1;
-                //    }
-                //}
+                    if (investingData.Percent < 0)
+                    {
+                        investingData.Percent *= -1;
+                    }
+                }
             }
 
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investingData);
+        }
+
+        public Tuple<List<decimal>, List<string>> GetChartInvestingTotalByMonth(DateTime from, DateTime to)
+        {
+            var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == UserInfo.Current.ID
+                  && x.Account.Bank.BankTypeID == (int)BankTypes.Broker
+                  && x.Account.IsDeleted == false
+                  && x.ActionType == AccountHistoryActionType.MoveMoney
+                  && x.CurrentDate >= from && x.CurrentDate <= to)
+              .Select(x => new
+              {
+                  x.AccountID,
+                  x.Actions,
+                  x.ValueFrom,
+                  x.ValueTo,
+                  x.CurrentDate
+              })
+              .GroupBy(x => x.CurrentDate.Month)
+              .ToList();
+
+            List<decimal> datas = new List<decimal>();
+            List<string> labels = new List<string>();
+
+            while (to > from)
+            {
+                labels.Add(from.Month + " " + from.Year);
+
+                decimal input = accountHistories.Where(x => x.Key == from.Month).SelectMany(x => x).Where(x => x.Actions == "input").Sum(x => x.ValueTo) ?? 0;
+                decimal output = accountHistories.Where(x => x.Key == from.Month).SelectMany(x => x).Where(x => x.Actions == "output").Sum(x => x.ValueFrom) ?? 0;
+
+                datas.Add(input - output);
+                from = from.AddMonths(1);
+            }
+
+            return new Tuple<List<decimal>, List<string>>(datas, labels);
         }
 
         public Tuple<List<decimal>, List<string>> GetChartTotalByMonth(DateTime from, DateTime to, SectionTypeEnum sectionTypeEnum)

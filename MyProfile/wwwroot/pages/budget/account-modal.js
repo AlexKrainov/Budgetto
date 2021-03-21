@@ -38,7 +38,7 @@ var MainAccountVue = new Vue({
                     console.log(error);
                 }
             });
-        }, 2000);
+        }, 1500);
     },
     methods: {
         edit: function (account, isCash) {
@@ -227,6 +227,10 @@ var MainAccountVue = new Vue({
                 }
             });
         },
+        showHide: function (account, isHide) {
+
+            AccountVue.showHide(JSCopyObject(account), isHide);
+        }
     }
 });
 
@@ -295,7 +299,7 @@ var AccountVue = new Vue({
                     console.log(error);
                 }
             });
-        }, 2000);
+        }, 1500);
     },
     methods: {
 
@@ -355,10 +359,9 @@ var AccountVue = new Vue({
                 .removeClass("show");
 
             return $.ajax({
-                type: "POST",
-                url: "/Account/ShowHide",
+                type: "GET",
+                url: "/Account/Toggle?accountID=" + this.account.id,
                 contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(this.account),
                 dataType: 'json',
                 context: this,
                 success: function (response) {
@@ -368,15 +371,22 @@ var AccountVue = new Vue({
                         //toastr.success("Данные счета обновлены");
                         this.account.isHide = isHide;
 
-                        if (typeof (BudgetVue) == "object" && isHide) {
-                            let index = BudgetVue.accounts.findIndex(x => x.id == this.account.id);
-                            BudgetVue.accounts.splice(index, 1);
-                            BudgetVue.accounts.push(this.account);
-                        } else {
-                            let hideAccounts = BudgetVue.accounts.filter(x => x.isHide);
-                            let notHideAccounts = BudgetVue.accounts.filter(x => x.isHide == false);
+                        if (typeof (BudgetVue) == "object") {
+                            for (var i = 0; i < BudgetVue.accounts.length; i++) {
+                                if (this.account.parentID == null) {
+                                    if (BudgetVue.accounts[i].id == this.account.id) {
+                                        BudgetVue.accounts[i].isHideCurrentAccount = isHide;
+                                        break;
+                                    }
+                                } else {
+                                    let index = BudgetVue.accounts[i].accounts.findIndex(x => x.id == this.account.id);
 
-                            BudgetVue.accounts = notHideAccounts.concat(hideAccounts);
+                                    if (index >= 0) {
+                                        BudgetVue.accounts[i].accounts[index].isHideCurrentAccount = isHide;
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                     $('[data-toggle="tooltip"]').tooltip();
@@ -556,8 +566,8 @@ var AccountTransferVue = new Vue({
             this.accountTo = {};
 
             for (var i = 0; i < this.accountsTo.length; i++) {
-                    this.accountsTo[i].isSelected = false;
-                    this.accountsTo[i].isDisabled = this.accountsTo[i].id == newValue.id;
+                this.accountsTo[i].isSelected = false;
+                this.accountsTo[i].isDisabled = this.accountsTo[i].id == newValue.id;
             }
             this.showEmpty = this.accountsTo.filter(x => x.isDisabled).length == this.accountsTo.length;
 

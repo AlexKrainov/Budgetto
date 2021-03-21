@@ -105,7 +105,7 @@
                     <input id="work-days" type="number" class="form-control" min="0" max="31"
                            v-model="userInfo.allWorkDays" required
                            data-placement="right" data-toggle="tooltip" data-html="true"
-                           title="При 5-дневной рабочей неделе ≈ 21 день <br />При графике 2/2 ≈ 15 дней">
+                           title="При графике 2/2 ≈ 15 дней<br />При 5-дневной рабочей неделе ≈ 21 день ">
                     <small class="invalid-feedback">Обязательное поле</small>
                     <small class="form-text text-muted">Нужно, чтобы посчитать ваш доход в день.</small>
                 </div>
@@ -115,7 +115,7 @@
                     <input id="work-hours" type="number" class="form-control" min="0" max="744"
                            v-model="userInfo.allWorkHours" required
                            data-placement="right" data-toggle="tooltip" data-html="true"
-                           title="При 5-дневной рабочей неделе по 8 рабочих часов ≈ 168 часов <br />При графике 2/2 и 12 рабочих часах ≈ 180 часов">
+                           title="При графике 2/2 и 12 рабочих часах ≈ 180 часов<br />При 5-дневной рабочей неделе по 8 рабочих часов ≈ 168 часов">
                     <small class="invalid-feedback">Обязательное поле</small>
                     <small class="form-text text-muted">Нужно, чтобы посчитать ваш доход в час.</small>
                 </div>
@@ -161,15 +161,15 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6">
-                        <h4 class="mb-1">Папки</h4>
+                        <h4 class="mb-1">Группы категорий</h4>
                         <h5 class="text-muted small mb-0">
-                            Нужны, чтобы группировать ваши категории по смыслу - например, папка "Еда" может содержать категории "Продукты", "Фастфуд", "Рестораны" и тд.
+                            Нужны, чтобы группировать ваши категории по смыслу - например, группа "Еда" может содержать категории "Продукты", "Фастфуд", "Рестораны" и тд.
                         </h5>
                         <h5 class="text-muted small mb-0">
-                            Для начала, для вашего удобства категории распределяются по 2-м папкам - "Расходы" и "Доходы".
+                            Для начала, для вашего удобства категории распределяются по 2-м группам - "Расходы" и "Доходы".
                         </h5>
                         <h5 class="text-muted small">
-                            В дальнйшем вы сможете добавлять, изменять и удалять папки.
+                            В дальнйшем вы сможете добавлять, изменять и удалять группы.
                         </h5>
 
                         <div class="card ui-bordered mt-3 area-item custom-card-hover"
@@ -224,7 +224,7 @@
                                         <div class="tab-content">
                                             <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active">
                                                 <div class="d-flex justify-content-between align-items-start ignore-dnd">
-                                                    <input type="text" class="form-control ignore-dnd" placeholder="Название колонки" 
+                                                    <input type="text" class="form-control ignore-dnd" placeholder="Название колонки"
                                                            v-model="templateColumn.name"
                                                            v-on:click="removeColumnName(templateColumn)">
                                                 </div>
@@ -439,3 +439,4 @@
         Перейти в рабочую область
     </button>
 </div>
+<span>Чтобы начать заново, просто перезагрузите страницу</span>

@@ -186,7 +186,7 @@ namespace MyProfile.Controllers
 
             await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Constructor_Step2_Sections, errorLogIDs: errorLogCreateIDs);
 
-            return Json(new { isOk = true, sections = sectionService.GetAllSectionForRecords() });
+            return Json(new { isOk = true, sections = sectionService.GetAllSectionForRecords(withoutCache: true) });
         }
 
         [HttpPost]

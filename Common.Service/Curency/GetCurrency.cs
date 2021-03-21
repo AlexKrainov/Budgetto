@@ -111,6 +111,9 @@ namespace Common.Service.Curency
             var dateSearch = DateTime.Now.AddDays(-2).Date;
             DateTime minDate = new DateTime(2010, 01, 01);
 
+            //refresh -2 date rows
+            repository.DeleteRange(repository.GetAll<CurrencyRateHistory>(x => x.Date == dateSearch).ToList(), true);
+
             var historyDates = repository.GetAll<CurrencyRateHistory>()
                 .OrderBy(x => x.Date)
                 .Select(x => x.Date)
@@ -130,9 +133,7 @@ namespace Common.Service.Curency
 
             try
             {
-
                 bankCurrencyData = CheckCBRxmlDailySite(currencies, dateSearch, "USD");
-
             }
             catch (Exception ex)
             {

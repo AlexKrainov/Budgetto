@@ -6,10 +6,10 @@
                 <div class="modal-header">
                     <h5 class="modal-title">
                         {{ account.isCash == false ? (account.id ? 'Редактирование организации' : 'Добавление организации' ) : ''  }}
-                        {{ account.isCash ? (account.id ? 'Редактирование наличных' : 'Добавление наличных') : ''  }}
+                        {{ account.isCash ? (account.id ? 'Редактирование группы наличных' : 'Добавление группы наличных') : ''  }}
                         @*<span class="font-weight-light">Information</span>
-                            <br>
-                            <small class="text-muted">We need payment information to process your order.</small>*@
+        <br>
+        <small class="text-muted">We need payment information to process your order.</small>*@
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
                 </div>
@@ -94,6 +94,28 @@
                             </label>
 
                         </div>*@
+
+                <div class="mt-3">
+                    <label class="form-label" v-show="account.isCash">Все наличные</label>
+                    <label class="form-label" v-show="account.isCash == false">Все счета</label>
+                    <div class="d-flex justify-content-between align-items-center rounded ui-bordered p-3 mb-2 bg-white"
+                         v-for="_account in account.accounts"
+                         v-bind:id="'account_'+_account.id">
+                        <div>
+                            <span> {{ new Intl.NumberFormat(_account.currency.specificCulture, { style: 'currency', currency: _account.currency.codeName }).format(_account.balance) }}</span>
+                            {{ _account.name }}
+                            <span class="badge badge-outline-secondary ml-2" v-show="[6,8].indexOf(_account.accountType) >= 0">{{ _account.accountTypeName }}</span>
+                            <span class="badge badge-outline-primary ml-2" v-show="[1,2,3,4,5,7].indexOf(_account.accountType) >= 0">{{ _account.accountTypeName }}</span>
+                        </div>
+                        <span class="fas fa-eye text-primary cursor-pointer" title="Отображается. Скрыть ?" data-toggle="tooltip"
+                              v-show="_account.isHideCurrentAccount == false"
+                              v-on:click="showHide(_account, true)"></span>
+                        <span class="fas fa-eye-slash text-secondary cursor-pointer" title="Скрыт. Отображать ?" data-toggle="tooltip"
+                              v-show="_account.isHideCurrentAccount"
+                              v-on:click="showHide(_account, false)"></span>
+                        @*<a href="javascript:void(0)" class="close float-none" data-toggle="tooltip" title="" data-original-title="Remove">×</a>*@
+                    </div>
+                </div>
 
                 </div>
                 <div class="modal-footer">

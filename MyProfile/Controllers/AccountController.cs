@@ -104,10 +104,10 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, isDeleted, accountIDWithIsDefault });
         }
 
-        [HttpPost]
-        public JsonResult ShowHide([FromBody] AccountViewModel account)
+        [HttpGet]
+        public JsonResult Toggle(int accountID)
         {
-            var isHide = accountService.ShowHide(account);
+            var isHide = accountService.ToggleShowHide(accountID);
 
             return Json(new { isOk = true, isHide });
         }
