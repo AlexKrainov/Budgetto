@@ -155,7 +155,7 @@
                                      v-bind:src="paymentSystem.logo"
                                      v-bind:class="account.paymentSystemID == paymentSystem.id ? 'border-primary rounded ui-bordered' : ''"
                                      v-bind:data="paymentSystem.id"
-                                     v-on:click="account.paymentSystemID = paymentSystem.id">
+                                     v-on:click="account.paymentSystemID != paymentSystem.id ? account.paymentSystemID = paymentSystem.id : account.paymentSystemID = null">
                             </div>
                         </div>
                     </div>
@@ -196,7 +196,7 @@
                     <div class="form-group mt-4">
                         <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
                             <input type="checkbox" class="custom-control-input" v-model="account.isCountBalanceInMainAccount" name="isCountBalanceInMainAccount">
-                            <span class="custom-control-label">Учитывать в при посчете общей суммы у организации/наличных</span>
+                            <span class="custom-control-label">Учитывать при подсчете общей суммы у организации/наличных</span>
                         </label>
                         @*<small class="text-muted">
                 Для некоторых категорий банки не считают кешбек, например ЖКХ, налоги и тд.

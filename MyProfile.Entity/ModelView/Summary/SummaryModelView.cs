@@ -57,5 +57,7 @@ namespace MyProfile.Entity.ModelView
         /// if while we are tring to get rate from CB by money catch an error
         /// </summary>
         public bool ConvertError { get; set; }
+        public int CountAllAccounts { get; set; }
+        public int CountedAccounts { get; set; }
     }
 }

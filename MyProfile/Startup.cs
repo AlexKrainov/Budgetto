@@ -160,6 +160,12 @@ namespace MyProfile
                  cronExpression: "0 * * ? * *")); //Every 1 minute
             CronExpression.ValidateExpression("0 * * ? * *");
 
+            services.AddTransient<NotificationReset>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NotificationReset),
+                 cronExpression: "0 0 010 1 * ?")); //At 10:00:00am, on the 1st day, every month
+            CronExpression.ValidateExpression("0 0 010 1 * ?");
+
             //"0 */5 * ? * *" - Every 5 minutes
             //0 0 1 2 * ? * - At 01:00 AM, on day 2 of the month
 

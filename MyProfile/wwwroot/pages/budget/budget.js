@@ -290,7 +290,7 @@
                 }
             });
         },
-        getSectionsTitle: function (sections) {
+        getSectionsTitleForLimit: function (sections) {
             if (sections.length > 0) {// sections
                 let li_s = "";
                 for (var i = 0; i < sections.length; i++) {
@@ -1070,8 +1070,8 @@
             let title = ""
             if (sectionTypeEnum == SectionTypeEnum.Earnings) {
                 title += "Доходы за";
-            //} else if (sectionTypeEnum == SectionTypeEnum.Investments) {
-            //    title += "Инвестиции за ";
+            } else if (sectionTypeEnum == SectionTypeEnum.Investments) {
+                title += "Пополнения за ";
             } else if (sectionTypeEnum == SectionTypeEnum.Spendings) {
                 title += "Расходы за ";
             }
@@ -1082,7 +1082,11 @@
                 title += " год ";
             }
 
-            title += "по категориям: ";
+            if (sectionTypeEnum == SectionTypeEnum.Investments) {
+                title += "по счетам: ";
+            } else {
+                title += "по категориям: ";
+            }
 
             if (sections && sections.length > 0) {// sections
                 let li_s = "";

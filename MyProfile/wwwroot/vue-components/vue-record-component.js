@@ -74,14 +74,26 @@
                                             v-if="record.account.accountType == 1 || (record.account.accountType != 1 && !record.account.bankImage)" 
                                             v-bind:class="record.account.accountIcon"
                                             data-placement="left" data-toggle-second="tooltip" v-bind:title="record.account.name"></i>
-                                        <div class="dropdown-menu">
+                                        <div class="dropdown-menu" style="min-width: 300px;">
                                             <a class="dropdown-item"
                                                href="javascript:void(0)"
                                                v-for="_account in accounts"
                                                v-show="_account.isDeleted == false || record.accountID == _account.id"
                                                v-bind:class="record.accountID == _account.id ? 'active' : ''"
-                                               v-on:click="record.accountID = _account.id; record.account = _account;">{{ _account.name }}</a>
-
+                                               v-on:click="record.accountID = _account.id; record.account = _account;">
+                                                <img class="ui-payment-small"
+                                                    v-if="_account.accountType != 1 && _account.bankImage"
+                                                    v-bind:src="_account.bankImage" 
+                                                    v-bind:title="_account.bankName"/>
+                                                <i class="text-xlarge mt-1"
+                                                    v-if="_account.accountType == 1 || (_account.accountType != 1 && !_account.bankImage)" 
+                                                    v-bind:class="_account.accountIcon"
+                                                    v-bind:title="_account.name"></i>
+                                                    {{ _account.name }}
+                                                <span class="badge badge-success float-right">
+                                                    {{ new Intl.NumberFormat(_account.currencySpecificCulture, { style: 'currency', currency: _account.currencyCodeName }).format(_account.balance) }}
+                                                </span>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-5 col-sm-5 col-md-5 mb-3 mt-1 pl-0 record-item">

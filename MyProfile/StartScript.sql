@@ -188,6 +188,7 @@ update Banks set LogoCircle = '/resources/banks/sber_circle.svg', LogoRectangle 
 update Banks  set LogoRectangle = '/resources/banks/alfa_bank_rectangle.png', BrandColor = '#ef3124' where ID = 4
 update Banks  set LogoRectangle = '/resources/banks/vtb_rectangle.svg', LogoCircle = '/resources/banks/vtb_cicle.svg', BrandColor = '#09ccff' where ID = 2
 update Banks  set LogoRectangle = '/resources/banks/gasprom_rectangle.svg', LogoCircle = '/resources/banks/gasprom_circle.svg', BrandColor = '#0d356c' where ID = 3
+Update Banks set Name = N'Открытие' where Name like '%Банк Открытие%'
 
 SET IDENTITY_INSERT [SchedulerTasks] ON
 
@@ -209,6 +210,8 @@ INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpre
 VALUES (8,'NotificationMailTask', 'New', 'NotificationMailTask','0 * * ? * *', 'Every minuts')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (9,'NotificationReminderCheckerTask', 'New', 'NotificationReminderCheckerTask','0 */5 * ? * *', 'Every 5 minuts')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment], [Comment])
+VALUES (10,'NotificationReset', 'New', 'NotificationReset','0 */5 * ? * *', 'Every 5 minuts', 'Обнуляем или пересоздаем все нужные нам уведомления (например, лимиты)')
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF
 

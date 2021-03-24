@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.AreaAndSection;
 using MyProfile.Entity.ModelView.TotalBudgetView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
@@ -166,6 +167,16 @@ namespace MyProfile.Budget.Service
                         investingData.Percent *= -1;
                     }
                 }
+
+                //only for title
+                investingData.Sections = repository.GetAll<Account>(x => x.UserID == currentUser.ID
+                     && x.Bank.BankTypeID == (int)BankTypes.Broker
+                     && x.IsDeleted == false)
+                        .Select(x => new SectionLightModelView
+                        {
+                            Name = x.Name + " (" + x.Bank.Name + ")"
+                        })
+                    .ToList();
             }
 
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investingData);
@@ -264,16 +275,16 @@ namespace MyProfile.Budget.Service
                     && x.Account.IsDeleted == false
                     && x.ActionType == AccountHistoryActionType.MoveMoney
                     && x.CurrentDate >= from2 && x.CurrentDate <= to)
-                .Select(x => new
-                {
-                    x.AccountID,
-                    x.AccountID2,
-                    x.Actions,
-                    x.ValueFrom,
-                    x.ValueTo
-                })
-                .ToList();
-                
+                    .Select(x => new
+                    {
+                        x.AccountID,
+                        x.AccountID2,
+                        x.Actions,
+                        x.ValueFrom,
+                        x.ValueTo
+                    })
+                    .ToList();
+
                 var tuple = GetChartInvestingTotalByMonth(from, to);
 
                 investingData.data = tuple.Item1.ToArray();
@@ -303,6 +314,16 @@ namespace MyProfile.Budget.Service
                         investingData.Percent *= -1;
                     }
                 }
+
+                //only for title
+                investingData.Sections = repository.GetAll<Account>(x => x.UserID == currentUser.ID
+                     && x.Bank.BankTypeID == (int)BankTypes.Broker
+                     && x.IsDeleted == false)
+                        .Select(x => new SectionLightModelView
+                        {
+                            Name = x.Name + " (" + x.Bank.Name + ")"
+                        })
+                    .ToList();
             }
 
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investingData);

@@ -361,10 +361,14 @@ namespace MyProfile.Budget.Service
                      CurrencySpecificCulture = x.Currency.SpecificCulture,
                      CurrencyCodeName = x.Currency.CodeName,
                      CurrencyIcon = x.Currency.Icon,
+                     Balance = x.Balance,
 
                      BankID = x.BankID,
                      BankName = x.Bank != null ? x.Bank.Name : "",
                      BankImage = x.Bank != null ? x.Bank.LogoCircle : "",
+
+                     PaymentSystemID = x.PaymentSystemID,
+                     PaymentLogo = x.PaymentSystemID != null ? x.PaymentSystem.Logo : null,
 
                      IsDeleted = x.IsDeleted
                  })

@@ -15,7 +15,8 @@
                   v-show="mainAccount.accountType == 1 || (mainAccount.accountType != 1 && !mainAccount.bankLogo)"
                   v-bind:class="mainAccount.accountIcon"></span>
             <div class="media-body">
-                <span class="text-muted small">{{ mainAccount.name }}</span>
+                <a href="javascript:void(0)" class="small text-body"
+                   v-on:click="editMainAccount(mainAccount)">{{ mainAccount.name }}</a>
                 <br />
                 <span class="text-large font-weight-semibold">
                     {{ new Intl.NumberFormat(mainAccount.currency.specificCulture, { style: 'currency', currency: mainAccount.currency.codeName }).format(mainAccount.balance) }}
@@ -81,12 +82,15 @@
                      v-if="account.accountType == 1"
                      v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
-                        <div class="media-body ml-2">
+                        <div class="media-body">
                             <span data-toggle="tooltip" title=""
                                   class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-original-title="Счет по умолчанию"
                                   style="left: -.625rem;top: -8px;"
                                   v-if="account.isDefault"></span>
-                            <span class="text-muted small">{{ account.name }}</span>
+                            <a href="javascript:void(0)" class="small text-body"
+                               v-on:click="editAccount(account)">
+                                {{ account.name }}
+                            </a>
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
                             <div class="text-large display-inline">
@@ -132,14 +136,16 @@
                          v-else-if="account.accountType == 2"
                          v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
-                        <div class="media-body ml-2">
+                        <div class="media-body">
                             <span data-toggle="tooltip" title=""
                                   class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-original-title="Счет по умолчанию"
                                   style="left: -.625rem;top: -8px;"
                                   v-if="account.isDefault"></span>
                             <img class="ui-payment-smaller mr-1" alt=""
+                                 v-show="account.paymentLogo"
                                  v-bind:src="account.paymentLogo">
-                            <span class="text-muted small">{{ account.name }}</span>
+                            <a href="javascript:void(0)" class="small text-body"
+                               v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
                             <div class="text-large display-inline">
@@ -267,8 +273,9 @@
                      v-else-if="account.accountType == 6 || account.accountType == 8"
                      v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
-                        <div class="media-body ml-2">
-                            <span class="text-muted small">{{ account.name }}</span>
+                        <div class="media-body">
+                            <a href="javascript:void(0)" class="small text-body"
+                               v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-secondary ml-2">{{ account.accountTypeName }}</span>
                             <br />
                             <div class="text-large display-inline">

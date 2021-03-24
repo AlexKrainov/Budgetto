@@ -15,7 +15,7 @@
 
             this.hubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("/NotificationHub") //, { transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling })
-                //.withAutomaticReconnect()
+                .withAutomaticReconnect()
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
 
@@ -36,7 +36,7 @@
             //});
             setTimeout(
                 this.load.bind(this, 10),
-                3100
+                1100
             );
         },
         methods: {

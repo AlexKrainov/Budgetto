@@ -418,17 +418,26 @@ namespace MyProfile.Budget.Service
             }
             else
             {
-                var accounts = repository.GetAll<Account>(x => x.UserID == filter.UserID && x.IsDeleted != true && x.IsCountTheBalance)
+                var accounts = repository.GetAll<Account>(x => x.UserID == filter.UserID && x.IsDeleted != true && x.ParentAccountID != null)
                     .Select(x => new
                     {
                         x.Balance,
                         x.CurrencyID,
-                        x.Currency.CodeName
+                        x.Currency.CodeName,
+                        x.IsCountTheBalance
                     })
                     .ToList();
 
+                summary.AllAccountsMoney.CountAllAccounts = accounts.Count();
+
                 for (int i = 0; i < accounts.Count; i++)
                 {
+                    if (accounts[i].IsCountTheBalance == false)
+                    {
+                        continue;
+                    }
+                    summary.AllAccountsMoney.CountedAccounts += 1;
+
                     try
                     {
                         if (currentUser.CurrencyID != accounts[i].CurrencyID)

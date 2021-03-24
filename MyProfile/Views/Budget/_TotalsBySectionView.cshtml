@@ -38,7 +38,7 @@
             <div class="col-md-6">
                 <div class="text-muted small">
                     Инвестиции <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
-                                  v-bind:data-original-title="getSectionsTitle(investingData.sections, investingData.sectionTypeEnum)"></i>
+                                  v-bind:data-original-title="getSectionsTitle(investingData.sections, 3)"></i>
                 </div>
                 <strong class="text-large font-weight-normal">{{ investingData.total }}</strong>
                 <sup v-show="investingData.percent != 0 && !investingData.isGood" class="text-danger small">- {{ investingData.percent }}%</sup>

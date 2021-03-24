@@ -18,5 +18,8 @@ namespace MyProfile.Entity.ModelView.Account
         public string AccountIcon { get; set; }
         public bool IsDeleted { get; set; }
         public string CurrencyIcon { get; set; }
+        public string PaymentLogo { get; set; }
+        public int? PaymentSystemID { get; set; }
+        public decimal Balance { get; set; }
     }
 }

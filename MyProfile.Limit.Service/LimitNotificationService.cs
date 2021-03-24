@@ -148,5 +148,48 @@ namespace MyProfile.Limit.Service
             }
             return false;
         }
+
+
+        /// <summary>
+        ///  Reset all notification what need every month (1st 10:00):
+        /// </summary>
+        /// <returns></returns>
+        public int NotificationsReset()
+        {
+            int items = 0;
+
+            try
+            {
+                var notifications = repository.GetAll<Notification>(x => x.NotificationTypeID == (int)NotificationType.Limit)
+                        .ToList();
+
+                for (int i = 0; i < notifications.Count; i++)
+                {
+                    notifications[i].IsSentOnMail = false;
+                    notifications[i].IsSentOnSite = false;
+                    notifications[i].IsSentOnTelegram = false;
+
+                    notifications[i].IsDone = false;
+                    notifications[i].IsRead = false;
+                    notifications[i].IsReady = false;
+                    notifications[i].IsReadyDateTime = null;
+                    notifications[i].ReadDateTime = null;
+                }
+
+                repository.Save();
+                items = notifications.Count;
+            }
+            catch (Exception ex)
+            {
+                 repository.Create(new ErrorLog
+                {
+                    ErrorText = ex.Message,
+                    CurrentDate = DateTime.Now,
+                    Where = "LimitNotificationService.NotificationsReset",
+                }, true);
+            }
+
+            return items;
+        }
     }
 }

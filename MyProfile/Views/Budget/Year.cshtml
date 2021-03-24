@@ -70,8 +70,14 @@
                     Добавить группу наличных/организацию
                 </button>
                 <div class="dropdown-menu" style="">
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, true)">Добавить группу наличных</a>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, false)">Добавить организацию</a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, true)">
+                        <span class="text-primary text-xlarge pr-2 pe-7s-cash text-center"></span>
+                        Добавить группу наличных
+                    </a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, false)">
+                        <span class="text-primary text-xlarge pr-2 pe-7s-culture text-center"></span>
+                        Добавить организацию
+                    </a>
                 </div>
             </div>
         </div>
@@ -116,8 +122,8 @@
                 <div class="card-title-elements">
                 </div>
                 @*<div class="card-title-elements ml-md-auto" v-show="template && template.id">
-                        <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3"><i class="collapse-icon"></i></a>
-                    </div>*@
+                    <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3"><i class="collapse-icon"></i></a>
+                </div>*@
                 <div class="text-right"
                      v-show="template && template.id">
                     <button type="button" class="btn icon-btn borderless btn-outline-primary text-big"
@@ -126,10 +132,10 @@
                         <i class="fas fa-history"></i>
                     </button>
                     @*<button type="button" class="btn icon-btn borderless btn-outline-primary text-big"
-                                onclick="ReminderVue.showRemindersByPeriod(@Model.SelectedDateTime.Month, @Model.SelectedDateTime.Year)"
-                                title="Посмотреть напоминание за месяц" data-toggle="tooltip" data-placement="bottom">
-                            <i class="ion ion-ios-alarm text-big"></i>
-                        </button>*@
+                            onclick="ReminderVue.showRemindersByPeriod(@Model.SelectedDateTime.Month, @Model.SelectedDateTime.Year)"
+                            title="Посмотреть напоминание за месяц" data-toggle="tooltip" data-placement="bottom">
+                        <i class="ion ion-ios-alarm text-big"></i>
+                    </button>*@
                     <button type="button" class="btn icon-btn borderless btn-outline-primary mr-4 text-big"
                             title="Экспорт таблицы в Excel"
                             data-toggle="tooltip" data-placement="bottom"
@@ -151,7 +157,7 @@
             </div>
             @*<div class="collapse table-responsive bg-light " id="collapseFilter" v-show="template && template.id">
 
-                </div>*@
+            </div>*@
         </div>
         <div class="callout callout-warning mx-4" v-show="!(template && template.id)">
             <p><b>Нет шаблона для отображения. Пожалуйста, <a href="/Template/Edit?periodTypeId=3">создайте шаблон</a></b></p>
@@ -159,6 +165,7 @@
         <div class="card-datatable table-responsive" style="padding: 0px 12px 8px 11px;">
             @await Html.PartialAsync("_TableView")
         </div>
+        <a href="https://budgetto.org" class="text-right mr-2">Разработано budgetto.org</a>
     </div>
 
 </div>

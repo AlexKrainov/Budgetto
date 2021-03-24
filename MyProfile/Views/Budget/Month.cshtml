@@ -67,8 +67,14 @@
                     Добавить группу наличных/организацию
                 </button>
                 <div class="dropdown-menu" style="">
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, true)">Добавить группу наличных</a>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, false)">Добавить организацию</a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, true)">
+                        <span class="text-primary text-xlarge pr-2 pe-7s-cash text-center"></span>
+                        Добавить группу наличных
+                    </a>
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, false)">
+                        <span class="text-primary text-xlarge pr-2 pe-7s-culture text-center"></span>
+                        Добавить организацию
+                    </a>
                 </div>
             </div>
         </div>
@@ -164,6 +170,7 @@
         <div class="card-datatable table-responsive" style="padding: 0px 12px 8px 11px;">
             @await Html.PartialAsync("_TableView")
         </div>
+        <a href="https://budgetto.org" class="text-right mr-2">Разработано budgetto.org</a>
     </div>
 
 </div>

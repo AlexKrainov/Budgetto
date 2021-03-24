@@ -17,9 +17,11 @@
                         {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.allAccountsMoney.balance) }}
                         @*<small><sup class="text-success">+11.25%</sup></small>*@
                     </div>
+                    <div class="text-muted small"
+                         v-show="summary.allAccountsMoney.countedAccounts != summary.allAccountsMoney.countAllAccounts">Суммируется {{ summary.allAccountsMoney.countedAccounts }} из {{ summary.allAccountsMoney.countAllAccounts }}</div>
                     @*<div class="col-md-8" style="display:inline-block; width: 60%; height: 50px;">
-                            <canvas id="statistics-chart-14"></canvas>
-                        </div>*@
+            <canvas id="statistics-chart-14"></canvas>
+        </div>*@
                 </div>
 
             </div>

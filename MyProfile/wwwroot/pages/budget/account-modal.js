@@ -40,7 +40,7 @@ var MainAccountVue = new Vue({
                     console.log(error);
                 }
             });
-        }, 1500);
+        }, 1000);
     },
     methods: {
         edit: function (account, isCash) {
@@ -304,7 +304,7 @@ var AccountVue = new Vue({
                     console.log(error);
                 }
             });
-        }, 1500);
+        }, 1000);
     },
     methods: {
 
