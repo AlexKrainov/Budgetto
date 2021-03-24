@@ -4,12 +4,14 @@ var MainAccountVue = new Vue({
     data: {
         account: {
             id: undefined,
+            currentyID: 1,
             bankTypeID: -1,
             isDeleted: false,
             isCash: false,
         },
         bankTypes: [],
         banks: [],
+        currencyInfos: Metadata.currencies,
 
         isSaving: false
     },
@@ -48,6 +50,7 @@ var MainAccountVue = new Vue({
             } else {
                 this.account = {
                     id: undefined,
+                    currentyID: 1,
                     name: undefined,
                     bankTypeID: 1,
                     isDeleted: false,
@@ -246,14 +249,15 @@ var AccountVue = new Vue({
             cachBackBalance: 0,
             cashBackForAllPercent: 1,
             isCountTheBalance: true,
+            isCountBalanceInMainAccount: true,
             //resetCashBackDate: null,
-            isDeleted: false
+            isDeleted: false,
+            paymentSystemID: null
         },
 
         bankTypes: [],
         accountTypes: [],
-        flatpickrExpirationDate: null,
-        flatpickrDateStart: null,
+        paymentSystems: [],
 
         currencyInfos: Metadata.currencies,
         isSaving: false,
@@ -292,6 +296,7 @@ var AccountVue = new Vue({
                 success: function (response) {
                     if (response.isOk) {
                         this.bankTypes = response.bankTypes;
+                        this.paymentSystems = response.paymentSystems;
                     }
                     return response;
                 },
@@ -316,12 +321,14 @@ var AccountVue = new Vue({
                     bankLogo: mainAccount.bankLogo,
                     bankTypeID: mainAccount.bankTypeID,
                     bankName: mainAccount.bankName,
+                    paymentSystemID: null,
                     currency: {},
                     currencyID: -1,
                     balance: null,
                     cachBackBalance: 0,
                     cashBackForAllPercent: 1,
                     isCountTheBalance: true,
+                    isCountBalanceInMainAccount: true,
                     //resetCashBackDate: null,
                     isDeleted: false,
                     isCash: mainAccount.accountType == 1,
@@ -339,10 +346,10 @@ var AccountVue = new Vue({
             } else if (this.account.accountType == 8 || this.account.accountType == 6) {
 
                 let dateConfig = GetFlatpickrRuConfig(this.account.dateStart);
-                this.flatpickrDateStart = flatpickr('#account-date-start', dateConfig);
+                flatpickr('#account-date-start', dateConfig);
 
                 dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
-                this.flatpickrExpirationDate = flatpickr('#expirationDate', dateConfig);
+                flatpickr('#expirationDate', dateConfig);
             }
 
             $("#account-name").removeClass("is-invalid");
@@ -531,6 +538,22 @@ var AccountVue = new Vue({
             this.account.currencyID = currency.id;
             this.account.currency = currency;
             this.$forceUpdate();
+        },
+        setExpirationDate: function (years) {
+            if (this.account.dateStart) {
+                let m = moment();
+
+                if (this.account.dateStart.length <= 10) {
+                    m = moment(this.account.dateStart, 'YYYY/MM/DD');
+                } else {
+                    m = moment(this.account.dateStart);
+                }
+
+                this.account.expirationDate = m.add(years, "year").format();
+
+                dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
+                flatpickr('#expirationDate', dateConfig);
+            }
         }
     }
 });

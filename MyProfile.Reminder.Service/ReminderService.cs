@@ -83,7 +83,7 @@ namespace MyProfile.Reminder.Service
                             IsMail = y.IsMail,
                             IsSite = y.IsSite,
                             IsTelegram = y.IsTelegram,
-                            ExpirationDateTime = y.ExpirationDateTime.Value.AddMinutes(x.Reminder.OlsonTZ.TimeZone.UTCOffsetMinutes),
+                            ExpirationDateTime = y.ExpirationDateTime, // error -> .HasValue && x.Reminder.OlsonTZID != null ? y.ExpirationDateTime.Value.AddMinutes(x.Reminder.OlsonTZ.TimeZone.UTCOffsetMinutes) : y.ExpirationDateTime.Value,
                             IsRepeat = y.IsRepeat
                         }).ToList() : null
                  })
@@ -104,6 +104,11 @@ namespace MyProfile.Reminder.Service
 
                 reminders[i].DateReminderString = reminders[i].DateReminder.Value.ToString("dd.MM.yyyy");
                 reminders[i].RepeatEveryName = LocalizatoinRepeat(reminders[i].RepeatEvery);
+
+                for (int y = 0; y < reminders[i].Notifications.Count; y++)
+                {
+                    reminders[i].Notifications[y].ExpirationDateTime = reminders[i].Notifications[y].ExpirationDateTime.Value.AddMinutes(reminders[i].OffSetClient);
+                }
             }
 
             return reminders;

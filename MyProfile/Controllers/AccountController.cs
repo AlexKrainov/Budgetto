@@ -34,8 +34,9 @@ namespace MyProfile.Controllers
         public JsonResult GetEnvironment()
         {
             var bankTypes = accountService.GetBankTypesAndAcountTypes();
-            
-            return Json(new { isOk = true, bankTypes });
+            var paymentSystems = accountService.GetPaymentSystems();
+
+            return Json(new { isOk = true, bankTypes, paymentSystems });
         }
         
         [HttpGet]

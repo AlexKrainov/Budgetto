@@ -232,8 +232,7 @@ namespace MyProfile
                 {
                     context.Request.Path = "/Error/Error_404";
                     await next();
-                }
-                if (context.Response.StatusCode == 500)
+                }else if (context.Response.StatusCode == 500)
                 {
                     context.Request.Path = "/Error/Error_500";
                     await next();

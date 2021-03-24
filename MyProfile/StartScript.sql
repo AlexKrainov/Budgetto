@@ -182,6 +182,13 @@ INSERT [Banks] ([ID], [Name], [LogoCircle], [BankTypeID]) VALUES (2500, N'Дру
 SET IDENTITY_INSERT [Banks] OFF
 GO
 
+update Banks  set LogoRectangle = '/resources/banks/open_rectangle.svg', BrandColor = '#09ccff' where ID = 5
+update Banks  set LogoRectangle = '/resources/banks/tinkoff_bank.svg', BrandColor = '#ffdd2d' where ID = 6
+update Banks set LogoCircle = '/resources/banks/sber_circle.svg', LogoRectangle = '/resources/banks/sber_rectangle.svg', BrandColor = '#21A038' where ID = 1
+update Banks  set LogoRectangle = '/resources/banks/alfa_bank_rectangle.png', BrandColor = '#ef3124' where ID = 4
+update Banks  set LogoRectangle = '/resources/banks/vtb_rectangle.svg', LogoCircle = '/resources/banks/vtb_cicle.svg', BrandColor = '#09ccff' where ID = 2
+update Banks  set LogoRectangle = '/resources/banks/gasprom_rectangle.svg', LogoCircle = '/resources/banks/gasprom_circle.svg', BrandColor = '#0d356c' where ID = 3
+
 SET IDENTITY_INSERT [SchedulerTasks] ON
 
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
@@ -213,3 +220,13 @@ INSERT INTO TelegramAccountStatuses ( ID, Name, CodeName) Values (4,'Забло�
 
 
 SET IDENTITY_INSERT [TelegramAccountStatuses] OFF
+
+
+
+INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('Visa', 'Visa', '/resources/payment_system/visa.png', 1)
+INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('Mastercard', 'Mastercard', '/resources/payment_system/mastercard.svg', 1)
+INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('Maestro', 'Maestro', '/resources/payment_system/maestro.png', 1)
+INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('American Express', 'AmericanExpress', '/resources/payment_system/american-express.png', 0)
+INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('PayPal', 'Paypal', '/resources/payment_system/paypal.png', 0)
+INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('Western Union', 'WesternUnion', '/resources/payment_system/western-union.png', 0)
+INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('Mir', 'Mir', '/resources/payment_system/mir.svg', 1)

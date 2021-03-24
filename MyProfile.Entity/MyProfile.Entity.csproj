@@ -137,6 +137,8 @@
     <Compile Remove="Migrations\20210317130650_129.Designer.cs" />
     <Compile Remove="Migrations\20210318084845_130.cs" />
     <Compile Remove="Migrations\20210318084845_130.Designer.cs" />
+    <Compile Remove="Migrations\20210323120504_136.cs" />
+    <Compile Remove="Migrations\20210323120504_136.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

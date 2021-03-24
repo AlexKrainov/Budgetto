@@ -62,5 +62,7 @@ namespace MyProfile.Entity.ModelView.Account
         public double? Percent { get; set; }
         public decimal? Input { get; set; }
         public decimal? Output { get; set; }
+        public bool IsCountBalanceInMainAccount { get; set; }
+        public string PaymentLogo { get; set; }
     }
 }

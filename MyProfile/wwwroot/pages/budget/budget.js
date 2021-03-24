@@ -603,6 +603,14 @@
             }
             AccountTransferVue.transferMoney(accounts, accountID);
         },
+        showHideAccounts: function (mainAccount, isHide) {
+            for (var i = 0; i < mainAccount.accounts.length; i++) {
+                if (mainAccount.accounts[i].isHideCurrentAccount != isHide) {
+                    mainAccount.accounts[i].isHideCurrentAccount = isHide;
+                    AccountVue.showHide(mainAccount.accounts[i], isHide);
+                }
+            }
+        },
 
         //resize and refresh
         refresh: function (typeRefresh) {

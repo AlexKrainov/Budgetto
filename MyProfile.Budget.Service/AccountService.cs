@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Common.Service;
+using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Account;
 using MyProfile.Entity.Repository;
@@ -17,19 +18,23 @@ namespace MyProfile.Budget.Service
         private IBaseRepository repository;
         private IMemoryCache cache;
         private UserLogService userLogService;
+        private CurrencyService сurrencyService;
 
         public AccountService(IBaseRepository repository,
             IMemoryCache cache,
-            UserLogService userLogService)
+            UserLogService userLogService,
+            CurrencyService сurrencyService)
         {
             this.repository = repository;
             this.cache = cache;
             this.userLogService = userLogService;
+            this.сurrencyService = сurrencyService;
         }
 
         public List<MainAccountModelView> GetMainAccounts(Guid currentUserID)
         {
             var now = DateTime.Now.ToUniversalTime();
+            var currentUser = UserInfo.Current;
 
             var mainAccounts = repository.GetAll<Account>(x => x.UserID == currentUserID && x.IsDeleted == false && x.ParentAccountID == null)
             .Select(y => new MainAccountModelView
@@ -43,6 +48,14 @@ namespace MyProfile.Budget.Service
                 Description = y.Description,
                 AccountType = (AccountTypes)y.AccountTypeID,
                 AccountIcon = y.AccountType.Icon,
+                CurrencyID = y.CurrencyID,
+                Currency = new Entity.ModelView.Currency.CurrencyClientModelView
+                {
+                    id = y.CurrencyID ?? 0,
+                    codeName = y.Currency.CodeName,
+                    specificCulture = y.Currency.SpecificCulture,
+                    icon = y.Currency.Icon,
+                },
 
                 IsShow = true,
                 IsHideCurrentAccount = y.IsHide,
@@ -61,6 +74,8 @@ namespace MyProfile.Budget.Service
                         AccountType = (AccountTypes)x.AccountTypeID,
                         AccountTypeName = x.AccountType.Name,
                         AccountIcon = x.AccountType.Icon,
+                        PaymentSystemID = x.PaymentSystemID,
+                        PaymentLogo = x.PaymentSystemID != null ? x.PaymentSystem.Logo : null,
                         CurrencyID = x.CurrencyID ?? 0,
                         CurrencyIcon = x.Currency.Icon,
                         Currency = new Entity.ModelView.Currency.CurrencyClientModelView
@@ -86,6 +101,7 @@ namespace MyProfile.Budget.Service
                         CashBackForAllPercent = x.CachbackForAllPercent,
                         ResetCashBackDate = x.ResetCachbackDate,
                         IsCountTheBalance = x.IsCountTheBalance,
+                        IsCountBalanceInMainAccount = x.IsCountBalanceInMainAccount,
 
                         IsShow = true,
                         IsCash = x.AccountTypeID == (int)AccountTypes.Cash,
@@ -102,12 +118,12 @@ namespace MyProfile.Budget.Service
             .OrderBy(x => x.ID)
             .ToList();
 
-            for (int y = 0; y < mainAccounts.Count; y++)
-            {
-                for (int i = 0; i < mainAccounts[y].Accounts.Count; i++)
-                {
-                    var account = mainAccounts[y].Accounts[i];
+            var currencyRates = сurrencyService.GetRatesByDate(now, currentUser.UserSessionID);
 
+            foreach (var mainAccount in mainAccounts)
+            {
+                foreach (var account in mainAccount.Accounts)
+                {
                     if (account.AccountType == AccountTypes.InvestmentsIIS
                         && account.DateStart.HasValue
                         && account.ExpirationDate.HasValue)
@@ -116,7 +132,41 @@ namespace MyProfile.Budget.Service
                         var leftDays = (account.ExpirationDate.Value - now).TotalDays;
                         account.Percent = 100 - Math.Round(leftDays / allDays * 100, 2);
                     }
+
+                    try
+                    {
+                        if (account.IsCountBalanceInMainAccount && mainAccount.CurrencyID != null)
+                        {
+                            if (mainAccount.CurrencyID == account.CurrencyID)
+                            {
+                                mainAccount.Balance += account.Balance;
+                            }
+                            else
+                            {
+                                if (mainAccount.Currency.codeName == "RUB")
+                                {
+                                    mainAccount.Balance += account.Balance * currencyRates.FirstOrDefault(x => x.CharCode == account.Currency.codeName).Rate;
+                                }
+                                else if (account.Currency.codeName == "RUB")
+                                {
+                                    mainAccount.Balance += account.Balance / currencyRates.FirstOrDefault(x => x.CharCode == mainAccount.Currency.codeName).Rate;
+                                }
+                                else
+                                {
+                                    var mainRate = currencyRates.FirstOrDefault(x => x.CharCode == mainAccount.Currency.codeName).Rate;
+                                    var accRate = currencyRates.FirstOrDefault(x => x.CharCode == account.Currency.codeName).Rate;
+
+                                    mainAccount.Balance += (accRate / mainRate) * account.Balance;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        mainAccount.ConvertError = true;
+                    }
                 }
+
             }
 
             return mainAccounts;
@@ -137,6 +187,8 @@ namespace MyProfile.Budget.Service
                       AccountType = (AccountTypes)x.AccountTypeID,
                       AccountTypeName = x.AccountType.Name,
                       AccountIcon = x.AccountType.Icon,
+                      PaymentSystemID = x.PaymentSystemID,
+                      PaymentLogo = x.PaymentSystemID != null ? x.PaymentSystem.Logo : null,
                       CurrencyID = x.CurrencyID ?? 0,
                       CurrencyIcon = x.Currency.Icon,
                       Currency = new Entity.ModelView.Currency.CurrencyClientModelView
@@ -349,6 +401,7 @@ namespace MyProfile.Budget.Service
                     UserID = currentUser.ID,
                     IsDefault = account.IsDefault,
                     Description = account.Description,
+                    PaymentSystemID = account.PaymentSystemID,
 
                     BankID = account.BankID,
                     DateStart = account.DateStart,
@@ -362,6 +415,7 @@ namespace MyProfile.Budget.Service
                     CachbackForAllPercent = account.CashBackForAllPercent,
                     ResetCachbackDate = account.ResetCashBackDate,
                     IsCountTheBalance = account.IsCountTheBalance,
+                    IsCountBalanceInMainAccount = account.IsCountBalanceInMainAccount,
 
                     IsHide = account.IsHideCurrentAccount,
 
@@ -423,8 +477,14 @@ namespace MyProfile.Budget.Service
                     accountDB.Name = account.Name;
                     accountDB.IsDefault = account.IsDefault;
                     accountDB.IsCountTheBalance = account.IsCountTheBalance;
+                    accountDB.IsCountBalanceInMainAccount = account.IsCountBalanceInMainAccount;
+                    accountDB.PaymentSystemID = account.PaymentSystemID;
 
-                    //accountDB.CurrencyID = account.CurrencyID;
+                    //User can change currency only for MainAccount , it's only for display the balance sum
+                    if (accountDB.ParentAccountID == null)
+                    {
+                        accountDB.CurrencyID = account.CurrencyID;
+                    }
 
                     if (accountDB.AccountType.ID != (int)AccountTypes.Cash)
                     {
@@ -590,6 +650,7 @@ namespace MyProfile.Budget.Service
                 accountDB.AccountHistories.Add(accountHistory);
 
                 repository.Update(accountDB, true);
+                userLogService.CreateUserLog(currentUser.UserSessionID, accountDB.IsHide ? UserLogActionType.Account_Toggle_Hide : UserLogActionType.Account_Toggle_Show);
             }
             catch (Exception ex)
             {
@@ -753,6 +814,7 @@ namespace MyProfile.Budget.Service
                 ResetCachbackDate = accountDB.ResetCachbackDate,
                 UserID = accountDB.UserID,
                 IsCountTheBalance = accountDB.IsCountTheBalance,
+                IsCountBalanceInMainAccount = accountDB.IsCountBalanceInMainAccount,
             };
 
             return JsonConvert.SerializeObject(account, Formatting.Indented);
@@ -789,6 +851,30 @@ namespace MyProfile.Budget.Service
 
             return accountTypes;
         }
+
+        public List<ShortPaymentSystemViewModel> GetPaymentSystems()
+        {
+            List<ShortPaymentSystemViewModel> paymentSystems;
+
+            if (cache.TryGetValue(typeof(ShortPaymentSystemViewModel).Name, out paymentSystems) == false)
+            {
+                paymentSystems = repository.GetAll<PaymentSystem>()
+                    .Where(x => x.IsVisible)
+                    .Select(x => new ShortPaymentSystemViewModel
+                    {
+                        ID = x.ID,
+                        Name = x.Name,
+                        CodeName = x.CodeName,
+                        Logo = x.Logo
+                    })
+                    .ToList();
+
+                cache.Set(typeof(ShortPaymentSystemViewModel).Name, paymentSystems, DateTime.Now.AddDays(15));
+            }
+
+            return paymentSystems;
+        }
+
 
         public List<BankTypeModelView> BankTypesAndBanks()
         {

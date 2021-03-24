@@ -1,19 +1,19 @@
 ﻿<!-- Layout footer -->
-<nav class="layout-footer footer bg-footer-theme">
+<!--<nav class="layout-footer footer bg-footer-theme">
     <div class="container-fluid d-flex flex-wrap justify-content-between  container-p-x pb-3 pt-3">
         <div>
-            Разработка сайта by
+            Сайт разработан при подджержке
             <img src="~/img/raynovgroup-logo.ico" class="ui-w-20" />
             <a href="https://www.raynovgroup.com" target="_blank" class="footer-text font-weight-bolder text-decoration-hover">RaynovGroup</a> ©
         </div>
 
         <div>
-            <a href="https://budgetto.org" target="_blank" class="footer-link">О продукте</a>
-            @*<a asp-area="Help" asp-controller="Center" asp-action="Index" class="footer-link pt-3 ml-4">Help-center</a>*@
-            @*<a href="javascript:void(0)" class="footer-link pt-3 ml-4">Contact</a>*@
-            <a asp-area="" asp-controller="Feedback" asp-action="Create" class="footer-link ml-4">
-                @*<i class="sidenav-icon pe-7s-display1"></i>*@
-                Обратная связь
+            <a href="https://budgetto.org" target="_blank" class="footer-link">О продукте</a>-->
+@*<a asp-area="Help" asp-controller="Center" asp-action="Index" class="footer-link pt-3 ml-4">Help-center</a>*@
+@*<a href="javascript:void(0)" class="footer-link pt-3 ml-4">Contact</a>*@
+<!--<a asp-area="" asp-controller="Feedback" asp-action="Create" class="footer-link ml-4">-->
+@*<i class="sidenav-icon pe-7s-display1"></i>*@
+<!--Обратная связь
             </a>
             <a href="mailto:support@budgetto.org?subject=Предложение по сайту app.budgetto.org" target="_blank" class="footer-link ml-4">
                 support@budgetto.org
@@ -25,9 +25,102 @@
         <div class="">
             <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="footer-link mr-4"
                onclick="ShowDocument('personal_data_processing_policy')">Политика конфиденциальности</a>
-            <a href="~/documents/terms_of_use.pdf" target="_blank" class="footer-link mr-4" 
+            <a href="~/documents/terms_of_use.pdf" target="_blank" class="footer-link mr-4"
                onclick="ShowDocument('terms_of_use')">Пользовательское соглашение</a>
         </div>
         <div class="">© @DateTime.Now.Year Управление финансами Budgetto.org</div>
+    </div>
+</nav>-->
+<nav class="footer bg-dark pt-2">
+    <div class="container pt-5">
+        <div class="row">
+
+            <div class="col-lg-3 pr-lg-4 pb-5">
+                <img src="/img/Logo-min.png" style="width: 149px;margin-left: -5px;">
+                <p>Все ваши финансы на одной странице. Привычный учет всех ваших финансов в таблице.</p>
+                @*<a class="text-twitter" href="#">
+                        <i class="ion ion-logo-twitter"></i>
+                    </a>
+                    &nbsp; &nbsp;
+                    <a class="text-facebook" href="#">
+                        <i class="ion ion-logo-facebook"></i>
+                    </a>
+                    &nbsp; &nbsp;
+                    <a class="text-instagram" href="#">
+                        <i class="ion ion-logo-instagram"></i>
+                    </a>*@
+            </div>
+
+            <div class="col">
+                <div class="row">
+                    <div class="col pb-4">
+                        <div class="footer-text small font-weight-bold mb-3">О НАС</div>
+                        <a href="#" class="footer-link d-block pb-2">Кто мы</a>
+                        <a href="#" class="footer-link d-block pb-2">Наша история</a>
+
+
+                    </div>
+                    <div class="col pb-4">
+                        <div class="footer-text small font-weight-bold mb-3">ПОДДЕРЖКА</div>
+                        <a asp-area="Help" asp-controller="Center" asp-action="Index" class="footer-link d-block pb-2">
+                            Help center
+                        </a>
+                        <a asp-area="" asp-controller="Feedback" asp-action="Create" class="footer-link d-block pb-2">
+                            Обратная связь
+                        </a>
+                        <a href="mailto:support@budgetto.org?subject=Предложение по сайту app.budgetto.org" target="_blank" class="footer-link d-block pb-2">
+                            support@budgetto.org
+                        </a>
+                    </div>
+                    <div class="col pb-4">
+                        <div class="footer-text small font-weight-bold mb-3">ПОМОГИТЕ НАМ УЛУЧШИТЬ ПРОДУКТ ДЛЯ ВАС</div>
+                        <a class="footer-link d-block pb-2" href="https://yandex.ru/poll/enter/uiRaJWRzrQEPZKoHhcHJ6" target="_blank"><i class="ion ion-md-checkbox-outline align-middle text-big mr-2"></i><u> Пройдите наш опрос</u></a>
+                        <a href="#" class="footer-link d-block pb-2">Запишитесь на интервью</a>
+                        <a href="#" class="footer-link d-block pb-2">Напишите нам все ваши пожелания/предложения/замечания <br /> +7 (926) 794-22-09  <i class="fab fa-whatsapp"></i>  <i class="fab fa-telegram-plane"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="col-lg-4 pb-4 pl-lg-4">
+                    <div class="footer-text small font-weight-bold mb-3">ПОСЛЕДНИЕ ДОРАБОТКИ</div>
+
+                    <div class="media mb-3">
+
+                        <div class="media-body">
+                            <h6 class="mb-2"><a href="#" class="footer-text">Добавили новый вид счетов для банков/брокеров/наличных</a></h6>
+                            <div class="small">Март 22, 2021</div>
+                        </div>
+                    </div>
+                    <div class="media mb-3">
+
+                        <div class="media-body">
+                            <h6 class="mb-2"><a href="#" class="footer-text">Добавили систему уведомлений</a></h6>
+                            <div class="small">Март 15, 2021</div>
+                        </div>
+                    </div>
+                    <div class="media">
+
+                        <div class="media-body">
+                            <h6 class="mb-2"><a href="#" class="footer-text">Добавлена панель "Общая сводка"</a></h6>
+                            <div class="small">Февраль 1, 2021</div>
+                        </div>
+                    </div>
+
+                </div>*@
+        </div>
+    </div>
+
+    <div class="bg-light">
+        <div class="container py-3">
+            <div>
+                © @DateTime.Now.Year Управление финансами Budgetto.org
+                <div class="float-right">
+                    <a href="~/documents/personal_data_processing_policy.pdf" target="_blank" class="footer-link mr-4"
+                       onclick="ShowDocument('personal_data_processing_policy')">Политика конфиденциальности</a>
+                    <a href="~/documents/terms_of_use.pdf" target="_blank" class="footer-link mr-4"
+                       onclick="ShowDocument('terms_of_use')">Пользовательское соглашение</a>
+                </div>
+            </div>
+        </div>
     </div>
 </nav>

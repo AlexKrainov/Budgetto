@@ -161,6 +161,8 @@
         public const string Account_Delete = "Account_Delete";
         public const string Account_Recovery = "Account_Recovery";
         public const string Account_Toggle = "Account_Toggle";
+        public const string Account_Toggle_Hide = "Account_Toggle_Hide";
+        public const string Account_Toggle_Show = "Account_Toggle_Show";
         public const string Account_TryToDeleteLastAccount = "Account_TryToDeleteLastAccount";
         public const string Account_TransferMoney= "Account_TransferMoney";
 

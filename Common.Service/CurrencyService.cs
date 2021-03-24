@@ -1,21 +1,12 @@
 ﻿using Common.Service.Curency;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Currency;
 using MyProfile.Entity.Repository;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 namespace Common.Service
 {
     public class CurrencyService
@@ -74,6 +65,13 @@ namespace Common.Service
             GetCurrency getCurrency = new GetCurrency(repository, cache, GetCurrencyInfo());
 
             return getCurrency.GetRateByCode(date, charCode, userSessionID);
+        }
+
+        public List<CurrencyRateHistory> GetRatesByDate(DateTime date, Guid? userSessionID = null)
+        {
+            GetCurrency getCurrency = new GetCurrency(repository, cache, GetCurrencyInfo());
+
+            return getCurrency.GetRatesByDate(date, userSessionID);
         }
 
     }

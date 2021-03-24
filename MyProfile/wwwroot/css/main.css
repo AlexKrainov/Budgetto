@@ -789,3 +789,12 @@ html.dark-style .tagify__input::before {
 .hover-border-secondary:hover {
     border-color: #8897AA !important;
 }
+
+.payment-max-width {
+    max-width: 70px;
+}
+
+.ui-payment-smaller {
+    height: 20px;
+    max-width: 55px;
+}

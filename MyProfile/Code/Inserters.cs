@@ -31,8 +31,8 @@ namespace MyProfile.Code
             now = DateTime.Now;
 
 
-            BanksLoading();
-            CreateParentAccount();
+            //BanksLoading();
+            //CreateParentAccount();
             //CreateTelegramBotAccount();
             //CreateTelegramAccountStatus();
             // LoadTimeZone();

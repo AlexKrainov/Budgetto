@@ -1,4 +1,5 @@
 ﻿using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.Currency;
 using System.Collections.Generic;
 
 namespace MyProfile.Entity.ModelView.Account
@@ -36,5 +37,8 @@ namespace MyProfile.Entity.ModelView.Account
         public int? BankTypeID { get; set; }
         public bool IsShow { get; set; }
         public bool IsHideCurrentAccount { get; set; }
+        public int? CurrencyID { get; set; }
+        public CurrencyClientModelView Currency { get; set; }
+        public bool ConvertError { get; set; }
     }
 }

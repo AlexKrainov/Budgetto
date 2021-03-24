@@ -56,7 +56,7 @@
             }
         });
 
-                                                                                                                                                                                                       // $('#modal-record1').modal('show');
+                                                                                                                                                                                                               // $('#modal-record1').modal('show');
     </script>
 }
 
@@ -467,8 +467,13 @@
                     <img alt="тест" src="/resources/banks/bcs_rectangle.svg" class="ui-w-120 m-3">
                     <span class="text-primary text-xlarge m-3 pe-7s-culture" style="display: none;"></span>
                     <div class="media-body">
-                        <a href="javascript:void(0)" class="d-block text-body text-large">тест</a>
-                        <div class="text-muted small">БКС</div>
+                        <span class="text-muted small">My name</span>
+                        <div class="text-large font-weight-semibold">$32,223.44</div>
+                        <span class="small">
+                            <span class="text-muted">Банк: </span>БКС&nbsp;&nbsp;
+                            <span class="text-muted">Скрытых: </span>2&nbsp;&nbsp;
+                            <span class="text-muted">Суммируется: </span>2 из 3
+                        </span>
                     </div>
                     <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow" style="position: absolute; right: 10px; top: 5px;"><i class="ion ion-ios-more"></i></button> <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" style="position: absolute; right: 13px; top: 13px; display: none;"></i> <div class="dropdown-menu dropdown-menu-right"><a href="javascript:void(0)" class="dropdown-item" style="display: none;">Добавить наличный счет</a> <a href="javascript:void(0)" class="dropdown-item">Добавить счет</a> <a href="javascript:void(0)" class="dropdown-item" style="display: none;">Редактировать папку наличных</a> <a href="javascript:void(0)" class="dropdown-item">Редактировать организацию</a> <a href="javascript:void(0)" class="dropdown-item text-danger" style="display: none;">Удалить папку наличных</a></div>
                 </div>
@@ -477,6 +482,7 @@
                         <div class="card card-condenced mt-2 border-secondary">
                             <div class="card-body media align-items-center px-3 py-2">
                                 <div class="media-body ml-2">
+                                    <img src="https://uxpowered.com/products/appwork/v160/assets_/img/payment/MasterCard-light.png" class="ui-payment-small mr-1" alt="">
                                     <span class="text-muted small">my first Broker</span>
                                     <span class="badge badge-outline-secondary ml-2">Брокерский счет</span>
                                     <br>
@@ -505,7 +511,8 @@
                         <div class="card card-condenced mt-2 border-secondary">
                             <div class="card-body media align-items-center px-3 py-2">
                                 <div class="media-body ml-2">
-                                    <span class="text-muted small">my first Broker</span>
+                                    <img src="https://uxpowered.com/products/appwork/v160/assets_/img/payment/Visa-light.png" class="ui-payment-small mr-1" alt="">
+                                    <span class="text-muted small">4879</span>
                                     <span class="badge badge-outline-secondary ml-2">Брокерский счет (ИИС)</span>
                                     <br>
                                     <div class="text-large display-inline">
@@ -539,8 +546,91 @@
             </div>
         </div>
         <div class="col-md-4 px-1">
-            <div class="card mb-4">
-
+            <div class="card mb-4 border-primary">
+                <div class="media align-items-center">
+                    <img src="~/resources/banks/bm_bank_rectangle.gif" class="ui-w-120 mx-3" alt="">
+                    <div class="media-body">
+                        <a href="javascript:void(0)" class="d-block text-body text-large">Дом РФ Банк</a>
+                        @*<small>
+                                <span class="text-muted">Color:</span>
+                                <span class="ui-product-color ui-product-color-sm align-text-bottom" style="background:#e81e2c;"></span> &nbsp;
+                                <span class="text-muted">Size: </span> EU 37 &nbsp;
+                                <span class="text-muted">Ships from: </span> China
+                            </small>*@
+                    </div>
+                </div>
+                <div class="px-3" style=" margin-top: -5px;">
+                    <div class="card card-condenced mt-2 border-primary">
+                        <div class="card-body media align-items-center px-3 py-2">
+                            <div class="media-body ml-2">
+                                <span data-toggle="tooltip" title=""
+                                      class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-original-title="Счет по умолчанию"
+                                      style="left: -.625rem;top: -8px;"></span>
+                                <span class="text-muted small">Мой счет</span>
+                                <span class="badge badge-primary">Дебетовый счет</span>
+                                <br />
+                                <div class="text-large display-inline">$1,534</div>
+                                <span class="text-success ml-1">≈59,41 ₽</span>
+                            </div>
+                            <button type="button" data-toggle="dropdown" aria-expanded="false"
+                                    class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
+                                    style="position: absolute; right: 10px; top: 5px;">
+                                <i class="ion ion-ios-more"></i>
+                            </button>
+                            <span class="small text-muted float-right mt-1">20.03.2021</span>
+                        </div>
+                    </div>
+                    <div class="card card-condenced mt-2 border-primary">
+                        <div class="card-body media align-items-center px-3 py-2">
+                            <div class="media-body ml-2">
+                                <span class="text-muted small">Моя кредитка</span>
+                                <span class="badge badge-primary">Кредитка</span>
+                                <br />
+                                <div class="text-large display-inline">$1,534</div>
+                                <span class="text-success ml-1">≈59,41 ₽</span>
+                                <span class="small text-muted float-right mt-3">$2,000</span>
+                                <br />
+                                <div class="progress mt-1" style="height: 4px;">
+                                    <div class="progress-bar bg-warning" style="width: 56%; height: 3px;"></div>
+                                </div>
+                                <span class="small text-muted float-left mt-1">Нужно довнести $430</span>
+                                <span class="small text-muted float-right mt-1">20.03.2021</span>
+                            </div>
+                            <button type="button" data-toggle="dropdown" aria-expanded="false"
+                                    class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
+                                    style="position: absolute; right: 10px; top: 5px;">
+                                <i class="ion ion-ios-more"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card card-condenced mt-2 border-primary">
+                        <div class="card-body media align-items-center px-3 py-2">
+                            <div class="media-body ml-2">
+                                <span class="text-muted small">Мой вклад</span>
+                                <span class="badge badge-primary">Вклад</span>
+                                <span class="badge badge-success">+ 5%</span>
+                                <br />
+                                <div class="text-large display-inline">$5,000</div>
+                                <span class="text-success ml-1">+140 ₽</span>
+                                <span class="small text-muted float-right mt-3">$5,500</span>
+                                <br />
+                                <div class="progress mt-1" style="height: 4px;">
+                                    <div class="progress-bar bg-success" style="width: 56%; height: 3px;"></div>
+                                </div>
+                                <span class="small text-muted float-left mt-1">20.03.2021</span>
+                                <span class="small text-muted float-right mt-1">20.03.2022</span>
+                            </div>
+                            <button type="button" data-toggle="dropdown" aria-expanded="false"
+                                    class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
+                                    style="position: absolute; right: 10px; top: 5px;">
+                                <i class="ion ion-ios-more"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center my-2">
+                        <button type="button" class="btn btn-sm btn-outline-primary text-center">Добавить счет</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -589,7 +679,8 @@
                     Расходы в день
                 </div>
             </div>
-        </div> <div class="col-sm-6 col-xl-4 px-1" style="">
+        </div>
+        <div class="col-sm-6 col-xl-4 px-1" style="">
             <div class="card mb-2 gray-bottom-line  custom-card-hover">
                 <div class="card-body row" style="height: 98px;">
                     <div class="col-md-6">

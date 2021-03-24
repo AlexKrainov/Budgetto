@@ -34,6 +34,10 @@ namespace MyProfile.Entity.Model
 		/// Count this balance with all accounts.balance
 		/// </summary>
         public bool IsCountTheBalance { get; set; }
+		/// <summary>
+		/// Count this balance in a main account
+		/// </summary>
+        public bool IsCountBalanceInMainAccount { get; set; }
         public bool IsHide { get; set; }
         public bool IsDeleted { get; set; }
 		/// <summary>
