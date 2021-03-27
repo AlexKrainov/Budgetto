@@ -66,6 +66,8 @@ namespace MyProfile.Entity.Model
 		public int? PaymentSystemID { get; set; }
 		[ForeignKey("ParentAccount")]
 		public int? ParentAccountID { get; set; }
+		[ForeignKey("Card")]
+		public int? CardID { get; set; }
 
 
 		public virtual User User { get; set; }
@@ -74,6 +76,7 @@ namespace MyProfile.Entity.Model
 		public virtual Bank Bank { get; set; }
 		public virtual PaymentSystem PaymentSystem { get; set; }
 		public virtual Account ParentAccount { get; set; }
+		public virtual Card Card { get; set; }
 
 		public virtual ICollection<Record> BudgetRecords { get; set; }
         public virtual ICollection<RecordHistory> RecordHistories { get; set; }

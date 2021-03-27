@@ -30,12 +30,518 @@ namespace MyProfile.Code
             this.httpContextAccessor = httpContextAccessor;
             now = DateTime.Now;
 
-
+            //CreditRCardsLoading();
+            //DebitCardsLoading();
             //BanksLoading();
             //CreateParentAccount();
             //CreateTelegramBotAccount();
             //CreateTelegramAccountStatus();
             // LoadTimeZone();
+        }
+
+        private void CreditRCardsLoading()
+        {
+            if (repository.GetAll<Card>().Any(x => x.AccountTypeID == (int)AccountTypes.Installment) == false)
+            {
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\rassrochki-credit-cards.json"))
+                using (WebClient client = new WebClient())
+                {
+                    List<CreditCard> cards = (List<CreditCard>)JsonConvert.DeserializeObject<List<CreditCard>>(reader.ReadToEnd());
+                    List<Card> newCards = new List<Card>();
+
+                    var banks = repository.GetAll<Bank>().ToList();
+                    int visaID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Visa").FirstOrDefault().ID;
+                    int mastercardID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Mastercard").FirstOrDefault().ID;
+                    int maestroID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Maestro").FirstOrDefault().ID;
+                    int mirID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Mir").FirstOrDefault().ID;
+                    int payPalID = repository.GetAll<PaymentSystem>(x => x.CodeName == "PayPal").FirstOrDefault().ID;
+                    int americanExpressID = repository.GetAll<PaymentSystem>(x => x.CodeName == "AmericanExpress").FirstOrDefault().ID;
+
+                    foreach (var cardInfo in cards)
+                    {
+                        Card card = new Card();
+                        try
+                        {
+                            card.AccountTypeID = (int)AccountTypes.Installment;
+                            card.bankiruBankName = cardInfo.bankName;
+                            card.Raiting = cardInfo.raiting;
+                            card.Name = cardInfo.cardName;
+                            card.BankID = banks.FirstOrDefault(x => x.Name == cardInfo.bankName)?.ID ?? null;
+
+                            if (!cardInfo.bankiCardID.Contains("specials"))
+                            {
+                                card.bankiruCardID = int.Parse(cardInfo.bankiCardID.Replace("/", ""));
+                            }
+
+                            #region payment system
+                            card.CardPaymentSystems = new List<CardPaymentSystem>();
+
+                            foreach (var paymentSystem in cardInfo.paymentSystems)
+                            {
+                                if (paymentSystem.Contains("Visa"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = visaID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Mastercard"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = mastercardID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Maestro"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = maestroID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Мир"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = mirID
+                                    });
+                                }
+                                if (paymentSystem.Contains("American Express"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = americanExpressID
+                                    });
+                                }
+                                card.paymentSystems += paymentSystem + ",";
+                            }
+                            #endregion
+
+                            if (!string.IsNullOrEmpty(cardInfo.serviceCost))
+                            {
+                                cardInfo.serviceCost = cardInfo.serviceCost.Replace(" ", "").Replace("от", "");
+
+                                var serviceCost = cardInfo.serviceCost.Split("-");
+                                if (serviceCost.Length == 1)
+                                {
+                                    card.ServiceCostFrom = 0;
+                                    card.ServiceCostTo = decimal.Parse(serviceCost[0].Replace("до", ""));
+
+                                }
+                                else
+                                {
+                                    card.ServiceCostFrom = decimal.Parse(serviceCost[0]);
+                                    card.ServiceCostTo = decimal.Parse(serviceCost[1]);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(cardInfo.rate))
+                            {
+                                if (cardInfo.rate.Contains("от"))
+                                {
+                                    card.IsRateTo = true;
+                                }
+                                else if (cardInfo.rate.Contains("до"))
+                                {
+                                    card.IsRateTo = false;
+                                }
+                                else if (!cardInfo.rate.Contains("от") && !cardInfo.rate.Contains("до"))
+                                {
+                                    card.IsRateTo = null;
+                                }
+                                card.Rate = decimal.Parse(cardInfo.rate.Replace("до", "").Replace("от", "").Replace("%", "").Replace(",", "."));
+                            }
+
+                            if (!string.IsNullOrEmpty(cardInfo.cashback))
+                            {
+                                if (cardInfo.cashback == "нет")
+                                {
+                                }
+                                else if (cardInfo.cashback == "есть")
+                                {
+                                    card.IsCashback = true;
+                                    card.Cashback = 1;
+                                }
+                                else if (cardInfo.cashback.Contains("до"))
+                                {
+                                    card.IsCashback = true;
+                                    card.Cashback = decimal.Parse(cardInfo.cashback.Replace("до ", "").Replace("%", "").Replace(",", "."));
+                                }
+                            }
+
+                            if (cardInfo.creditLimit.Contains("до"))
+                            {
+                                card.CreditLimit = decimal.Parse(cardInfo.creditLimit.Replace("до", "").Replace(" ", ""));
+                            }
+                            else if (cardInfo.creditLimit.Contains("см. условия"))
+                            {
+                                card.CreditLimit = 0;
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
+
+                        if (cardInfo.src.Contains("i-individual-design-previ"))
+                        {
+                            card.IsCustomDesign = true;
+                        }
+                        else if (!string.IsNullOrEmpty(cardInfo.src) && !cardInfo.src.Contains("i-no-design-card"))
+                        {
+                            try
+                            {
+                                Random random = new Random();
+                                var n = random.Next(10000, 99999).ToString();
+
+                                string url = @"C:\Users\t3l3f\source\repos\MyProject\MyProfile\wwwroot\resources\tmp\" + n + "_small.png";
+                                client.DownloadFile(new Uri(cardInfo.src), url);
+                                card.SmallLogo = @"/resources/cards/" + n + "_small.png";
+                            }
+                            catch (Exception ex1)
+                            {
+
+                            }
+                        }
+                        newCards.Add(card);
+                    }
+
+                    repository.CreateRange(newCards, true);
+                }
+
+            }
+        }
+
+        private void CreditCardsLoading()
+        {
+            if (repository.GetAll<Card>().Any(x => x.AccountTypeID == (int)AccountTypes.Credit) == false)
+            {
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\credit-cards.json"))
+                using (WebClient client = new WebClient())
+                {
+                    List<CreditCard> cards = (List<CreditCard>)JsonConvert.DeserializeObject<List<CreditCard>>(reader.ReadToEnd());
+                    List<Card> newCards = new List<Card>();
+
+                    var banks = repository.GetAll<Bank>().ToList();
+                    int visaID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Visa").FirstOrDefault().ID;
+                    int mastercardID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Mastercard").FirstOrDefault().ID;
+                    int maestroID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Maestro").FirstOrDefault().ID;
+                    int mirID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Mir").FirstOrDefault().ID;
+                    int payPalID = repository.GetAll<PaymentSystem>(x => x.CodeName == "PayPal").FirstOrDefault().ID;
+                    int americanExpressID = repository.GetAll<PaymentSystem>(x => x.CodeName == "AmericanExpress").FirstOrDefault().ID;
+
+                    foreach (var cardInfo in cards)
+                    {
+                        Card card = new Card();
+                        try
+                        {
+                            card.AccountTypeID = (int)AccountTypes.Credit;
+                            card.bankiruBankName = cardInfo.bankName;
+                            card.Raiting = cardInfo.raiting;
+                            card.Name = cardInfo.cardName;
+                            card.BankID = banks.FirstOrDefault(x => x.Name == cardInfo.bankName)?.ID ?? null;
+
+                            if (!cardInfo.bankiCardID.Contains("specials"))
+                            {
+                                card.bankiruCardID = int.Parse(cardInfo.bankiCardID.Replace("/", ""));
+                            }
+
+                            #region payment system
+                            card.CardPaymentSystems = new List<CardPaymentSystem>();
+
+                            foreach (var paymentSystem in cardInfo.paymentSystems)
+                            {
+                                if (paymentSystem.Contains("Visa"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = visaID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Mastercard"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = mastercardID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Maestro"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = maestroID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Мир"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = mirID
+                                    });
+                                }
+                                if (paymentSystem.Contains("American Express"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = americanExpressID
+                                    });
+                                }
+                                card.paymentSystems += paymentSystem + ",";
+                            }
+                            #endregion
+
+                            if (!string.IsNullOrEmpty(cardInfo.serviceCost))
+                            {
+                                cardInfo.serviceCost = cardInfo.serviceCost.Replace(" ", "").Replace("от", "");
+
+                                var serviceCost = cardInfo.serviceCost.Split("-");
+                                if (serviceCost.Length == 1)
+                                {
+                                    card.ServiceCostFrom = 0;
+                                    card.ServiceCostTo = decimal.Parse(serviceCost[0].Replace("до", ""));
+
+                                }
+                                else
+                                {
+                                    card.ServiceCostFrom = decimal.Parse(serviceCost[0]);
+                                    card.ServiceCostTo = decimal.Parse(serviceCost[1]);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(cardInfo.rate))
+                            {
+                                if (cardInfo.rate.Contains("от"))
+                                {
+                                    card.IsRateTo = true;
+                                }
+                                else if (cardInfo.rate.Contains("до"))
+                                {
+                                    card.IsRateTo = false;
+                                }
+                                else if (!cardInfo.rate.Contains("от") && !cardInfo.rate.Contains("до"))
+                                {
+                                    card.IsRateTo = null;
+                                }
+                                card.Rate = decimal.Parse(cardInfo.rate.Replace("до", "").Replace("от", "").Replace("%", "").Replace(",", "."));
+                            }
+
+                            if (!string.IsNullOrEmpty(cardInfo.cashback))
+                            {
+                                if (cardInfo.cashback == "нет")
+                                {
+                                }
+                                else if (cardInfo.cashback == "есть")
+                                {
+                                    card.IsCashback = true;
+                                    card.Cashback = 1;
+                                }
+                                else if (cardInfo.cashback.Contains("до"))
+                                {
+                                    card.IsCashback = true;
+                                    card.Cashback = decimal.Parse(cardInfo.cashback.Replace("до ", "").Replace("%", "").Replace(",", "."));
+                                }
+                            }
+
+                            if (cardInfo.creditLimit.Contains("до"))
+                            {
+                                card.CreditLimit = decimal.Parse(cardInfo.creditLimit.Replace("до", "").Replace(" ", ""));
+                            }
+                            else if (cardInfo.creditLimit.Contains("см. условия"))
+                            {
+                                card.CreditLimit = 0;
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
+
+                        if (cardInfo.src.Contains("i-individual-design-previ"))
+                        {
+                            card.IsCustomDesign = true;
+                        }
+                        else if (!string.IsNullOrEmpty(cardInfo.src) && !cardInfo.src.Contains("i-no-design-card"))
+                        {
+                            try
+                            {
+                                Random random = new Random();
+                                var n = random.Next(10000, 99999).ToString();
+
+                                string url = @"C:\Users\t3l3f\source\repos\MyProject\MyProfile\wwwroot\resources\tmp\" + n + "_small.png";
+                                client.DownloadFile(new Uri(cardInfo.src), url);
+                                card.SmallLogo = @"/resources/cards/" + n + "_small.png";
+                            }
+                            catch (Exception ex1)
+                            {
+
+                            }
+                        }
+                        newCards.Add(card);
+                    }
+
+                    repository.CreateRange(newCards, true);
+                }
+
+            }
+        }
+
+        private void DebitCardsLoading()
+        {
+            if (repository.GetAll<Card>().Any() == false)
+            {
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\debitCards.json"))
+                using (WebClient client = new WebClient())
+                {
+                    List<DebitCard> cards = (List<DebitCard>)JsonConvert.DeserializeObject<List<DebitCard>>(reader.ReadToEnd());
+                    List<Card> newCards = new List<Card>();
+
+                    var banks = repository.GetAll<Bank>().ToList();
+                    int visaID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Visa").FirstOrDefault().ID;
+                    int mastercardID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Mastercard").FirstOrDefault().ID;
+                    int maestroID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Maestro").FirstOrDefault().ID;
+                    int mirID = repository.GetAll<PaymentSystem>(x => x.CodeName == "Mir").FirstOrDefault().ID;
+                    int payPalID = repository.GetAll<PaymentSystem>(x => x.CodeName == "PayPal").FirstOrDefault().ID;
+
+                    foreach (var cardInfo in cards)
+                    {
+                        Card card = new Card();
+                        try
+                        {
+                            card.AccountTypeID = (int)AccountTypes.Debed;
+                            card.bankiruBankName = cardInfo.bankName;
+                            card.Raiting = cardInfo.raiting;
+                            card.Name = cardInfo.cardName;
+                            card.BankID = banks.FirstOrDefault(x => x.Name == cardInfo.bankName)?.ID ?? null;
+
+                            if (!cardInfo.bankiCardID.Contains("specials"))
+                            {
+                                card.bankiruCardID = int.Parse(cardInfo.bankiCardID.Replace("/", ""));
+                            }
+
+                            #region payment system
+                            card.CardPaymentSystems = new List<CardPaymentSystem>();
+
+                            foreach (var paymentSystem in cardInfo.paymentSystems)
+                            {
+                                if (paymentSystem.Contains("Visa"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = visaID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Mastercard"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = mastercardID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Maestro"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = maestroID
+                                    });
+                                }
+                                if (paymentSystem.Contains("Мир"))
+                                {
+                                    card.CardPaymentSystems.Add(new CardPaymentSystem
+                                    {
+                                        PaymentSystemID = mirID
+                                    });
+                                }
+                                card.paymentSystems += paymentSystem + ",";
+                            }
+                            #endregion
+
+                            if (!string.IsNullOrEmpty(cardInfo.serviceCost))
+                            {
+                                cardInfo.serviceCost = cardInfo.serviceCost.Replace(" ", "").Replace("от", "");
+
+                                var serviceCost = cardInfo.serviceCost.Split("-");
+                                if (serviceCost.Length == 1)
+                                {
+                                    card.ServiceCostFrom = 0;
+                                    card.ServiceCostTo = decimal.Parse(serviceCost[0].Replace("до", ""));
+
+                                }
+                                else
+                                {
+                                    card.ServiceCostFrom = decimal.Parse(serviceCost[0]);
+                                    card.ServiceCostTo = decimal.Parse(serviceCost[1]);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(cardInfo.interest))
+                            {
+                                if (cardInfo.interest == "нет")
+                                {
+                                }
+                                else if (cardInfo.interest == "есть")
+                                {
+                                    card.IsInterest = true;
+                                    card.Interest = 1;
+                                }
+                                else if (cardInfo.interest.Contains("до"))
+                                {
+                                    card.IsInterest = true;
+                                    card.Interest = decimal.Parse(cardInfo.interest.Replace("до ", "").Replace("%", "").Replace(",", "."));
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(cardInfo.cashback))
+                            {
+                                if (cardInfo.cashback == "нет")
+                                {
+                                }
+                                else if (cardInfo.cashback == "есть")
+                                {
+                                    card.IsCashback = true;
+                                    card.Cashback = 1;
+                                }
+                                else if (cardInfo.cashback.Contains("до"))
+                                {
+                                    card.IsCashback = true;
+                                    card.Cashback = decimal.Parse(cardInfo.cashback.Replace("до ", "").Replace("%", "").Replace(",", "."));
+                                }
+                            }
+
+                            foreach (var bonus in cardInfo.bonuses)
+                            {
+                                card.bonuses += bonus + ",";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
+
+                        if (!string.IsNullOrEmpty(cardInfo.src) && cardInfo.src != "//cdn.banki.ru/static/common/dist/media/cards/i-no-design-card.png?3c9582f023" && !cardInfo.src.Contains("i-individual-design-previ"))
+                        {
+                            try
+                            {
+                                Random random = new Random();
+                                var n = random.Next(1000, 9999).ToString();
+
+                                string url = @"C:\Users\t3l3f\source\repos\MyProject\MyProfile\wwwroot\resources\cards\" + n + "_small.png";
+                                client.DownloadFile(new Uri(cardInfo.src), url);
+                                card.SmallLogo = @"/resources/cards/" + n + "_small.png";
+                            }
+                            catch (Exception ex1)
+                            {
+
+                            }
+                        }
+                        newCards.Add(card);
+                    }
+
+                    repository.CreateRange(newCards, true);
+                }
+
+            }
         }
 
         private void BanksLoading()
@@ -178,7 +684,6 @@ namespace MyProfile.Code
 
             }
         }
-
 
         private void LoadTimeZone()
         {
@@ -488,6 +993,34 @@ namespace MyProfile.Code
             public string name { get; set; }
             public string tels { get; set; }
             public string raiting { get; set; }
+        }
+
+        public class DebitCard
+        {
+            public string src { get; set; }
+            public string cardName { get; set; }
+            public string bankiCardID { get; set; }
+            public string bankName { get; set; }
+            public List<string> paymentSystems { get; set; }
+            public string interest { get; set; }
+            public string serviceCost { get; set; }
+            public List<string> bonuses { get; set; }
+            public string cashback { get; set; }
+            public int raiting { get; set; }
+        }
+
+        public class CreditCard
+        {
+            public string src { get; set; }
+            public string cardName { get; set; }
+            public string bankiCardID { get; set; }
+            public string bankName { get; set; }
+            public List<string> paymentSystems { get; set; }
+            public string rate { get; set; }
+            public string serviceCost { get; set; }
+            public string creditLimit { get; set; }
+            public string cashback { get; set; }
+            public int raiting { get; set; }
         }
     }
 }

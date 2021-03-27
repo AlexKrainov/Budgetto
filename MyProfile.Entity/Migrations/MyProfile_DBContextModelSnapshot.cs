@@ -37,6 +37,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<decimal?>("CachbackForAllPercent");
 
+                    b.Property<int?>("CardID");
+
                     b.Property<int?>("CurrencyID");
 
                     b.Property<DateTime>("DateCreate");
@@ -85,6 +87,8 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("AccountTypeID");
 
                     b.HasIndex("BankID");
+
+                    b.HasIndex("CardID");
 
                     b.HasIndex("CurrencyID");
 
@@ -336,6 +340,86 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("SectionTypeID");
 
                     b.ToTable("BudgetSections");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Card", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountTypeID");
+
+                    b.Property<int?>("BankID");
+
+                    b.Property<string>("BigLogo")
+                        .HasMaxLength(256);
+
+                    b.Property<decimal>("Cashback");
+
+                    b.Property<decimal>("CreditLimit");
+
+                    b.Property<int>("GracePeriod");
+
+                    b.Property<decimal>("Interest");
+
+                    b.Property<bool>("IsCashback");
+
+                    b.Property<bool>("IsCustomDesign");
+
+                    b.Property<bool>("IsInterest");
+
+                    b.Property<bool?>("IsRateTo");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(512);
+
+                    b.Property<int>("Raiting");
+
+                    b.Property<decimal>("Rate");
+
+                    b.Property<decimal>("ServiceCostFrom");
+
+                    b.Property<decimal>("ServiceCostTo");
+
+                    b.Property<string>("SmallLogo")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("bankiruBankName");
+
+                    b.Property<int>("bankiruCardID");
+
+                    b.Property<string>("bonuses");
+
+                    b.Property<string>("paymentSystems");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AccountTypeID");
+
+                    b.HasIndex("BankID");
+
+                    b.ToTable("Cards");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CardPaymentSystem", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CardID");
+
+                    b.Property<int>("PaymentSystemID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CardID");
+
+                    b.HasIndex("PaymentSystemID");
+
+                    b.ToTable("CardPaymentSystems");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Chart", b =>
@@ -2435,6 +2519,10 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("Accounts")
                         .HasForeignKey("BankID");
 
+                    b.HasOne("MyProfile.Entity.Model.Card", "Card")
+                        .WithMany("Accounts")
+                        .HasForeignKey("CardID");
+
                     b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
                         .WithMany()
                         .HasForeignKey("CurrencyID");
@@ -2496,6 +2584,31 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
                         .WithMany()
                         .HasForeignKey("SectionTypeID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Card", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.AccountType", "AccountType")
+                        .WithMany()
+                        .HasForeignKey("AccountTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.Bank", "Bank")
+                        .WithMany("Cards")
+                        .HasForeignKey("BankID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CardPaymentSystem", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Card", "Card")
+                        .WithMany("CardPaymentSystems")
+                        .HasForeignKey("CardID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.PaymentSystem", "PaymentSystem")
+                        .WithMany("CardPaymentSystems")
+                        .HasForeignKey("PaymentSystemID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Chart", b =>

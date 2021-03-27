@@ -26,9 +26,9 @@
                    title="Не удалось конвертировать некоторые счета"></i>
                 <br />
                 <span class="small">
-                    <span v-show="mainAccount.bankName != null && mainAccount.bankName != mainAccount.name">
+                    @*<span v-show="mainAccount.bankName != null && mainAccount.bankName != mainAccount.name">
                         <span class="text-muted">Банк: </span>{{ mainAccount.bankName }}&nbsp;&nbsp;
-                    </span>
+                    </span>*@
                     <span v-show="mainAccount.accounts.filter(x => x.isHideCurrentAccount).length">
                         <span class="text-muted">Скрытых: </span>{{ mainAccount.accounts.filter(x => x.isHideCurrentAccount).length }}&nbsp;&nbsp;
                     </span>

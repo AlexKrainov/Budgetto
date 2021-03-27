@@ -61,6 +61,21 @@ namespace MyProfile.Controllers
             return View();
         }
 
+        public IActionResult ParsingCard()
+        {
+            return View();
+        }
+
+        public IActionResult ParsingCreditCard()
+        {
+            return View();
+        }
+        
+        public IActionResult ParsingRasCard()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public JsonResult Load([FromBody] List<Month1> months)

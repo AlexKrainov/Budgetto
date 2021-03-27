@@ -43,10 +43,12 @@ namespace MyProfile.Entity.Model
 		public virtual BankType BankType { get; set; }
 
 		public virtual ICollection<Account> Accounts { get; set; }
+		public virtual ICollection<Card> Cards { get; set; }
 
 		public Bank()
 		{
 			this.Accounts = new HashSet<Account>();
+			this.Cards = new HashSet<Card>();
 		}
 
 	}

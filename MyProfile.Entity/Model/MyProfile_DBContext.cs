@@ -276,6 +276,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<OlsonTZID> OlsonTZIDs { get; set; }
         public virtual DbSet<PaymentSystem> PaymentSystems { get; set; }
         public virtual DbSet<BankType> BankTypes { get; set; }
+        public virtual DbSet<Card> Cards { get; set; }
+        public virtual DbSet<CardPaymentSystem> CardPaymentSystems { get; set; }
 
 
 

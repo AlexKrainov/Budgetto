@@ -20,10 +20,12 @@ namespace MyProfile.Entity.Model
         public bool IsVisible { get; set; }
 
 		public virtual ICollection<Account> Accounts { get; set; }
+		public virtual ICollection<CardPaymentSystem> CardPaymentSystems { get; set; }
 
 		public PaymentSystem()
 		{
 			this.Accounts = new HashSet<Account>();
+			this.CardPaymentSystems = new HashSet<CardPaymentSystem>();
 		}
 	}
 }
