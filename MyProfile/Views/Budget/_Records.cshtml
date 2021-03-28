@@ -10,8 +10,12 @@
                 <div>
                     <h5 class="mb-0 d-flex align-items-center">
                         @*<span class="ui-icon ui-feed-icon-min bg-success text-white">{{record.account.currencyIcon}}</span>*@
+                        <img class="ui-payment-small dropdown-toggle" data-toggle="dropdown" style="margin-right: 10px;"
+                             v-show="record.account.accountType != 1 && record.account.cardLogo"
+                             v-bind:src="record.account.cardLogo"
+                             v-bind:title="record.account.name" />
                         <img class="ui-payment-small mr-1" alt=""
-                             v-show="record.account.accountType != 1 && record.account.bankImage"
+                             v-show="record.account.accountType != 1 && record.account.bankImage && record.account.cardLogo == undefined"
                              v-bind:src="record.account.bankImage"
                              v-bind:title="record.account.name">
                         <i class="text-xlarge mt-1 text-primary mr-1"

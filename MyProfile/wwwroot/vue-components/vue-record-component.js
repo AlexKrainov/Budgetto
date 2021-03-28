@@ -66,25 +66,33 @@
                                 <div class="row records" v-for="record in records" v-show="record.isCorrect">
                                     <div class="col-1 col-sm-1 col-md-1 px-0 pl-3 mr-2" >
                                         <span class="ui-icon ui-feed-icon-min bg-success text-white">{{record.account.currencyIcon}}</span>
+                                        <img class="ui-payment-small dropdown-toggle" data-toggle="dropdown" style="margin-left: -20px;"
+                                            v-if="record.account.accountType != 1 && record.account.cardLogo"
+                                            v-bind:src="record.account.cardLogo" 
+                                            v-bind:title="record.account.name"/>
                                         <img class="ui-payment-small cursor-pointer dropdown-toggle" data-toggle="dropdown" 
-                                            v-if="record.account.accountType != 1 && record.account.bankImage"
+                                            v-else-if="record.account.accountType != 1 && record.account.bankImage"
                                             v-bind:src="record.account.bankImage" 
                                             data-placement="left" data-toggle-second="tooltip" v-bind:title="record.account.name"/>
                                         <i class="text-xlarge cursor-pointer mt-1" data-toggle="dropdown"
                                             v-if="record.account.accountType == 1 || (record.account.accountType != 1 && !record.account.bankImage)" 
                                             v-bind:class="record.account.accountIcon"
                                             data-placement="left" data-toggle-second="tooltip" v-bind:title="record.account.name"></i>
-                                        <div class="dropdown-menu" style="min-width: 300px;">
+                                        <div name="selectionOfAccount" class="dropdown-menu" style="min-width: 300px;">
                                             <a class="dropdown-item"
                                                href="javascript:void(0)"
                                                v-for="_account in accounts"
                                                v-show="_account.isDeleted == false || record.accountID == _account.id"
                                                v-bind:class="record.accountID == _account.id ? 'active' : ''"
-                                               v-on:click="record.accountID = _account.id; record.account = _account;">
+                                               v-on:click="selectedAccount(record, _account, $event)">
                                                 <img class="ui-payment-small"
-                                                    v-if="_account.accountType != 1 && _account.bankImage"
+                                                    v-if="_account.accountType != 1 && _account.cardLogo"
+                                                    v-bind:src="_account.cardLogo" 
+                                                    v-bind:title="_account.cardName"/>
+                                                <img class="ui-payment-small"
+                                                    v-else-if="_account.accountType != 1 && _account.bankImage"
                                                     v-bind:src="_account.bankImage" 
-                                                    v-bind:title="_account.bankName"/>
+                                                    v-bind:title="_account.bankName"/>  
                                                 <i class="text-xlarge mt-1"
                                                     v-if="_account.accountType == 1 || (_account.accountType != 1 && !_account.bankImage)" 
                                                     v-bind:class="_account.accountIcon"
@@ -1077,6 +1085,20 @@
                     this.historyComponent.dateTimeOfPayment = _date;
                 }
             }
+        },
+
+        selectedAccount: function (record, account, _event) {
+            record.accountID = account.id;
+            record.account = account;
+
+            if (_event.target.parentElement.localName == "div") {
+                _event.target.parentElement.className = _event.target.parentElement.className.replaceAll("show", "");
+            } else if (_event.target.parentElement.parentElement.localName == "div") {
+                _event.target.parentElement.parentElement.className = _event.target.parentElement.parentElement.className.replaceAll("show", "");
+            } else if (_event.target.parentElement.parentElement.parentElement.localName == "div") {
+                _event.target.parentElement.parentElement.parentElement.className = _event.target.parentElement.parentElement.parentElement.className.replaceAll("show", "");
+            }
+
         },
 
         //Helpers

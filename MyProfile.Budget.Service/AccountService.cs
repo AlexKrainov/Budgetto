@@ -378,7 +378,11 @@ namespace MyProfile.Budget.Service
                      PaymentSystemID = x.PaymentSystemID,
                      PaymentLogo = x.PaymentSystemID != null ? x.PaymentSystem.Logo : null,
 
-                     IsDeleted = x.IsDeleted
+                     IsDeleted = x.IsDeleted,
+
+                     CardID = x.CardID,
+                     CardName = x.CardID != null ? x.Card.Name : null,
+                     CardLogo = x.CardID != null ? x.Card.SmallLogo : null,
                  })
                  .ToList();
 

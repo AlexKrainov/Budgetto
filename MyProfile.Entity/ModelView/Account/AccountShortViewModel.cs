@@ -21,5 +21,8 @@ namespace MyProfile.Entity.ModelView.Account
         public string PaymentLogo { get; set; }
         public int? PaymentSystemID { get; set; }
         public decimal Balance { get; set; }
+        public int? CardID { get; set; }
+        public string CardName { get; set; }
+        public string CardLogo { get; set; }
     }
 }

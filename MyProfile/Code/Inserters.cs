@@ -30,8 +30,9 @@ namespace MyProfile.Code
             this.httpContextAccessor = httpContextAccessor;
             now = DateTime.Now;
 
-            CardJsonToCard();
             //CardToJson();
+            //CardJsonToCard();
+            
             //CreditRCardsLoading();
             //DebitCardsLoading();
             //BanksLoading();

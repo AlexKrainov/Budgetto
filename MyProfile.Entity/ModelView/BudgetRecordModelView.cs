@@ -119,5 +119,8 @@ namespace MyProfile.Entity.ModelView
         public string Name { get; set; }
         public string AccountIcon { get; set; }
         public string CurrencyIcon { get; set; }
+        public int? CardID { get; set; }
+        public string CardName { get; set; }
+        public string CardLogo { get; set; }
     }
 }

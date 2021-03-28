@@ -834,6 +834,9 @@ namespace MyProfile.Budget.Service
                       Name = x.Account.Name,
                       AccountIcon = x.Account.AccountType.Icon,
                       CurrencyIcon = x.Account.Currency.Icon,
+                      CardID = x.Account.CardID,
+                      CardName = x.Account.CardID != null ? x.Account.Card.Name : null,
+                      CardLogo = x.Account.CardID != null ? x.Account.Card.SmallLogo : null,
                   },
                   Tags = x.Tags
                   .Select(y => new RecordTag
@@ -891,6 +894,9 @@ namespace MyProfile.Budget.Service
                       Name = x.Account.Name,
                       AccountIcon = x.Account.AccountType.Icon,
                       CurrencyIcon = x.Account.Currency.Icon,
+                      CardID = x.Account.CardID,
+                      CardName = x.Account.CardID != null ? x.Account.Card.Name : null,
+                      CardLogo = x.Account.CardID != null ? x.Account.Card.SmallLogo : null,
                   },
                   Tags = x.Tags
                   .Select(y => new RecordTag
@@ -943,7 +949,10 @@ namespace MyProfile.Budget.Service
                       AccountType = x.Account.AccountTypeID,
                       BankImage = x.Account.Bank != null ? x.Account.Bank.LogoCircle : null,
                       Name = x.Account.Name,
-                      AccountIcon = x.Account.AccountType.Icon
+                      AccountIcon = x.Account.AccountType.Icon,
+                      CardID = x.Account.CardID,
+                      CardName = x.Account.CardID != null ? x.Account.Card.Name : null,
+                      CardLogo = x.Account.CardID != null ? x.Account.Card.SmallLogo : null,
                   },
                   Tags = x.Tags
                   .Select(y => new RecordTag

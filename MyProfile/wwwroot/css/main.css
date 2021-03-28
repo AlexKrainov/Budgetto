@@ -798,3 +798,8 @@ html.dark-style .tagify__input::before {
     height: 20px;
     max-width: 55px;
 }
+
+.footer.bg-dark {
+    background-color: #2e323a !important;
+    color: #9d9fa1;
+}
