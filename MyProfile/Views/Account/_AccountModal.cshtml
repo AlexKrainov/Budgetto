@@ -27,6 +27,7 @@
                             <a href="javascript:void(0)" class="d-block text-body text-large">{{ account.bankName }}</a>
                         </div>
                     </div>
+
                     <div class="form-row">
                         <div class="form-group col">
                             <label class="form-label">Тип счета</label>
@@ -38,6 +39,51 @@
                                     {{ accountType.name }}
                                 </option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="form-label">Карте</label>
+                            <div class="input-group input-money">
+                                <vue-select2-component data-id="account_card"
+                                                       url="/Account/GetCards"
+                                                       selected-property-name="text"
+                                                       data-width="88%"
+                                                       v-bind:multiple="false"
+                                                       v-bind:minimum-input-length="0"
+                                                       v-bind:is-save-localstorage="false"
+                                                       v-bind:post-params="{ bankID: account.bankID, accountTypeID: account.accountType }"
+                                                       v-bind:disabled="account.id != undefined"
+                                                       v-bind:on-selected="selectedCard"
+                                                       v-bind:on-unselected="unselectedCard"
+                                                       v-bind:metadata="[
+                                                         {text: '',
+                                                         propertyName: 'logo',
+                                                         isOption: true,
+                                                         isLogo: true,
+                                                         isPlaceholder: false},
+                                                         {text: '',
+                                                         propertyName: 'text',
+                                                         isOption: true,
+                                                         isPlaceholder: false},
+                                                        {text: 'Счет',
+                                                         propertyName: 'accountTypeName',
+                                                         isOption: true,
+                                                         isPlaceholder: false},
+                                                       {text: 'Банк',
+                                                         propertyName: 'bankName',
+                                                         isOption: true,
+                                                         isPlaceholder: false}
+                                                       ]"></vue-select2-component>
+                                <div class="input-group-prepend">
+                                    <img class="ui-payment-small" alt="" style="margin-top: 5px; margin-left: 5px;"
+                                         v-bind:src="account.cardLogo"
+                                         v-show="account.cardLogo" />
+                                    <span class="text-xlarge pe-7s-credit" style=" padding-left: 20px; padding-top: 7px;"
+                                          v-show="!account.cardLogo"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -146,7 +192,7 @@
             </div>
         </div>*@
 
-                    <div class="form-row mt-3">
+                    @*<div class="form-row mt-3">
                         <div class="form-group col">
                             <label class="form-label">Система платежей</label>
                             <div class="text-center">
@@ -158,7 +204,7 @@
                                      v-on:click="account.paymentSystemID != paymentSystem.id ? account.paymentSystemID = paymentSystem.id : account.paymentSystemID = null">
                             </div>
                         </div>
-                    </div>
+                    </div>*@
 
                     <div id="section-description" class="form-row mt-3">
                         <div class="form-group col mb-0">

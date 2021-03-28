@@ -30,6 +30,8 @@ namespace MyProfile.Code
             this.httpContextAccessor = httpContextAccessor;
             now = DateTime.Now;
 
+            CardJsonToCard();
+            //CardToJson();
             //CreditRCardsLoading();
             //DebitCardsLoading();
             //BanksLoading();
@@ -37,6 +39,62 @@ namespace MyProfile.Code
             //CreateTelegramBotAccount();
             //CreateTelegramAccountStatus();
             // LoadTimeZone();
+        }
+
+        private void CardJsonToCard()
+        {
+            //if (repository.GetAll<Card>().Any() == false)
+            {
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\CardToProd.json"))
+                {
+                    List<Card> cards = (List<Card>)JsonConvert.DeserializeObject<List<Card>>(reader.ReadToEnd());
+
+                    //repository.Create(cards, true);
+                }
+            }
+
+        }
+
+        private void CardToJson()
+        {
+            using (StreamWriter writer = new StreamWriter(hostingEnvironment.WebRootPath + @"\\json\\CardToProd.json"))
+            {
+                var cards = repository.GetAll<Card>()
+                     .Select(x => new Card
+                     {
+                         AccountTypeID = x.AccountTypeID,
+                         BankID = x.BankID,
+                         bankiruCardID = x.bankiruCardID,
+                         BigLogo = x.BigLogo,
+                         bonuses = x.bonuses,
+                         Cashback = x.Cashback,
+                         CreditLimit = x.CreditLimit,
+                         GracePeriod = x.GracePeriod,
+                         Interest = x.Interest,
+                         IsCashback = x.IsCashback,
+                         IsCustomDesign = x.IsCustomDesign,
+                         IsInterest = x.IsInterest,
+                         IsRateTo = x.IsRateTo,
+                         Name = x.Name,
+                         paymentSystems = x.paymentSystems,
+                         Raiting = x.Raiting,
+                         Rate = x.Rate,
+                         SearchString = x.SearchString,
+                         ServiceCostFrom = x.ServiceCostFrom,
+                         ServiceCostTo = x.ServiceCostTo,
+                         SmallLogo = x.SmallLogo,
+                         CardPaymentSystems = x.CardPaymentSystems
+                             .Select(y => new CardPaymentSystem
+                             {
+                                 PaymentSystemID = y.PaymentSystemID
+                             })
+                             .ToList()
+                     })
+                     .ToList();
+                var s = JsonConvert.SerializeObject(cards);
+                writer.Write(s);
+                writer.Close();
+            }
         }
 
         private void CreditRCardsLoading()
@@ -63,7 +121,6 @@ namespace MyProfile.Code
                         try
                         {
                             card.AccountTypeID = (int)AccountTypes.Installment;
-                            card.bankiruBankName = cardInfo.bankName;
                             card.Raiting = cardInfo.raiting;
                             card.Name = cardInfo.cardName;
                             card.BankID = banks.FirstOrDefault(x => x.Name == cardInfo.bankName)?.ID ?? null;
@@ -237,7 +294,6 @@ namespace MyProfile.Code
                         try
                         {
                             card.AccountTypeID = (int)AccountTypes.Credit;
-                            card.bankiruBankName = cardInfo.bankName;
                             card.Raiting = cardInfo.raiting;
                             card.Name = cardInfo.cardName;
                             card.BankID = banks.FirstOrDefault(x => x.Name == cardInfo.bankName)?.ID ?? null;
@@ -410,7 +466,6 @@ namespace MyProfile.Code
                         try
                         {
                             card.AccountTypeID = (int)AccountTypes.Debed;
-                            card.bankiruBankName = cardInfo.bankName;
                             card.Raiting = cardInfo.raiting;
                             card.Name = cardInfo.cardName;
                             card.BankID = banks.FirstOrDefault(x => x.Name == cardInfo.bankName)?.ID ?? null;

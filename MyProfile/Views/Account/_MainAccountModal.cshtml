@@ -8,30 +8,38 @@
                         {{ account.isCash == false ? (account.id ? 'Редактирование организации' : 'Добавление организации' ) : ''  }}
                         {{ account.isCash ? (account.id ? 'Редактирование группы наличных' : 'Добавление группы наличных') : ''  }}
                         @*<span class="font-weight-light">Information</span>
-        <br>
-        <small class="text-muted">We need payment information to process your order.</small>*@
+                            <br>
+                            <small class="text-muted">We need payment information to process your order.</small>*@
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
                 </div>
                 <div class="modal-body py-2">
 
                     @*<div class="switchers-stacked">
-            <label class="switcher">
-                <input type="checkbox" class="switcher-input"
-                       v-model="account.isCash"
-                       v-bind:value="!account.isCash"
-                       checked>
-                <span class="switcher-indicator">
-                    <span class="switcher-yes">
-                        <span class="ion ion-md-checkmark"></span>
-                    </span>
-                    <span class="switcher-no">
-                        <span class="ion ion-md-close"></span>
-                    </span>
-                </span>
-                <span class="switcher-label">Наличные</span>
-            </label>
-        </div>*@
+                            <label class="switcher">
+                                <input type="checkbox" class="switcher-input"
+                                       v-model="account.isCash"
+                                       v-bind:value="!account.isCash"
+                                       checked>
+                                <span class="switcher-indicator">
+                                    <span class="switcher-yes">
+                                        <span class="ion ion-md-checkmark"></span>
+                                    </span>
+                                    <span class="switcher-no">
+                                        <span class="ion ion-md-close"></span>
+                                    </span>
+                                </span>
+                                <span class="switcher-label">Наличные</span>
+                            </label>
+                        </div>*@
+
+                    <div class="media align-items-center">
+                        <img class="ui-w-120" alt=""
+                             v-bind:class="account.isSVG ? 'm-4' : 'mx-5'"
+                             v-show="account.isCash == false && account.bankLogo"
+                             v-bind:src="account.bankLogo"
+                             v-bind:alt="account.name">
+                    </div>
 
                     <div class="form-row"
                          v-show="account.isCash == false">
@@ -52,15 +60,87 @@
                         <div class="form-group col">
                             <label class="form-label">Банк</label>
                             <span class="text-danger">*</span>
-                            <br />
-                            @*v-model="account.bankID"*@
-                            <select class="form-control" id="main-account-bank"
-                                    v-bind:disabled="account.id != undefined">
-                                <option v-for="bank in banks" v-bind:value="bank.id">
-                                    {{ bank.name }}
-                                </option>
-                            </select>
+                            <div class="input-group input-money">
+                                @*<select class="form-control" id="main-account-bank" style=" width: 88%;"
+                                            v-bind:disabled="account.id != undefined">
+                                        <option v-for="bank in banks" v-bind:value="bank.id">
+                                            {{ bank.name }}
+                                        </option>
+                                    </select>*@
+                                @*v-bind:post-params="{ bankID: account.bankID, accountTypeID: account.accountType }"*@
+                                <vue-select2-component data-id="main-account-bank"
+                                                       url="/Account/GetBanks"
+                                                       selected-property-name="text"
+                                                       v-bind:multiple="false"
+                                                       v-bind:minimum-input-length="0"
+                                                       v-bind:is-save-localstorage="false"
+                                                       v-bind:post-params="{ bankTypeID: account.bankTypeID }"
+                                                       v-bind:on-selected="selectedBank"
+                                                       v-bind:on-unselected="unselectedBank"
+                                                       v-bind:metadata="[
+                                                         {text: '',
+                                                         propertyName: 'logoRectangle',
+                                                         isOption: true,
+                                                         isLogo: true,
+                                                         isPlaceholder: false},
+                                                         {text: '',
+                                                         propertyName: 'text',
+                                                         isOption: true,
+                                                         isPlaceholder: false}]"></vue-select2-component>
+                                                       @*data-width="88%"*@
+                                @*<div class="input-group-prepend">
+                                    <img class="ui-payment-small" alt="" style="margin-top: 5px; margin-left: 5px;"
+                                         v-bind:src="account.bankLogo" />
+                                    <span class="text-xlarge pe-7s-culture" style=" padding-left: 15px; padding-top: 7px;"
+                                          v-show="!account.bankLogo"></span>
+                                </div>*@
+                            </div>
                             <small class="invalid-feedback">Обязательное поле</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row"
+                         v-show="account.isCash == false && account.bankID == null">
+                        <div class="form-group col">
+                            <label class="form-label">Или найдите банк по карте</label>
+                            <div class="input-group input-money">
+                                <vue-select2-component data-id="main_account_card"
+                                                       url="/Account/GetCards"
+                                                       selected-property-name="text"
+                                                       data-width="88%"
+                                                       v-bind:multiple="false"
+                                                       v-bind:minimum-input-length="0"
+                                                       v-bind:is-save-localstorage="false"
+                                                       v-bind:post-params="{ bankID: account.bankID, accountTypeID: account.accountType }"
+                                                       v-bind:on-selected="selectedCard"
+                                                       v-bind:on-unselected="unselectedCard"
+                                                       v-bind:metadata="[
+                                                         {text: '',
+                                                         propertyName: 'logo',
+                                                         isOption: true,
+                                                         isLogo: true,
+                                                         isPlaceholder: false},
+                                                         {text: '',
+                                                         propertyName: 'text',
+                                                         isOption: true,
+                                                         isPlaceholder: false},
+                                                        {text: 'Счет',
+                                                         propertyName: 'accountTypeName',
+                                                         isOption: true,
+                                                         isPlaceholder: false},
+                                                       {text: 'Банк',
+                                                         propertyName: 'bankName',
+                                                         isOption: true,
+                                                         isPlaceholder: false}
+                                                       ]"></vue-select2-component>
+                                <div class="input-group-prepend">
+                                    <img class="ui-payment-small" alt="" style="margin-top: 5px; margin-left: 5px;"
+                                         v-bind:src="account.cardLogo"
+                                         v-show="account.cardLogo" />
+                                    <span class="text-xlarge pe-7s-credit" style=" padding-left: 20px; padding-top: 7px;"
+                                          v-show="!account.cardLogo"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -88,7 +168,7 @@
                         </div>
                     </div>
 
-                    
+
 
                     <div id="section-description" class="form-row">
                         <div class="form-group col mb-0">
@@ -98,20 +178,21 @@
                     </div>
 
                     @*<div class="form-group mt-4">
-            <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" v-model="account.isHide" name="isHide">
-                <span class="custom-control-label">Скрывать в виджете</span>
-            </label>
-        </div>
-        <div class="form-group mt-4">
-            <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
-                <input type="checkbox" class="custom-control-input" v-model="account.isCountTheBalance" name="isCountTheBalance">
-                <span class="custom-control-label">Учитывать в поле "Всего на всех счетах"</span>
-            </label>
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="account.isHide" name="isHide">
+                                <span class="custom-control-label">Скрывать в виджете</span>
+                            </label>
+                        </div>
+                        <div class="form-group mt-4">
+                            <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
+                                <input type="checkbox" class="custom-control-input" v-model="account.isCountTheBalance" name="isCountTheBalance">
+                                <span class="custom-control-label">Учитывать в поле "Всего на всех счетах"</span>
+                            </label>
 
-        </div>*@
+                        </div>*@
 
-                    <div class="mt-3">
+                    <div class="mt-3" 
+                         v-show="account.id != undefined">
                         <label class="form-label" v-show="account.isCash">Все наличные</label>
                         <label class="form-label" v-show="account.isCash == false">Все счета</label>
                         <div class="d-flex justify-content-between align-items-center rounded ui-bordered p-3 mb-2 bg-white"

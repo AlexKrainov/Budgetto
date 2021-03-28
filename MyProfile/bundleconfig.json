@@ -250,5 +250,11 @@
     "inputFiles": [
       "wwwroot/pages/_base/hug-notification.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/vue-components/vue-select2-component.min.js",
+    "inputFiles": [
+      "wwwroot/vue-components/vue-select2-component.js"
+    ]
   }
 ]

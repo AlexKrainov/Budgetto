@@ -64,5 +64,8 @@ namespace MyProfile.Entity.ModelView.Account
         public decimal? Output { get; set; }
         public bool IsCountBalanceInMainAccount { get; set; }
         public string PaymentLogo { get; set; }
+        public int? CardID { get; set; }
+        public string CardName { get; set; }
+        public string CardLogo { get; set; }
     }
 }

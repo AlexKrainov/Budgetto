@@ -95,6 +95,10 @@ namespace MyProfile.Budget.Service
                         InterestRate = x.InterestRate,
                         IsOverdraft = x.IsOverdraft,
 
+                        CardID = x.CardID,
+                        CardName = x.CardID != null ? x.Card.Name : null,
+                        CardLogo = x.CardID != null ? x.Card.SmallLogo : null,
+
                         IsCachback = x.IsCachback,
                         IsCachBackMoney = x.IsCachbackMoney,
                         CachBackBalance = x.CachbackBalance,
@@ -207,6 +211,10 @@ namespace MyProfile.Budget.Service
                       ExpirationDate = x.ExpirationDate,
                       InterestRate = x.InterestRate,
                       IsOverdraft = x.IsOverdraft,
+
+                      CardID = x.CardID,
+                      CardName = x.CardID != null ? x.Card.Name : null,
+                      CardLogo = x.CardID != null ? x.Card.SmallLogo : null,
 
                       IsCachback = x.IsCachback,
                       IsCachBackMoney = x.IsCachbackMoney,
@@ -412,6 +420,8 @@ namespace MyProfile.Budget.Service
                     ExpirationDate = account.ExpirationDate,
                     InterestRate = account.InterestRate,
                     IsOverdraft = account.IsOverdraft,
+
+                    CardID = account.CardID,
 
                     IsCachback = account.IsCachback,
                     IsCachbackMoney = account.IsCachBackMoney,
@@ -923,10 +933,14 @@ namespace MyProfile.Budget.Service
                 banks = repository.GetAll<Bank>()
                 .Select(x => new ShortBankModelView
                 {
+                    id = x.ID,
+                    text = x.Name,
+
                     ID = x.ID,
                     Name = x.Name,
                     LogoCircle = x.LogoCircle,
                     LogoRectangle = x.LogoRectangle,
+                    BankTypeID = x.BankTypeID,
                 })
                 .ToList();
 
@@ -934,6 +948,36 @@ namespace MyProfile.Budget.Service
             }
 
             return banks;
+        }
+
+        public List<ShortCardModelView> GetCards()
+        {
+            List<ShortCardModelView> cards;
+
+            if (cache.TryGetValue(typeof(ShortCardModelView).Name, out cards) == false)
+            {
+                cards = repository.GetAll<Card>(x => x.AccountType.IsVisible)
+                .OrderBy(x => x.Raiting)
+                .Select(x => new ShortCardModelView
+                {
+                    id = x.ID,
+                    text = x.Name, // + " - " + x.AccountType.Name + " (" + x.Bank.Name + ")",
+
+                    ID = x.ID,
+                    AccountType = (AccountTypes)x.AccountTypeID,
+                    Name = x.Name,
+                    AccountTypeName = x.AccountType.Name,
+                    BankID = x.BankID ?? 0,
+                    BankName = x.Bank.Name,
+                    BankLogoRectangle = x.Bank.LogoRectangle,
+                    Logo = x.SmallLogo,
+                })
+                .ToList();
+
+                cache.Set(typeof(ShortCardModelView).Name, cards, DateTime.Now.AddDays(15));
+            }
+
+            return cards;
         }
 
     }

@@ -142,8 +142,8 @@
                                   style="left: -.625rem;top: -8px;"
                                   v-if="account.isDefault"></span>
                             <img class="ui-payment-smaller mr-1" alt=""
-                                 v-show="account.paymentLogo"
-                                 v-bind:src="account.paymentLogo">
+                                 v-show="account.cardID"
+                                 v-bind:src="account.cardLogo">
                             <a href="javascript:void(0)" class="small text-body"
                                v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>

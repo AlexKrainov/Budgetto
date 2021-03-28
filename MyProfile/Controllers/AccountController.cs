@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LinqKit;
+using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Account;
@@ -38,7 +39,7 @@ namespace MyProfile.Controllers
 
             return Json(new { isOk = true, bankTypes, paymentSystems });
         }
-        
+
         [HttpGet]
         public JsonResult GetEnvironmentForMain()
         {
@@ -95,7 +96,7 @@ namespace MyProfile.Controllers
             var newAccount = accountService.Save(account);
             return Json(new { isOk = true, account = newAccount });
         }
-        
+
         [HttpPost]
         public JsonResult RemoveOrRecovery([FromBody] AccountViewModel account)
         {
@@ -117,9 +118,88 @@ namespace MyProfile.Controllers
         public JsonResult TransferMoney([FromBody] TransferMoney transfer)
         {
             accountService.Transfer(transfer);
-            return Json(new { isOk = true});
+            return Json(new { isOk = true });
         }
 
+
+        #region Selects
+
+        [HttpGet]
+        public JsonResult GetCards(string searchString, int page, int? bankID = null, int? accountTypeID = null)
+        {
+
+            var predicate = PredicateBuilder.True<ShortCardModelView>();
+
+            if (string.IsNullOrEmpty(searchString) == false)
+            {
+                searchString = searchString.ToLower();
+                predicate = predicate.And(item =>
+                    item.Name.ToLower().Contains(searchString) ||
+                    item.BankName.ToLower().Contains(searchString));
+            }
+
+            if (bankID.HasValue)
+            {
+                predicate = predicate.And(item => item.BankID == bankID.Value);
+            }
+
+            if (accountTypeID != null)
+            {
+                predicate = predicate.And(item => (int)item.AccountType == accountTypeID.Value);
+            }
+
+            var cards = accountService.GetCards()
+                .AsQueryable()
+                .Where(predicate);
+            var result = cards
+                .OrderBy(item => item.Name)
+                .Skip((page - 1) * 20)
+                .Take(20)
+                .ToList();
+
+            return Json(new
+            {
+                Count = cards.Count(),
+                Items = result
+            });
+        }
+
+        [HttpGet]
+        public JsonResult GetBanks(string searchString, int page, int? bankTypeID = null)
+        {
+            var predicate = PredicateBuilder.True<ShortBankModelView>();
+
+            if (string.IsNullOrEmpty(searchString) == false)
+            {
+                searchString = searchString.ToLower();
+                predicate = predicate.And(item =>
+                    item.Name.ToLower().Contains(searchString));
+
+            }
+
+            if (bankTypeID.HasValue)
+            {
+                predicate = predicate.And(item => item.BankTypeID == bankTypeID.Value);
+            }
+
+            var banks = accountService.GetBanks()
+                .AsQueryable()
+                .Where(predicate);
+
+            var result = banks
+                .OrderBy(item => item.Name)
+                .Skip((page - 1) * 20)
+                .Take(20)
+                .ToList();
+
+            return Json(new
+            {
+                Count = banks.Count(),
+                Items = result
+            });
+        }
+
+        #endregion
 
     }
 }

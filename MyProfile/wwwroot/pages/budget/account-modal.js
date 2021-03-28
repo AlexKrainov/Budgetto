@@ -7,10 +7,12 @@ var MainAccountVue = new Vue({
             currentyID: 1,
             bankTypeID: -1,
             isDeleted: false,
+            cardID: null,
+            cardName: null,
             isCash: false,
+            currencyID: null,
         },
         bankTypes: [],
-        banks: [],
         currencyInfos: Metadata.currencies,
 
         isSaving: false
@@ -18,7 +20,7 @@ var MainAccountVue = new Vue({
     watch: {
         "account.bankTypeID": function (newValue) {
             if (newValue != undefined) {
-                this.banks = this.bankTypes.filter(x => x.id == newValue)[0].banks;
+                //this.banks = this.bankTypes.filter(x => x.id == newValue)[0].banks;
             }
         }
     },
@@ -55,15 +57,19 @@ var MainAccountVue = new Vue({
                     bankTypeID: 1,
                     isDeleted: false,
                     isCash: isCash,
+                    cardID: null,
+                    cardName: null,
+                    cardLogo: null,
+                    currencyID: null,
                 };
             }
-            setTimeout(function () {
-                $("#main-account-bank").trigger('change').val(MainAccountVue.account.bankID).select2({
-                    dropdownCssClass: "d-block",
-                    selectionCssClass: "d-block",
-                });
-            }, 300);
-            $("#main-account-name").removeClass("is-invalid");
+            //setTimeout(function () {
+            //    $("#main-account-bank").trigger('change').val(MainAccountVue.account.bankID).select2({
+            //        dropdownCssClass: "d-block",
+            //        selectionCssClass: "d-block",
+            //    });
+            //}, 300);
+            $("#main-account-bank").parent().removeClass("is-invalid");
             $("#modal-main-account").modal("show");
         },
         showHide: function (account, isHide) {
@@ -153,8 +159,6 @@ var MainAccountVue = new Vue({
         checkForm: function (e) {
             let isOk = true;
 
-
-
             if (!(this.account.name && this.account.name.length > 0)) {
                 isOk = false;
                 $("#main-account-name").addClass("is-invalid");
@@ -165,10 +169,10 @@ var MainAccountVue = new Vue({
             if (this.account.isCash == false) {
                 this.account.bankID = $("#main-account-bank").val() * 1;
                 if (this.account.bankID && this.account.bankID > 0) {
-                    $("#main-account-bank").removeClass("is-invalid");
+                    $("#main-account-bank").parent().removeClass("is-invalid");
                 } else {
                     isOk = false;
-                    $("#main-account-bank").addClass("is-invalid");
+                    $("#main-account-bank").parent().addClass("is-invalid");
                 }
             }
 
@@ -233,7 +237,45 @@ var MainAccountVue = new Vue({
         showHide: function (account, isHide) {
 
             AccountVue.showHide(JSCopyObject(account), isHide);
-        }
+        },
+        selectedCard: function () {
+            let card = $("#main_account_card").select2("data")[0];
+            this.account.cardID = card.id;
+            this.account.cardName = card.name;
+            this.account.cardLogo = card.logo;
+
+            if (!this.account.bankID) {
+                this.account.bankID = card.bankID;
+                this.account.bankName = card.bankName;
+                this.account.bankLogo = card.bankLogoRectangle;
+                this.account.isSVG = card.bankLogoRectangle ? card.bankLogoRectangle.indexOf("svg") > 0 : false;
+
+                $("#main-account-bank option").remove().val("");
+                $("#main-account-bank").append(`<option value="${card.bankID}">${card.bankName}</option>`).select2("data", { id: card.bankID, text: card.bankName });
+                $("#main-account-bank").trigger('change');
+            }
+        },
+        unselectedCard: function () {
+            this.account.cardID = null;
+            this.account.cardName = null;
+            this.account.cardLogo = null;
+        },
+        selectedBank: function () {
+            let bank = $("#main-account-bank").select2("data")[0];
+            this.account.bankID = bank.id;
+            this.account.bankName = bank.name;
+            this.account.bankLogo = bank.logoRectangle;
+            this.account.isSVG = bank.logoRectangle ? bank.logoRectangle.indexOf("svg") > 0 : false;
+            this.$forceUpdate();
+        },
+        unselectedBank: function () {
+            this.account.bankID = null;
+            this.account.bankName = null;
+            this.account.bankLogo = null;
+            this.account.isSVG = false;
+            this.$forceUpdate();
+        },
+
     }
 });
 
@@ -252,7 +294,10 @@ var AccountVue = new Vue({
             isCountBalanceInMainAccount: true,
             //resetCashBackDate: null,
             isDeleted: false,
-            paymentSystemID: null
+            paymentSystemID: null,
+            cardID: null,
+            cardName: null,
+            cardLogo: null,
         },
 
         bankTypes: [],
@@ -311,6 +356,12 @@ var AccountVue = new Vue({
         edit: function (account, mainAccount) {
             if (account) {
                 this.account = account;
+
+                if (this.account.cardID) {
+                    $("#account_card option").remove().val("");
+                    $("#account_card").append(`<option value="${this.account.cardID}">${this.account.cardName}</option>`).select2("data", { id: this.account.cardID, text: this.account.cardName });
+                    $("#account_card").trigger('change');
+                }
             } else {
                 this.account = {
                     id: undefined,
@@ -332,10 +383,15 @@ var AccountVue = new Vue({
                     //resetCashBackDate: null,
                     isDeleted: false,
                     isCash: mainAccount.accountType == 1,
+                    cardID: null,
+                    cardName: null,
+                    cardLogo: null,
                 };
 
                 this.account.currencyID = UserInfo.Currency.ID;
                 this.account.currency = this.currencyInfos[this.currencyInfos.findIndex(x => x.id == this.account.currencyID)];
+
+                $("#account_card option").remove().val("");
             }
 
             if (this.account.accountType == 2) {
@@ -554,10 +610,24 @@ var AccountVue = new Vue({
                 dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
                 flatpickr('#expirationDate', dateConfig);
             }
-        }
+        },
+        selectedCard: function () {
+            let card = $("#account_card").select2("data")[0];
+            this.account.cardID = card.id;
+            this.account.cardName = card.name;
+            this.account.cardLogo = card.logo;
+
+            if (!this.account.name) {
+                this.account.name = card.name;
+            }
+        },
+        unselectedCard: function () {
+            this.account.cardID = null;
+            this.account.cardName = null;
+            this.account.cardLogo = null;
+        },
     }
 });
-
 
 var AccountTransferVue = new Vue({
     el: "#account-transfer-modal-vue",

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyProfile.Entity.ModelView.Account
 {
-    public class ShortBankModelView
+    public class ShortBankModelView : Select2ModelView
     {
         public int ID { get; set; }
         public string Name { get; set; }

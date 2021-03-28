@@ -36,10 +36,14 @@ namespace MyProfile.Entity.Model
         public int GracePeriod { get; set; }
 
         public int Raiting { get; set; }
-        public string bankiruBankName { get; set; }
         public string bonuses { get; set; }
         public string paymentSystems { get; set; }
         public int bankiruCardID { get; set; }
+        /// <summary>
+        /// Property for searching, it's like additional informations
+        /// </summary>
+        public string SearchString { get; set; }
+
 
         [ForeignKey("AccountType")]
         public int AccountTypeID { get; set; }
