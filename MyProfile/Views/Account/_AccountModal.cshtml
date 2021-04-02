@@ -42,9 +42,10 @@
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-row"
+                         v-show="[1,6,7,8].indexOf(account.accountType) < 0">
                         <div class="form-group col">
-                            <label class="form-label">Карте</label>
+                            <label class="form-label">Карта</label>
                             <div class="input-group input-money">
                                 <vue-select2-component data-id="account_card"
                                                        url="/Account/GetCards"
@@ -54,7 +55,7 @@
                                                        v-bind:minimum-input-length="0"
                                                        v-bind:is-save-localstorage="false"
                                                        v-bind:post-params="{ bankID: account.bankID, accountTypeID: account.accountType }"
-                                                       v-bind:disabled="account.id != undefined"
+                                                       v-bind:disabled="account.id != undefined && account.isEmptyCard == false"
                                                        v-bind:on-selected="selectedCard"
                                                        v-bind:on-unselected="unselectedCard"
                                                        v-bind:metadata="[
@@ -92,7 +93,7 @@
                             <label class="form-label">Название</label>
                             <span class="text-danger">*</span>
                             <input id="account-name" type="text" class="form-control" v-model="account.name" required
-                                   v-bind:placeholder="account.bankTypeID == 1 ? 'Например, 4 последнии цифры номера карты' : account.bankTypeID == 2 ? 'Введите название счета или номер договора' : ''">
+                                   v-bind:placeholder="[2,3,4].indexOf(account.accountType) >= 0 ? 'Например, 4 последнии цифры номера карты' : [6,7,8].indexOf(account.accountType) >= 0 ? 'Введите название счета или номер договора' : ''">
                             <small class="invalid-feedback">Обязательное поле</small>
                         </div>
                     </div>
@@ -120,6 +121,9 @@
                                 Внимание! Если вы вручную корректируете <b>Баланс</b>, это не будет отражаться в виджете <b>Инвестиции</b> и в истории "пополнение/вывод"
                                 за предыдущий месяц/год. Пожалуйста, воспользуйтесь переводом со счета на счет "Перевести деньги".
                             </small>
+                            <small class="text-muted" v-else-if="account.accountType == 7">
+                                Внимание! Баланс вклада должен быть <b>без </b> начисленных процентов, те только та сумма на которую вы пополнили депозит.
+                            </small>
                         </div>
                     </div>
 
@@ -135,17 +139,24 @@
                             <label class="form-label" v-show="account.accountType == 7">Окончание срока вклада</label>
                             <input type="text" class="form-control" id="expirationDate" v-model="account.expirationDate">
                             <a class="small" href="javascript:void(0)"
+                               v-show="account.dateStart && account.accountType == 7"
+                               v-on:click="setExpirationDate(1)">+1 год</a>
+                            <a class="small" href="javascript:void(0)"
+                               v-show="account.dateStart && account.accountType == 7"
+                               v-on:click="setExpirationDate(2)">+2 год</a>
+                            <a class="small" href="javascript:void(0)"
                                v-show="account.dateStart"
                                v-on:click="setExpirationDate(3)">+3 года</a>
                         </div>
                     </div>
+
                     @*<div class="form-group" v-show="account.isCash == false">
-            <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" v-model="account.isOverdraft" name="isOverdraft">
-                <span class="custom-control-label">Подключен ли овердрафт</span>
-            </label>
-        </div>*@
-                    <div class="card bg-light" v-show="account.isCash == false && account.accountType != 6 && account.accountType != 8">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" v-model="account.isOverdraft" name="isOverdraft">
+                                <span class="custom-control-label">Подключен ли овердрафт</span>
+                            </label>
+                        </div>*@
+                    <div class="card bg-light" v-show="[1,6,7,8].indexOf(account.accountType) < 0">
                         <div class="card-header pb-0">
                             <div class="form-group">
                                 <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
@@ -160,11 +171,11 @@
                         <div class="card-body"
                              v-show="account.isCash == false && account.isCachback">
                             @*<div class="form-group" v-show="account.isCash == false && account.isCachback">
-                    <label class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" v-model="account.isCachBackMoney" name="isCachBackMoney">
-                        <span class="custom-control-label">Кешбек конвертируется в рубли</span>
-                    </label>
-                </div>*@
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" v-model="account.isCachBackMoney" name="isCachBackMoney">
+                                        <span class="custom-control-label">Кешбек конвертируется в рубли</span>
+                                    </label>
+                                </div>*@
                             <div class="form-row" v-show="account.isCash == false && account.isCachback">
                                 <div class="form-group col">
                                     <label class="form-label">Баланс кешбека</label>
@@ -184,27 +195,58 @@
                         </div>
                     </div>
 
-
-                    @*<div class="form-row" v-show="account.isCash == false && account.isCachback">
-            <div class="form-group col">
-                <label class="form-label">Следующая дата зачисления кешбек</label>
-                <input type="text" class="form-control" id="resetCashBackDate" v-model="account.resetCashBackDate" required>
-            </div>
-        </div>*@
-
-                    @*<div class="form-row mt-3">
-                        <div class="form-group col">
-                            <label class="form-label">Система платежей</label>
-                            <div class="text-center">
-                                <img class="ui-payment cursor-pointer mr-1 payment-max-width" alt=""
-                                     v-for="paymentSystem in paymentSystems"
-                                     v-bind:src="paymentSystem.logo"
-                                     v-bind:class="account.paymentSystemID == paymentSystem.id ? 'border-primary rounded ui-bordered' : ''"
-                                     v-bind:data="paymentSystem.id"
-                                     v-on:click="account.paymentSystemID != paymentSystem.id ? account.paymentSystemID = paymentSystem.id : account.paymentSystemID = null">
+                    <div class="card bg-light" v-show="account.accountType == 7">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Процент по вкладу</label>
+                                <div class="form-group input-group">
+                                    <input type="number" class="form-control"
+                                           v-model="account.interestRate"
+                                           v-bind:min="0"
+                                           v-bind:max="100">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label class="form-label">Начисление процентов</label>
+                                    <select class="form-control" id="capitalization-select"
+                                            v-model="account.timeListID">
+                                        <option value="1">Ежедневно</option>
+                                        <option value="2">Еженедельно</option>
+                                        <option value="3">Ежемесячно</option>
+                                        <option value="4">Ежеквартально</option>
+                                        <option value="5">Каждые полгода</option>
+                                        <option value="6">Ежегодно/В конце срока</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>*@
+                    </div>
+
+
+                    @*<div class="form-row" v-show="account.isCash == false && account.isCachback">
+                            <div class="form-group col">
+                                <label class="form-label">Следующая дата зачисления кешбек</label>
+                                <input type="text" class="form-control" id="resetCashBackDate" v-model="account.resetCashBackDate" required>
+                            </div>
+                        </div>*@
+
+                    @*<div class="form-row mt-3">
+                            <div class="form-group col">
+                                <label class="form-label">Система платежей</label>
+                                <div class="text-center">
+                                    <img class="ui-payment cursor-pointer mr-1 payment-max-width" alt=""
+                                         v-for="paymentSystem in paymentSystems"
+                                         v-bind:src="paymentSystem.logo"
+                                         v-bind:class="account.paymentSystemID == paymentSystem.id ? 'border-primary rounded ui-bordered' : ''"
+                                         v-bind:data="paymentSystem.id"
+                                         v-on:click="account.paymentSystemID != paymentSystem.id ? account.paymentSystemID = paymentSystem.id : account.paymentSystemID = null">
+                                </div>
+                            </div>
+                        </div>*@
 
                     <div id="section-description" class="form-row mt-3">
                         <div class="form-group col mb-0">
@@ -236,8 +278,8 @@
                             <span class="custom-control-label">Учитывать в поле "Всего на всех счетах"</span>
                         </label>
                         @*<small class="text-muted">
-                Для некоторых категорий банки не считают кешбек, например ЖКХ, налоги и тд.
-            </small>*@
+                                Для некоторых категорий банки не считают кешбек, например ЖКХ, налоги и тд.
+                            </small>*@
                     </div>
                     <div class="form-group mt-4">
                         <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
@@ -245,63 +287,63 @@
                             <span class="custom-control-label">Учитывать при подсчете общей суммы у организации/наличных</span>
                         </label>
                         @*<small class="text-muted">
-                Для некоторых категорий банки не считают кешбек, например ЖКХ, налоги и тд.
-            </small>*@
+                                Для некоторых категорий банки не считают кешбек, например ЖКХ, налоги и тд.
+                            </small>*@
                     </div>
                     @*<div class="form-row">
-            <div class="form-group col">
-                <label class="form-label">Начало</label>
-                <span class="text-danger">*</span>
-                <input type="text" class="form-control" id="date-start" v-model="account.dateStart" required>
-                <small class="invalid-feedback">Обязательное поле</small>
-            </div>
-            <div class="form-group col">
-                <label class="form-label">Окончание</label>
-                <input type="text" class="form-control" id="date-end" v-model="account.dateEnd">
-            </div>
-        </div>
+                            <div class="form-group col">
+                                <label class="form-label">Начало</label>
+                                <span class="text-danger">*</span>
+                                <input type="text" class="form-control" id="date-start" v-model="account.dateStart" required>
+                                <small class="invalid-feedback">Обязательное поле</small>
+                            </div>
+                            <div class="form-group col">
+                                <label class="form-label">Окончание</label>
+                                <input type="text" class="form-control" id="date-end" v-model="account.dateEnd">
+                            </div>
+                        </div>
 
-        <div class="form-row">
-            <div class="form-group col">
-                <label class="form-label">Сколько нужно накопить?</label>
-                <span class="text-danger">*</span>
-                <input id="account-expectationMoney" type="number" class="form-control" placeholder="" v-model="account.expectationMoney" required min="0">
-                <div class="text-muted small mt-1" v-show="account.expectationMoney">
-                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(account.expectationMoney) }}
-                </div>
-                <small class="invalid-feedback">Обязательное поле</small>
-            </div>
-        </div>
-        <div id="account-comment" class="form-row">
-            <div class="form-group col mb-0">
-                <label class="form-label">Комментарии</label>
-                <textarea class="form-control" v-model="account.description" placeholder=""></textarea>
-            </div>
-        </div>
-        <div class="form-row mt-3">
-            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" v-model="account.isShow_BudgetMonth" checked>
-                    <span class="custom-control-label">Показывать на странице "Финансы на месяц"</span>
-                </label>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" v-model="account.isShow_BudgetYear" checked>
-                    <span class="custom-control-label">Показывать на странице "Финансы на год"</span>
-                </label>
-            </div>
-        </div>
-        <div id="gaol-is-finish" class="form-row">
-            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;" v-show="account.id">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" v-model="account.isFinished">
-                    <span class="custom-control-label">Завершить цель</span>
-                </label>
-            </div>
-        </div>*@
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label class="form-label">Сколько нужно накопить?</label>
+                                <span class="text-danger">*</span>
+                                <input id="account-expectationMoney" type="number" class="form-control" placeholder="" v-model="account.expectationMoney" required min="0">
+                                <div class="text-muted small mt-1" v-show="account.expectationMoney">
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(account.expectationMoney) }}
+                                </div>
+                                <small class="invalid-feedback">Обязательное поле</small>
+                            </div>
+                        </div>
+                        <div id="account-comment" class="form-row">
+                            <div class="form-group col mb-0">
+                                <label class="form-label">Комментарии</label>
+                                <textarea class="form-control" v-model="account.description" placeholder=""></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row mt-3">
+                            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="account.isShow_BudgetMonth" checked>
+                                    <span class="custom-control-label">Показывать на странице "Финансы на месяц"</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="account.isShow_BudgetYear" checked>
+                                    <span class="custom-control-label">Показывать на странице "Финансы на год"</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="gaol-is-finish" class="form-row">
+                            <div class="form-group mb-0" style=" margin-left: 0px; margin-right: auto;" v-show="account.id">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="account.isFinished">
+                                    <span class="custom-control-label">Завершить цель</span>
+                                </label>
+                            </div>
+                        </div>*@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="button"

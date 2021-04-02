@@ -1,4 +1,4 @@
-﻿USE [u1127477_MyProfile]
+﻿rUSE [u1127477_MyProfile]
 GO
 SET IDENTITY_INSERT [dbo].[UserTypes] ON 
 
@@ -128,6 +128,7 @@ INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPayment
 INSERT [AccountTypes] ([ID], [Name], [CodeName], [Icon], [IsVisible], [IsPaymentSystem], [BankTypeID]) VALUES (8, N'Брокерский счет (ИИС)', N'InvestmentsIIS', 'pe-7s-culture',1,0,2)
 SET IDENTITY_INSERT [AccountTypes] OFF
 GO
+ update AccountTypes set IsVisible = 1 where ID = 6
 
 SET IDENTITY_INSERT [BankTypes] ON 
 
@@ -137,15 +138,6 @@ INSERT [BankTypes] ([ID], [Name], [CodeName], [IsVisible]) VALUES (3, N'Элек
 INSERT [BankTypes] ([ID], [Name], [CodeName], [IsVisible]) VALUES (4, N'Микрозаймы', N'Microloans', 0)
 INSERT [BankTypes] ([ID], [Name], [CodeName], [IsVisible]) VALUES (5, N'Форех', N'Forex', 0)
 SET IDENTITY_INSERT [BankTypes] OFF
-GO
-SET IDENTITY_INSERT BankTypeAccountTypes ON 
-INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (1,1,2)
-INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (2,1,3)
-INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (3,1,4)
-INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (4,1,7)
-INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (5,2,6)
-INSERT BankTypeAccountTypes (ID, BankTypeID, AccountTypeID) VALUES (6,2,8)
-SET IDENTITY_INSERT BankTypeAccountTypes OFF
 GO
 
 SET IDENTITY_INSERT [Banks] ON 
@@ -212,6 +204,9 @@ INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpre
 VALUES (9,'NotificationReminderCheckerTask', 'New', 'NotificationReminderCheckerTask','0 */5 * ? * *', 'Every 5 minuts')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment], [Comment])
 VALUES (10,'NotificationReset', 'New', 'NotificationReset','0 */5 * ? * *', 'Every 5 minuts', 'Обнуляем или пересоздаем все нужные нам уведомления (например, лимиты)')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment], [Comment])
+VALUES (11,'AccountDailyWork', 'New', 'AccountDailyWork','0 0 7 * * ?', 'At 07:00:00am every day', 'Обновление данных счетов, например начисление процентов по вкладам.')
+
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF
 

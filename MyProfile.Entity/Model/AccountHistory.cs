@@ -47,16 +47,18 @@ namespace MyProfile.Entity.Model
         [MaxLength(2048)]
         public string Comment { get; set; }
 
+        public string StateField { get; set; }
+
         [ForeignKey("Account")]
         public int AccountID { get; set; }
-        [ForeignKey("Account2")]
+        [ForeignKey("AccountFrom")]
         /// <summary>
         /// Second account with action, for transfer money
         /// </summary>
-        public int? AccountID2 { get; set; }
+        public int? AccountIDFrom { get; set; }
 
         public virtual Account Account { get; set; }
-        public virtual Account Account2 { get; set; }
+        public virtual Account AccountFrom { get; set; }
 
     }
 }

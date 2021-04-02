@@ -166,6 +166,12 @@ namespace MyProfile
                  cronExpression: "0 0 010 1 * ?")); //At 10:00:00am, on the 1st day, every month
             CronExpression.ValidateExpression("0 0 010 1 * ?");
 
+            services.AddTransient<AccountDailyWork>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(AccountDailyWork),
+                 cronExpression: "0 */5 * ? * *")); //At 07:00:00am every day(0 0 7 * * ?)
+            CronExpression.ValidateExpression("0 0 7 * * ?");
+
             //"0 */5 * ? * *" - Every 5 minutes
             //0 0 1 2 * ? * - At 01:00 AM, on day 2 of the month
 

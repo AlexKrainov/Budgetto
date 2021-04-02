@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.Service;
+using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.AreaAndSection;
@@ -19,14 +20,28 @@ namespace MyProfile.Budget.Service
         private IBaseRepository repository;
         private BudgetRecordService budgetRecordService;
         private SectionService sectionService;
+        private CurrencyService currencyService;
+
+        private Dictionary<DateTime, List<CurrencyRateHistory>> rates;
+
+        public int[] InvestAccountTypes = new int[]
+        {
+            (int)AccountTypes.Deposit,
+            (int)AccountTypes.Investments,
+            (int)AccountTypes.InvestmentsIIS,
+        };
 
         public BudgetTotalService(IBaseRepository repository,
             SectionService sectionService,
-            BudgetRecordService budgetRecordService)
+            BudgetRecordService budgetRecordService,
+            CurrencyService currencyService)
         {
             this.repository = repository;
             this.budgetRecordService = budgetRecordService;
             this.sectionService = sectionService;
+            this.currencyService = currencyService;
+
+            rates = new Dictionary<DateTime, List<CurrencyRateHistory>>();
         }
 
         public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByYear(int year)
@@ -124,18 +139,22 @@ namespace MyProfile.Budget.Service
             if (currentUser.UserSettings.Year_InvestingWidget)
             {
                 var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
-                    && x.Account.Bank.BankTypeID == (int)BankTypes.Broker
-                    && x.Account.IsDeleted == false
-                    && x.ActionType == AccountHistoryActionType.MoveMoney
-                    && x.CurrentDate >= from && x.CurrentDate <= to)
-                .Select(x => new
-                {
-                    x.AccountID,
-                    x.AccountID2,
-                    x.Actions,
-                    x.ValueFrom,
-                    x.ValueTo
-                })
+                    && (InvestAccountTypes.Contains(x.Account.AccountTypeID)
+                            || InvestAccountTypes.Contains(x.AccountFrom.AccountTypeID))
+                        && x.Account.IsDeleted == false
+                        && x.ActionType == AccountHistoryActionType.MoveMoney
+                        && x.CurrentDate >= from && x.CurrentDate <= to)
+                    .Select(x => new AccountHistoryTMP
+                    {
+                        ValueFrom = x.ValueFrom,
+                        ValueTo = x.ValueTo,
+                        CurrencyToCodeName = x.Account.Currency.CodeName,
+                        CurrencyFromCodeName = x.AccountFrom.Currency.CodeName,
+                        AccountTypeTo = (AccountTypes)x.Account.AccountTypeID,
+                        AccountTypeFrom = (AccountTypes)x.AccountFrom.AccountTypeID,
+                        CurrentDate = x.CurrentDate,
+                        CurrencyValue = x.CurrencyValue,
+                    })
                 .ToList();
 
                 var tuple = GetChartInvestingTotalByMonth(from, to);
@@ -143,12 +162,11 @@ namespace MyProfile.Budget.Service
                 investingData.data = tuple.Item1.ToArray();
                 investingData.labels = tuple.Item2.ToArray();
 
-                decimal input = accountHistories.Where(x => x.Actions == "input").Sum(x => x.ValueTo) ?? 0;
-                decimal output = accountHistories.Where(x => x.Actions == "output").Sum(x => x.ValueFrom) ?? 0;
+                decimal total = CountTotal(accountHistories);
 
                 investingData.Name = "Инвестиции";
                 //investingData.SectionTypeEnum = SectionTypeEnum.Investments;
-                investingData.Total = (input - output).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                investingData.Total = (total).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
                 if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 {
@@ -271,17 +289,21 @@ namespace MyProfile.Budget.Service
                 var from2 = to.AddMonths(-1);
 
                 var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
-                    && x.Account.Bank.BankTypeID == (int)BankTypes.Broker
-                    && x.Account.IsDeleted == false
-                    && x.ActionType == AccountHistoryActionType.MoveMoney
-                    && x.CurrentDate >= from2 && x.CurrentDate <= to)
-                    .Select(x => new
+                        && (InvestAccountTypes.Contains(x.Account.AccountTypeID)
+                            || InvestAccountTypes.Contains(x.AccountFrom.AccountTypeID))
+                        && x.Account.IsDeleted == false
+                        && x.ActionType == AccountHistoryActionType.MoveMoney
+                        && x.CurrentDate >= from2 && x.CurrentDate <= to)
+                    .Select(x => new AccountHistoryTMP
                     {
-                        x.AccountID,
-                        x.AccountID2,
-                        x.Actions,
-                        x.ValueFrom,
-                        x.ValueTo
+                        ValueFrom = x.ValueFrom,
+                        ValueTo = x.ValueTo,
+                        CurrencyToCodeName = x.Account.Currency.CodeName,
+                        CurrencyFromCodeName = x.AccountFrom.Currency.CodeName,
+                        AccountTypeTo = (AccountTypes)x.Account.AccountTypeID,
+                        AccountTypeFrom = (AccountTypes)x.AccountFrom.AccountTypeID,
+                        CurrentDate = x.CurrentDate,
+                        CurrencyValue = x.CurrencyValue,
                     })
                     .ToList();
 
@@ -290,12 +312,11 @@ namespace MyProfile.Budget.Service
                 investingData.data = tuple.Item1.ToArray();
                 investingData.labels = tuple.Item2.ToArray();
 
-                decimal input = accountHistories.Where(x => x.Actions == "input").Sum(x => x.ValueTo) ?? 0;
-                decimal output = accountHistories.Where(x => x.Actions == "output").Sum(x => x.ValueFrom) ?? 0;
+                decimal total = CountTotal(accountHistories);
 
                 investingData.Name = "Инвестиции";
                 //investingData.SectionTypeEnum = SectionTypeEnum.Investments;
-                investingData.Total = (input - output).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
+                investingData.Total = (total).ToString("C0", CultureInfo.CreateSpecificCulture(currentUser.Currency.SpecificCulture));
 
                 if (!(DateTime.Now.Year == to.Year && DateTime.Now.Month == to.Month))
                 {
@@ -317,11 +338,11 @@ namespace MyProfile.Budget.Service
 
                 //only for title
                 investingData.Sections = repository.GetAll<Account>(x => x.UserID == currentUser.ID
-                     && x.Bank.BankTypeID == (int)BankTypes.Broker
+                     && InvestAccountTypes.Contains(x.AccountTypeID)
                      && x.IsDeleted == false)
                         .Select(x => new SectionLightModelView
                         {
-                            Name = x.Name + " (" + x.Bank.Name + ")"
+                            Name = x.Name
                         })
                     .ToList();
             }
@@ -329,20 +350,83 @@ namespace MyProfile.Budget.Service
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investingData);
         }
 
+        private decimal CountTotal(List<AccountHistoryTMP> accountHistories)
+        {
+            decimal input = 0,
+                output = 0;
+            var currentUser = UserInfo.Current;
+
+            foreach (var history in accountHistories)
+            {
+                if (InvestAccountTypes.Contains((int)history.AccountTypeTo)) //input
+                {
+                    if (history.CurrencyToCodeName == "RUB")
+                    {
+                        input += history.ValueTo ?? 0;
+                    }
+                    else if (history.CurrencyFromCodeName == "RUB")
+                    {
+                        input += history.ValueFrom ?? 0;
+                    }
+                    else
+                    {
+                        List<CurrencyRateHistory> currencyRates = getRate(history.CurrentDate, currentUser.UserSessionID);
+
+                        input += (history.ValueTo ?? 0) * currencyRates.FirstOrDefault(x => x.CharCode == history.CurrencyToCodeName).Rate;
+                    }
+                }
+                else if (InvestAccountTypes.Contains((int)history.AccountTypeFrom))//output
+                {
+                    if (history.CurrencyFromCodeName == "RUB")
+                    {
+                        output += history.ValueFrom ?? 0;
+                    }
+                    else if (history.CurrencyToCodeName == "RUB")
+                    {
+                        output += history.ValueTo ?? 0;
+                    }
+                    else
+                    {
+                        List<CurrencyRateHistory> currencyRates = getRate(history.CurrentDate, currentUser.UserSessionID);
+
+                        output += (history.ValueFrom ?? 0) * currencyRates.FirstOrDefault(x => x.CharCode == history.CurrencyFromCodeName).Rate;
+                    }
+                }
+            }
+            return input - output;
+        }
+
+        private List<CurrencyRateHistory> getRate(DateTime currentDate, Guid userSessionID)
+        {
+            if (rates.ContainsKey(currentDate))
+            {
+                return rates[currentDate];
+            }
+
+            var rate = currencyService.GetRatesByDate(currentDate, userSessionID);
+            rates.Add(currentDate, rate);
+
+            return rate;
+        }
+
         public Tuple<List<decimal>, List<string>> GetChartInvestingTotalByMonth(DateTime from, DateTime to)
         {
             var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == UserInfo.Current.ID
-                  && x.Account.Bank.BankTypeID == (int)BankTypes.Broker
-                  && x.Account.IsDeleted == false
-                  && x.ActionType == AccountHistoryActionType.MoveMoney
+                   && (InvestAccountTypes.Contains(x.Account.AccountTypeID)
+                        || InvestAccountTypes.Contains(x.AccountFrom.AccountTypeID))
+                   && x.Account.IsDeleted == false
+                   && x.ActionType == AccountHistoryActionType.MoveMoney
                   && x.CurrentDate >= from && x.CurrentDate <= to)
-              .Select(x => new
+              .Select(x => new AccountHistoryTMP
               {
-                  x.AccountID,
-                  x.Actions,
-                  x.ValueFrom,
-                  x.ValueTo,
-                  x.CurrentDate
+                  ValueFrom = x.ValueFrom,
+                  ValueTo = x.ValueTo,
+                  CurrencyToCodeName = x.Account.Currency.CodeName,
+                  CurrencyFromCodeName = x.AccountFrom.Currency.CodeName,
+                  AccountTypeTo = (AccountTypes)x.Account.AccountTypeID,
+                  AccountTypeFrom = (AccountTypes)x.AccountFrom.AccountTypeID,
+                  CurrentDate = x.CurrentDate,
+                  CurrencyValue = x.CurrencyValue,
               })
               .GroupBy(x => x.CurrentDate.Month)
               .ToList();
@@ -354,10 +438,10 @@ namespace MyProfile.Budget.Service
             {
                 labels.Add(from.Month + " " + from.Year);
 
-                decimal input = accountHistories.Where(x => x.Key == from.Month).SelectMany(x => x).Where(x => x.Actions == "input").Sum(x => x.ValueTo) ?? 0;
-                decimal output = accountHistories.Where(x => x.Key == from.Month).SelectMany(x => x).Where(x => x.Actions == "output").Sum(x => x.ValueFrom) ?? 0;
-
-                datas.Add(input - output);
+                //decimal input = accountHistories.Where(x => x.Key == from.Month).SelectMany(x => x).Where(x => x.Actions == "input").Sum(x => x.ValueTo) ?? 0;
+                //decimal output = accountHistories.Where(x => x.Key == from.Month).SelectMany(x => x).Where(x => x.Actions == "output").Sum(x => x.ValueFrom) ?? 0;
+                var total = CountTotal(accountHistories.Where(x => x.Key == from.Month).SelectMany(x => x).ToList());
+                datas.Add(total);// input - output);
                 from = from.AddMonths(1);
             }
 
@@ -386,5 +470,17 @@ namespace MyProfile.Budget.Service
 
             return new Tuple<List<decimal>, List<string>>(datas, labels);
         }
+    }
+
+    public class AccountHistoryTMP
+    {
+        public decimal? ValueFrom { get; internal set; }
+        public decimal? ValueTo { get; internal set; }
+        public string CurrencyToCodeName { get; internal set; }
+        public string CurrencyFromCodeName { get; internal set; }
+        public DateTime CurrentDate { get; internal set; }
+        public decimal? CurrencyValue { get; internal set; }
+        public AccountTypes AccountTypeTo { get; internal set; }
+        public AccountTypes AccountTypeFrom { get; internal set; }
     }
 }

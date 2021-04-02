@@ -21,7 +21,6 @@ namespace MyProfile.Entity.Model
 
 		[MaxLength(264)]
 		public string Description { get; set; }
-        public decimal? InterestRate { get; set; }
         public decimal? CachbackForAllPercent { get; set; }
         public bool IsCachback { get; set; }
 		/// <summary>
@@ -54,6 +53,7 @@ namespace MyProfile.Entity.Model
 		public DateTime DateCreate { get; set; }
 		public DateTime LastChanges { get; set; }
 
+
 		[ForeignKey("AccountType")]
 		public int AccountTypeID { get; set; }
 		[ForeignKey("User")]
@@ -77,6 +77,7 @@ namespace MyProfile.Entity.Model
 		public virtual PaymentSystem PaymentSystem { get; set; }
 		public virtual Account ParentAccount { get; set; }
 		public virtual Card Card { get; set; }
+		public virtual AccountInfo AccountInfo { get; set; }
 
 		public virtual ICollection<Record> BudgetRecords { get; set; }
         public virtual ICollection<RecordHistory> RecordHistories { get; set; }

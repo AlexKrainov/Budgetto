@@ -58,7 +58,7 @@
                     <div class="form-row"
                          v-show="account.isCash == false">
                         <div class="form-group col">
-                            <label class="form-label">Банк</label>
+                            <label class="form-label">Выберите банк</label>
                             <span class="text-danger">*</span>
                             <div class="input-group input-money">
                                 @*<select class="form-control" id="main-account-bank" style=" width: 88%;"
@@ -102,7 +102,7 @@
                     <div class="form-row"
                          v-show="account.isCash == false && account.bankID == null">
                         <div class="form-group col">
-                            <label class="form-label">Или найдите банк по карте</label>
+                            <label class="form-label">или найдите банк по карте</label>
                             <div class="input-group input-money">
                                 <vue-select2-component data-id="main_account_card"
                                                        url="/Account/GetCards"

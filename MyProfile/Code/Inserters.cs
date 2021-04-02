@@ -44,13 +44,33 @@ namespace MyProfile.Code
 
         private void CardJsonToCard()
         {
-            //if (repository.GetAll<Card>().Any() == false)
+            if (repository.GetAll<Card>().Any() == false)
             {
+                var banks = repository.GetAll<Bank>()
+                    .Select(x => new
+                    {
+                        bankID = x.ID,
+                        bankName = x.Name
+                    })
+                    .ToList();
+
                 using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\CardToProd.json"))
                 {
                     List<Card> cards = (List<Card>)JsonConvert.DeserializeObject<List<Card>>(reader.ReadToEnd());
 
-                    //repository.Create(cards, true);
+                    foreach (var card in cards)
+                    {
+                        try
+                        {
+                            card.BankID = banks.FirstOrDefault(x => x.bankName == card.bankName).bankID;
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
+
+                    repository.CreateRange(cards, true);
                 }
             }
 
@@ -65,6 +85,7 @@ namespace MyProfile.Code
                      {
                          AccountTypeID = x.AccountTypeID,
                          BankID = x.BankID,
+                         bankName = x.Bank.Name,
                          bankiruCardID = x.bankiruCardID,
                          BigLogo = x.BigLogo,
                          bonuses = x.bonuses,

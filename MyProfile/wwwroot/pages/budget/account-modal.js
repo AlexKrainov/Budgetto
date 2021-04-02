@@ -298,6 +298,8 @@ var AccountVue = new Vue({
             cardID: null,
             cardName: null,
             cardLogo: null,
+            isEmptyCard: false,
+            timeListID: 3
         },
 
         bankTypes: [],
@@ -356,11 +358,13 @@ var AccountVue = new Vue({
         edit: function (account, mainAccount) {
             if (account) {
                 this.account = account;
+                this.account.isEmptyCard = true;
 
                 if (this.account.cardID) {
                     $("#account_card option").remove().val("");
                     $("#account_card").append(`<option value="${this.account.cardID}">${this.account.cardName}</option>`).select2("data", { id: this.account.cardID, text: this.account.cardName });
                     $("#account_card").trigger('change');
+                    this.account.isEmptyCard = false;
                 }
             } else {
                 this.account = {
@@ -386,6 +390,7 @@ var AccountVue = new Vue({
                     cardID: null,
                     cardName: null,
                     cardLogo: null,
+                    timeListID: 3
                 };
 
                 this.account.currencyID = UserInfo.Currency.ID;
@@ -394,19 +399,25 @@ var AccountVue = new Vue({
                 $("#account_card option").remove().val("");
             }
 
-            if (this.account.accountType == 2) {
+            let dateConfig = GetFlatpickrRuConfig(this.account.dateStart);
+            flatpickr('#account-date-start', dateConfig);
 
-                let dateConfig = GetFlatpickrRuConfig_Month(this.account.expirationDate);
-                this.flatpickrExpirationDate = flatpickr('#expirationDate', dateConfig);
+            dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
+            flatpickr('#expirationDate', dateConfig);
 
-            } else if (this.account.accountType == 8 || this.account.accountType == 6) {
+            //if (this.account.accountType == 2) {
 
-                let dateConfig = GetFlatpickrRuConfig(this.account.dateStart);
-                flatpickr('#account-date-start', dateConfig);
+            //    let dateConfig = GetFlatpickrRuConfig_Month(this.account.expirationDate);
+            //    this.flatpickrExpirationDate = flatpickr('#expirationDate', dateConfig);
 
-                dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
-                flatpickr('#expirationDate', dateConfig);
-            }
+            //} else if (this.account.accountType == 8 || this.account.accountType == 6) {
+
+            //    let dateConfig = GetFlatpickrRuConfig(this.account.dateStart);
+            //    flatpickr('#account-date-start', dateConfig);
+
+            //    dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
+            //    flatpickr('#expirationDate', dateConfig);
+            //}
 
             $("#account-name").removeClass("is-invalid");
             $("#modal-account").modal("show");

@@ -193,8 +193,8 @@ namespace MyProfile.Entity.Model
 
             modelBuilder.Entity<Account>()
                    .HasMany(x => x.AccountHistories2)
-                   .WithOne(x => x.Account2)
-                   .HasForeignKey(x => x.AccountID2);
+                   .WithOne(x => x.AccountFrom)
+                   .HasForeignKey(x => x.AccountIDFrom);
 
             #endregion
         }
@@ -278,6 +278,7 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<BankType> BankTypes { get; set; }
         public virtual DbSet<Card> Cards { get; set; }
         public virtual DbSet<CardPaymentSystem> CardPaymentSystems { get; set; }
+        public virtual DbSet<AccountInfo> AccountInfos { get; set; }
 
 
 

@@ -56,7 +56,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProfile.Tag.Service", "My
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProfile.Notification.Service", "MyProfile.Notification.Service\MyProfile.Notification.Service.csproj", "{B736AF77-617C-438E-8852-D428BBC9072F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram.Service", "Telegram.Service\Telegram.Service.csproj", "{B735141A-2EFE-4515-B6FE-899DD3FC58C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Service", "Telegram.Service\Telegram.Service.csproj", "{B735141A-2EFE-4515-B6FE-899DD3FC58C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

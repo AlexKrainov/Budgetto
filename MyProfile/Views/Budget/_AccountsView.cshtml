@@ -18,7 +18,7 @@
                 <a href="javascript:void(0)" class="small text-body"
                    v-on:click="editMainAccount(mainAccount)">{{ mainAccount.name }}</a>
                 <br />
-                <span class="text-large font-weight-semibold">
+                <span class="big-money font-weight-semibold">
                     {{ new Intl.NumberFormat(mainAccount.currency.specificCulture, { style: 'currency', currency: mainAccount.currency.codeName }).format(mainAccount.balance) }}
                 </span>
                 <i class="fas fa-info-circle cursor-help text-danger" data-toggle="tooltip" data-html="true"
@@ -27,8 +27,8 @@
                 <br />
                 <span class="small">
                     @*<span v-show="mainAccount.bankName != null && mainAccount.bankName != mainAccount.name">
-                        <span class="text-muted">Банк: </span>{{ mainAccount.bankName }}&nbsp;&nbsp;
-                    </span>*@
+                            <span class="text-muted">Банк: </span>{{ mainAccount.bankName }}&nbsp;&nbsp;
+                        </span>*@
                     <span v-show="mainAccount.accounts.filter(x => x.isHideCurrentAccount).length">
                         <span class="text-muted">Скрытых: </span>{{ mainAccount.accounts.filter(x => x.isHideCurrentAccount).length }}&nbsp;&nbsp;
                     </span>
@@ -93,7 +93,7 @@
                             </a>
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
-                            <div class="text-large display-inline">
+                            <div class="big-money display-inline">
                                 {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
                             </div>
                         </div>
@@ -148,7 +148,7 @@
                                v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
-                            <div class="text-large display-inline">
+                            <div class="big-money display-inline">
                                 {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
                             </div>
                             <span class="text-success ml-1" v-show="account.isCachback">
@@ -201,7 +201,7 @@
                                 <span class="text-muted small">Моя кредитка</span>
                                 <span class="badge badge-outline-primary ml-2">Кредитка</span>
                                 <br />
-                                <div class="text-large display-inline">$1,534</div>
+                                <div class="big-money display-inline">$1,534</div>
                                 <span class="text-success ml-1">≈59,41 ₽</span>
                                 <span class="small text-muted float-right mt-3">$2,000</span>
                                 <br />
@@ -240,7 +240,7 @@
                                 <span class="badge badge-outline-primary ml-2">Вклад</span>
                                 <span class="badge badge-outline-success">+ 5%</span>
                                 <br />
-                                <div class="text-large display-inline">$5,000</div>
+                                <div class="big-money display-inline">$5,000</div>
                                 <span class="text-success ml-1">+140 ₽</span>
                                 <span class="small text-muted float-right mt-3">$5,500</span>
                                 <br />
@@ -278,14 +278,14 @@
                                v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-secondary ml-2">{{ account.accountTypeName }}</span>
                             <br />
-                            <div class="text-large display-inline">
+                            <div class="big-money display-inline">
                                 {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
                             </div>
                             <span class="text-success ml-1" v-show="account.isCachback">
                                 ≈{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.cachBackBalance) }}
                             </span>
                             <br />
-                            <div class="progress mt-1" style="height: 4px;"
+                            <div class="progress mt-1" style="height: 4px;width: 100%;"
                                  v-show="account.percent">
                                 <div class="progress-bar"
                                      v-bind:class="account.percent >= 95 ? 'bg-success': 'bg-secondary'"
@@ -336,6 +336,79 @@
                         <div>
                             <span class="float-right text-danger">{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balanceSpendings) }}</span>
                             Расходы
+                        </div>
+                    </div>
+                </div>
+                @*Deposit*@
+                <div class="card card-condenced mt-2"
+                     v-bind:class="account.isFinishedDeposit ? 'border-success' : ''"
+                     v-else-if="account.accountType == 7"
+                     v-show="account.isHideCurrentAccount == false">
+                    <div class="card-body media align-items-center px-3 py-2">
+                        <div class="media-body">
+                            <a href="javascript:void(0)" class="small text-body"
+                               v-on:click="editAccount(account)">{{ account.name }}</a>
+                            <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
+                            <span class="badge badge-outline-success">{{ account.interestRate }} %</span>
+                            <span class="badge badge-warning" 
+                                  v-show="account.isFinishedDeposit">Завершен</span>
+                            <br />
+                            <div class="big-money display-inline">
+                                {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
+                            </div>
+                            <span class="text-success ml-1" v-show="account.interestBalance">
+                                + {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.interestBalance) }}
+                            </span>
+                            <span class="small text-muted float-right mt-3">
+                                {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.interestBalanceForEnd) }}
+                            </span>
+                            <br />
+                            <div class="progress mt-1" style="height: 4px;width: 100%;"
+                                 v-show="account.percent">
+                                <div class="progress-bar bg-success"
+                                     v-bind:style="'width: '+ account.percent +'%;'"
+                                     style="height: 3px;"></div>
+                            </div>
+                            <span class="small text-muted float-left mt-1"
+                                  v-show="account.percent">{{ getDateByFormat(account.dateStart, 'DD.MM.YYYY') }}</span>
+                            <span class="small text-muted float-right mt-1"
+                                  v-show="account.percent">{{ getDateByFormat(account.expirationDate, 'DD.MM.YYYY') }}</span>
+                        </div>
+                        <button type="button" data-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
+                                style="position: absolute;right: 10px;top: 5px;"
+                                v-show="!account.isDeleted">
+                            <i class="ion ion-ios-more"></i>
+                        </button>
+                        <i class="fa fa-undo pl-2 float-right text-success cursor-pointer"
+                           style="position: absolute;right: 13px;top: 13px;"
+                           v-show="account.isDeleted"
+                           v-on:click="removeOrRecoveryAccount(account)"></i>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="javascript:void(0)"
+                               v-on:click="editAccount(account)">Редактировать счет</a>
+                            <a class="dropdown-item" href="javascript:void(0)"
+                               v-on:click="transferMoney(account.id)">Перевести деньги</a>
+                            <a class="dropdown-item" href="javascript:void(0)"
+                               v-on:click="showHideAccount(account, true)">Скрыть счет</a>
+                            <a class="dropdown-item text-danger" href="javascript:void(0)"
+                               v-on:click="removeOrRecoveryAccount(account)">Удалить счет</a>
+                        </div>
+                    </div>
+                    <div class="card-footer small py-1 text-muted"
+                         v-show="account.isPast">
+                        <div class="text-secondary">Итого с этого счета за данный период</div>
+                        <div>
+                            <span class="float-right text-secondary">{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.input) }}</span>
+                            Пополнений
+                        </div>
+                        <div>
+                            <span class="float-right text-secondary">{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.input) }}</span>
+                            Проценты за месяц
+                        </div>
+                        <div>
+                            <span class="float-right text-warning">{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.output) }}</span>
+                            Выводы
                         </div>
                     </div>
                 </div>

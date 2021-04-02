@@ -67,5 +67,9 @@ namespace MyProfile.Entity.ModelView.Account
         public int? CardID { get; set; }
         public string CardName { get; set; }
         public string CardLogo { get; set; }
+        public int TimeListID { get; set; }
+        public decimal? InterestBalanceForEnd { get; set; }
+        public bool IsFinishedDeposit { get; set; }
+        public decimal? InterestBalance { get; set; }
     }
 }

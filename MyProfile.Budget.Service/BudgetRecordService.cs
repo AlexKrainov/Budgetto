@@ -234,6 +234,9 @@ namespace MyProfile.Budget.Service
                                         record.Error = "Не удалось списать средства со счета: " + account.Name;
                                         _money = 0;
                                         recordCashback = 0;
+
+                                        await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_Create", new Exception(),
+                                            $"account.Currency.CodeName_CBR: { account.Currency.CodeName_CBR}, newRecord.DateTimeOfPayment: {newRecord.DateTimeOfPayment } ");
                                     }
                                 }
 
@@ -696,7 +699,8 @@ namespace MyProfile.Budget.Service
                     {
                         db_record.Account.Balance += lastAccountRecordHistory.AccountTotal;
                     }
-                }else
+                }
+                else
                 {
                     await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_RecoveryRecord", new Exception(), "lastAccountRecordHistory is empty");
                 }

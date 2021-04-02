@@ -50,8 +50,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("ExpirationDate");
 
-                    b.Property<decimal?>("InterestRate");
-
                     b.Property<bool>("IsCachback");
 
                     b.Property<bool>("IsCachbackMoney");
@@ -109,7 +107,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("AccountID");
 
-                    b.Property<int?>("AccountID2");
+                    b.Property<int?>("AccountIDFrom");
 
                     b.Property<string>("ActionType")
                         .IsRequired()
@@ -139,6 +137,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<decimal?>("OldBalance")
                         .HasColumnType("Money");
 
+                    b.Property<string>("StateField");
+
                     b.Property<decimal?>("ValueFrom")
                         .HasColumnType("Money");
 
@@ -149,9 +149,32 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasIndex("AccountID");
 
-                    b.HasIndex("AccountID2");
+                    b.HasIndex("AccountIDFrom");
 
                     b.ToTable("AccountHistories");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.AccountInfo", b =>
+                {
+                    b.Property<int>("AccountID");
+
+                    b.Property<int>("CapitalizationOfDeposit");
+
+                    b.Property<decimal?>("InterestBalance");
+
+                    b.Property<decimal?>("InterestBalanceForEndOfDeposit");
+
+                    b.Property<DateTime?>("InterestNextDate");
+
+                    b.Property<decimal?>("InterestRate");
+
+                    b.Property<bool>("IsFinishedDeposit");
+
+                    b.Property<DateTime?>("LastInterestAccrualDate");
+
+                    b.HasKey("AccountID");
+
+                    b.ToTable("AccountInfos");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.AccountType", b =>
@@ -387,6 +410,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("SmallLogo")
                         .HasMaxLength(256);
+
+                    b.Property<string>("bankName");
 
                     b.Property<int>("bankiruCardID");
 
@@ -2548,9 +2573,17 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyProfile.Entity.Model.Account", "Account2")
+                    b.HasOne("MyProfile.Entity.Model.Account", "AccountFrom")
                         .WithMany("AccountHistories2")
-                        .HasForeignKey("AccountID2");
+                        .HasForeignKey("AccountIDFrom");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.AccountInfo", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Account", "Account")
+                        .WithOne("AccountInfo")
+                        .HasForeignKey("MyProfile.Entity.Model.AccountInfo", "AccountID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.AccountType", b =>

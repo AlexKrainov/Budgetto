@@ -803,3 +803,7 @@ html.dark-style .tagify__input::before {
     background-color: #2e323a !important;
     color: #9d9fa1;
 }
+
+.big-money {
+    font-size: 140% !important;
+}

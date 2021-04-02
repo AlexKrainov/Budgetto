@@ -43,6 +43,7 @@ namespace MyProfile.Entity.Model
         /// Property for searching, it's like additional informations
         /// </summary>
         public string SearchString { get; set; }
+        public string bankName { get; set; }
 
 
         [ForeignKey("AccountType")]
