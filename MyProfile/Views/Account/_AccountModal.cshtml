@@ -102,7 +102,9 @@
                         <div class="form-group col">
                             <label class="form-label">Баланс</label>
                             <div class="input-group input-money">
-                                <input id="account-balance" type="number" class="form-control" placeholder="" v-model="account.balance" required>
+                                <input id="account-balance" type="number" class="form-control" placeholder="" 
+                                       v-model="account.balance" 
+                                       v-bind:disabled="account.accountType == 7 && account.id > 0">
                                 <div class="input-group-prepend">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" v-bind:disabled="account.id != undefined">
                                         {{ account.currency.icon }}
@@ -131,13 +133,17 @@
                         <div class="form-group col" v-show="[6,7,8].indexOf(account.accountType) >= 0">
                             <label class="form-label" v-show="account.accountType == 7">Открытие вклада</label>
                             <label class="form-label" v-show="account.accountType == 6 || account.accountType == 8">Открытие счета</label>
-                            <input type="text" class="form-control" id="account-date-start" v-model="account.dateStart">
+                            <input type="text" class="form-control" id="account-date-start"
+                                   v-bind:disabled="[6,7,8].indexOf(account.accountType) >= 0 && account.id > 0"
+                                   v-model="account.dateStart">
+                            <small class="invalid-feedback">Обязательное поле</small>
                         </div>
                         <div class="form-group col" v-show="[2,3,4,7,8].indexOf(account.accountType) >= 0">
                             <label class="form-label" v-show="[2,3,4].indexOf(account.accountType) >= 0">Конец срока действия карты</label>
                             <label class="form-label" v-show="account.accountType == 8">Окончание срока ИИС</label>
                             <label class="form-label" v-show="account.accountType == 7">Окончание срока вклада</label>
-                            <input type="text" class="form-control" id="expirationDate" v-model="account.expirationDate">
+                            <input type="text" class="form-control" id="expirationDate"
+                                   v-model="account.expirationDate">
                             <a class="small" href="javascript:void(0)"
                                v-show="account.dateStart && account.accountType == 7"
                                v-on:click="setExpirationDate(1)">+1 год</a>
@@ -147,6 +153,7 @@
                             <a class="small" href="javascript:void(0)"
                                v-show="account.dateStart"
                                v-on:click="setExpirationDate(3)">+3 года</a>
+                            <small class="invalid-feedback">Обязательное поле</small>
                         </div>
                     </div>
 
@@ -199,20 +206,25 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="form-label">Процент по вкладу</label>
+                                <span class="text-danger">*</span>
                                 <div class="form-group input-group">
-                                    <input type="number" class="form-control"
+                                    <input type="number" class="form-control" id="interestRate"
+                                           v-bind:disabled="account.id > 0"
                                            v-model="account.interestRate"
                                            v-bind:min="0"
                                            v-bind:max="100">
                                     <div class="input-group-append">
-                                        <span class="input-group-text">%</span>
+                                        <span class="input-group-text bg-lightest">%</span>
                                     </div>
+                                    <small class="invalid-feedback">Обязательное поле</small>
                                 </div>
+
                             </div>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label class="form-label">Начисление процентов</label>
                                     <select class="form-control" id="capitalization-select"
+                                            v-bind:disabled="account.id > 0"
                                             v-model="account.timeListID">
                                         <option value="1">Ежедневно</option>
                                         <option value="2">Еженедельно</option>
@@ -259,7 +271,7 @@
                     </div>
 
                     <div class="form-group mt-4"
-                         v-show="account.bankTypeID != 2">
+                         v-show="[6,7,8].indexOf(account.accountType) >= 0 == false">
                         <label class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" v-model="account.isDefault" name="isDefault">
                             <span class="custom-control-label">Счет по умолчанию</span>

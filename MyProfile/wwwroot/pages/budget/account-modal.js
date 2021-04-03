@@ -329,6 +329,17 @@ var AccountVue = new Vue({
                     id: 1
                 }];
             }
+        },
+        "account.accountType": function (newValue) {
+            if (!(this.account.id >= 0)) {
+                if ([6, 7, 8].indexOf(newValue) >= 0) {
+                    this.account.isCountTheBalance = false;
+                    this.account.isCountBalanceInMainAccount = false;
+                } else {
+                    this.account.isCountTheBalance = true;
+                    this.account.isCountBalanceInMainAccount = true;
+                }
+            }
         }
     },
     mounted: function () {
@@ -366,6 +377,7 @@ var AccountVue = new Vue({
                     $("#account_card").trigger('change');
                     this.account.isEmptyCard = false;
                 }
+
             } else {
                 this.account = {
                     id: undefined,
@@ -399,28 +411,32 @@ var AccountVue = new Vue({
                 $("#account_card option").remove().val("");
             }
 
-            let dateConfig = GetFlatpickrRuConfig(this.account.dateStart);
-            flatpickr('#account-date-start', dateConfig);
+            setTimeout(function () {
 
-            dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
-            flatpickr('#expirationDate', dateConfig);
+                //Timeout needs to set disabled for dateStart
+                let dateConfig = GetFlatpickrRuConfig(AccountVue.account.dateStart,undefined, new Date);
+                flatpickr('#account-date-start', dateConfig);
 
-            //if (this.account.accountType == 2) {
+                dateConfig = GetFlatpickrRuConfig(AccountVue.account.expirationDate);
+                flatpickr('#expirationDate', dateConfig);
 
-            //    let dateConfig = GetFlatpickrRuConfig_Month(this.account.expirationDate);
-            //    this.flatpickrExpirationDate = flatpickr('#expirationDate', dateConfig);
+                //if (this.account.accountType == 2) {
 
-            //} else if (this.account.accountType == 8 || this.account.accountType == 6) {
+                //    let dateConfig = GetFlatpickrRuConfig_Month(this.account.expirationDate);
+                //    this.flatpickrExpirationDate = flatpickr('#expirationDate', dateConfig);
 
-            //    let dateConfig = GetFlatpickrRuConfig(this.account.dateStart);
-            //    flatpickr('#account-date-start', dateConfig);
+                //} else if (this.account.accountType == 8 || this.account.accountType == 6) {
 
-            //    dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
-            //    flatpickr('#expirationDate', dateConfig);
-            //}
+                //    let dateConfig = GetFlatpickrRuConfig(this.account.dateStart);
+                //    flatpickr('#account-date-start', dateConfig);
 
-            $("#account-name").removeClass("is-invalid");
-            $("#modal-account").modal("show");
+                //    dateConfig = GetFlatpickrRuConfig(this.account.expirationDate);
+                //    flatpickr('#expirationDate', dateConfig);
+                //}
+
+                $("#account-name").removeClass("is-invalid");
+                $("#modal-account").modal("show");
+            }, 100);
         },
         showHide: function (account, isHide) {
             this.account = account;
@@ -528,6 +544,30 @@ var AccountVue = new Vue({
             //    isOk = false;
             //    $("#goal-expectationMoney").addClass("is-invalid");
             //}
+
+            if (this.account.accountType == 7) {
+
+                if (!this.account.dateStart) {
+                    isOk = false;
+                    $("#account-date-start").next().addClass("is-invalid");
+                } else {
+                    $("#account-date-start").next().removeClass("is-invalid");
+                }
+
+                if (!this.account.expirationDate) {
+                    isOk = false;
+                    $("#expirationDate").next().addClass("is-invalid");
+                } else {
+                    $("#expirationDate").next().removeClass("is-invalid");
+                }
+
+                if (!this.account.interestRate) {
+                    isOk = false;
+                    $("#interestRate").addClass("is-invalid");
+                } else {
+                    $("#interestRate").removeClass("is-invalid");
+                }
+            }
 
             if (isOk == false && e) {
                 e.preventDefault();

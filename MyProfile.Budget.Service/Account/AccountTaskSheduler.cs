@@ -25,6 +25,7 @@ namespace MyProfile.Budget.Service
                 {
                     count += 1;
                 }
+                repository.Update(accounts[i], true);
             }
             return count;
         }
@@ -70,17 +71,29 @@ namespace MyProfile.Budget.Service
                     account.AccountInfo.IsFinishedDeposit = true;
 
                     //Set to notification to user
+                    //By default show on the site
                 }
                 lastPeriodDays = (decimal)((account.AccountInfo.LastInterestAccrualDate.Value.Date - account.AccountInfo.InterestNextDate.Value.Date).TotalDays) * -1;
 
                 var percentPerPeriod = lastPeriodDays * percentPerDay;
                 var lastInterestBalance = (account.Balance + (account.AccountInfo.InterestBalance ?? 0)) / 100 * percentPerPeriod;
 
-                if (account.AccountInfo.LastInterestAccrualDate.Value.Date != account.DateStart.Value.Date 
+                if (account.AccountInfo.LastInterestAccrualDate.Value.Date != account.DateStart.Value.Date
                     && account.AccountInfo.LastInterestAccrualDate.Value.Date <= now.Date)
                 {
+                    account.AccountHistories.Add(new AccountHistory
+                    {
+                        ActionType = AccountHistoryActionType.AddedPercent,
+                        CurrentDate = account.AccountInfo.LastInterestAccrualDate.Value.Date,
+                        OldBalance = account.AccountInfo.InterestBalance,
+                        NewBalance = account.AccountInfo.InterestBalance + lastInterestBalance,
+                        ValueTo = lastInterestBalance,
+                        StateField = $"{{ balance: {account.Balance}}}"
+                    });
+
                     account.AccountInfo.InterestBalance += lastInterestBalance;
                     isAdded = true;
+
                 }
             }
             return isAdded;
@@ -135,6 +148,34 @@ namespace MyProfile.Budget.Service
             }
 
             return interestBalance;
+        }
+
+        public void MinusOnePeriodForDeposit(DateTime startDate, DateTime endDate, TimeList timeList)
+        {
+            startDate = endDate;
+            switch (timeList)
+            {
+                case TimeList.Daily:
+                    endDate = endDate.AddDays(-1).Date;
+                    break;
+                case TimeList.Weekly:
+                    endDate = endDate.AddDays(-7).Date;
+                    break;
+                case TimeList.Monthly:
+                    endDate = endDate.AddMonths(-1).Date;
+                    break;
+                case TimeList.Quarterly:
+                    endDate = endDate.AddMonths(-3).Date;
+                    break;
+                case TimeList.HalfYearly:
+                    endDate = endDate.AddMonths(-6).Date;
+                    break;
+                case TimeList.Yearly:
+                    endDate = endDate.AddYears(-1).Date;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

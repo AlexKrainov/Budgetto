@@ -99,6 +99,7 @@ namespace MyProfile.Budget.Service
                         InterestBalance = x.AccountInfo != null ? x.AccountInfo.InterestBalance : null,
                         InterestBalanceForEnd = x.AccountInfo != null ? x.AccountInfo.InterestBalanceForEndOfDeposit : null,
                         IsFinishedDeposit = x.AccountInfo != null ? x.AccountInfo.IsFinishedDeposit : false,
+                        TimeListID = x.AccountInfo != null ? x.AccountInfo.CapitalizationOfDeposit : (int)TimeList.Monthly,
 
                         CardID = x.CardID,
                         CardName = x.CardID != null ? x.Card.Name : null,
@@ -147,7 +148,8 @@ namespace MyProfile.Budget.Service
                         if (account.IsFinishedDeposit)
                         {
                             account.InterestBalanceForEnd = account.Balance + account.InterestBalance;
-                        }else
+                        }
+                        else
                         {
                             account.InterestBalanceForEnd = account.Balance + account.InterestBalanceForEnd;
                         }
@@ -286,7 +288,8 @@ namespace MyProfile.Budget.Service
 
             var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
                     && x.Account.IsDeleted == false
-                    && x.ActionType == AccountHistoryActionType.MoveMoney
+                    && (x.ActionType == AccountHistoryActionType.MoveMoney 
+                        || x.ActionType == AccountHistoryActionType.AddedPercent)
                     && x.CurrentDate >= start && x.CurrentDate <= finish)
                 .Select(x => new
                 {
@@ -294,7 +297,8 @@ namespace MyProfile.Budget.Service
                     x.AccountIDFrom,
                     x.Actions,
                     x.ValueFrom,
-                    x.ValueTo
+                    x.ValueTo,
+                    x.ActionType,
                 })
                 .ToList();
 
@@ -309,8 +313,10 @@ namespace MyProfile.Budget.Service
                     account.BalanceEarnings += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Earnings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountTotal);
                     account.BalancePastCachback += records.Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings && (x.AccountID ?? 0) == account.ID).Sum(x => x.AccountCashback);
 
-                    account.Input = accountHistories.Where(x => x.AccountID == account.ID && x.Actions == "input").Sum(x => x.ValueTo);
-                    account.Output = accountHistories.Where(x => x.AccountID == account.ID && x.Actions == "output").Sum(x => x.ValueFrom);
+                    account.Output = accountHistories.Where(x => x.AccountIDFrom == account.ID && x.ActionType == AccountHistoryActionType.MoveMoney).Sum(x => x.ValueFrom);
+                    account.Input = accountHistories.Where(x => x.AccountID == account.ID && x.ActionType == AccountHistoryActionType.MoveMoney).Sum(x => x.ValueTo);
+
+                    account.InterestBalanceForPeriod = accountHistories.Where(x => x.AccountID == account.ID && x.ActionType == AccountHistoryActionType.AddedPercent).Sum(x => x.ValueTo);
                 }
             }
         }
@@ -357,6 +363,20 @@ namespace MyProfile.Budget.Service
                 accountFrom.Balance -= transfer.Value;
                 accountTo.Balance += transfer.EndValue;
             }
+
+            #region Recount InterestBalanceForEndOfDeposit
+            if (accountFrom.AccountTypeID == (int)AccountTypes.Deposit && accountFrom.AccountInfo.IsFinishedDeposit == false)
+            {
+                accountFrom.AccountInfo.InterestBalanceForEndOfDeposit =
+                    СalculateEndDeposit((accountFrom.AccountInfo.InterestBalance ?? 0) + accountFrom.Balance, accountFrom.AccountInfo.InterestRate ?? 0, accountFrom.AccountInfo.LastInterestAccrualDate.Value.Date, accountFrom.ExpirationDate.Value.Date, (TimeList)accountFrom.AccountInfo.CapitalizationOfDeposit);
+            }
+
+            if (accountTo.AccountTypeID == (int)AccountTypes.Deposit && accountTo.AccountInfo.IsFinishedDeposit == false)
+            {
+                accountTo.AccountInfo.InterestBalanceForEndOfDeposit =
+                    СalculateEndDeposit((accountTo.AccountInfo.InterestBalance ?? 0) + accountTo.Balance, accountTo.AccountInfo.InterestRate ?? 0, accountTo.AccountInfo.LastInterestAccrualDate.Value.Date, accountTo.ExpirationDate.Value.Date, (TimeList)accountTo.AccountInfo.CapitalizationOfDeposit);
+            } 
+            #endregion
 
             //accountHistoryFrom.NewBalance = accountFrom.Balance;
             accountHistory.NewBalance = accountTo.Balance;

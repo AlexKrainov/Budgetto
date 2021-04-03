@@ -13,6 +13,7 @@ namespace MyProfile.Entity.Model
         public static readonly string Recovery = "Recovery";
         public static readonly string MoveMoney = "MoveMoney";
         public static readonly string ResetCacback = "ResetCacback";
+        public static readonly string AddedPercent = "AddedPercent";
     }
     public class AccountHistory
     {
