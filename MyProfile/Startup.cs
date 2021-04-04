@@ -88,6 +88,9 @@ namespace MyProfile
             services.AddTransient<TelegramService>();
             services.AddTransient<NotificationEmailService>();
 
+            services.AddTransient<BaseTaskJob>();
+            services.AddTransient<HubManager>();
+
             #endregion
 
             //services.AddSingleton<IUserConnectionManagerOLD, UserConnectionManagerOLD>();

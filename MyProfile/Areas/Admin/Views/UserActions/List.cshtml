@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Настройки аккаунта";
+    Layout = "~/Views/Shared/Layouts/_Layout1.cshtml";
+    //var currentUser = MyProfile.Identity.UserInfo.Current;
+}
+
+
+@section Styles {
+    <link href="~/vendor/libs/datatables/datatables.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/bootstrap-tagsinput/bootstrap-tagsinput.css">
+
+    <!-- Page -->
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+}
+
+@section Scripts {
+    <!-- Dependencies -->
+    <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/datatables/datatables.js" asp-append-version="true"></script>
+    <script src="~/pages/_areas/admin/user-actions.js"></script>
+}
+<div id="task-vue">
+
+    <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold mb-3">
+        <div>User actions</div>
+    </h4>
+
+    <!-- Filters -->
+    <div class="ui-bordered px-4 pt-4 mb-4">
+        <div class="form-row">
+            <div class="col-md mb-2">
+                <label class="form-label">Priority</label>
+                @*data-width="88%"*@
+                <vue-select2-component data-id="emails"
+                                       url="/Admin/UserActions/GetEmails"
+                                       selected-property-name="text"
+                                       v-bind:multiple="true"
+                                       v-bind:minimum-input-length="0"
+                                       v-bind:is-save-localstorage="false"
+                                       v-bind:metadata="[
+                                                         {text: '',
+                                                         propertyName: 'text',
+                                                         isOption: true,
+                                                         isPlaceholder: false},
+                                                        {text: 'Счет',
+                                                         propertyName: 'userName',
+                                                         isOption: true,
+                                                         isPlaceholder: false},
+                                                       ]"></vue-select2-component>
+            </div>
+            <div class="col-md mb-2">
+                <label class="form-label">Start</label>
+                <input type="text" id="range-start" class="form-control" v-model="rangeStart">
+            </div>
+            <div class="col-md mb-2">
+                <label class="form-label">End</label>
+                <input type="text" id="range-end" class="form-control" v-model="rangeEnd">
+            </div>
+            <div class="col-md col-xl-2 mb-2">
+                <label class="form-label d-none d-md-block">&nbsp;</label>
+                <button type="button" class="btn btn-secondary btn-block" v-on:click="search">Refresh</button>
+            </div>
+        </div>
+    </div>
+    <!-- / Filters -->
+
+    <div class="card">
+        <div class="card-datatable table-responsive">
+            @*v-bind:class="pageViewSettings.isTableViewCompact ? 'compact' : ''"*@
+            <table id="table"
+                   class="table table-bordered dataTable table-hover"
+                   data-searching="false"
+                   data-paging="false"
+                   data-fixed-header="true"
+                   data-col-reorder="true"
+                   data-b-info="false">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>DateTime</th>
+                        <th>Action</th>
+                        <th>User name</th>
+                        <th>User email</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="td_s in row"
+                        v-html="getTD(td_s)">
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

@@ -807,3 +807,9 @@ html.dark-style .tagify__input::before {
 .big-money {
     font-size: 140% !important;
 }
+
+.select2-selection__choice__remove {
+    background-color: transparent;
+    border: none;
+    font-size: 1em;
+}

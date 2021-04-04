@@ -1,5 +1,6 @@
 ﻿@{bool isHorizontal = ViewData["LayoutSidenavHorizontal"] != null && ViewData["LayoutSidenavHorizontal"].ToString() == "True";}
 @{string currentPage = ViewContext.RouteData.Values["Controller"].ToString() + "/" + ViewContext.RouteData.Values["Action"].ToString();}
+@{var currentUser = MyProfile.Identity.UserInfo.Current; }
 
 <div id="layout-sidenav"
      class="layout-sidenav sidenav sidenav-vertical bg-sidenav-theme">
@@ -38,19 +39,19 @@
         <li class="sidenav-divider mb-1"></li>
         @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
 
-        <li class="sidenav-item@(currentPage == "Limit/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right" 
+        <li class="sidenav-item@(currentPage == "Limit/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
             title="Лимиты позволяют контролировать траты по выбранным категориям. В одном лимите можно совмещать несколько категорий.
            Например, поставьте себе лимит на фастфуд или продукты и отслеживайте его на страницах 'Финансы на месяц' и 'Финансы на год'.">
             <a asp-area="" asp-controller="Limit" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-frame-expand"></i><div>Лимиты</div></a>
         </li>
 
-        <li class="sidenav-item@(currentPage == "Goal/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right" 
+        <li class="sidenav-item@(currentPage == "Goal/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
             title="На этой странице можно создавать финансовые цели.
            Отслеживать прогресс по цели можно на страницах 'Финансы на месяц' и 'Финансы на год'.">
             <a asp-area="" asp-controller="Goal" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-rocket"></i><div>Цели</div></a>
         </li>
 
-        <li class="sidenav-item@(currentPage == "Chart/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right" 
+        <li class="sidenav-item@(currentPage == "Chart/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
             title="Аналитику по категориям можно формировать в виде графиков. Создавайте графики здесь и размещайте
            их на страницах 'Финансы на месяц' и 'Финансы на год'.">
             <a asp-area="" asp-controller="Chart" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-pie-chart"></i><div>Графики</div></a>
@@ -71,13 +72,45 @@
             <a asp-area="" asp-controller="Section" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon pe-7s-albums"></i><div>Категории</div></a>
         </li>
 
-        <li class="sidenav-item@(currentPage == "Budget/TimeLine" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right" 
-            title="В календаре отображаются все совершенные вами финансовые операции за выбранный год. 
+        <li class="sidenav-item@(currentPage == "Budget/TimeLine" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
+            title="В календаре отображаются все совершенные вами финансовые операции за выбранный год.
 При наведении на интересующую дату вы можете увидеть сумму трат за день или количество внесённых операций.">
             <a asp-area="" asp-controller="Budget" asp-action="TimeLine" class="sidenav-link"><i class="sidenav-icon lnr lnr-calendar-full"></i><div>Календарь</div></a>
         </li>
 
-        <li class="sidenav-item margin-top-auto @(currentPage == "Help/Center/Index" ? " active" : "")" >
+        @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin)
+        {
+    <li class="sidenav-item ">
+        <a href="javascript:void(0)" class="sidenav-link sidenav-toggle">
+            <i class="sidenav-icon lnr lnr-cog"></i>
+            <div>Admins</div>
+        </a>
+
+        <ul class="sidenav-menu @(currentPage == "Admin/SchedulerTask/List" ? " active" : "")">
+            <li class="sidenav-item">
+                <a asp-area="Admin" asp-controller="SchedulerTask" asp-action="List" class="sidenav-link">
+                    <div>Task</div>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidenav-menu @(currentPage == "Admin/UserActions/List" ? " active" : "")">
+            <li class="sidenav-item">
+                <a asp-area="Admin" asp-controller="UserActions" asp-action="List" class="sidenav-link">
+                    <div>User actions</div>
+                </a>
+            </li>
+        </ul>
+        <ul class="sidenav-menu @(currentPage == "Admin/UserActions/List" ? " active" : "")">
+            <li class="sidenav-item">
+                <a asp-area="Admin" asp-controller="UserSessions" asp-action="List" class="sidenav-link">
+                    <div>User Sessions</div>
+                </a>
+            </li>
+        </ul>
+    </li>
+        }
+
+        <li class="sidenav-item margin-top-auto @(currentPage == "Help/Center/Index" ? " active" : "")">
             <a asp-area="Help" asp-controller="Center" asp-action="Index" class="sidenav-link"><i class="sidenav-icon lnr lnr-question-circle"></i><div>Help center/Помощь</div></a>
         </li>
         @*<li class="sidenav-item@(currentPage == "ToDoList/List" ? " active" : "")">

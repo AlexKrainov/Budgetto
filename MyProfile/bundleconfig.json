@@ -256,5 +256,11 @@
     "inputFiles": [
       "wwwroot/vue-components/vue-select2-component.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/_areas/admin/scheduler-task.min.js",
+    "inputFiles": [
+      "wwwroot/pages/_areas/admin/scheduler-task.js"
+    ]
   }
 ]
