@@ -78,7 +78,7 @@
             <section v-for="account in mainAccount.accounts"
                      v-bind:class="[account.isDeleted ? 'deleted-item': '' ]">
                 @*cash*@
-                <div class="card card-condenced mt-2"
+                <div class="card card-condenced mt-2 border-primary"
                      v-if="account.accountType == 1"
                      v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 @*debet*@
-                <section class="card card-condenced mt-2"
+                <section class="card card-condenced mt-2 border-primary"
                          v-else-if="account.accountType == 2"
                          v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
@@ -269,7 +269,7 @@
                         </div>
                     </div>*@
                 @*Investing*@
-                <div class="card card-condenced mt-2"
+                <div class="card card-condenced mt-2 border-secondary"
                      v-else-if="account.accountType == 6 || account.accountType == 8"
                      v-show="account.isHideCurrentAccount == false">
                     <div class="card-body media align-items-center px-3 py-2">
@@ -340,7 +340,7 @@
                     </div>
                 </div>
                 @*Deposit*@
-                <div class="card card-condenced mt-2"
+                <div class="card card-condenced mt-2 border-secondary"
                      v-bind:class="account.isFinishedDeposit ? 'border-success' : ''"
                      v-else-if="account.accountType == 7"
                      v-show="account.isHideCurrentAccount == false">

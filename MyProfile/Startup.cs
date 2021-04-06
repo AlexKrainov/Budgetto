@@ -172,7 +172,7 @@ namespace MyProfile
             services.AddTransient<AccountDailyWork>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(AccountDailyWork),
-                 cronExpression: "0 */5 * ? * *")); //At 07:00:00am every day(0 0 7 * * ?)
+                 cronExpression: "0 0 7 * * ?")); //At 07:00:00am every day(0 0 7 * * ?)
             CronExpression.ValidateExpression("0 0 7 * * ?");
 
             //"0 */5 * ? * *" - Every 5 minutes

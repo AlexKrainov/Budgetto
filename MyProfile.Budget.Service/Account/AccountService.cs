@@ -99,7 +99,8 @@ namespace MyProfile.Budget.Service
                         InterestBalance = x.AccountInfo != null ? x.AccountInfo.InterestBalance : null,
                         InterestBalanceForEnd = x.AccountInfo != null ? x.AccountInfo.InterestBalanceForEndOfDeposit : null,
                         IsFinishedDeposit = x.AccountInfo != null ? x.AccountInfo.IsFinishedDeposit : false,
-                        TimeListID = x.AccountInfo != null ? x.AccountInfo.CapitalizationOfDeposit : (int)TimeList.Monthly,
+                        TimeListID = x.AccountInfo != null ? x.AccountInfo.CapitalizationTimeListID : (int)TimeList.Monthly,
+                        IsCapitalization = x.AccountInfo != null ? x.AccountInfo.IsCapitalization : false,
 
                         CardID = x.CardID,
                         CardName = x.CardID != null ? x.Card.Name : null,
@@ -368,13 +369,13 @@ namespace MyProfile.Budget.Service
             if (accountFrom.AccountTypeID == (int)AccountTypes.Deposit && accountFrom.AccountInfo.IsFinishedDeposit == false)
             {
                 accountFrom.AccountInfo.InterestBalanceForEndOfDeposit =
-                    СalculateEndDeposit((accountFrom.AccountInfo.InterestBalance ?? 0) + accountFrom.Balance, accountFrom.AccountInfo.InterestRate ?? 0, accountFrom.AccountInfo.LastInterestAccrualDate.Value.Date, accountFrom.ExpirationDate.Value.Date, (TimeList)accountFrom.AccountInfo.CapitalizationOfDeposit);
+                    СalculateEndDeposit((accountFrom.AccountInfo.InterestBalance ?? 0) + accountFrom.Balance, accountFrom.AccountInfo.InterestRate ?? 0, accountFrom.AccountInfo.LastInterestAccrualDate.Value.Date, accountFrom.ExpirationDate.Value.Date, (TimeList)accountFrom.AccountInfo.CapitalizationTimeListID);
             }
 
             if (accountTo.AccountTypeID == (int)AccountTypes.Deposit && accountTo.AccountInfo.IsFinishedDeposit == false)
             {
                 accountTo.AccountInfo.InterestBalanceForEndOfDeposit =
-                    СalculateEndDeposit((accountTo.AccountInfo.InterestBalance ?? 0) + accountTo.Balance, accountTo.AccountInfo.InterestRate ?? 0, accountTo.AccountInfo.LastInterestAccrualDate.Value.Date, accountTo.ExpirationDate.Value.Date, (TimeList)accountTo.AccountInfo.CapitalizationOfDeposit);
+                    СalculateEndDeposit((accountTo.AccountInfo.InterestBalance ?? 0) + accountTo.Balance, accountTo.AccountInfo.InterestRate ?? 0, accountTo.AccountInfo.LastInterestAccrualDate.Value.Date, accountTo.ExpirationDate.Value.Date, (TimeList)accountTo.AccountInfo.CapitalizationTimeListID);
             } 
             #endregion
 
@@ -486,13 +487,13 @@ namespace MyProfile.Budget.Service
                     if (account.AccountType == AccountTypes.Deposit)
                     {
                         accountDB.AccountInfo.InterestRate = account.InterestRate;
-                        accountDB.AccountInfo.CapitalizationOfDeposit = account.TimeListID;
+                        accountDB.AccountInfo.CapitalizationTimeListID = account.TimeListID;
                         accountDB.AccountInfo.InterestNextDate = accountDB.DateStart;
                         accountDB.AccountInfo.InterestBalance = 0;
                         accountDB.AccountInfo.InterestBalanceForEndOfDeposit = СalculateEndDeposit(account.Balance, account.InterestRate ?? 0, account.DateStart.Value.Date, account.ExpirationDate.Value.Date, (TimeList)account.TimeListID);
                     }
 
-                    CalculateDeposit(accountDB);
+                    CalculateDeposit(accountDB, isNew: true);
                 }
 
                 if (account.IsCachback)

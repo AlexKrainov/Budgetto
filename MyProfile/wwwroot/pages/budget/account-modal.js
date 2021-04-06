@@ -49,6 +49,7 @@ var MainAccountVue = new Vue({
             if (account) {
                 this.account = account;
                 this.account.isCash = account.accountType == 1;
+                $("#main_account_card").val("").trigger('change');
             } else {
                 this.account = {
                     id: undefined,
@@ -376,6 +377,8 @@ var AccountVue = new Vue({
                     $("#account_card").append(`<option value="${this.account.cardID}">${this.account.cardName}</option>`).select2("data", { id: this.account.cardID, text: this.account.cardName });
                     $("#account_card").trigger('change');
                     this.account.isEmptyCard = false;
+                } else {
+                    $("#account_card").val("").trigger('change');
                 }
 
             } else {
@@ -402,7 +405,8 @@ var AccountVue = new Vue({
                     cardID: null,
                     cardName: null,
                     cardLogo: null,
-                    timeListID: 3
+                    timeListID: 3,
+                    isCapitalization: true,
                 };
 
                 this.account.currencyID = UserInfo.Currency.ID;
@@ -414,7 +418,7 @@ var AccountVue = new Vue({
             setTimeout(function () {
 
                 //Timeout needs to set disabled for dateStart
-                let dateConfig = GetFlatpickrRuConfig(AccountVue.account.dateStart,undefined, new Date);
+                let dateConfig = GetFlatpickrRuConfig(AccountVue.account.dateStart, undefined, new Date);
                 flatpickr('#account-date-start', dateConfig);
 
                 dateConfig = GetFlatpickrRuConfig(AccountVue.account.expirationDate);

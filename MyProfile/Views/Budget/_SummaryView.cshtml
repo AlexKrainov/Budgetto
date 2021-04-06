@@ -20,8 +20,8 @@
                     <div class="text-muted small"
                          v-show="summary.allAccountsMoney.countedAccounts != summary.allAccountsMoney.countAllAccounts">Суммируется {{ summary.allAccountsMoney.countedAccounts }} из {{ summary.allAccountsMoney.countAllAccounts }} счетов</div>
                     @*<div class="col-md-8" style="display:inline-block; width: 60%; height: 50px;">
-            <canvas id="statistics-chart-14"></canvas>
-        </div>*@
+                            <canvas id="statistics-chart-14"></canvas>
+                        </div>*@
                 </div>
 
             </div>
@@ -90,131 +90,59 @@
 
             </div>
         </div>
-        @*<div id="accounts-view" class="row no-gutters row-bordered" style="overflow: inherit; border-top: 1px solid lightgray;"
-             v-show="accounts && accounts.length > 0 && accounts[0].isShow">
-            <div style=" border: 1px solid;" v-for="account in accounts"
-                 v-bind:id="'account_'+ account.id"
-                 v-bind:class="[account.isHide ? 'col-lg-1 border-light' : 'col-lg-3 border-light', account.isDeleted ? 'deleted-item': '' ]">
-
-                <div class="card-body d-flex align-items-center py-3 px-3" style="padding-bottom: 15px !important; "
-                     v-if="!account.isHide">
-                    <div class="ui-feed-icon-container d-inline-block"
-                         v-bind:class="account.accountType != 1 && account.bankImage ? 'mr-2': ''">
-                        <span class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-toggle="tooltip" title="Счет по умолчанию"
-                              v-if="account.isDefault"></span>
-                        <img v-show="account.accountType != 1 && account.bankImage" v-bind:src="account.bankImage" v-bind:alt="account.bankName" class="ui-w-40 rounded-circle">
-                        <span v-show="account.accountType == 1 || (account.accountType != 1 && !account.bankImage)" class="ui-icon ui-statistics-icon text-primary"
-                              v-bind:class="account.accountIcon"></span>
-                    </div>
-                    <div class="ml-3">
-                        <div class="text-muted small">{{ account.name }}</div>
-                        <div v-show="account.isPast == false"
-                             v-bind:class="account.balance < 0 ? 'text-danger' : ''">
-                            <span class="text-large">
-                                {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
-                            </span>
-                            <span class="float-right text-success"
-                                  v-show="account.isCachback">
-                                ≈{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.cachBackBalance) }}
-                            </span>
+        <div id="total-view" class="row no-gutters row-bordered total-view" style="overflow: inherit; border-top: 1px solid lightgray;">
+            <div class="col-sm-6 col-xl-4 px-1" v-show="earningData.isShow">
+                <div class="card-body row" style="height: 98px">
+                    <div class="col-md-6">
+                        <div class="text-muted small">
+                            Доходы <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                                      v-bind:data-original-title="getSectionsTitle(earningData.sections, earningData.sectionTypeEnum )"></i>
                         </div>
-                        <div class="text-muted small" title="Конец срока действия карты"
-                             v-show="account.isPast == false">{{ getDateByFormat(account.expirationDate, 'MMMM YYYY') }}</div>
+                        <strong class="text-large font-weight-normal">{{ earningData.total }}</strong>
+                        <sup v-show="earningData.percent != 0 && earningData.isGood" class="text-success small">+ {{ earningData.percent }}%</sup>
+                        <sup v-show="earningData.percent != 0 && !earningData.isGood" class="text-danger small">- {{ earningData.percent }}%</sup>
                     </div>
-
-                    <button type="button" data-toggle="dropdown" aria-expanded="false"
-                            class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
-                            style="position: absolute;right: 10px;top: 5px;"
-                            v-show="!account.isDeleted">
-                        <i class="ion ion-ios-more"></i>
-                    </button>
-                    <i class="fa fa-undo pl-2 float-right text-success cursor-pointer"
-                       style="position: absolute;right: 13px;top: 13px;"
-                       v-show="account.isDeleted"
-                       v-on:click="removeOrRecoveryAccount(account)"></i>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="editAccount(account)">Редактировать счет</a>
-                        <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="transferMoney(account.id)">Перевести деньги</a>
-                        <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="showHideAccount(account, true)">Скрыть счет</a>
-                        <a class="dropdown-item text-danger" href="javascript:void(0)"
-                           v-on:click="removeOrRecoveryAccount(account)">Удалить счет</a>
-                    </div>
-                </div>
-                <div class="card-body d-flex align-items-center py-3" style="padding-bottom: 15px !important; "
-                     v-else-if="account.isHide">
-                    <div class="ui-feed-icon-container d-inline-block">
-                        <span class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-toggle="tooltip" title="Счет по умолчанию"
-                              v-if="account.isDefault"></span>
-                        <img class="ui-w-40 rounded-circle" data-toggle="tooltip"
-                             v-show="account.accountType != 1 && account.bankImage"
-                             v-bind:src="account.bankImage"
-                             v-bind:alt="account.bankName"
-                             v-bind:title="account.name">
-                        <span class="ui-icon ui-statistics-icon text-primary" data-toggle="tooltip"
-                              v-show="account.accountType == 1 || (account.accountType != 1 && !account.bankImage)"
-                              v-bind:class="account.accountIcon"
-                              v-bind:title="account.name"></span>
-                    </div>
-                    <button type="button" data-toggle="dropdown" aria-expanded="false"
-                            class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
-                            v-if="!account.isDeleted"
-                            style="position: absolute;right: 10px;top: 5px;">
-                        <i class="ion ion-ios-more"></i>
-                    </button>
-                    <i class="fa fa-undo pl-2 float-right text-success cursor-pointer"
-                       style="position: absolute;right: 13px;top: 13px;"
-                       v-else-if="account.isDeleted"
-                       v-on:click="removeOrRecoveryAccount(account)"></i>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="editAccount(account)">Редактировать счет</a>
-                        <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="transferMoney(account.id)">Перевести деньги</a>
-                        <a class="dropdown-item" href="javascript:void(0)"
-                           v-on:click="showHideAccount(account, false)">Показывать счет</a>
-                        <a class="dropdown-item text-danger" href="javascript:void(0)"
-                           v-on:click="removeOrRecoveryAccount(account)">Удалить счет</a>
-                    </div>
-
-                </div>
-                <div class="card-footer small"
-                     v-show="account.isPast && account.isHide == false">
-                    <div class="text-secondary">Итого с этого счета за данный период</div>
-                    <div>
-                        <span class="float-right text-success">
-                            {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balanceEarnings) }}
-                        </span>
-                        Доходы
-                    </div>
-                    <div>
-                        <span class="float-right text-danger">
-                            {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balanceSpendings) }}
-                        </span>
-                        Расходы
-                    </div>
-                    <div>
-                        <span class="float-right">
-                            {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balanceInvestments) }}
-                        </span>
-                        Инвестиции
-                    </div>
-                    <div v-show="account.isCachback">
-                        <span class="float-right text-success">
-                            {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balancePastCachback) }}
-                        </span>
-                        Кешбек
+                    <div class="col-md-6" style="height: 65px;">
+                        <canvas id="earningChart"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-1">
-                <div class="card-body d-flex justify-content-center align-items-center pt-3" style=" padding-bottom: 15px !important;">
-                    <span class="ui-icon ui-statistics-icon ion ion-md-add text-primary cursor-pointer" title="Добавить счет"
-                          v-on:click="editAccount(undefined)"></span>
+            <div class="col-sm-6 col-xl-4 px-1" v-show="spendingData.isShow">
+                <div class="card-body row" style="height: 98px">
+                    <div class="col-md-6">
+                        <div class="text-muted small">
+                            Расходы <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                                       v-bind:data-original-title="getSectionsTitle(spendingData.sections, spendingData.sectionTypeEnum)"></i>
+                        </div>
+                        <strong class="text-large font-weight-normal">{{ spendingData.total }}</strong>
+                        <sup v-show="spendingData.percent != 0 && !spendingData.isGood" class="text-danger small">+ {{ spendingData.percent }}%</sup>
+                        <sup v-show="spendingData.percent != 0 && spendingData.isGood" class="text-success small">- {{ spendingData.percent }}%</sup>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="height: 70px;">
+                            <canvas id="spendingChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>*@
+            <div class="col-sm-6 col-xl-4 px-1" v-show="investingData.isShow">
+                <div class="card-body row" style="height: 98px">
+                    <div class="col-md-6">
+                        <div class="text-muted small">
+                            Инвестиции <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
+                                          v-bind:data-original-title="getSectionsTitle(investingData.sections, 3)"></i>
+                        </div>
+                        <strong class="text-large font-weight-normal">{{ investingData.total }}</strong>
+                        <sup v-show="investingData.percent != 0 && !investingData.isGood" class="text-danger small">- {{ investingData.percent }}%</sup>
+                        <sup v-show="investingData.percent != 0 && investingData.isGood" class="text-success small">+ {{ investingData.percent }}%</sup>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="height: 70px;">
+                            <canvas id="investmentsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

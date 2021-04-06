@@ -30,7 +30,7 @@ namespace MyProfile.Budget.Service
             return count;
         }
 
-        public bool CalculateDeposit(Account account)
+        public bool CalculateDeposit(Account account, bool isNew = false)
         {
             var now = DateTime.Now.ToUniversalTime().Date;
             bool isAdded = false;
@@ -41,7 +41,7 @@ namespace MyProfile.Budget.Service
             while (account.AccountInfo.InterestNextDate.Value.Date <= now && account.AccountInfo.IsFinishedDeposit == false)
             {
                 account.AccountInfo.LastInterestAccrualDate = account.AccountInfo.InterestNextDate;
-                switch ((TimeList)account.AccountInfo.CapitalizationOfDeposit)
+                switch ((TimeList)account.AccountInfo.CapitalizationTimeListID)
                 {
                     case TimeList.Daily:
                         account.AccountInfo.InterestNextDate = account.AccountInfo.InterestNextDate.Value.AddDays(1).Date;
@@ -76,10 +76,20 @@ namespace MyProfile.Budget.Service
                 lastPeriodDays = (decimal)((account.AccountInfo.LastInterestAccrualDate.Value.Date - account.AccountInfo.InterestNextDate.Value.Date).TotalDays) * -1;
 
                 var percentPerPeriod = lastPeriodDays * percentPerDay;
-                var lastInterestBalance = (account.Balance + (account.AccountInfo.InterestBalance ?? 0)) / 100 * percentPerPeriod;
+                decimal totalBalance = account.Balance;
 
-                if (account.AccountInfo.LastInterestAccrualDate.Value.Date != account.DateStart.Value.Date
-                    && account.AccountInfo.LastInterestAccrualDate.Value.Date <= now.Date)
+                if (account.AccountInfo.IsCapitalization)
+                {
+                    totalBalance = account.Balance + (account.AccountInfo.InterestBalance ?? 0);
+                }
+
+                decimal lastInterestBalance = totalBalance / 100 * percentPerPeriod;
+
+                if ((account.AccountInfo.LastInterestAccrualDate.Value.Date != account.DateStart.Value.Date
+                        && account.AccountInfo.LastInterestAccrualDate.Value.Date <= now.Date
+                        && isNew == false)
+                    || (isNew 
+                        && account.AccountInfo.LastInterestAccrualDate.Value.Date == now.Date))
                 {
                     account.AccountHistories.Add(new AccountHistory
                     {
@@ -93,7 +103,6 @@ namespace MyProfile.Budget.Service
 
                     account.AccountInfo.InterestBalance += lastInterestBalance;
                     isAdded = true;
-
                 }
             }
             return isAdded;
@@ -150,31 +159,34 @@ namespace MyProfile.Budget.Service
             return interestBalance;
         }
 
-        public void MinusOnePeriodForDeposit(DateTime startDate, DateTime endDate, TimeList timeList)
+        public void GetLastPeriod(DateTime dateEnd, DateTime lastDate, DateTime nextDate, TimeList timeList)
         {
-            startDate = endDate;
-            switch (timeList)
+            while (nextDate > dateEnd)
             {
-                case TimeList.Daily:
-                    endDate = endDate.AddDays(-1).Date;
-                    break;
-                case TimeList.Weekly:
-                    endDate = endDate.AddDays(-7).Date;
-                    break;
-                case TimeList.Monthly:
-                    endDate = endDate.AddMonths(-1).Date;
-                    break;
-                case TimeList.Quarterly:
-                    endDate = endDate.AddMonths(-3).Date;
-                    break;
-                case TimeList.HalfYearly:
-                    endDate = endDate.AddMonths(-6).Date;
-                    break;
-                case TimeList.Yearly:
-                    endDate = endDate.AddYears(-1).Date;
-                    break;
-                default:
-                    break;
+                lastDate = nextDate;
+                switch (timeList)
+                {
+                    case TimeList.Daily:
+                        nextDate = nextDate.AddDays(1).Date;
+                        break;
+                    case TimeList.Weekly:
+                        nextDate = nextDate.AddDays(7).Date;
+                        break;
+                    case TimeList.Monthly:
+                        nextDate = nextDate.AddMonths(1).Date;
+                        break;
+                    case TimeList.Quarterly:
+                        nextDate = nextDate.AddMonths(3).Date;
+                        break;
+                    case TimeList.HalfYearly:
+                        nextDate = nextDate.AddMonths(6).Date;
+                        break;
+                    case TimeList.Yearly:
+                        nextDate = nextDate.AddYears(1).Date;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

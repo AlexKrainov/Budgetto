@@ -72,5 +72,6 @@ namespace MyProfile.Entity.ModelView.Account
         public bool IsFinishedDeposit { get; set; }
         public decimal? InterestBalance { get; set; }
         public decimal? InterestBalanceForPeriod { get; set; }
+        public bool IsCapitalization { get; set; }
     }
 }

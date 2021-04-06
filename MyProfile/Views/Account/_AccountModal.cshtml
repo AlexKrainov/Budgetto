@@ -124,7 +124,7 @@
                                 за предыдущий месяц/год. Пожалуйста, воспользуйтесь переводом со счета на счет "Перевести деньги".
                             </small>
                             <small class="text-muted" v-else-if="account.accountType == 7">
-                                Внимание! Баланс вклада должен быть <b>без </b> начисленных процентов, те только та сумма на которую вы пополнили депозит.
+                                Внимание! Баланс вклада должен быть <b>c начисленными</b> процентами (Если они были).
                             </small>
                         </div>
                     </div>
@@ -235,7 +235,15 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group mt-4">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" v-model="account.isCapitalization" name="isCapitalization">
+                                    <span class="custom-control-label">Проценты остаюстя на карте (Проценты с капитализацией)</span>
+                                </label>
+                            </div>
+
                         </div>
+                        
                     </div>
 
 

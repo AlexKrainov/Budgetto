@@ -36,9 +36,10 @@ namespace MyProfile.Entity.Model
         /// <summary>
         /// TimeList (Enum)
         /// </summary>
-        public int CapitalizationOfDeposit { get; set; }
+        public int CapitalizationTimeListID { get; set; }
         public bool IsFinishedDeposit { get; set; }
         public decimal? InterestBalanceForEndOfDeposit { get; set; }
+        public bool IsCapitalization { get; set; }
         #endregion
 
 

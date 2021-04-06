@@ -19,7 +19,7 @@
     </label>
     <hr class="m-0 border-light">
 }
-<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Общая сводка + счета</span> </h5>
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Общая сводка + Итоги года</span> </h5>
 <label class="m-0 px-4 pb-3 d-flex media align-items-middle">
     <div class="media-body">
         <span class="theme-settings-t-rtl_switcher">Общая сводка</span>
@@ -33,21 +33,6 @@
         </span>
     </div>
 </label>
-<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
-    <div class="media-body">
-        <span class="theme-settings-t-rtl_switcher">Все счета</span>
-    </div>
-    <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_Accounts" name="user_settings" data-prop="Month_Accounts"
-               v-on:change="toggleElements('accounts', 'Month_Accounts', 'Dashboard_Month_IsShow_Accounts'); change(false, ['BudgetVue.loadAccounts'])">
-        <span class="switcher-indicator">
-            <span class="switcher-yes"></span>
-            <span class="switcher-no"></span>
-        </span>
-    </div>
-</label>
-
-<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Итоги года</span> </h5>
 <label class="m-0 px-4 pb-3 d-flex media align-items-middle">
     <div class="media-body">
         <span class="theme-settings-t-rtl_switcher">Показывать виджет доходов</span>
@@ -87,6 +72,22 @@
         </span>
     </div>
 </label>
+<hr class="m-0 border-light">
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Все счета и огранизации</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать виджеты считов и наличных</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_Accounts" name="user_settings" data-prop="Month_Accounts"
+               v-on:change="toggleElements('accounts', 'Month_Accounts', 'Dashboard_Month_IsShow_Accounts'); change(false, ['BudgetVue.loadAccounts'])">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
+
 <hr class="m-0 border-light">
 <h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Лимиты</span> </h5>
 <label class="m-0 px-4 pb-3 d-flex media align-items-middle">
