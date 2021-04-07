@@ -7,6 +7,7 @@ using MyProfile.Code.Hubs;
 using MyProfile.Code.Sheduler.Shedulers;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
+using MyProfile.Identity;
 using MyProfile.Limit.Service;
 using MyProfile.Reminder.Service;
 using MyProfile.Tag.Service;
@@ -50,6 +51,11 @@ namespace MyProfile.Areas.Admin.Controllers
             this.reminderService = reminderService;
             this.hubManager = hubManager;
             this.limitService = limitService;
+
+            if (UserInfo.Current.UserTypeID != (int)UserTypeEnum.Admin)
+            {
+                this.Redirect("/Home/Month");
+            }
         }
         public IActionResult List()
         {

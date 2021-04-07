@@ -13,7 +13,7 @@
     <script src="~/vendor/libs/chartjs/chartjs.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/datatables/datatables.js" asp-append-version="true"></script>
     <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
-
+    @*<script src="~/vendor/libs/waterfall/waterfall.js"></script>*@
     <environment names="Development">
         <script src="~/vendor/libs/flatpickr/plugins/monthSelect.js" asp-append-version="true"></script>
 
@@ -86,7 +86,7 @@
     <div class="row summary-view">
         @await Html.PartialAsync("_SummaryView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
     </div>
-    <div class="row accounts-view" id="accounts-view">
+    <div class="row accounts-view my-grid" id="accounts-view">
         @await Html.PartialAsync("_AccountsView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
     </div>
     @*<div class="row total-view">

@@ -42,6 +42,13 @@ namespace MyProfile.Entity.Model
         public bool IsCapitalization { get; set; }
         #endregion
 
+        #region Credit card
+        //public decimal? CreditLimit { get; set; }
+        //public DateTime? CreditExpirationDate { get; set; }
+        //public int? GracePeriod { get; set; }
+
+        #endregion
+
 
         public virtual Account Account { get; set; }
 

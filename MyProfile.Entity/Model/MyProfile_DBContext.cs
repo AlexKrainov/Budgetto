@@ -196,6 +196,10 @@ namespace MyProfile.Entity.Model
                    .WithOne(x => x.AccountFrom)
                    .HasForeignKey(x => x.AccountIDFrom);
 
+            modelBuilder.Entity<Limit>()
+                .Property(b => b.CurrencyID)
+                .HasDefaultValue(1);
+
             #endregion
         }
 

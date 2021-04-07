@@ -39,9 +39,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-1 ">{{ getCurrencyValue(limit.spendedMoney) }} / {{ getCurrencyValue(limit.limitMoney) }}</div>
+                <div class="mb-1 ">{{ limit.spendedMoneyString }} / {{ limit.limitMoneyString }}</div>
                 <div class="small text-muted">
-                    {{ limit.text }} {{ getCurrencyValue(limit.leftMoneyInADay) }}
+                    {{ limit.text }} {{ limit.leftMoneyInADayString }}
                     <i class="fas fa-info-circle cursor-help" data-toggle="tooltip" data-html="true"
                        v-show="limit.percent1 <= 100"
                        title="Высчитывается из расчета оставшихся дней в этом месяце.<br/> [Лимит] - [Сколько потратили] / [Количество дней, оставшихся в этом месяце]"></i>

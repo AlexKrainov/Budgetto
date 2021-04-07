@@ -1,5 +1,7 @@
 ﻿using MyProfile.Entity.ModelView.AreaAndSection;
+using MyProfile.Entity.ModelView.Currency;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace MyProfile.Entity.ModelView.Limit
 {
@@ -8,8 +10,29 @@ namespace MyProfile.Entity.ModelView.Limit
 		public string Name { get; set; }
 		public List<SectionLightModelView> Sections { get; set; } = new List<SectionLightModelView>();
 		public decimal LimitMoney { get; set; }
+		public string LimitMoneyString
+		{
+			get
+			{
+				return LimitMoney.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture));
+			}
+		}
 		public decimal SpendedMoney { get; set; }
+		public string SpendedMoneyString
+		{
+			get
+			{
+				return SpendedMoney.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture));
+			}
+		}
 		public decimal LeftMoneyInADay { get; set; }
+		public string LeftMoneyInADayString
+		{
+			get
+			{
+				return LeftMoneyInADay.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture));
+			}
+		}
 		public string ChartID { get; set; }
 		public decimal Percent1 { get; set; }
 		public decimal Percent2 { get; set; }
@@ -23,5 +46,6 @@ namespace MyProfile.Entity.ModelView.Limit
         public int PeriodTypeID { get; set; }
         public string Text { get; set; }
         public int ID { get; set; }
-    }
+		public CurrencyClientModelView Currency { get; set; }
+	}
 }

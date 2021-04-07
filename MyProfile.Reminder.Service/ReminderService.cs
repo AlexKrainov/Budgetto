@@ -287,6 +287,12 @@ namespace MyProfile.Reminder.Service
                         await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Notification);
                     }
                     newReminder.ID = reminder.ID;
+                    var notifications = reminder.ReminderDates.FirstOrDefault(x => x.DateReminder.Date == reminder.DateReminder.Value.Date).Notifications;
+
+                    foreach (var notification in newReminder.Notifications)
+                    {
+                        notification.ID = notifications.FirstOrDefault(x => x.ExpirationDateTime.Value.Date == notification.ExpirationDateTime.Value.Date).ID;
+                    }
                 }
             }
             catch (Exception ex)
@@ -307,6 +313,8 @@ namespace MyProfile.Reminder.Service
 
             newReminder.DateReminderString = newReminder.DateReminder.Value.ToString("dd.MM.yyyy");
             newReminder.RepeatEveryName = LocalizatoinRepeat(newReminder.RepeatEvery);
+
+            //newReminder.Notifications = repository.GetAll<ReminderDate>(x => x.ID == newReminder.ID)
 
             return true;
         }

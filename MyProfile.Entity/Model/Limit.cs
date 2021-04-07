@@ -28,10 +28,13 @@ namespace MyProfile.Entity.Model
 		public int PeriodTypeID { get; set; }
 		[ForeignKey("VisibleElement")]
 		public int VisibleElementID { get; set; }
+		[ForeignKey("Currency")]
+		public int? CurrencyID { get; set; }
 
 		public virtual User User { get; set; }
 		public virtual PeriodType PeriodType { get; set; }
 		public virtual VisibleElement VisibleElement { get; set; }
+		public virtual Currency Currency { get; set; }
 
 		public virtual ICollection<SectionGroupLimit> SectionGroupLimits { get; set; }
 		public virtual ICollection<Notification> Notifications { get; set; }

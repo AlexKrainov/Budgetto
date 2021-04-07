@@ -2,6 +2,7 @@
 using MyProfile.Entity.ModelView.Currency;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace MyProfile.Entity.ModelView.Account
@@ -13,10 +14,22 @@ namespace MyProfile.Entity.ModelView.Account
         public AccountTypes AccountType { get; set; }
         public string Name { get; set; }
         public decimal Balance { get; set; }
+        public string BalanceString { get
+            {
+                return Balance.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture));
+            }
+        }
         public decimal CachBackBalance { get; set; }
+        public string CachBackBalanceString
+        {
+            get
+            {
+                return CachBackBalance.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture));
+            }
+        }
         public string Description { get; set; }
         public decimal? InterestRate { get; set; }
-        public decimal? CashBackForAllPercent { get; set; }
+        public decimal? CachBackForAllPercent { get; set; }
         public bool IsCachback { get; set; }
         /// <summary>
         /// Is cachback return money or rocket-ruble or miles and etc/

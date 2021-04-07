@@ -109,7 +109,7 @@ namespace MyProfile.Budget.Service
                         IsCachback = x.IsCachback,
                         IsCachBackMoney = x.IsCachbackMoney,
                         CachBackBalance = x.CachbackBalance,
-                        CashBackForAllPercent = x.CachbackForAllPercent,
+                        CachBackForAllPercent = x.CachbackForAllPercent,
                         ResetCashBackDate = x.ResetCachbackDate,
                         IsCountTheBalance = x.IsCountTheBalance,
                         IsCountBalanceInMainAccount = x.IsCountBalanceInMainAccount,
@@ -240,7 +240,7 @@ namespace MyProfile.Budget.Service
                       IsCachback = x.IsCachback,
                       IsCachBackMoney = x.IsCachbackMoney,
                       CachBackBalance = x.CachbackBalance,
-                      CashBackForAllPercent = x.CachbackForAllPercent,
+                      CachBackForAllPercent = x.CachbackForAllPercent,
                       ResetCashBackDate = x.ResetCachbackDate,
                       IsCountTheBalance = x.IsCountTheBalance,
 
@@ -468,7 +468,7 @@ namespace MyProfile.Budget.Service
                     IsCachback = account.IsCachback,
                     IsCachbackMoney = account.IsCachBackMoney,
                     CachbackBalance = account.CachBackBalance,
-                    CachbackForAllPercent = account.CashBackForAllPercent,
+                    CachbackForAllPercent = account.CachBackForAllPercent,
                     ResetCachbackDate = account.ResetCashBackDate,
                     IsCountTheBalance = account.IsCountTheBalance,
                     IsCountBalanceInMainAccount = account.IsCountBalanceInMainAccount,
@@ -570,7 +570,7 @@ namespace MyProfile.Budget.Service
                         accountDB.IsCachback = account.IsCachback;
                         accountDB.IsCachbackMoney = account.IsCachBackMoney;
                         accountDB.CachbackBalance = account.CachBackBalance;
-                        accountDB.CachbackForAllPercent = account.CashBackForAllPercent;
+                        accountDB.CachbackForAllPercent = account.CachBackForAllPercent;
                         accountDB.DateStart = account.DateStart;
                         accountDB.ExpirationDate = account.ExpirationDate;
                         accountDB.IsOverdraft = account.IsOverdraft;
@@ -655,7 +655,7 @@ namespace MyProfile.Budget.Service
             {
                 actions.Append("CachbackBalance,");
             }
-            if (oldAccount.CachbackForAllPercent != newAccount.CashBackForAllPercent)
+            if (oldAccount.CachbackForAllPercent != newAccount.CachBackForAllPercent)
             {
                 actions.Append("Balance,");
             }

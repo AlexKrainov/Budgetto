@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Areas.Admin.Models;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
+using MyProfile.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace MyProfile.Areas.Admin.Controllers
             this.repository = repository;
             this.commonService = commonService;
             this.cache = cache;
+
+            if (UserInfo.Current.UserTypeID != (int)UserTypeEnum.Admin)
+            {
+                this.Redirect("/Home/Month");
+            }
         }
 
         public IActionResult List()

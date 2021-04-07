@@ -290,7 +290,7 @@ var AccountVue = new Vue({
             currencyID: -1,
             balance: 0,
             cachBackBalance: 0,
-            cashBackForAllPercent: 1,
+            cachBackForAllPercent: 1,
             isCountTheBalance: true,
             isCountBalanceInMainAccount: true,
             //resetCashBackDate: null,
@@ -317,6 +317,9 @@ var AccountVue = new Vue({
                 this.account.cachBackBalance = 0;
             }
         },
+        //"account.balance": function (newValue) {
+        //    this.account.balance = new Intl.NumberFormat(this.account.currency.specificCulture, { style: 'currency', currency: this.account.currency.codeName }).format(this.account.balance);
+        //},
         "account.bankTypeID": function (newValue) {
             console.log(newValue);
             if (newValue != undefined || newValue != null) {
@@ -393,10 +396,10 @@ var AccountVue = new Vue({
                     bankName: mainAccount.bankName,
                     paymentSystemID: null,
                     currency: {},
-                    currencyID: -1,
+                    currencyID: 1,
                     balance: null,
                     cachBackBalance: 0,
-                    cashBackForAllPercent: 1,
+                    cachBackForAllPercent: 1,
                     isCountTheBalance: true,
                     isCountBalanceInMainAccount: true,
                     //resetCashBackDate: null,

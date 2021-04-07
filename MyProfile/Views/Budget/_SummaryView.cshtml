@@ -14,7 +14,7 @@
                     </div>
                     <div class="text-xlarge" style="display: inline-block"
                          v-if="summary.currencySpecificCulture">
-                        {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.allAccountsMoney.balance) }}
+                        {{ summary.allAccountsMoney.balanceString }}
                         @*<small><sup class="text-success">+11.25%</sup></small>*@
                     </div>
                     <div class="text-muted small"
@@ -38,7 +38,7 @@
                             </div>
                             <span class=" text-xlarge"
                                   v-bind:class="summary.cashFlow.balance >= 0 ? 'text-success': 'text-danger'">
-                                {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.cashFlow.balance) }}
+                                {{ summary.cashFlow.balanceString }}
                             </span>
                             @*<small><sup class="text-success">+11.25%</sup></small>*@
                         </div>
@@ -68,8 +68,8 @@
                         <span class="float-right"
                               v-bind:class="summary.earningsPerHour != undefined && summary.earningsPerHour.balancePerHour > 0 ? 'text-success' : ''"
                               v-if="summary.currencySpecificCulture">
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balancePerHour) }} /
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.earningsPerHour.balancePerDay) }}
+                            {{ summary.earningsPerHour.balancePerHourString }} /
+                            {{ summary.earningsPerHour.balancePerDayString }}
                         </span>
                     </div>
 
@@ -81,8 +81,8 @@
                         </span>
                         <span class="float-right text-danger"
                               v-if="summary.currencySpecificCulture">
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.expensesPerDay.balancePerHour) }} /
-                            {{ new Intl.NumberFormat(summary.currencySpecificCulture, { style: 'currency', currency: summary.currencyCodeName }).format(summary.expensesPerDay.balancePerDay) }}
+                            {{ summary.expensesPerDay.balancePerHourString }} /
+                            {{ summary.expensesPerDay.balancePerDayString }}
                         </span>
                     </div>
                     @*<div class="col-lg-6 text-muted small ">Обязательств в месяц</div><div class="col-lg-6 text-danger">12 000 ₽</div>*@

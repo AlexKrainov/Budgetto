@@ -64,6 +64,8 @@ namespace MyProfile.Limit.Service
             }
             else
             {
+                limit.CurrencyID = 1;
+
                 limit.VisibleElement = new VisibleElement
                 {
                     IsShowOnDashboards = limit.IsShowOnDashboard,
@@ -191,6 +193,13 @@ namespace MyProfile.Limit.Service
                     IsOwner = userID == x.UserID,
                     UserName = x.User.Name + " " + x.User.LastName,
                     ImageLink = x.User.ImageLink,
+                    Currency = new Currency
+                    {
+                        ID = x.Currency.ID,
+                        CodeName = x.Currency.CodeName,
+                        SpecificCulture = x.Currency.SpecificCulture,
+                        Icon = x.Currency.Icon,
+                    },
                     Sections = x.SectionGroupLimits.Select(y => new Entity.ModelView.BudgetSectionModelView
                     {
                         ID = y.BudgetSectionID,
@@ -351,6 +360,13 @@ namespace MyProfile.Limit.Service
                     IsShow = isShow,
                     PeriodTypeID = (int)periodTypesEnum,
                     Text = text,
+                    Currency = new Entity.ModelView.Currency.CurrencyClientModelView
+                    {
+                        id = limit.CurrencyID ?? 0,
+                        codeName = limit.Currency.CodeName,
+                        specificCulture = limit.Currency.SpecificCulture,
+                        icon = limit.Currency.Icon,
+                    },
                     Sections = limit.Sections.Select(x => new Entity.ModelView.AreaAndSection.SectionLightModelView
                     {
                         ID = x.ID,

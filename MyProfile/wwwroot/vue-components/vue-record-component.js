@@ -41,6 +41,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <small class="text-muted" v-show="isEditMode">
+                                    Для <b>редактирования</b> записи <b>нажмите на сумму</b> и редактируйте прямо в ячейке.
+                                </small>
                             </div>
                         </div>
                         <div id="currency-container" class="form-inline mb-4" v-show="currentCurrencyID != 1">

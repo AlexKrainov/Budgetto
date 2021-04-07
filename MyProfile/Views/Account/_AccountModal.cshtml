@@ -192,7 +192,7 @@
                             <div class="form-group" v-show="account.isCash == false && account.isCachback">
                                 <label class="form-label">Процент кешбека на все покупки</label>
                                 <div class="form-group input-group">
-                                    <input type="number" class="form-control" placeholder="" v-model="account.cashBackForAllPercent"
+                                    <input type="number" class="form-control" placeholder="" v-model="account.cachBackForAllPercent"
                                            v-bind:min="0" v-bind:max="100">
                                     <div class="input-group-append">
                                         <span class="input-group-text">%</span>
@@ -238,7 +238,7 @@
                             <div class="form-group mt-4">
                                 <label class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" v-model="account.isCapitalization" name="isCapitalization">
-                                    <span class="custom-control-label">Проценты остаюстя на карте (Проценты с капитализацией)</span>
+                                    <span class="custom-control-label">Проценты остаюстя на карте (Вклад с капитализацией)</span>
                                 </label>
                             </div>
 

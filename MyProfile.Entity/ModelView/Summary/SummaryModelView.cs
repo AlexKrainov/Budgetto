@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace MyProfile.Entity.ModelView
@@ -7,7 +8,21 @@ namespace MyProfile.Entity.ModelView
     public class SummaryModelView
     {
         public decimal? TotalSpendings { get; set; }
+        public string TotalSpendingsString
+        {
+            get
+            {
+                return TotalSpendings.HasValue ? TotalSpendings?.ToString("C0", CultureInfo.CreateSpecificCulture(CurrencySpecificCulture)) : "";
+            }
+        }
         public decimal? TotalEarnings { get; set; }
+        public string TotalEarningsString
+        {
+            get
+            {
+                return TotalEarnings.HasValue ? TotalEarnings?.ToString("C0", CultureInfo.CreateSpecificCulture(CurrencySpecificCulture)) : "";
+            }
+        }
         public string CurrencyCodeName { get; set; }
         public string CurrencySpecificCulture { get; set; }
         public bool IsShow { get; set; }
@@ -26,6 +41,14 @@ namespace MyProfile.Entity.ModelView
         public string Name { get; set; }
         public decimal Balance { get; set; }
 
+        public string BalanceString
+        {
+            get
+            {
+                return Balance.ToString("C0", CultureInfo.CreateSpecificCulture("ru-RU"));
+            }
+        }
+
         public bool IsShow { get; set; }
         public bool IsChart { get; set; }
     }
@@ -38,13 +61,41 @@ namespace MyProfile.Entity.ModelView
         public int AllWorkHoursByPeriod { get; set; }
         public DateTime LastChange { get; set; }
         public decimal BalancePerDay { get; set; }
+        public string BalancePerDayString
+        {
+            get
+            {
+                return BalancePerDay.ToString("C0", CultureInfo.CreateSpecificCulture("ru-RU"));
+            }
+        }
         public decimal BalancePerHour { get; set; }
+        public string BalancePerHourString
+        {
+            get
+            {
+                return BalancePerHour.ToString("C0", CultureInfo.CreateSpecificCulture("ru-RU"));
+            }
+        }
     }
     public class ExpensesPerDayModelView : SummaryBase
     {
         public int TotalDays { get; set; }
         public decimal BalancePerDay { get; set; }
+        public string BalancePerDayString
+        {
+            get
+            {
+                return BalancePerDay.ToString("C0", CultureInfo.CreateSpecificCulture("ru-RU"));
+            }
+        }
         public decimal BalancePerHour { get; set; }
+        public string BalancePerHourString
+        {
+            get
+            {
+                return BalancePerHour.ToString("C0", CultureInfo.CreateSpecificCulture("ru-RU"));
+            }
+        }
     }
     public class CashFlowModelView : SummaryBase
     {

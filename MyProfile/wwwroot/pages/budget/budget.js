@@ -977,7 +977,7 @@
         },
         showLimitHistory: function (limitID) {
             let index = this.limitsChartsData.findIndex(x => x.id == limitID);
-            
+
             let filter = {
                 sections: this.limitsChartsData[index].sections.map(x => x.id),
                 isSection: true
@@ -1099,12 +1099,29 @@
         },
 
         //helpers
-        getCurrencyValue: function (value) {
-            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName })
-                .format(value)
-                .split(",")[0] + " ₽";
+        getCurrencyValue: function (value, currency) {
+            if (currency == undefined || currency.codeName == "RUB") {
+                return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName })
+                    .format(value)
+                    .split(",")[0] + " ₽";
+            }
+            else {
+                return new Intl.NumberFormat(currency.specificCulture, { style: 'currency', currency: currency.codeName })
+                    .format(value);
+            }
+            //    if (currency.codeName == "USD") {
+            //    return new Intl.NumberFormat(currency.specificCulture, { style: 'currency', currency: currency.codeName })
+            //        .format(value)
+            //        .split(".")[0];
+            //} else if (currency.codeName == "EUD") {
+            //    return new Intl.NumberFormat(currency.specificCulture, { style: 'currency', currency: currency.codeName })
+            //        .format(value)
+            //        .split(",")[0] + " €";
+            //}
             //.replace(/\D00(?=\D*$)/, '')
+            //.split(",")[0]
         },
+
         getDateByFormat: function (date, format) {
             return GetDateByFormat(date, format);
         },

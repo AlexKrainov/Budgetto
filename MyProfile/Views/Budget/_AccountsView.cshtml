@@ -1,4 +1,4 @@
-﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4 px-1"
+﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4 px-1 item"
      v-for="mainAccount in accounts"
      v-show="mainAccount.isShow && mainAccount.isHideCurrentAccount == false">
     <div class="card mb-1"
@@ -19,7 +19,7 @@
                    v-on:click="editMainAccount(mainAccount)">{{ mainAccount.name }}</a>
                 <br />
                 <span class="big-money font-weight-semibold">
-                    {{ new Intl.NumberFormat(mainAccount.currency.specificCulture, { style: 'currency', currency: mainAccount.currency.codeName }).format(mainAccount.balance) }}
+                    {{ mainAccount.balanceString }}
                 </span>
                 <i class="fas fa-info-circle cursor-help text-danger" data-toggle="tooltip" data-html="true"
                    v-show="mainAccount.convertError"
@@ -94,7 +94,7 @@
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
                             <div class="big-money display-inline">
-                                {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
+                                {{ account.balanceString }}
                             </div>
                         </div>
                         <button type="button" data-toggle="dropdown" aria-expanded="false"
@@ -149,10 +149,10 @@
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
                             <div class="big-money display-inline">
-                                {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
+                                {{ account.balanceString }}
                             </div>
                             <span class="text-success ml-1" v-show="account.isCachback">
-                                ≈{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.cachBackBalance) }}
+                                ≈{{ account.cachBackBalanceString }}
                             </span>
                         </div>
                         <button type="button" data-toggle="dropdown" aria-expanded="false"
@@ -279,10 +279,10 @@
                             <span class="badge badge-outline-secondary ml-2">{{ account.accountTypeName }}</span>
                             <br />
                             <div class="big-money display-inline">
-                                {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
+                                {{ account.balanceString }}
                             </div>
                             <span class="text-success ml-1" v-show="account.isCachback">
-                                ≈{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.cachBackBalance) }}
+                                ≈{{ account.cachBackBalanceString }}
                             </span>
                             <br />
                             <div class="progress mt-1" style="height: 4px;width: 100%;"
@@ -348,13 +348,13 @@
                         <div class="media-body">
                             <a href="javascript:void(0)" class="small text-body"
                                v-on:click="editAccount(account)">{{ account.name }}</a>
-                            <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
+                            <span class="badge badge-outline-secondary ml-2">{{ account.accountTypeName }}</span>
                             <span class="badge badge-outline-success">{{ account.interestRate }} %</span>
                             <span class="badge badge-warning" 
                                   v-show="account.isFinishedDeposit">Завершен</span>
                             <br />
                             <div class="big-money display-inline">
-                                {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balance) }}
+                                {{ account.balanceString }}
                             </div>
                             <span class="text-success ml-1" v-show="account.interestBalance">
                                 + {{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.interestBalance) }}

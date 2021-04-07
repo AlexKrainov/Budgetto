@@ -145,7 +145,7 @@ namespace MyProfile.Notification.Service
                 {
                     repository.Delete<Notification>(id);
                 }
-
+                await repository.SaveAsync();
             }
             #endregion
 
@@ -167,7 +167,6 @@ namespace MyProfile.Notification.Service
                         LastChangeDateTime = now,
 
                         Total = notification.Price,
-
                     };
 
                     if (typeof(T) == typeof(Limit))
@@ -185,12 +184,14 @@ namespace MyProfile.Notification.Service
 
                     newNotifications.Add(newNotification);
                     anyChanges = true;
+                    notification.ID = newNotification.ID;
                 }
                 repository.CreateRange(newNotifications);
+                await repository.SaveAsync();
+
             }
             #endregion
 
-            await repository.SaveAsync();
 
             #region Update 
 

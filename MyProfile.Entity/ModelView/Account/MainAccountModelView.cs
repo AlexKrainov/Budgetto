@@ -1,6 +1,7 @@
 ﻿using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Currency;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace MyProfile.Entity.ModelView.Account
 {
@@ -10,6 +11,13 @@ namespace MyProfile.Entity.ModelView.Account
         public AccountTypes AccountType { get; set; }
         public string Name { get; set; }
         public decimal Balance { get; set; }
+        public string BalanceString
+        {
+            get
+            {
+                return Balance.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture));
+            }
+        }
         public decimal CachBackBalance { get; set; }
         public string Description { get; set; }
         public bool IsHide { get; set; }
