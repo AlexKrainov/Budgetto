@@ -1,18 +1,44 @@
-﻿using Common.Service;
-using Microsoft.Extensions.Caching.Memory;
-using MyProfile.Entity.Model;
-using MyProfile.Entity.Repository;
-using MyProfile.UserLog.Service;
+﻿using MyProfile.Entity.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MyProfile.Budget.Service
 {
     public partial class AccountService
     {
+        public int AccountDailyWork()
+        {
+            int count = 0;
 
+            count += CheckDepositForInterest();
+            count += CheckGracePeriod();
+
+            return count;
+        }
+
+        #region Credit card
+        private int CheckGracePeriod()
+        {
+            var now = DateTime.Now.Date;
+
+            var accounts = repository.GetAll<AccountInfo>(x => x.Account.AccountTypeID == (int)AccountTypes.Credit
+                && x.CreditExpirationDate.Value.Date <= now
+                && x.Account.IsDeleted == false)
+              .ToList();
+
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                accounts[i].CreditExpirationDate = accounts[i].CreditExpirationDate.Value.AddMonths(1);
+                repository.Update(accounts[i], true);
+            }
+
+            return accounts.Count();
+        }
+
+
+        #endregion
+
+        #region Deposit
         public int CheckDepositForInterest()
         {
             int count = 0;
@@ -88,7 +114,7 @@ namespace MyProfile.Budget.Service
                 if ((account.AccountInfo.LastInterestAccrualDate.Value.Date != account.DateStart.Value.Date
                         && account.AccountInfo.LastInterestAccrualDate.Value.Date <= now.Date
                         && isNew == false)
-                    || (isNew 
+                    || (isNew
                         && account.AccountInfo.LastInterestAccrualDate.Value.Date == now.Date))
                 {
                     account.AccountHistories.Add(new AccountHistory
@@ -189,5 +215,6 @@ namespace MyProfile.Budget.Service
                 }
             }
         }
+        #endregion
     }
 }

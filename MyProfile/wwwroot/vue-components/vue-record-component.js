@@ -41,6 +41,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <small class="text-muted" v-show="isEditMode == false">
+                                    Вводите, например, 550 или 100+500 или 199.99 и нажимайте <b>Enter</b>. Можно вводить сразу несколько расходов/доходов за конкретный день.
+                                </small>
                                 <small class="text-muted" v-show="isEditMode">
                                     Для <b>редактирования</b> записи <b>нажмите на сумму</b> и редактируйте прямо в ячейке.
                                 </small>
@@ -315,7 +318,6 @@
         this.tagify = new Tagify(document.getElementById("money"), {
             transformTag: this.transformTag,
             duplicates: true,
-            placeholder: "550 или 100+500 или 199.99",
             callbacks: {
                 remove: this.removeTag
             },

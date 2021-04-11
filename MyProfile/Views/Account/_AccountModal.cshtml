@@ -102,8 +102,8 @@
                         <div class="form-group col">
                             <label class="form-label">Баланс</label>
                             <div class="input-group input-money">
-                                <input id="account-balance" type="number" class="form-control" placeholder="" 
-                                       v-model="account.balance" 
+                                <input id="account-balance" type="number" class="form-control" placeholder=""
+                                       v-model="account.balance"
                                        v-bind:disabled="account.accountType == 7 && account.id > 0">
                                 <div class="input-group-prepend">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" v-bind:disabled="account.id != undefined">
@@ -129,6 +129,16 @@
                         </div>
                     </div>
 
+                    <div class="form-row" v-show="account.accountType == 3">
+                        <div class="form-group col">
+                            <label class="form-label">Сумма кредита</label>
+                            <span class="text-danger">*</span>
+                            <input id="account-limit-balance" type="number" class="form-control" placeholder=""
+                                   v-model="account.creditLimit">
+                            <small class="invalid-feedback">Обязательное поле</small>
+                        </div>
+                    </div>
+
                     <div class="form-row" v-show="account.isCash == false">
                         <div class="form-group col" v-show="[6,7,8].indexOf(account.accountType) >= 0">
                             <label class="form-label" v-show="account.accountType == 7">Открытие вклада</label>
@@ -136,6 +146,14 @@
                             <input type="text" class="form-control" id="account-date-start"
                                    v-bind:disabled="[6,7,8].indexOf(account.accountType) >= 0 && account.id > 0"
                                    v-model="account.dateStart">
+                            <small class="invalid-feedback">Обязательное поле</small>
+                        </div>
+                        <div class="form-group col" v-show="account.accountType == 3">
+                            <label class="form-label">Конец расчетного периода</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="form-control" id="account-credit-expiration-date"
+                                   v-show="account.accountType == 3"
+                                   v-model="account.creditExpirationDate">
                             <small class="invalid-feedback">Обязательное поле</small>
                         </div>
                         <div class="form-group col" v-show="[2,3,4,7,8].indexOf(account.accountType) >= 0">
@@ -243,7 +261,7 @@
                             </div>
 
                         </div>
-                        
+
                     </div>
 
 
@@ -297,18 +315,20 @@
                             <input type="checkbox" class="custom-control-input" v-model="account.isCountTheBalance" name="isCountTheBalance">
                             <span class="custom-control-label">Учитывать в поле "Всего на всех счетах"</span>
                         </label>
-                        @*<small class="text-muted">
-                                Для некоторых категорий банки не считают кешбек, например ЖКХ, налоги и тд.
-                            </small>*@
+                        <small class="text-muted"
+                               v-show="account.accountType == 3">
+                                Будут суммироваться только свои средства, не кредитные
+                            </small>
                     </div>
                     <div class="form-group mt-4">
                         <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
                             <input type="checkbox" class="custom-control-input" v-model="account.isCountBalanceInMainAccount" name="isCountBalanceInMainAccount">
                             <span class="custom-control-label">Учитывать при подсчете общей суммы у организации/наличных</span>
                         </label>
-                        @*<small class="text-muted">
-                                Для некоторых категорий банки не считают кешбек, например ЖКХ, налоги и тд.
-                            </small>*@
+                        <small class="text-muted" 
+                               v-show="account.accountType == 3">
+                            Будут суммироваться только свои средства, не кредитные
+                        </small>
                     </div>
                     @*<div class="form-row">
                             <div class="form-group col">

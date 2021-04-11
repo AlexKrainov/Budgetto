@@ -4,10 +4,13 @@
 
 @section Styles {
     <link href="~/vendor/css/pages/messages.css" rel="stylesheet" asp-append-version="true" />
+
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/dragula/dragula.css">
 }
 
 @section Scripts {
     <script src="~/vendor/libs/masonry/masonry.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/dragula/dragula.js" asp-append-version="true"></script>
 
     <script src="~/pages/list/todo-list.js" asp-append-version="true"></script>
 }
@@ -30,14 +33,15 @@
 
             <div class="card-body py-3">
                 <h4 class="mb-0 text-muted" style="display:inline;">
-                    Группы категорий
+                    Папки
                 </h4>
                 <a href="javascript:void(0)" class="messages-sidebox-toggler text-muted text-large font-weight-light pl-4">&times;</a>
             </div>
             <hr class="border-light m-0">
 
             <div class="card-body pt-3">
-                <span class="cursor-pointer" v-on:click="editFolder">
+                <span class="cursor-pointer" data-placement="top" data-toggle="tooltip" title="Добавить папку"
+                      v-on:click="editFolder">
                     +  <i class="ion ion-md-folder-open d-block1"></i>
                 </span>
                 <input type="text" class="form-control form-control-sm mb-4" placeholder="Поиск..." style="display: inline; width: 80%; padding-left: 3px;"
@@ -70,15 +74,16 @@
                     <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-sidebox-toggler d-lg-none d-block text-muted text-large mr-2">
                         <i class="ion ion-md-more"></i>
                     </button>
-                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Добавить новый список"
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Добавить новый список" data-placement="top" data-toggle="tooltip"
                             v-on:click="edit()">
                         <i class="ion ion-md-add"></i>
                     </button>
-                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Обновить категорию"
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Обновить папку" data-placement="top" data-toggle="tooltip"
                             v-on:click="load">
                         <i class="ion ion-md-refresh"></i>
                     </button>
-                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Удалить выбранные списки"
+                    <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Удалить выбранные списки" data-placement="top" data-toggle="tooltip"
+                            v-show="anySelected"
                             v-on:click="removeLists">
                         <i class="ion ion-md-trash"></i>
                     </button>
@@ -101,17 +106,17 @@
                          v-show="_list.isDeleted == false">
                         <label class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input"
-                                   v-bind:checked="_list.selected"
-                                   v-on:click="_list.selected = !_list.selected">
+                                   v-model="_list.selected"
+                                   v-on:change="selectedList">
                             <span class="custom-control-label"></span>
                         </label>
                     </div>
-                    <a href="javascript:void(0)" class="ion d-block text-big mr-3" 
+                    <a href="javascript:void(0)" class="ion d-block text-big mr-3"
                        v-bind:title="_list.isFavorite ? 'Поместить в начало списка' : 'Поместить в начало списка'"
                        v-bind:class="_list.isFavorite ? 'ion-md-star text-warning' : 'ion-md-star-outline text-lighter'"
                        v-if="_list.isDeleted == false"
                        v-on:click="toggleFavorite(_list)"></a>
-                    <a href="javascript:void(0)" class="text-body mr-4" 
+                    <a href="javascript:void(0)" class="text-body mr-4"
                        v-on:click="selecteList(_list)"
                        v-if="_list.isDeleted == false">
                         {{ _list.title }}
@@ -143,11 +148,11 @@
         <div class="col" v-show="isEdit">
             <!-- Controls -->
             <div class="media flex-wrap align-items-center py-2 px-3">
-                <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Назад"
+                <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Назад" data-placement="top" data-toggle="tooltip"
                         v-on:click="isEdit = false">
                     <i class="ion ion-ios-undo"></i>
                 </button>
-                <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted mr-4" title="Сохранить список"
+                <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted mr-4" title="Сохранить список" data-placement="top" data-toggle="tooltip"
                         v-bind:disabled="isSaving"
                         v-on:click="saveList(true)">
                     <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
@@ -189,13 +194,13 @@
                         <span class="text-muted m-b block cursor-pointer link-orange-hover text-decoration"
                               v-on:click="editFolder(false)">Создать новую папку</span>
                         @*<span class="text-muted m-b block cursor-pointer link-green-hover text-decoration float-right"
-                              v-on:click="editFolder(true, _folder.id)">Редактировать папку</span>*@
+                            v-on:click="editFolder(true, _folder.id)">Редактировать папку</span>*@
                     </div>
                 </div>
 
                 <div id="tasks-inner">
                     <div class="card-body py-2">
-                        <div class="custom-controls-stacked">
+                        <div class="custom-controls-stacked list-items">
                             <div class="pb-2 todo-item"
                                  v-for="_item in list.items"
                                  v-show="_item.isDeleted == false">
@@ -208,6 +213,7 @@
                                 </label>
                                 @*<span class="ui-todo-badge badge badge-outline-default font-weight-normal ml-2">58 mins left</span>*@
                                 <span class="todo-item-actions ml-4 pl-4 float-right">
+                                    <span class="ion ion-ios-move small mr-2 cursor-pointer link-orange-hover item-handle"></span>
                                     <span class="ion ion-md-create link-green-hover cursor-pointer mr-2" title="Редактировать запись"
                                           v-bind:class="item != null && _item.id == item.id ? 'link-green': ''"
                                           v-on:click="editItem(_item)"></span>

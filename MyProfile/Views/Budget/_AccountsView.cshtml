@@ -193,81 +193,80 @@
                         </div>
                     </div>
                 </section>
-                @*<div class="card card-condenced mt-2"
+                @*Credit card*@
+                <section class="card card-condenced mt-2 "
+                         v-bind:class="[account.creditNeedMoney > 0 && account.percent >= 70 ? 'border-danger' : 'border-warning']"
                          v-else-if="account.accountType == 3"
                          v-show="account.isHideCurrentAccount == false">
-                        <div class="card-body media align-items-center px-3 py-2">
-                            <div class="media-body ml-2">
-                                <span class="text-muted small">Моя кредитка</span>
-                                <span class="badge badge-outline-primary ml-2">Кредитка</span>
-                                <br />
-                                <div class="big-money display-inline">$1,534</div>
-                                <span class="text-success ml-1">≈59,41 ₽</span>
-                                <span class="small text-muted float-right mt-3">$2,000</span>
-                                <br />
-                                <div class="progress mt-1" style="height: 4px;">
-                                    <div class="progress-bar bg-warning" style="width: 56%; height: 3px;"></div>
-                                </div>
-                                <span class="small text-muted float-left mt-1">Нужно довнести $430</span>
-                                <span class="small text-muted float-right mt-1">20.03.2021</span>
+                    <div class="card-body media align-items-center px-3 py-2">
+                        <div class="media-body">
+                            <span data-toggle="tooltip" title=""
+                                  class="ui-icon ui-feed-icon ion ion-md-star bg-success text-white" data-original-title="Счет по умолчанию"
+                                  style="left: -.625rem;top: -8px;"
+                                  v-if="account.isDefault"></span>
+                            <img class="ui-payment-smaller mr-1" alt=""
+                                 v-show="account.cardID"
+                                 v-bind:src="account.cardLogo">
+                            <a href="javascript:void(0)" class="small text-body"
+                               v-on:click="editAccount(account)">{{ account.name }}</a>
+                            <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
+                            <br />
+                            <div class="big-money display-inline">
+                                {{ account.balanceString }}
                             </div>
-                            <button type="button" data-toggle="dropdown" aria-expanded="false"
-                                    class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
-                                    style="position: absolute; right: 10px; top: 5px;">
-                                <i class="ion ion-ios-more"></i>
-                            </button>
+                            <span class="text-success ml-1" v-show="account.isCachback">
+                                ≈{{ account.cachBackBalanceString }}
+                            </span>
+                            <span class="small text-muted float-right mt-3">{{ account.creditLimitString }}</span>
+                            <br />
+                            <div class="progress mt-1" style="height: 4px;width: 100%;"
+                                 v-show="account.percent">
+                                <div class="progress-bar bg-success"
+                                     v-bind:class="account.creditNeedMoney > 0 && account.percent >= 70 ? 'bg-danger' : account.creditNeedMoney <= 0 ? 'bg-success' : 'bg-warning'"
+                                     v-bind:style="'width: '+ account.percent +'%;'"
+                                     style="height: 3px;"></div>
+                            </div>
+                            <span class="small text-muted float-left mt-1" v-show="account.creditNeedMoney > 0">Нужно довнести {{ account.creditNeedMoneyString }}</span>
+                            <span class="small text-muted float-right mt-1">{{ getDateByFormat(account.creditExpirationDate, 'DD.MM.YYYY') }}</span>
                         </div>
-                        <div class="card-footer small py-1 text-muted">
-                            <div class="text-secondary">Итого с этого счета за данный период</div>
-                            <div>
-                                <span class="float-right text-success">15 000 ₽</span>
-                                Доходы
-                            </div> <div>
-                                <span class="float-right text-danger">-54 000 ₽</span>
-                                Расходы
-                            </div> <div>
-                                <span class="float-right text-success">150  ₽</span>
-                                Кешбек
-                            </div>
+                        <button type="button" data-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
+                                style="position: absolute;right: 10px;top: 5px;"
+                                v-show="!account.isDeleted">
+                            <i class="ion ion-ios-more"></i>
+                        </button>
+                        <i class="fa fa-undo pl-2 float-right text-success cursor-pointer"
+                           style="position: absolute;right: 13px;top: 13px;"
+                           v-show="account.isDeleted"
+                           v-on:click="removeOrRecoveryAccount(account)"></i>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="javascript:void(0)"
+                               v-on:click="editAccount(account)">Редактировать счет</a>
+                            <a class="dropdown-item" href="javascript:void(0)"
+                               v-on:click="transferMoney(account.id)">Перевести деньги</a>
+                            <a class="dropdown-item" href="javascript:void(0)"
+                               v-on:click="showHideAccount(account, true)">Скрыть счет</a>
+                            <a class="dropdown-item text-danger" href="javascript:void(0)"
+                               v-on:click="removeOrRecoveryAccount(account)">Удалить счет</a>
                         </div>
                     </div>
-                    <div class="card card-condenced mt-2"
-                         v-else-if="account.accountType == 7"
-                         v-show="account.isHideCurrentAccount == false">
-                        <div class="card-body media align-items-center px-3 py-2">
-                            <div class="media-body ml-2">
-                                <span class="text-muted small">Мой вклад</span>
-                                <span class="badge badge-outline-primary ml-2">Вклад</span>
-                                <span class="badge badge-outline-success">+ 5%</span>
-                                <br />
-                                <div class="big-money display-inline">$5,000</div>
-                                <span class="text-success ml-1">+140 ₽</span>
-                                <span class="small text-muted float-right mt-3">$5,500</span>
-                                <br />
-                                <div class="progress mt-1" style="height: 4px;">
-                                    <div class="progress-bar bg-success" style="width: 56%; height: 3px;"></div>
-                                </div>
-                                <span class="small text-muted float-left mt-1">20.03.2021</span>
-                                <span class="small text-muted float-right mt-1">20.03.2022</span>
-                            </div>
-                            <button type="button" data-toggle="dropdown" aria-expanded="false"
-                                    class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
-                                    style="position: absolute; right: 10px; top: 5px;">
-                                <i class="ion ion-ios-more"></i>
-                            </button>
+                    <div class="card-footer small py-1 text-muted"
+                         v-show="account.isPast">
+                        <div class="text-secondary">Итого с этого счета за данный период</div>
+                        <div>
+                            <span class="float-right text-success">{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balanceEarnings) }}</span>
+                            Доходы
                         </div>
-                        <div class="card-footer small py-1 text-muted">
-                            <div class="text-secondary">Итого с этого счета за данный период</div>
-                            <div>
-                                <span class="float-right text-success">10 000 ₽</span>
-                                Внесено
-                            </div> <div>
-                                <span class="float-right text-success">+ 1 000 ₽</span>
-                                Проценты
-                            </div>
-
+                        <div>
+                            <span class="float-right text-danger">{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balanceSpendings) }}</span>
+                            Расходы
                         </div>
-                    </div>*@
+                        <div>
+                            <span class="float-right text-success">{{ new Intl.NumberFormat(account.currency.specificCulture, { style: 'currency', currency: account.currency.codeName }).format(account.balancePastCachback) }}</span>
+                            Кешбек
+                        </div>
+                    </div>
+                </section>
                 @*Investing*@
                 <div class="card card-condenced mt-2 border-secondary"
                      v-else-if="account.accountType == 6 || account.accountType == 8"
@@ -350,7 +349,7 @@
                                v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-secondary ml-2">{{ account.accountTypeName }}</span>
                             <span class="badge badge-outline-success">{{ account.interestRate }} %</span>
-                            <span class="badge badge-warning" 
+                            <span class="badge badge-warning"
                                   v-show="account.isFinishedDeposit">Завершен</span>
                             <br />
                             <div class="big-money display-inline">

@@ -19,6 +19,7 @@
         id: -500,
         searchListText: null,
         searchFolderText: null,
+        anySelected: false, //for delete list
     },
     watch: {
         searchFolderText: function (newValue, oldValue) {
@@ -80,6 +81,10 @@
                         ToDoListVue.getListItemIsDoneCount();
                         ToDoListVue.folder = ToDoListVue.folders[0];
                         HideLoading("#listOfLists");
+
+                        setTimeout(function () {
+                            $('[data-toggle="tooltip"]').tooltip();
+                        }, 100);
                     }
                 });
         },
@@ -91,8 +96,22 @@
         selecteList: function (list) {
             this.list = JSCopyObject(list);
             this.isEdit = true;
-        },
+            // Drag&Drop
 
+            setTimeout(function () {
+                var _drag = dragula(Array.prototype.slice.call(document.querySelectorAll('.list-items')), {
+                    moves: function (el, container, handle) {
+                        return handle.classList.contains('item-handle');
+                    }
+                });
+
+                _drag.on('drop', function (el, target, source, sibling) {
+                    setTimeout(function () {
+                        ToDoListVue.saveList(true);
+                    }, 100);
+                });
+            }, 500);
+        },
         edit: function (list) {
             if (list) {
                 this.list = list;
@@ -112,6 +131,22 @@
             }
 
             this.isEdit = true;
+
+            // Drag&Drop
+
+            setTimeout(function () {
+                var _drag = dragula(Array.prototype.slice.call(document.querySelectorAll('.list-items')), {
+                    moves: function (el, container, handle) {
+                        return handle.classList.contains('item-handle');
+                    }
+                });
+
+                _drag.on('drop', function (el, target, source, sibling) {
+                    setTimeout(function () {
+                        ToDoListVue.saveList(true);
+                    }, 100);
+                });
+            }, 500);
         },
         toggleFavorite: function (list) {
             if (this.isSaving) {
@@ -266,6 +301,17 @@
                 }
             });
         },
+        selectedList: function () {
+            this.anySelected = false;
+            for (var i = 0; i < this.folders.length; i++) {
+                for (var j = 0; j < this.folders[i].lists.length; j++) {
+                    if (this.folders[i].lists[j].selected) {
+                        this.anySelected = true;
+                        return;
+                    }
+                }
+            }
+        },
 
         //Items
         editItem: function (item) {
@@ -303,6 +349,8 @@
             }
             this.text = null;
             this.item = null;
+
+            this.saveList(true);
         },
         clearItem: function () {
             if (this.item) {

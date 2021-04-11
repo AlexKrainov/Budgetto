@@ -421,6 +421,8 @@ namespace MyProfile.Budget.Service
                 var accounts = repository.GetAll<Account>(x => x.UserID == filter.UserID && x.IsDeleted != true && x.ParentAccountID != null)
                     .Select(x => new
                     {
+                        x.AccountTypeID,
+                        CreditLimit = x.AccountInfo != null ? x.AccountInfo.CreditLimit : 0,
                         x.Balance,
                         x.CurrencyID,
                         x.Currency.CodeName,
@@ -429,6 +431,7 @@ namespace MyProfile.Budget.Service
                     .ToList();
 
                 summary.AllAccountsMoney.CountAllAccounts = accounts.Count();
+                decimal accountBalance = 0;
 
                 for (int i = 0; i < accounts.Count; i++)
                 {
@@ -437,6 +440,12 @@ namespace MyProfile.Budget.Service
                         continue;
                     }
                     summary.AllAccountsMoney.CountedAccounts += 1;
+                    accountBalance = accounts[i].Balance;
+
+                    if (accounts[i].AccountTypeID == (int)AccountTypes.Credit)
+                    {
+                        accountBalance = (accounts[i].CreditLimit - accounts[i].Balance) >= 0 ? 0 : ((accounts[i].CreditLimit - accounts[i].Balance) * (-1)) ?? 0;
+                    }
 
                     try
                     {
@@ -446,7 +455,7 @@ namespace MyProfile.Budget.Service
 
                             if (val != null && val.Rate != 0)
                             {
-                                summary.AllAccountsMoney.Balance += accounts[i].Balance * val.Rate;
+                                summary.AllAccountsMoney.Balance += accountBalance * val.Rate;
                             }
                             else
                             {
@@ -455,7 +464,7 @@ namespace MyProfile.Budget.Service
                         }
                         else
                         {
-                            summary.AllAccountsMoney.Balance += accounts[i].Balance;
+                            summary.AllAccountsMoney.Balance += accountBalance;
                         }
                     }
                     catch (Exception ex)

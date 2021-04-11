@@ -344,6 +344,7 @@ var AccountVue = new Vue({
                     this.account.isCountBalanceInMainAccount = true;
                 }
             }
+
         }
     },
     mounted: function () {
@@ -423,6 +424,9 @@ var AccountVue = new Vue({
                 //Timeout needs to set disabled for dateStart
                 let dateConfig = GetFlatpickrRuConfig(AccountVue.account.dateStart, undefined, new Date);
                 flatpickr('#account-date-start', dateConfig);
+
+                dateConfig = GetFlatpickrRuConfig(AccountVue.account.creditExpirationDate, new Date);
+                flatpickr('#account-credit-expiration-date', dateConfig);
 
                 dateConfig = GetFlatpickrRuConfig(AccountVue.account.expirationDate);
                 flatpickr('#expirationDate', dateConfig);
@@ -573,6 +577,23 @@ var AccountVue = new Vue({
                     $("#interestRate").addClass("is-invalid");
                 } else {
                     $("#interestRate").removeClass("is-invalid");
+                }
+            }
+
+            if (this.account.accountType == 3) {
+
+                if (!this.account.creditExpirationDate) {
+                    isOk = false;
+                    $("#account-credit-expiration-date").next().addClass("is-invalid");
+                } else {
+                    $("#account-credit-expiration-date").next().removeClass("is-invalid");
+                }
+
+                if (this.account.creditLimit == undefined || this.account.creditLimit <= 0) {
+                    isOk = false;
+                    $("#account-limit-balance").addClass("is-invalid");
+                } else {
+                    $("#account-limit-balance").removeClass("is-invalid");
                 }
             }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyProfile.Code.Sheduler.Shedulers
 {
     /// <summary>
-    /// Обновление данных счетов, например начисление процентов по вкладам
+    /// Обновление данных счетов, например начисление процентов по вкладам, перевод следующего грейс периода
     /// </summary>
     public class AccountDailyWork : BaseTaskJob, IJob
     {
@@ -30,7 +30,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                 var repository = scope.ServiceProvider.GetRequiredService<BaseRepository>();
                 var accountService = scope.ServiceProvider.GetRequiredService<AccountService>();
 
-                base.BaseExecute(repository, TaskType.AccountDailyWork, accountService.CheckDepositForInterest);
+                base.BaseExecute(repository, TaskType.AccountDailyWork, accountService.AccountDailyWork);
             }
             return Task.CompletedTask;
         }

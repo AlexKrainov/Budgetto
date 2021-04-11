@@ -146,7 +146,7 @@ namespace MyProfile.Areas.Admin.Controllers
                     baseTaskJob.BaseExecute(repository, TaskType.NotificationReset, limitService.NotificationsReset);
                     break;
                 case TaskType.AccountDailyWork:
-                    baseTaskJob.BaseExecute(repository, TaskType.AccountDailyWork, accountService.CheckDepositForInterest);
+                    baseTaskJob.BaseExecute(repository, TaskType.AccountDailyWork, accountService.AccountDailyWork);
                     break;
                 case TaskType.Test:
                     break;

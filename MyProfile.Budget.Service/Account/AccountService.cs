@@ -102,6 +102,10 @@ namespace MyProfile.Budget.Service
                         TimeListID = x.AccountInfo != null ? x.AccountInfo.CapitalizationTimeListID : (int)TimeList.Monthly,
                         IsCapitalization = x.AccountInfo != null ? x.AccountInfo.IsCapitalization : false,
 
+                        //credit card
+                        CreditLimit = x.AccountInfo != null ? x.AccountInfo.CreditLimit : null,
+                        CreditExpirationDate = x.AccountInfo != null ? x.AccountInfo.CreditExpirationDate : null,
+
                         CardID = x.CardID,
                         CardName = x.CardID != null ? x.Card.Name : null,
                         CardLogo = x.CardID != null ? x.Card.SmallLogo : null,
@@ -130,11 +134,15 @@ namespace MyProfile.Budget.Service
             .ToList();
 
             var currencyRates = сurrencyService.GetRatesByDate(now, currentUser.UserSessionID);
+            bool hasCurrencyRates = currencyRates.Count() > 0;
+            decimal accountBalance = 0;
 
             foreach (var mainAccount in mainAccounts)
             {
                 foreach (var account in mainAccount.Accounts)
                 {
+                    accountBalance = account.Balance;
+
                     if ((account.AccountType == AccountTypes.InvestmentsIIS || account.AccountType == AccountTypes.Deposit)
                         && account.DateStart.HasValue
                         && account.ExpirationDate.HasValue)
@@ -142,6 +150,18 @@ namespace MyProfile.Budget.Service
                         var allDays = (account.ExpirationDate.Value - account.DateStart.Value).TotalDays;
                         var leftDays = (account.ExpirationDate.Value - now).TotalDays;
                         account.Percent = 100 - Math.Round(leftDays / allDays * 100, 2);
+                    }
+
+                    if (account.AccountType == AccountTypes.Credit
+                       && account.CreditExpirationDate.HasValue)
+                    {
+                        var allDays = (account.CreditExpirationDate.Value - account.CreditExpirationDate.Value.AddMonths(-1)).TotalDays;
+                        var leftDays = (account.CreditExpirationDate.Value - now).TotalDays;
+                        account.Percent = 100 - Math.Round(leftDays / allDays * 100, 2);
+
+                        account.CreditNeedMoney = account.CreditLimit - account.Balance;
+
+                        accountBalance = account.CreditNeedMoney >= 0 ? 0 : (account.CreditNeedMoney * (-1)) ?? 0;
                     }
 
                     if (account.AccountType == AccountTypes.Deposit)
@@ -162,24 +182,38 @@ namespace MyProfile.Budget.Service
                         {
                             if (mainAccount.CurrencyID == account.CurrencyID)
                             {
-                                mainAccount.Balance += account.Balance;
-                            }
-                            else
-                            {
-                                if (mainAccount.Currency.codeName == "RUB")
+                                if (account.AccountType != AccountTypes.Credit)
                                 {
-                                    mainAccount.Balance += account.Balance * currencyRates.FirstOrDefault(x => x.CharCode == account.Currency.codeName).Rate;
-                                }
-                                else if (account.Currency.codeName == "RUB")
-                                {
-                                    mainAccount.Balance += account.Balance / currencyRates.FirstOrDefault(x => x.CharCode == mainAccount.Currency.codeName).Rate;
+                                    mainAccount.Balance += accountBalance;
                                 }
                                 else
                                 {
-                                    var mainRate = currencyRates.FirstOrDefault(x => x.CharCode == mainAccount.Currency.codeName).Rate;
-                                    var accRate = currencyRates.FirstOrDefault(x => x.CharCode == account.Currency.codeName).Rate;
+                                    mainAccount.Balance += accountBalance;
+                                }
+                            }
+                            else
+                            {
+                                if (hasCurrencyRates)
+                                {
+                                    if (mainAccount.Currency.codeName == "RUB")
+                                    {
+                                        mainAccount.Balance += accountBalance * currencyRates.FirstOrDefault(x => x.CharCode == account.Currency.codeName).Rate;
+                                    }
+                                    else if (account.Currency.codeName == "RUB")
+                                    {
+                                        mainAccount.Balance += accountBalance / currencyRates.FirstOrDefault(x => x.CharCode == mainAccount.Currency.codeName).Rate;
+                                    }
+                                    else
+                                    {
+                                        var mainRate = currencyRates.FirstOrDefault(x => x.CharCode == mainAccount.Currency.codeName).Rate;
+                                        var accRate = currencyRates.FirstOrDefault(x => x.CharCode == account.Currency.codeName).Rate;
 
-                                    mainAccount.Balance += (accRate / mainRate) * account.Balance;
+                                        mainAccount.Balance += (accRate / mainRate) * accountBalance;
+                                    }
+                                }
+                                else
+                                {
+                                    mainAccount.ConvertError = true;
                                 }
                             }
                         }
@@ -289,7 +323,7 @@ namespace MyProfile.Budget.Service
 
             var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
                     && x.Account.IsDeleted == false
-                    && (x.ActionType == AccountHistoryActionType.MoveMoney 
+                    && (x.ActionType == AccountHistoryActionType.MoveMoney
                         || x.ActionType == AccountHistoryActionType.AddedPercent)
                     && x.CurrentDate >= start && x.CurrentDate <= finish)
                 .Select(x => new
@@ -376,7 +410,7 @@ namespace MyProfile.Budget.Service
             {
                 accountTo.AccountInfo.InterestBalanceForEndOfDeposit =
                     СalculateEndDeposit((accountTo.AccountInfo.InterestBalance ?? 0) + accountTo.Balance, accountTo.AccountInfo.InterestRate ?? 0, accountTo.AccountInfo.LastInterestAccrualDate.Value.Date, accountTo.ExpirationDate.Value.Date, (TimeList)accountTo.AccountInfo.CapitalizationTimeListID);
-            } 
+            }
             #endregion
 
             //accountHistoryFrom.NewBalance = accountFrom.Balance;
@@ -491,9 +525,13 @@ namespace MyProfile.Budget.Service
                         accountDB.AccountInfo.InterestNextDate = accountDB.DateStart;
                         accountDB.AccountInfo.InterestBalance = 0;
                         accountDB.AccountInfo.InterestBalanceForEndOfDeposit = СalculateEndDeposit(account.Balance, account.InterestRate ?? 0, account.DateStart.Value.Date, account.ExpirationDate.Value.Date, (TimeList)account.TimeListID);
+                        CalculateDeposit(accountDB, isNew: true);
                     }
-
-                    CalculateDeposit(accountDB, isNew: true);
+                    else if (account.AccountType == AccountTypes.Credit)
+                    {
+                        accountDB.AccountInfo.CreditExpirationDate = account.CreditExpirationDate;
+                        accountDB.AccountInfo.CreditLimit = account.CreditLimit;
+                    }
                 }
 
                 if (account.IsCachback)
@@ -603,6 +641,12 @@ namespace MyProfile.Budget.Service
                         }
 
                         accountDB.AccountInfo.InterestRate = account.InterestRate;
+
+                        if (account.AccountType == AccountTypes.Credit)
+                        {
+                            accountDB.AccountInfo.CreditLimit = account.CreditLimit;
+                            accountDB.AccountInfo.CreditExpirationDate = account.CreditExpirationDate;
+                        }
                     }
 
                     try

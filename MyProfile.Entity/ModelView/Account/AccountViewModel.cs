@@ -80,11 +80,30 @@ namespace MyProfile.Entity.ModelView.Account
         public int? CardID { get; set; }
         public string CardName { get; set; }
         public string CardLogo { get; set; }
+
         public int TimeListID { get; set; }
         public decimal? InterestBalanceForEnd { get; set; }
         public bool IsFinishedDeposit { get; set; }
         public decimal? InterestBalance { get; set; }
         public decimal? InterestBalanceForPeriod { get; set; }
         public bool IsCapitalization { get; set; }
+
+        public decimal? CreditLimit { get; set; }
+        public string CreditLimitString
+        {
+            get
+            {
+                return CreditLimit.HasValue ? CreditLimit?.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture)) : null;
+            }
+        }
+        public DateTime? CreditExpirationDate { get; set; }
+        public decimal? CreditNeedMoney { get; set; }
+        public string CreditNeedMoneyString
+        {
+            get
+            {
+                return CreditNeedMoney.HasValue ? CreditNeedMoney?.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture)) : null;
+            }
+        }
     }
 }

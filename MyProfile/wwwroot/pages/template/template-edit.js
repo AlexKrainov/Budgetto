@@ -19,9 +19,6 @@
         footerActions: [],
     },
     watch: {
-        "template.name": function (newValue, oldValue) {
-
-        },
         "template.columns": function () {
             this.selectedSelections = [];
             let selections = [];
