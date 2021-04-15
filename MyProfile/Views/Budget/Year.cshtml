@@ -6,6 +6,7 @@
 @section Styles {
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/datatables/datatables.css">
     <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
+
 }
 
 @section Scripts {
@@ -90,13 +91,16 @@
         @await Html.PartialAsync("_AccountsView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
     </div>
     @*<div class="row total-view">
-        @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Year)
-    </div>*@
+            @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Year)
+        </div>*@
     <div class="row">
         @await Html.PartialAsync("_LimitsView")
     </div>
     <div class="row" id="goal-contrainer">
         @await Html.PartialAsync("_GoalsView")
+    </div>
+    <div class="row" id="todoList-view">
+        @await Html.PartialAsync("_ToDoListView")
     </div>
     <div class="row px-1">
         @await Html.PartialAsync("_BigChartView", "/Budget/Year")
@@ -122,8 +126,8 @@
                 <div class="card-title-elements">
                 </div>
                 @*<div class="card-title-elements ml-md-auto" v-show="template && template.id">
-                    <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3"><i class="collapse-icon"></i></a>
-                </div>*@
+                        <a data-toggle="collapse" href="#collapseFilter" class="d-block ml-3"><i class="collapse-icon"></i></a>
+                    </div>*@
                 <div class="text-right"
                      v-show="template && template.id">
                     <button type="button" class="btn icon-btn borderless btn-outline-primary text-big"
@@ -132,10 +136,10 @@
                         <i class="fas fa-history"></i>
                     </button>
                     @*<button type="button" class="btn icon-btn borderless btn-outline-primary text-big"
-                            onclick="ReminderVue.showRemindersByPeriod(@Model.SelectedDateTime.Month, @Model.SelectedDateTime.Year)"
-                            title="Посмотреть напоминание за месяц" data-toggle="tooltip" data-placement="bottom">
-                        <i class="ion ion-ios-alarm text-big"></i>
-                    </button>*@
+                                onclick="ReminderVue.showRemindersByPeriod(@Model.SelectedDateTime.Month, @Model.SelectedDateTime.Year)"
+                                title="Посмотреть напоминание за месяц" data-toggle="tooltip" data-placement="bottom">
+                            <i class="ion ion-ios-alarm text-big"></i>
+                        </button>*@
                     <button type="button" class="btn icon-btn borderless btn-outline-primary mr-4 text-big"
                             title="Экспорт таблицы в Excel"
                             data-toggle="tooltip" data-placement="bottom"
@@ -157,7 +161,7 @@
             </div>
             @*<div class="collapse table-responsive bg-light " id="collapseFilter" v-show="template && template.id">
 
-            </div>*@
+                </div>*@
         </div>
         <div class="callout callout-warning mx-4" v-show="!(template && template.id)">
             <p><b>Нет шаблона для отображения. Пожалуйста, <a href="/Template/Edit?periodTypeId=3">создайте шаблон</a></b></p>

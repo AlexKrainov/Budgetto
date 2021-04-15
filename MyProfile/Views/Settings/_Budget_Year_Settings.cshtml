@@ -25,8 +25,8 @@
         <span class="theme-settings-t-rtl_switcher">Общая сводка</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_Summary" name="user_settings" data-prop="Month_Summary"
-               v-on:change="toggleSummary('Month_Summary', 'Dashboard_Month_IsShow_Summary'); change(false, ['BudgetVue.loadSummaries']);">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_Summary" name="user_settings" data-prop="Year_Summary"
+               v-on:change="toggleSummary('Year_Summary', 'Dashboard_Year_IsShow_Summary'); change(false, ['BudgetVue.loadSummaries']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>
@@ -79,15 +79,14 @@
         <span class="theme-settings-t-rtl_switcher">Показывать виджеты счетов и наличных</span>
     </div>
     <div class="switcher switcher-sm d-block m-0">
-        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_Accounts" name="user_settings" data-prop="Month_Accounts"
-               v-on:change="toggleElements('accounts', 'Month_Accounts', 'Dashboard_Month_IsShow_Accounts'); change(false, ['BudgetVue.loadAccounts'])">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_Accounts" name="user_settings" data-prop="Year_Accounts"
+               v-on:change="toggleElements('accounts', 'Year_Accounts', 'Dashboard_Year_IsShow_Accounts'); change(false, ['BudgetVue.loadAccounts'])">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>
         </span>
     </div>
 </label>
-
 <hr class="m-0 border-light">
 <h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Лимиты</span> </h5>
 <label class="m-0 px-4 pb-3 d-flex media align-items-middle">
@@ -112,6 +111,21 @@
     <div class="switcher switcher-sm d-block m-0">
         <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_GoalWidgets" name="user_settings" data-prop="Year_GoalWidgets"
                v-on:change="toggleElements('goalChartsData','Year_GoalWidgets', 'Dashboard_Year_IsShow_GoalCharts'); change(false, ['BudgetVue.loadGoalCharts']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
+<hr class="m-0 border-light">
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Списки</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать виджеты списков</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Year_ToDoLists" name="user_settings" data-prop="Year_ToDoLists"
+               v-on:change="toggleElements('lists','Year_ToDoLists', 'Dashboard_Year_IsShow_ToDoLists'); change(false, ['BudgetVue.loadToDoLists']);">
         <span class="switcher-indicator">
             <span class="switcher-yes"></span>
             <span class="switcher-no"></span>

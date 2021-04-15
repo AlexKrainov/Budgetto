@@ -75,6 +75,11 @@ namespace MyProfile.Controllers
         {
             return View();
         }
+        
+        public IActionResult ParsingSubString()
+        {
+            return View();
+        }
 
 
         [HttpPost]

@@ -4,7 +4,8 @@
         folders: [{ lists: [{ isDeleted: false, isDoneCount: 0 }] }],
 
         //Edit list
-        list: { isDeleted: false, isDoneCount: 0 },
+        list: { isDeleted: false, isDoneCount: 0, periodTypeIDs: [] },
+        tmplist: { isDeleted: false, isDoneCount: 0 },
         text: null,
 
         //Edit item
@@ -20,6 +21,7 @@
         searchListText: null,
         searchFolderText: null,
         anySelected: false, //for delete list
+        reRender: true,
     },
     watch: {
         searchFolderText: function (newValue, oldValue) {
@@ -62,6 +64,17 @@
             }
         },
     },
+    computed: {
+        items: function () {
+            if (this.list.items) {
+                return this.list.items.sort(function (a) {
+                    return a.order;
+                });
+            } else {
+                return [];
+            }
+        }
+    },
     mounted: function () {
         this.load();
 
@@ -94,25 +107,36 @@
         },
         //List
         selecteList: function (list) {
+            $("#periodTypeIDs").val(null).trigger("change");
+
             this.list = JSCopyObject(list);
             this.isEdit = true;
-            // Drag&Drop
 
+            $("#periodTypeIDs")
+                .val(this.list.periodTypeIDs)
+                .select2();
+            //Save old list after open new one
+               // .change(function () { ToDoListVue.saveList(true) });
+
+            this.setDragAndDrop();
+        },
+        setDragAndDrop: function () {
             setTimeout(function () {
-                var _drag = dragula(Array.prototype.slice.call(document.querySelectorAll('.list-items')), {
+                let drake = dragula(Array.prototype.slice.call(document.querySelectorAll('.list-items')), {
                     moves: function (el, container, handle) {
                         return handle.classList.contains('item-handle');
                     }
                 });
 
-                _drag.on('drop', function (el, target, source, sibling) {
+                drake.on('drop', function (el, target, source, sibling) {
                     setTimeout(function () {
                         ToDoListVue.saveList(true);
-                    }, 100);
+                    }, 500);
                 });
             }, 500);
         },
         edit: function (list) {
+          
             if (list) {
                 this.list = list;
             } else {
@@ -127,26 +151,13 @@
                     isNewToday: true,
                     isEditToday: false,
                     isDoneCount: 0,
+                    periodTypeIDs:[],
                 };
             }
 
             this.isEdit = true;
-
-            // Drag&Drop
-
-            setTimeout(function () {
-                var _drag = dragula(Array.prototype.slice.call(document.querySelectorAll('.list-items')), {
-                    moves: function (el, container, handle) {
-                        return handle.classList.contains('item-handle');
-                    }
-                });
-
-                _drag.on('drop', function (el, target, source, sibling) {
-                    setTimeout(function () {
-                        ToDoListVue.saveList(true);
-                    }, 100);
-                });
-            }, 500);
+            console.log("select2");
+            this.setDragAndDrop();
         },
         toggleFavorite: function (list) {
             if (this.isSaving) {
@@ -184,7 +195,15 @@
                 this.list.title = this.list.items[0].text;
             }
 
+            $(".todo-item").each(function (index, el) {
+                let id = $(el).attr("item-id") * 1;
+                let _index = ToDoListVue.list.items.findIndex(x => x.id == id);
+                ToDoListVue.list.items[_index].order = index
+            });
+
             this.isSaving = true;
+
+            this.list.periodTypeIDs = $("#periodTypeIDs").val();
 
             return $.ajax({
                 type: "POST",
@@ -198,6 +217,8 @@
                 dataType: 'json',
                 success: function (response) {
 
+                    this.$this.reRender = false;
+
                     if (response.isOk) {
                         this.$this.list = response.list;
 
@@ -208,6 +229,12 @@
                                 this.$this.folder.lists.push(response.list);
                             } else {
                                 this.$this.folder.lists[listIndex] = response.list;
+                                //this.$this.list = response.list;
+                                //this.$this.list = {};
+                                //this.$this.tmplist = JSON.parse(JSON.stringify(response.list));
+                                //setTimeout(function () {
+                                //    ToDoListVue.list = ToDoListVue.tmplist;
+                                //}, 100);
                             }
                         } else {
                             let listIndex = this.$this.folder.lists.findIndex(x => x.id == response.list.id);
@@ -227,9 +254,15 @@
                     } else {
                         //ToDo error
                     }
+                    this.$this.$nextTick(() => {
+                        // Add the component back in
+                        this.$this.reRender = true;
+                    });
                     this.$this.getListItemIsDoneCount();
                     this.$this.isEdit = this.isContinuousOnThisList;
                     this.$this.isSaving = false;
+
+                    this.$this.setDragAndDrop();
                 },
                 error: function () {
                     this.$this.isSaving = false;
@@ -344,6 +377,7 @@
                     text: this.text,
                     isDone: false,
                     isDeleted: false,
+                    order: this.list.items.length + 1
                 });
                 this.id++;
             }

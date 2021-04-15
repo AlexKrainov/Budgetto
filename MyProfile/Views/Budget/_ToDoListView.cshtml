@@ -1,0 +1,85 @@
+﻿<div class="col-sm-6 col-md-4 col-lg-6 col-xl-4 px-1"
+     v-for="list in lists"
+     v-bind:id="'list_'+list.id"
+     v-show="list.isShow">
+    <div class="card ui-bordered custom-card-hover mb-2"
+         v-bind:class="[list.isDeleted ? 'deleted-item': '']">
+        <div class="card-body d-flex justify-content-between align-items-start pb-1">
+            <div>
+                <div data-toggle="tooltip" data-html="true" data-original-title="" title="" class="mb-2 d-inline-flex align-items-center">
+                    <i class="lnr lnr-list text-primary float-left" style="font-size: x-large;"></i>
+                    <strong class="pl-2">{{ list.title }}</strong>
+                </div>
+                <div class="text-muted small">{{ list.items.filter(x => x.isDone).length }} завершенных из {{ list.items.length }}</div>
+            </div>
+            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer"
+               style="position: absolute;right: 13px;top: 13px;"
+               v-show="list.isDeleted"
+               v-on:click="recoveryList(list)"></i>
+            <div class="btn-group project-actions">
+                <button type="button" data-toggle="dropdown" class="btn btn-sm btn-default icon-btn borderless rounded-pill md-btn-flat dropdown-toggle hide-arrow"
+                        v-show="list.isDeleted == false"><i class="ion ion-ios-more"></i></button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="javascript:void(0)" class="dropdown-item" v-on:click="hideList(list)">Не показывать на этой странице</a>
+                    <a href="javascript:void(0)" class="dropdown-item text-danger" v-on:click="remvoeList(list)">Удалить список</a>
+                </div>
+            </div>
+        </div>
+        <div class="progress rounded-0" style="height: 3px;">
+            <div class="progress-bar"
+                 v-bind:style="'width:' +list.percent+'%'"></div>
+        </div>
+        <div class="card-body small pt-1 pb-0">
+            <strong>{{ list.percent }}%</strong> завершено
+        </div>
+        <div class="card-body" style=" max-height: 250px; overflow: auto;">
+            <div class="custom-controls-stacked list-items"
+                 v-if="listReRender">
+                <div class="pb-2 todo-item"
+                     v-for="(_item, index) in list.items"
+                     v-bind:key="index"
+                     v-bind:order="_item.order"
+                     v-bind:item-id="_item.id"
+                     v-show="_item.isDeleted == false">
+                    <label class="ui-todo-item custom-control custom-checkbox display-inline">
+                        <input type="checkbox" class="custom-control-input"
+                               v-bind:checked="_item.isDone"
+                               v-on:click="_item.isDone = !_item.isDone; saveList(list);"
+                               v-bind:disabled="list.isDeleted">
+                        <span class="custom-control-label" ></span>
+                        <span class="custom-control-label" 
+                              v-bind:class="_item.isDone ? 'todolist-checked' : ''">{{ _item.text }}</span>
+                    </label>
+                    <span class="todo-item-actions ml-4 pl-4 float-right"
+                          v-show="list.isDeleted == false">
+                        @*<span class="ion ion-ios-move small mr-2 cursor-pointer link-orange-hover item-handle"></span>*@
+                        <span class="ion ion-md-create link-green-hover cursor-pointer mr-2" title="Редактировать запись"
+                              v-on:click="editListItem(list,_item)"></span>
+                        @*v-bind:class="item != null && _item.id == item.id ? 'link-green': ''"*@
+                        <span class="ion ion-md-trash link-red-hover cursor-pointer " title="Удалить"
+                              v-on:click="_item.isDeleted = true; saveList(list);"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" v-show="list.isDeleted == false">
+            <div class="input-group"
+                 v-bind:id="'edititem_list_'+list.id">
+                <input type="text" class="form-control border-primary form-control-sm" name="input-text"
+                       v-on:keypress="keyItemPress($event, list)"
+                       v-model="list.editItem.text">
+                <div class="input-group-append" v-show="list.editItem.text && list.editItem.text.length > 0">
+                    <button type="button" class="btn btn-sm btn-default border-primary" v-on:click="list.editItem.text = ''">
+                        <i class="ion ion-ios-close"></i>
+                    </button>
+                </div>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-sm btn-primary" v-on:click="addListItem(list)">
+                        {{list.editItem.id ? "Сохранить" : "Добавить" }}
+                    </button>
+                </div>
+                <small class="invalid-feedback">Это поле не должно быть пустым</small>
+            </div>
+        </div>
+    </div>
+</div>

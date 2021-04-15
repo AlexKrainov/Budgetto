@@ -53,6 +53,8 @@ namespace MyProfile.Areas.Identity.Controllers
 
                 user.UserSettings.Month_Summary = dbUserSettings.Month_Summary = userSettings.Month_Summary;
                 user.UserSettings.Month_Accounts = dbUserSettings.Month_Accounts = userSettings.Month_Accounts;
+
+                user.UserSettings.Month_ToDoLists = dbUserSettings.Month_ToDoLists = userSettings.Month_ToDoLists;
             }
             else if (userSettings.PageName == "Budget/Year")
             {
@@ -70,6 +72,8 @@ namespace MyProfile.Areas.Identity.Controllers
 
                 user.UserSettings.Year_Summary = dbUserSettings.Year_Summary = userSettings.Year_Summary;
                 user.UserSettings.Year_Accounts = dbUserSettings.Year_Accounts = userSettings.Year_Accounts;
+
+                user.UserSettings.Year_ToDoLists = dbUserSettings.Year_ToDoLists = userSettings.Year_ToDoLists;
             }
             else if (userSettings.PageName == "Goal/List")
             {

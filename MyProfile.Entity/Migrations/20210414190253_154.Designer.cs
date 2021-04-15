@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210414190253_154")]
+    partial class _154
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2358,8 +2360,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("Month_ToDoLists");
-
                     b.Property<string>("WebSiteTheme")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue("light");
@@ -2395,8 +2395,6 @@ namespace MyProfile.Entity.Migrations
                     b.Property<bool>("Year_Summary")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
-
-                    b.Property<bool>("Year_ToDoLists");
 
                     b.HasKey("ID");
 

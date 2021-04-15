@@ -145,6 +145,7 @@ namespace MyProfile.Identity
                     Dashboard_Month_IsShow_SpendingChart = currentUser.UserSettings.Month_SpendingWidget,
                     Dashboard_Month_IsShow_Summary = currentUser.UserSettings.Month_Summary,
                     Dashboard_Month_IsShow_Accounts = currentUser.UserSettings.Month_Accounts,
+                    Dashboard_Month_IsShow_ToDoLists = currentUser.UserSettings.Month_ToDoLists,
 
                     Dashboard_Year_IsShow_BigCharts = currentUser.UserSettings.Year_BigCharts,
                     Dashboard_Year_IsShow_EarningChart = currentUser.UserSettings.Year_EarningWidget,
@@ -154,6 +155,7 @@ namespace MyProfile.Identity
                     Dashboard_Year_IsShow_SpendingChart = currentUser.UserSettings.Year_SpendingWidget,
                     Dashboard_Year_IsShow_Summary = currentUser.UserSettings.Year_Summary,
                     Dashboard_Year_IsShow_Accounts = currentUser.UserSettings.Year_Accounts,
+                    Dashboard_Year_IsShow_ToDoLists = currentUser.UserSettings.Year_ToDoLists,
 
                     WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
                     IsShowHints = currentUser.UserSettings.IsShowHints,

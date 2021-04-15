@@ -242,4 +242,30 @@
         });
         return this.summaryAjax;
     },
+    //ToDoList 
+    loadToDoLists: function () {
+        if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_ToDoLists)) {
+            return false;
+        }
+
+        if (this.toDoListAjax && (this.toDoListAjax.readyState == 1 || this.toDoListAjax.readyState == 3)) { // OPENED & LOADING
+            this.toDoListAjax.abort();
+        }
+
+        ShowLoading('#todoList-view');
+
+        this.accountsAjax = $.ajax({
+            type: "GET",
+            url: "/ToDoList/GetListsByPeriodType?periodType=1",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+                this.lists = response.lists;
+
+                HideLoading('#todoList-view');
+            }
+        });
+        return this.accountsAjax;
+    },
 };

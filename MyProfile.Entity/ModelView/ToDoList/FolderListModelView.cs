@@ -10,7 +10,7 @@ namespace MyProfile.Entity.ModelView.ToDoList
         public int ID { get; set; }
         public string Title { get; set; }
         public string CssIcon { get; set; }
-        public IEnumerable<ToDoFolderList> Lists { get; set; }
+        public IEnumerable<ToDoListModelView> Lists { get; set; }
 
 
         public bool Selected { get; set; } = false;
@@ -20,16 +20,15 @@ namespace MyProfile.Entity.ModelView.ToDoList
         public string ImageLink { get; set; }
     }
 
-    public class ToDoFolderList
+    public class ToDoListModelView
     {
         public int ID { get; set; }
         public int FolderID { get; set; }
-        public int PeriodTypeID { get; set; }
         public string Title { get; set; }
-        //public VisibleElement VisibleElement { get; set; }
         public bool IsFavorite { get; set; }
         public bool IsShowInCollective { get; set; }
         public IEnumerable<ToDoListItemModelView> Items { get; set; }
+        public ToDoListItemModelView EditItem { get; set; } = new ToDoListItemModelView();
 
         public bool Selected { get; set; } = false;
         public bool IsDeleted { get; set; } = false;
@@ -41,6 +40,39 @@ namespace MyProfile.Entity.ModelView.ToDoList
         public DateTime DateCreate { get; set; }
         public bool IsNewToday { get; set; }
         public bool IsEditToday { get; set; }
+        public List<int> _periodTypeIDs { get; set; }
+        public List<int> PeriodTypeIDs
+        {
+            get
+            {
+                if (_periodTypeIDs == null)
+                {
+                    _periodTypeIDs = new List<int>();
+
+                    if (IsShow_BudgetMonth)
+                    {
+                        _periodTypeIDs.Add((int)PeriodTypesEnum.Month);
+                    }
+                    if (IsShow_BudgetYear)
+                    {
+                        _periodTypeIDs.Add((int)PeriodTypesEnum.Year);
+                    }
+                    return _periodTypeIDs;
+                }
+                else
+                {
+                    return _periodTypeIDs;
+                }
+
+            }
+            set
+            {
+                _periodTypeIDs = value;
+            }
+        }
+        public bool IsShow_BudgetMonth { get; set; }
+        public bool IsShow_BudgetYear { get; set; }
+        public decimal Percent { get; set; }
     }
 
     public class ToDoListItemModelView
@@ -57,5 +89,6 @@ namespace MyProfile.Entity.ModelView.ToDoList
         public string ImageLinkCreate { get; set; }
         public string UserNameDone { get; set; }
         public string ImageLinkDone { get; set; }
+        public int Order { get; set; }
     }
 }

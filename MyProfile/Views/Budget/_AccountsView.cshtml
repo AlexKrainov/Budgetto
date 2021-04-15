@@ -4,7 +4,7 @@
     <div class="card mb-1"
          v-bind:id="'main_account_'+ mainAccount.id"
          v-bind:class="[mainAccount.isDeleted ? 'deleted-item': '', mainAccount.bankTypeID == 1 || mainAccount.bankTypeID == null ? 'hover-border-primary' : mainAccount.bankTypeID == 2 ? 'hover-border-secondary' : '' ]">
-        <div class="media align-items-center"
+        <div class="media align-items-center" style="height: 80px"
              v-bind:class="mainAccount.isCash ? 'p-1 pl-2' : ''">
             <img class="ui-w-120" alt=""
                  v-bind:class="mainAccount.isSVG ? 'm-4' : 'mx-3'"

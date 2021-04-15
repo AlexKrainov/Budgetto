@@ -119,6 +119,21 @@
         </span>
     </div>
 </label>
+<hr class="m-0 border-light">
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Списки</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать виджеты списков</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_ToDoLists" name="user_settings" data-prop="Month_ToDoLists"
+               v-on:change="toggleElements('lists','Month_ToDoLists', 'Dashboard_Month_IsShow_ToDoLists'); change(false, ['BudgetVue.loadToDoLists']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
 <h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Графики</span> </h5>
 <label class="m-0 px-4 pb-3 d-flex media align-items-middle">
     <div class="media-body">

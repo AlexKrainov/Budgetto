@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.ToDoList;
 using MyProfile.Identity;
 using MyProfile.ToDoList.Service;
@@ -47,7 +48,7 @@ namespace MyProfile.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> EditList([FromBody] ToDoFolderList list)
+        public async Task<IActionResult> EditList([FromBody] ToDoListModelView list)
         {
             var result = await toDoListService.CreateOrUpdateList(list);
 
@@ -93,5 +94,19 @@ namespace MyProfile.Controllers
 
             return Json(new { isOk = result, listID, isFavorite });
         }
+
+        [HttpGet]
+        public JsonResult GetListsByPeriodType(PeriodTypesEnum periodType)
+        {
+            return Json(new { isOk = true, lists = toDoListService.GetListByPeriodTypeID(periodType)});
+        }
+        
+        [HttpGet]
+        public JsonResult HideList(int listID , PeriodTypesEnum periodType)
+        {
+            toDoListService.HideList(listID, periodType);
+            return Json(new { isOk = true});
+        }
+
     }
 }

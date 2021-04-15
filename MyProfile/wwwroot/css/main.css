@@ -814,3 +814,9 @@ html.dark-style .tagify__input::before {
     font-size: 1em;
 }
 
+
+/*.select2-container--default .select2-selection--multiple .select2-search--inline {
+    width: 100%;
+    padding-left: 12px;
+    margin-top: -5px;
+}*/

@@ -7,6 +7,7 @@
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/datatables/datatables.css">
     <link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
+    
 }
 
 @section Scripts {
@@ -97,6 +98,9 @@
     </div>
     <div class="row" id="goal-contrainer">
         @await Html.PartialAsync("_GoalsView")
+    </div>
+    <div class="row" id="todoList-view">
+        @await Html.PartialAsync("_ToDoListView")
     </div>
     <div class="row px-1">
         @await Html.PartialAsync("_BigChartView", "/Budget/Month")

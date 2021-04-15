@@ -18,13 +18,10 @@ namespace MyProfile.Entity.Model
 
 		[ForeignKey("ToDoListFolder")]
 		public int ToDoListFolderID { get; set; }
-		[ForeignKey("PeriodType")]
-		public int PeriodTypeID { get; set; }
 		[ForeignKey("VisibleElement")]
 		public int VisibleElementID { get; set; }
 
 		public virtual ToDoListFolder ToDoListFolder { get; set; }
-		public virtual PeriodType PeriodType { get; set; }
 		public virtual VisibleElement VisibleElement { get; set; }
 
 		public virtual ICollection<ToDoListItem> ToDoListItems { get; set; }

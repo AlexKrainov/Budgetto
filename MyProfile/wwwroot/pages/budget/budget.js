@@ -65,8 +65,14 @@
         //Accounts
         accounts: [],
         accountsAjax: null,
+        listReRender: true,
+
+        //ToDoLists
+        lists: [],
+        toDoListAjax: null,
 
         isLoading: false,
+        counter: -4999,
     },
     watch: {},
     mounted: BudgetMethods.mounted,
@@ -611,6 +617,158 @@
                 }
             }
         },
+        //ToDoList
+        loadToDoLists: BudgetMethods.loadToDoLists,
+        addListItem: function (list) {
+            if (!list.items) {
+                list.items = [];
+            }
+
+            if (!list.editItem.text || list.editItem.text.length == 0) {
+                $("#edititem_list_" + list.id + " input[name=input-text]").addClass("is-invalid");
+                return false;
+            } else {
+                $("#edititem_list_" + list.id + " input[name=input-text]").removeClass("is-invalid");
+            }
+
+            if (list.editItem.id) {
+                let index = list.items.findIndex(x => x.id == list.editItem.id);
+                if (index != -1) {
+                    list.items[index].text = list.editItem.text;
+                }
+            } else {
+                list.items.push({
+                    id: this.counter,
+                    text: list.editItem.text,
+                    isDone: false,
+                    isDeleted: false,
+                    order: list.items.length + 1
+                });
+                this.counter++;
+            }
+            list.editItem = {};
+
+            this.saveList(list);
+        },
+        editListItem: function (list, item) {
+            list.editItem = item;
+            $("#edititem_list_" + list.id + " input[name=input-text]").focus();
+        },
+        keyItemPress: function (e, list) {
+            if (e.keyCode == 13) {
+                this.addListItem(list);
+            }
+        },
+        saveList: function (list) {
+
+            var items = $("#list_" + list.id + " div.todo-item")
+            for (var i = 0; i < items.length; i++) {
+                let id = $(items[i]).attr("item-id") * 1;
+                let _index = list.items.findIndex(x => x.id == id);
+                list.items[_index].order = i;
+            }
+
+            //ShowLoading("#list_" + list.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/ToDoList/EditList",
+                data: JSON.stringify(list),
+                context: {
+                    $this: this,
+                    list: list,
+                    isContinuousOnThisList: true
+                },
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+
+                    this.$this.listReRender = false;
+
+                    if (response.isOk) {
+                        //this.list = response.list;
+                        let index = this.$this.lists.findIndex(x => x.id == this.list.id);
+                        this.$this.lists[index] = response.list;
+
+                    } else {
+                        //ToDo error
+                    }
+                    this.$this.$nextTick(() => {
+                        // Add the component back in
+                        this.$this.listReRender = true;
+                    });
+
+                    //this.$this.getListItemIsDoneCount();
+                    //  HideLoading("#list_" + this.list.id);
+
+                    //this.$this.setDragAndDrop();
+                },
+                error: function () {
+                    // HideLoading("#list_" + this.list.id);
+                }
+            });
+        },
+        remvoeList: function (list) {
+
+            let listsDelete = [list];
+            ShowLoading("#list_" + list.id);
+
+            return $.ajax({
+                type: "POST",
+                url: "/ToDoList/RemoveList",
+                data: JSON.stringify(listsDelete),
+                context: {
+                    $this: this,
+                    list: list
+                },
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+
+                    if (response.isOk) {
+                        this.list.isDeleted = true;
+                    }
+                    HideLoading("#list_" + this.list.id);
+                },
+                error: function () {
+                    HideLoading("#list_" + this.list.id);
+                }
+            });
+        },
+        recoveryList: function (list) {
+            ShowLoading('#list_' + list.id);
+
+            return $.ajax({
+                type: "GET",
+                url: "/ToDoList/Recovery?listID=" + list.id,
+                context: list,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    this.isDeleted = !response.isOk;
+                    HideLoading('#list_' + this.id);
+                }
+            });
+        },
+        hideList: function (list) {
+            ShowLoading('#list_' + list.id);
+
+            return $.ajax({
+                type: "GET",
+                url: "/ToDoList/HideList?listID=" + list.id + "&periodType=" + this.periodType,
+                context: {
+                    $this: this,
+                    list: list
+                },
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (response) {
+                    HideLoading('#list_' + this.list.id);
+                    let index = this.$this.lists.findIndex(x => x.id == this.list.id);
+                    this.$this.lists.splice(index, 1);
+                }
+            });
+        },
 
         //resize and refresh
         refresh: function (typeRefresh) {
@@ -678,6 +836,7 @@
             this.loadGoalCharts();
             this.loadAccounts();
             this.loadSummaries();
+            this.loadToDoLists();
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
 
