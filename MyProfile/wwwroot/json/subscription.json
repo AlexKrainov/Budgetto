@@ -1,554 +1,738 @@
-[
+п»ї[
   {
-    "src": "https://subme.ru/wp-content/uploads/2021/04/podpiska_justfood-300x300.jpg",
-    "raiting": "8.5",
-    "price": "890.00",
-    "title": "Just Food – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_apple_one-300x300.png",
-    "raiting": "9",
-    "price": "525.00",
-    "title": "Apple One – Семейная подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_apple_one-300x300.png",
-    "raiting": "9.1",
-    "price": "365.00",
-    "title": "Apple One – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_mts_netarif_logo-300x300.jpg",
-    "raiting": "8.3",
-    "price": "244.00",
-    "title": "МТС Нетариф – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_mts_premium_logo-300x300.jpg",
-    "raiting": "8.8",
-    "price": "199.00",
-    "title": "МТС Premium – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_tinkoff_pro-300x300.jpg",
-    "raiting": "9.1",
-    "price": "199.00",
-    "title": "Tinkoff Pro – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_sber_prime-300x300.jpg",
-    "raiting": "9.1",
-    "price": "199.00",
-    "title": "СберПрайм – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_vkcombo-300x300.jpg",
-    "raiting": "9.1",
-    "price": "149.00",
-    "title": "VK Combo – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_yandex_plus-300x300.png",
-    "raiting": "9.3",
-    "price": "299.00",
-    "title": "Яндекс Плюс Мульти – Семейная подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_yandex_plus-300x300.png",
-    "raiting": "9.3",
-    "price": "199.00",
-    "title": "Яндекс Плюс – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_ya_bi_siel-300x300.jpg",
-    "raiting": "8",
-    "price": "560.00",
-    "title": "Я бы съел – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_vnuk_i_vnuchka-300x300.jpg",
-    "raiting": "8",
-    "price": "2,400.00",
-    "title": "Внук и внучка – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_balancevkusa-300x300.jpg",
-    "raiting": "8",
-    "price": "1,900.00",
-    "title": "Баланс Вкуса – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_wowfood-300x300.jpg",
-    "raiting": "8",
-    "price": "380.00",
-    "title": "Wow Food – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_pgfood-300x300.jpg",
-    "raiting": "8",
-    "price": "1,790.00",
-    "title": "PG Food – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_performancefood-300x300.jpg",
-    "raiting": "8",
-    "price": "1,600.00",
-    "title": "Performance Food – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_plovpoint-300x300.jpg",
-    "raiting": "7.9",
-    "price": "1,400.00",
-    "title": "PlovPoint – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_yamdiet-300x300.jpg",
-    "raiting": "8.3",
-    "price": "300.00",
-    "title": "Yamdiet – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/level-kitchen-logo-300x300.jpg",
-    "raiting": "8.5",
-    "price": "850.00",
-    "title": "Level Kitchen – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/general-food-300x300.jpg",
-    "raiting": "8.8",
-    "price": "700.00",
-    "title": "General Food – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_growfood-300x300.jpg",
-    "raiting": "9",
-    "price": "320.00",
-    "title": "Grow Food – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_cityfood-300x300.jpg",
-    "raiting": "8.3",
-    "price": "700.00",
-    "title": "Cityfood – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_myfood-300x300.jpg",
-    "raiting": "8.9",
-    "price": "440.00",
-    "title": "My Food – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_befit-300x300.jpg",
-    "raiting": "8.8",
-    "price": "2,900.00",
-    "title": "BeFit – Подписка на доставку питания"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/kinopoisk-hd-logo-300x300.jpg",
-    "raiting": "8.8",
-    "price": "199.00",
-    "title": "КиноПоиск HD – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/amediateka-logo-300x300.jpg",
-    "raiting": "8.8",
-    "price": "4,999.00",
-    "title": "Амедиатека – Подписка на 1 год"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/amediateka-logo-300x300.jpg",
+    "src": "https://subme.ru/wp-content/uploads/2021/02/apple-musik-logo-300x300.jpg",
     "raiting": "8.6",
-    "price": "599.00",
-    "title": "Амедиатека – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_wink-300x300.png",
-    "raiting": "8.1",
-    "price": "1,800.00",
-    "title": "Wink – Подписка Премиум на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_wink-300x300.png",
-    "raiting": "8.1",
-    "price": "399.00",
-    "title": "Wink – Подписка Трансформер на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_wink-300x300.png",
-    "raiting": "8.3",
-    "price": "179.00",
-    "title": "Wink – Подписка Лайт на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_vipplay-300x300.png",
-    "raiting": "7.1",
-    "price": "299.00",
-    "title": "ViP Play – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_tvigle-300x300.jpg",
-    "raiting": "7.4",
     "price": "199.00",
-    "title": "Tvigle – Подписка на 1 месяц"
+    "title": "Apple Music вЂ“ РџРѕРґРїРёСЃРєР° РґР»СЏ РґРІРѕРёС…",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://music.apple.com/ru/"
   },
   {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_tvzavr-300x300.jpg",
-    "raiting": "7.4",
-    "price": "249.00",
-    "title": "TVZavr – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_start-300x300.jpg",
-    "raiting": "7.3",
-    "price": "2,699.00",
-    "title": "Start – Подписка на 12 месяцев"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_start-300x300.jpg",
-    "raiting": "7.3",
-    "price": "799.00",
-    "title": "Start – Подписка на 3 месяца"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_start-300x300.jpg",
-    "raiting": "7.3",
-    "price": "299.00",
-    "title": "Start – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_youtube_premium-300x300.png",
-    "raiting": "8",
-    "price": "125.00",
-    "title": "YouTube Premium – Студенческая подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_youtube_premium-300x300.png",
-    "raiting": "8",
-    "price": "299.00",
-    "title": "YouTube Premium – Семейная подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_youtube_premium-300x300.png",
-    "raiting": "8",
-    "price": "199.00",
-    "title": "YouTube Premium – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_premier-300x300.png",
-    "raiting": "7.8",
-    "price": "199.00",
-    "title": "Premier – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.5",
-    "price": "9,588.00",
-    "title": "Okko – Подписка Премиум на 12 месяцев"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.5",
-    "price": "2,397.00",
-    "title": "Okko – Подписка Премиум на 3 месяца"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.8",
-    "price": "799.00",
-    "title": "Okko – Подписка Премиум на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.5",
-    "price": "4,788.00",
-    "title": "Okko – Подписка Оптимум на 12 месяцев"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.8",
-    "price": "1,197.00",
-    "title": "Okko – Подписка Оптимум на 3 месяца"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.8",
-    "price": "399.00",
-    "title": "Okko – Подписка Оптимум на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.8",
-    "price": "2,388.00",
-    "title": "Okko – Подписка Лайт на 12 месяцев"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.8",
-    "price": "597.00",
-    "title": "Okko – Подписка Лайт на 3 месяца"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
-    "raiting": "8.8",
-    "price": "199.00",
-    "title": "Okko – Подписка Лайт на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/netflix-300x300.jpg",
-    "raiting": "8.5",
-    "price": "999.00",
-    "title": "Netflix – Подписка Премиум на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/netflix-300x300.jpg",
-    "raiting": "8.5",
-    "price": "799.00",
-    "title": "Netflix – Подписка Стандартная на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/netflix-300x300.jpg",
-    "raiting": "8.5",
-    "price": "599.00",
-    "title": "Netflix – Подписка Базовая на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/more-tv-logo-300x300.jpg",
-    "raiting": "8.4",
-    "price": "299.00",
-    "title": "more.tv – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/logo-full-01-300x300.png",
-    "raiting": "8.4",
-    "price": "597.00",
-    "title": "Megogo – Подписка Премиальная на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/logo-full-01-300x300.png",
+    "src": "https://subme.ru/wp-content/uploads/2021/02/apple-musik-logo-300x300.jpg",
     "raiting": "8.6",
-    "price": "397.00",
-    "title": "Megogo – Подписка Максимальная на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/logo-full-01-300x300.png",
-    "raiting": "8.9",
-    "price": "197.00",
-    "title": "Megogo – Подписка Легкая на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/ivi-logo-300x300.jpg",
-    "raiting": "8.9",
-    "price": "399.00",
-    "title": "ivi – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/amazon-prime-video-300x300.jpg",
-    "raiting": "7.8",
-    "price": "675.00",
-    "title": "Amazon Prime Video – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/google-play-movies-tv-logo-300x300.png",
-    "raiting": "8.4",
-    "price": "0.00",
-    "title": "Google Play Movies & TV"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/03/apple-tv-300x300.jpg",
-    "raiting": "9",
-    "price": "199.00",
-    "title": "Apple TV+ – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/boom_music-300x300.jpg",
-    "raiting": "9",
-    "price": "75.00",
-    "title": "BOOM – Студенческая подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/boom_music-300x300.jpg",
-    "raiting": "9",
-    "price": "149.00",
-    "title": "BOOM – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/beeline_music-1-300x300.jpg",
-    "raiting": "7.4",
-    "price": "180.00",
-    "title": "Музыка Билайн – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/mts_misic-1-300x300.jpg",
-    "raiting": "7.9",
     "price": "169.00",
-    "title": "МТС Music – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/sberzvuk-300x300.jpg",
-    "raiting": "8",
-    "price": "1,199.00",
-    "title": "СберЗвук – Подписка на 1 год"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/sberzvuk-300x300.jpg",
-    "raiting": "8",
-    "price": "169.00",
-    "title": "СберЗвук – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
-    "raiting": "8.6",
-    "price": "750.00",
-    "title": "Tidal HiFi – Студенческая подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
-    "raiting": "8.5",
-    "price": "2,250.00",
-    "title": "Tidal HiFi – Семейная подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
-    "raiting": "8.5",
-    "price": "1,500.00",
-    "title": "Tidal HiFi – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
-    "raiting": "8.8",
-    "price": "375.00",
-    "title": "Tidal Premium – Студенческая подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
-    "raiting": "8.6",
-    "price": "1,125.00",
-    "title": "Tidal Premium – Семейная подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
-    "raiting": "8.6",
-    "price": "750.00",
-    "title": "Tidal Premium – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/soundcloud-logo-300x300.jpg",
-    "raiting": "8.5",
-    "price": "2,250.00",
-    "title": "SoundCloud Repost – Подписка на 1 год"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/soundcloud-logo-300x300.jpg",
-    "raiting": "8.4",
-    "price": "11,000.00",
-    "title": "SoundCloud Pro Unlimited – Подписка на 1 год"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/yandex-muzika-logo-300x300.jpg",
-    "raiting": "8.6",
-    "price": "199.00",
-    "title": "Яндекс.Музыка – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/google-play-music-300x300.jpg",
-    "raiting": "7.9",
-    "price": "189.00",
-    "title": "Google Play Музыка – Подписка на 1 месяц"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/youtube-music-300x300.jpg",
-    "raiting": "7.8",
-    "price": "95.00",
-    "title": "YouTube Music (YouTube Premium) – Студенческая подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/youtube-music-300x300.jpg",
-    "raiting": "8.1",
-    "price": "269.00",
-    "title": "YouTube Music (YouTube Premium) – Семейная подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/youtube-music-300x300.jpg",
-    "raiting": "8.3",
-    "price": "169.00",
-    "title": "YouTube Music (YouTube Premium) – Подписка на 1 месяц"
+    "title": "Apple Music вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://music.apple.com/ru/"
   },
   {
     "src": "https://subme.ru/wp-content/uploads/2021/02/apple-musik-logo-300x300.jpg",
     "raiting": "8.8",
     "price": "269.00",
-    "title": "Apple Music – Семейная подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/apple-musik-logo-300x300.jpg",
-    "raiting": "8.6",
-    "price": "199.00",
-    "title": "Apple Music – Подписка для двоих"
+    "title": "Apple Music вЂ“ РЎРµРјРµР№РЅР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://music.apple.com/ru/"
   },
   {
     "src": "https://subme.ru/wp-content/uploads/2021/02/apple-musik-logo-300x300.jpg",
     "raiting": "8.8",
     "price": "75.00",
-    "title": "Apple Music – Студенческая подписка"
+    "title": "Apple Music вЂ“ РЎС‚СѓРґРµРЅС‡РµСЃРєР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://music.apple.com/ru/"
   },
   {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/apple-musik-logo-300x300.jpg",
-    "raiting": "8.6",
-    "price": "169.00",
-    "title": "Apple Music – Подписка на 1 месяц"
+    "src": "https://subme.ru/wp-content/uploads/2021/02/boom_music-300x300.jpg",
+    "raiting": "9",
+    "price": "149.00",
+    "title": "BOOM вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://boom.ru"
   },
   {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/deezer1-300x300.jpg",
-    "raiting": "8.9",
-    "price": "84.50",
-    "title": "Deezer Student – Студенческая подписка"
+    "src": "https://subme.ru/wp-content/uploads/2021/02/boom_music-300x300.jpg",
+    "raiting": "9",
+    "price": "75.00",
+    "title": "BOOM вЂ“ РЎС‚СѓРґРµРЅС‡РµСЃРєР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://boom.ru"
   },
   {
     "src": "https://subme.ru/wp-content/uploads/2021/02/deezer1-300x300.jpg",
     "raiting": "8.9",
     "price": "255.00",
-    "title": "Deezer HiFi – Подписка на 1 месяц"
+    "title": "Deezer вЂ“ РЎРµРјРµР№РЅР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.deezer.com/payment/go.php?id=100001&rg=1&origin=offer_comparative_top_family"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/deezer1-300x300.jpg",
+    "raiting": "8.9",
+    "price": "255.00",
+    "title": "Deezer вЂ“ РџРѕРґРїРёСЃРєР° HiFi РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.deezer.com/ru/offers/hifi"
   },
   {
     "src": "https://subme.ru/wp-content/uploads/2021/02/deezer1-300x300.jpg",
     "raiting": "9.4",
     "price": "2,028.00",
-    "title": "Deezer Premium – Годовая подписка"
+    "title": "Deezer вЂ“ РџРѕРґРїРёСЃРєР° Premium РЅР° 12 РјРµСЃСЏС†РµРІ",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.deezer.com/ru/offers/annual-plan"
   },
   {
     "src": "https://subme.ru/wp-content/uploads/2021/02/deezer1-300x300.jpg",
-    "raiting": "8.9",
-    "price": "255.00",
-    "title": "Deezer Family – Семейная подписка"
-  },
-  {
-    "src": "https://subme.ru/wp-content/uploads/2021/02/deezer1-300x300.jpg",
-    "raiting": "4 из 5 5",
+    "raiting": "4",
     "price": "169.00",
-    "title": "Deezer Premium – Подписка на 1 месяц"
+    "title": "Deezer вЂ“ РџРѕРґРїРёСЃРєР° Premium РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.deezer.com/payment/go.php?id=1&rg=1&origin=offer_comparative_top_premium"
   },
   {
-    "src": "https://subme.ru/wp-content/uploads/2018/01/Spotify-premium-300x300.jpg",
+    "src": "https://subme.ru/wp-content/uploads/2021/02/deezer1-300x300.jpg",
     "raiting": "8.9",
-    "price": "269.00",
-    "title": "Spotify premium – Подписка для семьи"
+    "price": "84.50",
+    "title": "Deezer вЂ“ РЎС‚СѓРґРµРЅС‡РµСЃРєР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.deezer.com/ru/offers/student"
   },
   {
-    "src": "https://subme.ru/wp-content/uploads/2018/01/Spotify-premium-300x300.jpg",
-    "raiting": "8.9",
-    "price": "85.00",
-    "title": "Spotify premium – Подписка для студентов"
+    "src": "https://subme.ru/wp-content/uploads/2021/02/google-play-music-300x300.jpg",
+    "raiting": "7.9",
+    "price": "189.00",
+    "title": "Google Play РњСѓР·С‹РєР° вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://play.google.com/music"
   },
   {
-    "src": "https://subme.ru/wp-content/uploads/2018/01/Spotify-premium-300x300.jpg",
-    "raiting": "9",
-    "price": "219.00",
-    "title": "Spotify premium – Подписка для двоих"
+    "src": "https://subme.ru/wp-content/uploads/2021/02/soundcloud-logo-300x300.jpg",
+    "raiting": "8.4",
+    "price": "11,000.00",
+    "title": "SoundCloud вЂ“ РџРѕРґРїРёСЃРєР° Pro Unlimited РЅР° 1 РіРѕРґ",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://checkout.soundcloud.com/pro"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/soundcloud-logo-300x300.jpg",
+    "raiting": "8.5",
+    "price": "2,250.00",
+    "title": "SoundCloud вЂ“ РџРѕРґРїРёСЃРєР° Repost РЅР° 1 РіРѕРґ",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://checkout.soundcloud.com/pro"
   },
   {
     "src": "https://subme.ru/wp-content/uploads/2018/01/Spotify-premium-300x300.jpg",
     "raiting": "9.1",
     "price": "169.00",
-    "title": "Spotify premium – Индивидуальная подписка"
+    "title": "Spotify вЂ“ РРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.spotify.com/purchase/offer/default-trial-1m?country=RU"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2018/01/Spotify-premium-300x300.jpg",
+    "raiting": "9",
+    "price": "219.00",
+    "title": "Spotify вЂ“ РџРѕРґРїРёСЃРєР° РґР»СЏ РґРІРѕРёС…",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.spotify.com/purchase/offer/duo-1-month-trial"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2018/01/Spotify-premium-300x300.jpg",
+    "raiting": "8.9",
+    "price": "269.00",
+    "title": "Spotify вЂ“ cРµРјРµР№РЅР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.spotify.com/purchase/offer/new-family-1m"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2018/01/Spotify-premium-300x300.jpg",
+    "raiting": "8.9",
+    "price": "85.00",
+    "title": "Spotify вЂ“ cС‚СѓРґРµРЅС‡РµСЃРєР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.spotify.com/student/verification"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
+    "raiting": "8.5",
+    "price": "1,500.00",
+    "title": "Tidal HiFi вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://tidal.com/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
+    "raiting": "8.5",
+    "price": "2,250.00",
+    "title": "Tidal HiFi вЂ“ РЎРµРјРµР№РЅР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://tidal.com/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
+    "raiting": "8.6",
+    "price": "750.00",
+    "title": "Tidal HiFi вЂ“ РЎС‚СѓРґРµРЅС‡РµСЃРєР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://tidal.com/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
+    "raiting": "8.6",
+    "price": "750.00",
+    "title": "Tidal Premium вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://tidal.com/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
+    "raiting": "8.6",
+    "price": "1,125.00",
+    "title": "Tidal Premium вЂ“ РЎРµРјРµР№РЅР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://tidal.com/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/tidal-01-300x300.jpg",
+    "raiting": "8.8",
+    "price": "375.00",
+    "title": "Tidal Premium вЂ“ РЎС‚СѓРґРµРЅС‡РµСЃРєР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://tidal.com/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/youtube-music-300x300.jpg",
+    "raiting": "8.3",
+    "price": "169.00",
+    "title": "YouTube Music (YouTube Premium) вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.youtube.com/red?hl=ru&gl=RU"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/youtube-music-300x300.jpg",
+    "raiting": "8.1",
+    "price": "269.00",
+    "title": "YouTube Music (YouTube Premium) вЂ“ РЎРµРјРµР№РЅР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.youtube.com/red?hl=ru&gl=RU"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/youtube-music-300x300.jpg",
+    "raiting": "7.8",
+    "price": "95.00",
+    "title": "YouTube Music (YouTube Premium) вЂ“ РЎС‚СѓРґРµРЅС‡РµСЃРєР°СЏ РїРѕРґРїРёСЃРєР°",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://www.youtube.com/red?hl=ru&gl=RU"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/mts_misic-1-300x300.jpg",
+    "raiting": "7.9",
+    "price": "169.00",
+    "title": "РњРўРЎ Music вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://music.mts.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/beeline_music-1-300x300.jpg",
+    "raiting": "7.4",
+    "price": "180.00",
+    "title": "РњСѓР·С‹РєР° Р‘РёР»Р°Р№РЅ вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://music.beeline.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/sberzvuk-300x300.jpg",
+    "raiting": "8",
+    "price": "1,199.00",
+    "title": "РЎР±РµСЂР—РІСѓРє вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РіРѕРґ",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://sber-zvuk.com/trial"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/sberzvuk-300x300.jpg",
+    "raiting": "8",
+    "price": "169.00",
+    "title": "РЎР±РµСЂР—РІСѓРє вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://sber-zvuk.com/trial"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/02/yandex-muzika-logo-300x300.jpg",
+    "raiting": "8.6",
+    "price": "199.00",
+    "title": "РЇРЅРґРµРєСЃ.РњСѓР·С‹РєР° вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РњСѓР·С‹РєР°",
+    "site": "https://music.yandex.ru/pay"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_befit-300x300.jpg",
+    "raiting": "8.8",
+    "price": "2,900.00",
+    "title": "BeFit вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://submee.page.link/befit"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_cityfood-300x300.jpg",
+    "raiting": "8.3",
+    "price": "700.00",
+    "title": "Cityfood вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://cityfood.pro"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/general-food-300x300.jpg",
+    "raiting": "8.8",
+    "price": "700.00",
+    "title": "General Food вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://fas.st/tjsl6i"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_growfood-300x300.jpg",
+    "raiting": "9",
+    "price": "320.00",
+    "title": "Grow Food вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://fas.st/jCpt2"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/04/podpiska_justfood-300x300.jpg",
+    "raiting": "8.5",
+    "price": "890.00",
+    "title": "Just Food вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://fas.st/3GSS8"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/level-kitchen-logo-300x300.jpg",
+    "raiting": "8.5",
+    "price": "850.00",
+    "title": "Level Kitchen вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://fas.st/1mJH3"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_myfood-300x300.jpg",
+    "raiting": "8.9",
+    "price": "440.00",
+    "title": "My Food вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://fas.st/4S33r"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_performancefood-300x300.jpg",
+    "raiting": "8",
+    "price": "1,600.00",
+    "title": "Performance Food вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://p-food.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_pgfood-300x300.jpg",
+    "raiting": "8",
+    "price": "1,790.00",
+    "title": "PG Food вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://pgfood.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_plovpoint-300x300.jpg",
+    "raiting": "7.9",
+    "price": "1,400.00",
+    "title": "PlovPoint вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://plovpoint.ru/site/menu"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_wowfood-300x300.jpg",
+    "raiting": "8",
+    "price": "380.00",
+    "title": "Wow Food вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://wowfood.pro"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_yamdiet-300x300.jpg",
+    "raiting": "8.3",
+    "price": "300.00",
+    "title": "Yamdiet вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://fas.st/KFSz6"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_balancevkusa-300x300.jpg",
+    "raiting": "8",
+    "price": "1,900.00",
+    "title": "Р‘Р°Р»Р°РЅСЃ Р’РєСѓСЃР° вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://taste-balance.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_vnuk_i_vnuchka-300x300.jpg",
+    "raiting": "8",
+    "price": "2,400.00",
+    "title": "Р’РЅСѓРє Рё РІРЅСѓС‡РєР° вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://appss.app/go/1e9f11f7931a426ba0eee42428aa9b3e365b64d1eb0a0b0b/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_ya_bi_siel-300x300.jpg",
+    "raiting": "8",
+    "price": "560.00",
+    "title": "РЇ Р±С‹ СЃСЉРµР» вЂ“ РџРѕРґРїРёСЃРєР° РЅР° РґРѕСЃС‚Р°РІРєСѓ РїРёС‚Р°РЅРёСЏ",
+    "category": "Р•РґР°",
+    "site": "https://appss.app/go/1e9f11f7d31d426ba0eee42428aa9b3e365b64d1eb0a0b0b/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_apple_one-300x300.png",
+    "raiting": "9.1",
+    "price": "365.00",
+    "title": "Apple One вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://www.apple.com/ru/apple-one/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_apple_one-300x300.png",
+    "raiting": "9",
+    "price": "525.00",
+    "title": "Apple One вЂ“ РЎРµРјРµР№РЅР°СЏ РїРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://www.apple.com/ru/apple-one/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_tinkoff_pro-300x300.jpg",
+    "raiting": "9.1",
+    "price": "199.00",
+    "title": "Tinkoff Pro вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://www.tinkoff.ru/pro/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_vkcombo-300x300.jpg",
+    "raiting": "9.1",
+    "price": "149.00",
+    "title": "VK Combo вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://vkcombo.ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_mts_premium_logo-300x300.jpg",
+    "raiting": "8.8",
+    "price": "199.00",
+    "title": "РњРўРЎ Premium вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://premium.mts.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_mts_netarif_logo-300x300.jpg",
+    "raiting": "8.3",
+    "price": "244.00",
+    "title": "РњРўРЎ РќРµС‚Р°СЂРёС„ вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://moskva.mts.ru/personal/mobilnaya-svyaz/tarifi/vse-tarifi/netarif"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_sber_prime-300x300.jpg",
+    "raiting": "9.1",
+    "price": "199.00",
+    "title": "РЎР±РµСЂРџСЂР°Р№Рј вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://www.sber.ru/sberprime/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_yandex_plus-300x300.png",
+    "raiting": "9.3",
+    "price": "199.00",
+    "title": "РЇРЅРґРµРєСЃ РџР»СЋСЃ вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://plus.yandex.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_yandex_plus-300x300.png",
+    "raiting": "9.3",
+    "price": "299.00",
+    "title": "РЇРЅРґРµРєСЃ РџР»СЋСЃ вЂ“ РЎРµРјРµР№РЅР°СЏ РџРѕРґРїРёСЃРєР° РњСѓР»СЊС‚Рё РЅР° 1 РјРµСЃСЏС†",
+    "category": "Р­РєРѕСЃРёСЃС‚РµРјС‹",
+    "site": "https://plus.yandex.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/amazon-prime-video-300x300.jpg",
+    "raiting": "7.8",
+    "price": "675.00",
+    "title": "Amazon Prime Video вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.primevideo.com/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/apple-tv-300x300.jpg",
+    "raiting": "9",
+    "price": "199.00",
+    "title": "Apple TV+ вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://tv.apple.com/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/google-play-movies-tv-logo-300x300.png",
+    "raiting": "8.4",
+    "price": "0.00",
+    "title": "Google Play вЂ“ Movies & TV",
+    "category": "РљРёРЅРѕ",
+    "site": "https://play.google.com/store/movies"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/ivi-logo-300x300.jpg",
+    "raiting": "8.9",
+    "price": "399.00",
+    "title": "ivi вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.ivi.ru/plus"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/logo-full-01-300x300.png",
+    "raiting": "8.9",
+    "price": "197.00",
+    "title": "Megogo вЂ“ РџРѕРґРїРёСЃРєР° Р›РµРіРєР°СЏ РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://megogo.ru/ru/kino_i_tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/logo-full-01-300x300.png",
+    "raiting": "8.6",
+    "price": "397.00",
+    "title": "Megogo вЂ“ РџРѕРґРїРёСЃРєР° РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://megogo.ru/ru/kino_i_tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/logo-full-01-300x300.png",
+    "raiting": "8.4",
+    "price": "597.00",
+    "title": "Megogo вЂ“ РџРѕРґРїРёСЃРєР° РџСЂРµРјРёР°Р»СЊРЅР°СЏ РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://megogo.ru/ru/kino_i_tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/more-tv-logo-300x300.jpg",
+    "raiting": "8.4",
+    "price": "299.00",
+    "title": "more.tv вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://more.tv/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/netflix-300x300.jpg",
+    "raiting": "8.5",
+    "price": "599.00",
+    "title": "Netflix вЂ“ РџРѕРґРїРёСЃРєР° Р‘Р°Р·РѕРІР°СЏ РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.netflix.com/ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/netflix-300x300.jpg",
+    "raiting": "8.5",
+    "price": "999.00",
+    "title": "Netflix вЂ“ РџРѕРґРїРёСЃРєР° РџСЂРµРјРёСѓРј РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.netflix.com/ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/netflix-300x300.jpg",
+    "raiting": "8.5",
+    "price": "799.00",
+    "title": "Netflix вЂ“ РџРѕРґРїРёСЃРєР° РЎС‚Р°РЅРґР°СЂС‚РЅР°СЏ РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.netflix.com/ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.8",
+    "price": "199.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° Р›Р°Р№С‚ РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.8",
+    "price": "2,388.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° Р›Р°Р№С‚ РЅР° 12 РјРµСЃСЏС†РµРІ",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.8",
+    "price": "597.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° Р›Р°Р№С‚ РЅР° 3 РјРµСЃСЏС†Р°",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.8",
+    "price": "399.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° РћРїС‚РёРјСѓРј РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.5",
+    "price": "4,788.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° РћРїС‚РёРјСѓРј РЅР° 12 РјРµСЃСЏС†РµРІ",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.8",
+    "price": "1,197.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° РћРїС‚РёРјСѓРј РЅР° 3 РјРµСЃСЏС†Р°",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.8",
+    "price": "799.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° РџСЂРµРјРёСѓРј РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.5",
+    "price": "9,588.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° РџСЂРµРјРёСѓРј РЅР° 12 РјРµСЃСЏС†РµРІ",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_okko-300x300.jpg",
+    "raiting": "8.5",
+    "price": "2,397.00",
+    "title": "Okko вЂ“ РџРѕРґРїРёСЃРєР° РџСЂРµРјРёСѓРј РЅР° 3 РјРµСЃСЏС†Р°",
+    "category": "РљРёРЅРѕ",
+    "site": "https://okko.tv"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_premier-300x300.png",
+    "raiting": "7.8",
+    "price": "199.00",
+    "title": "Premier вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://premier.one"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_start-300x300.jpg",
+    "raiting": "7.3",
+    "price": "299.00",
+    "title": "Start вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://start.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_start-300x300.jpg",
+    "raiting": "7.3",
+    "price": "2,699.00",
+    "title": "Start вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 12 РјРµСЃСЏС†РµРІ",
+    "category": "РљРёРЅРѕ",
+    "site": "https://start.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_start-300x300.jpg",
+    "raiting": "7.3",
+    "price": "799.00",
+    "title": "Start вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 3 РјРµСЃСЏС†Р°",
+    "category": "РљРёРЅРѕ",
+    "site": "https://start.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_tvigle-300x300.jpg",
+    "raiting": "7.4",
+    "price": "199.00",
+    "title": "Tvigle вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.tvzavr.ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_tvzavr-300x300.jpg",
+    "raiting": "7.4",
+    "price": "249.00",
+    "title": "TVZavr вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.tvzavr.ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_vipplay-300x300.png",
+    "raiting": "7.1",
+    "price": "299.00",
+    "title": "ViP Play вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://vipplay.ru"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_wink-300x300.png",
+    "raiting": "8.3",
+    "price": "179.00",
+    "title": "Wink вЂ“ РџРѕРґРїРёСЃРєР° Р›Р°Р№С‚ РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://wink.rt.ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_wink-300x300.png",
+    "raiting": "8.1",
+    "price": "1,800.00",
+    "title": "Wink вЂ“ РџРѕРґРїРёСЃРєР° РџСЂРµРјРёСѓРј РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://wink.rt.ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_wink-300x300.png",
+    "raiting": "8.1",
+    "price": "399.00",
+    "title": "Wink вЂ“ РџРѕРґРїРёСЃРєР° РўСЂР°РЅСЃС„РѕСЂРјРµСЂ РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://wink.rt.ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_youtube_premium-300x300.png",
+    "raiting": "8",
+    "price": "199.00",
+    "title": "YouTube Premium вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.youtube.com/premium"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_youtube_premium-300x300.png",
+    "raiting": "8",
+    "price": "299.00",
+    "title": "YouTube Premium вЂ“ РЎРµРјРµР№РЅР°СЏ РїРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.youtube.com/premium"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/podpiska_youtube_premium-300x300.png",
+    "raiting": "8",
+    "price": "125.00",
+    "title": "YouTube Premium вЂ“ РЎС‚СѓРґРµРЅС‡РµСЃРєР°СЏ РїРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.youtube.com/premium"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/amediateka-logo-300x300.jpg",
+    "raiting": "8.8",
+    "price": "4,999.00",
+    "title": "РђРјРµРґРёР°С‚РµРєР° вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РіРѕРґ",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.amediateka.ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/amediateka-logo-300x300.jpg",
+    "raiting": "8.6",
+    "price": "599.00",
+    "title": "РђРјРµРґРёР°С‚РµРєР° вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://www.amediateka.ru/"
+  },
+  {
+    "src": "https://subme.ru/wp-content/uploads/2021/03/kinopoisk-hd-logo-300x300.jpg",
+    "raiting": "8.8",
+    "price": "199.00",
+    "title": "РљРёРЅРѕРџРѕРёСЃРє HD вЂ“ РџРѕРґРїРёСЃРєР° РЅР° 1 РјРµСЃСЏС†",
+    "category": "РљРёРЅРѕ",
+    "site": "https://hd.kinopoisk.ru/"
   }
 ]

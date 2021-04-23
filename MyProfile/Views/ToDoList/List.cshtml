@@ -75,10 +75,11 @@
         </div>
         <!-- / Messages sidebox -->
         <!-- Messages list -->
-        <div class="col" v-show="isEdit == false" id="listOfLists">
+        <div class="col" v-show="isEdit == false && isShowMenu" id="listOfLists">
 
             <!-- Controls -->
-            <div class="media flex-wrap align-items-center py-2 px-2">
+            <div class="media flex-wrap align-items-center py-2 px-2"
+                 v-show="folder.id != null && folder.id != 0 ">
                 <div class="media-body d-flex flex-wrap flex-basis-100 flex-basis-sm-auto">
                     <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-sidebox-toggler d-lg-none d-block text-muted text-large mr-2">
                         <i class="ion ion-md-more"></i>
@@ -100,7 +101,6 @@
                 </div>
                 <input type="text" class="form-control form-control-sm float-right" style="width: 200px" placeholder="Поиск..."
                        v-model="searchListText">
-
             </div>
             <hr class="border-light m-0">
             <!-- / Controls -->
@@ -140,7 +140,7 @@
                     <span class="badge badge-pill badge-secondary" v-show="_list.items.length > 0 && _list.items.length == _list.isDoneCount">
                         {{ _list.items.length+"/"+_list.isDoneCount  }}
                     </span>
-                    <span class="badge badge-pill py-1 badge-success"
+                    <span class="badge badge-pill py-1 badge-success ml-2"
                           v-show="_list.isNewToday"
                           v-bind:style="_list.isDeleted ? 'opacity: .5;' : ''">Новый</span>
                     <span class="badge badge-pill py-1 badge-warning ml-2" v-show="_list.isEditToday">Отредактирован</span>
@@ -160,7 +160,7 @@
             <!-- Controls -->
             <div class="media flex-wrap align-items-center py-2 px-3">
                 <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted" title="Назад" data-placement="top" data-toggle="tooltip"
-                        v-on:click="isEdit = false">
+                        v-on:click="isEdit = false;">
                     <i class="ion ion-ios-undo"></i>
                 </button>
                 <button type="button" class="btn btn-default borderless md-btn-flat icon-btn messages-tooltip text-muted mr-4" title="Сохранить список" data-placement="top" data-toggle="tooltip"
@@ -323,31 +323,33 @@
                     <div class="form-group">
                         <label class="form-label text-muted">Выберите иконку</label>
                         <br />
-                        <span class="text-large mx-4 folder-icons">
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-albums')" class="cursor-pointer ion ion-ios-albums"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-alert')" class="cursor-pointer ion ion-ios-alert"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-attach')" class="cursor-pointer ion ion-ios-attach"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-basket')" class="cursor-pointer ion ion-md-basket"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-cart')" class="cursor-pointer ion ion-md-cart"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-airplane')" class="cursor-pointer ion ion-ios-airplane"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-beer')" class="cursor-pointer ion ion-ios-beer"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-wine')" class="cursor-pointer ion ion-ios-wine"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-boat')" class="cursor-pointer ion ion-md-boat"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-bicycle')" class="cursor-pointer ion ion-ios-bicycle"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-body')" class="cursor-pointer ion ion-ios-body"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-book')" class="cursor-pointer ion ion-ios-book"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-bus')" class="cursor-pointer ion ion-md-bus"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-calendar')" class="cursor-pointer ion ion-md-calendar"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-call')" class="cursor-pointer ion ion-ios-call"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-car')" class="cursor-pointer ion ion-md-car"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-checkbox-outline')" class="cursor-pointer ion ion-md-checkbox-outline"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-happy')" class="cursor-pointer ion ion-md-happy"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-home')" class="cursor-pointer ion ion-ios-home"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-ios-mail')" class="cursor-pointer ion ion-ios-mail"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-people')" class="cursor-pointer ion ion-md-people"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-pricetag')" class="cursor-pointer ion ion-md-pricetag"></i>
-                            <i v-on:click="chooseFolderIcon('ion ion-md-pricetags')" class="cursor-pointer ion ion-md-pricetags"></i>
-                        </span>
+                            @*folder-icons*@
+                        <div class="icons-container reminder-icons">
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-albums')" class="cursor-pointer ion ion-ios-albums"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-alert')" class="cursor-pointer ion ion-ios-alert"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-attach')" class="cursor-pointer ion ion-ios-attach"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-basket')" class="cursor-pointer ion ion-md-basket"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-cart')" class="cursor-pointer ion ion-md-cart"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-airplane')" class="cursor-pointer ion ion-ios-airplane"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-beer')" class="cursor-pointer ion ion-ios-beer"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-wine')" class="cursor-pointer ion ion-ios-wine"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-boat')" class="cursor-pointer ion ion-md-boat"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-bicycle')" class="cursor-pointer ion ion-ios-bicycle"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-body')" class="cursor-pointer ion ion-ios-body"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-book')" class="cursor-pointer ion ion-ios-book"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-bus')" class="cursor-pointer ion ion-md-bus"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-calendar')" class="cursor-pointer ion ion-md-calendar"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-call')" class="cursor-pointer ion ion-ios-call"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-car')" class="cursor-pointer ion ion-md-car"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-checkbox-outline')" class="cursor-pointer ion ion-md-checkbox-outline"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-happy')" class="cursor-pointer ion ion-md-happy"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-home')" class="cursor-pointer ion ion-ios-home"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-ios-mail')" class="cursor-pointer ion ion-ios-mail"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-people')" class="cursor-pointer ion ion-md-people"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-pricetag')" class="cursor-pointer ion ion-md-pricetag"></i></div>
+                            <div class="card d-inline-flex justify-content-center align-items-center m-1"><i v-on:click="chooseFolderIcon('ion ion-md-pricetags')" class="cursor-pointer ion ion-md-pricetags"></i></div>
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="card-footer">

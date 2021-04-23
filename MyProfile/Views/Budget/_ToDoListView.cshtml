@@ -32,7 +32,7 @@
         <div class="card-body small pt-1 pb-0">
             <strong>{{ list.percent }}%</strong> завершено
         </div>
-        <div class="card-body" style=" max-height: 250px; overflow: auto;">
+        <div class="card-body perfect-scroll" style=" max-height: 250px; overflow: auto;">
             <div class="custom-controls-stacked list-items"
                  v-if="listReRender">
                 <div class="pb-2 todo-item"
@@ -40,6 +40,7 @@
                      v-bind:key="index"
                      v-bind:order="_item.order"
                      v-bind:item-id="_item.id"
+                     v-bind:id="'item_' +_item.id"
                      v-show="_item.isDeleted == false">
                     <label class="ui-todo-item custom-control custom-checkbox display-inline">
                         <input type="checkbox" class="custom-control-input"
@@ -62,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer" v-show="list.isDeleted == false">
+        <div class="card-footer" v-show="list.isDeleted == false" v-if="refreshEditItem">
             <div class="input-group"
                  v-bind:id="'edititem_list_'+list.id">
                 <input type="text" class="form-control border-primary form-control-sm" name="input-text"

@@ -1802,6 +1802,122 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("SiteSettings");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScription", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("LogoBig")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("LogoSmall")
+                        .HasMaxLength(512);
+
+                    b.Property<int?>("ParentID");
+
+                    b.Property<string>("Site")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("SubScriptionCategoryID");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ParentID");
+
+                    b.HasIndex("SubScriptionCategoryID");
+
+                    b.ToTable("SubScriptions");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("SubScriptionCategories");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionOption", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("EditDate");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsBoth");
+
+                    b.Property<bool>("IsFamaly");
+
+                    b.Property<bool>("IsPersonally");
+
+                    b.Property<bool>("IsStudent");
+
+                    b.Property<int>("SubScriptionID");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(256);
+
+                    b.Property<decimal?>("_raiting");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SubScriptionID");
+
+                    b.ToTable("SubScriptionOptions");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionPricing", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("PricePerMonth")
+                        .HasColumnType("Money");
+
+                    b.Property<int>("PricingPeriodTypeID");
+
+                    b.Property<int>("SubScriptionOptionID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SubScriptionOptionID");
+
+                    b.ToTable("SubScriptionPricings");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Summary", b =>
                 {
                     b.Property<int>("ID")
@@ -2401,6 +2517,47 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.UserSubScription", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime?>("EndDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsPause");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("PricePerMonth")
+                        .HasColumnType("Money");
+
+                    b.Property<DateTime?>("StartDate");
+
+                    b.Property<int?>("SubScriptionPricingID");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SubScriptionPricingID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserSubScriptions");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.UserSummary", b =>
@@ -3058,6 +3215,34 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScription", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.SubScription", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentID");
+
+                    b.HasOne("MyProfile.Entity.Model.SubScriptionCategory", "SubScriptionCategory")
+                        .WithMany()
+                        .HasForeignKey("SubScriptionCategoryID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionOption", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.SubScription", "SubScription")
+                        .WithMany("SubScriptionOptions")
+                        .HasForeignKey("SubScriptionID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionPricing", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.SubScriptionOption", "SubScriptionOption")
+                        .WithMany("SubScriptionPricings")
+                        .HasForeignKey("SubScriptionOptionID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Summary", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.VisibleElement", "VisibleElement")
@@ -3214,6 +3399,18 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithOne("UserSettings")
                         .HasForeignKey("MyProfile.Entity.Model.UserSettings", "ID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.UserSubScription", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.SubScriptionPricing", "SubScriptionPricing")
+                        .WithMany("UserSubScriptions")
+                        .HasForeignKey("SubScriptionPricingID");
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("UserSubScriptions")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -262,6 +262,7 @@
             context: this,
             success: function (response) {
                 this.lists = response.lists;
+                this.afterLoadLists();
 
                 HideLoading('#todoList-view');
             }

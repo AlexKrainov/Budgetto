@@ -17,6 +17,7 @@
         isEdit: false,
         isSaving: false,
         isFolderSaving: false,
+        isShowMenu: true,
         id: -500,
         searchListText: null,
         searchFolderText: null,
@@ -63,6 +64,17 @@
 
             }
         },
+        isEdit: function (newValue) {
+            if (newValue == false) {
+                ShowLoading("#listOfLists");
+                this.isShowMenu = false;
+
+                setTimeout(function () {
+                    ToDoListVue.isShowMenu = true;
+                    HideLoading("#listOfLists");
+                }, 500);
+            }
+        }
     },
     computed: {
         items: function () {
@@ -92,7 +104,9 @@
                     if (result.isOk == true) {
                         ToDoListVue.folders = result.folders;
                         ToDoListVue.getListItemIsDoneCount();
-                        ToDoListVue.folder = ToDoListVue.folders[0];
+                        if (result.folders.length > 0) {
+                            ToDoListVue.folder = ToDoListVue.folders[0];
+                        }
                         HideLoading("#listOfLists");
 
                         setTimeout(function () {
@@ -112,11 +126,16 @@
             this.list = JSCopyObject(list);
             this.isEdit = true;
 
-            $("#periodTypeIDs")
-                .val(this.list.periodTypeIDs)
-                .select2();
+            if (this.list.periodTypeIDs) {
+                $("#periodTypeIDs")
+                    .val(this.list.periodTypeIDs)
+                    .select2();
+            } else {
+                $("#periodTypeIDs")
+                    .select2();
+            }
             //Save old list after open new one
-               // .change(function () { ToDoListVue.saveList(true) });
+            // .change(function () { ToDoListVue.saveList(true) });
 
             this.setDragAndDrop();
         },
@@ -136,9 +155,13 @@
             }, 500);
         },
         edit: function (list) {
-          
+            $("#periodTypeIDs").val(null).trigger("change");
+
             if (list) {
                 this.list = list;
+                $("#periodTypeIDs")
+                    .val(this.list.periodTypeIDs)
+                    .select2();
             } else {
                 this.list = {
                     items: [],
@@ -151,12 +174,14 @@
                     isNewToday: true,
                     isEditToday: false,
                     isDoneCount: 0,
-                    periodTypeIDs:[],
+                    periodTypeIDs: [],
                 };
+                $("#periodTypeIDs")
+                    .select2();
             }
 
             this.isEdit = true;
-            console.log("select2");
+
             this.setDragAndDrop();
         },
         toggleFavorite: function (list) {
@@ -423,8 +448,8 @@
             }
 
             let newCssIcon = cssIcon.replace(" ", ".");
-            $(".folder-icons i").removeClass("active");
-            $(".folder-icons i." + newCssIcon).addClass("active");
+            $(".reminder-icons i").removeClass("active");
+            $(".reminder-icons i." + newCssIcon).addClass("active");
             this.folder.cssIcon = cssIcon;
         },
         saveFolder: function () {
@@ -459,8 +484,9 @@
                             this.folders[index].title = response.folder.title;
                             this.folders[index].cssIcon = response.folder.cssIcon;
                         }
-                        //BudgetVue.refresh("onlyTable");
 
+
+                        this.selecteFolder(response.folder);
                         //this.close();
                         $("#modal-folder").modal("hide");
                     } else {

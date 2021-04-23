@@ -200,6 +200,15 @@ namespace MyProfile.Entity.Model
                 .Property(b => b.CurrencyID)
                 .HasDefaultValue(1);
 
+            modelBuilder.Entity<SubScriptionOption>()
+               .Property(b => b.IsActive)
+               .HasDefaultValue(true);
+
+
+            modelBuilder.Entity<SubScription>()
+               .Property(b => b.IsActive)
+               .HasDefaultValue(true);
+
             #endregion
         }
 
@@ -283,8 +292,12 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<Card> Cards { get; set; }
         public virtual DbSet<CardPaymentSystem> CardPaymentSystems { get; set; }
         public virtual DbSet<AccountInfo> AccountInfos { get; set; }
+        public virtual DbSet<SubScription> SubScriptions { get; set; }
+        public virtual DbSet<SubScriptionCategory> SubScriptionCategories { get; set; }
 
-
+        public virtual DbSet<SubScriptionOption> SubScriptionOptions { get; set; }
+        public virtual DbSet<SubScriptionPricing> SubScriptionPricings { get; set; }
+        public virtual DbSet<UserSubScription> UserSubScriptions { get; set; }
 
     }
 }

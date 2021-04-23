@@ -6,7 +6,7 @@
 
 <!--<html lang="ru" class="layout-navbar-fixed mdl-js layout-fixed @(currentUser.UserSettings.WebSiteTheme == "dark" ? "dark-style": "light-style")" dir="ltr">-->
 @*<html lang="ru" class="default-style layout-navbar-fixed mdl-js layout-fixed" dir="ltr">*@
-<html lang="ru" class="light-style layout-sidenav-100vh layout-expanded layout-fixed layout-navbar-fixed" dir="ltr">
+<html lang="ru" class="light-style layout-sidenav-100vh layout-expanded layout-fixed layout-navbar-fixed layout-collapsed" dir="ltr">
 <head>
     <title>Budgetto.org : @ViewData["Title"]</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -135,7 +135,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" asp-append-version="true"></script>
 
     <!-- Libs -->
-    @*<link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">*@
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.css">
 
     @RenderSection("Styles", required: false)
 
@@ -178,7 +178,7 @@
         <script src="~/vendor/libs/toastr/toastr.js" asp-append-version="true"></script>
         <script src="~/vendor/libs/tagify/src/tagify.js" asp-append-version="true"></script>
         <script src="~/vendor/libs/tagify/dist/tagify.polyfills.min.js" asp-append-version="true"></script>*@
-    @*<script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js" asp-append-version="true"></script>*@
+    <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.js" asp-append-version="true"></script>
 
 
     <environment names="Development">

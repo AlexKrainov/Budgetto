@@ -67,6 +67,12 @@
         <a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-layers"></i><div>Шаблоны</div></a>
     </li>
 
+    <li class="sidenav-item@(currentPage == "Subscription/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
+        title="">
+        <a asp-area="" asp-controller="Subscription" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-ios-pricetags"></i><div>Подписки</div></a>@*lnr lnr-tag*@
+    </li>
+
+
     <li class="sidenav-divider mb-1"></li>
     @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
 

@@ -71,6 +71,7 @@
     <ProjectReference Include="..\MyProfile.Notification.Service\MyProfile.Notification.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Payment.Service\MyProfile.Payment.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Reminder.Service\MyProfile.Reminder.Service.csproj" />
+    <ProjectReference Include="..\MyProfile.SubScription.Service\MyProfile.SubScription.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Tag.Service\MyProfile.Tag.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Template.Service\MyProfile.Template.Service.csproj" />
     <ProjectReference Include="..\MyProfile.ToDoList.Service\MyProfile.ToDoList.Service.csproj" />
@@ -127,6 +128,7 @@
     <Folder Include="wwwroot\resources\feedback\" />
     <Folder Include="wwwroot\resources\help\3\" />
     <Folder Include="wwwroot\resources\cards\" />
+    <Folder Include="wwwroot\resources\subscriptions\" />
     <Folder Include="wwwroot\resources\users\" />
     <Folder Include="wwwroot\video\" />
   </ItemGroup>

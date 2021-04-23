@@ -10,6 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using SubScriptionModel = MyProfile.Entity.Model.SubScription;
+
 
 namespace MyProfile.Code
 {
@@ -32,7 +34,7 @@ namespace MyProfile.Code
 
             //CardToJson();
             //CardJsonToCard();
-            
+
             //CreditRCardsLoading();
             //DebitCardsLoading();
             //BanksLoading();
@@ -40,6 +42,170 @@ namespace MyProfile.Code
             //CreateTelegramBotAccount();
             //CreateTelegramAccountStatus();
             // LoadTimeZone();
+            SubScriptionLoading();
+        }
+
+        private void SubScriptionLoading()
+        {
+            if (repository.GetAll<SubScriptionPricing>().Any() == false)
+            {
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\subscription.json"))
+                using (WebClient client = new WebClient())
+                {
+                    List<SubScriptionJson> json = (List<SubScriptionJson>)JsonConvert.DeserializeObject<List<SubScriptionJson>>(reader.ReadToEnd());
+                    List<SubScriptionModel> subScriptions = new List<SubScriptionModel>();
+                    List<SubScriptionCategory> categories = repository.GetAll<SubScriptionCategory>().ToList();
+
+                    //foreach (var jsonSub in json)
+                    //{
+                    //    if (categories.Any(x => x.Title == jsonSub.category) == false)
+                    //    {
+                    //        categories.Add(new SubScriptionCategory
+                    //        {
+                    //            Title = jsonSub.category,
+                    //            CodeName = ""
+                    //        });
+                    //    }
+                    //}
+
+                    //  repository.CreateRange(categories, true);
+
+                    foreach (var jsonSub in json)
+                    {
+                        SubScriptionModel subScription;
+                        bool isBoth = false;
+                        bool isFamaly = false;
+                        bool isStudent = false;
+                        bool isPersanaly = false;
+                        string title = "";
+                        decimal price;
+                        decimal priceForMonth;
+
+                        PricingPeriodType pricingPeriodType = PricingPeriodType.Undefined;
+                        try
+                        {
+                            var arr = jsonSub.title.Split(" – ");
+
+                            if (subScriptions.Any(x => x.Title == arr[0]) == false)
+                            {
+                                subScription = new SubScriptionModel { SubScriptionCategory = new SubScriptionCategory(), SubScriptionOptions = new List<SubScriptionOption>() };
+                                subScription.Title = arr[0];
+                                subScription.Site = jsonSub.site;
+                            }
+                            else
+                            {
+                                subScription = subScriptions.FirstOrDefault(x => x.Title == arr[0]);
+                            }
+
+                            subScription.SubScriptionCategoryID = categories.FirstOrDefault(x => x.Title == jsonSub.category).ID;
+
+
+                            isBoth = arr[1].ToLower().Contains("для двоих");
+                            isFamaly = arr[1].ToLower().Contains("семейная");
+                            isStudent = arr[1].ToLower().Contains("студенческая");
+                            isPersanaly = isBoth == false && isFamaly == false && isStudent == false;
+
+                            if (jsonSub.title.Contains("Подписка"))
+                            {
+                                title = arr[1].Replace("Подписка ", "");
+                                if (title.IndexOf(" на") >= 0)
+                                {
+                                    title = title.Substring(0, title.IndexOf(" на"));
+                                }
+                                else
+                                {
+                                    title = null;
+                                }
+                            }
+
+                            price = decimal.Parse(jsonSub.price);
+
+                            if (jsonSub.title.Contains("на 1 год") || jsonSub.title.Contains("на 12 месяцев"))
+                            {
+                                pricingPeriodType = PricingPeriodType.Month12;
+                                priceForMonth = price / 12;
+
+                            }
+                            else if (jsonSub.title.Contains("на 3 месяца"))
+                            {
+                                pricingPeriodType = PricingPeriodType.Month3;
+                                priceForMonth = price / 3;
+                            }
+                            else
+                            {
+                                pricingPeriodType = PricingPeriodType.Month1;
+                                priceForMonth = price;
+                            }
+
+                            var subScriptionOption = subScription.SubScriptionOptions.FirstOrDefault(x => x.Title == title);
+                            bool isNew = true;
+
+                            if (subScriptionOption != null)
+                            {
+                                isNew = !(subScriptionOption.IsBoth == isBoth && subScriptionOption.IsFamaly == isFamaly && subScriptionOption.IsPersonally == isPersanaly && subScriptionOption.IsStudent == isStudent);
+                            }
+
+                            if (isNew)
+                            {
+                                subScription.SubScriptionOptions.Add(new SubScriptionOption
+                                {
+                                    IsActive = true,
+                                    IsFamaly = isFamaly,
+                                    IsPersonally = isPersanaly,
+                                    IsStudent = isStudent,
+                                    IsBoth = isBoth,
+                                    _raiting = decimal.Parse(jsonSub.raiting),
+                                    EditDate = now,
+                                    Title = title,
+                                    SubScriptionPricings = new List<SubScriptionPricing> { new SubScriptionPricing
+                                {
+                                    PricingPeriodTypeID = (int)pricingPeriodType,
+                                    Price = price,
+                                    PricePerMonth = priceForMonth,
+                                } }
+                                });
+                            }
+                            else
+                            {
+                                subScriptionOption.SubScriptionPricings.Add(new SubScriptionPricing
+                                {
+                                    PricingPeriodTypeID = (int)pricingPeriodType,
+                                    Price = price,
+                                    PricePerMonth = priceForMonth,
+                                });
+                            }
+
+
+
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
+
+                        if (!string.IsNullOrEmpty(jsonSub.src))
+                        {
+                            try
+                            {
+                                Random random = new Random();
+                                var n = random.Next(10000, 99999).ToString();
+
+                                string url = @"C:\Users\t3l3f\source\repos\MyProject\MyProfile\wwwroot\resources\subscriptions\" + n + "_big.jpg";
+                                client.DownloadFile(new Uri(jsonSub.src), url);
+                                subScription.LogoBig = @"/resources/subscriptions/" + n + "_big.jpg";
+                            }
+                            catch (Exception ex1)
+                            {
+
+                            }
+                        }
+                        subScriptions.Add(subScription);
+                    }
+
+                    repository.CreateRange(subScriptions, true);
+                }
+
+            }
         }
 
         private void CardJsonToCard()
@@ -1099,5 +1265,17 @@ namespace MyProfile.Code
             public string cashback { get; set; }
             public int raiting { get; set; }
         }
+
+        public class SubScriptionJson
+        {
+            public string src { get; set; }
+            public string raiting { get; set; }
+            public string price { get; set; }
+            public string title { get; set; }
+            public string category { get; set; }
+            public string site { get; set; }
+        }
+
+
     }
 }

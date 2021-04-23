@@ -8,7 +8,7 @@
         templateID: null,
 
         template: {},
-        columnOrderQueue: 0, //save last reorder column
+        queueNumber: 0, //save last reorder column
         rows: [],
         footerRow: [],
 
@@ -70,6 +70,7 @@
         //ToDoLists
         lists: [],
         toDoListAjax: null,
+        refreshEditItem: true,
 
         isLoading: false,
         counter: -4999,
@@ -619,6 +620,15 @@
         },
         //ToDoList
         loadToDoLists: BudgetMethods.loadToDoLists,
+        afterLoadLists: function () {
+
+            this.$nextTick(() => {
+                let els = document.querySelectorAll(".perfect-scroll");
+                for (var i = 0; i < els.length; i++) {
+                    new PerfectScrollbar(els[i]);
+                }
+            });
+        },
         addListItem: function (list) {
             if (!list.items) {
                 list.items = [];
@@ -646,13 +656,24 @@
                 });
                 this.counter++;
             }
-            list.editItem = {};
+            list.editItem = { id: 0, text: "" };
 
             this.saveList(list);
+
+            this.$nextTick(() => {
+                //scroll to
+                $("#list_" + list.id + " .perfect-scroll").scrollTop($("#list_" + list.id + " .perfect-scroll").prop("scrollHeight"));
+            });
         },
         editListItem: function (list, item) {
+            //this.refreshEditItem = false;
+            //this.$nextTick(() => {
+            //this.refreshEditItem = true;
             list.editItem = item;
             $("#edititem_list_" + list.id + " input[name=input-text]").focus();
+            //Not good
+            //this.$forceUpdate();
+            //});
         },
         keyItemPress: function (e, list) {
             if (e.keyCode == 13) {
@@ -670,43 +691,55 @@
 
             //ShowLoading("#list_" + list.id);
 
-            return $.ajax({
-                type: "POST",
-                url: "/ToDoList/EditList",
-                data: JSON.stringify(list),
-                context: {
-                    $this: this,
-                    list: list,
-                    isContinuousOnThisList: true
-                },
-                contentType: "application/json",
-                dataType: 'json',
-                success: function (response) {
+            BudgetVue.queueNumber += 1;
 
-                    this.$this.listReRender = false;
-
-                    if (response.isOk) {
-                        //this.list = response.list;
-                        let index = this.$this.lists.findIndex(x => x.id == this.list.id);
-                        this.$this.lists[index] = response.list;
-
-                    } else {
-                        //ToDo error
-                    }
-                    this.$this.$nextTick(() => {
-                        // Add the component back in
-                        this.$this.listReRender = true;
-                    });
-
-                    //this.$this.getListItemIsDoneCount();
-                    //  HideLoading("#list_" + this.list.id);
-
-                    //this.$this.setDragAndDrop();
-                },
-                error: function () {
-                    // HideLoading("#list_" + this.list.id);
+            if (Lists == undefined) {
+                var Lists = [list];
+            } else {
+                let index = Lists.findIndex(x => x.id == list.id);
+                if (index == -1) {
+                    Lists.push(list);
+                } else {
+                    Lists[index] = list;
                 }
-            });
+            }
+
+            setTimeout(function () {
+                if (BudgetVue.queueNumber == 1) {
+                    BudgetVue.queueNumber = 0;
+
+                    for (var i = 0; i < Lists.length; i++) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/ToDoList/EditList",
+                            data: JSON.stringify(Lists[i]),
+                            context: BudgetVue,
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function (response) {
+
+                                if (response.isOk) {
+                                    let index = this.lists.findIndex(x => x.id == response.list.id);
+                                    this.lists[index] = response.list;
+
+                                } else {
+                                    //ToDo error
+                                }
+                                //  HideLoading("#list_" + this.list.id);
+                                Lists = undefined;
+
+                                BudgetVue.$forceUpdate();
+                            },
+                            error: function () {
+                                // HideLoading("#list_" + this.list.id);
+                            }
+                        });
+                    }
+
+                } else {
+                    BudgetVue.queueNumber -= 1;
+                }
+            }, 3000);
         },
         remvoeList: function (list) {
 
@@ -887,43 +920,7 @@
                     realtime: false
                 }
             });
-            this.dataTable.on('column-reorder', function (e, settings, details) {
-                BudgetVue.columnOrderQueue += 1;
-
-                setTimeout(function () {
-                    if (BudgetVue.columnOrderQueue == 1) {
-                        BudgetVue.columnOrderQueue = 0;
-
-                        let order = [];
-
-                        $("#table th").each(function (index) {
-                            let el = $(this);
-                            order.push({
-                                id: el.data("column-id"),
-                                newOrder: el.data("column-index"),
-                                oldOrder: el.data("column-order"),
-                            });
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/Budget/TemplateChangeColumns",
-                            contentType: "application/json",
-                            data: JSON.stringify({
-                                listOrder: order,
-                                templateID: BudgetVue.template.id
-                            }),
-                            dataType: 'json',
-                            success: function (response) {
-                                toastr.success("Изменения в шаблоне сохранены");
-                            }
-                        });
-                    } else {
-                        BudgetVue.columnOrderQueue -= 1;
-                    }
-                }, 1500);
-
-            });
+            this.dataTable.on('column-reorder', this.moveColumn);
 
             $.fn.dataTable.ext.order["dom-text-numeric"] = function (settings, col) {
                 return this.api().column(col, { order: 'index' }).nodes().map(function (td, i) {
@@ -935,6 +932,43 @@
             setTimeout(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             }, 1000);
+        },
+        moveColumn: function (e, settings, details) {
+            BudgetVue.queueNumber += 1;
+
+            setTimeout(function () {
+                if (BudgetVue.queueNumber == 1) {
+                    BudgetVue.queueNumber = 0;
+
+                    let order = [];
+
+                    $("#table th").each(function (index) {
+                        let el = $(this);
+                        order.push({
+                            id: el.data("column-id"),
+                            newOrder: el.data("column-index"),
+                            oldOrder: el.data("column-order"),
+                        });
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Budget/TemplateChangeColumns",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            listOrder: order,
+                            templateID: BudgetVue.template.id
+                        }),
+                        dataType: 'json',
+                        success: function (response) {
+                            toastr.success("Изменения в шаблоне сохранены");
+                        }
+                    });
+                } else {
+                    BudgetVue.queueNumber -= 1;
+                }
+            }, 1500);
+
         },
         toExcel: function () {
             this.isGenerateExcel = true;

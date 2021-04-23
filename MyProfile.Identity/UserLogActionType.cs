@@ -167,5 +167,10 @@
         public const string Account_TransferMoney= "Account_TransferMoney";
 
         public const string Summary_Set_WorkHours = "Summary_Edit_WorkHours";
+
+        public const string SubScription_Create = "SubScription_Create";
+        public const string SubScription_Edit = "SubScription_Edit";
+        public const string SubScription_Delete = "SubScription_Delete";
+        public const string SubScription_Recovery = "SubScription_Recovery";
     }
 }

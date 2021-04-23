@@ -35,6 +35,7 @@ using MyProfile.Code.Hubs;
 using MyProfile.Models;
 using MyProfile.Notification.Service;
 using Telegram.Service;
+using MyProfile.SubScription.Service;
 
 namespace MyProfile
 {
@@ -79,6 +80,7 @@ namespace MyProfile
             services.AddTransient<TagService>();
             services.AddTransient<AccountService>();
             services.AddTransient<SummaryService>();
+            services.AddTransient<SubScriptionService>();
 
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();

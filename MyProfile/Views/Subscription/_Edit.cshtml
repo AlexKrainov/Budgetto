@@ -1,0 +1,104 @@
+﻿<div class="modal modal-top fade" id="modal-subscription">
+    <div class="modal-dialog model-lg">
+        <form class="modal-content" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    {{ subScription.userSubScriptionID > 0 ? "Редактирование подписки" : "Добавление подписки" }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body py-2">
+                <div class="d-none d-sm-block px-0 text-center my-4">
+                    <img v-bind:src="subScription.logoBig" alt="" class="ui-bg-cover ui-w-120">
+                </div>
+
+                <h5 class="text-center font-weight-normal mb-4">Выберите вариант подписки</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-4"
+                         v-for="option in subScription.options">
+                        <a href="javascript:void(0)" class="d-block rounded ui-bordered p-3"
+                           v-on:click="selectOption(option)"
+                           v-bind:class="option.isSelected ? 'border-primary text-primary' : 'text-muted'">
+                            <span>
+                                {{ option.title }}
+                                {{ option.title ? (' - ' + option.optionVariant) : option.optionVariant }}
+                            </span>
+                            <br>
+                            <small class="text-muted">{{option.diapasonPrice}}</small>
+                        </a>
+                    </div>
+                </div>
+                <h5 class="text-center font-weight-normal mb-4">Выберите период подписки</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-4"
+                         v-for="pricing in pricings">
+                        <a href="javascript:void(0)" class="d-block rounded ui-bordered p-3 "
+                           v-on:click="selectPrice(pricing)"
+                           v-bind:class="pricing.isSelected ? 'border-primary text-primary' : 'text-muted'">
+                            <span>
+                                {{pricing.periodString }}
+                            </span>
+                            <br>
+                            <small class="text-muted">{{ pricing.priceString }}</small>
+                        </a>
+                    </div>
+                </div>
+
+                <section v-show="anySelectedPricing">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="form-label">Название</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="form-control" id="userTitle"
+                                   v-model="subScription.userTitle">
+                            <small class="invalid-feedback">Обязательное поле</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="form-label">Цена подписки</label>
+                            <span class="text-danger">*</span>
+                            <div class="form-group input-group">
+                                <input type="number" class="form-control" placeholder="" id="userPrice"
+                                       v-model="subScription.userPrice">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">₽</span>
+                                </div>
+                            </div>
+                            <small class="invalid-feedback">Обязательное поле</small>
+                            <small class="text-muted">
+                                В зависимости от выбранного периода
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="form-label">Цена подписки за месяц</label>
+                            <span class="text-danger">*</span>
+                            <div class="form-group input-group">
+                                <input type="number" class="form-control" placeholder="" id="userPriceForMonth"
+                                       v-model="subScription.userPriceForMonth">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">₽</span>
+                                </div>
+                            </div>
+                            <small class="invalid-feedback">Обязательное поле</small>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button"
+                        v-on:click="save"
+                        v-bind:disabled="isSaving">
+                    <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                    {{ subScription.userPricingID >= 0 ? 'Сохранить' : 'Добавить' }}
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </form>
+    </div>
+</div>
