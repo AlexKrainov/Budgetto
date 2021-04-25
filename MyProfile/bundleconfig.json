@@ -262,5 +262,11 @@
     "inputFiles": [
       "wwwroot/pages/_areas/admin/scheduler-task.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/subscription/subscription-list.min.js",
+    "inputFiles": [
+      "wwwroot/pages/subscription/subscription-list.js"
+    ]
   }
 ]

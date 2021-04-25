@@ -75,7 +75,8 @@
                 <i class="ion ion-md-add navbar-icon align-middle text-large" style="color:var(--success);" title="Добавить запись"></i>
             </a>*@
         <a id="addRecord" class="nav-link cursor-pointer btn rounded-pill btn-primary py-1" onclick="RecordVue.addRecord();" title="Добавить запись" style="color: white;">
-            <i class="ion ion-md-add navbar-icon align-middle text-large" title="Добавить запись"></i><span style=" margin-left: 14px;">Добавить расходы/доходы</span>
+            <i class="ion ion-md-add navbar-icon align-middle text-large" title="Добавить запись"></i>
+            <span style=" margin-left: 14px;">Добавить расходы/доходы</span>
         </a>
         @if (currentUser.UserSettings.IsShowHints && hintsPages.Contains(s))
         {
@@ -84,12 +85,12 @@
                     <i class="ion ion-md-help-circle navbar-icon align-middle"></i>
                 </a>
                 @if (this.Context.Request.Path == "/"
-     || this.Context.Request.Path.Value.Contains("/Budget/Month")
-     || this.Context.Request.Path.Value.Contains("/Budget/Year"))
+    || this.Context.Request.Path.Value.Contains("/Budget/Month")
+    || this.Context.Request.Path.Value.Contains("/Budget/Year"))
                 {
                     <div class="dropdown-menu dropdown-menu-right">
                         @if (this.Context.Request.Path == "/"
-            || this.Context.Request.Path.Value.Contains("/Budget/Month"))
+           || this.Context.Request.Path.Value.Contains("/Budget/Month"))
                         {
                             <a href="javascript:void(0)" class="dropdown-item d-inline-flex align-items-center" id="hint-add-record">
                                 <i class="fas fa-route text-large"></i> &nbsp; Тур по добавлению записи

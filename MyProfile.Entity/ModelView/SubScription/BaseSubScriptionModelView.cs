@@ -54,6 +54,7 @@ namespace MyProfile.Entity.ModelView.SubScription
             }
         }
         public bool IsDeleted { get; set; }
+        public bool IsShow { get; set; } = true;
     }
 
     public class SubScriptionOptionModelView

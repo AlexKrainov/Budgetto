@@ -42,7 +42,92 @@ namespace MyProfile.Code
             //CreateTelegramBotAccount();
             //CreateTelegramAccountStatus();
             // LoadTimeZone();
-            SubScriptionLoading();
+            //SubScriptionLoading();
+            // SubScriptionToJson();
+            //SubScriptionToProd();
+            //InsertSummeries();
+        }
+
+        private void SubScriptionToProd()
+        {
+            if (repository.GetAll<SubScriptionModel>().Any() == false)
+            {
+                List<SubScriptionCategory> categories = new List<SubScriptionCategory>();
+
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\SubScriptionCategoryToProd.json"))
+                {
+                    categories = (List<SubScriptionCategory>)JsonConvert.DeserializeObject<List<SubScriptionCategory>>(reader.ReadToEnd());
+                    repository.CreateRange(categories, true);
+                }
+
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\SubScriptionToProd.json"))
+                {
+                    List<SubScriptionModel> subScriptions = (List<SubScriptionModel>)JsonConvert.DeserializeObject<List<SubScriptionModel>>(reader.ReadToEnd());
+
+                    foreach (var subScription in subScriptions)
+                    {
+                        subScription.SubScriptionCategoryID = categories.FirstOrDefault(x => x.Title == subScription.Description).ID;
+                        subScription.Description = null;
+                    }
+
+                    repository.CreateRange(subScriptions, true);
+                }
+            }
+        }
+
+        private void SubScriptionToJson()
+        {
+            using (StreamWriter writer = new StreamWriter(hostingEnvironment.WebRootPath + @"\\json\\SubScriptionCategoryToProd.json"))
+            {
+                //SubScriptionCategory = 
+                var cards = repository.GetAll<SubScriptionCategory>()
+                     .Select(x => new SubScriptionCategory
+                     {
+                         CodeName = x.CodeName,
+                         Title = x.Title
+                     })
+                     .ToList();
+                var s = JsonConvert.SerializeObject(cards);
+                writer.Write(s);
+                writer.Close();
+            }
+
+            using (StreamWriter writer = new StreamWriter(hostingEnvironment.WebRootPath + @"\\json\\SubScriptionToProd.json"))
+            {
+                //SubScriptionCategory = 
+                var cards = repository.GetAll<SubScriptionModel>()
+                     .Select(x => new SubScriptionModel
+                     {
+                         IsActive = true,
+                         LogoBig = x.LogoBig,
+                         Site = x.Site,
+                         Title = x.Title,
+                         Description = x.SubScriptionCategory.Title,
+                         SubScriptionOptions = x.SubScriptionOptions
+                            .Select(y => new SubScriptionOption
+                            {
+                                EditDate = y.EditDate,
+                                IsActive = true,
+                                IsBoth = y.IsBoth,
+                                IsFamaly = y.IsFamaly,
+                                IsPersonally = y.IsPersonally,
+                                IsStudent = y.IsStudent,
+                                Title = y.Title,
+                                _raiting = y._raiting,
+                                SubScriptionPricings = y.SubScriptionPricings
+                                    .Select(z => new SubScriptionPricing
+                                    {
+                                        Price = z.Price,
+                                        PricePerMonth = z.PricePerMonth,
+                                        PricingPeriodTypeID = z.PricingPeriodTypeID,
+                                    }).ToList()
+                            }).ToList()
+                     })
+                     .ToList();
+                var s = JsonConvert.SerializeObject(cards);
+                writer.Write(s);
+                writer.Close();
+            }
         }
 
         private void SubScriptionLoading()
@@ -1204,6 +1289,22 @@ namespace MyProfile.Code
             //    });
             //}
 
+            if (!db_summuries.Any(x => x.ID == (int)SummaryType.AllSubScriptionPrice))
+            {
+                summaries.Add(new Summary
+                {
+                    Name = "Общая цена всех подписок",
+                    CodeName = "AllSubScriptionPrice",
+                    CurrentDate = now,
+                    IsActive = true,
+                    VisibleElement = new VisibleElement
+                    {
+                        IsShow_BudgetMonth = true,
+                        IsShow_BudgetYear = true,
+                    }
+                });
+            }
+
             if (summaries.Count > 0)
             {
                 repository.CreateRange(summaries);
@@ -1231,6 +1332,7 @@ namespace MyProfile.Code
             public string licence { get; set; }
             public string name_eng { get; set; }
         }
+
         public class BankRaiting
         {
             public string name { get; set; }
@@ -1275,7 +1377,5 @@ namespace MyProfile.Code
             public string category { get; set; }
             public string site { get; set; }
         }
-
-
     }
 }

@@ -32,6 +32,7 @@ namespace MyProfile.Entity.ModelView
         public ExpensesPerDayModelView ExpensesPerDay { get; set; }
         public CashFlowModelView CashFlow { get; set; }
         public AllAccountsMoneyModelView AllAccountsMoney { get; set; }
+        public AllSubScriptionsModelView AllSubScriptionPrice { get; set; }
     }
 
     public class SummaryBase
@@ -96,6 +97,10 @@ namespace MyProfile.Entity.ModelView
                 return BalancePerHour.ToString("C0", CultureInfo.CreateSpecificCulture("ru-RU"));
             }
         }
+    }
+
+    public class AllSubScriptionsModelView : SummaryBase
+    {
     }
     public class CashFlowModelView : SummaryBase
     {

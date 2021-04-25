@@ -10,14 +10,24 @@ var SubScriptionListVue = new Vue({
         option: {},
         pricings: [],
 
-        msnry: {},
+        //msnry: {},
 
         isSaving: false,
         numberID: -1,
         activeViewID: 1,
+        searchText: null,
     },
     watch: {
+        searchText: function (newValue) {
+            if (newValue) {
+                newValue = newValue.toLocaleLowerCase();
+            }
 
+            for (var i = 0; i < this.subScriptions.length; i++) {
+                this.subScriptions[i].isShow = this.subScriptions[i].title.toLocaleLowerCase().indexOf(newValue) >= 0;
+                    //|| this.icons[i].name.toLocaleLowerCase().indexOf(newValue) >= 0;
+            }
+        }
     },
     computed: {
         anySelectedPricing: function () {

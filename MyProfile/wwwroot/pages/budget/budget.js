@@ -59,6 +59,7 @@
             expensesPerDay: {},
             cashFlow: {},
             allAccountsMoney: {},
+            allSubScriptionPrice: {},
         },
         chashFlowChart: undefined,
         summaryAjax: null,

@@ -112,6 +112,21 @@ namespace MyProfile.Budget.Service
                 BuildAllAccountsMoney(summaries, filter);
             }
 
+            if (bdSummaries.Any(x => x.ID == (int)SummaryType.AllSubScriptionPrice))
+            {
+                var allSubScriptions = bdSummaries.FirstOrDefault(x => x.ID == (int)SummaryType.AllSubScriptionPrice);
+
+                summaries.AllSubScriptionPrice = new AllSubScriptionsModelView
+                {
+                    ID = allSubScriptions.ID,
+                    ElementID = allSubScriptions.CodeName,
+                    IsShow = true,
+                    Name = allSubScriptions.Name
+
+                };
+                BuildAllSubScriptions(summaries, filter);
+            }
+
             //ExpensesPerDay
 
             return summaries;
@@ -473,6 +488,27 @@ namespace MyProfile.Budget.Service
                     }
                 }
 
+            }
+        }
+
+        private void BuildAllSubScriptions(SummaryModelView summary, SummaryFilter filter)
+        {
+            var now = DateTime.Now;
+            var currentUser = UserInfo.Current;
+
+            var pricePerMonth = repository.GetAll<UserSubScription>(x => x.UserID == filter.UserID
+                      && x.IsDeleted == false
+                      && x.IsPause == false)
+                 .Sum(x => x.PricePerMonth);
+
+            if (filter.PeriodType == PeriodTypesEnum.Month)
+            {
+                summary.AllSubScriptionPrice.Balance = pricePerMonth;
+            }
+            else if (filter.PeriodType == PeriodTypesEnum.Year)
+            {
+
+                summary.AllSubScriptionPrice.Balance = pricePerMonth * 12;
             }
         }
 

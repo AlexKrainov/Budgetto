@@ -14,7 +14,8 @@ namespace MyProfile.Entity.Model
         EarningsPerHour,
         ExpensesPerDay,//Spendings per day
         CashFlow,
-        AllAccountsMoney
+        AllAccountsMoney,
+        AllSubScriptionPrice
     }
 
     public class Summary
