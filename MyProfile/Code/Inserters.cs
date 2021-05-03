@@ -46,6 +46,306 @@ namespace MyProfile.Code
             // SubScriptionToJson();
             //SubScriptionToProd();
             //InsertSummeries();
+            AddPaymentTariff();
+            AddBudgettoEntityType();
+            AddPaymentCounter();
+            IDs();
+
+            CheckAndAddUserEntityCounter();
+        }
+
+        private void IDs()
+        {
+            var userLogs = repository.GetAll<Entity.Model.UserLog>().ToList();
+
+            foreach (var userLog in userLogs)
+            {
+                userLog.ID3 = userLog.ID3;
+            }
+            repository.Save();
+        }
+
+
+        private void AddBudgettoEntityType()
+        {
+            var db_EntityType = repository.GetAll<EntityType>().Select(x => new { ID = x.ID }).ToList();
+            List<EntityType> entityTypes = new List<EntityType>();
+
+            if (!db_EntityType.Any(x => x.ID == (int)BudgettoEntityType.Limits))
+            {
+                entityTypes.Add(new EntityType
+                {
+                    CodeName = Enum.GetName(typeof(BudgettoEntityType), BudgettoEntityType.Limits)
+                });
+            }
+
+            if (!db_EntityType.Any(x => x.ID == (int)BudgettoEntityType.Reminders))
+            {
+                entityTypes.Add(new EntityType
+                {
+                    CodeName = Enum.GetName(typeof(BudgettoEntityType), BudgettoEntityType.Reminders)
+                });
+            }
+
+            if (!db_EntityType.Any(x => x.ID == (int)BudgettoEntityType.ToDoLists))
+            {
+                entityTypes.Add(new EntityType
+                {
+                    CodeName = Enum.GetName(typeof(BudgettoEntityType), BudgettoEntityType.ToDoLists)
+                });
+            }
+
+
+            if (entityTypes.Count > 0)
+            {
+                repository.CreateRange(entityTypes);
+                repository.Save();
+            }
+        }
+
+        private void AddPaymentCounter()
+        {
+            var now = DateTime.Now.ToUniversalTime();
+            var db_PaymentCounter = repository.GetAll<PaymentCounter>().Select(x => new { ID = x.ID, EntityTypeID = x.EntityTypeID, x.PaymentTariffID }).ToList();
+            List<PaymentCounter> paymentCounters = new List<PaymentCounter>();
+
+            if (!db_PaymentCounter.Any(x => x.PaymentTariffID == (int)PaymentTariffTypes.Free))
+            {
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Limits))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Free,
+                        EntityTypeID = (int)BudgettoEntityType.Limits,
+                        CanBeCount = 1,
+                        LastChanges = now,
+                    });
+                }
+
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Reminders))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Free,
+                        EntityTypeID = (int)BudgettoEntityType.Reminders,
+                        CanBeCount = 1,
+                        LastChanges = now,
+                    });
+                }
+
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.ToDoLists))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Free,
+                        EntityTypeID = (int)BudgettoEntityType.ToDoLists,
+                        CanBeCount = 1,
+                        LastChanges = now,
+                    });
+                }
+            }
+
+            if (!db_PaymentCounter.Any(x => x.PaymentTariffID == (int)PaymentTariffTypes.Standard))
+            {
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Limits))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Standard,
+                        EntityTypeID = (int)BudgettoEntityType.Limits,
+                        CanBeCount = 3,
+                        LastChanges = now,
+                    });
+                }
+
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Reminders))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Standard,
+                        EntityTypeID = (int)BudgettoEntityType.Reminders,
+                        CanBeCount = 3,
+                        LastChanges = now,
+                    });
+                }
+
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.ToDoLists))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Standard,
+                        EntityTypeID = (int)BudgettoEntityType.ToDoLists,
+                        CanBeCount = 3,
+                        LastChanges = now,
+                    });
+                }
+            }
+
+            if (!db_PaymentCounter.Any(x => x.PaymentTariffID == (int)PaymentTariffTypes.Freedom))
+            {
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Limits))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Freedom,
+                        EntityTypeID = (int)BudgettoEntityType.Limits,
+                        CanBeCount = 99,
+                        LastChanges = now,
+                    });
+                }
+
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Reminders))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Freedom,
+                        EntityTypeID = (int)BudgettoEntityType.Reminders,
+                        CanBeCount = 99,
+                        LastChanges = now,
+                    });
+                }
+
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.ToDoLists))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Freedom,
+                        EntityTypeID = (int)BudgettoEntityType.ToDoLists,
+                        CanBeCount = 99,
+                        LastChanges = now,
+                    });
+                }
+            }
+
+            if (!db_PaymentCounter.Any(x => x.PaymentTariffID == (int)PaymentTariffTypes.Premium))
+            {
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Limits))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Premium,
+                        EntityTypeID = (int)BudgettoEntityType.Limits,
+                        CanBeCount = 5,
+                        LastChanges = now,
+                    });
+                }
+
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Reminders))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Premium,
+                        EntityTypeID = (int)BudgettoEntityType.Reminders,
+                        CanBeCount = 5,
+                        LastChanges = now,
+                    });
+                }
+
+                if (!db_PaymentCounter.Any(x => x.EntityTypeID == (int)BudgettoEntityType.ToDoLists))
+                {
+                    paymentCounters.Add(new PaymentCounter
+                    {
+                        PaymentTariffID = (int)PaymentTariffTypes.Premium,
+                        EntityTypeID = (int)BudgettoEntityType.ToDoLists,
+                        CanBeCount = 5,
+                        LastChanges = now,
+                    });
+                }
+            }
+
+            if (paymentCounters.Count > 0)
+            {
+                repository.CreateRange(paymentCounters);
+                repository.Save();
+            }
+        }
+
+        private void AddPaymentTariff()
+        {
+            var db_PaymentTariff = repository.GetAll<PaymentTariff>().Select(x => new { ID = x.ID, CodeName = x.CodeName }).ToList();
+            List<PaymentTariff> PaymentTariffs = new List<PaymentTariff>();
+
+            if (!db_PaymentTariff.Any(x => x.ID == (int)PaymentTariffTypes.Free))
+            {
+                PaymentTariffs.Add(new PaymentTariff
+                {
+                    Name = "Free",
+                    CodeName = "Free"
+                });
+            }
+
+            if (!db_PaymentTariff.Any(x => x.ID == (int)PaymentTariffTypes.Standard))
+            {
+                PaymentTariffs.Add(new PaymentTariff
+                {
+                    Name = "Standard",
+                    CodeName = "Standard"
+                });
+            }
+
+            if (!db_PaymentTariff.Any(x => x.ID == (int)PaymentTariffTypes.Premium))
+            {
+                PaymentTariffs.Add(new PaymentTariff
+                {
+                    Name = "Premium",
+                    CodeName = "Premium"
+                });
+            }
+
+            if (!db_PaymentTariff.Any(x => x.ID == (int)PaymentTariffTypes.Freedom))
+            {
+                PaymentTariffs.Add(new PaymentTariff
+                {
+                    Name = "Freedom",
+                    CodeName = "Freedom"
+                });
+            }
+
+            if (PaymentTariffs.Count > 0)
+            {
+                repository.CreateRange(PaymentTariffs);
+                repository.Save();
+            }
+        }
+
+        private void CheckAndAddUserEntityCounter()
+        {
+            var now = DateTime.Now.ToUniversalTime();
+            var userEntityCounters = new List<UserEntityCounter>();
+
+            var users = repository.GetAll<MyProfile.Entity.Model.User>(x => x.IsDeleted == false)
+                .Select(x => new
+                {
+                    x.ID,
+                    Counters = x.UserEntityCounters
+                     .Select(y => new
+                     {
+                         y.EntityTypeID,
+                         y.AddedCount
+                     })
+                     .ToList()
+                })
+                .ToList();
+
+            for (int i = 0; i < users.Count; i++)
+            {
+                if (!users[i].Counters.Any(x => x.EntityTypeID == (int)BudgettoEntityType.Limits))
+                {
+                    userEntityCounters.Add(new UserEntityCounter
+                    {
+                        LastChanges = now,
+                        EntityTypeID = (int)BudgettoEntityType.Limits,
+                        AddedCount = 0,
+                        UserID = users[i].ID,
+                    });
+                }
+
+            }
+
+            if (userEntityCounters.Count > 0)
+            {
+                 repository.CreateRange(userEntityCounters, true);
+            }
         }
 
         private void SubScriptionToProd()
@@ -1147,13 +1447,13 @@ namespace MyProfile.Code
                     DateTo = now.AddYears(10),
                     //DateTo = now.AddMonths(2),
                     IsPaid = false,
-                    Tariff = PaymentTariffs.Free,
+                    PaymentTariffID = (int)PaymentTariffTypes.Freedom,
                     PaymentHistories = new List<PaymentHistory> {
                         new PaymentHistory {
                             DateFrom = now,
                             DateTo = now.AddYears(1),
                             //DateTo = now.AddMonths(2),
-                            Tariff = PaymentTariffs.Free,
+                            PaymentTariffID = (int)PaymentTariffTypes.Freedom,
                         }
                     }
                 },
@@ -1289,21 +1589,21 @@ namespace MyProfile.Code
             //    });
             //}
 
-            if (!db_summuries.Any(x => x.ID == (int)SummaryType.AllSubScriptionPrice))
-            {
-                summaries.Add(new Summary
-                {
-                    Name = "Общая цена всех подписок",
-                    CodeName = "AllSubScriptionPrice",
-                    CurrentDate = now,
-                    IsActive = true,
-                    VisibleElement = new VisibleElement
-                    {
-                        IsShow_BudgetMonth = true,
-                        IsShow_BudgetYear = true,
-                    }
-                });
-            }
+            //if (!db_summuries.Any(x => x.ID == (int)SummaryType.AllSubScriptionPrice))
+            //{
+            //    summaries.Add(new Summary
+            //    {
+            //        Name = "Общая цена всех подписок",
+            //        CodeName = "AllSubScriptionPrice",
+            //        CurrentDate = now,
+            //        IsActive = true,
+            //        VisibleElement = new VisibleElement
+            //        {
+            //            IsShow_BudgetMonth = true,
+            //            IsShow_BudgetYear = true,
+            //        }
+            //    });
+            //}
 
             if (summaries.Count > 0)
             {

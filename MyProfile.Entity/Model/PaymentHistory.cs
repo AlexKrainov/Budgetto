@@ -11,11 +11,6 @@ namespace MyProfile.Entity.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
         public bool IsPaid { get; set; }
-        /// <summary>
-        /// PaymentTariffs
-        /// </summary>
-        [MaxLength(16)]
-        public string Tariff { get; set; }
         public DateTime? DateClickToPay { get; set; }
         public DateTime? DateFinisthToPay { get; set; }
         public DateTime? DateFrom { get; set; }
@@ -23,7 +18,10 @@ namespace MyProfile.Entity.Model
 
         [ForeignKey("Payment")]
         public int PaymentID { get; set; }
+        [ForeignKey("PaymentTariff")]
+        public int? PaymentTariffID { get; set; }
 
+        public virtual PaymentTariff PaymentTariff { get; set; }
         public virtual Payment Payment { get; set; }
         public virtual IEnumerable<PromoCodeHistory> PromoCodeHistories { get; set; }
 

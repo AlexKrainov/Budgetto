@@ -238,13 +238,13 @@ namespace MyProfile.UserLog.Service
 
             try
             {
-                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID != 0)
+                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID3 != 0)
                 {
                     foreach (var errorLogID in errorLogIDs)
                     {
                         await repository.CreateAsync<UserErrorLog>(new UserErrorLog
                         {
-                            UserLogID = userLog.ID,
+                            UserLogID = userLog.ID3,
                             ErrorLogID = errorLogID
                         });
                     }
@@ -255,7 +255,7 @@ namespace MyProfile.UserLog.Service
             {
             }
 
-            return userLog.ID;
+            return (int)userLog.ID3;
         }
         public int CreateUserLog(Guid userSessionID, string userLogActionType, string comment = null, List<int> errorLogIDs = null)
         {
@@ -277,13 +277,13 @@ namespace MyProfile.UserLog.Service
 
             try
             {
-                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID != 0)
+                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID3 != 0)
                 {
                     foreach (var errorLogID in errorLogIDs)
                     {
                         repository.Create<UserErrorLog>(new UserErrorLog
                         {
-                            UserLogID = userLog.ID,
+                            UserLogID = userLog.ID3,
                             ErrorLogID = errorLogID
                         });
                     }
@@ -294,7 +294,7 @@ namespace MyProfile.UserLog.Service
             {
             }
 
-            return userLog.ID;
+            return (int)userLog.ID3;
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace MyProfile.Areas.Admin.Models
 {
     public class UserActionsModel
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Comment { get; internal set; }
         public DateTime CurrentDateTime { get; internal set; }
         public string Email { get; internal set; }

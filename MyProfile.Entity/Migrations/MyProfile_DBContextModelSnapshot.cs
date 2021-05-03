@@ -768,6 +768,21 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("CurrencyRateHistories");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.EntityType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("EntityTypes");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.ErrorLog", b =>
                 {
                     b.Property<int>("ID")
@@ -1247,12 +1262,38 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("LastDatePayment");
 
-                    b.Property<string>("Tariff")
-                        .HasMaxLength(16);
+                    b.Property<int>("PaymentTariffID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
                     b.HasKey("ID");
 
+                    b.HasIndex("PaymentTariffID");
+
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.PaymentCounter", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CanBeCount");
+
+                    b.Property<int>("EntityTypeID");
+
+                    b.Property<DateTime>("LastChanges");
+
+                    b.Property<int>("PaymentTariffID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EntityTypeID");
+
+                    b.HasIndex("PaymentTariffID");
+
+                    b.ToTable("PaymentCounters");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentHistory", b =>
@@ -1272,12 +1313,15 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("PaymentID");
 
-                    b.Property<string>("Tariff")
-                        .HasMaxLength(16);
+                    b.Property<int?>("PaymentTariffID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
                     b.HasKey("ID");
 
                     b.HasIndex("PaymentID");
+
+                    b.HasIndex("PaymentTariffID");
 
                     b.ToTable("PaymentHistories");
                 });
@@ -1306,6 +1350,25 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("PaymentSystems");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.PaymentTariff", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .HasMaxLength(32);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(32);
+
+                    b.Property<int>("Order");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PaymentTariffs");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.PeriodType", b =>
                 {
                     b.Property<int>("ID")
@@ -1313,12 +1376,14 @@ namespace MyProfile.Entity.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CodeName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(32);
 
                     b.Property<bool>("IsUsing");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(32);
 
                     b.HasKey("ID");
 
@@ -2287,6 +2352,29 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("UserConnects");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.UserEntityCounter", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AddedCount");
+
+                    b.Property<int>("EntityTypeID");
+
+                    b.Property<DateTime>("LastChanges");
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EntityTypeID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserEntityCounters");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.UserErrorLog", b =>
                 {
                     b.Property<int>("ID")
@@ -2318,6 +2406,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Comment");
 
                     b.Property<DateTime>("CurrentDateTime");
+
+                    b.Property<long>("ID3");
 
                     b.Property<Guid>("UserSessionID");
 
@@ -3052,12 +3142,37 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Payment", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
+                        .WithMany("Payments")
+                        .HasForeignKey("PaymentTariffID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.PaymentCounter", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.EntityType", "EntityType")
+                        .WithMany()
+                        .HasForeignKey("EntityTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
+                        .WithMany("PaymentCounters")
+                        .HasForeignKey("PaymentTariffID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentHistory", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.Payment", "Payment")
                         .WithMany("PaymentHistories")
                         .HasForeignKey("PaymentID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
+                        .WithMany("PaymentHistories")
+                        .HasForeignKey("PaymentTariffID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PromoCodeHistory", b =>
@@ -3365,6 +3480,19 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithOne("UserConnect")
                         .HasForeignKey("MyProfile.Entity.Model.UserConnect", "UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.UserEntityCounter", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.EntityType", "EntityType")
+                        .WithMany()
+                        .HasForeignKey("EntityTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("UserEntityCounters")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

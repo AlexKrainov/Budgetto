@@ -5,11 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProfile.Entity.Model
 {
-    public class PaymentTariffs
-    {
-        public const string Free = "Free";
-        public const string Standart_Year = "Standart_Year";
-    }
     /// <summary>
     /// Use this object for error on the site
     /// </summary>
@@ -22,13 +17,13 @@ namespace MyProfile.Entity.Model
         public DateTime DateTo { get; set; }
         public DateTime? LastDatePayment { get; set; }
         public bool IsPaid { get; set; }
-        [MaxLength(16)]
-        public string Tariff { get; set; }
-
         //[ForeignKey("User")]
         //public Guid UserID { get; set; }
+        [ForeignKey("PaymentTariff")]
+        public int PaymentTariffID { get; set; }
 
         public virtual User User { get; set; }
+        public virtual PaymentTariff PaymentTariff { get; set; }
 
         public virtual IEnumerable<PaymentHistory> PaymentHistories { get; set; }
 

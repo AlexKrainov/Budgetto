@@ -16,7 +16,7 @@ namespace MyProfile.Entity.Model
         [ForeignKey("ErrorLog")]
         public int? ErrorLogID { get; set; }
         [ForeignKey("UserLog")]
-        public int? UserLogID { get; set; }
+        public long? UserLogID { get; set; }
 
 
         public virtual ErrorLog ErrorLog { get; set; }

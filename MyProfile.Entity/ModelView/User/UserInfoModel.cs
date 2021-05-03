@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyProfile.Entity.ModelView.Counter;
+using System;
+using System.Collections.Generic;
 
 namespace MyProfile.Entity.ModelView
 {
@@ -15,6 +17,8 @@ namespace MyProfile.Entity.ModelView
         /// </summary>
         public bool IsHelpRecord { get; set; }
         public string TimeZoneClient { get; set; }
+
+        public List<CounterViewModel> Counters { get; set; }
 
         public UserInfoModel()
         {

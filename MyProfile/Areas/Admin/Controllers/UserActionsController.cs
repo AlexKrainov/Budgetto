@@ -68,7 +68,7 @@ namespace MyProfile.Areas.Admin.Controllers
             var data = repository.GetAll(predicate)
                 .Select(x => new UserActionsModel
                 {
-                    ID = x.ID,
+                    ID = x.ID3,
                     Comment = x.Comment,
                     CurrentDateTime = x.CurrentDateTime,
                     UserName = x.UserSession.User.Name,

@@ -15,6 +15,10 @@ var LimitListVue = new Vue({
         periodTypes: [],
         isSaving: false,
         numberID: -1,
+
+        //payment
+        currentCount: 0,
+        limitCount: 0,
     },
     watch: {
         //'limit.periodTypeID': function (newValue, oldValue) {
@@ -31,6 +35,10 @@ var LimitListVue = new Vue({
     },
     computed: {},
     mounted: function () {
+        let baseEl = document.getElementById("limit-list-vue");
+        this.currentCount = baseEl.getAttribute("data-current-count") * 1;
+        this.limitCount = baseEl.getAttribute("data-limit-count") * 1;
+
         this.load()
             .then(function () {
                 LimitListVue.loadSections();

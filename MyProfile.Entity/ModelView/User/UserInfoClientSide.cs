@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyProfile.Entity.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -78,7 +79,7 @@ namespace MyProfile.Entity.ModelView.User
     {
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public string Tariff { get; set; }
+        public PaymentTariffTypes TariffType { get; set; }
     }
 
     public class TelegramAccountClientSide

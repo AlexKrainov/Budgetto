@@ -74,6 +74,7 @@ namespace MyProfile.Entity.Model
         public virtual IEnumerable<ToDoListFolder> ToDoListFolders { get; set; }
         public virtual IEnumerable<UserSummary> UserSummaries { get; set; }
         public virtual IEnumerable<UserSubScription> UserSubScriptions { get; set; }
+        public virtual IEnumerable<UserEntityCounter> UserEntityCounters { get; set; }
 
         public User()
         {
@@ -91,6 +92,7 @@ namespace MyProfile.Entity.Model
             this.Accounts = new HashSet<Account>();
             this.UserSummaries = new HashSet<UserSummary>();
             this.UserSubScriptions = new HashSet<UserSubScription>();
+            this.UserEntityCounters = new HashSet<UserEntityCounter>();
         }
     }
 }

@@ -81,6 +81,7 @@ namespace MyProfile
             services.AddTransient<AccountService>();
             services.AddTransient<SummaryService>();
             services.AddTransient<SubScriptionService>();
+            services.AddTransient<UserCounterService>();
 
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelEntitySave;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.Counter;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
@@ -74,7 +75,7 @@ namespace MyProfile.User.Service
                 {
                     DateFrom = currentUser.Payment.DateFrom,
                     DateTo = currentUser.Payment.DateTo,
-                    Tariff = currentUser.Payment.Tariff
+                    TariffType = (PaymentTariffTypes)currentUser.Payment.PaymentTariffID
                 },
                 TelegramLogin = currentUser.UserConnect.TelegramLogin,
             };
@@ -151,6 +152,7 @@ namespace MyProfile.User.Service
                 predicate = predicate.And(x => x.Email == email);
             }
 
+
             UserInfoModel user = await repository.GetAll(predicate)
                  .Select(x => new UserInfoModel
                  {
@@ -186,8 +188,17 @@ namespace MyProfile.User.Service
                          ID = x.Payment.ID,
                          IsPaid = x.Payment.IsPaid,
                          LastDatePayment = x.Payment.LastDatePayment,
-                         Tariff = x.Payment.Tariff,
+                         PaymentTariffID = x.Payment.PaymentTariffID
                      },
+                     Counters = x.UserEntityCounters
+                        .Select(y => new CounterViewModel
+                        {
+                            EntityType = (BudgettoEntityType)y.EntityTypeID,
+                            AddedCount = y.AddedCount,
+                            LastChanges = y.LastChanges,
+                            CanBeCountByTariff = x.Payment.PaymentTariff.PaymentCounters.FirstOrDefault(z => z.EntityTypeID == y.EntityTypeID).CanBeCount
+                        })
+                        .ToList(),
                      UserSettings = new UserSettings
                      {
                          BudgetPages_WithCollective = x.UserSettings.BudgetPages_WithCollective,
@@ -318,13 +329,13 @@ namespace MyProfile.User.Service
                     DateTo = now.AddYears(1),
                     //DateTo = now.AddMonths(2),
                     IsPaid = false,
-                    Tariff = PaymentTariffs.Free,
+                    PaymentTariffID = (int)PaymentTariffTypes.Free,
                     PaymentHistories = new List<PaymentHistory> {
                         new PaymentHistory {
                             DateFrom = now,
                             DateTo = now.AddYears(1),
                             //DateTo = now.AddMonths(2),
-                            Tariff = PaymentTariffs.Free,
+                            PaymentTariffID = (int)PaymentTariffTypes.Free,
                         }
                     }
                 },

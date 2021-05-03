@@ -33,7 +33,7 @@ namespace MyProfile.Payment.Service
             {
                 DateClickToPay = now,
                 PaymentID = currentUser.Payment.ID,
-                Tariff = model.Tariff,
+                PaymentTariffID = (int)model.TariffTypeID,
             };
 
             try
@@ -65,7 +65,7 @@ namespace MyProfile.Payment.Service
                 paymentHistory.Payment.IsPaid = true;
                 paymentHistory.Payment.LastDatePayment = now;
 
-                if (paymentHistory.Tariff == PaymentTariffs.Standart_Year)
+                if (paymentHistory.PaymentTariffID == (int)PaymentTariffTypes.Standard)
                 {
                     DateTime newDateTo = now > paymentHistory.Payment.DateTo ?
                         now.AddYears(1) :
@@ -74,7 +74,7 @@ namespace MyProfile.Payment.Service
                     paymentHistory.DateFrom = paymentHistory.Payment.DateTo;
                     paymentHistory.Payment.DateFrom = now.AddDays(-1);
                     paymentHistory.Payment.DateTo = newDateTo;
-                    paymentHistory.Payment.Tariff = PaymentTariffs.Standart_Year;
+                    paymentHistory.Payment.PaymentTariffID = (int)PaymentTariffTypes.Standard;
                     paymentHistory.DateTo = newDateTo;
                 }
 
@@ -90,7 +90,7 @@ namespace MyProfile.Payment.Service
                     ID = paymentHistory.Payment.ID,
                     IsPaid = paymentHistory.Payment.IsPaid,
                     LastDatePayment = paymentHistory.Payment.LastDatePayment,
-                    Tariff = paymentHistory.Payment.Tariff,
+                    PaymentTariffID = paymentHistory.Payment.PaymentTariffID,
                 };
                 await UserInfo.AddOrUpdate_Authenticate(currentUser);
 

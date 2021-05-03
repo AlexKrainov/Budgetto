@@ -209,6 +209,14 @@ namespace MyProfile.Entity.Model
                .Property(b => b.IsActive)
                .HasDefaultValue(true);
 
+            modelBuilder.Entity<Payment>()
+              .Property(b => b.PaymentTariffID)
+              .HasDefaultValue((int)PaymentTariffTypes.Free);
+
+            modelBuilder.Entity<PaymentHistory>()
+             .Property(b => b.PaymentTariffID)
+             .HasDefaultValue((int)PaymentTariffTypes.Free);
+
             #endregion
         }
 
@@ -298,6 +306,10 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<SubScriptionOption> SubScriptionOptions { get; set; }
         public virtual DbSet<SubScriptionPricing> SubScriptionPricings { get; set; }
         public virtual DbSet<UserSubScription> UserSubScriptions { get; set; }
+        public virtual DbSet<PaymentTariff> PaymentTariffs { get; set; }
+        public virtual DbSet<PaymentCounter> PaymentCounters { get; set; }
+        public virtual DbSet<EntityType> EntityTypes { get; set; }
+        public virtual DbSet<UserEntityCounter> UserEntityCounters { get; set; }
 
     }
 }

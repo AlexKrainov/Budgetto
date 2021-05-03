@@ -46,13 +46,16 @@ namespace MyProfile.Code.Sheduler.Shedulers
                     {
                         int changedCounts = _service();
 
-                        repository.Create(new SchedulerTaskLog
+                        if (taskType != TaskType.NotificationSiteTask)
                         {
-                            TaskID = (int)taskType,
-                            ChangedItems = changedCounts,
-                            Start = now,
-                            End = TimeZoner.GetCurrentDateTimeUTC(),
-                        }, true);
+                            repository.Create(new SchedulerTaskLog
+                            {
+                                TaskID = (int)taskType,
+                                ChangedItems = changedCounts,
+                                Start = now,
+                                End = TimeZoner.GetCurrentDateTimeUTC(),
+                            }, true); 
+                        }
                     }
                     catch (Exception ex)
                     {

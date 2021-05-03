@@ -25,12 +25,14 @@ namespace MyProfile.Limit.Service
         private SectionService sectionService;
         private UserLogService userLogService;
         private NotificationService notificationService;
+        private UserCounterService userCounterService;
 
         public LimitService(BaseRepository repository,
             CollectionUserService collectionUserService,
             SectionService sectionService,
             BudgetRecordService budgetRecordService,
-            NotificationService notificationService)
+            NotificationService notificationService,
+            UserCounterService userCounterService)
         {
             this.repository = repository;
             this.collectionUserService = collectionUserService;
@@ -38,11 +40,13 @@ namespace MyProfile.Limit.Service
             this.sectionService = sectionService;
             this.userLogService = new UserLogService(repository);
             this.notificationService = notificationService;
+            this.userCounterService = userCounterService;
         }
 
         public async Task<LimitModelView> UpdateOrCreate(LimitModelView limit)
         {
             var currentUser = UserInfo.Current;
+            List<int> errorLogIDs = new List<int>();
             limit.UserID = currentUser.ID;
             limit.SectionGroupLimits = limit.NewSections.Distinct().Select(x => new SectionGroupLimit { BudgetSectionID = x.ID, LimitID = limit.ID }).ToList();
 
@@ -59,8 +63,15 @@ namespace MyProfile.Limit.Service
                 dbLimit.VisibleElement.IsShowInCollective = limit.IsShowInCollective;
                 dbLimit.VisibleElement.IsShowOnDashboards = limit.IsShowOnDashboard;
 
-                await repository.UpdateAsync(dbLimit, true);
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Edit);
+                try
+                {
+                    await repository.UpdateAsync(dbLimit, true);
+                }
+                catch (Exception ex)
+                {
+                    errorLogIDs.Add(userLogService.CreateErrorLog(currentUser.UserSessionID, "LimitService_Edit", ex));
+                }
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Edit, errorLogIDs: errorLogIDs);
             }
             else
             {
@@ -71,11 +82,22 @@ namespace MyProfile.Limit.Service
                     IsShowOnDashboards = limit.IsShowOnDashboard,
                     IsShowInCollective = limit.IsShowInCollective,
                 };
-                await repository.CreateAsync(limit, true);
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Create);
+                try
+                {
+                    await repository.CreateAsync(limit, true);
+
+                    //userCounterService
+                  //  await userCounterService.AddEntity(currentUser, BudgettoEntityType.Limits);
+                    
+                }
+                catch (Exception ex)
+                {
+                    errorLogIDs.Add(userLogService.CreateErrorLog(currentUser.UserSessionID, "LimitService_Create", ex));
+                }
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Create, errorLogIDs: errorLogIDs);
             }
 
-            if (limit.Notifications.Any())
+            if (errorLogIDs.Count == 0 && limit.Notifications.Any())
             {
                 try
                 {

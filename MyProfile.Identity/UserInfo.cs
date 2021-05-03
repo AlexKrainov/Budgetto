@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.User;
 using Newtonsoft.Json;
@@ -123,7 +124,7 @@ namespace MyProfile.Identity
                     DateFrom = currentUser.Payment.DateFrom,
                     DateTo = currentUser.Payment.DateTo,
                     //ID = currentUser.Payment.ID,
-                    Tariff = currentUser.Payment.Tariff
+                    TariffType = (PaymentTariffTypes)currentUser.Payment.PaymentTariffID
                 },
                 Currency = new CurrencyClientSide
                 {
