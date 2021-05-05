@@ -55,10 +55,10 @@ namespace Telegram.Service
             if (cache.TryGetValue(typeof(TelegramBotUser).Name, out telegramBotUser) == false)
             {
                 telegramBotUser = repository.GetAll<User>(x => x.UserTypeID == (int)UserTypeEnum.TelegramBot && x.IsDeleted == false)
-                .Select(x => new TelegramBotUser
-                {
-                    ID = x.ID
-                })
+                    .Select(x => new TelegramBotUser
+                    {
+                        ID = x.ID
+                    })
                 .FirstOrDefault();
 
                 cache.Set(typeof(TelegramBotUser).Name, telegramBotUser, DateTime.Now.AddDays(15));
@@ -286,9 +286,9 @@ namespace Telegram.Service
                     }, true);
         }
 
-        private async Task SaveMessageFromTelegramBot(int chatID, string answer)
+        private async Task SaveMessageFromTelegramBot(long chatID, string answer)
         {
-            int telegramBotChatUserID = await repository.GetAll<ChatUser>(x => x.ChatID == chatID && x.UserID == telegramBotUser.ID)
+            long telegramBotChatUserID = await repository.GetAll<ChatUser>(x => x.ChatID == chatID && x.UserID == telegramBotUser.ID)
                 .Select(x => x.ID)
                 .FirstOrDefaultAsync();
 

@@ -27,7 +27,7 @@ namespace MyProfile.Entity.Model
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }
 		[ForeignKey("VisibleElement")]
-		public int VisibleElementID { get; set; }
+		public long VisibleElementID { get; set; }
 
 		public virtual User User { get; set; }
 		public virtual VisibleElement VisibleElement { get; set; }

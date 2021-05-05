@@ -137,7 +137,7 @@ namespace MyProfile.Budget.Service
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
             bool result = true;
-            List<int> errorLogIDs = new List<int>();
+            List<long> errorLogIDs = new List<long>();
 
             var oldUserSummary = repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
                 && x.SummaryID == (int)SummaryType.EarningsPerHour
@@ -183,7 +183,7 @@ namespace MyProfile.Budget.Service
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
             bool result = true;
-            List<int> errorLogIDs = new List<int>();
+            List<long> errorLogIDs = new List<long>();
 
             var oldUserSummary = await repository.GetAll<UserSummary>(x => x.UserID == currentUser.ID
                 && x.SummaryID == (int)SummaryType.EarningsPerHour

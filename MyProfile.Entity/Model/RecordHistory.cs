@@ -16,7 +16,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         [Required]
         public string ActionTypeCode { get; set; }
         [Required]
@@ -61,15 +61,15 @@ namespace MyProfile.Entity.Model
 
 
         [ForeignKey("Record")]
-        public int RecordID { get; set; }
+        public long RecordID { get; set; }
         [ForeignKey("Account")]
-        public int? AccountID { get; set; }
+        public long? AccountID { get; set; }
         [ForeignKey("RecordCurrency")]
         public int? RecordCurrencyID { get; set; }
         [ForeignKey("AccountCurrency")]
         public int? AccountCurrencyID { get; set; }
         [ForeignKey("Section")]
-        public int? SectionID { get; set; }
+        public long? SectionID { get; set; }
 
 
         public virtual Record Record { get; set; }

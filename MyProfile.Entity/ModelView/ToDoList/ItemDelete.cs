@@ -6,7 +6,7 @@ namespace MyProfile.Entity.ModelView.ToDoList
 {
     public class ItemDelete
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

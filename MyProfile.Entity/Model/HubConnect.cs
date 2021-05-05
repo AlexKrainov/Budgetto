@@ -10,7 +10,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         public DateTime DateConnect { get; set; }
         [StringLength(128)]
         public string ConnectionID { get; set; }

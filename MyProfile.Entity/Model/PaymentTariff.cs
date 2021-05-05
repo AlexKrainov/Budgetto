@@ -22,7 +22,6 @@ namespace MyProfile.Entity.Model
         public string Name { get; set; }
         [MaxLength(32)]
         public string CodeName { get; set; }
-        public int Order { get; set; }
 
 
         public virtual IEnumerable<PaymentHistory> PaymentHistories { get; set; }

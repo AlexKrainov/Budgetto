@@ -11,6 +11,8 @@ namespace MyProfile.Entity.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int NumberUser { get; set; }
         [Required]
         public string Name { get; set; }
         public string LastName { get; set; }
@@ -43,11 +45,11 @@ namespace MyProfile.Entity.Model
         [ForeignKey("UserType")]
         public int UserTypeID { get; set; }
         [ForeignKey("Payment")]
-        public int PaymentID { get; set; }
+        public long PaymentID { get; set; }
         [ForeignKey("Currency")]
         public int CurrencyID { get; set; }
         [ForeignKey("Resource")]
-        public int? ResourceID { get; set; }
+        public long? ResourceID { get; set; }
         [ForeignKey("OlsonTZ")]
         public int? OlsonTZID { get; set; }
 

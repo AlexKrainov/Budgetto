@@ -10,8 +10,8 @@ using MyProfile.Entity.Model;
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    [Migration("20210317130838_129")]
-    partial class _129
+    [Migration("20210504160436_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Account", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -39,20 +39,24 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<decimal?>("CachbackForAllPercent");
 
+                    b.Property<long?>("CardID");
+
                     b.Property<int?>("CurrencyID");
 
                     b.Property<DateTime>("DateCreate");
+
+                    b.Property<DateTime?>("DateStart");
 
                     b.Property<string>("Description")
                         .HasMaxLength(264);
 
                     b.Property<DateTime?>("ExpirationDate");
 
-                    b.Property<decimal?>("InterestRate");
-
                     b.Property<bool>("IsCachback");
 
                     b.Property<bool>("IsCachbackMoney");
+
+                    b.Property<bool>("IsCountBalanceInMainAccount");
 
                     b.Property<bool>("IsCountTheBalance");
 
@@ -70,7 +74,7 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.Property<int?>("ParentAccountID");
+                    b.Property<long?>("ParentAccountID");
 
                     b.Property<int?>("PaymentSystemID");
 
@@ -83,6 +87,8 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("AccountTypeID");
 
                     b.HasIndex("BankID");
+
+                    b.HasIndex("CardID");
 
                     b.HasIndex("CurrencyID");
 
@@ -97,30 +103,88 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.AccountHistory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountID");
+                    b.Property<long>("AccountID");
+
+                    b.Property<long?>("AccountIDFrom");
 
                     b.Property<string>("ActionType")
                         .IsRequired()
                         .HasMaxLength(16);
 
+                    b.Property<string>("Actions")
+                        .HasMaxLength(1024);
+
+                    b.Property<decimal?>("CachbackBalance")
+                        .HasColumnType("Money");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(2048);
+
+                    b.Property<decimal?>("CurrencyValue")
+                        .HasColumnType("Money");
+
                     b.Property<DateTime>("CurrentDate");
 
                     b.Property<string>("NewAccountStateJson");
 
+                    b.Property<decimal?>("NewBalance")
+                        .HasColumnType("Money");
+
                     b.Property<string>("OldAccountStateJson");
 
-                    b.Property<string>("Value")
-                        .HasMaxLength(32);
+                    b.Property<decimal?>("OldBalance")
+                        .HasColumnType("Money");
+
+                    b.Property<string>("StateField");
+
+                    b.Property<decimal?>("ValueFrom")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal?>("ValueTo")
+                        .HasColumnType("Money");
 
                     b.HasKey("ID");
 
                     b.HasIndex("AccountID");
 
+                    b.HasIndex("AccountIDFrom");
+
                     b.ToTable("AccountHistories");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.AccountInfo", b =>
+                {
+                    b.Property<long>("AccountID");
+
+                    b.Property<int>("CapitalizationTimeListID");
+
+                    b.Property<DateTime?>("CreditExpirationDate");
+
+                    b.Property<decimal?>("CreditLimit");
+
+                    b.Property<int?>("GracePeriod");
+
+                    b.Property<decimal?>("InterestBalance");
+
+                    b.Property<decimal?>("InterestBalanceForEndOfDeposit");
+
+                    b.Property<DateTime?>("InterestNextDate");
+
+                    b.Property<decimal?>("InterestRate");
+
+                    b.Property<bool>("IsCapitalization");
+
+                    b.Property<bool>("IsFinishedDeposit");
+
+                    b.Property<DateTime?>("LastInterestAccrualDate");
+
+                    b.HasKey("AccountID");
+
+                    b.ToTable("AccountInfos");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.AccountType", b =>
@@ -128,6 +192,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("BankTypeID");
 
                     b.Property<string>("CodeName")
                         .IsRequired()
@@ -149,6 +215,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("BankTypeID");
+
                     b.ToTable("AccountTypes");
                 });
 
@@ -159,6 +227,9 @@ namespace MyProfile.Entity.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("BankTypeID");
+
+                    b.Property<string>("BrandColor")
+                        .HasMaxLength(16);
 
                     b.Property<string>("Licence")
                         .HasMaxLength(256);
@@ -218,25 +289,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("BankTypes");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.BankTypeAccountType", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AccountTypeID");
-
-                    b.Property<int>("BankTypeID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AccountTypeID");
-
-                    b.HasIndex("BankTypeID");
-
-                    b.ToTable("BankTypeAccountTypes");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetArea", b =>
                 {
                     b.Property<int>("ID")
@@ -271,7 +323,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetSection", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -323,6 +375,88 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("BudgetSections");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Card", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountTypeID");
+
+                    b.Property<int?>("BankID");
+
+                    b.Property<string>("BigLogo")
+                        .HasMaxLength(256);
+
+                    b.Property<decimal>("Cashback");
+
+                    b.Property<decimal>("CreditLimit");
+
+                    b.Property<int>("GracePeriod");
+
+                    b.Property<decimal>("Interest");
+
+                    b.Property<bool>("IsCashback");
+
+                    b.Property<bool>("IsCustomDesign");
+
+                    b.Property<bool>("IsInterest");
+
+                    b.Property<bool?>("IsRateTo");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(512);
+
+                    b.Property<int>("Raiting");
+
+                    b.Property<decimal>("Rate");
+
+                    b.Property<string>("SearchString");
+
+                    b.Property<decimal>("ServiceCostFrom");
+
+                    b.Property<decimal>("ServiceCostTo");
+
+                    b.Property<string>("SmallLogo")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("bankName");
+
+                    b.Property<int>("bankiruCardID");
+
+                    b.Property<string>("bonuses");
+
+                    b.Property<string>("paymentSystems");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AccountTypeID");
+
+                    b.HasIndex("BankID");
+
+                    b.ToTable("Cards");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CardPaymentSystem", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("CardID");
+
+                    b.Property<int>("PaymentSystemID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CardID");
+
+                    b.HasIndex("PaymentSystemID");
+
+                    b.ToTable("CardPaymentSystems");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Chart", b =>
                 {
                     b.Property<int>("ID")
@@ -345,7 +479,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<Guid>("UserID");
 
-                    b.Property<int>("VisibleElementID");
+                    b.Property<long>("VisibleElementID");
 
                     b.HasKey("ID");
 
@@ -360,7 +494,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.ChartField", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -405,7 +539,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Chat", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -428,11 +562,11 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.ChatUser", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ChatID");
+                    b.Property<long>("ChatID");
 
                     b.Property<DateTime>("DateAdded");
 
@@ -554,9 +688,9 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ChildSectionID");
+                    b.Property<long?>("ChildSectionID");
 
-                    b.Property<int?>("SectionID");
+                    b.Property<long?>("SectionID");
 
                     b.HasKey("ID");
 
@@ -603,7 +737,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.CurrencyRateHistory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -636,9 +770,24 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("CurrencyRateHistories");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.ErrorLog", b =>
+            modelBuilder.Entity("MyProfile.Entity.Model.EntityType", b =>
                 {
                     b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("EntityTypes");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.ErrorLog", b =>
+                {
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -662,11 +811,11 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Feedback", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ChatID");
+                    b.Property<long>("ChatID");
 
                     b.Property<int>("MoodID");
 
@@ -714,7 +863,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<Guid>("UserID");
 
-                    b.Property<int>("VisibleElementID");
+                    b.Property<long>("VisibleElementID");
 
                     b.HasKey("ID");
 
@@ -727,7 +876,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.GoalRecord", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -840,7 +989,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.HubConnect", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -860,7 +1009,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.IPSetting", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -882,9 +1031,13 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CurrencyID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Description");
 
@@ -904,9 +1057,11 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<Guid>("UserID");
 
-                    b.Property<int>("VisibleElementID");
+                    b.Property<long>("VisibleElementID");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("CurrencyID");
 
                     b.HasIndex("PeriodTypeID");
 
@@ -924,7 +1079,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("CameDateTime");
 
-                    b.Property<int>("Code");
+                    b.Property<long>("Code");
 
                     b.Property<string>("Comment");
 
@@ -964,13 +1119,13 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Message", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ChatID");
+                    b.Property<long>("ChatID");
 
-                    b.Property<int?>("ChatUserID");
+                    b.Property<long?>("ChatUserID");
 
                     b.Property<DateTime>("DateCreate");
 
@@ -1017,7 +1172,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Notification", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1047,13 +1202,13 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime>("LastChangeDateTime");
 
-                    b.Property<int?>("LimitID");
+                    b.Property<long?>("LimitID");
 
                     b.Property<int>("NotificationTypeID");
 
                     b.Property<DateTime?>("ReadDateTime");
 
-                    b.Property<int?>("ReminderDateID");
+                    b.Property<long?>("ReminderDateID");
 
                     b.Property<int?>("TelegramAccountID");
 
@@ -1097,7 +1252,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Payment", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1109,12 +1264,38 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("LastDatePayment");
 
-                    b.Property<string>("Tariff")
-                        .HasMaxLength(16);
+                    b.Property<int>("PaymentTariffID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
                     b.HasKey("ID");
 
+                    b.HasIndex("PaymentTariffID");
+
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.PaymentCounter", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CanBeCount");
+
+                    b.Property<int>("EntityTypeID");
+
+                    b.Property<DateTime>("LastChanges");
+
+                    b.Property<int>("PaymentTariffID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EntityTypeID");
+
+                    b.HasIndex("PaymentTariffID");
+
+                    b.ToTable("PaymentCounters");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentHistory", b =>
@@ -1132,14 +1313,17 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsPaid");
 
-                    b.Property<int>("PaymentID");
+                    b.Property<long>("PaymentID");
 
-                    b.Property<string>("Tariff")
-                        .HasMaxLength(16);
+                    b.Property<int?>("PaymentTariffID")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
                     b.HasKey("ID");
 
                     b.HasIndex("PaymentID");
+
+                    b.HasIndex("PaymentTariffID");
 
                     b.ToTable("PaymentHistories");
                 });
@@ -1168,6 +1352,23 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("PaymentSystems");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.PaymentTariff", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .HasMaxLength(32);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PaymentTariffs");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.PeriodType", b =>
                 {
                     b.Property<int>("ID")
@@ -1175,12 +1376,14 @@ namespace MyProfile.Entity.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CodeName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(32);
 
                     b.Property<bool>("IsUsing");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(32);
 
                     b.HasKey("ID");
 
@@ -1201,6 +1404,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime>("DateTo");
 
+                    b.Property<int>("LimitCounter");
+
                     b.Property<int>("Percent");
 
                     b.Property<int>("TryCounter");
@@ -1212,7 +1417,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.PromoCodeHistory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1241,13 +1446,13 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Record", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AccountID");
+                    b.Property<long?>("AccountID");
 
-                    b.Property<int>("BudgetSectionID");
+                    b.Property<long>("BudgetSectionID");
 
                     b.Property<decimal>("Cashback")
                         .HasColumnType("Money");
@@ -1303,7 +1508,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.RecordHistory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1317,7 +1522,7 @@ namespace MyProfile.Entity.Migrations
                     b.Property<decimal?>("AccountCurrencyRate")
                         .HasColumnType("Money");
 
-                    b.Property<int?>("AccountID");
+                    b.Property<long?>("AccountID");
 
                     b.Property<decimal>("AccountNewBalance")
                         .HasColumnType("Money");
@@ -1348,12 +1553,12 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int>("RecordCurrencyNominal");
 
-                    b.Property<int>("RecordID");
+                    b.Property<long>("RecordID");
 
                     b.Property<decimal>("RecordTotal")
                         .HasColumnType("Money");
 
-                    b.Property<int?>("SectionID");
+                    b.Property<long?>("SectionID");
 
                     b.HasKey("ID");
 
@@ -1372,15 +1577,15 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.RecordTag", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("DateSet");
 
-                    b.Property<int>("RecordID");
+                    b.Property<long>("RecordID");
 
-                    b.Property<int>("UserTagID");
+                    b.Property<long>("UserTagID");
 
                     b.HasKey("ID");
 
@@ -1393,7 +1598,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Reminder", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1439,7 +1644,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.ReminderDate", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1447,7 +1652,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsDone");
 
-                    b.Property<int>("ReminderID");
+                    b.Property<long>("ReminderID");
 
                     b.HasKey("ID");
 
@@ -1458,7 +1663,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Resource", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1492,13 +1697,13 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.ResourceMessage", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("MessageID");
+                    b.Property<long>("MessageID");
 
-                    b.Property<int>("ResourceID");
+                    b.Property<long>("ResourceID");
 
                     b.HasKey("ID");
 
@@ -1546,7 +1751,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.SchedulerTaskLog", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1571,13 +1776,13 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupChart", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BudgetSectionID");
+                    b.Property<long>("BudgetSectionID");
 
-                    b.Property<int>("ChartFieldID");
+                    b.Property<long>("ChartFieldID");
 
                     b.HasKey("ID");
 
@@ -1590,13 +1795,13 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.SectionGroupLimit", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BudgetSectionID");
+                    b.Property<long>("BudgetSectionID");
 
-                    b.Property<int>("LimitID");
+                    b.Property<long>("LimitID");
 
                     b.HasKey("ID");
 
@@ -1628,7 +1833,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.SectionTypeView", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1664,6 +1869,122 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("SiteSettings");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScription", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("LogoBig")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("LogoSmall")
+                        .HasMaxLength(512);
+
+                    b.Property<int?>("ParentID");
+
+                    b.Property<string>("Site")
+                        .HasMaxLength(512);
+
+                    b.Property<int>("SubScriptionCategoryID");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ParentID");
+
+                    b.HasIndex("SubScriptionCategoryID");
+
+                    b.ToTable("SubScriptions");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("SubScriptionCategories");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionOption", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("EditDate");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsBoth");
+
+                    b.Property<bool>("IsFamaly");
+
+                    b.Property<bool>("IsPersonally");
+
+                    b.Property<bool>("IsStudent");
+
+                    b.Property<int>("SubScriptionID");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(256);
+
+                    b.Property<decimal?>("_raiting");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SubScriptionID");
+
+                    b.ToTable("SubScriptionOptions");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionPricing", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("PricePerMonth")
+                        .HasColumnType("Money");
+
+                    b.Property<int>("PricingPeriodTypeID");
+
+                    b.Property<int>("SubScriptionOptionID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SubScriptionOptionID");
+
+                    b.ToTable("SubScriptionPricings");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Summary", b =>
                 {
                     b.Property<int>("ID")
@@ -1684,7 +2005,7 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
-                    b.Property<int>("VisibleElementID");
+                    b.Property<long>("VisibleElementID");
 
                     b.HasKey("ID");
 
@@ -1695,7 +2016,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Tag", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1782,7 +2103,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Template", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1826,13 +2147,13 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.TemplateBudgetSection", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BudgetSectionID");
+                    b.Property<long>("BudgetSectionID");
 
-                    b.Property<int>("TemplateColumnID");
+                    b.Property<long>("TemplateColumnID");
 
                     b.HasKey("ID");
 
@@ -1845,7 +2166,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.TemplateColumn", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1867,7 +2188,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<int?>("PlaceAfterCommon");
 
-                    b.Property<int>("TemplateID");
+                    b.Property<long>("TemplateID");
 
                     b.HasKey("ID");
 
@@ -1878,7 +2199,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.ToDoList", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1890,17 +2211,13 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsFavorite");
 
-                    b.Property<int>("PeriodTypeID");
-
                     b.Property<string>("Title");
 
                     b.Property<int>("ToDoListFolderID");
 
-                    b.Property<int>("VisibleElementID");
+                    b.Property<long>("VisibleElementID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("PeriodTypeID");
 
                     b.HasIndex("ToDoListFolderID");
 
@@ -1931,7 +2248,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.ToDoListItem", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -1949,7 +2266,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<int>("ToDoListID");
+                    b.Property<long>("ToDoListID");
 
                     b.HasKey("ID");
 
@@ -1995,11 +2312,15 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<int>("NumberUser")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int?>("OlsonTZID");
 
-                    b.Property<int>("PaymentID");
+                    b.Property<long>("PaymentID");
 
-                    b.Property<int?>("ResourceID");
+                    b.Property<long?>("ResourceID");
 
                     b.Property<string>("SaltPassword")
                         .IsRequired()
@@ -2037,15 +2358,38 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("UserConnects");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.UserErrorLog", b =>
+            modelBuilder.Entity("MyProfile.Entity.Model.UserEntityCounter", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ErrorLogID");
+                    b.Property<int>("AddedCount");
 
-                    b.Property<int?>("UserLogID");
+                    b.Property<int>("EntityTypeID");
+
+                    b.Property<DateTime>("LastChanges");
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EntityTypeID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserEntityCounters");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.UserErrorLog", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long?>("ErrorLogID");
+
+                    b.Property<long?>("UserLogID");
 
                     b.HasKey("ID");
 
@@ -2058,7 +2402,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.UserLog", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -2224,6 +2568,8 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("Month_ToDoLists");
+
                     b.Property<string>("WebSiteTheme")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue("light");
@@ -2260,9 +2606,52 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("Year_ToDoLists");
+
                     b.HasKey("ID");
 
                     b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.UserSubScription", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime?>("EndDate");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsPause");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("PricePerMonth")
+                        .HasColumnType("Money");
+
+                    b.Property<DateTime?>("StartDate");
+
+                    b.Property<int?>("SubScriptionPricingID");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<Guid>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SubScriptionPricingID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserSubScriptions");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.UserSummary", b =>
@@ -2287,7 +2676,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<string>("Value");
 
-                    b.Property<int?>("VisibleElementID");
+                    b.Property<long?>("VisibleElementID");
 
                     b.HasKey("ID");
 
@@ -2306,7 +2695,7 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("SectionID");
+                    b.Property<long>("SectionID");
 
                     b.Property<int>("UserSummaryID");
 
@@ -2340,7 +2729,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.UserTag", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -2354,7 +2743,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<int?>("TagID");
+                    b.Property<long?>("TagID");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -2388,7 +2777,7 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.VisibleElement", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -2420,12 +2809,16 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("Accounts")
                         .HasForeignKey("BankID");
 
+                    b.HasOne("MyProfile.Entity.Model.Card", "Card")
+                        .WithMany("Accounts")
+                        .HasForeignKey("CardID");
+
                     b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
                         .WithMany()
                         .HasForeignKey("CurrencyID");
 
                     b.HasOne("MyProfile.Entity.Model.Account", "ParentAccount")
-                        .WithMany()
+                        .WithMany("ChildAccounts")
                         .HasForeignKey("ParentAccountID");
 
                     b.HasOne("MyProfile.Entity.Model.PaymentSystem", "PaymentSystem")
@@ -2444,6 +2837,25 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("AccountHistories")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.Account", "AccountFrom")
+                        .WithMany("AccountHistories2")
+                        .HasForeignKey("AccountIDFrom");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.AccountInfo", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Account", "Account")
+                        .WithOne("AccountInfo")
+                        .HasForeignKey("MyProfile.Entity.Model.AccountInfo", "AccountID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.AccountType", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.BankType", "BankType")
+                        .WithMany("AccountTypes")
+                        .HasForeignKey("BankTypeID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Bank", b =>
@@ -2451,19 +2863,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.BankType", "BankType")
                         .WithMany("Banks")
                         .HasForeignKey("BankTypeID");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.BankTypeAccountType", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.AccountType", "AccountType")
-                        .WithMany()
-                        .HasForeignKey("AccountTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.BankType", "BankType")
-                        .WithMany()
-                        .HasForeignKey("BankTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetArea", b =>
@@ -2483,6 +2882,31 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
                         .WithMany()
                         .HasForeignKey("SectionTypeID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Card", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.AccountType", "AccountType")
+                        .WithMany()
+                        .HasForeignKey("AccountTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.Bank", "Bank")
+                        .WithMany("Cards")
+                        .HasForeignKey("BankID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.CardPaymentSystem", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Card", "Card")
+                        .WithMany("CardPaymentSystems")
+                        .HasForeignKey("CardID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.PaymentSystem", "PaymentSystem")
+                        .WithMany("CardPaymentSystems")
+                        .HasForeignKey("PaymentSystemID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Chart", b =>
@@ -2650,6 +3074,10 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.Limit", b =>
                 {
+                    b.HasOne("MyProfile.Entity.Model.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyID");
+
                     b.HasOne("MyProfile.Entity.Model.PeriodType", "PeriodType")
                         .WithMany()
                         .HasForeignKey("PeriodTypeID")
@@ -2718,12 +3146,37 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Payment", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
+                        .WithMany("Payments")
+                        .HasForeignKey("PaymentTariffID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.PaymentCounter", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.EntityType", "EntityType")
+                        .WithMany()
+                        .HasForeignKey("EntityTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
+                        .WithMany("PaymentCounters")
+                        .HasForeignKey("PaymentTariffID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentHistory", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.Payment", "Payment")
                         .WithMany("PaymentHistories")
                         .HasForeignKey("PaymentID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
+                        .WithMany("PaymentHistories")
+                        .HasForeignKey("PaymentTariffID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PromoCodeHistory", b =>
@@ -2881,6 +3334,34 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScription", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.SubScription", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentID");
+
+                    b.HasOne("MyProfile.Entity.Model.SubScriptionCategory", "SubScriptionCategory")
+                        .WithMany()
+                        .HasForeignKey("SubScriptionCategoryID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionOption", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.SubScription", "SubScription")
+                        .WithMany("SubScriptionOptions")
+                        .HasForeignKey("SubScriptionID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.SubScriptionPricing", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.SubScriptionOption", "SubScriptionOption")
+                        .WithMany("SubScriptionPricings")
+                        .HasForeignKey("SubScriptionOptionID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Summary", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.VisibleElement", "VisibleElement")
@@ -2937,11 +3418,6 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.ToDoList", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.PeriodType", "PeriodType")
-                        .WithMany()
-                        .HasForeignKey("PeriodTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("MyProfile.Entity.Model.ToDoListFolder", "ToDoListFolder")
                         .WithMany("ToDoLists")
                         .HasForeignKey("ToDoListFolderID")
@@ -3011,6 +3487,19 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.UserEntityCounter", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.EntityType", "EntityType")
+                        .WithMany()
+                        .HasForeignKey("EntityTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("UserEntityCounters")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.UserErrorLog", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.ErrorLog", "ErrorLog")
@@ -3042,6 +3531,18 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithOne("UserSettings")
                         .HasForeignKey("MyProfile.Entity.Model.UserSettings", "ID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.UserSubScription", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.SubScriptionPricing", "SubScriptionPricing")
+                        .WithMany("UserSubScriptions")
+                        .HasForeignKey("SubScriptionPricingID");
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("UserSubScriptions")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

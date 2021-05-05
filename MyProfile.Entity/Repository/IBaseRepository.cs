@@ -23,6 +23,8 @@ namespace MyProfile.Entity.Repository
 
         void Delete<T>(int id, bool isSave = false) where T : class;
         void Delete<T>(T entity, bool isSave = false) where T : class;
+        void Delete<T>(Expression<Func<T, bool>> predicate) where T : class;
+        void DeleteRange<T>(Expression<Func<T, bool>> predicate) where T : class;
         Task DeleteAsync<T>(int id, bool isSave = false) where T : class;
         Task DeleteAsync<T>(T entity, bool isSave = false) where T : class;
         void DeleteRange<T>(IEnumerable<T> entities, bool isSave = false) where T : class;

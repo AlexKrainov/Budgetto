@@ -46,7 +46,7 @@ namespace MyProfile.Limit.Service
         public async Task<LimitModelView> UpdateOrCreate(LimitModelView limit)
         {
             var currentUser = UserInfo.Current;
-            List<int> errorLogIDs = new List<int>();
+            List<long> errorLogIDs = new List<long>();
             limit.UserID = currentUser.ID;
             limit.SectionGroupLimits = limit.NewSections.Distinct().Select(x => new SectionGroupLimit { BudgetSectionID = x.ID, LimitID = limit.ID }).ToList();
 
@@ -401,7 +401,7 @@ namespace MyProfile.Limit.Service
             return limitCharts;
         }
 
-        public async Task<bool> ToggleLimit(int limitID, PeriodTypesEnum periodType)
+        public async Task<bool> ToggleLimit(long limitID, PeriodTypesEnum periodType)
         {
             var currentUser = UserInfo.Current;
             var db_limit = await repository.GetAll<Entity.Model.Limit>(x => x.ID == limitID && x.UserID == currentUser.ID)

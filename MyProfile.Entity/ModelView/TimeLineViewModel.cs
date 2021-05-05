@@ -28,8 +28,8 @@ namespace MyProfile.Entity.ModelView
     public class CalendarFilterModels
     {
         public int Year { get; set; }
-        public List<int> Sections { get; set; } = new List<int>();
-        public List<int> Tags { get; set; } = new List<int>();
+        public List<long> Sections { get; set; } = new List<long>();
+        public List<long> Tags { get; set; } = new List<long>();
         public bool IsAmount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -42,7 +42,7 @@ namespace MyProfile.Entity.ModelView
 
         public CalendarFilterModels()
         {
-            this.Sections = new List<int>();
+            this.Sections = new List<long>();
         }
     }
 }

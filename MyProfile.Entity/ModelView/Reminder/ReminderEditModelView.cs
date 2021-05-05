@@ -19,7 +19,7 @@ namespace MyProfile.Entity.ModelView.Reminder
         public bool isDeleted;
         public bool isWasRepeat;
 
-        public int ID { get; set; }
+        public long ID { get; set; }
         public DateTime? DateReminder { get; set; }
         public string Description { get; set; }
         public bool IsRepeat { get; set; }
@@ -33,6 +33,6 @@ namespace MyProfile.Entity.ModelView.Reminder
         public string TimeZoneClient { get; set; }
         public int? OlzonTZID { get; set; }
         public List<NotificationUserViewModel> Notifications { get; set; }
-        public int ReminderDateID { get; set; }
+        public long ReminderDateID { get; set; }
     }
 }

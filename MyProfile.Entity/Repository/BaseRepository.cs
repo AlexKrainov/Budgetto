@@ -118,6 +118,14 @@ namespace MyProfile.Entity.Repository
 
             if (isSave) { this.Save(); }
         }
+        public virtual void Delete<T>(Expression<Func<T, bool>> predicate) where T : class
+        {
+            context.Remove(GetDbSet<T>().Where(predicate).FirstOrDefault());
+        }
+        public virtual void DeleteRange<T>(Expression<Func<T, bool>> predicate) where T : class
+        {
+            context.RemoveRange(GetDbSet<T>().Where(predicate));
+        }
         public virtual void Delete<T>(T entity, bool isSave = false) where T : class
         {
             GetDbSet<T>().Remove(entity);

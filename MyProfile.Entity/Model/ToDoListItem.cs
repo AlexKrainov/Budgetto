@@ -9,7 +9,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Text { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime DateEdit { get; set; }
@@ -17,7 +17,7 @@ namespace MyProfile.Entity.Model
         public bool IsDone { get; set; }
 
         [ForeignKey("ToDoList")]
-        public int ToDoListID { get; set; }
+        public long ToDoListID { get; set; }
         [ForeignKey("OwnerUser")]
         public Guid? OwnerUserID { get; set; }
         [ForeignKey("DoneUser")]

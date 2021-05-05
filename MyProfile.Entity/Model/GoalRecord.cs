@@ -9,7 +9,7 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 		[Column(TypeName = "Money")]
 		public decimal Total { get; set; }
 		public DateTime? DateTimeOfPayment { get; set; }

@@ -9,12 +9,12 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 		
 		[ForeignKey("Limit")]
-		public int LimitID { get; set; }
+		public long LimitID { get; set; }
 		[ForeignKey("BudgetSection")]
-		public int BudgetSectionID { get; set; }
+		public long BudgetSectionID { get; set; }
 
 		public virtual Limit Limit { get; set; }
 		public virtual BudgetSection BudgetSection { get; set; }

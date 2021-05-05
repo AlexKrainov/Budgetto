@@ -18,7 +18,7 @@ namespace MyProfile.Entity.Model
         /// Is ok send letter ?
         /// </summary>
         public bool IsSuccessful { get; set; }
-        public int Code { get; set; }
+        public long Code { get; set; }
 
         [ForeignKey("User")]
         public Guid? UserID { get; set; }

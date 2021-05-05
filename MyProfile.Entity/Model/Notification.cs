@@ -17,7 +17,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         public int NotificationTypeID { get; set; }
         public bool IsReady { get; set; }
         public DateTime? IsReadyDateTime { get; set; }
@@ -55,9 +55,9 @@ namespace MyProfile.Entity.Model
         [ForeignKey("User")]
         public Guid UserID { get; set; }
         [ForeignKey("Limit")]
-        public int? LimitID { get; set; }
+        public long? LimitID { get; set; }
         [ForeignKey("ReminderDate")]
-        public int? ReminderDateID { get; set; }
+        public long? ReminderDateID { get; set; }
         [ForeignKey("TelegramAccount")]
         public int? TelegramAccountID { get; set; }
 

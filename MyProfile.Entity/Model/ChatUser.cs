@@ -8,7 +8,7 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
         public bool IsChatOwner { get; set; }
 		/// <summary>
 		/// Left the chat
@@ -19,7 +19,7 @@ namespace MyProfile.Entity.Model
         public bool IsMute { get; set; }
 
         [ForeignKey("Chat")]
-		public int ChatID { get; set; }
+		public long ChatID { get; set; }
 		[ForeignKey("User")]
 		public Guid? UserID { get; set; }
 		[ForeignKey("TelegramAccount")]

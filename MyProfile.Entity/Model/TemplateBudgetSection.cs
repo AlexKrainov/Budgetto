@@ -8,12 +8,12 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 
 		[ForeignKey("BudgetSection")]
-		public int BudgetSectionID { get; set; }
+		public long BudgetSectionID { get; set; }
 		[ForeignKey("TemplateColumn")]
-		public int TemplateColumnID { get; set; }
+		public long TemplateColumnID { get; set; }
 
 		public virtual BudgetSection BudgetSection { get; set; }
 		public virtual TemplateColumn TemplateColumn { get; set; }

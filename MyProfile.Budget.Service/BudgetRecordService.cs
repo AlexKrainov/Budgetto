@@ -81,8 +81,8 @@ namespace MyProfile.Budget.Service
             bool isCreate = false;
             DateTime now = DateTime.Now.ToUniversalTime();
             List<RecordTag> newUserTags = new List<RecordTag>();
-            List<int> errorLogCreateIDs = new List<int>();
-            List<int> errorLogEditIDs = new List<int>();
+            List<long> errorLogCreateIDs = new List<long>();
+            List<long> errorLogEditIDs = new List<long>();
             budgetRecord.DateTimeOfPayment = new DateTime(budgetRecord.DateTimeOfPayment.Year, budgetRecord.DateTimeOfPayment.Month, budgetRecord.DateTimeOfPayment.Day, 13, 0, 0);
             decimal recordCashback = 0;
             decimal _money = 0;
@@ -309,8 +309,8 @@ namespace MyProfile.Budget.Service
                             }
                             else
                             {
-                                var dbRecord = repository.GetByID<Record>(record.ID);
-                                int oldAccountID = dbRecord.AccountID ?? -1,
+                                var dbRecord = repository.GetAll<Record>(x => x.ID == record.ID).FirstOrDefault(); ;
+                                long oldAccountID = dbRecord.AccountID ?? -1,
                                     oldSectionTypeID = dbRecord.BudgetSection.SectionTypeID ?? 0;
                                 decimal oldTotal = dbRecord.Total,
                                     oldCashback = dbRecord.Cashback;

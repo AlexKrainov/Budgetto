@@ -33,7 +33,7 @@ namespace MyProfile.Entity.Model
         public bool IsChart { get; set; }
 
         [ForeignKey("VisibleElement")]
-        public int VisibleElementID { get; set; }
+        public long VisibleElementID { get; set; }
 
         public virtual VisibleElement VisibleElement { get; set; }
 

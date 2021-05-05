@@ -4,7 +4,7 @@ namespace MyProfile.Entity.ModelView.Notification
 {
     public class NotificationUserViewModel
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public bool IsSite { get; set; }
         public bool IsMail { get; set; }
         public bool IsTelegram { get; set; }

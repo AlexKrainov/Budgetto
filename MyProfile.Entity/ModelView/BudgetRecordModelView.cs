@@ -9,7 +9,7 @@ namespace MyProfile.Entity.ModelView
     public class BudgetRecordModelView
     {
 
-        public int ID { get; set; }
+        public long ID { get; set; }
         public decimal Money { get; set; }
         public string RawData { get; set; }
         public IEnumerable<RecordTag> Tags { get; set; }
@@ -23,7 +23,7 @@ namespace MyProfile.Entity.ModelView
         /// </summary>
         public bool IsConsider { get; set; }
 
-        public int SectionID { get; set; }
+        public long SectionID { get; set; }
         public string SectionName { get; set; }
         public int AreaID { get; set; }
         public string AreaName { get; set; }
@@ -48,7 +48,7 @@ namespace MyProfile.Entity.ModelView
         public string CssBackground { get; set; }
         public string CssColor { get; set; }
         public int? SectionTypeID { get; set; }
-        public int? AccountID { get; set; }
+        public long? AccountID { get; set; }
         public decimal Cashback { get; set; }
         public AccountModelView Account { get; set; }
         public BudgetSectionModelView Section { get; set; }
@@ -59,10 +59,10 @@ namespace MyProfile.Entity.ModelView
     /// </summary>
     public class RecordModelView
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Tag { get; set; }
         public decimal Money { get; set; }
-        public int SectionID { get; set; }
+        public long SectionID { get; set; }
         public string SectionName { get; set; }
         public bool IsSaved { get; set; }
         public bool IsCorrect { get; set; }
@@ -71,7 +71,7 @@ namespace MyProfile.Entity.ModelView
         public int? CurrencyID { get; set; }
         public decimal? CurrencyRate { get; set; }
         public int? CurrencyNominal { get; set; }
-        public int AccountID { get; set; }
+        public long AccountID { get; set; }
         public AccountModelView Account { get; set; }
 
         public IEnumerable<RecordTag> Tags { get; set; }
@@ -86,7 +86,7 @@ namespace MyProfile.Entity.ModelView
         /// <summary>
         /// if ID <= 0 = new , if ID > 0 - old
         /// </summary>
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Title { get; set; }
         public string Value { get { return Title; } }
         public DateTime DateCreate { get; set; }
@@ -107,7 +107,7 @@ namespace MyProfile.Entity.ModelView
     }
     public class TagSectionModelView
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public int Count { get; set; }
         public string Title { get; set; }
         public bool IsShow { get; set; } = true;
@@ -119,7 +119,7 @@ namespace MyProfile.Entity.ModelView
         public string Name { get; set; }
         public string AccountIcon { get; set; }
         public string CurrencyIcon { get; set; }
-        public int? CardID { get; set; }
+        public long? CardID { get; set; }
         public string CardName { get; set; }
         public string CardLogo { get; set; }
     }

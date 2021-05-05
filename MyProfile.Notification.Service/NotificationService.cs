@@ -73,7 +73,7 @@ namespace MyProfile.Notification.Service
             return notifications;
         }
 
-        public void SetRead(List<int> ids)
+        public void SetRead(List<long> ids)
         {
             var now = DateTime.Now.ToUniversalTime();
             var notifications = repository.GetAll<Entity.Model.Notification>(x => x.IsRead == false && x.IsSentOnSite && ids.Contains(x.ID)).ToList();
@@ -132,7 +132,7 @@ namespace MyProfile.Notification.Service
         /// <param name="objectID">Limit, Reminder and etc.</param>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public async Task<bool> CreateOrUpdate<T>(List<NotificationUserViewModel> notifications, int objectID, Guid userID)
+        public async Task<bool> CreateOrUpdate<T>(List<NotificationUserViewModel> notifications, long objectID, Guid userID)
         {
             var now = DateTime.Now.ToUniversalTime();
             bool anyChanges = false;
@@ -143,7 +143,7 @@ namespace MyProfile.Notification.Service
                 var notificationForDelete = notifications.Where(x => x.IsDeleted).Select(x => x.ID).ToList();
                 foreach (var id in notificationForDelete)
                 {
-                    repository.Delete<Notification>(id);
+                    repository.Delete<Notification>(x => x.ID == id);
                 }
                 await repository.SaveAsync();
             }

@@ -130,7 +130,7 @@ namespace MyProfile.Controllers
         public IActionResult SetFlagConstructor()
         {
             var currentUser = UserInfo.Current;
-            List<int> errorLogCreateIDs = new List<int>();
+            List<long> errorLogCreateIDs = new List<long>();
 
             try
             {

@@ -2,7 +2,7 @@
 {
     public class Select2ModelView
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string text { get; set; }
     }
 }

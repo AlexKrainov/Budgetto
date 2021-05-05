@@ -19,7 +19,7 @@ namespace MyProfile.Entity.Model
         public bool IsChart { get; set; }
 
         [ForeignKey("VisibleElement")]
-		public int? VisibleElementID { get; set; }
+		public long? VisibleElementID { get; set; }
 		[ForeignKey("User")]
 		public Guid UserID { get; set; }
 		[ForeignKey("Summary")]

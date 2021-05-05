@@ -9,7 +9,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         /// <summary>
         /// This prop is ready for count 
         /// </summary>
@@ -44,11 +44,11 @@ namespace MyProfile.Entity.Model
         [ForeignKey("User")]
         public Guid UserID { get; set; }
         [ForeignKey("BudgetSection")]
-        public int BudgetSectionID { get; set; }
+        public long BudgetSectionID { get; set; }
         [ForeignKey("Currency")]
         public int? CurrencyID { get; set; }
         [ForeignKey("Account")]
-        public int? AccountID { get; set; }
+        public long? AccountID { get; set; }
 
         public virtual User User { get; set; }
         public virtual BudgetSection BudgetSection { get; set; }

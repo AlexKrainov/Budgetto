@@ -79,7 +79,7 @@ namespace MyProfile.Template.Service
 
                 if (templateViewModel != null)
                 {
-                    var template = repository.GetByID<Template>(templateViewModel.ID);
+                    var template = repository.GetAll<Template>(x => x.ID == templateViewModel.ID).FirstOrDefault();
                     template.LastSeenDate = DateTime.Now.ToUniversalTime();
                     await repository.SaveAsync();
                 }
@@ -237,7 +237,7 @@ namespace MyProfile.Template.Service
         /// <param name="template"></param>
         /// <param name="isRemove">== true - remove, == false - recovery</param>
         /// <returns></returns>
-        public async Task<bool> RemoveOrRecovery(int templateID, bool isRemove)
+        public async Task<bool> RemoveOrRecovery(long templateID, bool isRemove)
         {
             var currentUser = UserInfo.Current;
             var db_item = await repository.GetAll<Template>(x => x.ID == templateID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
@@ -281,7 +281,7 @@ namespace MyProfile.Template.Service
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
             bool isEdit = false;
-            List<int> errorLogCreateIDs = new List<int>();
+            List<long> errorLogCreateIDs = new List<long>();
 
             #region Check name
 
@@ -367,7 +367,7 @@ namespace MyProfile.Template.Service
                     var columns = repository.GetAll<TemplateColumn>(x => x.TemplateID == template.ID);
                     repository.DeleteRange(columns, true);
 
-                    Template templateDB = repository.GetByID<Template>(template.ID);
+                    Template templateDB = repository.GetAll<Template>(x => x.ID == template.ID).FirstOrDefault();
 
                     templateDB.UserID = UserInfo.Current.ID;
                     templateDB.PeriodTypeID = template.PeriodTypeID;

@@ -9,9 +9,9 @@ namespace MyProfile.Entity.Model
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
 		[ForeignKey("Section")]
-		public int? SectionID { get; set; }
+		public long? SectionID { get; set; }
 		[ForeignKey("ChildSection")]
-		public int? ChildSectionID { get; set; }
+		public long? ChildSectionID { get; set; }
 
 
 		public virtual BudgetSection Section { get; set; }

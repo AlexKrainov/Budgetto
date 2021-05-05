@@ -19,6 +19,7 @@ namespace MyProfile.Entity.Model
         /// How many times tried
         /// </summary>
         public int TryCounter { get; set; }
+        public int LimitCounter { get; set; }
         public int Percent { get; set; }
 
 

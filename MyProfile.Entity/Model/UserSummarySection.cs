@@ -12,7 +12,7 @@ namespace MyProfile.Entity.Model
         [ForeignKey("UserSummary")]
 		public int UserSummaryID { get; set; }
 		[ForeignKey("Section")]
-		public int SectionID { get; set; }
+		public long SectionID { get; set; }
 
 		public virtual UserSummary UserSummary { get; set; }
 		public virtual BudgetSection Section { get; set; }

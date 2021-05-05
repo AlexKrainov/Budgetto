@@ -22,7 +22,7 @@ namespace MyProfile.Entity.ModelView.ToDoList
 
     public class ToDoListModelView
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public int FolderID { get; set; }
         public string Title { get; set; }
         public bool IsFavorite { get; set; }
@@ -77,7 +77,7 @@ namespace MyProfile.Entity.ModelView.ToDoList
 
     public class ToDoListItemModelView
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Text { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime DateEdit { get; set; }

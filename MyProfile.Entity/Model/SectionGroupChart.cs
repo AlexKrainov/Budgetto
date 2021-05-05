@@ -7,12 +7,12 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 		
 		[ForeignKey("ChartField")]
-		public int ChartFieldID { get; set; }
+		public long ChartFieldID { get; set; }
 		[ForeignKey("BudgetSection")]
-		public int BudgetSectionID { get; set; }
+		public long BudgetSectionID { get; set; }
 
 		public virtual ChartField ChartField { get; set; }
 		public virtual BudgetSection BudgetSection { get; set; }

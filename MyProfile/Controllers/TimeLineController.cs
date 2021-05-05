@@ -128,7 +128,7 @@ namespace MyProfile.Controllers
         [HttpGet]
         public async Task<JsonResult> LoadingRecordsForByDate(DateTime date)
         {
-            CalendarFilterModels filter = new CalendarFilterModels { Sections = new List<int>() };
+            CalendarFilterModels filter = new CalendarFilterModels { Sections = new List<long>() };
             filter.StartDate = new DateTime(date.Year, date.Month, date.Day, 00, 00, 01);
             filter.EndDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
             filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();

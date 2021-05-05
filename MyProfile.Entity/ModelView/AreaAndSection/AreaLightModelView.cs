@@ -13,7 +13,7 @@ namespace MyProfile.Entity.ModelView.AreaAndSection
 
     public class SectionLightModelView
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Name { get; set; }
         public int BudgetAreaID { get; set; }
         public string BudgetAreaname { get; set; }

@@ -6,7 +6,7 @@ namespace MyProfile.Entity.ModelView.BudgetView
 {
 	public class BudgetControllerModelView
 	{
-		public int SelectedTemplateID { get; set; }
+		public long SelectedTemplateID { get; set; }
 		public List<TemplateViewModel_Short> Templates { get; set; } = new List<TemplateViewModel_Short>();
 		public DateTime SelectedDateTime { get; set; }
 		public int SelectedYear{ get; set; }

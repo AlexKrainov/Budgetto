@@ -301,11 +301,11 @@ namespace MyProfile.Reminder.Service
 
                 if (newReminder.ID > 0)
                 {
-                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Edit, errorLogIDs: new List<int>(errorID));
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Edit, errorLogIDs: new List<long> { errorID });
                 }
                 else
                 {
-                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Create, errorLogIDs: new List<int>(errorID));
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Create, errorLogIDs: new List<long> { errorID });
                 }
 
                 return false;

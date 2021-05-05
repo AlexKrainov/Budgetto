@@ -9,16 +9,16 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 		public string Text { get; set; }
 		public DateTime DateCreate { get; set; }
 		public DateTime? DateEdit { get; set; }
 		public bool IsDeleted { get; set; }
 
 		[ForeignKey("Chat")]
-		public int ChatID { get; set; }
+		public long ChatID { get; set; }
 		[ForeignKey("ChatUser")]
-		public int? ChatUserID { get; set; }
+		public long? ChatUserID { get; set; }
 
 		public virtual ChatUser ChatUser { get; set; }
 		public virtual Chat Chat { get; set; }

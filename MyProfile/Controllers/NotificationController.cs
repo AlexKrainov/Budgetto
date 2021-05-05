@@ -24,7 +24,7 @@ namespace MyProfile.Controllers
         }
 
         [HttpPost]
-        public IActionResult SetFlagRead([FromBody] List<int> IDs)
+        public IActionResult SetFlagRead([FromBody] List<long> IDs)
         {
             notificationService.SetRead(IDs);
             return Json(new { isOk = true });

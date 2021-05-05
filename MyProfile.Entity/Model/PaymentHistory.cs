@@ -17,7 +17,7 @@ namespace MyProfile.Entity.Model
         public DateTime? DateTo { get; set; }
 
         [ForeignKey("Payment")]
-        public int PaymentID { get; set; }
+        public long PaymentID { get; set; }
         [ForeignKey("PaymentTariff")]
         public int? PaymentTariffID { get; set; }
 

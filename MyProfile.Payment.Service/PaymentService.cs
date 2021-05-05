@@ -50,7 +50,7 @@ namespace MyProfile.Payment.Service
             return payment.ID;
         }
 
-        public async Task<int> Paid(Guid paymentHistoryID)
+        public async Task<long> Paid(Guid paymentHistoryID)
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();

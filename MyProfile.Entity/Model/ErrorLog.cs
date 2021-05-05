@@ -13,7 +13,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         public DateTime CurrentDate { get; set; }
         [StringLength(64)]
         public string Where { get; set; }

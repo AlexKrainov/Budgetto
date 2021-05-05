@@ -218,7 +218,7 @@ namespace MyProfile.UserLog.Service
         /// <param name="userLogActionType"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public async Task<int> CreateUserLogAsync(Guid userSessionID, string userLogActionType, string comment = null, List<int> errorLogIDs = null)
+        public async Task<long> CreateUserLogAsync(Guid userSessionID, string userLogActionType, string comment = null, List<long>errorLogIDs = null)
         {
             UserLog userLog = new UserLog();
 
@@ -238,13 +238,13 @@ namespace MyProfile.UserLog.Service
 
             try
             {
-                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID3 != 0)
+                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID != 0)
                 {
                     foreach (var errorLogID in errorLogIDs)
                     {
                         await repository.CreateAsync<UserErrorLog>(new UserErrorLog
                         {
-                            UserLogID = userLog.ID3,
+                            UserLogID = userLog.ID,
                             ErrorLogID = errorLogID
                         });
                     }
@@ -255,9 +255,9 @@ namespace MyProfile.UserLog.Service
             {
             }
 
-            return (int)userLog.ID3;
+            return userLog.ID;
         }
-        public int CreateUserLog(Guid userSessionID, string userLogActionType, string comment = null, List<int> errorLogIDs = null)
+        public long CreateUserLog(Guid userSessionID, string userLogActionType, string comment = null, List<long>errorLogIDs = null)
         {
             UserLog userLog = new UserLog();
 
@@ -277,13 +277,13 @@ namespace MyProfile.UserLog.Service
 
             try
             {
-                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID3 != 0)
+                if (errorLogIDs != null && errorLogIDs.Count > 0 && userLog.ID != 0)
                 {
                     foreach (var errorLogID in errorLogIDs)
                     {
                         repository.Create<UserErrorLog>(new UserErrorLog
                         {
-                            UserLogID = userLog.ID3,
+                            UserLogID = userLog.ID,
                             ErrorLogID = errorLogID
                         });
                     }
@@ -294,7 +294,7 @@ namespace MyProfile.UserLog.Service
             {
             }
 
-            return (int)userLog.ID3;
+            return userLog.ID;
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace MyProfile.UserLog.Service
         /// <param name="errorText"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public async Task<int> CreateErrorLogAsync(Guid? userSessionID, string where, Exception exception, string comment = null, List<int> userLogIDs = null)
+        public async Task<long> CreateErrorLogAsync(Guid? userSessionID, string where, Exception exception, string comment = null, List<long>userLogIDs = null)
         {
             repository.ResetContextState();
 
@@ -349,7 +349,7 @@ namespace MyProfile.UserLog.Service
 
             return log.ID;
         }
-        public int CreateErrorLog(Guid? userSessionID, string where, Exception exception, string comment = null, List<int> userLogIDs = null)
+        public long CreateErrorLog(Guid? userSessionID, string where, Exception exception, string comment = null, List<long>userLogIDs = null)
         {
             repository.ResetContextState();
 

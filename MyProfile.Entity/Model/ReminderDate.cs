@@ -9,12 +9,12 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
         public DateTime DateReminder { get; set; }
         public bool IsDone { get; set; }
 
 		[ForeignKey("Reminder")]
-		public int ReminderID { get; set; }
+		public long ReminderID { get; set; }
 
 		public virtual Reminder Reminder { get; set; }
 

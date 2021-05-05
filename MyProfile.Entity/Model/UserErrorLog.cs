@@ -10,11 +10,11 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
 
 
         [ForeignKey("ErrorLog")]
-        public int? ErrorLogID { get; set; }
+        public long? ErrorLogID { get; set; }
         [ForeignKey("UserLog")]
         public long? UserLogID { get; set; }
 

@@ -12,7 +12,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public DateTime? LastDatePayment { get; set; }

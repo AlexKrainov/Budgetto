@@ -244,7 +244,7 @@ namespace MyProfile.Budget.Service
             };
             if (budgetSection.ID > 0)
             {
-                List<int> errorLogEditIDs = new List<int>();
+                List<long> errorLogEditIDs = new List<long>();
                 try
                 {
                     await repository.UpdateAsync(budgetSection, true);
@@ -260,7 +260,7 @@ namespace MyProfile.Budget.Service
             }
             else
             {
-                List<int> errorLogCreateIDs = new List<int>();
+                List<long> errorLogCreateIDs = new List<long>();
                 try
                 {
                     await repository.CreateAsync(budgetSection, true);
@@ -288,7 +288,7 @@ namespace MyProfile.Budget.Service
             return section;
         }
 
-        public async Task<int> SaveIncludedSection(int sectionID, List<int> includedSections)
+        public async Task<int> SaveIncludedSection(long sectionID, List<long> includedSections)
         {
             var section = await repository.GetAll<BudgetSection>(x => x.ID == sectionID)
                 .Include(x => x.CollectiveSections)
@@ -326,7 +326,7 @@ namespace MyProfile.Budget.Service
             return await repository.SaveAsync();
         }
 
-        public async Task<List<int>> GetCollectionSectionIDsBySectionID(List<int> sectionIDs)
+        public async Task<List<long>> GetCollectionSectionIDsBySectionID(List<long> sectionIDs)
         {
             return await repository.GetAll<CollectiveSection>(x => sectionIDs.Contains(x.SectionID ?? 0))
              .Select(x => x.ChildSectionID ?? 0)

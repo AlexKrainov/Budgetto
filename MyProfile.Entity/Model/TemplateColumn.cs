@@ -48,7 +48,7 @@ namespace MyProfile.Entity.Model
 
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 		[Required]
 		public string Name { get; set; }
 		public int Order { get; set; }
@@ -71,7 +71,7 @@ namespace MyProfile.Entity.Model
 		public ushort? PlaceAfterCommon { get; set; }
 
 		[ForeignKey("Template")]
-		public int TemplateID { get; set; }
+		public long TemplateID { get; set; }
 
 		public virtual Template Template { get; set; }
 

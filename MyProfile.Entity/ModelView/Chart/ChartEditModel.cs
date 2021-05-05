@@ -26,9 +26,9 @@ namespace MyProfile.Entity.ModelView.Chart
 
 	public class ChartFieldItem
 	{
-		public int ID { get; set; }
+		public long ID { get; set; }
 		public string Name { get; set; }
 		public string CssColor { get; set; }
-		public IEnumerable<int> Sections { get; set; }
+		public IEnumerable<long> Sections { get; set; }
 	}
 }

@@ -93,7 +93,7 @@ namespace MyProfile.ToDoList.Service
 
                     foreach (var visibleElementID in visibleElementIDs)
                     {
-                        await repository.DeleteAsync<VisibleElement>(visibleElementID);
+                        repository.Delete<VisibleElement>(x=> x.ID == visibleElementID);
                     }
                     await repository.SaveAsync();
                     await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.ToDoListFolder_Delete);
@@ -198,7 +198,7 @@ namespace MyProfile.ToDoList.Service
             return lists;
         }
 
-        public async Task<ToDoListModelView> GetListByID(int id)
+        public async Task<ToDoListModelView> GetListByID(long id)
         {
             var currentUserID = UserInfo.Current.ID;
             var todate = DateTime.Now.Date;

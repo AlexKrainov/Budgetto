@@ -790,7 +790,7 @@ namespace MyProfile.Budget.Service
             return accountDB.IsHide;
         }
 
-        public bool RemoveOrRecovery(AccountViewModel account, ref int accountIDWithIsDefault)
+        public bool RemoveOrRecovery(AccountViewModel account, ref long accountIDWithIsDefault)
         {
             var now = DateTime.Now.ToUniversalTime();
             var currentUser = UserInfo.Current;
@@ -869,9 +869,9 @@ namespace MyProfile.Budget.Service
         /// </summary>
         /// <param name="account"></param>
         /// <returns>ID of isDefault account</returns>
-        private int UpdateIsDefaultAccount(Account account)
+        private long UpdateIsDefaultAccount(Account account)
         {
-            int accountIDWithIsDefault = -1;
+            long accountIDWithIsDefault = -1;
 
             if (account.IsDefault)
             {

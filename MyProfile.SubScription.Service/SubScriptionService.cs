@@ -193,7 +193,7 @@ namespace MyProfile.SubScription.Service
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
-            List<int> errorLogIDs = new List<int>();
+            List<long> errorLogIDs = new List<long>();
             bool result = true;
 
             try
@@ -218,7 +218,7 @@ namespace MyProfile.SubScription.Service
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
-            List<int> errorLogIDs = new List<int>();
+            List<long> errorLogIDs = new List<long>();
             bool result = true;
             try
             {

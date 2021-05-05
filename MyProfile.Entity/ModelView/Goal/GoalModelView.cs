@@ -25,7 +25,7 @@ namespace MyProfile.Entity.ModelView.Goal
 
 	public class RecordItem
 	{
-		public int ID { get; set; }
+		public long ID { get; set; }
 		public int GoalID { get; set; }
 		public decimal Total { get; set; }
 		public DateTime? DateTimeOfPayment { get; set; }

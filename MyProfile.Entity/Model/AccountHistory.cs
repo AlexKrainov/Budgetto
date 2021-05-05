@@ -19,7 +19,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         [Required]
         [MaxLength(16)]
         public string ActionType { get; set; }
@@ -51,12 +51,12 @@ namespace MyProfile.Entity.Model
         public string StateField { get; set; }
 
         [ForeignKey("Account")]
-        public int AccountID { get; set; }
+        public long AccountID { get; set; }
         [ForeignKey("AccountFrom")]
         /// <summary>
         /// Second account with action, for transfer money
         /// </summary>
-        public int? AccountIDFrom { get; set; }
+        public long? AccountIDFrom { get; set; }
 
         public virtual Account Account { get; set; }
         public virtual Account AccountFrom { get; set; }

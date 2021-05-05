@@ -100,7 +100,7 @@ namespace MyProfile.Controllers
         [HttpPost]
         public JsonResult RemoveOrRecovery([FromBody] AccountViewModel account)
         {
-            int accountIDWithIsDefault = -1;
+            long accountIDWithIsDefault = -1;
             var isDeleted = accountService.RemoveOrRecovery(account, ref accountIDWithIsDefault);
 
             return Json(new { isOk = true, isDeleted, accountIDWithIsDefault });

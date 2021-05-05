@@ -12,7 +12,7 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 		[Required]
 		[MaxLength(132)]
 		public string Title { get; set; }

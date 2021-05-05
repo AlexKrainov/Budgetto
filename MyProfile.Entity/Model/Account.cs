@@ -9,7 +9,7 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 		[Required]
 		[MaxLength(128)]
 		public string Name { get; set; }
@@ -65,9 +65,9 @@ namespace MyProfile.Entity.Model
 		[ForeignKey("PaymentSystem")]
 		public int? PaymentSystemID { get; set; }
 		[ForeignKey("ParentAccount")]
-		public int? ParentAccountID { get; set; }
+		public long? ParentAccountID { get; set; }
 		[ForeignKey("Card")]
-		public int? CardID { get; set; }
+		public long? CardID { get; set; }
 
 
 		public virtual User User { get; set; }

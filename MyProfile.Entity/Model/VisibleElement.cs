@@ -9,7 +9,7 @@ namespace MyProfile.Entity.Model
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
+		public long ID { get; set; }
 
 		public bool IsShow_BudgetMonth { get; set; }
 		public bool IsShow_BudgetYear { get; set; }

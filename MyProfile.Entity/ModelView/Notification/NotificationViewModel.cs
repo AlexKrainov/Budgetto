@@ -11,7 +11,7 @@ namespace MyProfile.Entity.ModelView.Notification
         IMailNotification,
         IReminderNotification
     {
-        public int NotificationID { get; set; }
+        public long NotificationID { get; set; }
         public int NotificationTypeID { get; set; }
         public string NotifyType { get; set; }
         public string Title { get; set; }
@@ -36,7 +36,7 @@ namespace MyProfile.Entity.ModelView.Notification
 
         #region Limit
         [JsonIgnore]
-        public int? LimitID { get; set; }
+        public long? LimitID { get; set; }
         [JsonIgnore]
         public string SpecificCulture { get; set; }
         public decimal? Total { get; set; }
@@ -51,7 +51,7 @@ namespace MyProfile.Entity.ModelView.Notification
         public DateTime? ExpirationDateTime { get; set; }
         public string Icon { get; set; }
         public DateTime? ReadDateTime { get; set; }
-        public int? ReminderDateID { get; set; }
+        public long? ReminderDateID { get; set; }
         public int ReminderUTCOffsetMinutes { get; set; }
         public int UserUTCOffsetMinutes { get; set; }
         #endregion
@@ -60,7 +60,7 @@ namespace MyProfile.Entity.ModelView.Notification
     public interface ILimitNotification
     {
         [JsonIgnore]
-        int? LimitID { get; set; }
+        long? LimitID { get; set; }
         [JsonIgnore]
         string SpecificCulture { get; set; }
         decimal? Total { get; set; }
@@ -89,7 +89,7 @@ namespace MyProfile.Entity.ModelView.Notification
     }
     public class TelegramAccountModelView
     {
-        public int ChatID { get; set; }
+        public long ChatID { get; set; }
         public int TelegramBotChatUserID { get; set; }
         public string TelegramID { get; set; }
         public int StatusID { get; set; }

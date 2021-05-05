@@ -46,24 +46,13 @@ namespace MyProfile.Code
             // SubScriptionToJson();
             //SubScriptionToProd();
             //InsertSummeries();
-            AddPaymentTariff();
-            AddBudgettoEntityType();
-            AddPaymentCounter();
-            IDs();
-
+            //AddPaymentTariff();
+            //AddBudgettoEntityType();
+            //AddPaymentCounter();
+           
             CheckAndAddUserEntityCounter();
         }
 
-        private void IDs()
-        {
-            var userLogs = repository.GetAll<Entity.Model.UserLog>().ToList();
-
-            foreach (var userLog in userLogs)
-            {
-                userLog.ID3 = userLog.ID3;
-            }
-            repository.Save();
-        }
 
 
         private void AddBudgettoEntityType()

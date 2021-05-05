@@ -7,7 +7,7 @@ namespace MyProfile.Entity.ModelView.Account
 {
     public class MainAccountModelView
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public AccountTypes AccountType { get; set; }
         public string Name { get; set; }
         public decimal Balance { get; set; }

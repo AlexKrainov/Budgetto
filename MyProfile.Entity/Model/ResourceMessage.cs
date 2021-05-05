@@ -7,12 +7,12 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
 
         [ForeignKey("Resource")]
-        public int ResourceID { get; set; }
+        public long ResourceID { get; set; }
         [ForeignKey("Message")]
-        public int MessageID { get; set; }
+        public long MessageID { get; set; }
 
         public virtual Resource Resource { get; set; }
         public virtual Message Message { get; set; }

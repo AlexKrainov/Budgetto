@@ -9,9 +9,9 @@ namespace Telegram.Service.Model
         public Guid? UserID { get; set; }
         public string TelegramLogin { get; set; }
         public int StatusID { get; set; }
-        public int ChatID { get; set; }
-        public int ChatUserID { get; set; }
-        public int ChatTelegramBotUserID { get; set; }
+        public long ChatID { get; set; }
+        public long ChatUserID { get; set; }
+        public long ChatTelegramBotUserID { get; set; }
         public int TelegramAccountID { get; internal set; }
         public string UserName { get; internal set; }
     }

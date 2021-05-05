@@ -7,7 +7,7 @@ namespace MyProfile.Entity.ModelView
 {
     public class TemplateViewModel
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Name { get; set; }
         public bool? IsCountCollectiveBudget { get; set; }
         public DateTime DateCreate { get; set; } = DateTime.Now;
@@ -26,7 +26,7 @@ namespace MyProfile.Entity.ModelView
 
     public class TemplateViewModel_Short
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Name { get; set; }
         public string PeriodName { get; set; }
         public int PeriodTypeID { get; set; }
@@ -35,7 +35,7 @@ namespace MyProfile.Entity.ModelView
 
     public class Column
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Name { get; set; }
         public int Order { get; set; }
         public bool IsShow { get; set; }
@@ -85,22 +85,22 @@ namespace MyProfile.Entity.ModelView
         /// <summary>
         /// sectionID
         /// </summary>
-        public int? ID { get; set; }
+        public long? ID { get; set; }
         public string Value { get; set; }
         public FormulaFieldType Type { get; set; }
     }
 
     public class TemplateBudgetSection
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public int BudgetAreaID { get; set; }
         public string BudgetAreaName { get; set; }
-        public int SectionID { get; set; }
+        public long SectionID { get; set; }
         public string SectionName { get; set; }
 
 
         #region Collection budget
-        public int MainSectionID { get; set; } = -1;
+        public long MainSectionID { get; set; } = -1;
         public bool IsCollectSection { get; set; } = false;
         public List<BudgetSectionModelView> CollectionSections { get; set; }
         #endregion

@@ -8,12 +8,12 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long ID { get; set; }
         public DateTime DateSet { get; set; }
         [ForeignKey("Record")]
-        public int RecordID { get; set; }
+        public long RecordID { get; set; }
         [ForeignKey("UserTag")]
-        public int UserTagID { get; set; }
+        public long UserTagID { get; set; }
 
         public virtual UserTag UserTag { get; set; }
         public virtual Record Record { get; set; }

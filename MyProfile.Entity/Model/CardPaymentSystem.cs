@@ -10,7 +10,7 @@ namespace MyProfile.Entity.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         [ForeignKey("Card")]
-        public int CardID { get; set; }
+        public long CardID { get; set; }
         [ForeignKey("PaymentSystem")]
         public int PaymentSystemID { get; set; }
 

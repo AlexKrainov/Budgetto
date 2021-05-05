@@ -20,7 +20,7 @@ namespace MyProfile.Entity.Model
     {
         [Key]
         [ForeignKey("Account")]
-        public int AccountID { get; set; }
+        public long AccountID { get; set; }
 
         #region Deposit
         public decimal? InterestRate { get; set; }

@@ -7,12 +7,12 @@ namespace MyProfile.Entity.ModelView.BudgetView
 	{
 		public decimal Total { get; set; }
 		public DateTime DateTimeOfPayment { get; set; }
-		public int SectionID { get; set; }
+		public long SectionID { get; set; }
 		public string SectionName { get; set; }
 		public int AreaID { get; set; }
 		public string AreaName { get; set; }
-		public IEnumerable<int> CollectionSectionIDs { get; set; }
+		public IEnumerable<long> CollectionSectionIDs { get; set; }
         public int? SectionTypeID { get; set; }
-        public int? AccountID { get; set; }
+        public long? AccountID { get; set; }
     }
 }

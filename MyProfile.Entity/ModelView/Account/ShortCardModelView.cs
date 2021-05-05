@@ -4,7 +4,7 @@ namespace MyProfile.Entity.ModelView.Account
 {
     public class ShortCardModelView : Select2ModelView
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string Name { get; set; }
         public string Logo { get; set; }
         public AccountTypes AccountType { get; set; }

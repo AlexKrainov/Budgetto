@@ -27,7 +27,7 @@ namespace MyProfile.Limit.Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<int> CheckLimitNotificationsAsync(int? limitID = null, Guid? userID = null)
+        public async Task<int> CheckLimitNotificationsAsync(long? limitID = null, Guid? userID = null)
         {
             int _checkLimits = 0;
             var predicate = PredicateBuilder.True<Notification>();

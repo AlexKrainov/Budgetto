@@ -4,7 +4,7 @@ namespace MyProfile.Entity.ModelView.Account
 {
     public class AccountShortViewModel
 	{
-        public int ID { get; set; }
+        public long ID { get; set; }
         public AccountTypes AccountType { get; set; }
 		public string Name { get; set; }
 		public bool IsDefault { get; set; }
@@ -21,7 +21,7 @@ namespace MyProfile.Entity.ModelView.Account
         public string PaymentLogo { get; set; }
         public int? PaymentSystemID { get; set; }
         public decimal Balance { get; set; }
-        public int? CardID { get; set; }
+        public long? CardID { get; set; }
         public string CardName { get; set; }
         public string CardLogo { get; set; }
     }

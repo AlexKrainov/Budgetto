@@ -118,7 +118,7 @@ namespace MyProfile.Controllers
         public async Task<IActionResult> SaveSections([FromBody] List<BudgetAreaModelView> areas)
         {
             var currentUser = UserInfo.Current;
-            List<int> errorLogCreateIDs = new List<int>();
+            List<long> errorLogCreateIDs = new List<long>();
             List<BudgetArea> budgetAreas = new List<BudgetArea>();
             //List<BudgetSectionModelView> sectionForUpdate = new List<BudgetSectionModelView>();
 
@@ -193,7 +193,7 @@ namespace MyProfile.Controllers
         public async Task<IActionResult> SaveTemplate([FromBody] TemplateViewModel template)
         {
             var currentUser = UserInfo.Current;
-            List<int> errorLogCreateIDs = new List<int>();
+            List<long> errorLogCreateIDs = new List<long>();
             TemplateErrorModelView templateResult = new TemplateErrorModelView();
 
             try
@@ -241,7 +241,7 @@ namespace MyProfile.Controllers
         public async Task<IActionResult> SaveLimits([FromBody] List<LimitModelView> limits)
         {
             var currentUser = UserInfo.Current;
-            List<int> errorLogCreateIDs = new List<int>();
+            List<long> errorLogCreateIDs = new List<long>();
 
             try
             {
@@ -267,7 +267,7 @@ namespace MyProfile.Controllers
         public async Task<IActionResult> SaveGoals([FromBody] List<GoalModelView> goals)
         {
             var currentUser = UserInfo.Current;
-            List<int> errorLogCreateIDs = new List<int>();
+            List<long> errorLogCreateIDs = new List<long>();
 
             try
             {
@@ -292,7 +292,7 @@ namespace MyProfile.Controllers
         public async Task<IActionResult> Finish()
         {
             var currentUser = UserInfo.Current;
-            List<int> errorLogCreateIDs = new List<int>();
+            List<long> errorLogCreateIDs = new List<long>();
 
             try
             {

@@ -9,8 +9,8 @@ namespace MyProfile.Entity.ModelView.Account
 {
     public class AccountViewModel
     {
-        public int ID { get; set; }
-        public int? ParentID { get; set; }
+        public long ID { get; set; }
+        public long? ParentID { get; set; }
         public AccountTypes AccountType { get; set; }
         public string Name { get; set; }
         public decimal Balance { get; set; }
@@ -77,7 +77,7 @@ namespace MyProfile.Entity.ModelView.Account
         public decimal? Output { get; set; }
         public bool IsCountBalanceInMainAccount { get; set; }
         public string PaymentLogo { get; set; }
-        public int? CardID { get; set; }
+        public long? CardID { get; set; }
         public string CardName { get; set; }
         public string CardLogo { get; set; }
 

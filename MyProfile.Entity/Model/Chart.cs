@@ -23,7 +23,7 @@ namespace MyProfile.Entity.Model
 		[ForeignKey("ChartType")]
 		public int ChartTypeID { get; set; }
 		[ForeignKey("VisibleElement")]
-		public int VisibleElementID { get; set; }
+		public long VisibleElementID { get; set; }
 
 		public virtual User User { get; set; }
 		public virtual ChartType ChartType { get; set; }
