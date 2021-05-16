@@ -237,11 +237,15 @@ var SectionVue = new Vue({
             this.chooseColor();
             $("#accordion2-2, #accordion2-1").removeClass("show");
             this.changeSectionType(2)
+            $("#base-section").val("").trigger('change');
 
             $("#modal-section").modal("show");
         },
         edit: function (section) {
             this.section = JSCopyObject(section);
+
+            $("#base-section").append(`<option value="${this.section.baseSectionID}">${this.section.baseSectionName}</option>`).select2("data", { id: this.section.baseSectionID, text: this.section.baseSectionName });
+            $("#base-section").trigger('change');
 
             $("#collectiveSections").select2();
 
@@ -400,6 +404,30 @@ var SectionVue = new Vue({
                 this.section.cssColor = '';
                 this.section.cssBackground = '';
             }
-        }
+        },
+        selectedBaseSection: function () {
+            let baseSection = $("#base-section").select2("data")[0];
+            this.section.baseSectionID = baseSection.id;
+            this.section.baseSectionName = baseSection.name;
+            this.section.sectionTypeID = baseSection.sectionTypeID;
+
+            if (!this.section.cssColor) {
+                this.section.cssColor = baseSection.color;
+            }
+            if (!this.section.cssIcon) {
+                this.section.cssIcon = baseSection.icon;
+            }
+            if (!this.section.cssBackground) {
+                this.section.cssBackground = baseSection.background;
+            }
+            if (!this.section.name) {
+                this.section.name = baseSection.sectionName;
+            }
+        },
+        unselectedBaseSection: function () {
+            this.section.baseSectionID = null;
+            this.section.baseSectionName = null;
+        },
+
     }
 });

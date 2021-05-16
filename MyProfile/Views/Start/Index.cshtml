@@ -127,66 +127,71 @@
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6">
                         <h4 class="ml-3 mb-1">Категории</h4>
-                        <h5 class="text-muted small ml-3">
-                            Выберите категории, по которым вы ведете учет финансов или добавьте свои:
+                        <h5 class="form-label ml-3">
+                            Выберите категории, по которым вы ведете учет финансов.
+                            <br />
+                            В дальнйшем вы сможете добавлять, изменять и удалять группы.
                         </h5>
-
                         <div class="mt-4" data-placement="right" data-toggle="tooltip" data-html="true"
                              title="Чтобы добавить категорию, нажмите на нее. Чтобы убрать категорию, нажмите на нее еще раз">
                             <vue-section-component data-class="cards-medium"
-                                                   data-records-style="margin-left: 15px;"
+                                                   data-id="baseSections"
+                                                   data-records-style="margin-left: 15px;max-height: 300px; overflow-x: auto;"
                                                    v-bind:is-show-filter="false"
+                                                   v-bind:is-show-change-view-mode="true"
                                                    v-bind:data-is-selection="true"
                                                    v-bind:data-items="sectionSource"
                                                    v-on:onchoose="onChooseSection"></vue-section-component>
                             <a href="javascript:void(0)" class="small show-sections ml-3" v-on:click="selectAllSections">Выбрать все категории</a>
+                            <span class="small show-sections ml-3 float-right">Выбрано категорий: {{ sectionSource.filter(x => x.isSelected).length }}</span>
                         </div>
                         <br />
-                        <h4 class="ml-3" v-show="userSectionSource && userSectionSource.length > 0">
-                            Мои категории
-                        </h4>
-                        <vue-section-component data-class="cards-medium"
-                                               data-records-style="margin-left: 15px;"
-                                               v-bind:is-show-filter="false"
-                                               v-bind:data-items="userSectionSource"
-                                               v-on:onchoose="onEditSection"></vue-section-component>
-                        <br>
-                        <button class="btn btn-primary ml-3" v-on:click="addSection">
-                            <i class="ion ion-md-add  pr-2"></i>Добавить свою категорию
-                        </button>
-                        <br />
-                        <div class="callout callout-danger mt-3" v-show="errorMessage">
-                            <button type="button" class="close" data-dismiss="alert" v-on:click="errorMessage = null">×</button>
-                            {{ errorMessage }}
-                        </div>
+                        @*<h4 class="ml-3" v-show="userSectionSource && userSectionSource.length > 0">
+            Мои категории
+        </h4>
+        <vue-section-component data-class="cards-medium"
+                               data-records-style="margin-left: 15px;"
+                               v-bind:is-show-filter="false"
+                               v-bind:data-items="userSectionSource"
+                               v-on:onchoose="onEditSection"></vue-section-component>
+        <br>
+        <button class="btn btn-primary ml-3" v-on:click="addSection">
+            <i class="ion ion-md-add  pr-2"></i>Добавить свою категорию
+        </button>
+        <br />
+        <div class="callout callout-danger mt-3" v-show="errorMessage">
+            <button type="button" class="close" data-dismiss="alert" v-on:click="errorMessage = null">×</button>
+            {{ errorMessage }}
+        </div>*@
                     </div>
                     <div class="col-12 col-sm-12 col-md-6">
-                        <h4 class="mb-1">Группы категорий</h4>
-                        <h5 class="text-muted small mb-0">
-                            Нужны, чтобы группировать ваши категории по смыслу - например, группа "Еда" может содержать категории "Продукты", "Фастфуд", "Рестораны" и тд.
-                        </h5>
-                        <h5 class="text-muted small mb-0">
-                            Для начала, для вашего удобства категории распределяются по 2-м группам - "Расходы" и "Доходы".
-                        </h5>
-                        <h5 class="text-muted small">
-                            В дальнйшем вы сможете добавлять, изменять и удалять группы.
-                        </h5>
+                     
+                        @*<h4 class="mb-1">Группы категорий</h4>
+        <h5 class="text-muted small mb-0">
+            Нужны, чтобы группировать ваши категории по смыслу - например, группа "Еда" может содержать категории "Продукты", "Фастфуд", "Рестораны" и тд.
+        </h5>
+        <h5 class="text-muted small mb-0">
+            Для начала, для вашего удобства категории распределяются по 2-м группам - "Расходы" и "Доходы".
+        </h5>
+        <h5 class="text-muted small">
+            В дальнйшем вы сможете добавлять, изменять и удалять группы.
+        </h5>
 
-                        <div class="card ui-bordered mt-3 area-item custom-card-hover"
-                             v-for="area in areas">
-                            <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
-                                <strong>{{ area.name }}</strong> &nbsp;
-                            </div>
-                            <vue-section-component data-class="cards-medium"
-                                                   data-records-style="margin-left: 15px;"
-                                                   v-bind:data-id="'areaid_'+area.id"
-                                                   data-section-classes=""
-                                                   v-bind:is-show-filter="false"
-                                                   v-bind:data-items="area.sections"></vue-section-component>
-                        </div>
+        <div class="card ui-bordered mt-3 area-item custom-card-hover"
+             v-for="area in areas">
+            <div class="d-flex flex-wrap justify-content-between align-items-center p-3">
+                <strong>{{ area.name }}</strong> &nbsp;
+            </div>
+            <vue-section-component data-class="cards-medium"
+                                   data-records-style="margin-left: 15px;"
+                                   v-bind:data-id="'areaid_'+area.id"
+                                   data-section-classes=""
+                                   v-bind:is-show-filter="false"
+                                   v-bind:data-items="area.sections"></vue-section-component>
+        </div>*@
                     </div>
                 </div>
-                @await Html.PartialAsync("~/Views/Section/_ModelSection.cshtml")
+                @*@await Html.PartialAsync("~/Views/Section/_ModelSection.cshtml")*@
             </div>
         </div>
         <div id="smartwizard-1-step-3" class="card animated fadeIn">
@@ -202,7 +207,7 @@
                         </h5>
                         <div class="mt-4">
                             <vue-section-component data-class="cards-medium"
-                                                   data-records-style="margin-left: 15px;"
+                                                   data-records-style="margin-left: 15px;max-height: 300px; overflow-x: auto;"
                                                    v-bind:is-show-filter="false"
                                                    v-bind:data-items="sections"
                                                    v-on:onchoose="templateOnSelectedSection"></vue-section-component>

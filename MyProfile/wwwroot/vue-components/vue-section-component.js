@@ -1,7 +1,7 @@
 ﻿Vue.component("vue-section-component", {
     template: `
         <div v-bind:id="dataId" >
-            <div class="cursor-pointer">
+            <div class="cursor-pointer div-change-view">
                 <i class="ion ion-md-apps text-large" 
                     v-show="isShowChangeViewMode"
                     v-bind:class="privateIsShowByFolderMode == false ? 'text-primary' : ''"

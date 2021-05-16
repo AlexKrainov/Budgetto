@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210512133445_8")]
+    partial class _8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,9 +314,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Background")
-                        .HasMaxLength(32);
-
                     b.Property<int>("BaseAreaID");
 
                     b.Property<string>("CodeName")
@@ -334,13 +333,9 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.Property<int>("SectionTypeID");
-
                     b.HasKey("ID");
 
                     b.HasIndex("BaseAreaID");
-
-                    b.HasIndex("SectionTypeID");
 
                     b.ToTable("BaseSections");
                 });
@@ -2932,11 +2927,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.BaseArea", "BaseArea")
                         .WithMany("BaseSections")
                         .HasForeignKey("BaseAreaID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
-                        .WithMany()
-                        .HasForeignKey("SectionTypeID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -19,6 +19,7 @@ using Common.Service;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.UserLog.Service;
 using Microsoft.Extensions.Caching.Memory;
+using MyProfile.Entity.ModelView.Section;
 
 namespace MyProfile.Budget.Service
 {
@@ -30,7 +31,7 @@ namespace MyProfile.Budget.Service
         private CommonService commonService;
         private IMemoryCache cache;
 
-        public SectionService(IBaseRepository repository, 
+        public SectionService(IBaseRepository repository,
             IMemoryCache cache,
             CommonService commonService)
         {
@@ -63,6 +64,8 @@ namespace MyProfile.Budget.Service
                         .Select(y => new BudgetSectionModelView
                         {
                             ID = y.ID,
+                            BaseSectionID = y.BaseSectionID,
+                            BaseSectionName = y.BaseSection != null ? y.BaseSection.Name : null,
                             SectionTypeID = y.SectionTypeID,
                             SectionTypeName = y.SectionTypeID != null ? y.SectionType.Name : null,
                             Name = y.Name,
@@ -134,6 +137,8 @@ namespace MyProfile.Budget.Service
                     .Select(x => new BudgetSectionModelView
                     {
                         ID = x.ID,
+                        BaseSectionID = x.BaseSectionID,
+                        BaseSectionName = x.BaseSection != null ? x.BaseSection.Name : null,
                         Name = x.Name,
                         Description = x.Description,
                         CssIcon = x.CssIcon,
@@ -146,7 +151,7 @@ namespace MyProfile.Budget.Service
                         IsShow = true,
                         SectionTypeID = x.SectionTypeID,
                         IsCashback = x.IsCashback,
-                        Tags = x.BudgetRecords.SelectMany(y => y.Tags).GroupBy(y => y.UserTag).Select(y => new TagSectionModelView { ID = y.Key.ID, Title= y.Key.Title, Count = y.Count() }).OrderByDescending(y => y.Count).ToList()
+                        Tags = x.BudgetRecords.SelectMany(y => y.Tags).GroupBy(y => y.UserTag).Select(y => new TagSectionModelView { ID = y.Key.ID, Title = y.Key.Title, Count = y.Count() }).OrderByDescending(y => y.Count).ToList()
                         //CollectiveSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
                         //{
                         //    ID = y.ChildSection.ID,
@@ -241,6 +246,7 @@ namespace MyProfile.Budget.Service
                 IsShowInCollective = section.IsShowInCollective,
                 IsShowOnSite = section.IsShowOnSite,
                 IsCashback = section.IsCashback,
+                BaseSectionID = section.BaseSectionID,
             };
             if (budgetSection.ID > 0)
             {
@@ -333,6 +339,35 @@ namespace MyProfile.Budget.Service
              .ToListAsync();
         }
 
+        public IEnumerable<BaseSectionModelView> GetBaseSections()
+        {
+            List<BaseSectionModelView> sections;
+
+            if (cache.TryGetValue(typeof(BaseSectionModelView).Name, out sections) == false)
+            {
+                sections = repository.GetAll<BaseSection>()
+                 .Select(x => new BaseSectionModelView
+                 {
+                     AreaID = x.BaseAreaID,
+                     AreaName = x.BaseArea.Name,
+                     SectionID = x.ID,
+                     SectionName = x.Name,
+                     Background = x.Background,
+                     Color = x.Color,
+                     Icon = x.Icon,
+                     KeyWords = x.KeyWords,
+                     SectionTypeID = x.SectionTypeID,
+
+                     id = x.ID,
+                     text = x.Name
+                 })
+                 .ToList();
+
+                cache.Set(typeof(BaseSectionModelView).Name, sections, DateTime.Now.AddDays(15));
+            }
+
+            return sections;
+        }
 
         #region Deletes
         public async Task<Tuple<bool, bool, string>> DeleteArea(int areaID)

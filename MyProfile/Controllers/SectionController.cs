@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.Section;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.User.Service;
@@ -128,6 +130,38 @@ namespace MyProfile.Controllers
         }
 
         #endregion
+
+        [HttpGet]
+        public JsonResult GetBaseSection(string searchString, int page)
+        {
+            var predicate = PredicateBuilder.True<BaseSectionModelView>();
+
+            if (string.IsNullOrEmpty(searchString) == false)
+            {
+                searchString = searchString.ToLower();
+                predicate = predicate.And(item =>
+                    item.KeyWords.ToLower().Contains(searchString)
+                    || item.SectionName.ToLower().Contains(searchString)
+                    || item.AreaName.ToLower().Contains(searchString));
+            }
+
+            var banks = sectionService.GetBaseSections()
+                .AsQueryable()
+                .Where(predicate);
+
+            var result = banks
+                .OrderBy(item => item.AreaID)
+                .Skip((page - 1) * 20)
+                .Take(20)
+                .ToList();
+
+            return Json(new
+            {
+                Count = banks.Count(),
+                Items = result
+            });
+        }
+
     }
 
 }

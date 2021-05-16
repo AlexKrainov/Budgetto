@@ -49,11 +49,85 @@ namespace MyProfile.Code
             //AddPaymentTariff();
             //AddBudgettoEntityType();
             //AddPaymentCounter();
-           
+
             CheckAndAddUserEntityCounter();
+            CheckAndAddBaseSectionsAndAreas();
+
         }
 
+        private void CheckAndAddBaseSectionsAndAreas()
+        {
+            List<BaseAreaAndSection> categories = new List<BaseAreaAndSection>();
+            List<BaseArea> baseAreas = repository.GetAll<BaseArea>().ToList();
+            List<BaseSection> baseSections = repository.GetAll<BaseSection>().ToList();
 
+            using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\base-section-area.json"))
+            {
+                categories = JsonConvert.DeserializeObject<List<BaseAreaAndSection>>(reader.ReadToEnd());
+
+                BaseArea baseArea = new BaseArea();
+                BaseSection baseSection = new BaseSection();
+
+                foreach (var item in categories)
+                {
+                    if (!string.IsNullOrEmpty(item.AreaEng))
+                    {
+                        baseArea = baseAreas.FirstOrDefault(x => x.CodeName == item.AreaEng);
+                        if (baseArea == null)
+                        {
+                            baseArea = new BaseArea();
+                        }
+
+                        baseArea.Name = item.AreaRus;
+                        baseArea.CodeName = item.AreaEng;
+
+                        if (baseArea.ID == 0)
+                        {
+                            repository.Create(baseArea, true);
+                        }
+                        else
+                        {
+                            repository.Update(baseArea, true);
+                        }
+                    }
+                    else
+                    {
+                        baseSection = baseSections.FirstOrDefault(x => x.CodeName == item.CategoryEng);
+                        if (baseSection == null)
+                        {
+                            baseSection = new BaseSection();
+                        }
+
+                        baseSection.Name = item.CategoryRus;
+                        baseSection.CodeName = item.CategoryEng;
+                        baseSection.BaseAreaID = baseArea.ID;
+                        baseSection.KeyWords = item.KeyWords;
+                        baseSection.Color = item.Color;
+                        baseSection.Background = item.Background;
+                        baseSection.Icon = item.Icon;
+
+                        if (item.SectionType == Enum.GetName(typeof(SectionTypeEnum), SectionTypeEnum.Spendings))
+                        {
+                            baseSection.SectionTypeID = (int)SectionTypeEnum.Spendings;
+                        }
+                        else if (item.SectionType == Enum.GetName(typeof(SectionTypeEnum), SectionTypeEnum.Earnings))
+                        {
+                            baseSection.SectionTypeID = (int)SectionTypeEnum.Earnings;
+                        }
+
+                        if (baseSection.ID == 0)
+                        {
+                            repository.Create(baseSection, true);
+                        }
+                        else
+                        {
+                            repository.Update(baseSection, true);
+                        }
+                    }
+
+                }
+            }
+        }
 
         private void AddBudgettoEntityType()
         {
@@ -333,7 +407,7 @@ namespace MyProfile.Code
 
             if (userEntityCounters.Count > 0)
             {
-                 repository.CreateRange(userEntityCounters, true);
+                repository.CreateRange(userEntityCounters, true);
             }
         }
 
@@ -1665,6 +1739,19 @@ namespace MyProfile.Code
             public string title { get; set; }
             public string category { get; set; }
             public string site { get; set; }
+        }
+
+        public class BaseAreaAndSection
+        {
+            public string AreaEng { get; set; }
+            public string AreaRus { get; set; }
+            public string CategoryEng { get; set; }
+            public string CategoryRus { get; set; }
+            public string KeyWords { get; set; }
+            public string Color { get; set; }
+            public string Icon { get; set; }
+            public string Background { get; set; }
+            public string SectionType { get; set; }
         }
     }
 }

@@ -133,7 +133,7 @@ namespace MyProfile.Controllers
                     {
                         budgetSections.Add(new BudgetSection
                         {
-                            CodeName = section.CodeName,
+                            BaseSectionID = (int)section.ID,
                             CssBackground = section.CssBackground,
                             CssColor = section.CssColor,
                             CssIcon = section.CssIcon,
@@ -313,6 +313,29 @@ namespace MyProfile.Controllers
         [HttpGet]
         public IActionResult LoadSections()
         {
+            var baseSections = sectionService.GetBaseSections()
+                .Select(x => new BudgetSectionModelView
+                {
+                    ID = x.SectionID,
+                    Name = x.SectionName,
+                    CssIcon = x.Icon,
+                    CssColor = x.Color,
+                    CssBackground = x.Background,
+                    IsShowInCollective = true,
+                    IsShowOnSite = true,
+                    AreaID = x.AreaID,
+                    AreaName = x.AreaName,
+                    IsSelected = false,
+                    IsShow_Filtered = true,
+                    IsShow = true,
+                    SectionTypeName = x.SectionTypeID == (int)SectionTypeEnum.Spendings ? "Расходы" : "Доходы",
+                    SectionTypeID = x.SectionTypeID,
+                    IsCashback = true,
+                })
+                .ToList();
+
+
+
             var sections = new List<BudgetSectionModelView>
             {
                 //Расходы
@@ -847,7 +870,7 @@ namespace MyProfile.Controllers
 
             //var userSections = await sectionService.GetAllSectionForRecords();
 
-            return Json(new { isOk = true, sections });
+            return Json(new { isOk = true, sections = baseSections });
         }
     }
 }

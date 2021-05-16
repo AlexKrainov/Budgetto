@@ -50,6 +50,16 @@
     "isShow": true
   },
   {
+    "nameClass": "fas fa-ice-cream",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-apple-alt",
+    "name": "",
+    "isShow": true
+  },
+  {
     "nameClass": "fab fa-shopify",
     "name": "",
     "isShow": true
@@ -130,6 +140,16 @@
     "isShow": true
   },
   {
+    "nameClass": "fas fa-user-edit",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-users",
+    "name": "",
+    "isShow": true
+  },
+  {
     "nameClass": "fas fa-bus",
     "name": "",
     "isShow": true
@@ -150,12 +170,32 @@
     "isShow": true
   },
   {
+    "nameClass": "fas fa-tachometer-alt",
+    "name": "",
+    "isShow": true
+  },
+  {
     "nameClass": "fas fa-truck",
     "name": "",
     "isShow": true
   },
   {
+    "nameClass": "fas fa-shipping-fast",
+    "name": "",
+    "isShow": true
+  },
+  {
     "nameClass": "fas fa-subway",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-bus-alt",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-train",
     "name": "",
     "isShow": true
   },
@@ -185,12 +225,37 @@
     "isShow": true
   },
   {
+    "nameClass": "fas fa-road",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-parking",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-hands-wash",
+    "name": "",
+    "isShow": true
+  },
+  {
     "nameClass": "fas fa-ship",
     "name": "",
     "isShow": true
   },
   {
     "nameClass": "fas fa-plane",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-plane-departure",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-hotel",
     "name": "",
     "isShow": true
   },
@@ -217,6 +282,41 @@
     "isShow": true
   },
   {
+    "nameClass": "fas fa-house-damage",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-university",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-house-user",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-user-tie",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-user-plus",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-user-shield",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-tools",
+    "name": "",
+    "isShow": true
+  },
+  {
     "nameClass": "fas fa-faucet",
     "name": "",
     "isShow": true
@@ -234,16 +334,6 @@
 
   {
     "nameClass": "fas fa-phone",
-    "name": "",
-    "isShow": true
-  },
-  {
-    "nameClass": "fas fa-tooth",
-    "name": "",
-    "isShow": true
-  },
-  {
-    "nameClass": "fas fa-user-md",
     "name": "",
     "isShow": true
   },
@@ -278,12 +368,37 @@
     "isShow": true
   },
   {
+    "nameClass": "fas fa-tooth",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-user-md",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-pills",
+    "name": "",
+    "isShow": true
+  },
+  {
     "nameClass": "fas fa-clinic-medical",
     "name": "",
     "isShow": true
   },
   {
     "nameClass": "fas fa-hand-holding-medical",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-file-medical",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-hand-holding-heart",
     "name": "",
     "isShow": true
   },
@@ -320,6 +435,11 @@
     "isShow": true
   },
   {
+    "nameClass": "fas fa-hand-holding-usd",
+    "name": "",
+    "isShow": true
+  },
+  {
     "nameClass": "fas fa-piggy-bank",
     "name": "",
     "isShow": true
@@ -351,6 +471,16 @@
   },
   {
     "nameClass": "fas fa-baby",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-gamepad",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-shapes",
     "name": "",
     "isShow": true
   },
@@ -438,6 +568,95 @@
     "nameClass": "fas fa-percentage",
     "name": "",
     "isShow": true
+  },
+  {
+    "nameClass": "fas fa-print",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-balance-scale",
+    "name": "",
+    "isShow": true
+  }  ,
+  {
+    "nameClass": "fas fa-briefcase",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-ad",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-graduation-cap",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-user-graduate",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-dumbbell",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-broom",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-tags",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-globe-americas",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-passport",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-map-marked-alt",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-gift",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-cut",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-table-tennis",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-suitcase-rolling",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-shower",
+    "name": "",
+    "isShow": true
+  },
+  {
+    "nameClass": "fas fa-air-freshener",
+    "name": "",
+    "isShow": true
   }
-
 ]

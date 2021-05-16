@@ -46,10 +46,13 @@ namespace MyProfile.Entity.Model
         public int BudgetAreaID { get; set; }
         [ForeignKey("SectionType")]
         public int? SectionTypeID { get; set; }
+        [ForeignKey("BaseSection")]
+        public int? BaseSectionID { get; set; }
 
 
         public virtual BudgetArea BudgetArea { get; set; }
         public virtual SectionType SectionType { get; set; }
+        public virtual BaseSection BaseSection { get; set; }
 
 
         public virtual IEnumerable<Record> BudgetRecords { get; set; }

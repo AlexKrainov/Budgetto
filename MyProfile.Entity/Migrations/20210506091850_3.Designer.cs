@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210506091850_3")]
+    partial class _3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,64 +289,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("BankTypes");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.BaseArea", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CodeName")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.HasKey("ID");
-
-                    b.ToTable("BaseAreas");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.BaseSection", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Background")
-                        .HasMaxLength(32);
-
-                    b.Property<int>("BaseAreaID");
-
-                    b.Property<string>("CodeName")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("Icon")
-                        .HasMaxLength(64);
-
-                    b.Property<string>("KeyWords")
-                        .IsRequired();
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128);
-
-                    b.Property<int>("SectionTypeID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BaseAreaID");
-
-                    b.HasIndex("SectionTypeID");
-
-                    b.ToTable("BaseSections");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetArea", b =>
                 {
                     b.Property<int>("ID")
@@ -382,8 +326,6 @@ namespace MyProfile.Entity.Migrations
                     b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("BaseSectionID");
 
                     b.Property<int>("BudgetAreaID");
 
@@ -426,8 +368,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BaseSectionID");
-
                     b.HasIndex("BudgetAreaID");
 
                     b.HasIndex("SectionTypeID");
@@ -444,8 +384,6 @@ namespace MyProfile.Entity.Migrations
                     b.Property<int>("AccountTypeID");
 
                     b.Property<int?>("BankID");
-
-                    b.Property<int?>("BaseAreaID");
 
                     b.Property<string>("BigLogo")
                         .HasMaxLength(256);
@@ -496,8 +434,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("AccountTypeID");
 
                     b.HasIndex("BankID");
-
-                    b.HasIndex("BaseAreaID");
 
                     b.ToTable("Cards");
                 });
@@ -2927,19 +2863,6 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("BankTypeID");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.BaseSection", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.BaseArea", "BaseArea")
-                        .WithMany("BaseSections")
-                        .HasForeignKey("BaseAreaID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.SectionType", "SectionType")
-                        .WithMany()
-                        .HasForeignKey("SectionTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetArea", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.User", "User")
@@ -2949,10 +2872,6 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetSection", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.BaseSection", "BaseSection")
-                        .WithMany()
-                        .HasForeignKey("BaseSectionID");
-
                     b.HasOne("MyProfile.Entity.Model.BudgetArea", "BudgetArea")
                         .WithMany("BudgetSectinos")
                         .HasForeignKey("BudgetAreaID")
@@ -2973,10 +2892,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.Bank", "Bank")
                         .WithMany("Cards")
                         .HasForeignKey("BankID");
-
-                    b.HasOne("MyProfile.Entity.Model.BaseArea")
-                        .WithMany("Cards")
-                        .HasForeignKey("BaseAreaID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.CardPaymentSystem", b =>

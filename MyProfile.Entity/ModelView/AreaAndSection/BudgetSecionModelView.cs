@@ -10,7 +10,9 @@ namespace MyProfile.Entity.ModelView
 		[NonSerialized, JsonIgnore]
 		public Guid UserID;
 		public long ID { get; set; }
-		public string Name { get; set; }
+        public int? BaseSectionID { get; set; }
+        public string BaseSectionName { get; set; }
+        public string Name { get; set; }
 		public string Description { get; set; }
 		public string CssIcon { get; set; }
 		public string CssColor { get; set; }

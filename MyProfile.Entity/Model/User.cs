@@ -11,7 +11,6 @@ namespace MyProfile.Entity.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NumberUser { get; set; }
         [Required]
         public string Name { get; set; }

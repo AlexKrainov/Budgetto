@@ -1,0 +1,871 @@
+﻿[
+  {
+    "AreaEng": "Food & Dining",
+    "AreaRus": "Еда/Питание"
+  },
+  {
+    "CategoryEng": "Groceries",
+    "CategoryRus": "Продукты",
+    "KeyWords": "Продукты, Супермаркеты, Еда, Обед, Завтрак, Ужин, Школьное питание, Еда по подписке",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-shopping-basket",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Fast Food",
+    "CategoryRus": "Фаст фуд",
+    "KeyWords": "Быстрое питание, Фастфуд, Фаст, Перекусы, Кофе, Гамбургер, Сладости, Еда вне дома, Доставка еды",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-hamburger",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Alcohol & Tabacco",
+    "CategoryRus": "Алкоголь, Табак и пр.",
+    "KeyWords": "Алкоголь, Табак, Сигареты, Электронные сигареты, Вредные привычки, Вино, Пиво",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-glass-cheers",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Restaurants",
+    "CategoryRus": "Рестораны",
+    "KeyWords": "Рестораны, Кафе, Бар, Кальян, Чаевые, Еда вне дома, Доставка еды",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-utensils",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Shopping/Clohing",
+    "AreaRus": "Покупки / Одежда"
+  },
+  {
+    "CategoryEng": "Clothing & Shoes",
+    "CategoryRus": "Одежда и обувь",
+    "KeyWords": "Одежда, Обувь, Аксессуары, Ювелирные изделия, Часы",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-tshirt",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Electronics & Software",
+    "CategoryRus": "Электроника и ПО",
+    "KeyWords": "Электроника, Программное обеспечение, Аксессуары, ПО",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-laptop",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Sporting Goods",
+    "CategoryRus": "Спортивные товары",
+    "KeyWords": "Спортивные товары, Спорт, Спорт товары",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-table-tennis",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Gift spendings",
+    "CategoryRus": "Подарки",
+    "KeyWords": "Подарки",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-gift",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Other expenses",
+    "CategoryRus": "Прочие расходы",
+    "KeyWords": "Прочие, Другие, Внебюджета",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-suitcase-rolling",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Transport",
+    "AreaRus": "Общественный транспорт"
+  },
+  {
+    "CategoryEng": "Taxi",
+    "CategoryRus": "Такси",
+    "KeyWords": "Такси",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-taxi",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Metro",
+    "CategoryRus": "Метро",
+    "KeyWords": "Метро",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-subway",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Public transport",
+    "CategoryRus": "Общественный транспорт",
+    "KeyWords": "Общественный транспорт, Автобус, Электричка",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-bus-alt",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Car sharing",
+    "CategoryRus": "Каршеринг",
+    "KeyWords": "Каршеринг",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-car-side",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Personal Care/Beauty",
+    "AreaRus": "Личная гигиена/красота"
+  },
+  {
+    "CategoryEng": "Hair",
+    "CategoryRus": "Салоны/Парикмахерские",
+    "KeyWords": "Волосы, Парикмахерская,Барбершоп, Салоны, Ногти, Маникюр, Педикюр",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-cut",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Beauty Products",
+    "CategoryRus": "Косметические продукты",
+    "KeyWords": "Косметические, Косметика, Парфюмерия, Личная гигиена, Парфюм",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-spray-can",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Income",
+    "AreaRus": "Доход"
+  },
+  {
+    "CategoryEng": "Paycheck",
+    "CategoryRus": "Зарплата",
+    "KeyWords": "Зарплата,Бонус,Аванс, 13 зарплата, Отпускные",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-hand-holding-usd",
+    "Background": "rgb(0, 200, 83)",
+    "SectionType": "Earnings"
+  },
+  {
+    "CategoryEng": "Gift money",
+    "CategoryRus": "Подарки",
+    "KeyWords": "Подарок, Подарки",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-gift",
+    "Background": "rgb(0, 200, 83)",
+    "SectionType": "Earnings"
+  },
+  {
+    "CategoryEng": "Part-time job",
+    "CategoryRus": "Подработка",
+    "KeyWords": "Подработка",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-user-plus",
+    "Background": "rgb(0, 200, 83)",
+    "SectionType": "Earnings"
+  },
+  {
+    "CategoryEng": "Cashback",
+    "CategoryRus": "Кешбэк",
+    "KeyWords": "Возврат наличных, Кешбэк, Возврат,Возвращенная покупка, Налоговый вычет",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-wallet",
+    "Background": "rgb(0, 200, 83)",
+    "SectionType": "Earnings"
+  },
+  {
+    "CategoryEng": "Freelance",
+    "CategoryRus": "Фриланс",
+    "KeyWords": "Фриланс, Freelance",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-user-tie",
+    "Background": "rgb(0, 200, 83)",
+    "SectionType": "Earnings"
+  },
+  {
+    "CategoryEng": "Passive income",
+    "CategoryRus": "Пассивный доход",
+    "KeyWords": "Пассивный доход",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-user-plus",
+    "Background": "rgb(0, 200, 83)",
+    "SectionType": "Earnings"
+  },
+  {
+    "CategoryEng": "Alimony",
+    "CategoryRus": "Алименты",
+    "KeyWords": "Алименты",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "far fa-money-bill-alt",
+    "Background": "rgb(0, 200, 83)",
+    "SectionType": "Earnings"
+  },
+  {
+    "AreaEng": "Subscriptions and utility bills",
+    "AreaRus": "Коммунальные платежи и подписки"
+  },
+  {
+    "CategoryEng": "Subscriptions",
+    "CategoryRus": "Подписки",
+    "KeyWords": "Подписки, Телевидение, Музыка, Кабельное",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fab fa-youtube",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Internet",
+    "CategoryRus": "Интернет",
+    "KeyWords": "Интернет, Домашний интернет",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-wifi",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Phone",
+    "CategoryRus": "Телефон",
+    "KeyWords": "Телефон, Связь, Мобильный интернет, Мобилка",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-phone",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Home bills",
+    "CategoryRus": "ЖКХ",
+    "KeyWords": "ЖКХ, Электричество, За квартиру, Свет, Коммунальные услуги, Коммунальные, Газ, Водоснабжение",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-faucet",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Entertainment",
+    "AreaRus": "Отдых и развлечения"
+  },
+  {
+    "CategoryEng": "Entertainment",
+    "CategoryRus": "Отдых и развлечения",
+    "KeyWords": "Искусство, Культура, Фильмы, Театр, Концерты, Кино,Ночная жизнь, Клубы, Бары, Музеи, Парки, Развлечения, Самокаты,  Активный отдых, Лотерея, Хобби, Игры, Парк, Кинотеатр, Баня",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-biking",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Health & Fitness",
+    "AreaRus": "Здоровье и фитнес"
+  },
+  {
+    "CategoryEng": "Dentist",
+    "CategoryRus": "Стоматолог",
+    "KeyWords": "Дантист, Стоматолог, Зубы, ",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-tooth",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Doctor",
+    "CategoryRus": "Врач и процедуры",
+    "KeyWords": "Доктор, Врач, Прием, Консультация, Телемедицина, Глазной, Мед процедуры, Процедуры",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-user-md",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Pharmacy",
+    "CategoryRus": "Аптеки",
+    "KeyWords": "Аптека, Таблетки, Лекарства, БАДы, Витамины,Аптеки",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-pills",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Analyzes",
+    "CategoryRus": "Анализы",
+    "KeyWords": "Кровь, Анализы, Сдать кровь",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-prescription-bottle-alt",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Gym",
+    "CategoryRus": "Спортзал и Бассейн",
+    "KeyWords": "Спортзал, Качалка, Бассейн",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-dumbbell",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Helth Insurance",
+    "CategoryRus": "Медицинская страховка",
+    "KeyWords": "Страховка, Медицинская страховка",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-file-medical",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Sports",
+    "CategoryRus": "Спорт",
+    "KeyWords": "Спорт, Занятия спортом, Фитнес, Пилатес, Йога",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-biking",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Massage",
+    "CategoryRus": "Массаж и Спа",
+    "KeyWords": "Массаж, Спа, Релакс",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-hot-tub",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Kids",
+    "AreaRus": "Дети"
+  },
+  {
+    "CategoryEng": "Toys",
+    "CategoryRus": "Игрушки",
+    "KeyWords": "Игрушки",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-gamepad",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Food",
+    "CategoryRus": "Еда",
+    "KeyWords": "Еда, Еда для детей, Детское питание",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-ice-cream",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Babysitter & Daycare",
+    "CategoryRus": "Няня и детский сад",
+    "KeyWords": "Няня, Детский сад, Сад, Частный сад",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-baby-carriage",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Tutor",
+    "CategoryRus": "Репетитор",
+    "KeyWords": "Репетитор, Учитель",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-user-edit",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Healthcare",
+    "CategoryRus": "Детская медицина",
+    "KeyWords": "Медицина, Детская медицина, Здравоохранение, Педиатр",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-user-md",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Baby Supplies",
+    "CategoryRus": "Детские товары",
+    "KeyWords": "Одежда, Детская одежда, Детские товары, Подгузники, Пеленки",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-baby",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Kids Activities",
+    "CategoryRus": "Детские мероприятия",
+    "KeyWords": "Детские мероприятия, Детские дни рождения, Игры для детей",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-users",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Child expenses",
+    "CategoryRus": "Расходы на ребенка",
+    "KeyWords": "Расходы на ребенка, Карманные расходы",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-baby",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Auto",
+    "AreaRus": "Автомобиль/Авто"
+  },
+  {
+    "CategoryEng": "Fuel & Gas",
+    "CategoryRus": "Бензин",
+    "KeyWords": "Бензин, Газ, Топливо, Заправка",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-gas-pump",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Parking",
+    "CategoryRus": "Парковка",
+    "KeyWords": "Парковка, Стоянка, Паркинг, Платные парковки",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-parking",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Car wash",
+    "CategoryRus": "Автомойка",
+    "KeyWords": "Автомойка, Мойка, ",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-hands-wash",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Fines",
+    "CategoryRus": "Штрафы",
+    "KeyWords": "Штрафы, ГИБДД",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-car",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Toll roads",
+    "CategoryRus": "Платные дороги",
+    "KeyWords": "Дороги, Платные дороги",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-road",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Service & Parts",
+    "CategoryRus": "Сервис и запчасти",
+    "KeyWords": "Шины, Запчасти, Колеса, Масло, Стекло, Ремонт авто, Техосмотр, Осмотр, Машинное масло, Сервис, Машина",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-car-battery",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Leasing",
+    "CategoryRus": "Лизинг",
+    "KeyWords": "Лизинг",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-car",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Auto Insurance",
+    "CategoryRus": "Автострахование",
+    "KeyWords": "Автострахование, Страховка, Каско, Осаго, Дсаго, Страховки, Автостраховка, Страховка машины",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-car-crash",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Accessories",
+    "CategoryRus": "Авто аксессуары",
+    "KeyWords": "Авто аксессуары",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-air-freshener",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Travel",
+    "AreaRus": "Путешествия"
+  },
+  {
+    "CategoryEng": "Air Travel",
+    "CategoryRus": "Самолет и багаж",
+    "KeyWords": "Самолет, Билеты, Багаж",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-plane-departure",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Hotel",
+    "CategoryRus": "Отели",
+    "KeyWords": "Отели, Airbnb, Хостел, Арендная плата, Гостиница, Дом, Квартира, Комната",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-hotel",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Rental Car & Taxi",
+    "CategoryRus": "Прокат авто и такси",
+    "KeyWords": "Такси, Автомобиль, Прокат",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-taxi",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Transport",
+    "CategoryRus": "Транспорт (ЖД, Электрички и тд)",
+    "KeyWords": "Автобус, Общественный транспорт, ЖД, Железная дорога, Электричка, Пароход, Корабль, Лодка, Билеты",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-train",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Visas",
+    "CategoryRus": "Визы, страховки и налоги",
+    "KeyWords": "Визы, Фото, Документы, Страховка, Налоги, Комиссии",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-passport",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Business trip",
+    "CategoryRus": "Командировки",
+    "KeyWords": "Командировка, Командировочные",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-map-marked-alt",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Travel food",
+    "CategoryRus": "Продукты",
+    "KeyWords": "Продукты в путешествии, Еда в путешествии, Продукты, Еда",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-apple-alt",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Travel cafes",
+    "CategoryRus": "Рестораны и кафе",
+    "KeyWords": "Рестораны в путешествии, Кафе в путешествии",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-pizza-slice",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Vacation",
+    "CategoryRus": "Отпуск и прочие расходы",
+    "KeyWords": "Отпуск, Отдых, Билеты, Связь",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-globe-americas",
+    "Background": "rgb(33, 150, 243)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Education",
+    "AreaRus": "Образование"
+  },
+  {
+    "CategoryEng": "Student Loan",
+    "CategoryRus": "Студенческий кредит",
+    "KeyWords": "Студенческий кредит, Кредит на обучение",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-user-graduate",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Tuition",
+    "CategoryRus": "Обучение",
+    "KeyWords": "Обучение, Курсы, Семинары, Институт, ",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-graduation-cap",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Books",
+    "CategoryRus": "Книги",
+    "KeyWords": "Газеты, Журналы, Книги, Пресса",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-book",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Fees & Tax",
+    "AreaRus": "Налоги, Кредиты и сборы"
+  },
+  {
+    "CategoryEng": "ATM Fee",
+    "CategoryRus": "Комиссия банка",
+    "KeyWords": "Комиссия банка, Комиссия за банкомат, Коммисия,Плата за обслуживание",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-university",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Tax",
+    "CategoryRus": "Налоги",
+    "KeyWords": "Налоги, Налог на имущество, Налоги ИП, ИП,Налог с продаж, Фриланс налоги, Транспортный налог, Налог на машину, Налог на авто, Пени, Штрафы",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-university",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Trade Commissions",
+    "CategoryRus": "Комиссия и сборы",
+    "KeyWords": "Торговые комиссии,Комиссии",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-university",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Life Insurance",
+    "CategoryRus": "Страхование жизни",
+    "KeyWords": "Страхование жизни, Страхование",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-user-shield",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Charity",
+    "CategoryRus": "Благотворительность",
+    "KeyWords": "Благотворительность, Пожертвование",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-hand-holding-heart",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Loans",
+    "CategoryRus": "Ипотека и кредиты",
+    "KeyWords": "Кредиты, Сборы, Ипотека, Потребкредит, Заем, Автокредиты",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-university",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Home",
+    "AreaRus": "Дом"
+  },
+  {
+    "CategoryEng": "Home Insurance",
+    "CategoryRus": "Страхование жилья",
+    "KeyWords": "Страхование жилья, Страховка жилья, Страховка",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-house-damage",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Home Services",
+    "CategoryRus": "Домашние услуги",
+    "KeyWords": "Домашние Услуги, Уборка, Прачка, Прачечная, Клининг, Уют",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-broom",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Lawn & Garden",
+    "CategoryRus": "Дача",
+    "KeyWords": "Газон, Сад, Огород, Дача, Ремонт на даче, Садоводство, Рассада, Загородный дом",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-home",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Home Improvement",
+    "CategoryRus": "Обустройство дома",
+    "KeyWords": "Обустройство дома,Обстановка,Товары для дома, Мебель, Техника, Белье, Кухонная утварь, Инструменты, чистящие средства, Интерьер",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-couch",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Rent",
+    "CategoryRus": "Аренда",
+    "KeyWords": "Аренда, Аренда дома, Аренда квартиры, квартира, Комната",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-house-user",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Renovation",
+    "CategoryRus": "Ремонт",
+    "KeyWords": "Ремонт",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-tools",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Investment",
+    "AreaRus": "Инвестиции"
+  },
+  {
+    "CategoryEng": "Interest Income",
+    "CategoryRus": "Процентный доход",
+    "KeyWords": "Депозит, Проценты, ",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-piggy-bank",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Earnings"
+  },
+  {
+    "CategoryEng": "Dividend",
+    "CategoryRus": "Дивиденды и купоны",
+    "KeyWords": "Дивиденды, Дивы, Купоны",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-piggy-bank",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Earnings"
+  },
+  {
+    "CategoryEng": "Commission",
+    "CategoryRus": "Комиссии и сборы",
+    "KeyWords": "Сборы, Комиссии",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-university",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Investment Tax",
+    "CategoryRus": "Налоги по инвестициям",
+    "KeyWords": "Налоги, Налоги по инветсициям, Штрафы",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-university",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Rental Income",
+    "CategoryRus": "Рентный доход",
+    "KeyWords": "Доходы с аренды, Рентный доход",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-piggy-bank",
+    "Background": "rgb(158, 158, 158)",
+    "SectionType": "Earnings"
+  },
+  {
+    "AreaEng": "Pets",
+    "AreaRus": "Домашние питомцы"
+  },
+  {
+    "CategoryEng": "Veterinary",
+    "CategoryRus": "Ветеринарная клиника",
+    "KeyWords": "Ветеринарная, клиника, Животные, Вет клиника",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-dog",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Toys pets",
+    "CategoryRus": "Игрушки",
+    "KeyWords": "Игрушки, Животные",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-paw",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Food pets",
+    "CategoryRus": "Еда",
+    "KeyWords": "Еда, Животные",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-paw",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "AreaEng": "Business Services",
+    "AreaRus": "Бизнес-услуги"
+  },
+  {
+    "CategoryEng": "Advertising",
+    "CategoryRus": "Реклама",
+    "KeyWords": "Реклама, Таргет",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-ad",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Legal",
+    "CategoryRus": "Юридические услуги",
+    "KeyWords": "Юридические услуги",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-balance-scale",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Office Supplies",
+    "CategoryRus": "Офисные принадлежности",
+    "KeyWords": "Офисные принадлежности",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-briefcase",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Printing",
+    "CategoryRus": "Печать",
+    "KeyWords": "Печать",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-print",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  },
+  {
+    "CategoryEng": "Shipping",
+    "CategoryRus": "Перевозки",
+    "KeyWords": "Перевозки",
+    "Color": "rgb(255, 255, 255)",
+    "Icon": "fas fa-shipping-fast",
+    "Background": "rgb(244, 67, 54)",
+    "SectionType": "Spendings"
+  }
+]

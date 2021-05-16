@@ -10,8 +10,9 @@
         },
 
         //2
-        areas: [{ id: 0, name: "Расходы", codeName: "Spendings", sections: [] },
-        { id: 1, name: "Доходы", codeName: "Earnings", sections: [] }], //2
+        areas: [],
+        //    [{ id: 0, name: "Расходы", codeName: "Spendings", sections: [] },
+        //{ id: 1, name: "Доходы", codeName: "Earnings", sections: [] }], //2
         sectionSource: [],//2
         section: {}, //2
         userSectionSource: [],//2
@@ -92,7 +93,7 @@
                     });
                     $('#work-hours').tooltip('dispose');
                     $('#work-days').tooltip('dispose');
-                   // $('[data-toggle="tooltip"]').tooltip('show');
+                    // $('[data-toggle="tooltip"]').tooltip('show');
                 } else {
                     $("#userInfoName").addClass("is-invalid");
                     canGo = false;
@@ -293,6 +294,11 @@
                         //    }
 
                         //}
+                        this.$nextTick(() => {
+                            //$("#baseSections>.ion-ios-list").click();
+                            $(".ion-ios-list").click();
+                            $("#baseSections>.div-change-view").hide();
+                        });
                     }
                     return true;
                 },
@@ -304,9 +310,15 @@
         },
         onChooseSection: function (section) {
             if (section.isSelected) {
-                this.areas[section.areaID].sections.push(section);
+                let index = this.areas.findIndex(x => x.id == section.areaID);
+                if (index < 0) {
+                    this.areas.push({ id: section.areaID, name: section.areaName, sections: [] });
+                    index = this.areas.length - 1;
+                }
+                this.areas[index].sections.push(section);
             } else {
-                this.areas[section.areaID].sections.splice(this.areas[section.areaID].sections.findIndex(x => x.id == section.id), 1);
+                let index = this.areas.findIndex(x => x.id == section.areaID);
+                this.areas[index].sections.splice(this.areas[index].sections.findIndex(x => x.id == section.id), 1);
                 $('[data-toggle="tooltip"]').tooltip('dispose');
             }
         },

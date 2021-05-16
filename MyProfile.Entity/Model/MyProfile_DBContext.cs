@@ -310,6 +310,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<PaymentCounter> PaymentCounters { get; set; }
         public virtual DbSet<EntityType> EntityTypes { get; set; }
         public virtual DbSet<UserEntityCounter> UserEntityCounters { get; set; }
+        public virtual DbSet<BaseArea> BaseAreas { get; set; }
+        public virtual DbSet<BaseSection> BaseSections{ get; set; }
 
     }
 }

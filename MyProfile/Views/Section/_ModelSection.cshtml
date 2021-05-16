@@ -22,6 +22,32 @@
                 </label>
             </div>
             <div class="modal-body pt-0">
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label class="form-label">Базовая категория</label>
+                        <vue-select2-component data-id="base-section"
+                                               url="/Section/GetBaseSection"
+                                               selected-property-name="text"
+                                               data-width="100%"
+                                               v-bind:multiple="false"
+                                               v-bind:minimum-input-length="0"
+                                               v-bind:is-save-localstorage="false"
+                                               v-bind:on-selected="selectedBaseSection"
+                                               v-bind:on-unselected="unselectedBaseSection"
+                                               v-bind:metadata="[
+                                                         {text: 'Группа категорий',
+                                                         propertyName: 'areaName',
+                                                         isOption: true,
+                                                         isPlaceholder: false},
+                                                         {text: 'Название категори',
+                                                         propertyName: 'sectionName',
+                                                         isOption: true,
+                                                         isPlaceholder: false}
+                                                       ]"></vue-select2-component>
+                    </div>
+                </div>
+
                 <div class="form-row">
                     <div class="form-group col">
                         <label class="form-label">Название категории</label>
@@ -122,7 +148,7 @@
                     </div>
 
                 </div>
-                <div class="form-group isCashback-section" >
+                <div class="form-group isCashback-section">
                     <label class="custom-control custom-checkbox" style=" margin-bottom: 0px;">
                         <input type="checkbox" class="custom-control-input" v-model="section.isCashback" name="isCashback">
                         <span class="custom-control-label">Считать кешбек для этой категории</span>

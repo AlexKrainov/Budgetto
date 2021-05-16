@@ -296,6 +296,7 @@ namespace MyProfile.User.Service
             var newUser = new Entity.Model.User
             {
                 ID = Guid.NewGuid(),
+                NumberUser = repository.GetAll<Entity.Model.User>().Count(),
                 DateCreate = now,
                 Email = email,
                 IsAllowCollectiveBudget = false,
