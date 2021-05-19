@@ -273,7 +273,6 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<UserErrorLog> UserErrorLogs { get; set; }
         public virtual DbSet<IPSetting> IPSettings { get; set; }
         public virtual DbSet<HelpMenu> HelpMenus { get; set; }
-        public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<RecordTag> RecordTags { get; set; }
         public virtual DbSet<UserTag> UserTags { get; set; }
         public virtual DbSet<AccountType> AccountTypes { get; set; }
@@ -311,7 +310,10 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<EntityType> EntityTypes { get; set; }
         public virtual DbSet<UserEntityCounter> UserEntityCounters { get; set; }
         public virtual DbSet<BaseArea> BaseAreas { get; set; }
-        public virtual DbSet<BaseSection> BaseSections{ get; set; }
+        public virtual DbSet<BaseSection> BaseSections { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<MccCategory> MccCategories { get; set; }
+        public virtual DbSet<MccCode> MccCodes { get; set; }
 
     }
 }

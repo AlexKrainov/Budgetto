@@ -306,8 +306,8 @@ namespace MyProfile.Budget.Service
                  && x.IsDeleted == false
                  && x.AccountID != null
                  && x.DateTimeOfPayment >= start && x.DateTimeOfPayment <= finish
-                 && x.AccountRecordHistories.Count > 0)
-                      .Select(x => x.AccountRecordHistories
+                 && x.RecordHistories.Count > 0)
+                      .Select(x => x.RecordHistories
                                           .OrderByDescending(x => x.ID)
                                           .FirstOrDefault())
                       .Select(x => new

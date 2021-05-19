@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.Company;
 using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
@@ -111,6 +112,25 @@ namespace Common.Service
                 cache.Set(typeof(TimeZoneClientModelView).Name, timezones, DateTime.Now.AddDays(15));
             }
             return timezones;
+        }
+
+        public List<CompanyLightViewModel> GetCompanies()
+        {
+            List<CompanyLightViewModel> companies;
+
+            if (cache.TryGetValue(typeof(CompanyLightViewModel).Name, out companies) == false)
+            {
+                companies = repository.GetAll<Company>()
+                 .Select(x => new CompanyLightViewModel
+                 {
+                     ID = x.ID,
+                     TagKeyWords = x.TagKeyWords,
+                 })
+                 .ToList();
+
+                cache.Set(typeof(CompanyLightViewModel).Name, companies, DateTime.Now.AddDays(15));
+            }
+            return companies;
         }
     }
 }

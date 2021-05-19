@@ -1,0 +1,86 @@
+﻿@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Календарь";
+    var UserInfo = MyProfile.Identity.UserInfo.Current;
+}
+
+@section Styles {
+}
+
+@section Scripts {
+    <script>
+
+        var HistoryVue = new Vue({
+            el: "#history_records",
+            data: {
+                
+            },
+            watch: {
+                
+            },
+            computed: {},
+            mounted: function () {
+                
+            },
+            methods: {
+                
+            }
+        });
+
+
+
+    </script>
+}
+
+<h4 class="d-flex flex-wrap w-100 font-weight-bold">
+    <span class="lnr lnr-calendar-full display-4 text-primary mr-2"></span>
+    <span class="px-0 pb-2 pt-2">
+        History
+    </span>
+    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom"
+       title="В календаре отображаются все совершенные вами финансовые операции за выбранный год.
+При наведении на интересующую дату вы можете увидеть сумму трат за день или количество внесённых операций.">
+        <i class="pe-7s-info d-block text-primary"></i>
+    </a>
+</h4>
+
+<section id="history_records" v-cloak>
+
+
+    <div class="card mb-4">
+        <h6 class="card-header">Фильтр</h6>
+        <div class="card-body">
+            <form id="filter" class="margin-top">
+                <div class="row mb-5">
+                    <div class="col-12 col-sm-12 col-md-8">
+                        <div class="nav-tabs-top mb-4">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#sale-stats" v-on:click="filter.isSection = true; serialize(true);">Категории</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#latest-sales" v-on:click="filter.isSection = false; serialize(true)">Теги</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4">
+                        <br />
+
+
+                    </div>
+                </div>
+                @*<div>
+                        <button type="button" class="btn btn-primary pull-right" onclick="history.search_click()">
+                            @LocalizationBL.GetText(CrmUserInfo.Current.Localization, Utils.Localization.IOT.Common.SearchButton.Code)
+                        </button>
+                    </div>*@
+
+            </form>
+        </div>
+    </div>
+
+    <new-vue-record-history-component>
+
+    </new-vue-record-history-component>
+</section>

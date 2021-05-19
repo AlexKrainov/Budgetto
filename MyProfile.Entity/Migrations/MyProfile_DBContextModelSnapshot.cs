@@ -351,8 +351,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CodeName");
-
                     b.Property<string>("Description");
 
                     b.Property<bool>("IsCreatedByConstructor");
@@ -763,6 +761,58 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("SectionID");
 
                     b.ToTable("CollectiveSections");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Company", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BankKeyWords")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("BrandColor")
+                        .HasMaxLength(8);
+
+                    b.Property<string>("City")
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(64);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("IsChecked");
+
+                    b.Property<string>("LogoCircle")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LogoSquare")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<int?>("ParentCompanyID");
+
+                    b.Property<string>("Site")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("TagKeyWords")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("TextColor")
+                        .HasMaxLength(8);
+
+                    b.Property<string>("t_objectID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ParentCompanyID");
+
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Currency", b =>
@@ -1181,6 +1231,51 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("MailTypes");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.MccCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BankID");
+
+                    b.Property<bool>("IsSystem");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(64);
+
+                    b.Property<int?>("bankCategoryID");
+
+                    b.Property<int?>("bankParentCategoryID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BankID");
+
+                    b.ToTable("MccCategories");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.MccCode", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CompanyID");
+
+                    b.Property<int>("Mcc");
+
+                    b.Property<int>("MccCategoryID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CompanyID");
+
+                    b.HasIndex("MccCategoryID");
+
+                    b.ToTable("MccCodes");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.Message", b =>
                 {
                     b.Property<long>("ID")
@@ -1592,6 +1687,12 @@ namespace MyProfile.Entity.Migrations
                         .HasColumnType("Money");
 
                     b.Property<decimal>("AccountNewBalanceCashback")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("AccountOldBalance")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("AccountOldBalanceCashback")
                         .HasColumnType("Money");
 
                     b.Property<decimal>("AccountTotal")
@@ -2076,29 +2177,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("VisibleElementID");
 
                     b.ToTable("Summaries");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.Tag", b =>
-                {
-                    b.Property<long>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("DateCreate");
-
-                    b.Property<string>("IconCss")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("Image")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(132);
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.TelegramAccount", b =>
@@ -2795,6 +2873,8 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CompanyID");
+
                     b.Property<DateTime>("DateCreate");
 
                     b.Property<string>("IconCss")
@@ -2805,8 +2885,6 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<long?>("TagID");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(132);
@@ -2815,7 +2893,7 @@ namespace MyProfile.Entity.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("TagID");
+                    b.HasIndex("CompanyID");
 
                     b.HasIndex("UserID");
 
@@ -3083,6 +3161,13 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("SectionID");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Company", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Company", "ParentCompany")
+                        .WithMany()
+                        .HasForeignKey("ParentCompanyID");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.ErrorLog", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.UserSession", "UserSession")
@@ -3187,6 +3272,26 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("MailLogs")
                         .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.MccCategory", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Bank", "Bank")
+                        .WithMany("MccCategories")
+                        .HasForeignKey("BankID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.MccCode", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyID");
+
+                    b.HasOne("MyProfile.Entity.Model.MccCategory", "MccCategory")
+                        .WithMany("MccCodes")
+                        .HasForeignKey("MccCategoryID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Message", b =>
@@ -3310,7 +3415,7 @@ namespace MyProfile.Entity.Migrations
                         .HasForeignKey("RecordCurrencyID");
 
                     b.HasOne("MyProfile.Entity.Model.Record", "Record")
-                        .WithMany("AccountRecordHistories")
+                        .WithMany("RecordHistories")
                         .HasForeignKey("RecordID")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -3674,9 +3779,9 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.UserTag", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagID");
+                    b.HasOne("MyProfile.Entity.Model.Company", "Company")
+                        .WithMany("UserTags")
+                        .HasForeignKey("CompanyID");
 
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany()

@@ -94,6 +94,9 @@ namespace MyProfile.Entity.ModelView
         public bool IsShow { get; set; } = true;
         public bool ToBeEdit { get; set; }
         public bool IsDeleted { get; set; }
+        public int? CompanyID { get; set; }
+        public string CompanyName { get; set; }
+        public string CompanyLogo { get; set; }
         //public IOrderedEnumerable<TagSectionModelView> Sections { get; set; }
         //public IQueryable<TagSectionModelView> SectionIDs { get; set; }
     }
@@ -122,5 +125,11 @@ namespace MyProfile.Entity.ModelView
         public long? CardID { get; set; }
         public string CardName { get; set; }
         public string CardLogo { get; set; }
+    }
+
+    public class HistoryRecordModelView
+    {
+        public DateTime GroupDate { get; set; }
+        public List<BudgetRecordModelView> Records { get; set; }
     }
 }

@@ -44,11 +44,13 @@ namespace MyProfile.Entity.Model
 
 		public virtual ICollection<Account> Accounts { get; set; }
 		public virtual ICollection<Card> Cards { get; set; }
+		public virtual ICollection<MccCategory> MccCategories { get; set; }
 
 		public Bank()
 		{
 			this.Accounts = new HashSet<Account>();
 			this.Cards = new HashSet<Card>();
+			this.MccCategories = new HashSet<MccCategory>();
 		}
 
 	}

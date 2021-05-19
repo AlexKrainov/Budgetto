@@ -125,21 +125,6 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, data = result });
         }
 
-        [HttpGet]
-        public async Task<JsonResult> LoadingRecordsForByDate(DateTime date)
-        {
-            CalendarFilterModels filter = new CalendarFilterModels { Sections = new List<long>() };
-            filter.StartDate = new DateTime(date.Year, date.Month, date.Day, 00, 00, 01);
-            filter.EndDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
-            filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
-            filter.UserID = UserInfo.Current.ID;
-
-            var result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
-
-            return Json(new { isOk = true, data = result });
-        }
-
-
         [HttpPost]
         public async Task<JsonResult> RemoveRecord([FromBody] BudgetRecordModelView record)
         {

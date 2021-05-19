@@ -45,6 +45,10 @@ namespace MyProfile.Entity.Model
         /// </summary>
         [Column(TypeName = "Money")]
         public decimal AccountCashback { get; set; }
+        [Column(TypeName = "Money")]
+        public decimal AccountOldBalance { get; set; }
+        [Column(TypeName = "Money")]
+        public decimal AccountOldBalanceCashback { get; set; }
 
         [Column(TypeName = "Money")]
         public decimal? RacordCurrencyRate { get; set; }

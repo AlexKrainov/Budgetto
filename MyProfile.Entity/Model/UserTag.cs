@@ -21,13 +21,13 @@ namespace MyProfile.Entity.Model
         public bool IsDeleted { get; set; }
 
 
-        [ForeignKey("Tag")]
-		public long? TagID { get; set; }
+        [ForeignKey("Company")]
+		public int? CompanyID { get; set; }
 		[ForeignKey("User")]
 		public Guid? UserID { get; set; }
 
 		public virtual User User { get; set; }
-		public virtual Tag Tag { get; set; }
+		public virtual Company Company { get; set; }
 
 		public virtual ICollection<RecordTag> RecordTags { get; set; }
 

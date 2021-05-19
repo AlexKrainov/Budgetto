@@ -1,0 +1,997 @@
+﻿[
+  {
+    "ID": "10790",
+    "Name": "#FARШ",
+    "TagKeyWords": "#FARШ | Фарш | Farsh"
+  },
+  {
+    "ID": "10864",
+    "Name": "«Алёнка»",
+    "TagKeyWords": "«Алёнка» | Алёнка"
+  },
+  {
+    "ID": "10924",
+    "Name": "A.V.E",
+    "TagKeyWords": "A.V.E |"
+  },
+  {
+    "ID": "10874",
+    "Name": "Airbnb",
+    "TagKeyWords": "Airbnb |"
+  },
+  {
+    "ID": "10868",
+    "Name": "ALDI",
+    "TagKeyWords": "ALDI |"
+  },
+  {
+    "ID": "10831",
+    "Name": "Aliexpress.com",
+    "TagKeyWords": "Aliexpress | Аллиэкспресс | Алиэкспрес | Али"
+  },
+  {
+    "ID": "10841",
+    "Name": "Avito",
+    "TagKeyWords": "Avito |"
+  },
+  {
+    "ID": "10955",
+    "Name": "Biglion",
+    "TagKeyWords": "Biglion |"
+  },
+  {
+    "ID": "10859",
+    "Name": "Billa",
+    "TagKeyWords": "Billa |"
+  },
+  {
+    "ID": "10860",
+    "Name": "Bolt",
+    "TagKeyWords": "Bolt |"
+  },
+  {
+    "ID": "10895",
+    "Name": "Book24",
+    "TagKeyWords": "Book24 |"
+  },
+  {
+    "ID": "10906",
+    "Name": "Booking.com",
+    "TagKeyWords": "Booking.com |"
+  },
+  {
+    "ID": "10876",
+    "Name": "BQ Bar",
+    "TagKeyWords": "BQ Bar |"
+  },
+  {
+    "ID": "10821",
+    "Name": "Burger King",
+    "TagKeyWords": "Burger King |"
+  },
+  {
+    "ID": "10934",
+    "Name": "Cinnabon",
+    "TagKeyWords": "Cinnabon |"
+  },
+  {
+    "ID": "10778",
+    "Name": "Cofix",
+    "TagKeyWords": "Cofix |"
+  },
+  {
+    "ID": "10871",
+    "Name": "Costa Coffee",
+    "TagKeyWords": "Costa Coffee |"
+  },
+  {
+    "ID": "10909",
+    "Name": "Daily food",
+    "TagKeyWords": "Daily food |"
+  },
+  {
+    "ID": "10839",
+    "Name": "Delivery Club",
+    "TagKeyWords": "Delivery Club |"
+  },
+  {
+    "ID": "10858",
+    "Name": "Dominos pizza",
+    "TagKeyWords": "Dominos pizza |"
+  },
+  {
+    "ID": "10881",
+    "Name": "Elementaree",
+    "TagKeyWords": "Elementaree |"
+  },
+  {
+    "ID": "10818",
+    "Name": "Facebook",
+    "TagKeyWords": "Facebook |"
+  },
+  {
+    "ID": "10933",
+    "Name": "Fissman.ru",
+    "TagKeyWords": "Fissman.ru |"
+  },
+  {
+    "ID": "10786",
+    "Name": "Fix Price",
+    "TagKeyWords": "Fix Price |"
+  },
+  {
+    "ID": "10873",
+    "Name": "Flowwow",
+    "TagKeyWords": "Flowwow |"
+  },
+  {
+    "ID": "10917",
+    "Name": "French Kiss",
+    "TagKeyWords": "French Kiss |"
+  },
+  {
+    "ID": "10900",
+    "Name": "FUNDAY",
+    "TagKeyWords": "FUNDAY |"
+  },
+  {
+    "ID": "10923",
+    "Name": "Gipfel",
+    "TagKeyWords": "Gipfel |"
+  },
+  {
+    "ID": "10824",
+    "Name": "Gloria Jeans",
+    "TagKeyWords": "Gloria Jeans |"
+  },
+  {
+    "ID": "10796",
+    "Name": "Good Food Academy",
+    "TagKeyWords": "Good Food Academy |"
+  },
+  {
+    "ID": "10785",
+    "Name": "Google",
+    "TagKeyWords": "Google |"
+  },
+  {
+    "ID": "10814",
+    "Name": "Headquarters",
+    "TagKeyWords": "Headquarters |"
+  },
+  {
+    "ID": "10893",
+    "Name": "IL PATIO",
+    "TagKeyWords": "IL PATIO |"
+  },
+  {
+    "ID": "10811",
+    "Name": "INTICKETS.RU",
+    "TagKeyWords": "INTICKETS.RU |"
+  },
+  {
+    "ID": "10826",
+    "Name": "KFC",
+    "TagKeyWords": "KFC |"
+  },
+  {
+    "ID": "10942",
+    "Name": "Krispy Kreme",
+    "TagKeyWords": "Krispy Kreme |"
+  },
+  {
+    "ID": "10866",
+    "Name": "Lamoda",
+    "TagKeyWords": "Lamoda |"
+  },
+  {
+    "ID": "10869",
+    "Name": "Lidl",
+    "TagKeyWords": "Lidl |"
+  },
+  {
+    "ID": "10885",
+    "Name": "Lingualeo",
+    "TagKeyWords": "Lingualeo |"
+  },
+  {
+    "ID": "10904",
+    "Name": "market-place",
+    "TagKeyWords": "market-place |"
+  },
+  {
+    "ID": "10771",
+    "Name": "McDonald's",
+    "TagKeyWords": "McDonald's |"
+  },
+  {
+    "ID": "10801",
+    "Name": "METRO Cash&Carry",
+    "TagKeyWords": "METRO Cash&Carry |"
+  },
+  {
+    "ID": "10910",
+    "Name": "MODI",
+    "TagKeyWords": "MODI |"
+  },
+  {
+    "ID": "10810",
+    "Name": "Mothercare",
+    "TagKeyWords": "Mothercare |"
+  },
+  {
+    "ID": "10894",
+    "Name": "Muzey",
+    "TagKeyWords": "Muzey |"
+  },
+  {
+    "ID": "10829",
+    "Name": "Netprint.ru",
+    "TagKeyWords": "Netprint.ru |"
+  },
+  {
+    "ID": "10915",
+    "Name": "Nike",
+    "TagKeyWords": "Nike |"
+  },
+  {
+    "ID": "10870",
+    "Name": "Oktogo.ru",
+    "TagKeyWords": "Oktogo.ru |"
+  },
+  {
+    "ID": "10941",
+    "Name": "OLDI",
+    "TagKeyWords": "OLDI |"
+  },
+  {
+    "ID": "10935",
+    "Name": "One&Double",
+    "TagKeyWords": "One&Double |"
+  },
+  {
+    "ID": "10769",
+    "Name": "Ozon.ru",
+    "TagKeyWords": "Ozon.ru |"
+  },
+  {
+    "ID": "10789",
+    "Name": "PANORAMA360",
+    "TagKeyWords": "PANORAMA360 |"
+  },
+  {
+    "ID": "10887",
+    "Name": "Paul Bakery",
+    "TagKeyWords": "Paul Bakery |"
+  },
+  {
+    "ID": "10863",
+    "Name": "PayPal",
+    "TagKeyWords": "PayPal |"
+  },
+  {
+    "ID": "10902",
+    "Name": "PICK-UP",
+    "TagKeyWords": "PICK-UP |"
+  },
+  {
+    "ID": "10912",
+    "Name": "Ponominalu",
+    "TagKeyWords": "Ponominalu |"
+  },
+  {
+    "ID": "10848",
+    "Name": "Qiwi",
+    "TagKeyWords": "Qiwi |"
+  },
+  {
+    "ID": "10903",
+    "Name": "Radario",
+    "TagKeyWords": "Radario |"
+  },
+  {
+    "ID": "10833",
+    "Name": "REG.RU",
+    "TagKeyWords": "REG.RU |"
+  },
+  {
+    "ID": "10919",
+    "Name": "Samsonite",
+    "TagKeyWords": "Samsonite |"
+  },
+  {
+    "ID": "10856",
+    "Name": "Save Time",
+    "TagKeyWords": "Save Time |"
+  },
+  {
+    "ID": "10782",
+    "Name": "SmartMed",
+    "TagKeyWords": "SmartMed |"
+  },
+  {
+    "ID": "10851",
+    "Name": "SPAR",
+    "TagKeyWords": "SPAR |"
+  },
+  {
+    "ID": "10802",
+    "Name": "Starbucks Coffee",
+    "TagKeyWords": "Starbucks Coffee |"
+  },
+  {
+    "ID": "10897",
+    "Name": "StarHit сafe",
+    "TagKeyWords": "StarHit сafe |"
+  },
+  {
+    "ID": "10932",
+    "Name": "Street Beat",
+    "TagKeyWords": "Street Beat |"
+  },
+  {
+    "ID": "10822",
+    "Name": "Super Kitchen",
+    "TagKeyWords": "Super Kitchen |"
+  },
+  {
+    "ID": "10867",
+    "Name": "TELE2",
+    "TagKeyWords": "TELE2 |"
+  },
+  {
+    "ID": "10954",
+    "Name": "Tesla",
+    "TagKeyWords": "Tesla |"
+  },
+  {
+    "ID": "10936",
+    "Name": "Tezenis",
+    "TagKeyWords": "Tezenis |"
+  },
+  {
+    "ID": "10937",
+    "Name": "TGI Fridays",
+    "TagKeyWords": "TGI Fridays |"
+  },
+  {
+    "ID": "10781",
+    "Name": "Uber",
+    "TagKeyWords": "Uber |"
+  },
+  {
+    "ID": "10913",
+    "Name": "Ural Airlines",
+    "TagKeyWords": "Ural Airlines |"
+  },
+  {
+    "ID": "10847",
+    "Name": "Urent",
+    "TagKeyWords": "Urent |"
+  },
+  {
+    "ID": "10960",
+    "Name": "VISA",
+    "TagKeyWords": "VISA |"
+  },
+  {
+    "ID": "10787",
+    "Name": "WILDBERRIES",
+    "TagKeyWords": "WILDBERRIES |"
+  },
+  {
+    "ID": "10882",
+    "Name": "Wix",
+    "TagKeyWords": "Wix |"
+  },
+  {
+    "ID": "10914",
+    "Name": "Zarina",
+    "TagKeyWords": "Zarina |"
+  },
+  {
+    "ID": "10920",
+    "Name": "Zenden",
+    "TagKeyWords": "Zenden |"
+  },
+  {
+    "ID": "10947",
+    "Name": "Авиакомпания UTair",
+    "TagKeyWords": "Авиакомпания UTair |"
+  },
+  {
+    "ID": "10896",
+    "Name": "Авиакомпания Победа",
+    "TagKeyWords": "Авиакомпания Победа |"
+  },
+  {
+    "ID": "10865",
+    "Name": "Азбука Вкуса",
+    "TagKeyWords": "Азбука Вкуса |"
+  },
+  {
+    "ID": "10927",
+    "Name": "Акушерство.ру",
+    "TagKeyWords": "Акушерство.ру |"
+  },
+  {
+    "ID": "10849",
+    "Name": "Аптека Вита",
+    "TagKeyWords": "Аптека Вита |"
+  },
+  {
+    "ID": "10840",
+    "Name": "Аптека Здоров.ру",
+    "TagKeyWords": "Аптека Здоров.ру |"
+  },
+  {
+    "ID": "10768",
+    "Name": "Аптеки Столички",
+    "TagKeyWords": "Аптеки Столички |"
+  },
+  {
+    "ID": "10804",
+    "Name": "Ароматный мир",
+    "TagKeyWords": "Ароматный мир |"
+  },
+  {
+    "ID": "10886",
+    "Name": "АТАК Супермаркеты",
+    "TagKeyWords": "АТАК Супермаркеты |"
+  },
+  {
+    "ID": "10844",
+    "Name": "Ашан",
+    "TagKeyWords": "Ашан |"
+  },
+  {
+    "ID": "10929",
+    "Name": "Аэрофлот",
+    "TagKeyWords": "Аэрофлот |"
+  },
+  {
+    "ID": "10861",
+    "Name": "Аэроэкспресс",
+    "TagKeyWords": "Аэроэкспресс |"
+  },
+  {
+    "ID": "10819",
+    "Name": "Банкомат Тинькофф",
+    "TagKeyWords": "Банкомат Тинькофф |"
+  },
+  {
+    "ID": "10883",
+    "Name": "Бахетле",
+    "TagKeyWords": "Бахетле |"
+  },
+  {
+    "ID": "10843",
+    "Name": "Библио Глобус",
+    "TagKeyWords": "Библио Глобус |"
+  },
+  {
+    "ID": "10795",
+    "Name": "Библио-Глобус",
+    "TagKeyWords": "Библио-Глобус |"
+  },
+  {
+    "ID": "10846",
+    "Name": "Билайн",
+    "TagKeyWords": "Билайн |"
+  },
+  {
+    "ID": "10788",
+    "Name": "Братья Караваевы",
+    "TagKeyWords": "Братья Караваевы |"
+  },
+  {
+    "ID": "10879",
+    "Name": "Буше",
+    "TagKeyWords": "Буше |"
+  },
+  {
+    "ID": "10921",
+    "Name": "ВАБИ САБИ",
+    "TagKeyWords": "ВАБИ САБИ |"
+  },
+  {
+    "ID": "10813",
+    "Name": "Вега",
+    "TagKeyWords": "Вега |"
+  },
+  {
+    "ID": "10855",
+    "Name": "Верный",
+    "TagKeyWords": "Верный |"
+  },
+  {
+    "ID": "10945",
+    "Name": "Виктория",
+    "TagKeyWords": "Виктория |"
+  },
+  {
+    "ID": "10762",
+    "Name": "ВкусВилл",
+    "TagKeyWords": "ВкусВилл |"
+  },
+  {
+    "ID": "10948",
+    "Name": "ВТБ",
+    "TagKeyWords": "ВТБ |"
+  },
+  {
+    "ID": "10926",
+    "Name": "ВымпелКом",
+    "TagKeyWords": "ВымпелКом |"
+  },
+  {
+    "ID": "10835",
+    "Name": "Гемотест",
+    "TagKeyWords": "Гемотест |"
+  },
+  {
+    "ID": "10891",
+    "Name": "Гипермаркет Карусель",
+    "TagKeyWords": "Гипермаркет Карусель |"
+  },
+  {
+    "ID": "10783",
+    "Name": "Горздрав",
+    "TagKeyWords": "Горздрав |"
+  },
+  {
+    "ID": "10925",
+    "Name": "Госуслуги",
+    "TagKeyWords": "Госуслуги |"
+  },
+  {
+    "ID": "10805",
+    "Name": "Грабли",
+    "TagKeyWords": "Грабли |"
+  },
+  {
+    "ID": "10772",
+    "Name": "Да!",
+    "TagKeyWords": "Да! |"
+  },
+  {
+    "ID": "10791",
+    "Name": "Даблби",
+    "TagKeyWords": "Даблби |"
+  },
+  {
+    "ID": "10916",
+    "Name": "Декатлон",
+    "TagKeyWords": "Декатлон |"
+  },
+  {
+    "ID": "10774",
+    "Name": "Детский Мир",
+    "TagKeyWords": "Детский Мир |"
+  },
+  {
+    "ID": "10852",
+    "Name": "Дикси",
+    "TagKeyWords": "Дикси |"
+  },
+  {
+    "ID": "10798",
+    "Name": "Додо Пицца",
+    "TagKeyWords": "Додо Пицца |"
+  },
+  {
+    "ID": "10928",
+    "Name": "Дочки-Сыночки",
+    "TagKeyWords": "Дочки-Сыночки |"
+  },
+  {
+    "ID": "10765",
+    "Name": "ЖКУ-Москва",
+    "TagKeyWords": "ЖКУ-Москва |"
+  },
+  {
+    "ID": "10803",
+    "Name": "Издательство «МИФ»",
+    "TagKeyWords": "Издательство «МИФ» |"
+  },
+  {
+    "ID": "10815",
+    "Name": "ИКЕА",
+    "TagKeyWords": "ИКЕА |"
+  },
+  {
+    "ID": "10922",
+    "Name": "КиберПлат",
+    "TagKeyWords": "КиберПлат |"
+  },
+  {
+    "ID": "10952",
+    "Name": "Киноход",
+    "TagKeyWords": "Киноход |"
+  },
+  {
+    "ID": "10939",
+    "Name": "Киноцентр на Красной Пресне",
+    "TagKeyWords": "Киноцентр на Красной Пресне |"
+  },
+  {
+    "ID": "10918",
+    "Name": "Конфаэль",
+    "TagKeyWords": "Конфаэль |"
+  },
+  {
+    "ID": "10944",
+    "Name": "Кораблик",
+    "TagKeyWords": "Кораблик |"
+  },
+  {
+    "ID": "10880",
+    "Name": "Красное и белое",
+    "TagKeyWords": "Красное и белое |"
+  },
+  {
+    "ID": "10812",
+    "Name": "Крошка КАРТОШКА",
+    "TagKeyWords": "Крошка КАРТОШКА |"
+  },
+  {
+    "ID": "10836",
+    "Name": "Кухня на районе",
+    "TagKeyWords": "Кухня на районе |"
+  },
+  {
+    "ID": "10850",
+    "Name": "Лабиринт.ру",
+    "TagKeyWords": "Лабиринт.ру |"
+  },
+  {
+    "ID": "10808",
+    "Name": "Лаборатории CMD",
+    "TagKeyWords": "Лаборатории CMD |"
+  },
+  {
+    "ID": "10901",
+    "Name": "Лента",
+    "TagKeyWords": "Лента |"
+  },
+  {
+    "ID": "10806",
+    "Name": "Леруа Мерлен",
+    "TagKeyWords": "Леруа Мерлен |"
+  },
+  {
+    "ID": "10943",
+    "Name": "Л'Этуаль",
+    "TagKeyWords": "Л'Этуаль |"
+  },
+  {
+    "ID": "10780",
+    "Name": "Магнит",
+    "TagKeyWords": "Магнит |"
+  },
+  {
+    "ID": "10834",
+    "Name": "Магнолия",
+    "TagKeyWords": "Магнолия |"
+  },
+  {
+    "ID": "10905",
+    "Name": "МастерХост",
+    "TagKeyWords": "МастерХост |"
+  },
+  {
+    "ID": "10854",
+    "Name": "Мвидео",
+    "TagKeyWords": "Мвидео |"
+  },
+  {
+    "ID": "10842",
+    "Name": "Мегафон",
+    "TagKeyWords": "Мегафон |"
+  },
+  {
+    "ID": "10797",
+    "Name": "МЕДСИ",
+    "TagKeyWords": "МЕДСИ |"
+  },
+  {
+    "ID": "10878",
+    "Name": "Метро Санкт-Петербург",
+    "TagKeyWords": "Метро Санкт-Петербург |"
+  },
+  {
+    "ID": "10907",
+    "Name": "Мираторг",
+    "TagKeyWords": "Мираторг |"
+  },
+  {
+    "ID": "10930",
+    "Name": "МОЙ магазин",
+    "TagKeyWords": "МОЙ магазин |"
+  },
+  {
+    "ID": "10938",
+    "Name": "Мосигра",
+    "TagKeyWords": "Мосигра |"
+  },
+  {
+    "ID": "10940",
+    "Name": "Московский зоопарк",
+    "TagKeyWords": "Московский зоопарк |"
+  },
+  {
+    "ID": "10777",
+    "Name": "Московский метрополитен",
+    "TagKeyWords": "Московский метрополитен |"
+  },
+  {
+    "ID": "10792",
+    "Name": "Московский транспорт",
+    "TagKeyWords": "Московский транспорт |"
+  },
+  {
+    "ID": "10911",
+    "Name": "Мосхозторг",
+    "TagKeyWords": "Мосхозторг |"
+  },
+  {
+    "ID": "10767",
+    "Name": "Мосцветторг",
+    "TagKeyWords": "Мосцветторг |"
+  },
+  {
+    "ID": "10763",
+    "Name": "МосЭнергоСбыт",
+    "TagKeyWords": "МосЭнергоСбыт |"
+  },
+  {
+    "ID": "10875",
+    "Name": "МТС",
+    "TagKeyWords": "МТС |"
+  },
+  {
+    "ID": "10820",
+    "Name": "МТС-Банк",
+    "TagKeyWords": "МТС-Банк |"
+  },
+  {
+    "ID": "10828",
+    "Name": "Му-Му",
+    "TagKeyWords": "Му-Му |"
+  },
+  {
+    "ID": "10845",
+    "Name": "ОБИ",
+    "TagKeyWords": "ОБИ |"
+  },
+  {
+    "ID": "10956",
+    "Name": "О'КЕЙ",
+    "TagKeyWords": "О'КЕЙ |"
+  },
+  {
+    "ID": "10953",
+    "Name": "Оптимист Оптика",
+    "TagKeyWords": "Оптимист Оптика |"
+  },
+  {
+    "ID": "10889",
+    "Name": "Пекарни Папан",
+    "TagKeyWords": "Пекарни Папан |"
+  },
+  {
+    "ID": "10776",
+    "Name": "Перекрёсток",
+    "TagKeyWords": "Перекрёсток |"
+  },
+  {
+    "ID": "10951",
+    "Name": "Персона",
+    "TagKeyWords": "Персона |"
+  },
+  {
+    "ID": "10807",
+    "Name": "Планета Здоровья",
+    "TagKeyWords": "Планета Здоровья |"
+  },
+  {
+    "ID": "10766",
+    "Name": "Подружка",
+    "TagKeyWords": "Подружка |"
+  },
+  {
+    "ID": "10764",
+    "Name": "Портал госуслуг Москвы",
+    "TagKeyWords": "Портал госуслуг Москвы |"
+  },
+  {
+    "ID": "10816",
+    "Name": "Почта России",
+    "TagKeyWords": "Почта России |"
+  },
+  {
+    "ID": "10775",
+    "Name": "Пятерочка",
+    "TagKeyWords": "Пятерочка |"
+  },
+  {
+    "ID": "10888",
+    "Name": "Ремит",
+    "TagKeyWords": "Ремит |"
+  },
+  {
+    "ID": "10877",
+    "Name": "РЖД",
+    "TagKeyWords": "РЖД |"
+  },
+  {
+    "ID": "10950",
+    "Name": "Рокетбанк",
+    "TagKeyWords": "Рокетбанк |"
+  },
+  {
+    "ID": "10958",
+    "Name": "Ростелеком",
+    "TagKeyWords": "Ростелеком |"
+  },
+  {
+    "ID": "10908",
+    "Name": "Ростелеком Плати Просто",
+    "TagKeyWords": "Ростелеком Плати Просто |"
+  },
+  {
+    "ID": "10872",
+    "Name": "Сбер Мега Маркет",
+    "TagKeyWords": "Сбер Мега Маркет |"
+  },
+  {
+    "ID": "10799",
+    "Name": "Сбербанк",
+    "TagKeyWords": "Сбербанк |"
+  },
+  {
+    "ID": "10837",
+    "Name": "Сбермаркет",
+    "TagKeyWords": "Сбермаркет |"
+  },
+  {
+    "ID": "10946",
+    "Name": "Связной",
+    "TagKeyWords": "Связной  |"
+  },
+  {
+    "ID": "10800",
+    "Name": "Ситимобил",
+    "TagKeyWords": "Ситимобил |"
+  },
+  {
+    "ID": "10827",
+    "Name": "Столото",
+    "TagKeyWords": "Столото |"
+  },
+  {
+    "ID": "10770",
+    "Name": "Стрелка",
+    "TagKeyWords": "Стрелка |"
+  },
+  {
+    "ID": "10949",
+    "Name": "Супермаркет \"Я Любимый\"",
+    "TagKeyWords": "Супермаркет \"Я Любимый\" |"
+  },
+  {
+    "ID": "10899",
+    "Name": "Счастливый взгляд",
+    "TagKeyWords": "Счастливый взгляд |"
+  },
+  {
+    "ID": "10853",
+    "Name": "Тануки",
+    "TagKeyWords": "Тануки |"
+  },
+  {
+    "ID": "10959",
+    "Name": "ТВТ ( ТВТ)",
+    "TagKeyWords": "ТВТ ( ТВТ) |"
+  },
+  {
+    "ID": "10884",
+    "Name": "Те самые пончики",
+    "TagKeyWords": "Те самые пончики |"
+  },
+  {
+    "ID": "10779",
+    "Name": "Терволина",
+    "TagKeyWords": "Терволина |"
+  },
+  {
+    "ID": "10794",
+    "Name": "Теремок",
+    "TagKeyWords": "Теремок |"
+  },
+  {
+    "ID": "10823",
+    "Name": "Тинькофф Банк",
+    "TagKeyWords": "Тинькофф Банк |"
+  },
+  {
+    "ID": "10898",
+    "Name": "ТК Подорожник",
+    "TagKeyWords": "ТК Подорожник |"
+  },
+  {
+    "ID": "10862",
+    "Name": "Три правила",
+    "TagKeyWords": "Три правила |"
+  },
+  {
+    "ID": "10838",
+    "Name": "Утконос",
+    "TagKeyWords": "Утконос |"
+  },
+  {
+    "ID": "10830",
+    "Name": "Федеральная Налоговая Служба",
+    "TagKeyWords": "Федеральная Налоговая Служба |"
+  },
+  {
+    "ID": "10817",
+    "Name": "ЦППК",
+    "TagKeyWords": "ЦППК |"
+  },
+  {
+    "ID": "10857",
+    "Name": "Читай-город",
+    "TagKeyWords": "Читай-город |"
+  },
+  {
+    "ID": "10892",
+    "Name": "ШефМаркет",
+    "TagKeyWords": "ШефМаркет |"
+  },
+  {
+    "ID": "10784",
+    "Name": "Шоколадница",
+    "TagKeyWords": "Шоколадница |"
+  },
+  {
+    "ID": "10957",
+    "Name": "Элекснет",
+    "TagKeyWords": "Элекснет |"
+  },
+  {
+    "ID": "10825",
+    "Name": "ЮMoney",
+    "TagKeyWords": "ЮMoney |"
+  },
+  {
+    "ID": "10931",
+    "Name": "Якитория",
+    "TagKeyWords": "Якитория |"
+  },
+  {
+    "ID": "10773",
+    "Name": "Яндекс Такси",
+    "TagKeyWords": "Яндекс Такси |"
+  },
+  {
+    "ID": "10832",
+    "Name": "Яндекс.Еда",
+    "TagKeyWords": "Яндекс.Еда |"
+  },
+  {
+    "ID": "10809",
+    "Name": "Яндекс.Маркет",
+    "TagKeyWords": "Яндекс.Маркет |"
+  },
+  {
+    "ID": "10793",
+    "Name": "Яндекс.Плюс",
+    "TagKeyWords": "Яндекс.Плюс |"
+  },
+  {
+    "ID": "10890",
+    "Name": "Яндекс.Шеф",
+    "TagKeyWords": "Яндекс.Шеф |"
+  }
+]

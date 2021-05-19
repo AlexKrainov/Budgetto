@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 using SubScriptionModel = MyProfile.Entity.Model.SubScription;
 
 
@@ -51,8 +52,224 @@ namespace MyProfile.Code
             //AddPaymentCounter();
 
             CheckAndAddUserEntityCounter();
-            CheckAndAddBaseSectionsAndAreas();
+           // LoadTinkoffOperations();
+            // UpdateCompanies();
 
+        }
+
+        /// <summary>
+        /// [Company], [MccCode], [MccCategory]
+        /// </summary>
+        private void LoadTinkoffOperations()
+        {
+            var now = DateTime.Now.ToUniversalTime();
+            string[] moscow_cities = new string[] { "MOSCOW", "MOSKVA", "GOROD MOSKVA", "G. MOSKVA", "77 - MOSCOW", "MOSKVA G", "WWW.YAKITORIY" };
+            string[] countries = new string[] { "RU", "RUS" };
+            int bankID = repository.GetAll<Bank>(x => x.NameEn == "Tinkoff Bank").FirstOrDefault().ID;
+
+            List<Company> companies = repository.GetAll<Company>().ToList();
+            List<MccCategory> categories = repository.GetAll<MccCategory>().ToList();
+            List<MccCode> codes = repository.GetAll<MccCode>().ToList();
+
+            using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\tinkoff-operations-2.json"))
+            //using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\tinkoff-operations.json"))
+            using (WebClient client = new WebClient())
+            {
+                List<TinkoffOperation> operations = JsonConvert.DeserializeObject<List<TinkoffOperation>>(reader.ReadToEnd());
+
+                foreach (var operation in operations)
+                {
+                    #region company
+                    if (operation.description.Contains("Билайн"))
+                    {
+                        operation.description = "Билайн";
+                    }
+                    if (operation.description.Contains("МосЭнергоСбыт"))
+                    {
+                        operation.description = "МосЭнергоСбыт";
+                    }
+                    if (operation.description.Contains("МТС +"))
+                    {
+                        operation.description = "МТС";
+                    }
+                    if (operation.description.Contains("Мамин ростелеком"))
+                    {
+                        operation.description = "Ростелеком";
+                    }
+                    if (operation.description.Contains("Дмитрий К.") && operation.operationPaymentType != "TEMPLATE" && operation.brand.name == "Сбербанк")
+                    {
+                        operation.description = "Сбербанк";
+                    }
+                    if (operation.description.Contains("Дмитрий К.") && operation.operationPaymentType != "TEMPLATE" && operation.brand.name == "Тинькофф Банк")
+                    {
+                        operation.description = "Тинькофф Банк";
+                    }
+                    var company = companies.FirstOrDefault(x => operation.brand != null && x.t_objectID == operation.brand.id);
+
+                    if (company == null)
+                    {
+                        company = new Company();
+                        company.CreateDate = now;
+
+                        if (operation.description != "Пополнение счета Тинькофф Брокер"
+                            && operation.description != "В бюджетные организации"
+                            && operation.description != "Департамент Финансов города Москвы (ГБОУ Школа № 1935 л/сч 2607542000900589)"
+                             && operation.description != "Перевод между счетами"
+                             && operation.description != "Рокетбанк"
+                             && operation.description != "Пополнение Tinkoff Black"
+                             && operation.description != "Проценты на остаток по счету"
+                            && operation.description != "Пополнение накопительного счета"
+                            && operation.description != "Оплата базового номера +79688092636"
+                            && operation.description != "Мой телефон +79035130446"
+                            && operation.description != "Билайн +79660857970"
+                            && operation.description != "Перевод с карты"
+                            && operation.description != "Бонусы")
+                        {
+                            if (operation.brand != null
+                                && operation.brand.baseColor != null
+                                && operation.brand.name != "Перевод с карты"
+                                && operation.brand.name != "Перевод на вклад"
+                                && operation.brand.name != "Бонусы")
+                            {
+                                company.Name = operation.brand.name;
+                                company.BankKeyWords += operation.brand.name + " | ";
+                                company.TagKeyWords += operation.brand.name + " | ";
+                                company.BrandColor = operation.brand.baseColor.ToUpper();
+                                company.TextColor = operation.brand.baseTextColor.ToUpper();
+                                company.t_objectID = operation.brand.id;
+
+
+                                if (!System.IO.File.Exists(@"C:\Users\t3l3f\source\repos\MyProject\MyProfile\wwwroot\resources\companies\" + operation.brand.logoFile))
+                                {
+                                    try
+                                    {
+                                        //Random random = new Random();
+                                        //var n = random.Next(10000, 99999).ToString();
+
+                                        string url = @"C:\Users\t3l3f\source\repos\MyProject\MyProfile\wwwroot\resources\companies\" + operation.brand.logoFile;
+                                        client.DownloadFile(new Uri("https://brands-prod.cdn-tinkoff.ru/general_logo/" + operation.brand.logoFile), url);
+                                        company.LogoSquare = @"/resources/companies/" + operation.brand.logoFile;
+                                    }
+                                    catch (Exception ex1)
+                                    {
+
+                                    }
+                                }
+                                else
+                                {
+                                    company.LogoSquare = @"/resources/companies/" + operation.brand.logoFile;
+                                }
+                            }
+                            //else if (operation.merchant != null)
+                            //{
+                            //    company.Name = operation.merchant.name;
+                            //} 
+                        }
+
+                        if (operation.merchant != null)
+                        {
+                            if (!string.IsNullOrEmpty(company.Name) && operation.merchant.region != null)
+                            {
+                                if (moscow_cities.Contains(operation.merchant.region.city))
+                                {
+                                    company.City = "Moscow";
+                                }
+                                else
+                                {
+                                    company.City = operation.merchant.region.city;
+                                }
+
+                                if (countries.Contains(operation.merchant.region.country))
+                                {
+                                    company.Country = "Russia";
+                                }
+                                else
+                                {
+                                    company.Country = operation.merchant.region.country;
+                                }
+                            }
+
+                        }
+                        if (!string.IsNullOrEmpty(company.Name))
+                        {
+                            repository.Create(company, true);
+                            companies.Add(company);
+                        }
+                    }
+                    #endregion
+
+
+                    var mccCode = new MccCode();
+                    var category = categories.FirstOrDefault(x => x.Name == operation.category.name);
+
+                    if (category == null)
+                    {
+                        category = new MccCategory { MccCodes = new List<MccCode>() };
+                        category.BankID = bankID;
+                        category.Name = operation.category.name;
+                        if (int.TryParse(operation.category.id, out int bankCategoryID))
+                        {
+                            category.bankCategoryID = bankCategoryID;
+                        }
+
+                        category.IsSystem = (new string[] { "Переводы/иб", "Перевод между счетами", "Бонусы", "Проценты", "Пополнение вклада" }).Contains(operation.category.name);
+
+                        mccCode = new MccCode
+                        {
+                            CompanyID = company.ID == 0 ? (int?)null : company.ID,
+                            Mcc = operation.mcc
+                        };
+
+                        if (operation.spendingCategory != null
+                            && operation.spendingCategory.parentId != null
+                            && int.TryParse(operation.spendingCategory.parentId, out int bankParentCategoryID))
+                        {
+                            category.bankParentCategoryID = bankParentCategoryID;
+                        }
+
+                        category.MccCodes.Add(mccCode);
+
+                        repository.Create(category, true);
+                        categories.Add(category);
+                    }
+
+                    if (mccCode.ID == 0 && !category.MccCodes.Any(x => x.Mcc == operation.mcc))
+                    {
+                        category.MccCodes.Add(new MccCode
+                        {
+                            CompanyID = company.ID == 0 ? (int?)null : company.ID,
+                            Mcc = operation.mcc
+                        });
+                        repository.Update(category, true);
+
+                    }
+
+                }
+            }
+        }
+
+        private void UpdateCompanies()
+        {
+            var now = DateTime.Now.ToUniversalTime();
+
+            List<Company> companies = repository.GetAll<Company>().ToList();
+
+            using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\companies.json"))
+            {
+                List<Company> file_companies = JsonConvert.DeserializeObject<List<Company>>(reader.ReadToEnd());
+
+                foreach (var file_company in file_companies)
+                {
+                    var company = companies.FirstOrDefault(x => x.Name == file_company.Name);
+
+                    company.TagKeyWords = file_company.TagKeyWords;
+                    company.BankKeyWords = file_company.BankKeyWords;
+                    company.Site = file_company.Site;
+                    company.IsChecked = file_company.IsChecked;
+
+                    repository.Update(company, true);
+                }
+            }
         }
 
         private void CheckAndAddBaseSectionsAndAreas()
@@ -1752,6 +1969,192 @@ namespace MyProfile.Code
             public string Icon { get; set; }
             public string Background { get; set; }
             public string SectionType { get; set; }
+        }
+
+
+        public class Subgroup
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+        }
+
+        public class Location
+        {
+            public double latitude { get; set; }
+            public double longitude { get; set; }
+        }
+
+        public class Amount
+        {
+            public string value { get; set; }
+            public string loyaltyProgramId { get; set; }
+            public string loyalty { get; set; }
+            public string name { get; set; }
+            public string loyaltySteps { get; set; }
+            public string loyaltyPointsId { get; set; }
+            public string loyaltyPointsName { get; set; }
+            public bool loyaltyImagine { get; set; }
+            public bool partialCompensation { get; set; }
+            public Currency currency { get; set; }
+        }
+
+        public class LoyaltyBonu
+        {
+            public string loyaltyType { get; set; }
+            public Amount amount { get; set; }
+        }
+
+        public class Currency
+        {
+            public int code { get; set; }
+            public string name { get; set; }
+            public string strCode { get; set; }
+        }
+
+        public class CashbackAmount
+        {
+            public Currency currency { get; set; }
+            public int value { get; set; }
+        }
+
+        public class DebitingTime
+        {
+            public object milliseconds { get; set; }
+        }
+
+        public class OperationTime
+        {
+            public object milliseconds { get; set; }
+        }
+
+        public class SpendingCategory
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+            public string icon { get; set; }
+            public string parentId { get; set; }
+        }
+
+        public class Category
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+        }
+
+        public class Region
+        {
+            public string country { get; set; }
+            public string city { get; set; }
+            public string address { get; set; }
+            public string zip { get; set; }
+        }
+
+        public class Merchant
+        {
+            public string name { get; set; }
+            public Region region { get; set; }
+        }
+
+        public class AccountAmount
+        {
+            public Currency currency { get; set; }
+            public double value { get; set; }
+        }
+
+        public class Brand
+        {
+            public string name { get; set; }
+            public string baseTextColor { get; set; }
+            public string logo { get; set; }
+            public string id { get; set; }
+            public bool roundedLogo { get; set; }
+            public string baseColor { get; set; }
+            public string logoFile { get; set; }
+            public string link { get; set; }
+        }
+
+        public class FeeAmount
+        {
+            public Currency currency { get; set; }
+            public string value { get; set; }
+        }
+
+        public class FieldsValues
+        {
+            public string date { get; set; }
+            public string igBillId { get; set; }
+            public string account { get; set; }
+            public string period { get; set; }
+            public string payerCode { get; set; }
+            public string bankContract { get; set; }
+        }
+
+        public class Payment
+        {
+            public bool sourceIsQr { get; set; }
+            public string bankAccountId { get; set; }
+            public string paymentId { get; set; }
+            public string providerGroupId { get; set; }
+            public string paymentType { get; set; }
+            public FeeAmount feeAmount { get; set; }
+            public string providerId { get; set; }
+            public bool hasPaymentOrder { get; set; }
+            public string comment { get; set; }
+            public FieldsValues fieldsValues { get; set; }
+            public bool repeatable { get; set; }
+            public string cardNumber { get; set; }
+            public string templateId { get; set; }
+            public bool templateIsFavorite { get; set; }
+        }
+
+        public class TinkoffOperation
+        {
+            public bool isDispute { get; set; }
+            public bool isOffline { get; set; }
+            public bool hasStatement { get; set; }
+            public bool isSuspicious { get; set; }
+            public string authorizationId { get; set; }
+            public string id { get; set; }
+            public string status { get; set; }
+            public bool operationTransferred { get; set; }
+            public string idSourceType { get; set; }
+            public string type { get; set; }
+            public bool trancheCreationAllowed { get; set; }
+            public Subgroup subgroup { get; set; }
+            public List<Location> locations { get; set; }
+            public List<LoyaltyBonu> loyaltyBonus { get; set; }
+            public CashbackAmount cashbackAmount { get; set; }
+            public string description { get; set; }
+            public DebitingTime debitingTime { get; set; }
+            public int cashback { get; set; }
+            public Amount amount { get; set; }
+            public OperationTime operationTime { get; set; }
+            public SpendingCategory spendingCategory { get; set; }
+            public List<object> offers { get; set; }
+            public bool isHce { get; set; }
+            public int mcc { get; set; }
+            public Category category { get; set; }
+            public List<object> additionalInfo { get; set; }
+            public int virtualPaymentType { get; set; }
+            public string account { get; set; }
+            public string ucid { get; set; }
+            public Merchant merchant { get; set; }
+            public string card { get; set; }
+            public List<object> loyaltyPayment { get; set; }
+            public string group { get; set; }
+            public string mccString { get; set; }
+            public bool cardPresent { get; set; }
+            public bool isExternalCard { get; set; }
+            public string cardNumber { get; set; }
+            public AccountAmount accountAmount { get; set; }
+            public Brand brand { get; set; }
+            public Payment payment { get; set; }
+            public string operationPaymentType { get; set; }
+            public string subcategory { get; set; }
+            public string installmentStatus { get; set; }
+            public string senderAgreement { get; set; }
+            public bool? hasShoppingReceipt { get; set; }
+            public string compensation { get; set; }
         }
     }
 }

@@ -130,7 +130,7 @@
             ShowLoading('#history-records');
             return $.ajax({
                 type: "GET",
-                url: "/Budget/LoadingRecordsForByDate?date=" + this.dateTimeOfPayment,
+                url: "/History/LoadingRecordsForByDate?date=" + this.dateTimeOfPayment,
                 contentType: "application/json",
                 dataType: 'json',
                 context: this,

@@ -128,6 +128,7 @@
     <Folder Include="wwwroot\resources\feedback\" />
     <Folder Include="wwwroot\resources\help\3\" />
     <Folder Include="wwwroot\resources\cards\" />
+    <Folder Include="wwwroot\resources\companies\" />
     <Folder Include="wwwroot\resources\subscriptions\" />
     <Folder Include="wwwroot\resources\users\" />
     <Folder Include="wwwroot\video\" />

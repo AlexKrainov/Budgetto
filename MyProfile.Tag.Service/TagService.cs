@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.Service;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
@@ -17,11 +18,15 @@ namespace MyProfile.Tag.Service
     {
         private IBaseRepository repository;
         private IMemoryCache cache;
+        private CommonService commonService;
 
-        public TagService(IBaseRepository repository, IMemoryCache cache)
+        public TagService(IBaseRepository repository,
+            IMemoryCache cache,
+            CommonService commonService)
         {
             this.repository = repository;
             this.cache = cache;
+            this.commonService = commonService;
         }
 
 
@@ -37,6 +42,8 @@ namespace MyProfile.Tag.Service
 
             if (recordTags.Any(x => x.IsNew))
             {
+                var companies = commonService.GetCompanies();
+
                 foreach (var recordTag in recordTags.Where(x => x.IsNew))
                 {
                     if (newTags.Any(x => x.Title.ToLower() == recordTag.Title.ToLower() && x.IsNew == false))
@@ -56,6 +63,7 @@ namespace MyProfile.Tag.Service
                             UserID = currentUser.ID,
                             DateCreate = now,
                             Title = recordTag.Title,
+                            CompanyID = companies.FirstOrDefault(x => x.TagKeyWords.Contains(recordTag.Title))?.ID
                         });
                     }
                 }

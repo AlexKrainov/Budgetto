@@ -56,12 +56,12 @@ namespace MyProfile.Entity.Model
         public virtual Account Account { get; set; }
 
         public virtual ICollection<RecordTag> Tags { get; set; }
-        public virtual ICollection<RecordHistory> AccountRecordHistories { get; set; }
+        public virtual ICollection<RecordHistory> RecordHistories { get; set; }
 
         public Record()
         {
             this.Tags = new HashSet<RecordTag>();
-            this.AccountRecordHistories = new HashSet<RecordHistory>();
+            this.RecordHistories = new HashSet<RecordHistory>();
         }
     }
 }

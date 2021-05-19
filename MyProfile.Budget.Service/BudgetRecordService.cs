@@ -106,9 +106,10 @@ namespace MyProfile.Budget.Service
                 }
                 recordCashback = 0;
                 _money = 0;
+                Account account = accounts.FirstOrDefault(x => x.ID == record.AccountID);
                 history = new RecordHistory();
 
-                Account account = accounts.FirstOrDefault(x => x.ID == record.AccountID);
+
                 SectionLightModelView section = sections.FirstOrDefault(x => x.ID == record.SectionID);
 
                 try
@@ -122,6 +123,9 @@ namespace MyProfile.Budget.Service
 
                         accounts.Add(account);
                     }
+                    history.AccountOldBalance = account.Balance;
+                    history.AccountOldBalanceCashback = account.CachbackBalance;
+
                     if (isSpending
                         && record.Money >= 100
                         && account.IsCachback
@@ -350,7 +354,7 @@ namespace MyProfile.Budget.Service
                                 {
                                     #region OLD Return back balance and cashback
 
-                                    RecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
+                                    RecordHistory lastAccountRecordHistory = dbRecord.RecordHistories
                                            .Where(x => x.ActionTypeCode == RecordActionTypeCode.Create || x.ActionTypeCode == RecordActionTypeCode.Edit)
                                            .OrderByDescending(x => x.ID)
                                            .FirstOrDefault();
@@ -440,7 +444,7 @@ namespace MyProfile.Budget.Service
                                         accounts.Add(oldAccount);
                                     }
 
-                                    RecordHistory lastAccountRecordHistory = dbRecord.AccountRecordHistories
+                                    RecordHistory lastAccountRecordHistory = dbRecord.RecordHistories
                                          .Where(x => (x.ActionTypeCode == RecordActionTypeCode.Create
                                               || x.ActionTypeCode == RecordActionTypeCode.Edit)
                                               && x.AccountID == oldAccount.ID)
@@ -609,7 +613,7 @@ namespace MyProfile.Budget.Service
 
                 #region Account and AccountHistory
 
-                RecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
+                RecordHistory lastAccountRecordHistory = db_record.RecordHistories
                                       .Where(x => x.ActionTypeCode == RecordActionTypeCode.Create || x.ActionTypeCode == RecordActionTypeCode.Edit)
                                       .OrderByDescending(x => x.ID)
                                       .FirstOrDefault();
@@ -641,7 +645,7 @@ namespace MyProfile.Budget.Service
                     //record.Error = "Не удалось списать средства со счета: " + account.Name;
                 }
 
-                db_record.AccountRecordHistories.Add(new RecordHistory
+                db_record.RecordHistories.Add(new RecordHistory
                 {
                     ActionTypeCode = RecordActionTypeCode.Delete,
                     AccountID = db_record.AccountID,
@@ -675,7 +679,7 @@ namespace MyProfile.Budget.Service
 
                 #region Account and AccountHistory
 
-                RecordHistory lastAccountRecordHistory = db_record.AccountRecordHistories
+                RecordHistory lastAccountRecordHistory = db_record.RecordHistories
                                       .Where(x => x.ActionTypeCode == RecordActionTypeCode.Create || x.ActionTypeCode == RecordActionTypeCode.Edit)
                                       .OrderByDescending(x => x.ID)
                                       .FirstOrDefault();
@@ -705,7 +709,7 @@ namespace MyProfile.Budget.Service
                     await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "BudgetRecord_RecoveryRecord", new Exception(), "lastAccountRecordHistory is empty");
                 }
 
-                db_record.AccountRecordHistories.Add(new RecordHistory
+                db_record.RecordHistories.Add(new RecordHistory
                 {
                     ActionTypeCode = RecordActionTypeCode.Recovery,
                     AccountID = db_record.AccountID,
@@ -841,19 +845,125 @@ namespace MyProfile.Budget.Service
                       CardID = x.Account.CardID,
                       CardName = x.Account.CardID != null ? x.Account.Card.Name : null,
                       CardLogo = x.Account.CardID != null ? x.Account.Card.SmallLogo : null,
+
                   },
                   Tags = x.Tags
-                  .Select(y => new RecordTag
-                  {
-                      ID = y.UserTagID,
-                      Title = y.UserTag.Title,
-                      IsDeleted = y.UserTag.IsDeleted,
-                      DateCreate = y.UserTag.DateCreate,
-                  })
+                      .Select(y => new RecordTag
+                      {
+                          ID = y.UserTagID,
+                          Title = y.UserTag.Title,
+                          IsDeleted = y.UserTag.IsDeleted,
+                          DateCreate = y.UserTag.DateCreate,
+
+                          CompanyID = y.UserTag.CompanyID,
+                          CompanyName = y.UserTag.Company != null ? y.UserTag.Company.Name : null,
+                          CompanyLogo = y.UserTag.Company != null ? y.UserTag.Company.LogoSquare : null,
+
+                      }),
+                  //x.RecordHistories
+                  //  .OrderBy(z => z.DateCreate)
+                  //  .Select(z => new
+                  //  {
+                  //      z.ActionTypeCode,
+                  //      z.AccountNewBalance,
+                  //      z.old
+                  //  })
               })
               .OrderByDescending(x => x.DateTimeOfPayment.Date)
               .ToListAsync();
         }
+
+        public async Task<IList<HistoryRecordModelView>> GetBudgetRecordsGroupByDateByFilterAsync(CalendarFilterModels filter)
+        {
+            var expression = await getExpressionByCalendarFilterAsync(filter);
+
+            return await repository
+              .GetAll(expression)
+              .GroupBy(x => x.DateTimeOfPayment.Date)
+              .Select(y => new HistoryRecordModelView
+              {
+                  GroupDate = y.Key,
+                  Records= y
+                    .OrderByDescending(x => x.DateTimeOfPayment.Date)
+                    .Select(x => new BudgetRecordModelView
+                    {
+                        ID = x.ID,
+                        AccountID = x.AccountID,
+                        DateTimeCreate = x.DateTimeCreate,
+                        DateTimeEdit = x.DateTimeEdit,
+                        Description = x.Description,
+                        IsConsider = x.IsHide,
+                        RawData = x.RawData,
+                        Money = x.Total,
+                        Cashback = x.Cashback,
+                        CurrencyID = x.CurrencyID,
+                        CurrencyNominal = x.CurrencyNominal,
+                        CurrencyRate = x.CurrencyRate,
+                        CurrencySpecificCulture = x.Currency.SpecificCulture,
+                        CurrencyCodeName = x.Currency.CodeName,
+                        DateTimeOfPayment = x.DateTimeOfPayment,
+                        SectionID = x.BudgetSectionID,
+                        SectionName = x.BudgetSection.Name,
+                        SectionTypeID = x.BudgetSection.SectionTypeID,
+                        AreaID = x.BudgetSection.BudgetArea.ID,
+                        AreaName = x.BudgetSection.BudgetArea.Name,
+                        CssIcon = x.BudgetSection.CssIcon,
+                        CssBackground = x.BudgetSection.CssBackground,
+                        CssColor = x.BudgetSection.CssColor,
+                        IsShowForCollection = x.IsShowForCollection,
+                        IsOwner = x.UserID == filter.UserID,
+                        UserName = x.User.Name + " " + x.User.LastName,
+                        ImageLink = x.User.ImageLink,
+                        Section = new BudgetSectionModelView
+                        {
+                            SectionTypeID = x.BudgetSection.SectionTypeID,
+                            AreaID = x.BudgetSection.BudgetAreaID,
+                            AreaName = x.BudgetSection.BudgetArea.Name,
+                            Name = x.BudgetSection.Name,
+                            ID = x.BudgetSectionID,
+                            CssIcon = x.BudgetSection.CssIcon,
+                            CssBackground = x.BudgetSection.CssBackground,
+                            CssColor = x.BudgetSection.CssColor,
+                        },
+                        Account = x.AccountID == null ? null : new AccountModelView
+                        {
+                            AccountType = x.Account.AccountTypeID,
+                            BankImage = x.Account.Bank != null ? x.Account.Bank.LogoCircle : null,
+                            Name = x.Account.Name,
+                            AccountIcon = x.Account.AccountType.Icon,
+                            CurrencyIcon = x.Account.Currency.Icon,
+                            CardID = x.Account.CardID,
+                            CardName = x.Account.CardID != null ? x.Account.Card.Name : null,
+                            CardLogo = x.Account.CardID != null ? x.Account.Card.SmallLogo : null,
+
+                        },
+                        Tags = x.Tags
+                      .Select(y => new RecordTag
+                      {
+                          ID = y.UserTagID,
+                          Title = y.UserTag.Title,
+                          IsDeleted = y.UserTag.IsDeleted,
+                          DateCreate = y.UserTag.DateCreate,
+
+                          CompanyID = y.UserTag.CompanyID,
+                          CompanyName = y.UserTag.Company != null ? y.UserTag.Company.Name : null,
+                          CompanyLogo = y.UserTag.Company != null ? y.UserTag.Company.LogoSquare : null,
+
+                      }),
+                        //x.RecordHistories
+                        //  .OrderBy(z => z.DateCreate)
+                        //  .Select(z => new
+                        //  {
+                        //      z.ActionTypeCode,
+                        //      z.AccountNewBalance,
+                        //      z.old
+                        //  })
+                    })
+                    .ToList()
+              })
+              .ToListAsync();
+        }
+
 
         public IList<BudgetRecordModelView> GetBudgetRecordsByFilter(CalendarFilterModels filter)
         {

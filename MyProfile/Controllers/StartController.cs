@@ -150,7 +150,6 @@ namespace MyProfile.Controllers
 
                     budgetAreas.Add(new BudgetArea
                     {
-                        CodeName = area.CodeName,
                         Name = area.Name,
                         IsShowOnSite = true,
                         IsShowInCollective = true,

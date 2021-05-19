@@ -13,10 +13,6 @@ namespace MyProfile.Entity.Model
 		[Required]
 		public string Name { get; set; }
 		/// <summary>
-		/// It needs for isolate the section created by the system
-		/// </summary>
-		public string CodeName { get; set; }
-		/// <summary>
 		/// Hide but not delete
 		/// </summary>
 		public bool IsShowOnSite { get; set; } = true;
