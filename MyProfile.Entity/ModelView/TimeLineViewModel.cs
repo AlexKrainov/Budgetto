@@ -39,7 +39,7 @@ namespace MyProfile.Entity.ModelView
         /// Search records by section or tags
         /// </summary>
         public bool IsSection { get; set; } = true;
-
+        public bool IsSearchAllUserSections { get; set; }
         public CalendarFilterModels()
         {
             this.Sections = new List<long>();

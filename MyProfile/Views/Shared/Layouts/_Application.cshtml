@@ -81,6 +81,7 @@
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/css/rtl/uikit.css">
     <link rel="stylesheet" asp-append-version="true" href="~/css/demo.css">
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/flatpickr/flatpickr.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/daterangepicker/daterangepicker.min.css" />
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/toastr/toastr.css">
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/spinkit/spinkit.css" />
     @if (currentUser.UserSettings.IsShowHints)
@@ -195,6 +196,8 @@
         <script src="~/vendor/libs/filtrex/src/filtrex.js" asp-append-version="true"></script>
         <script src="~/pages/_base/record-vue.js"></script>
 
+        <script src="~/vendor/libs/daterangepicker/daterangepicker.js" asp-append-version="true"></script>
+
         @if (currentUser.UserSettings.IsShowHints)
         {
             <script src="~/vendor/libs/shepherd/shepherd.js" asp-append-version="true"></script>
@@ -230,6 +233,8 @@
         <script src="~/vue-components/vue-select2-component.min.js"></script>
         <script src="~/vendor/libs/filtrex/src/filtrex.js" asp-append-version="true"></script>
         <script src="~/pages/_base/record-vue.min.js"></script>
+
+        <script src="~/vendor/libs/daterangepicker/daterangepicker.min.js" asp-append-version="true"></script>
 
         @if (currentUser.UserSettings.IsShowHints)
         {

@@ -59,6 +59,9 @@
                                                                        v-bind:data-is-selection="true"
                                                                        v-bind:data-items="sections"
                                                                        v-on:onchoose="onChooseSection"></vue-section-component>
+                                                <span class="float-left">
+                                                    <span class="small show-sections ml-3 ">Выбрано категорий: {{ sections.filter(x => x.isSelected).length }}</span>
+                                                </span>
                                                 <span class="float-right">
                                                     <span v-on:click="selectOnlyType(2)" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Выбрать только расходы </span>|
                                                     <span v-on:click="selectOnlyType(1)" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать только доходы </span>|
@@ -78,6 +81,9 @@
                                                         </div>
                                                     </span>
                                                 </section>
+                                                <span class="float-left">
+                                                    <span class="small show-sections ml-3 ">Выбрано тегов: {{ userTags.filter(x => x.isShow == false).length }}</span>
+                                                </span>
                                                 <span class="float-right">
                                                     <span v-on:click="selectAllTags" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все теги </span>|
                                                     <span v-on:click="unselectAllTags" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить поле </span>
@@ -89,55 +95,27 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <span class="text-muted m-b block">С</span>
-                                    <input type="date" id="dateHistoryStart" class="form-control" v-model="filter.startDate" />
+                                    <div id="daterange" class="form-control">
+                                        <span></span>
+                                        <i class="fa fa-caret-down"></i>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <span class="text-muted m-b block">По</span>
-                                    <input type="date" id="dateHistoryEnd" class="form-control" v-model="filter.endDate" />
+                                    <button type="submit" class="btn btn-primary" v-on:click="search">Поиск</button>
                                 </div>
-                            </div>
-                            <div class="mt-3 float-right">
-                                <button type="submit" class="btn btn-primary" v-on:click="search">Поиск</button>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <div class=" card pl-0" style=" margin-bottom: 50px;">
-                    <ul class="list-group list-group-flush records-timeline" style=" margin-left: -5px;">
-                        @await Html.PartialAsync("_Records")
-                    </ul>
+                <div class="pl-0" style=" margin-bottom: 50px;">
+                    <new-vue-record-history-component v-bind:is-show-footer="true"
+                                                      v-bind:is-show-modal="true">
+                    </new-vue-record-history-component>
                 </div>
-                <div class="card card-body mt-4" v-show="records && records.length > 0" id="history-footer"
-                     style="position: fixed; right: 42px; top: 84%; width: 91.4%; z-index: 1;">
-                    <div class="text-right">
-                        <div style="display:inline-block" v-show="spendingInvestingMoney != 0">
-                            <label class="text-muted font-weight-normal m-0">Итого инвстиций</label>
-                            <div class="text-large">
-                                <strong>
-                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingInvestingMoney) }}
-                                </strong>
-                            </div>
-                        </div>
-                        <div class="mx-4" style="display:inline-block" v-show="spendingErningMoney != 0">
-                            <label class="text-muted font-weight-normal m-0">Итого доходов</label>
-                            <div class="text-large">
-                                <strong>
-                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingErningMoney) }}
-                                </strong>
-                            </div>
-                        </div>
-                        <div style="display:inline-block" v-show="spendingTotalMoney != 0">
-                            <label class="text-muted font-weight-normal m-0">Итого расходов</label>
-                            <div class="text-large">
-                                <strong>
-                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingTotalMoney) }}
-                                </strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            
+
+
             </div>
         </div>
     </div>

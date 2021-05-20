@@ -48,7 +48,7 @@ namespace MyProfile.Controllers
         public async Task<JsonResult> LoadingRecordsForByDate(DateTime date)
         {
             CalendarFilterModels filter = new CalendarFilterModels { Sections = new List<long>() };
-            filter.StartDate = new DateTime(date.Year, date.Month, date.Day, 00, 00, 01);
+            filter.StartDate = new DateTime(date.Year, date.Month, date.Day, 00, 00, 00);
             filter.EndDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
             filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
             filter.UserID = UserInfo.Current.ID;
@@ -58,13 +58,15 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, data = result });
         }
 
-        [HttpGet]
-        public async Task<JsonResult> LoadingGroupRecordsForByDate(DateTime date)
+        [HttpPost]
+        public async Task<JsonResult> GetGroupRecords([FromBody] CalendarFilterModels filter)
         {
-            CalendarFilterModels filter = new CalendarFilterModels { Sections = new List<long>() };
-            filter.StartDate = new DateTime(date.Year, date.Month, date.Day, 00, 00, 01);
-            filter.EndDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
-            filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
+            filter.StartDate = new DateTime(filter.StartDate.Year, filter.StartDate.Month, filter.StartDate.Day, 00, 00, 00);
+            filter.EndDate = new DateTime(filter.EndDate.Year, filter.EndDate.Month, filter.EndDate.Day, 23, 59, 59);
+            if (filter.IsSearchAllUserSections)
+            {
+                filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
+            }
             filter.UserID = UserInfo.Current.ID;
 
             var result = await budgetRecordService.GetBudgetRecordsGroupByDateByFilterAsync(filter);

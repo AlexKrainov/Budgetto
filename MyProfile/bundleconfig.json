@@ -268,5 +268,23 @@
     "inputFiles": [
       "wwwroot/pages/subscription/subscription-list.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/vendor/libs/daterangepicker/daterangepicker.min.css",
+    "inputFiles": [
+      "wwwroot/vendor/libs/daterangepicker/daterangepicker.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/vendor/libs/daterangepicker/daterangepicker.min.js",
+    "inputFiles": [
+      "wwwroot/vendor/libs/daterangepicker/daterangepicker.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/pages/history/history-list.min.js",
+    "inputFiles": [
+      "wwwroot/pages/history/history-list.js"
+    ]
   }
 ]

@@ -10,4 +10,13 @@
         public string codeName_CBR { get; set; }
         public int? codeNumber_CBR { get; set; }
     }
+
+    public class CurrencyLightModelView
+    {
+        public int? ID { get; set; }
+        public int Nominal { get; set; }
+        public decimal? Rate { get; set; }
+        public string SpecificCulture { get; set; }
+        public string CodeName { get; set; }
+    }
 }

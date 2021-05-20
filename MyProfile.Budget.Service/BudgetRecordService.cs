@@ -877,91 +877,102 @@ namespace MyProfile.Budget.Service
         {
             var expression = await getExpressionByCalendarFilterAsync(filter);
 
-            return await repository
+            return repository
               .GetAll(expression)
-              .GroupBy(x => x.DateTimeOfPayment.Date)
-              .Select(y => new HistoryRecordModelView
+              .Select(x => new BudgetRecordModelView
               {
-                  GroupDate = y.Key,
-                  Records= y
-                    .OrderByDescending(x => x.DateTimeOfPayment.Date)
-                    .Select(x => new BudgetRecordModelView
-                    {
-                        ID = x.ID,
-                        AccountID = x.AccountID,
-                        DateTimeCreate = x.DateTimeCreate,
-                        DateTimeEdit = x.DateTimeEdit,
-                        Description = x.Description,
-                        IsConsider = x.IsHide,
-                        RawData = x.RawData,
-                        Money = x.Total,
-                        Cashback = x.Cashback,
-                        CurrencyID = x.CurrencyID,
-                        CurrencyNominal = x.CurrencyNominal,
-                        CurrencyRate = x.CurrencyRate,
-                        CurrencySpecificCulture = x.Currency.SpecificCulture,
-                        CurrencyCodeName = x.Currency.CodeName,
-                        DateTimeOfPayment = x.DateTimeOfPayment,
-                        SectionID = x.BudgetSectionID,
-                        SectionName = x.BudgetSection.Name,
-                        SectionTypeID = x.BudgetSection.SectionTypeID,
-                        AreaID = x.BudgetSection.BudgetArea.ID,
-                        AreaName = x.BudgetSection.BudgetArea.Name,
-                        CssIcon = x.BudgetSection.CssIcon,
-                        CssBackground = x.BudgetSection.CssBackground,
-                        CssColor = x.BudgetSection.CssColor,
-                        IsShowForCollection = x.IsShowForCollection,
-                        IsOwner = x.UserID == filter.UserID,
-                        UserName = x.User.Name + " " + x.User.LastName,
-                        ImageLink = x.User.ImageLink,
-                        Section = new BudgetSectionModelView
-                        {
-                            SectionTypeID = x.BudgetSection.SectionTypeID,
-                            AreaID = x.BudgetSection.BudgetAreaID,
-                            AreaName = x.BudgetSection.BudgetArea.Name,
-                            Name = x.BudgetSection.Name,
-                            ID = x.BudgetSectionID,
-                            CssIcon = x.BudgetSection.CssIcon,
-                            CssBackground = x.BudgetSection.CssBackground,
-                            CssColor = x.BudgetSection.CssColor,
-                        },
-                        Account = x.AccountID == null ? null : new AccountModelView
-                        {
-                            AccountType = x.Account.AccountTypeID,
-                            BankImage = x.Account.Bank != null ? x.Account.Bank.LogoCircle : null,
-                            Name = x.Account.Name,
-                            AccountIcon = x.Account.AccountType.Icon,
-                            CurrencyIcon = x.Account.Currency.Icon,
-                            CardID = x.Account.CardID,
-                            CardName = x.Account.CardID != null ? x.Account.Card.Name : null,
-                            CardLogo = x.Account.CardID != null ? x.Account.Card.SmallLogo : null,
+                  ID = x.ID,
+                  AccountID = x.AccountID,
+                  DateTimeCreate = x.DateTimeCreate,
+                  DateTimeEdit = x.DateTimeEdit,
+                  Description = x.Description,
+                  IsConsider = x.IsHide,
+                  RawData = x.RawData,
+                  Money = x.Total,
+                  Cashback = x.Cashback,
+                  CurrencyID = x.CurrencyID,
+                  CurrencyNominal = x.CurrencyNominal,
+                  CurrencyRate = x.CurrencyRate,
+                  CurrencySpecificCulture = x.Currency.SpecificCulture,
+                  CurrencyCodeName = x.Currency.CodeName,
+                  DateTimeOfPayment = x.DateTimeOfPayment,
+                  SectionID = x.BudgetSectionID,
+                  SectionName = x.BudgetSection.Name,
+                  SectionTypeID = x.BudgetSection.SectionTypeID,
+                  AreaID = x.BudgetSection.BudgetArea.ID,
+                  AreaName = x.BudgetSection.BudgetArea.Name,
+                  CssIcon = x.BudgetSection.CssIcon,
+                  CssBackground = x.BudgetSection.CssBackground,
+                  CssColor = x.BudgetSection.CssColor,
+                  IsShowForCollection = x.IsShowForCollection,
+                  IsOwner = x.UserID == filter.UserID,
+                  UserName = x.User.Name + " " + x.User.LastName,
+                  ImageLink = x.User.ImageLink,
+                  Currency = new CurrencyLightModelView
+                  {
+                      ID = x.CurrencyID,
+                      Nominal = x.CurrencyNominal,
+                      Rate = x.CurrencyRate,
+                      SpecificCulture = x.Currency.SpecificCulture,
+                      CodeName = x.Currency.CodeName,
+                  },
+                  Section = new BudgetSectionModelView
+                  {
+                      SectionTypeID = x.BudgetSection.SectionTypeID,
+                      AreaID = x.BudgetSection.BudgetAreaID,
+                      AreaName = x.BudgetSection.BudgetArea.Name,
+                      Name = x.BudgetSection.Name,
+                      ID = x.BudgetSectionID,
+                      CssIcon = x.BudgetSection.CssIcon,
+                      CssBackground = x.BudgetSection.CssBackground,
+                      CssColor = x.BudgetSection.CssColor,
+                  },
+                  Account = x.AccountID == null ? null : new AccountModelView
+                  {
+                      AccountType = x.Account.AccountTypeID,
+                      BankImage = x.Account.Bank != null ? x.Account.Bank.LogoCircle : null,
+                      Name = x.Account.Name,
+                      AccountIcon = x.Account.AccountType.Icon,
+                      CurrencyIcon = x.Account.Currency.Icon,
+                      CardID = x.Account.CardID,
+                      CardName = x.Account.CardID != null ? x.Account.Card.Name : null,
+                      CardLogo = x.Account.CardID != null ? x.Account.Card.SmallLogo : null,
+                      ID = x.AccountID,
 
-                        },
-                        Tags = x.Tags
+                      NewBalance = x.RecordHistories != null ? x.RecordHistories
+                            .OrderBy(z => z.DateCreate)
+                            .FirstOrDefault().AccountNewBalance : (decimal?)null,
+                      OldBalance = x.RecordHistories != null ? x.RecordHistories
+                            .OrderBy(z => z.DateCreate)
+                            .FirstOrDefault().AccountOldBalance : (decimal?)null
+                  },
+                  Tags = x.Tags
                       .Select(y => new RecordTag
                       {
                           ID = y.UserTagID,
                           Title = y.UserTag.Title,
-                          IsDeleted = y.UserTag.IsDeleted,
-                          DateCreate = y.UserTag.DateCreate,
+                          //IsDeleted = y.UserTag.IsDeleted,
+                          //DateCreate = y.UserTag.DateCreate,
 
                           CompanyID = y.UserTag.CompanyID,
                           CompanyName = y.UserTag.Company != null ? y.UserTag.Company.Name : null,
                           CompanyLogo = y.UserTag.Company != null ? y.UserTag.Company.LogoSquare : null,
 
                       }),
-                        //x.RecordHistories
-                        //  .OrderBy(z => z.DateCreate)
-                        //  .Select(z => new
-                        //  {
-                        //      z.ActionTypeCode,
-                        //      z.AccountNewBalance,
-                        //      z.old
-                        //  })
-                    })
-                    .ToList()
               })
-              .ToListAsync();
+              .OrderByDescending(x => x.DateTimeOfPayment.Date)
+              .ToList()
+              .GroupBy(x => x.DateTimeOfPayment.Date)
+              .Select(y => new HistoryRecordModelView
+              {
+                  GroupDate = y.Key,
+                  Records = y
+                    .OrderBy(x => x.DateTimeOfPayment.Date)
+                    .Select(x => x)
+                  //.ToList()
+              })
+              .OrderByDescending(x => x.GroupDate)
+              .ToList();
         }
 
 

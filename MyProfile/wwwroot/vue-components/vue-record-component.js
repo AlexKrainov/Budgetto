@@ -181,8 +181,8 @@
                         </div>
                     </section>
                     <section id="history-records" v-show="isShowHistory">
-                        <vue-record-history-component>
-                        </vue-record-history-component>
+                            <new-vue-record-history-component v-bind:is-show-date="false"
+                                                            ></new-vue-record-history-component>
                     </section>
                     <div class="callout callout-danger" v-show="isAvailable == false">
                         У вас истек пробный период. <u><a href="/Store/Index" class="text-danger">Продлить</a></u>
@@ -1079,13 +1079,17 @@
             document.getElementById("money").focus()
         },
 
-        //History
         showHistory: function (isShow) {
             this.isShowHistory = isShow;
             if (isShow) {
                 let _date = moment(this.flatpickr.latestSelectedDateObj).add(1, "seconds").format("YYYY-MM-DDTHH:mm:ss");
                 if (_date == this.historyComponent.dateTimeOfPayment) {
-                    this.historyComponent.loadHistory();
+                    let filter = {
+                        isSearchAllUserSections: true,
+                        startDate: _date,
+                        endDate: _date
+                    };
+                    this.historyComponent.loadHistory(filter);
                 } else {
                     this.historyComponent.dateTimeOfPayment = _date;
                 }

@@ -8,74 +8,113 @@
 }
 
 @section Scripts {
-    <script>
-
-        var HistoryVue = new Vue({
-            el: "#history_records",
-            data: {
-                
-            },
-            watch: {
-                
-            },
-            computed: {},
-            mounted: function () {
-                
-            },
-            methods: {
-                
-            }
-        });
-
-
-
-    </script>
+    <environment names="Development">
+        <script asp-append-version="true" src="~/pages/history/history-list.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script asp-append-version="true" src="~/pages/history/history-list.min.js"></script>
+    </environment>
 }
 
 <h4 class="d-flex flex-wrap w-100 font-weight-bold">
-    <span class="lnr lnr-calendar-full display-4 text-primary mr-2"></span>
+    <span class="lnr lnr-history display-4 text-primary mr-2"></span>
     <span class="px-0 pb-2 pt-2">
-        History
+        История
     </span>
     <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom"
-       title="В календаре отображаются все совершенные вами финансовые операции за выбранный год.
-При наведении на интересующую дату вы можете увидеть сумму трат за день или количество внесённых операций.">
+       title="В истории отображаются все совершенные вами финансовые операции за выбранный период.">
         <i class="pe-7s-info d-block text-primary"></i>
     </a>
 </h4>
 
-<section id="history_records" v-cloak>
+<section id="history-vue" v-cloak>
 
 
     <div class="card mb-4">
         <h6 class="card-header">Фильтр</h6>
         <div class="card-body">
             <form id="filter" class="margin-top">
-                <div class="row mb-5">
-                    <div class="col-12 col-sm-12 col-md-8">
-                        <div class="nav-tabs-top mb-4">
-                            <ul class="nav nav-tabs">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#sale-stats" v-on:click="filter.isSection = true; serialize(true);">Категории</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#latest-sales" v-on:click="filter.isSection = false; serialize(true)">Теги</a>
-                                </li>
-                            </ul>
+                <div class="collapse show" id="historyCollapse">
+                    @*<div class="card-title">
+                            Фильтр
+                        </div>*@
+                    <div class="row my-3">
+                        <div class="col-md-12">
+                            <div class="nav-tabs-top mb-4">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#sale-stats" v-on:click="filter.isSection = true; search()">Категории</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#latest-sales" v-on:click="filter.isSection = false; search()">Теги</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade active show p-2" id="sale-stats">
+                                        <vue-section-component data-class="cards-medium"
+                                                               data-records-style="margin-left: 15px;max-height: 300px; overflow-x: auto;"
+                                                               data-search-id="searchSection"
+                                                               v-bind:is-show-filter="false"
+                                                               v-bind:is-show-change-view-mode="true"
+                                                               v-bind:data-is-selection="true"
+                                                               v-bind:data-items="sections"
+                                                               v-on:onchoose="onChooseSection"></vue-section-component>
+                                        <span class="float-left">
+                                            <span class="small show-sections ml-3 ">Выбрано категорий: {{ sections.filter(x => x.isSelected).length }}</span>
+                                        </span>
+                                        <span class="float-right">
+                                            <span v-on:click="selectOnlyType(2)" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Выбрать только расходы </span>|
+                                            <span v-on:click="selectOnlyType(1)" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать только доходы </span>|
+                                            <span v-on:click="selectAll" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все категории </span>|
+                                            <span v-on:click="unselectAll" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить форму </span>
+                                        </span>
+                                    </div>
+                                    <div class="tab-pane fade p-2" id="latest-sales">
+                                        <input type="text" class="form-control" name="tags" placeholder="Начинайте вводить тег" />
+                                        <section>
+                                            <span v-bind:title="tag.title" tabindex="-1" class="tagify__tag cursor-pointer"
+                                                  v-for="tag in userTags"
+                                                  v-show="tag.isShow"
+                                                  v-on:click="selectedTag(tag)">
+                                                <div>
+                                                    <span class="tagify__tag-text">{{ tag.title }}</span>
+                                                </div>
+                                            </span>
+                                        </section>
+                                        <span class="float-left">
+                                            <span class="small show-sections ml-3 ">Выбрано тегов: {{ userTags.filter(x => x.isShow == false).length }}</span>
+                                        </span>
+                                        <span class="float-right">
+                                            <span v-on:click="selectAllTags" class="text-muted m-b block cursor-pointer link-green-hover text-decoration">Выбрать все теги </span>|
+                                            <span v-on:click="unselectAllTags" class="text-muted m-b block cursor-pointer link-red-hover text-decoration">Очистить поле </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12 col-md-4">
-                        <br />
-
-
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div id="daterange" class="form-control">
+                                <span></span>
+                                <i class="fa fa-caret-down"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-primary" v-on:click="search">Поиск</button>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text ion ion-ios-search"></div>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                @*<div>
-                        <button type="button" class="btn btn-primary pull-right" onclick="history.search_click()">
-                            @LocalizationBL.GetText(CrmUserInfo.Current.Localization, Utils.Localization.IOT.Common.SearchButton.Code)
-                        </button>
-                    </div>*@
-
             </form>
         </div>
     </div>

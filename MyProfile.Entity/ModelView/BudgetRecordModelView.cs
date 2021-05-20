@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MyProfile.Entity.ModelView.Currency;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,7 @@ namespace MyProfile.Entity.ModelView
         public decimal Cashback { get; set; }
         public AccountModelView Account { get; set; }
         public BudgetSectionModelView Section { get; set; }
+        public CurrencyLightModelView Currency { get; set; }
     }
 
     /// <summary>
@@ -125,11 +127,15 @@ namespace MyProfile.Entity.ModelView
         public long? CardID { get; set; }
         public string CardName { get; set; }
         public string CardLogo { get; set; }
+        public long? ID { get; set; }
+
+        public decimal? NewBalance { get; set; }
+        public decimal? OldBalance { get; set; }
     }
 
     public class HistoryRecordModelView
     {
         public DateTime GroupDate { get; set; }
-        public List<BudgetRecordModelView> Records { get; set; }
+        public IEnumerable<BudgetRecordModelView> Records { get; set; }
     }
 }

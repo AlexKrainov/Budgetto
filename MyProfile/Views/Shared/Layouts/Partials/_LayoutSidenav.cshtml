@@ -88,6 +88,11 @@
         <a asp-area="" asp-controller="Budget" asp-action="TimeLine" class="sidenav-link"><i class="sidenav-icon lnr lnr-calendar-full"></i><div>Календарь</div></a>
     </li>
 
+    <li class="sidenav-item@(currentPage == "History/Records" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
+        title="В истории отображаются все совершенные вами финансовые операции за выбранный период.">
+        <a asp-area="" asp-controller="History" asp-action="Records" class="sidenav-link"><i class="sidenav-icon lnr lnr-history"></i><div>История</div></a>
+    </li>
+
     @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin)
     {
         <li class="sidenav-item ">

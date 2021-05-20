@@ -7,7 +7,7 @@
     <link rel="stylesheet" asp-append-version="true" href="~/vendor/libs/datatables/datatables.css">
     <link href="~/vendor/libs/flatpickr/plugins/monthSelect.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
-    
+
 }
 
 @section Scripts {
@@ -20,12 +20,13 @@
 
         <script src="~/pages/budget/_budget-month.js" asp-append-version="true"></script>
         <script src="~/pages/budget/budget.js" asp-append-version="true"></script>
-        <script src="~/pages/budget/history-modal.js" asp-append-version="true"></script>
+        @*<script src="~/pages/budget/history-modal.js" asp-append-version="true"></script>*@
+        <script src="~/pages/history/history-list.js" asp-append-version="true"></script>
         <script src="~/pages/reminder/budget-reminder-model.js" asp-append-version="true"></script>
         <script src="~/pages/goal/goal-add-money.js" asp-append-version="true"></script>
         <script src="~/pages/budget/account-modal.js" asp-append-version="true"></script>
 
-        
+
     </environment>
     <environment names="Staging,Production">
         <script src="~/vendor/libs/flatpickr/plugins/monthSelect.min.js" asp-append-version="true"></script>
@@ -33,6 +34,7 @@
         <script src="~/pages/budget/_budget-month.min.js" asp-append-version="true"></script>
         <script src="~/pages/budget/budget.min.js" asp-append-version="true"></script>
         <script src="~/pages/budget/history-modal.min.js" asp-append-version="true"></script>
+        <script src="~/pages/history/history-list.min.js" asp-append-version="true"></script>
         <script src="~/pages/reminder/budget-reminder-model.min.js" asp-append-version="true"></script>
         <script src="~/pages/goal/goal-add-money.min.js" asp-append-version="true"></script>
         <script src="~/pages/budget/account-modal.js" asp-append-version="true"></script>
@@ -91,8 +93,8 @@
         @await Html.PartialAsync("_AccountsView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
     </div>
     @*<div class="row total-view">
-        @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
-    </div>*@
+            @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+        </div>*@
     <div class="row">
         @await Html.PartialAsync("_LimitsView")
     </div>

@@ -820,3 +820,7 @@ html.dark-style .tagify__input::before {
     padding-left: 12px;
     margin-top: -5px;
 }*/
+
+#history_records .div-change-view {
+    margin-left: 16px;
+}

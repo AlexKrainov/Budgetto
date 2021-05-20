@@ -230,6 +230,21 @@ function GetFlatpickrRuConfigWithTime(date, minDate, maxDate) {
         time_24hr: true,
     };
 }
+function GetDateRangePickerRuConfig(start, end, minDate, maxDate) {
+    let today = moment();
+    return {
+        startDate: start,
+        endDate: end,
+        ranges: {
+            'Сегодня': [today, today],
+            'Текущая неделя': [moment().startOf('isoWeek'), today],
+            'Текущий месяц': [moment().startOf('month'), today],
+            '3 месяца': [moment().subtract(3, 'months').startOf('month'), today],
+            'Этот год': [moment().startOf('year'), today],
+            'За все время': [moment("01-01-2021", "MM-DD-YYYY"), today],
+        }
+    };
+}
 
 function ShowLoading(selector) {
     var overlayBg = themeSettings.isDarkStyle()
