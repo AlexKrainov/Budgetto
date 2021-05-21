@@ -1,173 +1,271 @@
 ﻿Vue.component("vue-record-history-component", {
-    template: `<div class="row m-0" v-bind:id="id" v-bind:name="name">
-	 <div class="input-group w-100">
-         <div class="input-group-prepend">
-             <div class="input-group-text ion ion-ios-search"></div>
-         </div>
-         <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
-     </div>
-     <div class=" card m-4" style="width: 100%;">
-         <ul class="list-group list-group-flush records-timeline" style=" margin-left: -5px;">
-             <li class="list-group-item py-4 record-item"
-                 v-for="record in records"
-                 v-bind:id="'record_'+record.id"
-                 v-show="record.isShowForFilter"
-                 v-bind:style="'border-left-color: '+record.cssBackground+' !important;'">
-                 <div class="media flex-wrap" v-if="record.isDeleted == false">
-                     <div class="">
-                         <i class="record-icon" v-bind:class="record.cssIcon"></i>
-                     </div>
-                     <div class="media-body ml-sm-4">
-                         <h5 class="mb-2">
-                             <i class="fas fa-trash pl-2 edit-record float-right text-danger cursor-pointer" v-on:click="remove(record)" v-if="record.isOwner"></i>
-                             <a href="javascript:void(0)" class="float-right font-weight-semibold ml-3" v-on:click="edit(record)" v-if="record.isOwner">
-                                 {{ getCurrencyValue(record) }}
-                                 <i class="fas fa-edit pl-2 edit-record"></i>
-                             </a>
-                             <div href="javascript:void(0)" class="float-right font-weight-semibold ml-3" v-else-if="!record.isOwner">
-                                 {{ getCurrencyValue(record) }}
-                             </div>
-                             <div class="text-body">
-                                 {{ record.areaName }} > {{ record.sectionName }}
-                             </div>
-                             <div class="text-muted small pt-1">
-                                 <i class="ion ion-md-time text-primary"></i>
-                                 <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
-                             </div>
-                         </h5>
-                         <div v-html="descriptionBuilder(record)"> </div>
-                         <div class="mt-2">
-                             <div class="card-title with-elements">
-                                 <div class="card-title-elements ml-md-auto">
-                                     <a data-toggle="collapse" v-bind:href="'#collapse_info_' + record.id" class="d-block ml-3"><i class="collapse-icon"></i></a>
-                                 </div>
-                             </div>
-                             <div class="collapse" v-bind:id="'collapse_info_' + record.id">
-                                 <span class="badge badge-outline-default text-muted" v-show="record.isConsider" title="Семеный"><i class="fas fa-users"></i></span>
-                                 <span class="badge badge-outline-default text-muted"><i class="ion ion-md-time text-primary"></i>  Создание: {{ GetDateByFormat(record.dateTimeCreate, 'DD.MM.YYYY') }}</span>
-                                 <span class="badge badge-outline-default text-muted"><i class="ion ion-md-time text-primary"></i>  Отредактирован: {{ GetDateByFormat(record.dateTimeEdit, 'DD.MM.YYYY') }}</span>
-                                 <span class="badge badge-outline-default text-muted">
-                                     <i class="ion ion-md-create text-primary"></i>  Внесенное число: {{ record.rawData }}
-                                 </span>
-                             </div>
+    template: `
+<div class="ui-timeline ui-timeline-with-info">
+    <div v-for="(groupRecord, index) in groupRecords">
+        <div class="ui-timeline-separator text-big" style="    z-index: 5;"
+                v-show="isShowDate">
+            <div class="ui-timeline-track-bg d-inline-block rounded small font-weight-semibold py-2 px-4">{{ getDate(groupRecord) }}</div>
+        </div>
+        <div class="mb-2" 
+            v-bind:style="isShowDate ? 'margin-top: -57px;' : ''" 
+            v-show="index == 0">
+            <div class="row no-gutters align-items-center py-2">
+                <div class="col-12 col-md-3 px-4 font-weight-semibold">
+                    Категория
+                </div>
+                <div class="col-4 col-md-3
+                font-weight-semibold px-4">
+                    Комментарий
+                </div>
+                <div class="col-4 col-md-3 px-4 font-weight-semibold">Источник</div>
+                <div class="col-4 col-md-3 px-4 font-weight-semibold text-right">
+                    Сумма/Кэшбэк
+                </div>
+            </div>
+        </div>
+        <div class="ui-timeline-item"
+            v-for="record in groupRecord.records"
+            v-bind:id="'history-record-'+record.id"
+            v-show="record.isShowForFilter"
+            v-bind:class="[record.isDeleted ? ' deleted-item' : '']">
+            <div class="ui-timeline-badge ui-w-50"
+                    v-html="getLogoHtml(record)">
+            </div>
+            <div class="card pb-3 mb-2">
+                <div class="row no-gutters align-items-center">
+                    <div class="col-6 col-md-3 px-3 pt-3">
+                        <a href="javascript:void(0)" class="text-body font-weight-semibold">{{ record.section.name }}</a><br>
+                        <small class="text-muted">{{ record.section.areaName }}</small>
+                    </div>
+                    <div class="col-6 col-md-3 text-muted small px-3 pt-3"
+                        v-html="descriptionBuilder(record)">
+                    </div>
+                    <div class="col-6 col-md-3 text-muted small px-3 pt-3">
+                        <div class="media">
+                           <span v-html="getCardLogoHtml(record)"></span>
+                            <div class="media-body ml-2" style="margin-top: -4px;">
+                                <span class="text-body font-weight-semibold text-big">{{ record.account.name }}</span>
+                                <div class="text-muted small">
+                                    <span>
+                                        <del>
+                                            <span class=" pt-1">
+                                                 {{ getCurrencyValue(record, record.account.oldBalance) }}
+                                            </span>
+                                        </del>
+                                        &nbsp; -&gt;&nbsp;
+                                        <span class=" pt-1">
+                                                 {{ getCurrencyValue(record, record.account.newBalance) }}
+                                        </span>
 
-                         </div>
-                     </div>
-                 </div>
-                 <div class="media flex-wrap" v-else-if="record.isDeleted">
-                     <div class="media-body ml-sm-4">
-                         <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" v-on:click="recovery(record)"></i>
-                         <h5 class="mb-2 pr-4">
-                             <div href="javascript:void(0)" class="float-right font-weight-semibold ml-3 deleted-item">
-                                 {{ getCurrencyValue(record) }}
-                             </div>
-                             <div class="text-body deleted-item">
-                                 {{ record.areaName }} > {{ record.sectionName }}
-                             </div>
-                             <div class="text-muted small pt-1 deleted-item">
-                                 <i class="ion ion-md-time text-primary"></i>
-                                 <span>{{ GetDateByFormat(record.dateTimeOfPayment, 'DD.MM.YYYY') }} </span>
-                             </div>
-                         </h5>
-                         <div class="deleted-item">{{ record.description }}</div>
-                     </div>
-                 </div>
-             </li>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 px-3 pt-3 text-right">
 
-         </ul>
-     </div>
+                        <h5 class="mb-0 pb-0">
+                            <a href="javascript:void(0)" class="text-body font-weight-semibold">
+                                {{ getCurrencyValue(record, record.money) }}
+                            </a> 
+                            <span class="text-muted1 small pt-1 text-success d-block">
+                                 {{ getCurrencyValue(record, record.cashback, false) }}
+                            </span>
+                        </h5>
+                        <div class="pt-2" style="margin-bottom: -10px;"
+                            v-show="record.isDeleted == false">
+                            <i class="fas fa-edit pl-2 edit-record cursor-pointer"
+                                v-on:click="edit(record)"></i> 
+                            <i class="fas fa-trash pl-2 edit-record text-danger cursor-pointer"
+                                v-on:click="remove(record)"></i>
+                        </div>
+                        <div class="pt-2" style="margin-bottom: -10px;"
+                            v-show="record.isDeleted == true">
+                            <i class="fa fa-undo pl-2 float-right text-success cursor-pointer" 
+                                v-on:click="recovery(record)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+    <div class="card card-body mt-4" v-show="groupRecords && groupRecords.length > 0 && isShowFooter" id="history-footer"
+                     style="position: fixed; right: 42px; top: 84%; width: 91.4%; z-index: 5;">
+                    <div class="text-right">
+                        <div style="display:inline-block" v-show="spendingInvestingMoney != 0">
+                            <label class="text-muted font-weight-normal m-0">Итого инвестиций</label>
+                            <div class="text-large">
+                                <strong>
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingInvestingMoney) }}
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="mx-4" style="display:inline-block" v-show="spendingErningMoney != 0">
+                            <label class="text-muted font-weight-normal m-0">Итого доходов</label>
+                            <div class="text-large">
+                                <strong>
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingErningMoney) }}
+                                </strong>
+                            </div>
+                        </div>
+                        <div style="display:inline-block" v-show="spendingTotalMoney != 0">
+                            <label class="text-muted font-weight-normal m-0">Итого расходов</label>
+                            <div class="text-large">
+                                <strong>
+                                    {{ new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(spendingTotalMoney) }}
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 </div>
 `,
     props: {
-        id: String,
-        name: String,
-
-        //Events
-        afterSave: Event,
-        //showModal: Event,
+        dataSearchId: String,
+        dataId: String,
+        name: {
+            type: String,
+            default: "section-component"
+        },
+        onchoose: Event,
+        onUpdateView: Event,
+        isShowFilter: {
+            type: Boolean,
+            default: false,
+        },
+        dataItems: Array,//[{"id":9,"name":"Расходы (продукты)","description":"test groceries","cssIcon":"fas fa-shopping-cart","cssColor":"rgba(24,28,33,0.8)","areaID":5,"areaName":"Основные расходы","isUpdated":false,"collectiveSections":[],"sectionTypeID":null,"sectionTypeName":null,"recordCount":139,"isShow":true,"hasRecords":false,"cssBackground":"#ffab91"}]
+        dataClass: {
+            type: String,
+            default: "" //   cards-small/cards-medium/cards-big
+        },
+        dataSelectedItemsCount: Array,//[{ id:9, count:1 }]
+        dataIsSelection: {
+            type: Boolean,
+            default: false
+        },
+        isShowFooter: {
+            type: Boolean,
+            default: false
+        },
+        isShowModal: {
+            type: Boolean,
+            default: false
+        },
+        isShowDate: {
+            type: Boolean,
+            default: true
+        },
     },
     data: function () {
         return {
             dateTimeOfPayment: null,
+            groupRecords: [],
             isShowCollection: true,
-            records: [],
             searchText: null,
+            filter: {},
 
-            showAddRecord: false,
+            spendingTotalMoney: 0,
+            spendingErningMoney: 0,
+            spendingInvestingMoney: 0,
 
             //state
             isSaving: false,
-            after_save_callback: Event,
         }
     },
     watch: {
         dateTimeOfPayment: function (newValue, oldValue) {
-            this.loadHistory();
+            let filter = {
+                isSearchAllUserSections: true,
+                startDate: newValue,
+                endDate: newValue
+            };
+            this.loadHistory(filter);
         },
+
         searchText: function (newValue, oldValue) {
             if (newValue) {
                 newValue = newValue.toLocaleLowerCase();
             }
 
-            for (var i = 0; i < this.records.length; i++) {
-                let record = this.records[i];
+            for (var i = 0; i < this.groupRecords.length; i++) {
+                let groupRecord = this.groupRecords[i];
+                for (var j = 0; j < groupRecord.records.length; j++) {
+                    let record = groupRecord.records[j];
 
-                record.isShowForFilter = record.sectionName.toLocaleLowerCase().indexOf(newValue) >= 0
-                    || (record.description && record.description.toLocaleLowerCase().indexOf(newValue) >= 0)
-                    || record.areaName.toLocaleLowerCase().indexOf(newValue) >= 0
-                    || (record.userName && record.userName.toLocaleLowerCase().indexOf(newValue) >= 0)
-                    || record.money.toString().indexOf(newValue) >= 0
-                    || record.rawData.indexOf(newValue) >= 0;
+                    record.isShowForFilter = record.section.name.toLocaleLowerCase().indexOf(newValue) >= 0
+                        || (record.description && record.description.toLocaleLowerCase().indexOf(newValue) >= 0)
+                        || record.section.areaName.toLocaleLowerCase().indexOf(newValue) >= 0
+                        || record.money.toString().indexOf(newValue) >= 0
+                        || record.rawData.indexOf(newValue) >= 0
+                        || record.tags.find(x => x.value.toLocaleLowerCase().indexOf(newValue) >= 0);
+                }
             }
+        },
+        groupRecords: {
+            handler: function (newValue, oldValue) {
+                if (this.isShowFooter == false) {
+                    return;
+                }
+                this.spendingTotalMoney = 0;
+                this.spendingErningMoney = 0;
+                this.spendingInvestingMoney = 0;
+
+                let records = [];
+                for (var i = 0; i < this.groupRecords.length; i++) {
+                    records = Array.prototype.concat.apply(records, this.groupRecords[i].records);
+                }
+
+                for (var i = 0; i < records.length; i++) {
+                    if (records[i].isDeleted == false) {
+                        if (records[i].sectionTypeID == 1) { //Earnings
+                            this.spendingErningMoney += records[i].money * 1;
+                        } else if (records[i].sectionTypeID == 2) { //Spendings
+                            this.spendingTotalMoney += records[i].money * 1;
+                        } else if (records[i].sectionTypeID == 3) { //Investments
+                            this.spendingInvestingMoney += records[i].money * 1;
+                        }
+                    }
+                }
+            },
+            deep: true
         }
     },
     mounted: function () {
 
     },
     methods: {
-        loadHistory: function () {
+        loadHistory: function (filter) {
             this.searchText = null;
             ShowLoading('#history-records');
+            this.filter = filter;
+
             return $.ajax({
-                type: "GET",
-                url: "/History/LoadingRecordsForByDate?date=" + this.dateTimeOfPayment,
+                type: "POST",
+                url: "/History/GetGroupRecords",// + this.dateTimeOfPayment,
+                data: JSON.stringify(filter),
                 contentType: "application/json",
                 dataType: 'json',
                 context: this,
                 success: function (response) {
-                    this.records = response.data;
+                    this.groupRecords = response.data;
                     HideLoading('#history-records');
+
+                    if (this.isShowModal) {
+                        $("#modalTimeLine").modal("show");
+                    }
                 }
             });
-            //return $.ajax({
-            //    type: "GET",
-            //    url: "/Budget/GetLastRecords?last=5",
-            //    contentType: 'application/json; charset=utf-8',
-            //    dataType: 'json',
-            //    context: this,
-            //    success: function (response) {
-            //        if (response.isOk) {
-            //            this.records = response.data;
-            //        }
-
-            //        return response;
-            //    },
-            //    error: function (xhr, status, error) {
-            //        console.log(error);
-            //    }
-            //});
         },
-
         edit: function (record) {
             RecordVue.recordComponent.isShowHistory = false;
             if (typeof (BudgetVue) != "undefined") {
-                RecordVue.editByElement(record, BudgetVue.refresh, "runtimeData");
+                RecordVue.editByElement(record, this.refresh, "runtimeData");
             } else {
                 RecordVue.editByElement(record);
             }
         },
         remove: function (record) {
-            ShowLoading('#record_' + record.id);
+            ShowLoading('#history-record-' + record.id);
 
             return $.ajax({
                 type: "POST",
@@ -178,13 +276,16 @@
                 dataType: 'json',
                 success: function (response) {
                     record.isDeleted = response.isOk;
-                    HideLoading('#record_' + record.id);
-                    BudgetVue.refreshAfterChangeRecords(response.dateTimeOfPayment)
+                    HideLoading('#history-record-' + record.id);
+
+                    if (typeof (BudgetVue) != "undefined") {
+                        BudgetVue.refreshAfterChangeRecords(response.dateTimeOfPayment)
+                    }
                 }
             });
         },
         recovery: function (record) {
-            ShowLoading('#record_' + record.id);
+            ShowLoading('#history-record-' + record.id);
             return $.ajax({
                 type: "POST",
                 url: "/Budget/RecoveryRecord",
@@ -194,14 +295,17 @@
                 dataType: 'json',
                 success: function (response) {
                     record.isDeleted = !response.isOk;
-                    HideLoading('#record_' + record.id);
-                    BudgetVue.refreshAfterChangeRecords(response.dateTimeOfPayment)
+                    HideLoading('#history-record-' + record.id);
+
+                    if (typeof (BudgetVue) != "undefined") {
+                        BudgetVue.refreshAfterChangeRecords(response.dateTimeOfPayment)
+                    }
                 }
             });
         },
-        getCurrencyValue: function (record) {
-            let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(record.money);
-            if (UserInfo.Currency.ID != record.currencyID) {
+        getCurrencyValue: function (record, money, isCashback) {
+            let value = new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(money);
+            if (UserInfo.Currency.ID != record.currencyID && isCashback == undefined) {
                 try {
                     value += " (" + new Intl.NumberFormat(record.currencySpecificCulture, { style: 'currency', currency: record.currencyCodeName }).format(CalculateExpression(record.tag)) + ")";
                 } catch (e) {
@@ -209,11 +313,52 @@
             }
             return value;
         },
-        GetDateByFormat: function (date, format) {
-            return GetDateByFormat(date, format);
-        },
         descriptionBuilder: function (record) {
             return TagBuilder.toDescription(record);
-        }
+        },
+        getLogoHtml: function (record) {
+            let html;
+            if (record.tags.length > 0 && record.tags.some(x => x.companyLogo)) {
+                let tag = record.tags.find(x => x.companyLogo);
+                html = `<img src="${tag.companyLogo}" class="ui-w-50 rounded-circle" alt="">`
+            } else {
+                html = `<div class="ui-square rounded-circle text-white" style="background-color: ${record.section.cssBackground}">
+                            <div class="d-flex ui-square-content">
+                                <div class="m-auto text-large ${record.section.cssIcon}" style="color: ${record.section.cssColor}"></div>
+                            </div>
+                        </div>`;
+            }
+
+            return html;
+
+        },
+        getCardLogoHtml: function (record) {
+            let html;
+            if (record.account.accountType != 1 && record.account.cardLogo) {
+                html = ` <img class="ui-payment-small dropdown-toggle" data-toggle="dropdown"
+                                 src="${record.account.cardLogo}"
+                                 title="${record.account.name}" />`;
+            } else if (record.account.accountType != 1 && record.account.bankImage && record.account.cardLogo == undefined) {
+                html = `<img class="ui-payment-small" alt=""
+                                 src="${record.account.bankImage}"
+                                 title="${record.account.name}">`
+            } else {
+                html = `<i class="text-xlarge mt-1 text-primary ${record.account.accountIcon}"
+                               title="${record.account.name}"></i>`
+            }
+            return html;
+        },
+        getDate: function (groupRecord) {
+            let date = moment(groupRecord.groupDate).format("DD.MM.YYYY");
+            let today = moment().format("DD.MM.YYYY");
+            let yesterday = moment().subtract(1, "days").format("DD.MM.YYYY");
+            if (today == date) {
+                return "Сегодня";
+            } else if (yesterday == date) {
+                return "Вчера";
+            } else {
+                return date;
+            }
+        },
     }
 });

@@ -181,8 +181,8 @@
                         </div>
                     </section>
                     <section id="history-records" v-show="isShowHistory">
-                            <new-vue-record-history-component v-bind:is-show-date="false"
-                                                            ></new-vue-record-history-component>
+                            <vue-record-history-component v-bind:is-show-date="false"
+                                                            ></vue-record-history-component>
                     </section>
                     <div class="callout callout-danger" v-show="isAvailable == false">
                         У вас истек пробный период. <u><a href="/Store/Index" class="text-danger">Продлить</a></u>

@@ -32,7 +32,7 @@
 
     <div class="card mb-4">
         <h6 class="card-header">Фильтр</h6>
-        <div class="card-body">
+        <div class="card-body pt-0">
             <form id="filter" class="margin-top">
                 <div class="collapse show" id="historyCollapse">
                     @*<div class="card-title">
@@ -100,18 +100,17 @@
                                 <i class="fa fa-caret-down"></i>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <button type="button" class="btn btn-primary" v-on:click="search">Поиск</button>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <div>
+                        <div class="col-md-6">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text ion ion-ios-search"></div>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
                             </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-primary" v-on:click="search">Поиск</button>
                         </div>
                     </div>
                 </div>
@@ -119,7 +118,7 @@
         </div>
     </div>
 
-    <new-vue-record-history-component>
+    <vue-record-history-component>
 
-    </new-vue-record-history-component>
+    </vue-record-history-component>
 </section>
