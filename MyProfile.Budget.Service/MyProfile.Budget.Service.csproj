@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
     <ProjectReference Include="..\MyProfile.Identity\MyProfile.Identity.csproj" />
+    <ProjectReference Include="..\MyProfile.Progress.Service\MyProfile.Progress.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Reminder.Service\MyProfile.Reminder.Service.csproj" />
     <ProjectReference Include="..\MyProfile.Tag.Service\MyProfile.Tag.Service.csproj" />
     <ProjectReference Include="..\MyProfile.User.Service\MyProfile.User.Service.csproj" />

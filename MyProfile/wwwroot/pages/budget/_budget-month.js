@@ -254,7 +254,7 @@
 
         ShowLoading('#todoList-view');
 
-        this.accountsAjax = $.ajax({
+        this.toDoListAjax = $.ajax({
             type: "GET",
             url: "/ToDoList/GetListsByPeriodType?periodType=1",
             contentType: "application/json",
@@ -265,6 +265,35 @@
                 this.afterLoadLists();
 
                 HideLoading('#todoList-view');
+            }
+        });
+        return this.accountsAjax;
+    },
+
+    //Progress
+    loadProgress: function () {
+        //if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_ToDoLists)) {
+        //    return false;
+        //}
+
+        if (this.progressAjax && (this.progressAjax.readyState == 1 || this.progressAjax.readyState == 3)) { // OPENED & LOADING
+            this.progressAjax.abort();
+        }
+
+        //ShowLoading('#todoList-view');
+
+        this.progressAjax = $.ajax({
+            type: "GET",
+            url: "/Common/GetProgress",
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            context: this,
+            success: function (result) {
+                if (result.isOk == true) {
+                    this.progresses = result.data || [];
+                }
+
+               // HideLoading('#todoList-view');
             }
         });
         return this.accountsAjax;

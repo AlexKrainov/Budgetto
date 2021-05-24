@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyProfile.Entity\MyProfile.Entity.csproj" />
+    <ProjectReference Include="..\MyProfile.UserLog.Service\MyProfile.UserLog.Service.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -36,6 +36,7 @@ using MyProfile.Models;
 using MyProfile.Notification.Service;
 using Telegram.Service;
 using MyProfile.SubScription.Service;
+using MyProfile.Progress.Service;
 
 namespace MyProfile
 {
@@ -82,6 +83,7 @@ namespace MyProfile
             services.AddTransient<SummaryService>();
             services.AddTransient<SubScriptionService>();
             services.AddTransient<UserCounterService>();
+            services.AddTransient<ProgressService>();
 
             services.AddTransient<UserEmailService>();
             services.AddTransient<CommonService>();

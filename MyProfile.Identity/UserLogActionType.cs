@@ -49,6 +49,7 @@
         public const string Feedback_Page = "Feedback_Page";
         public const string HelpCenter_Page = "HelpCenter_Page";
         public const string HelpCenter_Article_Page = "HelpCenter_Article_Page";
+        public const string History_Page = "History_Page";
 
         public const string BudgetPage_HideGoal = "BudgetPage_HideGoal";
         public const string BudgetPage_HideLimit = "BudgetPage_HideLimit";
@@ -172,5 +173,9 @@
         public const string SubScription_Edit = "SubScription_Edit";
         public const string SubScription_Delete = "SubScription_Delete";
         public const string SubScription_Recovery = "SubScription_Recovery";
+
+        public const string History_Filtered = "History_Filtered";
+
+        public const string Progress_Introductory_Finish = "Progress_Introductory_Finish";
     }
 }

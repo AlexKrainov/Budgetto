@@ -20,6 +20,7 @@ using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.UserLog.Service;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.ModelView.Section;
+using MyProfile.Progress.Service;
 
 namespace MyProfile.Budget.Service
 {
@@ -30,16 +31,19 @@ namespace MyProfile.Budget.Service
         private UserLogService userLogService;
         private CommonService commonService;
         private IMemoryCache cache;
+        private ProgressService progressService;
 
         public SectionService(IBaseRepository repository,
             IMemoryCache cache,
-            CommonService commonService)
+            CommonService commonService,
+            ProgressService progressService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
             this.userLogService = new UserLogService(repository);
             this.commonService = commonService;
             this.cache = cache;
+            this.progressService = progressService;
         }
 
 
@@ -196,7 +200,7 @@ namespace MyProfile.Budget.Service
             return sections;
         }
 
-        public BudgetAreaModelView CreateOrUpdateArea(BudgetAreaModelView area)
+        public async Task<BudgetAreaModelView> CreateOrUpdateArea(BudgetAreaModelView area)
         {
             var currentUser = UserInfo.Current;
             var budgetArea = new BudgetArea
@@ -211,16 +215,25 @@ namespace MyProfile.Budget.Service
             if (budgetArea.ID > 0)
             {
                 area.IsUpdated = true;
-                repository.Update(budgetArea, true);
-                userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Edit);
+                await repository.UpdateAsync(budgetArea, true);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Edit);
             }
             else
             {
-                repository.Create(budgetArea, true);
-                userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Area_Create);
+                await repository .CreateAsync(budgetArea, true);
+                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Create);
             }
 
             area.ID = budgetArea.ID;
+
+            #region Progress
+
+            if (currentUser.IsCompleteIntroductoryProgress == false)
+            {
+                await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateArea);
+            }
+
+            #endregion
 
             cache.Remove(typeof(AreaLightModelView).Name + "_" + currentUser.ID);
             cache.Remove(typeof(BudgetSection).Name + "_" + currentUser.ID);
@@ -281,7 +294,16 @@ namespace MyProfile.Budget.Service
                 section.IsUpdated = false;
             }
 
-            await SaveIncludedSection(section.ID, section.CollectiveSections.Select(x => x.ID).ToList());
+            #region Progress
+
+            if (currentUser.IsCompleteIntroductoryProgress == false)
+            {
+                await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateSection);
+            }
+
+            #endregion
+
+            //await SaveIncludedSection(section.ID, section.CollectiveSections.Select(x => x.ID).ToList());
 
             section.ID = budgetSection.ID;
             section.AreaID = budgetSection.BudgetAreaID;

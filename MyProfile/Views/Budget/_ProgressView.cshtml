@@ -1,0 +1,67 @@
+﻿<div class="card mb-3"
+     v-show="progresses && progresses.length > 0">
+    <div class="card-body p-4">
+
+        <div class=" ui-bordered py-3 px-4"
+             v-bind:class="progresses.filter(x => x.isComplete == false).length == 0 ? 'border-primary' : ''">
+            <div class="text-center">
+                <div class="ui-stars ml-5 pl-5" style="height: 46px;">
+                    <div class="ui-star filled mr-5" style="width: 3.1em;"
+                         v-for="(progress, index) in progresses"
+                         v-bind:class="[getProgressCompleteStyle(index), index == (progresses.length - 1) ? '' : 'progress-item']">
+                        <a class="ui-square rounded-circle cursor-pointer"
+                           v-bind:href="progress.isComplete == false && progress.href ? progress.href : 'javascript:void(0)'"
+                           v-bind:onclick="progress.isComplete == false && progress.onClick ? progress.onClick : ''"
+                           v-bind:class="progress.isComplete ? 'bg-primary text-white' : 'bg-light text-dark'"
+                           data-toggle="tooltip" v-bind:data-original-title="progress.tooltip">
+                            <div class="d-flex ui-square-content text-big">
+                                <div class="m-auto text-big"
+                                     v-bind:class="progress.cssClass"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <a data-toggle="collapse" href="#order-1234" class="d-block ml-3 float-right collapsed" aria-expanded="false"
+                   style=" margin-top: 15px;">
+                    <i class="collapse-icon"></i>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive collapse" id="order-1234" style="">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr v-for="(progress, index) in progresses">
+                        <td class="p-4">
+                            <div class="media align-items-center">
+                                <div style="width: 3.1em;">
+                                    <div class="ui-square rounded-circle"
+                                         v-bind:class="progress.isComplete ? 'bg-primary text-white' : 'bg-light text-dark'"
+                                         data-toggle="tooltip" v-bind:data-original-title="progress.tooltip">
+                                        <div class="d-flex ui-square-content text-big">
+                                            <div class="m-auto text-big"
+                                                 v-bind:class="progress.cssClass"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="media-body ml-3">
+                                    <a class="d-block text-body"
+                                       v-bind:href="progress.isComplete == false && progress.href ? progress.href : 'javascript:void(0)'"
+                                       v-bind:onclick="progress.isComplete == false && progress.onClick ? progress.onClick : ''">
+                                        {{ progress.tooltip }}
+                                        <span class="badge badge-success"
+                                              v-show="progress.isComplete">Выполнено</span>
+                                    </a>
+                                    <small>
+                                        <span class="text-muted">{{ progress.description }}</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>

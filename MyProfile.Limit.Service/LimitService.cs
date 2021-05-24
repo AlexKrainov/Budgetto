@@ -7,6 +7,7 @@ using MyProfile.Entity.ModelView.Notification;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Notification.Service;
+using MyProfile.Progress.Service;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
 using System;
@@ -26,13 +27,15 @@ namespace MyProfile.Limit.Service
         private UserLogService userLogService;
         private NotificationService notificationService;
         private UserCounterService userCounterService;
+        private ProgressService progressService;
 
         public LimitService(BaseRepository repository,
             CollectionUserService collectionUserService,
             SectionService sectionService,
             BudgetRecordService budgetRecordService,
             NotificationService notificationService,
-            UserCounterService userCounterService)
+            UserCounterService userCounterService,
+            ProgressService progressService)
         {
             this.repository = repository;
             this.collectionUserService = collectionUserService;
@@ -41,6 +44,7 @@ namespace MyProfile.Limit.Service
             this.userLogService = new UserLogService(repository);
             this.notificationService = notificationService;
             this.userCounterService = userCounterService;
+            this.progressService = progressService;
         }
 
         public async Task<LimitModelView> UpdateOrCreate(LimitModelView limit)
@@ -87,8 +91,8 @@ namespace MyProfile.Limit.Service
                     await repository.CreateAsync(limit, true);
 
                     //userCounterService
-                  //  await userCounterService.AddEntity(currentUser, BudgettoEntityType.Limits);
-                    
+                    //  await userCounterService.AddEntity(currentUser, BudgettoEntityType.Limits);
+
                 }
                 catch (Exception ex)
                 {
@@ -97,25 +101,38 @@ namespace MyProfile.Limit.Service
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Create, errorLogIDs: errorLogIDs);
             }
 
-            if (errorLogIDs.Count == 0 && limit.Notifications.Any())
+            if (errorLogIDs.Count == 0)
             {
-                try
+                if (limit.Notifications.Any())
                 {
-                    var anyChanges = await notificationService.CreateOrUpdate<Entity.Model.Limit>(limit.Notifications, limit.ID, currentUser.ID);
-
-                    #region Force checke
-                    if (anyChanges)
+                    try
                     {
-                        await CheckLimitNotificationsAsync(limit.ID);
-                        await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Notification);
+                        var anyChanges = await notificationService.CreateOrUpdate<Entity.Model.Limit>(limit.Notifications, limit.ID, currentUser.ID);
+
+                        #region Force checke
+                        if (anyChanges)
+                        {
+                            await CheckLimitNotificationsAsync(limit.ID);
+                            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Limit_Notification);
+                        }
+                        #endregion
                     }
-                    #endregion
+                    catch (Exception ex)
+                    {
+                        await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "LimitService_UpdateOrCreate_Notifications", ex);
+                    }
                 }
-                catch (Exception ex)
+
+                #region Progress
+
+                if (currentUser.IsCompleteIntroductoryProgress == false)
                 {
-                    await userLogService.CreateErrorLogAsync(currentUser.UserSessionID, "LimitService_UpdateOrCreate_Notifications", ex);
+                    await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateLimit);
                 }
+
+                #endregion
             }
+
 
             return await repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.ID == limit.ID)
                 .Select(x => new LimitModelView

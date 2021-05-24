@@ -217,6 +217,10 @@ namespace MyProfile.Entity.Model
              .Property(b => b.PaymentTariffID)
              .HasDefaultValue((int)PaymentTariffTypes.Free);
 
+            modelBuilder.Entity<Progress>()
+             .Property(b => b.IsActive)
+             .HasDefaultValue(true);
+
             #endregion
         }
 
@@ -314,6 +318,10 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<MccCategory> MccCategories { get; set; }
         public virtual DbSet<MccCode> MccCodes { get; set; }
+        public virtual DbSet<Progress> Progresses { get; set; }
+        public virtual DbSet<ProgressLog> ProgressLogs { get; set; }
+        public virtual DbSet<ProgressItemType> ProgressItemTypes { get; set; }
+        public virtual DbSet<ProgressType> ProgressTypes { get; set; }
 
     }
 }

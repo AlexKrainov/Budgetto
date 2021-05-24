@@ -76,6 +76,7 @@ namespace MyProfile.Entity.Model
         public virtual IEnumerable<UserSummary> UserSummaries { get; set; }
         public virtual IEnumerable<UserSubScription> UserSubScriptions { get; set; }
         public virtual IEnumerable<UserEntityCounter> UserEntityCounters { get; set; }
+        public virtual IEnumerable<Progress> Progresses { get; set; }
 
         public User()
         {
@@ -94,6 +95,7 @@ namespace MyProfile.Entity.Model
             this.UserSummaries = new HashSet<UserSummary>();
             this.UserSubScriptions = new HashSet<UserSubScription>();
             this.UserEntityCounters = new HashSet<UserEntityCounter>();
+            this.Progresses = new HashSet<Progress>();
         }
     }
 }

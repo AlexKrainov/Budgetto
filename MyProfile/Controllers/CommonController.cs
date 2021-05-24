@@ -9,6 +9,7 @@ using MyProfile.Entity.ModelView.Currency;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Limit.Service;
+using MyProfile.Progress.Service;
 using MyProfile.Tag.Service;
 using MyProfile.UserLog.Service;
 using Newtonsoft.Json;
@@ -35,6 +36,7 @@ namespace MyProfile.Controllers
         private CurrencyService currencyService;
         private IMemoryCache cache;
         private LimitService limitService;
+        private ProgressService progressService;
 
         public CommonController(IBaseRepository repository,
             CommonService commonService,
@@ -42,7 +44,8 @@ namespace MyProfile.Controllers
             UserLogService userLogService,
             CurrencyService currencyService,
             IMemoryCache cache,
-            LimitService limitService)
+            LimitService limitService,
+            ProgressService progressService)
         {
             this.repository = repository;
             this.commonService = commonService;
@@ -51,6 +54,7 @@ namespace MyProfile.Controllers
             this.currencyService = currencyService;
             this.cache = cache;
             this.limitService = limitService;
+            this.progressService = progressService;
         }
 
         public IActionResult Index()
@@ -111,6 +115,27 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true, timezone = commonService.GetTimeZones() });
         }
 
+        /// <summary>
+        /// Check after add, edit record
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult GetProgress()
+        {
+            var currentUser = UserInfo.Current;
+
+            if (currentUser.IsCompleteIntroductoryProgress == false)
+            {
+                return Json(new { isOk = true, data = progressService.GetIntroductoryProgress() });
+            }
+            else
+            {
+                return Json(new { isOk = true, data = progressService.GetFinancialLiteracyMonthProgress() });
+            }
+
+
+
+        }
 
     }
 }

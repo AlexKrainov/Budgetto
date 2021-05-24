@@ -222,6 +222,7 @@
                             this.reminders.push(response.data);
                         }
                         BudgetVue.refresh("onlyTable");
+                        BudgetVue.refresh("only-progress");
 
                         this.close();
                     }

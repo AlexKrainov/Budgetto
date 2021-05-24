@@ -52,9 +52,125 @@ namespace MyProfile.Code
             //AddPaymentCounter();
 
             CheckAndAddUserEntityCounter();
-           // LoadTinkoffOperations();
+            CreateProgressTypes();
+            CheckUserProgress();
+            //LoadTinkoffOperations();
             // UpdateCompanies();
 
+        }
+
+        private void CreateProgressTypes()
+        {
+            List<ProgressType> progressTypes = new List<ProgressType>();
+
+            foreach (var type in Enum.GetNames(typeof(ProgressTypeEnum)))
+            {
+                if (!repository.Any<ProgressType>(x => x.CodeName == type))
+                {
+                    progressTypes.Add(new ProgressType { CodeName = type });
+                }
+            }
+
+            if (progressTypes.Count > 0)
+            {
+                repository.CreateRange(progressTypes, true);
+            }
+
+            List<ProgressItemType> progressItemTypes = new List<ProgressItemType>();
+
+            foreach (var type in Enum.GetNames(typeof(ProgressItemTypeEnum)))
+            {
+                if (!repository.Any<ProgressItemType>(x => x.CodeName == type))
+                {
+                    progressItemTypes.Add(new ProgressItemType { CodeName = type });
+                }
+            }
+
+            if (progressItemTypes.Count > 0)
+            {
+                repository.CreateRange(progressItemTypes, true);
+            }
+        }
+
+        private void CheckUserProgress()
+        {
+            var newPrgoresses = new List<MyProfile.Entity.Model.Progress>();
+            var userIDs = repository.GetAll<MyProfile.Entity.Model.User>(x => x.IsDeleted == false).Select(x => x.ID).ToList();
+            var progresses = repository.GetAll<MyProfile.Entity.Model.Progress>()
+                .ToList();
+
+            foreach (var userID in userIDs)
+            {
+                var newProgress = progresses.FirstOrDefault(x => x.ParentProgressID == null && x.UserID == userID && x.ProgressTypeID == (int)ProgressTypeEnum.Introductory);
+                if (newProgress == null)
+                {
+                    newProgress = new MyProfile.Entity.Model.Progress
+                    {
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        UserID = userID,
+                        Progresses = new List<MyProfile.Entity.Model.Progress>()
+                    };
+
+                    #region ProgressTypeEnum.Introductory
+                    newProgress.Progresses.Add(new MyProfile.Entity.Model.Progress
+                    {
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecord,
+                        UserID = userID
+                    });
+                    newProgress.Progresses.Add(new MyProfile.Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateLimit
+                    });
+                    newProgress.Progresses.Add(new MyProfile.Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateNotification
+                    });
+                    newProgress.Progresses.Add(new MyProfile.Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateOrEditTemplate
+                    });
+                    newProgress.Progresses.Add(new MyProfile.Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateSection
+                    });
+                    newProgress.Progresses.Add(new MyProfile.Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateArea
+                    });
+                    newProgress.Progresses.Add(new MyProfile.Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateAccount
+                    });
+
+                    newProgress.Progresses.Add(new MyProfile.Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateReminder
+                    });
+                    #endregion
+
+                    repository.Create(newProgress, true);
+                }
+
+                //if (!newProgress.Progresses.Any(x => x.ParentProgressID != null && x.ProgressTypeID == (int)ProgressTypeEnum.Introductory && x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateRecord))
+                //{
+
+                //}
+            }
         }
 
         /// <summary>
@@ -71,7 +187,8 @@ namespace MyProfile.Code
             List<MccCategory> categories = repository.GetAll<MccCategory>().ToList();
             List<MccCode> codes = repository.GetAll<MccCode>().ToList();
 
-            using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\tinkoff-operations-2.json"))
+            using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\tinkoff-operations-Anna.json"))
+            //using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\tinkoff-operations-2.json"))
             //using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\tinkoff-operations.json"))
             using (WebClient client = new WebClient())
             {

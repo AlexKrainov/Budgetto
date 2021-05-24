@@ -18,7 +18,6 @@ namespace MyProfile.Controllers
     public class HistoryController : Controller
     {
         private IBaseRepository repository;
-        private BudgetService budgetService;
         private SectionService sectionService;
         private BudgetRecordService budgetRecordService;
         private UserLogService userLogService;
@@ -26,13 +25,11 @@ namespace MyProfile.Controllers
         //private IOptions<ProjectConfig> config;
 
         public HistoryController(IBaseRepository repository,
-            BudgetService budgetService,
             SectionService sectionService,
             BudgetRecordService budgetRecordService,
             UserLogService userLogService)
         {
             this.repository = repository;
-            this.budgetService = budgetService;
             this.sectionService = sectionService;
             this.budgetRecordService = budgetRecordService;
             this.userLogService = userLogService;
@@ -41,6 +38,7 @@ namespace MyProfile.Controllers
 
         public IActionResult Records()
         {
+            userLogService.CreateUserLog(UserInfo.Current.UserSessionID, UserLogActionType.History_Page);
             return View();
         }
 
@@ -61,13 +59,16 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<JsonResult> GetGroupRecords([FromBody] CalendarFilterModels filter)
         {
+            var currentUser = UserInfo.Current;
+            await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.History_Filtered);
+
             filter.StartDate = new DateTime(filter.StartDate.Year, filter.StartDate.Month, filter.StartDate.Day, 00, 00, 00);
             filter.EndDate = new DateTime(filter.EndDate.Year, filter.EndDate.Month, filter.EndDate.Day, 23, 59, 59);
             if (filter.IsSearchAllUserSections)
             {
                 filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
             }
-            filter.UserID = UserInfo.Current.ID;
+            filter.UserID = currentUser.ID;
 
             var result = await budgetRecordService.GetBudgetRecordsGroupByDateByFilterAsync(filter);
 

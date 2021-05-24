@@ -17,6 +17,7 @@ namespace MyProfile.Entity.ModelView
         /// </summary>
         public bool IsHelpRecord { get; set; }
         public string TimeZoneClient { get; set; }
+        public bool IsCompleteIntroductoryProgress { get; set; }
 
         public List<CounterViewModel> Counters { get; set; }
 

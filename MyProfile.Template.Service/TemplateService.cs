@@ -6,6 +6,7 @@ using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Progress.Service;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
 using Newtonsoft.Json;
@@ -22,11 +23,13 @@ namespace MyProfile.Template.Service
     {
         private IBaseRepository repository;
         private UserLogService userLogService;
+        private ProgressService progressService;
 
-        public TemplateService(IBaseRepository repository, UserLogService userLogService)
+        public TemplateService(IBaseRepository repository, UserLogService userLogService, ProgressService progressService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
+            this.progressService = progressService;
         }
 
         public async Task<TemplateViewModel> GetTemplateByID(Expression<Func<Template, bool>> predicate, bool addCollectiveBudget = true)
@@ -424,6 +427,15 @@ namespace MyProfile.Template.Service
             {
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Template_Create, errorLogIDs: errorLogCreateIDs);
             }
+
+            #region Progress
+
+            if (currentUser.IsCompleteIntroductoryProgress == false)
+            {
+                await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateOrEditTemplate);
+            }
+
+            #endregion
 
             await setDefaultTemplates(template);
 

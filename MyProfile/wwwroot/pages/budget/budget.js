@@ -73,6 +73,10 @@
         toDoListAjax: null,
         refreshEditItem: true,
 
+        //Progress
+        progresses: [],
+        progressAjax: null,
+
         isLoading: false,
         counter: -4999,
     },
@@ -804,13 +808,24 @@
             });
         },
 
+        //progress
+        loadProgress: BudgetMethods.loadProgress,
+        getProgressCompleteStyle: function (index) {
+            //if (index <= this.progresses.length
+            //    && this.progresses[index].isComplete && this.progresses[index + 1].isComplete) {
+            //    return "progress-complete";
+            //}
+            //return "";
+            return index <= (this.progresses.length - 2) && this.progresses[index].isComplete && this.progresses[index + 1].isComplete ? "progress-complete" : "";
+        },
+
         //resize and refresh
         refresh: function (typeRefresh) {
             //let typeRefresh = [
             //    "onlyTable",
             //    "runtimeData",
             //];
-            if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData" || typeRefresh == "all") {
+            if (typeRefresh == undefined || typeRefresh == 'onlyTable' || typeRefresh == "runtimeData" || typeRefresh == "all" || typeRefresh == "only-progress") {
 
                 if (this.templateID != "-1") {
                     this.isLoading = true;
@@ -838,6 +853,10 @@
             }
 
             if (typeRefresh == 'onlyTable') {
+                return false;
+            }
+            if (typeRefresh == 'only-progress') {
+                this.loadProgress();
                 return false;
             }
 
@@ -871,6 +890,7 @@
             this.loadAccounts();
             this.loadSummaries();
             this.loadToDoLists();
+            this.loadProgress();
         },
         refreshAfterChangeRecords: function (dateTimeOfPayment) {
 

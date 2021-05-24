@@ -1549,6 +1549,102 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("PeriodTypes");
                 });
 
+            modelBuilder.Entity("MyProfile.Entity.Model.Progress", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("DateComplete");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsComplete");
+
+                    b.Property<long?>("ParentProgressID");
+
+                    b.Property<int?>("ProgressItemTypeID");
+
+                    b.Property<int>("ProgressTypeID");
+
+                    b.Property<DateTime?>("UserDateEdit");
+
+                    b.Property<Guid>("UserID");
+
+                    b.Property<string>("Value")
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ParentProgressID");
+
+                    b.HasIndex("ProgressItemTypeID");
+
+                    b.HasIndex("ProgressTypeID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Progresses");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.ProgressItemType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ProgressItemTypes");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.ProgressLog", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("DateComplete");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsComplete");
+
+                    b.Property<long>("ProgressID");
+
+                    b.Property<DateTime?>("UserDateEdit");
+
+                    b.Property<string>("Value")
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProgressID");
+
+                    b.ToTable("ProgressLogs");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.ProgressType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeName")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ProgressTypes");
+                });
+
             modelBuilder.Entity("MyProfile.Entity.Model.PromoCode", b =>
                 {
                     b.Property<int>("ID")
@@ -3365,6 +3461,35 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
                         .WithMany("PaymentHistories")
                         .HasForeignKey("PaymentTariffID");
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.Progress", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Progress", "ParentProgress")
+                        .WithMany()
+                        .HasForeignKey("ParentProgressID");
+
+                    b.HasOne("MyProfile.Entity.Model.ProgressItemType", "ProgressItemType")
+                        .WithMany()
+                        .HasForeignKey("ProgressItemTypeID");
+
+                    b.HasOne("MyProfile.Entity.Model.ProgressType", "ProgressType")
+                        .WithMany()
+                        .HasForeignKey("ProgressTypeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyProfile.Entity.Model.User", "User")
+                        .WithMany("Progresses")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyProfile.Entity.Model.ProgressLog", b =>
+                {
+                    b.HasOne("MyProfile.Entity.Model.Progress", "Progress")
+                        .WithMany("ProgressLogs")
+                        .HasForeignKey("ProgressID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PromoCodeHistory", b =>

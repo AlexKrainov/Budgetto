@@ -4,6 +4,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Account;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Progress.Service;
 using MyProfile.UserLog.Service;
 using Newtonsoft.Json;
 using System;
@@ -19,16 +20,19 @@ namespace MyProfile.Budget.Service
         private IMemoryCache cache;
         private UserLogService userLogService;
         private CurrencyService сurrencyService;
+        private ProgressService progressService;
 
         public AccountService(IBaseRepository repository,
             IMemoryCache cache,
             UserLogService userLogService,
-            CurrencyService сurrencyService)
+            CurrencyService сurrencyService,
+            ProgressService progressService)
         {
             this.repository = repository;
             this.cache = cache;
             this.userLogService = userLogService;
             this.сurrencyService = сurrencyService;
+            this.progressService = progressService;
         }
 
         public List<MainAccountModelView> GetMainAccounts(Guid currentUserID)
@@ -289,7 +293,6 @@ namespace MyProfile.Budget.Service
                   .ThenBy(x => x.AccountType == AccountTypes.Debed)
                   .ToList();
         }
-
 
         /// <summary>
         /// Get all money by section type for the period
@@ -666,6 +669,15 @@ namespace MyProfile.Budget.Service
                     userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.Account_Update);
                 }
             }
+
+            #region Progress
+
+            if (currentUser.IsCompleteIntroductoryProgress == false)
+            {
+                progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateAccount).Wait();
+            }
+
+            #endregion
 
             cache.Remove(typeof(AccountShortViewModel).Name + "_" + currentUser.ID);
 

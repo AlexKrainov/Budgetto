@@ -9,6 +9,7 @@ using MyProfile.Entity.ModelView.BudgetView;
 using MyProfile.Entity.ModelView.Currency;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Progress.Service;
 using MyProfile.Tag.Service;
 using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
@@ -31,13 +32,15 @@ namespace MyProfile.Budget.Service
         private SectionService sectionService;
         private CurrencyService currencyService;
         private IMemoryCache cache;
+        private ProgressService progressService;
 
         public BudgetRecordService(IBaseRepository repository,
             TagService tagService,
             AccountService accountService,
             IMemoryCache cache,
             SectionService sectionService,
-            CurrencyService currencyService)
+            CurrencyService currencyService,
+            ProgressService progressService)
         {
             this.repository = repository;
             this.collectionUserService = new CollectionUserService(repository);
@@ -47,6 +50,7 @@ namespace MyProfile.Budget.Service
             this.sectionService = sectionService;
             this.currencyService = currencyService;
             this.cache = cache;
+            this.progressService = progressService;
         }
 
         public async Task<RecordModelView> GetByID(int id)
@@ -574,10 +578,23 @@ namespace MyProfile.Budget.Service
             {
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_Create, errorLogIDs: errorLogCreateIDs);
             }
-            if (currentUser.IsAvailable == false)
+
+            #region Progress
+
+            if (isEdit || isCreate)
             {
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_IsNotAvailibleUser, errorLogIDs: errorLogCreateIDs);
-            }
+                if (currentUser.IsCompleteIntroductoryProgress == false)
+                {
+                    await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateRecord);
+                }
+            } 
+
+            #endregion
+
+           //if (currentUser.IsAvailable == false)
+            //{
+            //    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Record_IsNotAvailibleUser, errorLogIDs: errorLogCreateIDs);
+            //}
 
             if (budgetRecord.Records.Any(x => x.IsSaved == false))
             {
@@ -975,7 +992,6 @@ namespace MyProfile.Budget.Service
               .ToList();
         }
 
-
         public IList<BudgetRecordModelView> GetBudgetRecordsByFilter(CalendarFilterModels filter)
         {
             var currentUserID = UserInfo.Current.ID;
@@ -1093,7 +1109,7 @@ namespace MyProfile.Budget.Service
               //.OrderBy(x => x.ID)
               .ToListAsync();
         }
-
+        
         public async Task<decimal> GetTotalSpendsForLimitByFilter(CalendarFilterModels filter)
         {
             var expression = await getExpressionByCalendarFilterAsync(filter);
@@ -1125,7 +1141,6 @@ namespace MyProfile.Budget.Service
               .GetAll(expression)
               .Sum(x => x.Total);
         }
-
 
         public async Task<List<int>> GetAllYears()
         {

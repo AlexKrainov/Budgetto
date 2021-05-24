@@ -152,7 +152,6 @@ namespace MyProfile.User.Service
                 predicate = predicate.And(x => x.Email == email);
             }
 
-
             UserInfoModel user = await repository.GetAll(predicate)
                  .Select(x => new UserInfoModel
                  {
@@ -181,6 +180,7 @@ namespace MyProfile.User.Service
                      IsAvailable = x.Payment.DateFrom <= now && x.Payment.DateTo >= now,
                      IsHelpRecord = x.BudgetRecords.Count() == 0,
                      TimeZoneClient = x.OlsonTZID != null ? x.OlsonTZ.Name : null,
+                     IsCompleteIntroductoryProgress = x.Progresses.Any(z => z.ProgressTypeID == (int)ProgressTypeEnum.Introductory && z.ParentProgressID == null && z.IsComplete),
                      Payment = new Payment
                      {
                          DateFrom = x.Payment.DateFrom,
@@ -249,6 +249,7 @@ namespace MyProfile.User.Service
 
             if (user != null)
             {
+                #region TelegramLogin
                 if (string.IsNullOrEmpty(user.UserConnect.TelegramLogin))
                 {
                     user.UserConnect.TelegramLogin = GetTelegramLogin();
@@ -260,6 +261,7 @@ namespace MyProfile.User.Service
                     };
                     await repository.UpdateAsync(userDB, true);
                 }
+                #endregion
 
                 if (password != null && user.HashPassword != passwordService.GenerateHashSHA256(password, user.SaltPassword))
                 {
@@ -361,6 +363,20 @@ namespace MyProfile.User.Service
                     TelegramLogin = telegramLogin
                 },
                 UserTypeID = (int)UserTypeEnum.User,
+                Progresses = new List<Progress>{
+                    new Progress
+                    {
+                        ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                    },
+                    new Progress
+                    {
+                        ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth
+                    },
+                    new Progress
+                    {
+                        ProgressTypeID = (int)ProgressTypeEnum.Gamification
+                    },
+                }
             };
 
             newUser.Accounts = new List<Account>{
@@ -386,6 +402,85 @@ namespace MyProfile.User.Service
                     }
                 };
             await repository.CreateAsync(newUser, true);
+
+            #region Progress
+            var progressIntroductoryID = newUser.Progresses.FirstOrDefault(x => x.ProgressTypeID == (int)ProgressTypeEnum.Introductory).ID;
+            var progressFinancialLiteracyMonthID = newUser.Progresses.FirstOrDefault(x => x.ProgressTypeID == (int)ProgressTypeEnum.FinancialLiteracyMonth).ID;
+
+            List<Progress> progresses = new List<Progress>();
+
+            #region ProgressTypeEnum.Introductory
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecord
+            });
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateLimit
+            });
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateNotification
+            });
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateOrEditTemplate
+            });
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateSection
+            });
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateArea
+            });
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateAccount
+            });
+            progresses.Add(new MyProfile.Entity.Model.Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.Introductory,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateReminder
+            });
+            #endregion
+
+            //#region ProgressTypeEnum.FinancialLiteracyMonth
+            //progresses.Add(new Progress
+            //{
+            //    ParentProgressID = progressIntroductoryID,
+            //    ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+            //    ProgressItemTypeID = (int)ProgressItemTypeEnum.Investing10Percent
+            //});
+            //progresses.Add(new Progress
+            //{
+            //    ParentProgressID = progressIntroductoryID,
+            //    ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+            //    ProgressItemTypeID = (int)ProgressItemTypeEnum.EarnMoreThanSpend
+            //});
+            //progresses.Add(new Progress
+            //{
+            //    ParentProgressID = progressIntroductoryID,
+            //    ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+            //    ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth
+            //});
+            //#endregion
+            #endregion
 
             return 1;
         }

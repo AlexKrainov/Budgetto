@@ -16,7 +16,9 @@
                            class="pr-4">
                             <i class="pe-7s-info d-block text-primary"></i>
                         </a>
-                        <a class="nav-link cursor-pointer" v-on:click="edit()" v-show="isNew == false || reminder.id == undefined "
+                        <a id="add-reminder" class="nav-link cursor-pointer" 
+                           v-on:click="edit()" 
+                           v-show="isNew == false || reminder.id == undefined "
                            title="Добавить новое уведомление на эту дату">
                             <i class="ion ion-md-add navbar-icon align-middle" style="color:var(--success);"></i>
                         </a>

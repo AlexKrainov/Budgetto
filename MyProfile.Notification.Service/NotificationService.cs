@@ -2,6 +2,7 @@
 using MyProfile.Entity.ModelView.Notification;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Progress.Service;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,10 +16,13 @@ namespace MyProfile.Notification.Service
     public class NotificationService
     {
         private BaseRepository repository;
+        private ProgressService progressService;
 
-        public NotificationService(BaseRepository repository)
+        public NotificationService(BaseRepository repository,
+            ProgressService progressService)
         {
             this.repository = repository;
+            this.progressService = progressService;
         }
 
         public List<NotificationViewModel> GetLastNotification(int skip, int take, Expression<Func<Notification, bool>> expression = null)
@@ -136,6 +140,7 @@ namespace MyProfile.Notification.Service
         {
             var now = DateTime.Now.ToUniversalTime();
             bool anyChanges = false;
+            var currentUser = UserInfo.Current;
 
             #region Delete
             if (notifications.Any(x => x.IsDeleted))
@@ -189,6 +194,14 @@ namespace MyProfile.Notification.Service
                 repository.CreateRange(newNotifications);
                 await repository.SaveAsync();
 
+                #region Progress
+
+                if (currentUser.IsCompleteIntroductoryProgress == false)
+                {
+                    await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateNotification);
+                }
+
+                #endregion
             }
             #endregion
 

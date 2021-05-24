@@ -20,6 +20,8 @@
         <script src="~/pages/budget/budget.js" asp-append-version="true"></script>
     </environment>
     <script>
+        var Progress = [];
+
         $(function () {
             var chart = new Chart(document.getElementById('statistics-chart-14').getContext("2d"), {
                 type: 'line',
@@ -54,6 +56,22 @@
                     chart.resize();
                 });
             }
+
+            $.ajax({
+                type: "GET",
+                url: "/Common/GetProgress",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.isOk == true) {
+                        Progress = result.data;
+                    }
+                    return true;
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
         });
 
         // $('#modal-record1').modal('show');
@@ -1395,7 +1413,7 @@
         </div>
     </div>
 
-    <div>
+    <div class="mb-5 pb-5">
         <div class="ui-stars ml-3">
             <div class="ui-star filled mr-5 test test-complite" style="width: 3.1em;">
                 <div class="ui-square bg-primary rounded-circle text-white ">
@@ -1422,23 +1440,68 @@
 
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body p-4">
+
+            <div class=" ui-bordered py-3 px-4">
+                <div>
+                    <div class="ui-stars ml-3" style="height: 46px;">
+                        <div class="ui-star filled mr-5 progress-item progress-complite" style="width: 3.1em;">
+                            <div class="ui-square bg-primary rounded-circle text-white"
+                                 data-toggle="tooltip" data-original-title="Добавить расходы/доходы">
+                                <div class="d-flex ui-square-content text-big">
+                                    <div class="ion ion-md-add m-auto  text-big"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-star filled mr-5 progress-item" style="width: 3.1em;">
+                            <div class="ui-square bg-primary rounded-circle text-white">
+                                <div class="d-flex ui-square-content text-big">
+                                    <div class="lnr lnr-rocket m-auto text-big"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-star filled mr-5" style="width: 3.1em;">
+                            <div class="ui-square bg-light rounded-circle text-dark">
+                                <div class="d-flex ui-square-content text-big">
+                                    <div class="lnr lnr-frame-expand m-auto text-big "></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a data-toggle="collapse" href="#order-4153148974123" class="d-block ml-3 float-right collapsed" aria-expanded="false"><i class="collapse-icon"></i></a>
+                </div>
+            </div>
+            <div class="table-responsive collapse" id="order-4153148974123" style="">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="p-4">
+                                <div class="media align-items-center">
+                                    <div style="width: 3.1em;">
+                                        <div class="ui-square bg-primary rounded-circle text-white">
+                                            <div class="d-flex ui-square-content text-big">
+                                                <div class="ion ion-md-add m-auto  text-big"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="media-body ml-3">
+                                        <a href="#" class="d-block text-body">Добавить расходы/доходы <span class="badge badge-success">Выполнено</span></a>
+                                        <small>
+                                            <span class="text-muted">Записи основной компонент ведения личных финансов</span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
 </div>
-<style>
-    .test::after {
-        top: 1.5625rem;
-        left: 2.05rem;
-        width: 3rem;
-        height: .125rem;
-        content: "";
-        position: absolute;
-        bottom: 0;
-        z-index: 15;
-        background: #e7e7e7;
-    }
-    .test-complite::after {
-        background: #26B4FF !important;
-    }
-</style>
 
 
 <div id="test" class="bs4-toast toast bg-success fade">

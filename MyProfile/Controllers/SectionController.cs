@@ -54,11 +54,11 @@ namespace MyProfile.Controllers
         }
 
         //[HttpPost]
-        public IActionResult SaveArea([FromBody] BudgetAreaModelView area)
+        public async Task<IActionResult> SaveArea([FromBody] BudgetAreaModelView area)
         {
             try
             {
-                sectionService.CreateOrUpdateArea(area);
+                await sectionService.CreateOrUpdateArea(area);
 
                 return Json(new { isOk = true, area });
             }

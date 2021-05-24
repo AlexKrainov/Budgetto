@@ -7,6 +7,7 @@ using MyProfile.Entity.ModelView.Reminder;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Notification.Service;
+using MyProfile.Progress.Service;
 using MyProfile.UserLog.Service;
 using System;
 using System.Collections.Generic;
@@ -24,16 +25,16 @@ namespace MyProfile.Reminder.Service
         private UserLogService userLogService;
         private CommonService commonService;
         private NotificationService notificationService;
+        private ProgressService progressService;
 
-        public ReminderService(IBaseRepository baseRepository, UserLogService userLogService, CommonService commonService, NotificationService notificationService)
+        public ReminderService(IBaseRepository baseRepository, UserLogService userLogService, CommonService commonService, NotificationService notificationService, ProgressService progressService)
         {
             this.repository = baseRepository;
             this.userLogService = userLogService;
             this.commonService = commonService;
             this.notificationService = notificationService;
+            this.progressService = progressService;
         }
-
-
 
         /// <summary>
         /// 
@@ -293,6 +294,15 @@ namespace MyProfile.Reminder.Service
                     {
                         notification.ID = notifications.FirstOrDefault(x => x.ExpirationDateTime.Value.Date == notification.ExpirationDateTime.Value.Date).ID;
                     }
+
+                    #region Progress
+
+                    if (currentUser.IsCompleteIntroductoryProgress == false)
+                    {
+                        await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateReminder);
+                    }
+
+                    #endregion
                 }
             }
             catch (Exception ex)

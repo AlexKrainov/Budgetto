@@ -824,3 +824,19 @@ html.dark-style .tagify__input::before {
 #history-vue .div-change-view {
     margin-left: 16px;
 }
+
+.progress-item::after {
+    top: 1.5625rem;
+    left: 2.05rem;
+    width: 3rem;
+    height: .125rem;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    z-index: 15;
+    background: #e7e7e7;
+}
+
+.progress-complete::after {
+    background: #26B4FF !important;
+}
