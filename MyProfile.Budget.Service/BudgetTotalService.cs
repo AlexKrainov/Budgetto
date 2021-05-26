@@ -288,31 +288,31 @@ namespace MyProfile.Budget.Service
             {
                 var from2 = to.AddMonths(-1);
 
-                var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
-                        && (InvestAccountTypes.Contains(x.Account.AccountTypeID)
-                            || InvestAccountTypes.Contains(x.AccountFrom.AccountTypeID))
-                        && x.Account.IsDeleted == false
-                        && x.ActionType == AccountHistoryActionType.MoveMoney
-                        && x.CurrentDate >= from2 && x.CurrentDate <= to)
-                    .Select(x => new AccountHistoryTMP
-                    {
-                        ValueFrom = x.ValueFrom,
-                        ValueTo = x.ValueTo,
-                        CurrencyToCodeName = x.Account.Currency.CodeName,
-                        CurrencyFromCodeName = x.AccountFrom.Currency.CodeName,
-                        AccountTypeTo = (AccountTypes)x.Account.AccountTypeID,
-                        AccountTypeFrom = (AccountTypes)x.AccountFrom.AccountTypeID,
-                        CurrentDate = x.CurrentDate,
-                        CurrencyValue = x.CurrencyValue,
-                    })
-                    .ToList();
+                //var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
+                //        && (InvestAccountTypes.Contains(x.Account.AccountTypeID)
+                //            || InvestAccountTypes.Contains(x.AccountFrom.AccountTypeID))
+                //        && x.Account.IsDeleted == false
+                //        && x.ActionType == AccountHistoryActionType.MoveMoney
+                //        && x.CurrentDate >= from2 && x.CurrentDate <= to)
+                //    .Select(x => new AccountHistoryTMP
+                //    {
+                //        ValueFrom = x.ValueFrom,
+                //        ValueTo = x.ValueTo,
+                //        CurrencyToCodeName = x.Account.Currency.CodeName,
+                //        CurrencyFromCodeName = x.AccountFrom.Currency.CodeName,
+                //        AccountTypeTo = (AccountTypes)x.Account.AccountTypeID,
+                //        AccountTypeFrom = (AccountTypes)x.AccountFrom.AccountTypeID,
+                //        CurrentDate = x.CurrentDate,
+                //        CurrencyValue = x.CurrencyValue,
+                //    })
+                //    .ToList();
 
                 var tuple = GetChartInvestingTotalByMonth(from, to);
 
                 investingData.data = tuple.Item1.ToArray();
                 investingData.labels = tuple.Item2.ToArray();
 
-                decimal total = CountTotal(accountHistories);
+                decimal total = GetTotalInvestByPeriod(from2, to);// (accountHistories);
 
                 investingData.Name = "Инвестиции";
                 //investingData.SectionTypeEnum = SectionTypeEnum.Investments;
@@ -348,6 +348,30 @@ namespace MyProfile.Budget.Service
             }
 
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investingData);
+        }
+
+        public decimal GetTotalInvestByPeriod(DateTime from, DateTime to)
+        {
+            var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == UserInfo.Current.ID
+                       && (InvestAccountTypes.Contains(x.Account.AccountTypeID)
+                           || InvestAccountTypes.Contains(x.AccountFrom.AccountTypeID))
+                       && x.Account.IsDeleted == false
+                       && x.ActionType == AccountHistoryActionType.MoveMoney
+                       && x.CurrentDate >= from && x.CurrentDate <= to)
+                   .Select(x => new AccountHistoryTMP
+                   {
+                       ValueFrom = x.ValueFrom,
+                       ValueTo = x.ValueTo,
+                       CurrencyToCodeName = x.Account.Currency.CodeName,
+                       CurrencyFromCodeName = x.AccountFrom.Currency.CodeName,
+                       AccountTypeTo = (AccountTypes)x.Account.AccountTypeID,
+                       AccountTypeFrom = (AccountTypes)x.AccountFrom.AccountTypeID,
+                       CurrentDate = x.CurrentDate,
+                       CurrencyValue = x.CurrencyValue,
+                   })
+                   .ToList();
+
+            return CountTotal(accountHistories);
         }
 
         private decimal CountTotal(List<AccountHistoryTMP> accountHistories)

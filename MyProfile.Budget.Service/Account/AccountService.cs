@@ -674,7 +674,7 @@ namespace MyProfile.Budget.Service
 
             if (currentUser.IsCompleteIntroductoryProgress == false)
             {
-                progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateAccount).Wait();
+                progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateAccount).Wait();
             }
 
             #endregion

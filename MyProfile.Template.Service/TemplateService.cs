@@ -432,7 +432,7 @@ namespace MyProfile.Template.Service
 
             if (currentUser.IsCompleteIntroductoryProgress == false)
             {
-                await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateOrEditTemplate);
+                await progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateOrEditTemplate);
             }
 
             #endregion

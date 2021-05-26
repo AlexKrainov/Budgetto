@@ -15,6 +15,8 @@ namespace MyProfile.Areas.Admin.Models
         public string CronExpression { get; internal set; }
         public string Comment { get; internal set; }
         public int ID { get; internal set; }
+        public DateTime? NextStart { get; internal set; }
+        public bool IsMissed { get; internal set; }
     }
 
     public class SchedulerTaskFilter

@@ -299,7 +299,7 @@ namespace MyProfile.Reminder.Service
 
                     if (currentUser.IsCompleteIntroductoryProgress == false)
                     {
-                        await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateReminder);
+                        await progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateReminder);
                     }
 
                     #endregion

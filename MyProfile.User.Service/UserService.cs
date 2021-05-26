@@ -460,26 +460,28 @@ namespace MyProfile.User.Service
             });
             #endregion
 
-            //#region ProgressTypeEnum.FinancialLiteracyMonth
-            //progresses.Add(new Progress
-            //{
-            //    ParentProgressID = progressIntroductoryID,
-            //    ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
-            //    ProgressItemTypeID = (int)ProgressItemTypeEnum.Investing10Percent
-            //});
-            //progresses.Add(new Progress
-            //{
-            //    ParentProgressID = progressIntroductoryID,
-            //    ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
-            //    ProgressItemTypeID = (int)ProgressItemTypeEnum.EarnMoreThanSpend
-            //});
-            //progresses.Add(new Progress
-            //{
-            //    ParentProgressID = progressIntroductoryID,
-            //    ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
-            //    ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth
-            //});
-            //#endregion
+            #region ProgressTypeEnum.FinancialLiteracyMonth
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.Investing10Percent,
+                NeedToBeValue = 10.ToString()
+            });
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.EarnMoreThanSpend
+            });
+            progresses.Add(new Progress
+            {
+                ParentProgressID = progressIntroductoryID,
+                ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+                ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth,
+                NeedToBeValue = 70.ToString()
+            });
+            #endregion
             #endregion
 
             return 1;

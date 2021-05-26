@@ -127,7 +127,7 @@ namespace MyProfile.Limit.Service
 
                 if (currentUser.IsCompleteIntroductoryProgress == false)
                 {
-                    await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateLimit);
+                    await progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateLimit);
                 }
 
                 #endregion

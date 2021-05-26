@@ -1,6 +1,6 @@
 ﻿Vue.component("vue-record-history-component", {
     template: `
-<div class="ui-timeline ui-timeline-with-info">
+<div class="ui-timeline ui-timeline-with-info history-records">
     <div v-for="(groupRecord, index) in groupRecords">
         <div class="ui-timeline-separator text-big" style="    z-index: 5;"
                 v-show="isShowDate">
@@ -236,8 +236,12 @@
     methods: {
         loadHistory: function (filter) {
             this.searchText = null;
-            ShowLoading('#history-records');
+            ShowLoading('.history-records');
             this.filter = filter;
+
+            if (this.isShowModal) {
+                $("#modalTimeLine").modal("show");
+            }
 
             return $.ajax({
                 type: "POST",
@@ -248,11 +252,8 @@
                 context: this,
                 success: function (response) {
                     this.groupRecords = response.data;
-                    HideLoading('#history-records');
+                    HideLoading('.history-records');
 
-                    if (this.isShowModal) {
-                        $("#modalTimeLine").modal("show");
-                    }
                 }
             });
         },

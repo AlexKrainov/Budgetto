@@ -198,7 +198,7 @@ namespace MyProfile.Notification.Service
 
                 if (currentUser.IsCompleteIntroductoryProgress == false)
                 {
-                    await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateNotification);
+                    await progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateNotification);
                 }
 
                 #endregion

@@ -39,6 +39,7 @@ namespace MyProfile.Entity.Model
         public string Name { get; set; }
         public DateTime? FirstStart { get; set; }
         public DateTime? LastStart { get; set; }
+        public DateTime? NextStart { get; set; }
         [Required]
         [MaxLength(16)]
         public string TaskStatus { get; set; }
@@ -49,6 +50,7 @@ namespace MyProfile.Entity.Model
         public string CronExpression { get; set; }
         [MaxLength(64)]
         public string CronComment { get; set; }
+        [MaxLength(256)]
         public string Comment { get; set; }
 
 

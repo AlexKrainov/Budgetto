@@ -230,7 +230,7 @@ namespace MyProfile.Budget.Service
 
             if (currentUser.IsCompleteIntroductoryProgress == false)
             {
-                await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateArea);
+                await progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateArea);
             }
 
             #endregion
@@ -298,7 +298,7 @@ namespace MyProfile.Budget.Service
 
             if (currentUser.IsCompleteIntroductoryProgress == false)
             {
-                await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateSection);
+                await progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateSection);
             }
 
             #endregion

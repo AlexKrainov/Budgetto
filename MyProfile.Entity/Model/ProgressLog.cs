@@ -12,8 +12,9 @@ namespace MyProfile.Entity.Model
         public int ID { get; set; }
         public bool IsComplete { get; set; }
         public DateTime? DateComplete{ get; set; }
+        public string NeedToBeValue { get; set; }
         [MaxLength(32)]
-        public string Value { get; set; }
+        public string CurrentValue { get; set; }
         public DateTime? UserDateEdit { get; set; }
         public bool IsActive { get; set; }
 

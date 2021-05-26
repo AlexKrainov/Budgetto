@@ -284,7 +284,7 @@
 
         this.progressAjax = $.ajax({
             type: "GET",
-            url: "/Common/GetProgress",
+            url: "/Common/GetProgress?date=" + this.budgetDate + "&periodType=1",
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             context: this,

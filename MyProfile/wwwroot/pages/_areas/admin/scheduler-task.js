@@ -101,11 +101,20 @@
             } else {
                 html += "<td></td>";
             }
+            if (data.nextStart) {
+                let missed = '';
+                if (data.isMissed) {
+                    missed = '<a href="javascript:void(0)" class="badge badge-pill badge-danger">Missed</a>';
+                }
+                html += "<td>" + moment(data.nextStart).format("DD.MM.YYYY HH:mm") + " " + missed + "</td > ";
+            } else {
+                html += "<td></td>";
+            }
 
             html += "<td data-id-status='" + data.id + "'>" + this.status(data.id, data.taskStatus) + "</td>";
             html += "<td>" + data.cronComment + "</td>";
             html += "<td>" + data.cronExpression + "</td>";
-            html += "<td>" + (data.comment ? data.comment : "") + "</td>";
+            //html += "<td>" + (data.comment ? data.comment : "") + "</td>";
 
             return html;
         },

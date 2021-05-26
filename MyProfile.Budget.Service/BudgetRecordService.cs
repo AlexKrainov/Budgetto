@@ -585,7 +585,7 @@ namespace MyProfile.Budget.Service
             {
                 if (currentUser.IsCompleteIntroductoryProgress == false)
                 {
-                    await progressService.CompleteProgressItemType(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateRecord);
+                    await progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateRecord);
                 }
             } 
 

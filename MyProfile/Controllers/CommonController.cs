@@ -3,6 +3,7 @@ using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Account;
 using MyProfile.Entity.ModelView.Currency;
@@ -37,6 +38,7 @@ namespace MyProfile.Controllers
         private IMemoryCache cache;
         private LimitService limitService;
         private ProgressService progressService;
+        private BudgetTotalService budgetTotalService;
 
         public CommonController(IBaseRepository repository,
             CommonService commonService,
@@ -45,7 +47,8 @@ namespace MyProfile.Controllers
             CurrencyService currencyService,
             IMemoryCache cache,
             LimitService limitService,
-            ProgressService progressService)
+            ProgressService progressService,
+            BudgetTotalService budgetTotalService)
         {
             this.repository = repository;
             this.commonService = commonService;
@@ -55,6 +58,7 @@ namespace MyProfile.Controllers
             this.cache = cache;
             this.limitService = limitService;
             this.progressService = progressService;
+            this.budgetTotalService = budgetTotalService;
         }
 
         public IActionResult Index()
@@ -120,7 +124,7 @@ namespace MyProfile.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetProgress()
+        public JsonResult GetProgress(DateTime date, PeriodType periodType)
         {
             var currentUser = UserInfo.Current;
 
@@ -130,7 +134,20 @@ namespace MyProfile.Controllers
             }
             else
             {
-                return Json(new { isOk = true, data = progressService.GetFinancialLiteracyMonthProgress() });
+                DateTime start = new DateTime(date.Year, date.Month, 01, 00, 00, 00);
+                DateTime finish = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 23, 59, 59);
+
+                var totalInvest = budgetTotalService.GetTotalInvestByPeriod(start, finish);
+                var total = budgetTotalService.GetChartTotalByMonth(start, finish, SectionTypeEnum.Earnings);
+                var totalEarnings = total.Item1[total.Item1.Count - 1];
+                total = budgetTotalService.GetChartTotalByMonth(start, finish, SectionTypeEnum.Spendings);
+                var totalSpendings = total.Item1[total.Item1.Count - 1];
+                int count = repository.GetAll<Record>(x => x.UserID == currentUser.ID && x.IsDeleted == false && x.DateTimeOfPayment >= start && x.DateTimeOfPayment <= finish)
+                    .GroupBy(x => x.DateTimeOfPayment.Date)
+                    .Count();
+
+                //return Json(new { isOk = true});
+                return Json(new { isOk = true, data = progressService.SetAndGetFinancialLiteracyMonthProgress(totalEarnings, totalSpendings, totalInvest, count) });
             }
 
 

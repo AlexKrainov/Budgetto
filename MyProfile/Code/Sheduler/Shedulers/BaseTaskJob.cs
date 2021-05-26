@@ -4,6 +4,7 @@ using MyProfile.Budget.Service;
 using MyProfile.Common;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
+using NCrontab;
 using Quartz;
 using System;
 using System.Linq;
@@ -25,12 +26,17 @@ namespace MyProfile.Code.Sheduler.Shedulers
         internal void BaseExecute(BaseRepository repository, TaskType taskType, Func<int> _service)
         {
             var now = TimeZoner.GetCurrentDateTimeUTC();
-
             var task = repository.GetAll<SchedulerTask>(x => x.ID == (int)taskType).FirstOrDefault();
 
             if (task != null)
             {
                 task.LastStart = now;
+                try
+                {
+                    CronExpression cronExpression = new CronExpression(task.CronExpression);
+                    task.NextStart = cronExpression.GetNextValidTimeAfter(now).GetValueOrDefault().DateTime;
+                }
+                catch (Exception ex) { }
 
                 if (task.TaskStatus == Enum.GetName(typeof(TaskStatus), TaskStatus.New)
                     || task.TaskStatus == Enum.GetName(typeof(TaskStatus), TaskStatus.InProcess))
@@ -54,7 +60,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                                 ChangedItems = changedCounts,
                                 Start = now,
                                 End = TimeZoner.GetCurrentDateTimeUTC(),
-                            }, true); 
+                            }, true);
                         }
                     }
                     catch (Exception ex)

@@ -65,6 +65,7 @@ namespace MyProfile.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult GetData([FromBody] SchedulerTaskFilter filter)
         {
+            var now = DateTime.Now;
             var data = repository.GetAll<SchedulerTask>()
                 .Select(x => new SchedulerTaskModel
                 {
@@ -72,6 +73,7 @@ namespace MyProfile.Areas.Admin.Controllers
                     Name = x.Name,
                     FirstStart = x.FirstStart,
                     LastStart = x.LastStart,
+                    NextStart = x.NextStart,
                     TaskStatus = x.TaskStatus,
                     CronComment = x.CronComment,
                     CronExpression = x.CronExpression,
@@ -88,6 +90,12 @@ namespace MyProfile.Areas.Admin.Controllers
                 if (item.LastStart.HasValue)
                 {
                     item.LastStart = item.LastStart.Value.AddHours(3);
+                }
+
+                if (item.NextStart.HasValue)
+                {
+                    item.NextStart = item.NextStart.Value.AddHours(3);
+                    item.IsMissed = now > item.NextStart;
                 }
             }
 
@@ -115,7 +123,7 @@ namespace MyProfile.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult ForceStart(TaskType taskID)
         {
-            
+
             switch (taskID)
             {
                 case TaskType.AccountRemoveCachback:

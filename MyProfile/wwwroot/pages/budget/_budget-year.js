@@ -256,6 +256,10 @@
         });
         return this.accountsAjax;
     },
+    //Progress
+    loadProgress: function () {
+        return null;
+    },
 };
 
 

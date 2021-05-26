@@ -94,7 +94,6 @@ namespace MyProfile.Code
 
         private void CheckUserProgress()
         {
-            var newPrgoresses = new List<MyProfile.Entity.Model.Progress>();
             var userIDs = repository.GetAll<MyProfile.Entity.Model.User>(x => x.IsDeleted == false).Select(x => x.ID).ToList();
             var progresses = repository.GetAll<MyProfile.Entity.Model.Progress>()
                 .ToList();
@@ -102,6 +101,8 @@ namespace MyProfile.Code
             foreach (var userID in userIDs)
             {
                 var newProgress = progresses.FirstOrDefault(x => x.ParentProgressID == null && x.UserID == userID && x.ProgressTypeID == (int)ProgressTypeEnum.Introductory);
+                var progressFinancialLiteracyMonth = progresses.FirstOrDefault(x => x.ProgressTypeID == (int)ProgressTypeEnum.FinancialLiteracyMonth);
+
                 if (newProgress == null)
                 {
                     newProgress = new MyProfile.Entity.Model.Progress
@@ -164,6 +165,38 @@ namespace MyProfile.Code
                     #endregion
 
                     repository.Create(newProgress, true);
+                }
+
+                if (progressFinancialLiteracyMonth == null)
+                {
+                    progressFinancialLiteracyMonth = new MyProfile.Entity.Model.Progress
+                    {
+                        ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+                        UserID = userID,
+                        Progresses = new List<MyProfile.Entity.Model.Progress>()
+                    };
+
+                    progressFinancialLiteracyMonth.Progresses.Add(new Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.Investing10Percent,
+                        NeedToBeValue = 10.ToString()
+                    }) ;
+                    progressFinancialLiteracyMonth.Progresses.Add(new Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.EarnMoreThanSpend
+                    });
+                    progressFinancialLiteracyMonth.Progresses.Add(new Entity.Model.Progress
+                    {
+                        UserID = userID,
+                        ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
+                        ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth,
+                        NeedToBeValue = 70.ToString()
+                    });
+                    repository.Create(progressFinancialLiteracyMonth, true);
                 }
 
                 //if (!newProgress.Progresses.Any(x => x.ParentProgressID != null && x.ProgressTypeID == (int)ProgressTypeEnum.Introductory && x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateRecord))
