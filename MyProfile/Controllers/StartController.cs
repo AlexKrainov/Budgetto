@@ -210,7 +210,7 @@ namespace MyProfile.Controllers
                     template.Columns[i].TotalAction = FooterActionType.Sum;
                 }
 
-                templateResult = await templateService.SaveTemplate(template, false);
+                templateResult = await templateService.SaveTemplate(template, false, isContstructorSave: true);
 
                 template.ID = 0;
                 template.Name = "Шаблон на год";
@@ -223,7 +223,7 @@ namespace MyProfile.Controllers
                     Order = 0,
                     Formula = new List<FormulaItem>(),
                 };
-                await templateService.SaveTemplate(template, false);
+                await templateService.SaveTemplate(template, false, isContstructorSave: true);
 
             }
             catch (System.Exception ex)

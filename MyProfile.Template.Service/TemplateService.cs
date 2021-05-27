@@ -278,7 +278,7 @@ namespace MyProfile.Template.Service
                         .ToListAsync();
         }
 
-        public async Task<TemplateErrorModelView> SaveTemplate(TemplateViewModel template, bool saveAs)
+        public async Task<TemplateErrorModelView> SaveTemplate(TemplateViewModel template, bool saveAs, bool isContstructorSave = false)
         {
             TemplateErrorModelView modelView = new TemplateErrorModelView { Template = template };
             var currentUser = UserInfo.Current;
@@ -430,7 +430,7 @@ namespace MyProfile.Template.Service
 
             #region Progress
 
-            if (currentUser.IsCompleteIntroductoryProgress == false)
+            if (currentUser.IsCompleteIntroductoryProgress == false && isContstructorSave == false)
             {
                 await progressService.SetCompleteProgressItemTypeAsync(currentUser.ID, ProgressTypeEnum.Introductory, ProgressItemTypeEnum.CreateOrEditTemplate);
             }

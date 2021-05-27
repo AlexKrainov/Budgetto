@@ -18,11 +18,11 @@
         let z = new Date;
         z.setDate(z.getDate() - 1);
         let dateConfig = GetFlatpickrRuConfigWithTime(z);
-        this.rangeStart = moment(z).format("YYYY-MM-DD HH:mm:ss");
+        this.rangeStart = moment(z).format("YYYY-MM-DDTHH:mm:ss");
         flatpickr('#range-start', dateConfig);
 
-        dateConfig = GetFlatpickrRuConfigWithTime(new Date);
-        this.rangeEnd = moment().format("YYYY-MM-DD HH:mm:ss");
+        dateConfig = GetFlatpickrRuConfigWithTime(moment().add(1, "days").toDate());
+        this.rangeEnd = (moment().add(1, "days")).format("YYYY-MM-DDTHH:mm:ss");
         flatpickr('#range-end', dateConfig);
 
         this.search();
@@ -41,10 +41,10 @@
             if (!filterData.rangeStart) {
                 let z = new Date;
                 z.setDate(z.getDate() - 1);
-                filterData.rangeStart = moment(z).format("YYYY-MM-DD HH:mm:ss");
+                filterData.rangeStart = moment(z).format("YYYY-MM-DDTHH:mm:ss");
             }
             if (!filterData.rangeEnd) {
-                filterData.rangeEnd = moment().format("YYYY-MM-DD HH:mm:ss");
+                filterData.rangeEnd = moment().format("YYYY-MM-DDTHH:mm:ss");
             }
 
             this.tableAjax = $.ajax({

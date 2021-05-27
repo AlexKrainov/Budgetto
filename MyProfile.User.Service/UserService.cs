@@ -371,11 +371,7 @@ namespace MyProfile.User.Service
                     new Progress
                     {
                         ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth
-                    },
-                    new Progress
-                    {
-                        ProgressTypeID = (int)ProgressTypeEnum.Gamification
-                    },
+                    }
                 }
             };
 
@@ -412,48 +408,56 @@ namespace MyProfile.User.Service
             #region ProgressTypeEnum.Introductory
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.Introductory,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecord
             });
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.Introductory,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateLimit
             });
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.Introductory,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateNotification
             });
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.Introductory,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateOrEditTemplate
             });
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.Introductory,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateSection
             });
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.Introductory,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateArea
             });
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.Introductory,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateAccount
             });
             progresses.Add(new MyProfile.Entity.Model.Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.Introductory,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateReminder
@@ -463,6 +467,7 @@ namespace MyProfile.User.Service
             #region ProgressTypeEnum.FinancialLiteracyMonth
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.Investing10Percent,
@@ -470,6 +475,7 @@ namespace MyProfile.User.Service
             });
             progresses.Add(new Progress
             {
+                UserID = newUser.ID,
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.EarnMoreThanSpend
@@ -479,10 +485,13 @@ namespace MyProfile.User.Service
                 ParentProgressID = progressIntroductoryID,
                 ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
                 ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth,
-                NeedToBeValue = 70.ToString()
+                NeedToBeValue = 21.ToString(),
+                UserID = newUser.ID,
             });
             #endregion
             #endregion
+
+            repository.CreateRange(progresses, true);
 
             return 1;
         }

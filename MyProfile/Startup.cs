@@ -111,15 +111,15 @@ namespace MyProfile
             services.AddTransient<ResetCachbackAccountTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(ResetCachbackAccountTask),
-                 cronExpression: "0 0 01 1 * ?")); //At 12:00 AM, on day 2 of the month (0 0 1 2 * ? *)
-            CronExpression.ValidateExpression("0 0 01 1 * ?");
+                 cronExpression: "0 0 4 1 * ?")); //At 01:00:00am, on the 1st day, every month (0 0 1 2 * ? *)
+            CronExpression.ValidateExpression("0 0 4 1 * ?");
 
 
             services.AddTransient<SetDoneReminderTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(SetDoneReminderTask),
-                 cronExpression: "0 0 1 * * ?")); //Every day At 01:00 AM
-            CronExpression.ValidateExpression("0 0 1 * * ?");
+                 cronExpression: "0 0 4 * * ?")); //Every day At 01:00 AM
+            CronExpression.ValidateExpression("0 0 4 * * ?");
 
             if (PublishSettings.IsOnlyProdTask)
             {
@@ -134,7 +134,7 @@ namespace MyProfile
             services.AddTransient<ResetHubConnectTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(ResetHubConnectTask),
-                 cronExpression: "0 0 4 * * ?")); //Every day At 04:00 AM
+                 cronExpression: "0 0 4 * * ?")); //Every day At 01:00 AM
             CronExpression.ValidateExpression("0 0 4 * * ?");
 
             //ToDo: сделать проверку за 30 секунд до отправке уведомления 
@@ -171,14 +171,23 @@ namespace MyProfile
             services.AddTransient<NotificationReset>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(NotificationReset),
-                 cronExpression: "0 0 010 1 * ?")); //At 10:00:00am, on the 1st day, every month
-            CronExpression.ValidateExpression("0 0 010 1 * ?");
+                 cronExpression: "0 0 5 1 * ?")); //At 2:00:00am, on the 1st day, every month
+            CronExpression.ValidateExpression("0 0 5 1 * ?");
 
             services.AddTransient<AccountDailyWork>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(AccountDailyWork),
-                 cronExpression: "0 0 7 * * ?")); //At 07:00:00am every day(0 0 7 * * ?)
-            CronExpression.ValidateExpression("0 0 7 * * ?");
+                 cronExpression: "0 0 10 * * ?")); //At 07:00:00am every day(0 0 7 * * ?)
+            CronExpression.ValidateExpression("0 0 10 * * ?");
+
+            services.AddTransient<ProgressMonthlyTask>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(ProgressMonthlyTask),
+                 cronExpression: "0 30 4 1 * ?")); //At 01:30:00am, on the 1st day, every month
+            CronExpression.ValidateExpression("0 30 4 1 * ?");
+
+            //CronExpression cronExpression = new CronExpression("0 30 4 1 * ?");
+            //var test = cronExpression.GetNextValidTimeAfter(System.DateTime.Now).GetValueOrDefault().DateTime;
 
             //"0 */5 * ? * *" - Every 5 minutes
             //0 0 1 2 * ? * - At 01:00 AM, on day 2 of the month

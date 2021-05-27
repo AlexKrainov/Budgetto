@@ -26,6 +26,7 @@ namespace MyProfile.Entity.Model
         NotificationReminderCheckerTask = 9,
         NotificationReset = 10,
         AccountDailyWork = 11,
+        ProgressMonthly = 12,
 
         Test,
     }

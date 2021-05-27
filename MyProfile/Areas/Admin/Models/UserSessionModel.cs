@@ -25,8 +25,8 @@ namespace MyProfile.Areas.Admin.Models
 
     public class UserSessionFilterModel
     {
-        public DateTime RangeStart { get; internal set; }
-        public DateTime RangeEnd { get; internal set; }
+        public DateTime RangeStart { get; set; }
+        public DateTime RangeEnd { get; set; }
         public List<Guid> UserIDs { get; set; }
     }
 }

@@ -54,8 +54,9 @@ namespace MyProfile.Code
             CheckAndAddUserEntityCounter();
             CreateProgressTypes();
             CheckUserProgress();
-            //LoadTinkoffOperations();
-            // UpdateCompanies();
+           //LoadTinkoffOperations();
+           //UpdateCompanies();
+           //LinkUserTagsAndCompanies();
 
         }
 
@@ -182,7 +183,7 @@ namespace MyProfile.Code
                         ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
                         ProgressItemTypeID = (int)ProgressItemTypeEnum.Investing10Percent,
                         NeedToBeValue = 10.ToString()
-                    }) ;
+                    });
                     progressFinancialLiteracyMonth.Progresses.Add(new Entity.Model.Progress
                     {
                         UserID = userID,
@@ -366,7 +367,7 @@ namespace MyProfile.Code
 
                         mccCode = new MccCode
                         {
-                            CompanyID = company.ID == 0 ? (int?)null : company.ID,
+                            //CompanyID = company.ID == 0 ? (int?)null : company.ID,
                             Mcc = operation.mcc
                         };
 
@@ -387,7 +388,7 @@ namespace MyProfile.Code
                     {
                         category.MccCodes.Add(new MccCode
                         {
-                            CompanyID = company.ID == 0 ? (int?)null : company.ID,
+                            //CompanyID = company.ID == 0 ? (int?)null : company.ID,
                             Mcc = operation.mcc
                         });
                         repository.Update(category, true);
@@ -410,16 +411,52 @@ namespace MyProfile.Code
 
                 foreach (var file_company in file_companies)
                 {
-                    var company = companies.FirstOrDefault(x => x.Name == file_company.Name);
+                    var company = companies.FirstOrDefault(x => x.ID == file_company.ID);
 
                     company.TagKeyWords = file_company.TagKeyWords;
                     company.BankKeyWords = file_company.BankKeyWords;
                     company.Site = file_company.Site;
                     company.IsChecked = file_company.IsChecked;
+                    company.Name = file_company.Name;
 
                     repository.Update(company, true);
                 }
             }
+        }
+
+        private void LinkUserTagsAndCompanies()
+        {
+            var companies = repository.GetAll<Company>()
+                .Select(x => new
+                {
+                    TagKeyWords = x.TagKeyWords.Replace(" ", ""),
+                    CopmanyID = x.ID
+                })
+                .ToList();
+
+            var userTags = repository.GetAll<UserTag>(x => x.IsDeleted != true && x.CompanyID == null).ToList();
+
+            foreach (var tag in userTags)
+            {
+                var tagName = tag.Title.ToLower();
+
+                foreach (var company in companies)
+                {
+                    var tagkeyWords = company.TagKeyWords.Split("|").ToList();
+                    tagkeyWords = tagkeyWords.Select(x => x.ToLower()).ToList();
+
+                    if (tagkeyWords.Contains(tagName))
+                    {
+                        tag.CompanyID = company.CopmanyID;
+                        goto Exit;
+                    }
+                }
+            Exit:
+                continue;
+
+            }
+            repository.Save();
+
         }
 
         private void CheckAndAddBaseSectionsAndAreas()

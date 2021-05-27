@@ -840,3 +840,26 @@ html.dark-style .tagify__input::before {
 .progress-complete::after {
     background: #26B4FF !important;
 }
+
+.collapse-bold .collapse-icon::after {
+    border-bottom: 0.1625rem solid black;
+    border-left: 0.1625rem solid black;
+}
+
+.dark-style .collapse-bold .collapse-icon::after {
+    border-bottom: 0.1625rem solid white;
+    border-left: 0.1625rem solid white;
+}
+
+.dark-style .modal-content {
+    background-color: #25282E;
+}
+
+.progress-circle {
+    background-color: rgba(24,28,33,0.06) !important;
+    color: #25282E !important;
+}
+
+.dark-style .progress-circle {
+    background-color: #fff !important;
+}

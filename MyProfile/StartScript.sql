@@ -185,9 +185,9 @@ Update Banks set Name = N'Открытие' where Name like '%Банк Откр�
 SET IDENTITY_INSERT [SchedulerTasks] ON
 
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
-VALUES (1,'AccountRemoveCachback', 'New', 'AccountRemoveCachback', '0 0 12 1 * ?', 'Every month on the 1st, at noon')
+VALUES (1,'AccountRemoveCachback', 'New', 'AccountRemoveCachback', '0 0 4 1 * ?', 'At 01:00:00am, on the 1st day, every month')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
-VALUES (2,'SetDoneToReminderDates', 'New', 'SetDoneToReminderDates', '0 0 1 * * ?', 'Every day at 1am')
+VALUES (2,'SetDoneToReminderDates', 'New', 'SetDoneToReminderDates', '0 0 4 * * ?', 'Every day at 1am')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (3,'CurrencyHistoryTask', 'New', 'CurrencyHistoryTask', '0 0 * ? * *', 'Every hour')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
@@ -203,9 +203,11 @@ VALUES (8,'NotificationMailTask', 'New', 'NotificationMailTask','0 * * ? * *', '
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment])
 VALUES (9,'NotificationReminderCheckerTask', 'New', 'NotificationReminderCheckerTask','0 */5 * ? * *', 'Every 5 minuts')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment], [Comment])
-VALUES (10,'NotificationReset', 'New', 'NotificationReset','0 */5 * ? * *', 'Every 5 minuts', 'Обнуляем или пересоздаем все нужные нам уведомления (например, лимиты)')
+VALUES (10,'NotificationReset', 'New', 'NotificationReset','0 0 5 1 * ?', 'At 2:00:00am, on the 1st day, every month', 'Обнуляем или пересоздаем все нужные нам уведомления (например, лимиты)')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment], [Comment])
-VALUES (11,'AccountDailyWork', 'New', 'AccountDailyWork','0 0 7 * * ?', 'At 07:00:00am every day', 'Обновление данных счетов, например начисление процентов по вкладам.')
+VALUES (11,'AccountDailyWork', 'New', 'AccountDailyWork','0 0 10 * * ?', 'At 07:00:00am every day', 'Обновление данных счетов, например начисление процентов по вкладам.')
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment], [Comment])
+VALUES (12,'ProgressMonthly', 'New', 'ProgressMonthly','0 30 4 1 * ?', 'At 01:30:00am, on the 1st day, every month', 'В начале каждого месяца переносим данные из прогресс бара в историю')
 
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF

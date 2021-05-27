@@ -1,14 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using MyProfile.Budget.Service;
 using MyProfile.Common;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
-using NCrontab;
 using Quartz;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using TaskStatus = MyProfile.Entity.Model.TaskStatus;
 
 namespace MyProfile.Code.Sheduler.Shedulers

@@ -90,14 +90,14 @@ namespace MyProfile.Progress.Service
             {
                 CssClass = "pe-7s-piggy",
                 Tooltip = "Ивестировать 10% от дохода",
-                Description = "Сейчас проинвестированно: " + investPercent + "%",
+                Description = "Сейчас проинвестировано: " + investPercent + "%",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.Investing10Percent).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.Investing10Percent).DateComplete,
             });
             progressItems.Add(new ProgressItemViewModel
             {
                 CssClass = "pe-7s-graph1",
-                Tooltip = "Доходы больше чем расходы",
+                Tooltip = "Поддерживать доходы выше расходов",
                 Description = "",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.EarnMoreThanSpend).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.EarnMoreThanSpend).DateComplete,
@@ -112,7 +112,44 @@ namespace MyProfile.Progress.Service
             });
             #endregion
 
+            //ToDo set Main progress
+
             return progressItems;
+        }
+
+        public int CopyToHistory()
+        {
+            int count = 0;
+            var now = DateTime.Now;
+            List<ProgressLog> logs = new List<ProgressLog>();
+
+            var progresses = repository.GetAll<Entity.Model.Progress>(x => x.ProgressTypeID == (int)ProgressTypeEnum.FinancialLiteracyMonth && x.User.IsDeleted != true)
+                .ToList();
+
+            foreach (var progress in progresses)
+            {
+                logs.Add(new ProgressLog
+                {
+                    CurrentValue = progress.CurrentValue,
+                    DateComplete = progress.DateComplete,
+                    IsActive = progress.IsActive,
+                    IsComplete = progress.IsComplete,
+                    NeedToBeValue = progress.NeedToBeValue,
+                    UserDateEdit = progress.UserDateEdit,
+                    ProgressID = progress.ID,
+                    DateLog = now
+                });
+
+                progress.DateComplete = null;
+                progress.CurrentValue = null;
+                progress.IsComplete = false;
+
+                repository.Save();
+            }
+            count = logs.Count;
+            repository.CreateRange(logs, true);
+
+            return count;
         }
 
         public List<ProgressItemViewModel> GetIntroductoryProgress()
@@ -139,7 +176,7 @@ namespace MyProfile.Progress.Service
             {
                 CssClass = "ion ion-md-add",
                 Tooltip = "Добавить расходы/доходы",
-                Description = "Записи основной компонент ведения личных финансов. Также вы можете добавить хештего через знаки # или !, известные бренды будут цеплятся автоматически",
+                Description = "Записи - основной компонент ведения личных финансов",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateRecord).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateRecord).DateComplete,
                 OnClick = "$('#addRecord').click()"
@@ -149,7 +186,7 @@ namespace MyProfile.Progress.Service
             {
                 CssClass = "lnr lnr-frame-expand",
                 Tooltip = "Добавить лимит",
-                Description = "Лимиты нужно, чтобы планировать бюджет и не выходить за рамки запланированного",
+                Description = "С помощью лимитов можно контролировать траты по выбранным категориям",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateLimit).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateLimit).DateComplete,
                 Href = "/Limit/List"
@@ -157,19 +194,9 @@ namespace MyProfile.Progress.Service
 
             progressItems.Add(new ProgressItemViewModel
             {
-                CssClass = "ion ion-ios-notifications-outline",
-                Tooltip = "Добавить уведомление для лимита или напоминания",
-                Description = "Уведомление, нужно например, чтобы вам на почту/телеграм/на сайте пришло уведомление о",
-                IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateNotification).IsComplete,
-                DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateNotification).DateComplete,
-                Href = "/Limit/List"
-            });
-
-            progressItems.Add(new ProgressItemViewModel
-            {
                 CssClass = "pe-7s-alarm",
                 Tooltip = "Добавить напоминание",
-                Description = "Напоминания позволят не забыть о самых важных запланированных делах, днях рождения, оплаты счетов и тд. Так же добавляйте уведомления на телефон, чтобы точно не пропустить",
+                Description = "Напоминания позволят не забыть о самых важных запланированных делах - днях рождения, оплате счетов и тд.",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateReminder).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateReminder).DateComplete,
                 OnClick = "$('#reminder-history').click(); $('#add-reminder').click();"
@@ -177,9 +204,20 @@ namespace MyProfile.Progress.Service
 
             progressItems.Add(new ProgressItemViewModel
             {
+                CssClass = "ion ion-ios-notifications-outline",
+                Tooltip = "Добавить уведомление для лимита или напоминания",
+                Description = "Настройте уведомления под себя - и получайте их в удобное время и удобным способом - например, по почте или в Телеграм",
+                IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateNotification).IsComplete,
+                DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateNotification).DateComplete,
+                Href = "/Limit/List"
+            });
+
+
+            progressItems.Add(new ProgressItemViewModel
+            {
                 CssClass = "pe-7s-albums",
                 Tooltip = "Добавить категорию",
-                Description = "Категория",
+                Description = "Вы можете добавлять, редактировать, изменять иконку и цвет для ваших категорий",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateSection).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateSection).DateComplete,
                 Href = "/Section/Edit"
@@ -189,7 +227,7 @@ namespace MyProfile.Progress.Service
             {
                 CssClass = "pe-7s-folder",
                 Tooltip = "Добавить группу категорий",
-                Description = "Группа категорий, нужно для объединения категорий по смыслу или действию. Например, в группу катигорий Еда/Продукты, может входить продукты, фастфуд, рестораны и тд.",
+                Description = "Объединяйте категории по смыслу для вашего удобства",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateArea).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateArea).DateComplete,
                 Href = "/Section/Edit"
@@ -199,7 +237,7 @@ namespace MyProfile.Progress.Service
             {
                 CssClass = "lnr lnr-layers",
                 Tooltip = "Добавить или отредактируйте шаблон",
-                Description = "Шаблоны нужны, чтобы объединять по вашем предпочтениям категории",
+                Description = "Шаблоны нужны, чтобы объединять и отображать категории в таблице",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateOrEditTemplate).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateOrEditTemplate).DateComplete,
                 Href = "/Template/List"
@@ -209,7 +247,7 @@ namespace MyProfile.Progress.Service
             {
                 CssClass = "pe-7s-cash",
                 Tooltip = "Добавить счет, вклад, наличные и тд",
-                Description = "Вы можете видеть все свои счета сразу...",
+                Description = "Получите быстрый доступ к информации по добавленным счетам, вкладам и наличным средствам прямо с главной страницы",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateAccount).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateAccount).DateComplete,
                 OnClick = "MainAccountVue.edit(null, false)"
