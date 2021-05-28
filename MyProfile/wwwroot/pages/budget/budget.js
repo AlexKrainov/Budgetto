@@ -866,6 +866,7 @@
                 this.loadLimitCharts();
                 this.loadAccounts();
                 this.loadSummaries();
+                this.loadProgress();
                 return false;
             }
             if (typeRefresh == "onlyGoal") {
@@ -880,6 +881,7 @@
             if (typeRefresh == "onlySummery") {
                 this.loadAccounts();
                 this.loadSummaries();
+                this.loadProgress();
                 return;
             }
 

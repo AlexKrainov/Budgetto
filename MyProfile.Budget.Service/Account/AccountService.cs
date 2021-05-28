@@ -523,6 +523,7 @@ namespace MyProfile.Budget.Service
 
                     if (account.AccountType == AccountTypes.Deposit)
                     {
+                        accountDB.AccountInfo.IsCapitalization = account.IsCapitalization;
                         accountDB.AccountInfo.InterestRate = account.InterestRate;
                         accountDB.AccountInfo.CapitalizationTimeListID = account.TimeListID;
                         accountDB.AccountInfo.InterestNextDate = accountDB.DateStart;
@@ -644,6 +645,7 @@ namespace MyProfile.Budget.Service
                         }
 
                         accountDB.AccountInfo.InterestRate = account.InterestRate;
+                        accountDB.AccountInfo.IsCapitalization = account.IsCapitalization;
 
                         if (account.AccountType == AccountTypes.Credit)
                         {

@@ -81,14 +81,14 @@ namespace MyProfile.Areas.Admin.Controllers
                     UserName = x.UserID != null ? x.User.Name : null,
                     Email = x.UserID != null ? x.User.Email : null,
                 })
-                .OrderByDescending(x => x.ID)
+                .OrderByDescending(x => x.EnterDate)
                 .ToList();
 
             foreach (var item in data)
             {
                 item.EnterDate = item.EnterDate.AddHours(3);
 
-                item.IPCounter = repository.GetAll<IPSetting>(x => x.IP == item.IP).Count();
+                item.IPCounter = repository.GetAll<IPSetting>(x => x.IP == item.IP).Select(x => x.Counter)?.FirstOrDefault() ?? 1;
             }
 
             return Json(new { isOk = true, data = data });

@@ -81,7 +81,7 @@
             this.totalChartsAjax.abort();
         }
 
-        this.totalChartsAjax =  $.ajax({
+        this.totalChartsAjax = $.ajax({
             type: "GET",
             url: "/BudgetTotal/LoadByMonth?to=" + this.budgetDate,
             contentType: "application/json",
@@ -107,7 +107,7 @@
             this.limitsAjax.abort();
         }
 
-        this.limitsAjax =  $.ajax({
+        this.limitsAjax = $.ajax({
             type: "GET",
             url: "/Limit/LoadCharts?date=" + this.budgetDate + "&periodTypesEnum=1",
             contentType: "application/json",
@@ -133,7 +133,7 @@
             this.goalsAjax.abort();
         }
 
-        this.goalsAjax =  $.ajax({
+        this.goalsAjax = $.ajax({
             type: "GET",
             url: `/Goal/LoadCharts?date=${this.budgetDate}&periodTypesEnum=1`,
             contentType: "application/json",
@@ -276,26 +276,29 @@
         //    return false;
         //}
 
-        if (this.progressAjax && (this.progressAjax.readyState == 1 || this.progressAjax.readyState == 3)) { // OPENED & LOADING
-            this.progressAjax.abort();
-        }
+        setTimeout(function () {
 
-        //ShowLoading('#todoList-view');
 
-        this.progressAjax = $.ajax({
-            type: "GET",
-            url: "/Common/GetProgress?date=" + this.budgetDate + "&periodType=1",
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            context: this,
-            success: function (result) {
-                if (result.isOk == true) {
-                    this.progresses = result.data || [];
-                }
-
-               // HideLoading('#todoList-view');
+            if (BudgetVue.progressAjax && (BudgetVue.progressAjax.readyState == 1 || BudgetVue.progressAjax.readyState == 3)) { // OPENED & LOADING
+                BudgetVue.progressAjax.abort();
             }
-        });
-        return this.accountsAjax;
+
+            //ShowLoading('#todoList-view');
+
+            BudgetVue.progressAjax = $.ajax({
+                type: "GET",
+                url: "/Common/GetProgress?date=" + BudgetVue.budgetDate + "&periodType=1",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                context: BudgetVue,
+                success: function (result) {
+                    if (result.isOk == true) {
+                        this.progresses = result.data || [];
+                    }
+
+                    // HideLoading('#todoList-view');
+                }
+            });
+        }, 1000);
     },
 };

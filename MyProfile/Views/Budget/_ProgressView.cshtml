@@ -1,10 +1,10 @@
-﻿<div class="card mb-3"
+﻿<div class="card mb-2" style=" margin-left: -8px; margin-right: -8px;"
      v-show="progresses && progresses.length > 0">
     <div class="text-muted small pl-4 pt-1 text-center" style="margin-bottom: -20px;">
         {{ progresses.length > 5 ? 'Начните знакомство с сервисом здесь' : 'Придерживайтесь оснвных правил финансовой грамотности' }}
 
     </div>
-    <div class="card-body p-4">
+    <div class="card-body pt-4 p-2">
 
         <div class=" ui-bordered py-3 px-4"
              v-bind:class="progresses.filter(x => x.isComplete == false).length == 0 ? 'border-primary' : ''">

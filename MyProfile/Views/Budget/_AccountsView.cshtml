@@ -93,7 +93,8 @@
                             </a>
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
-                            <div class="big-money display-inline">
+                            <div class="big-money display-inline"
+                                 v-bind:class="account.balance < 0 ? 'text-danger' : ''">
                                 {{ account.balanceString }}
                             </div>
                         </div>
@@ -148,7 +149,8 @@
                                v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
-                            <div class="big-money display-inline">
+                            <div class="big-money display-inline"
+                                 v-bind:class="account.balance < 0 ? 'text-danger' : ''">
                                 {{ account.balanceString }}
                             </div>
                             <span class="text-success ml-1" v-show="account.isCachback">
@@ -211,7 +213,8 @@
                                v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-primary ml-2">{{ account.accountTypeName }}</span>
                             <br />
-                            <div class="big-money display-inline">
+                            <div class="big-money display-inline"
+                                 v-bind:class="account.balance < 0 ? 'text-danger' : ''">
                                 {{ account.balanceString }}
                             </div>
                             <span class="text-success ml-1" v-show="account.isCachback">
@@ -277,7 +280,8 @@
                                v-on:click="editAccount(account)">{{ account.name }}</a>
                             <span class="badge badge-outline-secondary ml-2">{{ account.accountTypeName }}</span>
                             <br />
-                            <div class="big-money display-inline">
+                            <div class="big-money display-inline"
+                                 v-bind:class="account.balance < 0 ? 'text-danger' : ''">
                                 {{ account.balanceString }}
                             </div>
                             <span class="text-success ml-1" v-show="account.isCachback">
@@ -352,7 +356,8 @@
                             <span class="badge badge-warning"
                                   v-show="account.isFinishedDeposit">Завершен</span>
                             <br />
-                            <div class="big-money display-inline">
+                            <div class="big-money display-inline"
+                                 v-bind:class="account.balance < 0 ? 'text-danger' : ''">
                                 {{ account.balanceString }}
                             </div>
                             <span class="text-success ml-1" v-show="account.interestBalance">

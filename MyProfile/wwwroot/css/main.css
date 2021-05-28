@@ -863,3 +863,6 @@ html.dark-style .tagify__input::before {
 .dark-style .progress-circle {
     background-color: #fff !important;
 }
+.select2-results__option--highlighted .text-muted {
+    color: black !important;
+}

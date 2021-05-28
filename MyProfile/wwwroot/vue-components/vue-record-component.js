@@ -176,7 +176,13 @@
                             <a href="javascript:void(0)" class="pr-2 text-decoration-hover"
                                 v-for="tag in topTagIDsBySection"
                                 v-on:click="selectedTag(tag)"
-                                v-show="tag.isShow">{{ tag.title }}</a>
+                                v-show="tag.isShow">
+                                <span class="tagify__tag tagify--noAnim cursor-pointer">
+                                    <div>
+                                        <span class="tagify__tag-text">{{ tag.title }}</span>
+                                    </div>
+                                </span>
+                            </a>
                             </div>
                         </div>
                     </section>

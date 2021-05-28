@@ -60,7 +60,7 @@
                     setTimeout(function () {
 
                         UserSessionsVue.dataTable = $("#table").DataTable({
-                            'order': [[0, 'desc']],
+                            //'order': [[0, 'desc']],
                             columnDefs: [
                                 { "targets": 1, "type": "date" }
                             ],

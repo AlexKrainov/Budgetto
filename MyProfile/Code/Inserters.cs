@@ -53,7 +53,7 @@ namespace MyProfile.Code
 
             CheckAndAddUserEntityCounter();
             CreateProgressTypes();
-            CheckUserProgress();
+            //CheckUserProgress();
            //LoadTinkoffOperations();
            //UpdateCompanies();
            //LinkUserTagsAndCompanies();
@@ -195,7 +195,7 @@ namespace MyProfile.Code
                         UserID = userID,
                         ProgressTypeID = (int)ProgressTypeEnum.FinancialLiteracyMonth,
                         ProgressItemTypeID = (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth,
-                        NeedToBeValue = 70.ToString()
+                        NeedToBeValue = 21.ToString()
                     });
                     repository.Create(progressFinancialLiteracyMonth, true);
                 }

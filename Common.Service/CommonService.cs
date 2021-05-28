@@ -132,5 +132,18 @@ namespace Common.Service
             }
             return companies;
         }
+
+        public string GetDays(int daysCount)
+        {
+            if ((new int[] { 1, 21, 31 }).Contains(daysCount))
+            {
+                return "день";
+            }
+            else if ((new int[] { 2, 3, 4, 22, 23, 24, 32, 33, 34}).Contains(daysCount))
+            {
+                return "дня";
+            }
+            return "дней";
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.Service;
+using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView.Progress;
 using MyProfile.Entity.Repository;
@@ -15,12 +16,15 @@ namespace MyProfile.Progress.Service
     {
         private IBaseRepository repository;
         private UserLogService userLogService;
+        private CommonService commonService;
 
         public ProgressService(IBaseRepository repository,
-            UserLogService userLogService)
+            UserLogService userLogService,
+            CommonService commonService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
+            this.commonService = commonService;
         }
 
         public List<ProgressItemViewModel> SetAndGetFinancialLiteracyMonthProgress(decimal totalEarnings, decimal totalSpendings, decimal totalInvest, int countRecordsDays)
@@ -88,14 +92,6 @@ namespace MyProfile.Progress.Service
 
             progressItems.Add(new ProgressItemViewModel
             {
-                CssClass = "pe-7s-piggy",
-                Tooltip = "Ивестировать 10% от дохода",
-                Description = "Сейчас проинвестировано: " + investPercent + "%",
-                IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.Investing10Percent).IsComplete,
-                DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.Investing10Percent).DateComplete,
-            });
-            progressItems.Add(new ProgressItemViewModel
-            {
                 CssClass = "pe-7s-graph1",
                 Tooltip = "Поддерживать доходы выше расходов",
                 Description = "",
@@ -104,9 +100,17 @@ namespace MyProfile.Progress.Service
             });
             progressItems.Add(new ProgressItemViewModel
             {
+                CssClass = "pe-7s-piggy",
+                Tooltip = "Ивестировать 10% от дохода",
+                Description = "Сейчас проинвестировано: " + investPercent + "%",
+                IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.Investing10Percent).IsComplete,
+                DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.Investing10Percent).DateComplete,
+            });
+            progressItems.Add(new ProgressItemViewModel
+            {
                 CssClass = "pe-7s-date",
                 Tooltip = "Систематически заносить раходы/доходы",
-                Description = countRecordsDays + " дней из " + needToBeCount + " дня",
+                Description = countRecordsDays + " " + commonService.GetDays(countRecordsDays) + " из " + needToBeCount + " дня",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth).DateComplete,
             });
@@ -348,5 +352,7 @@ namespace MyProfile.Progress.Service
             //}
             return 1;
         }
+
+
     }
 }

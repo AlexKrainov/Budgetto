@@ -244,7 +244,11 @@ var SectionVue = new Vue({
         edit: function (section) {
             this.section = JSCopyObject(section);
 
-            $("#base-section").append(`<option value="${this.section.baseSectionID}">${this.section.baseSectionName}</option>`).select2("data", { id: this.section.baseSectionID, text: this.section.baseSectionName });
+            if (this.section.baseSectionID) {
+                $("#base-section").append(`<option value="${this.section.baseSectionID}">${this.section.baseSectionName}</option>`).select2("data", { id: this.section.baseSectionID, text: this.section.baseSectionName });
+            } else {
+                $("#base-section").val("");
+            }
             $("#base-section").trigger('change');
 
             $("#collectiveSections").select2();

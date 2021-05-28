@@ -58,13 +58,13 @@ namespace MyProfile.Budget.Service
 
         public bool CalculateDeposit(Account account, bool isNew = false)
         {
-            var now = DateTime.Now.ToUniversalTime().Date;
+            var nowDate = DateTime.Now.ToUniversalTime().Date;
             bool isAdded = false;
 
             decimal percentPerDay = (decimal)account.AccountInfo.InterestRate / 366;
             decimal lastPeriodDays = 0;
 
-            while (account.AccountInfo.InterestNextDate.Value.Date <= now && account.AccountInfo.IsFinishedDeposit == false)
+            while (account.AccountInfo.InterestNextDate.Value.Date <= nowDate && account.AccountInfo.IsFinishedDeposit == false)
             {
                 account.AccountInfo.LastInterestAccrualDate = account.AccountInfo.InterestNextDate;
                 switch ((TimeList)account.AccountInfo.CapitalizationTimeListID)
@@ -94,10 +94,13 @@ namespace MyProfile.Budget.Service
                 if (account.AccountInfo.InterestNextDate.Value.Date >= account.ExpirationDate.Value.Date)
                 {
                     account.AccountInfo.InterestNextDate = account.ExpirationDate.Value.Date;
-                    account.AccountInfo.IsFinishedDeposit = true;
 
                     //Set to notification to user
                     //By default show on the site
+                }
+                if (nowDate >= account.ExpirationDate.Value.Date)
+                {
+                    account.AccountInfo.IsFinishedDeposit = true;
                 }
                 lastPeriodDays = (decimal)((account.AccountInfo.LastInterestAccrualDate.Value.Date - account.AccountInfo.InterestNextDate.Value.Date).TotalDays) * -1;
 
@@ -112,10 +115,10 @@ namespace MyProfile.Budget.Service
                 decimal lastInterestBalance = totalBalance / 100 * percentPerPeriod;
 
                 if ((account.AccountInfo.LastInterestAccrualDate.Value.Date != account.DateStart.Value.Date
-                        && account.AccountInfo.LastInterestAccrualDate.Value.Date <= now.Date
+                        && account.AccountInfo.LastInterestAccrualDate.Value.Date <= nowDate.Date
                         && isNew == false)
                     || (isNew
-                        && account.AccountInfo.LastInterestAccrualDate.Value.Date == now.Date))
+                        && account.AccountInfo.LastInterestAccrualDate.Value.Date == nowDate.Date))
                 {
                     account.AccountHistories.Add(new AccountHistory
                     {
