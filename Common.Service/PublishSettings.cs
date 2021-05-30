@@ -1,4 +1,4 @@
-﻿#define _PROD
+﻿#define PROD
 
 namespace Common.Service
 {

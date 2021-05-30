@@ -103,11 +103,6 @@ namespace MyProfile.Budget.Service
 
             foreach (var record in budgetRecord.Records.Where(x => x.IsCorrect))
             {
-                if (currentUser.IsAvailable == false)
-                {
-                    record.IsSaved = false;
-                    continue;
-                }
                 recordCashback = 0;
                 _money = 0;
                 Account account = accounts.FirstOrDefault(x => x.ID == record.AccountID);

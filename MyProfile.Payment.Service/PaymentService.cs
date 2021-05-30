@@ -25,14 +25,14 @@ namespace MyProfile.Payment.Service
         }
 
 
-        public async Task<Guid> CreatePaymentHistory(PaymentViewModel model)
+        public async Task<long> CreatePaymentHistory(PaymentViewModel model)
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
             var payment = new PaymentHistory
             {
-                DateClickToPay = now,
-                PaymentID = currentUser.Payment.ID,
+               // DateClickToPay = now,
+               // PaymentID = currentUser.Payment.ID,
                 PaymentTariffID = (int)model.TariffTypeID,
             };
 
@@ -50,7 +50,7 @@ namespace MyProfile.Payment.Service
             return payment.ID;
         }
 
-        public async Task<long> Paid(Guid paymentHistoryID)
+        public async Task<Guid> Paid(long paymentHistoryID)
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
@@ -60,9 +60,9 @@ namespace MyProfile.Payment.Service
 
             try
             {
-                paymentHistory.IsPaid = true;
-                paymentHistory.DateFinisthToPay = now;
-                paymentHistory.Payment.IsPaid = true;
+                //paymentHistory.IsPaid = true;
+                //paymentHistory.DateFinisthToPay = now;
+                //paymentHistory.Payment.IsPaid = true;
                 paymentHistory.Payment.LastDatePayment = now;
 
                 if (paymentHistory.PaymentTariffID == (int)PaymentTariffTypes.Standard)
@@ -82,16 +82,15 @@ namespace MyProfile.Payment.Service
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.PaymentHistory_Update);
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Payment_Update);
 
-                currentUser.IsAvailable = paymentHistory.Payment.DateFrom <= now && paymentHistory.Payment.DateTo >= now;
-                currentUser.Payment = new Payment
-                {
-                    DateFrom = paymentHistory.Payment.DateFrom,
-                    DateTo = paymentHistory.Payment.DateTo,
-                    ID = paymentHistory.Payment.ID,
-                    IsPaid = paymentHistory.Payment.IsPaid,
-                    LastDatePayment = paymentHistory.Payment.LastDatePayment,
-                    PaymentTariffID = paymentHistory.Payment.PaymentTariffID,
-                };
+                //currentUser.Payment = new Payment
+                //{
+                //    DateFrom = paymentHistory.Payment.DateFrom,
+                //    DateTo = paymentHistory.Payment.DateTo,
+                //    ID = paymentHistory.Payment.ID,
+                //    //IsPaid = paymentHistory.Payment.IsPaid,
+                //    LastDatePayment = paymentHistory.Payment.LastDatePayment,
+                //    PaymentTariffID = paymentHistory.Payment.PaymentTariffID,
+                //};
                 await UserInfo.AddOrUpdate_Authenticate(currentUser);
 
             }
@@ -99,10 +98,10 @@ namespace MyProfile.Payment.Service
             {
                 await userLogService.CreateErrorLogAsync(userSessionID: currentUser.UserSessionID, where: "PaymentService.Paid", ex);
 
-                return -1;
+                return Guid.Empty;
             }
 
-            return paymentHistory.PaymentID;
+            return Guid.Empty;// paymentHistory.PaymentID;
         }
     }
 }

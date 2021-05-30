@@ -23,11 +23,11 @@ namespace MyProfile.Entity.Model
         public int Percent { get; set; }
 
 
-        public virtual IEnumerable<PromoCodeHistory> PromoCodeHistories{ get; set; }
+        public virtual IEnumerable<PromoCodeLog> PromoCodeLogs{ get; set; }
 
         public PromoCode()
         {
-            this.PromoCodeHistories = new HashSet<PromoCodeHistory>();
+            this.PromoCodeLogs = new HashSet<PromoCodeLog>();
         }
 
     }

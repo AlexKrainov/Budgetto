@@ -70,7 +70,6 @@ namespace MyProfile.User.Service
                     IsShowFirstEnterHint = currentUser.UserSettings.IsShowFirstEnterHint,
                     IsShowCookie = currentUser.UserSettings.IsShowCookie,
                 },
-                IsAvailable = currentUser.IsAvailable,
                 Payment = new PaymentClientSide
                 {
                     DateFrom = currentUser.Payment.DateFrom,
@@ -177,7 +176,6 @@ namespace MyProfile.User.Service
                      HashPassword = x.HashPassword,
                      SaltPassword = x.SaltPassword,
                      Currency = x.Currency,
-                     IsAvailable = x.Payment.DateFrom <= now && x.Payment.DateTo >= now,
                      IsHelpRecord = x.BudgetRecords.Count() == 0,
                      TimeZoneClient = x.OlsonTZID != null ? x.OlsonTZ.Name : null,
                      IsCompleteIntroductoryProgress = x.Progresses.Any(z => z.ProgressTypeID == (int)ProgressTypeEnum.Introductory && z.ParentProgressID == null && z.IsComplete),
@@ -185,8 +183,6 @@ namespace MyProfile.User.Service
                      {
                          DateFrom = x.Payment.DateFrom,
                          DateTo = x.Payment.DateTo,
-                         ID = x.Payment.ID,
-                         IsPaid = x.Payment.IsPaid,
                          LastDatePayment = x.Payment.LastDatePayment,
                          PaymentTariffID = x.Payment.PaymentTariffID
                      },
@@ -196,7 +192,7 @@ namespace MyProfile.User.Service
                             EntityType = (BudgettoEntityType)y.EntityTypeID,
                             AddedCount = y.AddedCount,
                             LastChanges = y.LastChanges,
-                            CanBeCountByTariff = x.Payment.PaymentTariff.PaymentCounters.FirstOrDefault(z => z.EntityTypeID == y.EntityTypeID).CanBeCount
+                            //CanBeCountByTariff = x.Payment.PaymentTariff.PaymentCounters.FirstOrDefault(z => z.EntityTypeID == y.EntityTypeID).CanBeCount
                         })
                         .ToList(),
                      UserSettings = new UserSettings
@@ -331,16 +327,8 @@ namespace MyProfile.User.Service
                     DateFrom = now,
                     DateTo = now.AddYears(1),
                     //DateTo = now.AddMonths(2),
-                    IsPaid = false,
+                    // IsPaid = false,
                     PaymentTariffID = (int)PaymentTariffTypes.Free,
-                    PaymentHistories = new List<PaymentHistory> {
-                        new PaymentHistory {
-                            DateFrom = now,
-                            DateTo = now.AddYears(1),
-                            //DateTo = now.AddMonths(2),
-                            PaymentTariffID = (int)PaymentTariffTypes.Free,
-                        }
-                    }
                 },
 
                 UserSummaries = new List<UserSummary> {

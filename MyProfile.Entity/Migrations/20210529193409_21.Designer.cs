@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210529193409_21")]
+    partial class _21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1405,29 +1407,6 @@ namespace MyProfile.Entity.Migrations
                     b.ToTable("OlsonTZIDs");
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.Payment", b =>
-                {
-                    b.Property<Guid>("ID");
-
-                    b.Property<DateTime>("DateFrom");
-
-                    b.Property<DateTime>("DateTo");
-
-                    b.Property<DateTime?>("LastDatePayment");
-
-                    b.Property<int>("PaymentTariffID");
-
-                    b.Property<int?>("PromoCodeID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PaymentTariffID");
-
-                    b.HasIndex("PromoCodeID");
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentCounter", b =>
                 {
                     b.Property<long>("ID")
@@ -1449,67 +1428,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasIndex("PaymentTariffID");
 
                     b.ToTable("PaymentCounters");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.PaymentHistory", b =>
-                {
-                    b.Property<long>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("DateFrom");
-
-                    b.Property<DateTime?>("DateTo");
-
-                    b.Property<Guid>("PaymentID");
-
-                    b.Property<int?>("PaymentTariffID");
-
-                    b.Property<int?>("PromoCodeID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PaymentID");
-
-                    b.HasIndex("PaymentTariffID");
-
-                    b.HasIndex("PromoCodeID");
-
-                    b.ToTable("PaymentHistories");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.PaymentLog", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DateClickToPay");
-
-                    b.Property<DateTime>("DateEnterPage");
-
-                    b.Property<DateTime>("DateFinishToPay");
-
-                    b.Property<DateTime?>("DateFrom");
-
-                    b.Property<DateTime?>("DatePayment");
-
-                    b.Property<DateTime?>("DateTo");
-
-                    b.Property<int?>("PaymentTariffID");
-
-                    b.Property<int?>("PromoCodeID");
-
-                    b.Property<Guid>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PaymentTariffID");
-
-                    b.HasIndex("PromoCodeID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("PaymentLogs");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentSystem", b =>
@@ -1675,60 +1593,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("ProgressTypes");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.PromoCode", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CodeName")
-                        .IsRequired()
-                        .HasMaxLength(16);
-
-                    b.Property<DateTime>("DateFrom");
-
-                    b.Property<DateTime>("DateTo");
-
-                    b.Property<int>("LimitCounter");
-
-                    b.Property<int>("Percent");
-
-                    b.Property<int>("TryCounter");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("PromoCodes");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.PromoCodeLog", b =>
-                {
-                    b.Property<long>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CurrentDateTime");
-
-                    b.Property<string>("InputPromoCode")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.Property<bool>("IsApplied");
-
-                    b.Property<bool>("IsSuccess");
-
-                    b.Property<Guid>("PaymentLogID");
-
-                    b.Property<int?>("PromoCodeID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PaymentLogID");
-
-                    b.HasIndex("PromoCodeID");
-
-                    b.ToTable("PromoCodeLogs");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Record", b =>
@@ -3456,23 +3320,6 @@ namespace MyProfile.Entity.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyProfile.Entity.Model.Payment", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.User", "User")
-                        .WithOne("Payment")
-                        .HasForeignKey("MyProfile.Entity.Model.Payment", "ID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
-                        .WithMany("Payments")
-                        .HasForeignKey("PaymentTariffID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.PromoCode", "PromoCode")
-                        .WithMany()
-                        .HasForeignKey("PromoCodeID");
-                });
-
             modelBuilder.Entity("MyProfile.Entity.Model.PaymentCounter", b =>
                 {
                     b.HasOne("MyProfile.Entity.Model.EntityType", "EntityType")
@@ -3483,38 +3330,6 @@ namespace MyProfile.Entity.Migrations
                     b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
                         .WithMany("PaymentCounters")
                         .HasForeignKey("PaymentTariffID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.PaymentHistory", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.Payment", "Payment")
-                        .WithMany()
-                        .HasForeignKey("PaymentID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
-                        .WithMany()
-                        .HasForeignKey("PaymentTariffID");
-
-                    b.HasOne("MyProfile.Entity.Model.PromoCode", "PromoCode")
-                        .WithMany()
-                        .HasForeignKey("PromoCodeID");
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.PaymentLog", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.PaymentTariff", "PaymentTariff")
-                        .WithMany()
-                        .HasForeignKey("PaymentTariffID");
-
-                    b.HasOne("MyProfile.Entity.Model.PromoCode", "PromoCode")
-                        .WithMany()
-                        .HasForeignKey("PromoCodeID");
-
-                    b.HasOne("MyProfile.Entity.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -3545,18 +3360,6 @@ namespace MyProfile.Entity.Migrations
                         .WithMany("ProgressLogs")
                         .HasForeignKey("ProgressID")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyProfile.Entity.Model.PromoCodeLog", b =>
-                {
-                    b.HasOne("MyProfile.Entity.Model.PaymentLog", "PaymentLog")
-                        .WithMany()
-                        .HasForeignKey("PaymentLogID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyProfile.Entity.Model.PromoCode", "PromoCode")
-                        .WithMany("PromoCodeLogs")
-                        .HasForeignKey("PromoCodeID");
                 });
 
             modelBuilder.Entity("MyProfile.Entity.Model.Record", b =>

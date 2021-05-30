@@ -28,12 +28,12 @@ namespace MyProfile.Controllers
             var paymentHistoryID = await paymentService.CreatePaymentHistory(model);
             return Json(new { isOk = true, paymentHistoryID });
         }
-        [HttpGet]
-        public async Task<IActionResult> PayFinish(Guid paymentID)
-        {
-            var _paymentID = await paymentService.Paid(paymentID);
-            return Json(new { isOk = _paymentID > 0, paymentID = _paymentID });
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> PayFinish(Guid paymentID)
+        //{
+        //    var _paymentID = await paymentService.Paid(paymentID);
+        //    return Json(new { isOk = _paymentID > 0, paymentID = _paymentID });
+        //}
 
 
     }

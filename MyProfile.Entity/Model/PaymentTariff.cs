@@ -24,13 +24,13 @@ namespace MyProfile.Entity.Model
         public string CodeName { get; set; }
 
 
-        public virtual IEnumerable<PaymentHistory> PaymentHistories { get; set; }
+        //public virtual IEnumerable<PaymentHistory> PaymentHistories { get; set; }
         public virtual IEnumerable<Payment> Payments { get; set; }
         public virtual IEnumerable<PaymentCounter> PaymentCounters { get; set; }
 
         public PaymentTariff()
         {
-            this.PaymentHistories = new HashSet<PaymentHistory>();
+            //  this.PaymentHistories = new HashSet<PaymentHistory>();
             this.Payments = new HashSet<Payment>();
             this.PaymentCounters = new HashSet<PaymentCounter>();
         }

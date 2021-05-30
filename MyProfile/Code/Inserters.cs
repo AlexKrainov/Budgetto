@@ -54,10 +54,30 @@ namespace MyProfile.Code
             CheckAndAddUserEntityCounter();
             CreateProgressTypes();
             //CheckUserProgress();
-           //LoadTinkoffOperations();
-           //UpdateCompanies();
-           //LinkUserTagsAndCompanies();
+            //LoadTinkoffOperations();
+            //UpdateCompanies();
+            //LinkUserTagsAndCompanies();
+            CreatePayments();
+        }
 
+        private void CreatePayments()
+        {
+            var users = repository.GetAll<MyProfile.Entity.Model.User>(x => x.Payment == null).Select(x => x.ID).ToList();
+            var payments = new List<Entity.Model.Payment>();
+            var now = DateTime.Now;
+            var nowPlus10 = DateTime.Now.AddYears(10);
+
+            foreach (var userID in users)
+            {
+                payments.Add(new Entity.Model.Payment
+                {
+                    DateFrom = now,
+                    DateTo = nowPlus10,
+                    PaymentTariffID = (int)PaymentTariffTypes.Freedom,
+                    ID = userID,
+                });
+            }
+            repository.CreateRange(payments, true);
         }
 
         private void CreateProgressTypes()
@@ -1908,22 +1928,14 @@ namespace MyProfile.Code
                     WebSiteTheme = WebSiteThemeEnum.Light,
                     IsShowConstructor = true,
                 },
-                Payment = new MyProfile.Entity.Model.Payment
-                {
-                    DateFrom = now,
-                    DateTo = now.AddYears(10),
-                    //DateTo = now.AddMonths(2),
-                    IsPaid = false,
-                    PaymentTariffID = (int)PaymentTariffTypes.Freedom,
-                    PaymentHistories = new List<PaymentHistory> {
-                        new PaymentHistory {
-                            DateFrom = now,
-                            DateTo = now.AddYears(1),
-                            //DateTo = now.AddMonths(2),
-                            PaymentTariffID = (int)PaymentTariffTypes.Freedom,
-                        }
-                    }
-                },
+                //Payment = new MyProfile.Entity.Model.Payment
+                //{
+                //    DateFrom = now,
+                //    DateTo = now.AddYears(10),
+                //    //DateTo = now.AddMonths(2),
+                //   // IsPaid = false,
+                //    PaymentTariffID = (int)PaymentTariffTypes.Freedom,
+                //},
                 Accounts = new List<Account>{
                     new Account
                     {

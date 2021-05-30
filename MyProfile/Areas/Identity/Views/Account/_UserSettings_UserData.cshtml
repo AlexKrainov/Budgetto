@@ -74,7 +74,6 @@
     <label class="form-label mt-3">Подписка действительна до</label>
     <div class="input-group">
         <input type="text" class="form-control" disabled
-               v-bind:class="user.isAvailable ? '' : 'is-invalid'"
                v-bind:value="getDateByFormat(user.payment.dateTo, 'DD.MM.YYYY')">
         @*<span class="input-group-append">
                 <a class="btn btn-success" href="/Store/Index">Продлить</a>

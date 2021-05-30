@@ -209,14 +209,6 @@ namespace MyProfile.Entity.Model
                .Property(b => b.IsActive)
                .HasDefaultValue(true);
 
-            modelBuilder.Entity<Payment>()
-              .Property(b => b.PaymentTariffID)
-              .HasDefaultValue((int)PaymentTariffTypes.Free);
-
-            modelBuilder.Entity<PaymentHistory>()
-             .Property(b => b.PaymentTariffID)
-             .HasDefaultValue((int)PaymentTariffTypes.Free);
-
             modelBuilder.Entity<Progress>()
              .Property(b => b.IsActive)
              .HasDefaultValue(true);
@@ -273,7 +265,7 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PaymentHistory> PaymentHistories { get; set; }
         public virtual DbSet<PromoCode> PromoCodes { get; set; }
-        public virtual DbSet<PromoCodeHistory> PromoCodeHistories { get; set; }
+        public virtual DbSet<PromoCodeLog> PromoCodeLogs { get; set; }
         public virtual DbSet<UserErrorLog> UserErrorLogs { get; set; }
         public virtual DbSet<IPSetting> IPSettings { get; set; }
         public virtual DbSet<HelpMenu> HelpMenus { get; set; }
@@ -322,6 +314,7 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<ProgressLog> ProgressLogs { get; set; }
         public virtual DbSet<ProgressItemType> ProgressItemTypes { get; set; }
         public virtual DbSet<ProgressType> ProgressTypes { get; set; }
+        public virtual DbSet<PaymentLog> PaymentLogs{ get; set; }
 
     }
 }

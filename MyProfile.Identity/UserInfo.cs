@@ -117,7 +117,6 @@ namespace MyProfile.Identity
                 IsConfirmEmail = currentUser.IsConfirmEmail,
                 LastName = currentUser.LastName,
                 UserType = currentUser.UserType.CodeName,
-                IsAvailable = currentUser.IsAvailable,
                 IsHelpRecord = currentUser.IsHelpRecord,
                 Payment = new PaymentClientSide
                 {

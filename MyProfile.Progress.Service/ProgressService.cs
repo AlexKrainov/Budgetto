@@ -263,10 +263,10 @@ namespace MyProfile.Progress.Service
         public async Task<int> SetCompleteProgressItemTypeAsync(Guid userID, ProgressTypeEnum progressTypeEnum, ProgressItemTypeEnum progressItemTypeEnum)
         {
             var progress = await repository.GetAll<Entity.Model.Progress>(x =>
-                x.UserID == userID
-                && x.ParentProgressID != null
-                && x.ProgressTypeID == (int)progressTypeEnum
-                && x.ProgressItemTypeID == (int)progressItemTypeEnum)
+                    x.UserID == userID
+                    && x.ParentProgressID != null
+                    && x.ProgressTypeID == (int)progressTypeEnum
+                    && x.ProgressItemTypeID == (int)progressItemTypeEnum)
                 .FirstOrDefaultAsync();
 
             if (!progress.IsComplete)

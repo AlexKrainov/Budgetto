@@ -43,8 +43,6 @@ namespace MyProfile.Entity.Model
         public bool IsAllowCollectiveBudget { get; set; }
         [ForeignKey("UserType")]
         public int UserTypeID { get; set; }
-        [ForeignKey("Payment")]
-        public long PaymentID { get; set; }
         [ForeignKey("Currency")]
         public int CurrencyID { get; set; }
         [ForeignKey("Resource")]
