@@ -235,9 +235,9 @@
                     } else {
                         if (result.nameAlreadyExist) {
                             //Show message
-                            this.errorMessage = result.errorMessage;
                             toastr.error("Не удалось сохранить шаблон");
                         }
+                        this.errorMessage = result.errorMessage;
                     }
                     this.isSavingTemplate = false;
                     return true;

@@ -866,3 +866,7 @@ html.dark-style .tagify__input::before {
 .select2-results__option--highlighted .text-muted {
     color: black !important;
 }
+
+.cursor-not-click:hover {
+    cursor: not-allowed !important;
+}

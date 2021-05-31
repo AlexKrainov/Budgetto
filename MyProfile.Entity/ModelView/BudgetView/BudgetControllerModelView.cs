@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyProfile.Entity.ModelView.Counter;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,5 +12,8 @@ namespace MyProfile.Entity.ModelView.BudgetView
 		public DateTime SelectedDateTime { get; set; }
 		public int SelectedYear{ get; set; }
         public List<int> Years { get; set; }
+
+        public CounterViewModel ReminderCounterModel { get; set; }
+
     }
 }

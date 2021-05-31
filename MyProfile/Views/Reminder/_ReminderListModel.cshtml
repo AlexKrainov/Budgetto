@@ -1,4 +1,6 @@
-﻿<div class="modal modal-slide fade" id="modalReminderTimeLine">
+﻿@model MyProfile.Entity.ModelView.Counter.CounterViewModel
+
+<div class="modal modal-slide fade" id="modalReminderTimeLine" data-current-count="@Model.CurrentCount" data-limit-count="@Model.CanBeCount">
     <div class="modal-dialog">
         <form class="modal-content">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
@@ -16,24 +18,28 @@
                            class="pr-4">
                             <i class="pe-7s-info d-block text-primary"></i>
                         </a>
-                        <a id="add-reminder" class="nav-link cursor-pointer" 
-                           v-on:click="edit()" 
+                        <a id="add-reminder" class="nav-link "
+                           v-on:click="edit()"
                            v-show="isNew == false || reminder.id == undefined "
+                           v-bind:class="currentCount >= limitCount ? 'disabled cursor-not-click' : 'cursor-pointer'"
                            title="Добавить новое уведомление на эту дату">
                             <i class="ion ion-md-add navbar-icon align-middle" style="color:var(--success);"></i>
                         </a>
+                        <span class="badge align-text-bottom ml-1"
+                              v-show="(limitCount - currentCount) < 10"
+                              v-bind:class="currentCount >= limitCount ? 'badge-danger' : (limitCount - currentCount) <= 3 ? 'badge-warning' : 'badge-success'">Доступно {{ limitCount - currentCount }} </span>
 
                         {{ GetDateByFormat(dateTime, 'DD.MM.YYYY') }} {{ dateTimeFinish != null ? ' - ' + GetDateByFormat(dateTimeFinish, 'DD.MM.YYYY') : '' }}
                         @*<div class="navbar-collapse collapse" id="header-11">
-                                <div class="navbar-nav align-items-lg-center ml-auto">
-                                    <div class="input-group w-100">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text ion ion-ios-search"></div>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
-                                    </div>
-                                </div>
-                            </div>*@
+            <div class="navbar-nav align-items-lg-center ml-auto">
+                <div class="input-group w-100">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text ion ion-ios-search"></div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Поиск" v-model="searchText">
+                </div>
+            </div>
+        </div>*@
                     </div>
                 </nav>
 

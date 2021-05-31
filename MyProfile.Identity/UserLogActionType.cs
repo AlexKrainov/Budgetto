@@ -177,5 +177,12 @@
         public const string History_Filtered = "History_Filtered";
 
         public const string Progress_Introductory_Finish = "Progress_Introductory_Finish";
+
+        public const string CounterLimits_Create_Limit = "CounterLimits_Create_Limit";
+        public const string CounterLimits_Recovery_Limit = "CounterLimits_Recovery_Limit";
+        public const string CounterTemplates_Create_Limit = "CounterTemplates_Create_Limit";
+        public const string CounterTemplates_Recovery_Limit = "CounterTemplates_Recovery_Limit";
+        public const string CounterReminders_Create_Limit = "CounterReminders_Create_Limit";
+        public const string CounterReminders_Recovery_Limit = "CounterReminders_Recovery_Limit";
     }
 }

@@ -193,6 +193,11 @@
                 <span class="ion ion-md-add"></span>Добавить уведомление
             </button>
         </div>
+
+        <div class="callout callout-danger mt-3" v-show="errorMessage">
+            <button type="button" class="close" data-dismiss="alert" v-on:click="errorMessage = null">×</button>
+            {{ errorMessage }}
+        </div>
     </div>
     <div class="card-footer">
         <button class="btn btn-primary" type="button"

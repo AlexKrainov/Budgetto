@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MyProfile.Entity.ModelView.Counter.CounterViewModel
+@{
     ViewData["Title"] = "Лимиты";
 }
 
@@ -18,7 +19,7 @@
     </environment>
 }
 
-<section id="limit-list-vue" v-cloak data-current-count="1" data-limit-count="2">
+<section id="limit-list-vue" v-cloak data-current-count="@Model.CurrentCount" data-limit-count="@Model.CanBeCount">
 
     <h4 class="d-flex flex-wrap w-100 font-weight-bold">
         <span class="lnr lnr-frame-expand display-4 text-primary mr-2"></span>
@@ -31,12 +32,11 @@
             <i class="pe-7s-info d-block text-primary"></i>
         </a>
         <span class="px-0 pb-2 ml-4">
-            <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)" 
+            <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)"
                v-on:click="edit()"
-               v-bind:class="currentCount >= limitCount ? 'disabled' : ''"
-               >Добавить новый лимит</a>
+               v-bind:class="currentCount >= limitCount ? 'disabled' : ''">Добавить новый лимит</a>
             <span class="badge align-text-bottom ml-1"
-                  v-show="(limitCount - currentCount) < 50"
+                  v-show="(limitCount - currentCount) < 10"
                   v-bind:class="currentCount >= limitCount ? 'badge-danger' : (limitCount - currentCount) <= 3 ? 'badge-warning' : 'badge-success'">Доступно {{ limitCount - currentCount }} </span>
         </span>
     </h4>

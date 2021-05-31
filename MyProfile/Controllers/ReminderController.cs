@@ -60,21 +60,21 @@ namespace MyProfile.Controllers
         public async Task<IActionResult> Edit([FromBody] ReminderEditModelView reminder)
         {
             var result = await reminderService.CreateOrUpdate(reminder);
-            return Json(new { IsOk = result, data = reminder });
+            return Json(new { IsOk = result.Item1, data = reminder, message = result.Item2 });
         }
 
         [HttpPost]
         public async Task<IActionResult> Remove([FromBody] ReminderEditModelView reminder)
         {
-            var result = await reminderService.RemoveOrRecovery(reminder, true);
+            var result = await reminderService.RemoveOrRecovery(reminder, isDelete: true);
             return Json(new { IsOk = true, data = reminder, isDeleted = true });
         }
 
         [HttpPost]
         public async Task<IActionResult> Recovery([FromBody] ReminderEditModelView reminder)
         {
-            var result = await reminderService.RemoveOrRecovery(reminder, false);
-            return Json(new { IsOk = true, data = reminder, isRecovery = true });
+            var result = await reminderService.RemoveOrRecovery(reminder, isDelete: false);
+            return Json(new { IsOk = result, data = reminder, isRecovery = true });
         }
 
     }

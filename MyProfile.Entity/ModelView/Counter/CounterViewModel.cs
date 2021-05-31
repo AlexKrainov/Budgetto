@@ -9,7 +9,14 @@ namespace MyProfile.Entity.ModelView.Counter
     {
         public BudgettoEntityType EntityType { get; set; }
         public int AddedCount { get; set; }
-        public DateTime LastChanges { get; set; }
+        public DateTime? LastChanges { get; set; }
         public int CanBeCountByTariff { get; set; }
+        public int CurrentCount { get; set; }
+
+        public int CanBeCount { get
+            {
+                return AddedCount + CanBeCountByTariff;
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.Counter;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
@@ -20,21 +21,24 @@ namespace MyProfile.Controllers
         private IBaseRepository repository;
         private TemplateService templateService;
         private UserLogService userLogService;
+        private UserCounterService userCounterService;
 
         public TemplateController(IBaseRepository repository,
             TemplateService templateService,
-            UserLogService userLogService)
+            UserLogService userLogService,
+            UserCounterService userCounterService)
         {
             this.repository = repository;
             this.templateService = templateService;
             this.userLogService = userLogService;
-
+            this.userCounterService = userCounterService;
         }
 
         public async Task<IActionResult> List()
         {
             await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Templates_Page);
-            return View();
+            CounterViewModel counterViewModel = userCounterService.GetCounterByEntity(BudgettoEntityType.Templates);
+            return View(counterViewModel);
         }
 
         public async Task<JsonResult> GetTemplates()
@@ -132,15 +136,16 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<JsonResult> Recovery([FromBody] TemplateViewModel template)
         {
+            bool result;
             try
             {
-                await templateService.RemoveOrRecovery(template.ID, isRemove: false);
+                result = await templateService.RemoveOrRecovery(template.ID, isRemove: false);
             }
             catch (Exception ex)
             {
                 return Json(new { isOk = false, ex.Message });
             }
-            return Json(new { isOk = true, template });
+            return Json(new { isOk = result, template });
         }
 
         /// <summary>

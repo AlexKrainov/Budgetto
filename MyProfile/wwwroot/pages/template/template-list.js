@@ -6,6 +6,10 @@ var TemplateListVue = new Vue({
         activeTemplatePeriodTypeID: -1,
         search: null,
         msnry: {},
+
+        //payment
+        currentCount: 0,
+        limitCount: 0,
     },
     watch: {
         search: function (newValue, oldValue) {
@@ -19,6 +23,10 @@ var TemplateListVue = new Vue({
         }
     },
     mounted: function () {
+        let baseEl = document.getElementById("template-list-vue");
+        this.currentCount = baseEl.getAttribute("data-current-count") * 1;
+        this.limitCount = baseEl.getAttribute("data-limit-count") * 1;
+
         this.init()
             .then(function () {
                 TemplateListVue.msnry = new Masonry('#templates', {
@@ -65,6 +73,9 @@ var TemplateListVue = new Vue({
                 dataType: 'json',
                 success: function (response) {
                     template.isDeleted = response.isOk;
+                    if (template.isDeleted) {
+                        TemplateListVue.currentCount -= 1;
+                    }
                     HideLoading('#template_' + template.id);
                 }
             });
@@ -80,7 +91,12 @@ var TemplateListVue = new Vue({
                 contentType: "application/json",
                 dataType: 'json',
                 success: function (response) {
-                    template.isDeleted = !response.isOk;
+                    if (response.isOk) {
+                        template.isDeleted = !response.isOk;
+                        if (template.isDeleted == false) {
+                            TemplateListVue.currentCount += 1;
+                        }
+                    }
                     HideLoading('#template_' + template.id);
                 }
             });

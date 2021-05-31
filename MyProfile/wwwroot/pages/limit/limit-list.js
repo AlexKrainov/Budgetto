@@ -15,6 +15,7 @@ var LimitListVue = new Vue({
         periodTypes: [],
         isSaving: false,
         numberID: -1,
+        errorMessage: null,
 
         //payment
         currentCount: 0,
@@ -136,6 +137,8 @@ var LimitListVue = new Vue({
             return sendAjax("/Limit/Save", this.limit, "POST")
                 .then(function (result) {
                     if (result.isOk == true) {
+                        LimitListVue.currentCount += 1;
+                        
 
                         // LimitListVue.load();
                         let limitIndex = LimitListVue.limits.findIndex(x => x.id == result.limit.id);
@@ -152,6 +155,7 @@ var LimitListVue = new Vue({
                         $("#modal-limit").modal("hide");
                     } else {
                         console.log(result.message);
+                        LimitListVue.errorMessage = result.message;
                     }
                     LimitListVue.isSaving = false;
                 });
@@ -238,6 +242,9 @@ var LimitListVue = new Vue({
                 dataType: 'json',
                 success: function (response) {
                     limit.isDeleted = response.isOk;
+                    if (limit.isDeleted) {
+                        LimitListVue.currentCount -= 1;
+                    }
                     HideLoading('#limit_' + limit.id);
                 }
             });
@@ -253,6 +260,9 @@ var LimitListVue = new Vue({
                 dataType: 'json',
                 success: function (response) {
                     limit.isDeleted = !response.isOk;
+                    if (limit.isDeleted == false) {
+                        LimitListVue.currentCount += 1;
+                    }
                     HideLoading('#limit_' + limit.id);
                 }
             });

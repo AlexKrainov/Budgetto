@@ -190,7 +190,7 @@
     @await Html.PartialAsync("_HistoryModal")
 </div>
 <div id="reminder-vue">
-    @await Html.PartialAsync("../Reminder/_ReminderListModel.cshtml")
+    @await Html.PartialAsync("../Reminder/_ReminderListModel.cshtml", Model.ReminderCounterModel)
 </div>
 @await Html.PartialAsync("../Goal/_GoalAddMoney.cshtml")
 @await Html.PartialAsync("../Account/_AccountModal.cshtml")

@@ -9,6 +9,7 @@ namespace MyProfile.Entity.Model
 		Limits = 1,
 		Reminders = 2,
 		ToDoLists = 3,
+		Templates = 4,
 	}
 	public class EntityType
 	{

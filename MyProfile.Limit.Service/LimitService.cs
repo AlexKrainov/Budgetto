@@ -47,7 +47,15 @@ namespace MyProfile.Limit.Service
             this.progressService = progressService;
         }
 
-        public async Task<LimitModelView> UpdateOrCreate(LimitModelView limit)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <returns>errorCode: 
+        /// 0 - ok
+        /// 1 - limit by PaymentCounter
+        /// </returns>
+        public async Task<Tuple<long, int>> UpdateOrCreate(LimitModelView limit)
         {
             var currentUser = UserInfo.Current;
             List<long> errorLogIDs = new List<long>();
@@ -79,6 +87,12 @@ namespace MyProfile.Limit.Service
             }
             else
             {
+                if (await userCounterService.CanCreateEntityAsync(BudgettoEntityType.Limits) == false)
+                {
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.CounterLimits_Create_Limit);
+                    return new Tuple<long, int>(0, 1);
+                }
+
                 limit.CurrencyID = 1;
 
                 limit.VisibleElement = new VisibleElement
@@ -90,8 +104,6 @@ namespace MyProfile.Limit.Service
                 {
                     await repository.CreateAsync(limit, true);
 
-                    //userCounterService
-                    //  await userCounterService.AddEntity(currentUser, BudgettoEntityType.Limits);
 
                 }
                 catch (Exception ex)
@@ -134,43 +146,7 @@ namespace MyProfile.Limit.Service
             }
 
 
-            return await repository.GetAll<MyProfile.Entity.Model.Limit>(x => x.ID == limit.ID)
-                .Select(x => new LimitModelView
-                {
-                    ID = limit.ID,
-                    Description = limit.Description,
-                    LimitMoney = limit.LimitMoney,
-                    Name = limit.Name,
-                    IsShowOnDashboard = limit.IsShowOnDashboard,
-                    IsShowInCollective = limit.IsShowInCollective,
-                    PeriodName = x.PeriodType.Name,
-                    PeriodTypeID = x.PeriodTypeID,
-                    IsFinished = limit.IsFinished,
-                    IsOwner = limit.UserID == x.UserID,
-                    UserName = x.User.Name + " " + x.User.LastName,
-                    ImageLink = x.User.ImageLink,
-                    Sections = x.SectionGroupLimits.Select(y => new Entity.ModelView.BudgetSectionModelView //.OrderBy(z => z.BudgetSection.BudgetRecords)
-                    {
-                        ID = y.BudgetSectionID,
-                        Name = y.BudgetSection.Name,
-                        CssColor = y.BudgetSection.CssColor,
-                        CssBackground = y.BudgetSection.CssBackground,
-                        CssIcon = y.BudgetSection.CssIcon,
-                        IsShow_Filtered = true,
-                        IsShow = true,
-                        AreaName = y.BudgetSection.BudgetArea.Name,
-                    }).ToList(),
-                    Notifications = x.Notifications != null ?
-                        x.Notifications.Select(y => new NotificationUserViewModel
-                        {
-                            ID = y.ID,
-                            IsMail = y.IsMail,
-                            IsSite = y.IsSite,
-                            IsTelegram = y.IsTelegram,
-                            Price = y.Total ?? 0
-                        }).ToList() : null
-                })
-                .FirstOrDefaultAsync();
+            return new Tuple<long, int>(limit.ID, 0);
         }
 
 
@@ -184,6 +160,15 @@ namespace MyProfile.Limit.Service
         {
             var currentUser = UserInfo.Current;
             var db_limit = await repository.GetAll<Entity.Model.Limit>(x => x.ID == limit.ID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
+
+            if (isRemove == false)
+            {
+                if (await userCounterService.CanCreateEntityAsync(BudgettoEntityType.Limits) == false)
+                {
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.CounterLimits_Recovery_Limit);
+                    return false;
+                }
+            }
 
             if (db_limit != null)
             {

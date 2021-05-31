@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using MyProfile.Hubs;
 using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
+using MyProfile.User.Service;
 
 namespace MyProfile.Controllers
 {
@@ -29,6 +30,7 @@ namespace MyProfile.Controllers
         private BudgetRecordService budgetRecordService;
         private UserLogService userLogService;
         private IHubContext<NotificationHub> hubContext;
+        private UserCounterService userCounterService;
 
         //private IOptions<ProjectConfig> config;
 
@@ -38,7 +40,8 @@ namespace MyProfile.Controllers
             SectionService sectionService,
             BudgetRecordService budgetRecordService,
             UserLogService userLogService,
-            IHubContext<NotificationHub> hubContext)
+            IHubContext<NotificationHub> hubContext,
+            UserCounterService userCounterService)
         //,IOptions<ProjectConfig> config)
         {
             this.repository = repository;
@@ -48,6 +51,7 @@ namespace MyProfile.Controllers
             this.budgetRecordService = budgetRecordService;
             this.userLogService = userLogService;
             this.hubContext = hubContext;
+            this.userCounterService = userCounterService;
             //this.config = config;
 
         }
@@ -76,6 +80,8 @@ namespace MyProfile.Controllers
             }
 
             await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.BudgetMonth_Page);
+
+            model.ReminderCounterModel = await userCounterService.GetCounterByEntityAsync(BudgettoEntityType.Reminders);
 
             return View(model);
         }
@@ -129,7 +135,10 @@ namespace MyProfile.Controllers
                 model.Years.Add(DateTime.Now.Year);
             }
 
+           // model.ReminderCounterModel = await userCounterService.GetCounterByEntityAsync(BudgettoEntityType.Reminders);
+
             await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.BudgetYear_Page);
+
 
             return View(model);
         }
@@ -160,6 +169,9 @@ namespace MyProfile.Controllers
             {
                 model.SelectedTemplateID = model.Templates[0].ID;
             }
+
+           // model.ReminderCounterModel = await userCounterService.GetCounterByEntityAsync(BudgettoEntityType.Reminders);
+
             return View(model);
         }
 

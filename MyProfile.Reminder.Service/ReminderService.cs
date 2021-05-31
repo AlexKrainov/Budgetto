@@ -8,6 +8,7 @@ using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Notification.Service;
 using MyProfile.Progress.Service;
+using MyProfile.User.Service;
 using MyProfile.UserLog.Service;
 using System;
 using System.Collections.Generic;
@@ -26,14 +27,16 @@ namespace MyProfile.Reminder.Service
         private CommonService commonService;
         private NotificationService notificationService;
         private ProgressService progressService;
+        private UserCounterService userCounterService;
 
-        public ReminderService(IBaseRepository baseRepository, UserLogService userLogService, CommonService commonService, NotificationService notificationService, ProgressService progressService)
+        public ReminderService(IBaseRepository baseRepository, UserLogService userLogService, CommonService commonService, NotificationService notificationService, ProgressService progressService, UserCounterService userCounterService)
         {
             this.repository = baseRepository;
             this.userLogService = userLogService;
             this.commonService = commonService;
             this.notificationService = notificationService;
             this.progressService = progressService;
+            this.userCounterService = userCounterService;
         }
 
         /// <summary>
@@ -139,7 +142,12 @@ namespace MyProfile.Reminder.Service
             return reminderDates.Count;
         }
 
-        public async Task<bool> CreateOrUpdate(ReminderEditModelView newReminder)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newReminder"></param>
+        /// <returns></returns>
+        public async Task<Tuple<bool, string>> CreateOrUpdate(ReminderEditModelView newReminder)
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
@@ -265,6 +273,13 @@ namespace MyProfile.Reminder.Service
                 }
                 else
                 {
+                    if (await userCounterService.CanCreateEntityAsync(BudgettoEntityType.Reminders) == false)
+                    {
+                        await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.CounterReminders_Create_Limit);
+
+                        return new Tuple<bool, string>(false, "Ошибка при создании. Превышен лимит доступных напоминаний.") ;
+                    }
+
                     var reminder = new Reminder();
 
                     reminder.UserID = currentUser.ID;
@@ -318,7 +333,7 @@ namespace MyProfile.Reminder.Service
                     await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Reminder_Create, errorLogIDs: new List<long> { errorID });
                 }
 
-                return false;
+                return new Tuple<bool, string>(false, "Ошибка во время сохранения напоминания");
             }
 
             newReminder.DateReminderString = newReminder.DateReminder.Value.ToString("dd.MM.yyyy");
@@ -326,7 +341,7 @@ namespace MyProfile.Reminder.Service
 
             //newReminder.Notifications = repository.GetAll<ReminderDate>(x => x.ID == newReminder.ID)
 
-            return true;
+            return new Tuple<bool, string>(true, null);
         }
 
         public IQueryable<ReminderShortModelView> GetRemindersByDateRange(DateTime from, DateTime to, Guid currentUserID)
@@ -355,6 +370,15 @@ namespace MyProfile.Reminder.Service
         {
             var currentUser = UserInfo.Current;
             var now = DateTime.Now.ToUniversalTime();
+
+            if (isDelete == false)
+            {
+                if (await userCounterService.CanCreateEntityAsync(BudgettoEntityType.Reminders) == false)
+                {
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.CounterReminders_Recovery_Limit);
+                    return false;
+                }
+            }
 
             var reminder = await repository.GetAll<Reminder>(x => x.ID == reminderEdit.ID
                     && x.UserID == currentUser.ID)

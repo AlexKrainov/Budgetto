@@ -6,6 +6,7 @@ using Common.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.Counter;
 using MyProfile.Entity.ModelView.Limit;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
@@ -22,24 +23,27 @@ namespace MyProfile.Controllers
         private LimitService limitService;
         private CommonService commonService;
         private UserLogService userLogService;
+        private UserCounterService userCounterService;
 
         public LimitController(IBaseRepository repository,
             LimitService limitService,
             CommonService dictionariesService,
-            UserLogService userLogService)
+            UserLogService userLogService,
+            UserCounterService userCounterService)
         {
             this.repository = repository;
             this.limitService = limitService;
             this.commonService = dictionariesService;
             this.userLogService = userLogService;
+            this.userCounterService = userCounterService;
         }
 
         [HttpGet]
         public async Task<IActionResult> List()
         {
             await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Limit_Page);
-
-            return View();
+            CounterViewModel counterViewModel = userCounterService.GetCounterByEntity(BudgettoEntityType.Limits);
+            return View(counterViewModel);
         }
 
         public async Task<JsonResult> GetLimits()
@@ -64,14 +68,19 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<JsonResult> Save([FromBody] LimitModelView limit)
         {
-
             try
             {
-                limit = await limitService.UpdateOrCreate(limit);
+                var result = await limitService.UpdateOrCreate(limit);
+
+                if (result.Item2 == 1)
+                {
+                    return Json(new { isOk = false, Message = "Ошибка при создании. Превышен лимит доступных лимитов." });
+                }
+                limit = (await limitService.GetLimitListView(UserInfo.Current.ID, x => x.ID == result.Item1)).FirstOrDefault();
             }
             catch (Exception ex)
             {
-                return Json(new { isOk = false, Message = "Вовремя сохранения лимита произошла ошибка." });
+                return Json(new { isOk = false, Message = "Во время сохранения лимита произошла ошибка." });
             }
 
             return Json(new { isOk = true, limit });
@@ -104,7 +113,7 @@ namespace MyProfile.Controllers
         {
             try
             {
-                await limitService.RemoveOrRecovery(limit, isRemove: true);
+              await limitService.RemoveOrRecovery(limit, isRemove: true);
             }
             catch (Exception ex)
             {
@@ -116,15 +125,16 @@ namespace MyProfile.Controllers
         [HttpPost]
         public async Task<JsonResult> Recovery([FromBody] LimitModelView limit)
         {
+            bool result = false;
             try
             {
-                await limitService.RemoveOrRecovery(limit, isRemove: false);
+               result = await limitService.RemoveOrRecovery(limit, isRemove: false);
             }
             catch (Exception ex)
             {
                 return Json(new { isOk = false, ex.Message });
             }
-            return Json(new { isOk = true, limit });
+            return Json(new { isOk = result, limit });
         }
 
         [HttpGet]

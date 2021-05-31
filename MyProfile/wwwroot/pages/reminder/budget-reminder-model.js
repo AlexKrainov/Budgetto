@@ -16,6 +16,11 @@
         isNew: true,
         isPast: false,
         numberID: -1,
+        errorMessage: null,
+
+        //payment
+        currentCount: 0,
+        limitCount: 0,
     },
     watch: {
         //searchText: function (newValue, oldValue) {
@@ -42,6 +47,9 @@
         },
     },
     mounted: function () {
+        let baseEl = document.getElementById("modalReminderTimeLine");
+        this.currentCount = baseEl.getAttribute("data-current-count") * 1;
+        this.limitCount = baseEl.getAttribute("data-limit-count") * 1;
     },
     methods: {
         showReminders: function (dateTime) {
@@ -215,6 +223,8 @@
                 success: function (response) {
 
                     if (response.isOk) {
+                        this.currentCount += 1;
+
                         if (this.reminder.id > 0) {
                             let index = this.reminders.findIndex(x => x.id == response.data.id);
                             this.reminders[index] = response.data;
@@ -225,6 +235,8 @@
                         BudgetVue.refresh("only-progress");
 
                         this.close();
+                    } else {
+                        this.errorMessage = response.message;
                     }
                     this.isSaving = false;
                 },
@@ -322,6 +334,9 @@
                     if (this.reminder.id == reminder.id) {
                         this.close();
                     }
+                    if (response.isDeleted) {
+                        this.currentCount -= 1;
+                    }
                     HideLoading('#reminder_' + reminder.id);
                     BudgetVue.refresh("onlyTable");
                 }
@@ -339,11 +354,18 @@
                 contentType: "application/json",
                 dataType: 'json',
                 success: function (response) {
-                    let index = this.reminders.findIndex(x => x.id == response.data.id);
-                    this.reminders[index].isDeleted = !response.isRecovery;
-                    //reminder.isDeleted = !response.isRecovery;
+                    if (response.isOk) {
+                        let index = ReminderVue.reminders.findIndex(x => x.id == response.data.id);
+                        ReminderVue.reminders[index].isDeleted = !response.isRecovery;
+
+                        ReminderVue.currentCount += 1;
+
+                        BudgetVue.refresh("onlyTable");
+
+                    } else {
+                        this.errorMessage = response.message;
+                    }
                     HideLoading('#reminder_' + reminder.id);
-                    BudgetVue.refresh("onlyTable");
                 }
             });
         },
@@ -372,7 +394,7 @@
                     let duration = moment.duration(moment(dateStr).diff(moment(ReminderVue.reminder.dateReminder)));
                     let notificationID = instance.element.id.replace('expirationDateTime_', '') * 1;
                     let index = ReminderVue.reminder.notifications.findIndex(x => x.id == notificationID);
-                    
+
                     ReminderVue.reminder.notifications[index].repeatMinutes = Math.round(duration.asMinutes() * -10) / 10;
                 };
                 flatpickr('#expirationDateTime_' + ReminderVue.reminder.notifications[index].id, config);

@@ -24,12 +24,14 @@ namespace MyProfile.Template.Service
         private IBaseRepository repository;
         private UserLogService userLogService;
         private ProgressService progressService;
+        private UserCounterService userCounterService;
 
-        public TemplateService(IBaseRepository repository, UserLogService userLogService, ProgressService progressService)
+        public TemplateService(IBaseRepository repository, UserLogService userLogService, ProgressService progressService, UserCounterService userCounterService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
             this.progressService = progressService;
+            this.userCounterService = userCounterService;
         }
 
         public async Task<TemplateViewModel> GetTemplateByID(Expression<Func<Template, bool>> predicate, bool addCollectiveBudget = true)
@@ -245,6 +247,15 @@ namespace MyProfile.Template.Service
             var currentUser = UserInfo.Current;
             var db_item = await repository.GetAll<Template>(x => x.ID == templateID && x.UserID == currentUser.ID).FirstOrDefaultAsync();
 
+            if (isRemove == false)
+            {
+                if (await userCounterService.CanCreateEntityAsync(BudgettoEntityType.Templates) == false)
+                {
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.CounterTemplates_Recovery_Limit);
+                    return false;
+                }
+            }
+
             if (db_item != null)
             {
                 db_item.IsDeleted = isRemove;
@@ -318,6 +329,14 @@ namespace MyProfile.Template.Service
             {
                 if (template.ID == 0)//create
                 {
+                    if (await userCounterService.CanCreateEntityAsync(BudgettoEntityType.Templates) == false)
+                    {
+                        await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.CounterTemplates_Create_Limit);
+                        modelView.IsOk = false;
+                        modelView.ErrorMessage = "Ошибка при создании. Превышен лимит доступных шаблонов.";
+                        return modelView;
+                    }
+
                     Template templateDB = new Template();
                     templateDB.UserID = currentUser.ID;
                     templateDB.PeriodTypeID = template.PeriodTypeID;
