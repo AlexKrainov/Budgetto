@@ -63,6 +63,7 @@ namespace MyProfile.Entity.ModelView.User
         public bool Dashboard_Year_IsShow_Summary { get; set; }
         public bool Dashboard_Month_IsShow_ToDoLists { get; set; }
         public bool Dashboard_Year_IsShow_ToDoLists { get; set; }
+        public bool Dashboard_Month_IsShow_ProgressBar { get; set; }
     }
     public class CurrencyClientSide
     {

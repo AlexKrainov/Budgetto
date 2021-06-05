@@ -11,5 +11,6 @@
         public string Background { get; set; }
         public string Icon { get; set; }
         public int SectionTypeID { get; set; }
+        public int BaseAreaID { get; set; }
     }
 }

@@ -1,2454 +1,2446 @@
 ﻿[
-    {
-      "ID": "10790",
-      "Name": "#FARШ",
-      "TagKeyWords": "#FARШ | Фарш | Farsh | FARШ",
-      "Site": "https://farshburger.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "#FARШ |"
-    },
-    {
-      "ID": "10864",
-      "Name": "«Алёнка»",
-      "TagKeyWords": "«Алёнка» | Алёнка",
-      "Site": "https://www.alenka.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "«Алёнка» |"
-    },
-    {
-      "ID": "10924",
-      "Name": "A.V.E",
-      "TagKeyWords": "A.V.E | ave | аве",
-      "IsChecked": false,
-      "BankKeyWords": "A.V.E |"
-    },
-    {
-      "ID": "10874",
-      "Name": "Airbnb",
-      "TagKeyWords": "Airbnb | Айрбнб | bnb | бнб | Эрбнб",
-      "Site": "https://airbnb.com/",
-      "IsChecked": true,
-      "BankKeyWords": "Airbnb |"
-    },
-    {
-      "ID": "10868",
-      "Name": "ALDI",
-      "TagKeyWords": "ALDI ",
-      "Site": "https://www.aldi.it/",
-      "IsChecked": true,
-      "BankKeyWords": "ALDI |"
-    },
-    {
-      "ID": "11047",
-      "Name": "Alfa-Hotel",
-      "TagKeyWords": "Alfa-Hotel | АльфаОтель | Альфа хотель",
-      "IsChecked": true,
-      "BankKeyWords": "Alfa-Hotel |"
-    },
-    {
-      "ID": "10831",
-      "Name": "Aliexpress",
-      "TagKeyWords": "Aliexpress | Аллиэкспресс | Алиэкспрес | Али",
-      "Site": "https://www.aliexpress.com/",
-      "IsChecked": true,
-      "BankKeyWords": "Aliexpress.com |"
-    },
-    {
-      "ID": "10978",
-      "Name": "App Store & iTunes",
-      "TagKeyWords": "App Store & iTunes | itunes | appstore | app store | эпл стор | эплстор",
-      "IsChecked": true,
-      "BankKeyWords": "App Store & iTunes |"
-    },
-    {
-      "ID": "10967",
-      "Name": "Apple",
-      "TagKeyWords": "Apple | эпл",
-      "IsChecked": true,
-      "BankKeyWords": "Apple |"
-    },
-    {
-      "ID": "10841",
-      "Name": "Avito",
-      "TagKeyWords": "Avito | Авито",
-      "Site": "https://www.avito.ru",
-      "IsChecked": true,
-      "BankKeyWords": "Avito |"
-    },
-    {
-      "ID": "10955",
-      "Name": "Biglion",
-      "TagKeyWords": "Biglion | Биглион",
-      "Site": "https://www.biglion.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Biglion |"
-    },
-    {
-      "ID": "10859",
-      "Name": "Billa",
-      "TagKeyWords": "Billa | Била | Билла",
-      "Site": "https://www.billa.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Billa |"
-    },
-    {
-      "ID": "10998",
-      "Name": "Blizzard",
-      "TagKeyWords": "Blizzard | биззард | базард",
-      "IsChecked": true,
-      "BankKeyWords": "Blizzard |"
-    },
-    {
-      "ID": "10860",
-      "Name": "Bolt",
-      "TagKeyWords": "Bolt | Болт",
-      "Site": "https://bolt.eu",
-      "IsChecked": true,
-      "BankKeyWords": "Bolt |"
-    },
-    {
-      "ID": "10895",
-      "Name": "Book24",
-      "TagKeyWords": "Book24 | бук24 | бук | book",
-      "Site": "https://book24.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Book24 |"
-    },
-    {
-      "ID": "10906",
-      "Name": "Booking",
-      "TagKeyWords": "Booking.com | Booking | Букинг | Букин",
-      "Site": "https://www.booking.com",
-      "IsChecked": true,
-      "BankKeyWords": "Booking.com |"
-    },
-    {
-      "ID": "10876",
-      "Name": "BQ Bar",
-      "TagKeyWords": "BQ Bar | БКбар | бикъю | бикъю бар | бикю | BQBar",
-      "Site": "https://barbqcafe.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "BQ Bar |"
-    },
-    {
-      "ID": "11019",
-      "Name": "Brandshop",
-      "TagKeyWords": "Brandshop | ",
-      "IsChecked": true,
-      "BankKeyWords": "Brandshop |"
-    },
-    {
-      "ID": "10821",
-      "Name": "Burger King",
-      "TagKeyWords": "Burger King | Бургер | кинг | бургер кинг |  бургеркинг",
-      "Site": "https://burgerking.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Burger King |"
-    },
-    {
-      "ID": "10934",
-      "Name": "Cinnabon",
-      "TagKeyWords": "Cinnabon | Канибон | Каннабон | Канабон",
-      "Site": "https://cinnabonrussia.com/",
-      "IsChecked": true,
-      "BankKeyWords": "Cinnabon |"
-    },
-    {
-      "ID": "10961",
-      "Name": "Coffee Like",
-      "TagKeyWords": "Coffee Like | лайк | кофе лайк | кофелайк",
-      "IsChecked": true,
-      "BankKeyWords": "Coffee Like |"
-    },
-    {
-      "ID": "11012",
-      "Name": "CoffeeHouse",
-      "TagKeyWords": "CoffeeHouse | кофе хауз | кофехауз | Coffe house",
-      "IsChecked": true,
-      "BankKeyWords": "CoffeeHouse |"
-    },
-    {
-      "ID": "10778",
-      "Name": "Cofix",
-      "TagKeyWords": "Cofix | Кофикс",
-      "Site": "https://www.cofix.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Cofix |"
-    },
-    {
-      "ID": "11046",
-      "Name": "COLIN'S",
-      "TagKeyWords": "COLIN'S | колинс | колинз | collins | collin",
-      "IsChecked": true,
-      "BankKeyWords": "COLIN'S |"
-    },
-    {
-      "ID": "11013",
-      "Name": "Compass group",
-      "TagKeyWords": "Compass group |",
-      "IsChecked": true,
-      "BankKeyWords": "Compass group |"
-    },
-    {
-      "ID": "11009",
-      "Name": "Correas Cafetera",
-      "TagKeyWords": "Correas Cafetera | корес | correas",
-      "IsChecked": true,
-      "BankKeyWords": "Correas Cafetera |"
-    },
-    {
-      "ID": "10871",
-      "Name": "Costa Coffee",
-      "TagKeyWords": "Costa Coffee | Коста кофи | Costa | КостаКофи | Коста кофе | КостаКофе",
-      "Site": "https://www.costacoffee.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Costa Coffee |"
-    },
-    {
-      "ID": "10909",
-      "Name": "Daily food",
-      "TagKeyWords": "Daily food | ДейлиФуд | Дейли фуд | Дейли",
-      "Site": "https://dailyfood.cafe/",
-      "IsChecked": true,
-      "BankKeyWords": "Daily food |"
-    },
-    {
-      "ID": "10839",
-      "Name": "Delivery Club",
-      "TagKeyWords": "Delivery Club | Деливери | ДеливериКлаб | Деливери клаб | Деливери клуб | Delivary",
-      "Site": "https://www.delivery-club.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Delivery Club |"
-    },
-    {
-      "ID": "10963",
-      "Name": "DNS",
-      "TagKeyWords": "DNS | днс",
-      "IsChecked": true,
-      "BankKeyWords": "DNS |"
-    },
-    {
-      "ID": "10858",
-      "Name": "Dominos pizza",
-      "TagKeyWords": "Dominos pizza | Доминос | Домино | Dominos ",
-      "Site": "https://dominospizza.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Dominos pizza |"
-    },
-    {
-      "ID": "10881",
-      "Name": "Elementaree",
-      "TagKeyWords": "Elementaree | элементари | elementare",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Elementaree |"
-    },
-    {
-      "ID": "10818",
-      "Name": "Facebook",
-      "TagKeyWords": "Facebook | фейсбук",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Facebook |"
-    },
-    {
-      "ID": "10933",
-      "Name": "Fissman",
-      "TagKeyWords": "Fissman.ru | fissman | физмен",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Fissman.ru |"
-    },
-    {
-      "ID": "10786",
-      "Name": "Fix Price",
-      "TagKeyWords": "Fix Price | fix | фикс | фикспрайс | фикс прайс",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Fix Price |"
-    },
-    {
-      "ID": "10873",
-      "Name": "Flowwow",
-      "TagKeyWords": "Flowwow | флоуоу | флоу | Floww",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Flowwow |"
-    },
-    {
-      "ID": "10917",
-      "Name": "French Kiss",
-      "TagKeyWords": "French Kiss | френч кис | френчкис",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "French Kiss |"
-    },
-    {
-      "ID": "10900",
-      "Name": "FUNDAY",
-      "TagKeyWords": "FUNDAY | фандей",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "FUNDAY |"
-    },
-    {
-      "ID": "10923",
-      "Name": "Gipfel",
-      "TagKeyWords": "Gipfel | гипфел",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Gipfel |"
-    },
-    {
-      "ID": "10824",
-      "Name": "Gloria Jeans",
-      "TagKeyWords": "Gloria Jeans | глория | глория джинс | gloria",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Gloria Jeans |"
-    },
-    {
-      "ID": "10796",
-      "Name": "Good Food Academy",
-      "TagKeyWords": "Good Food Academy | good food | гудфуд академия | гудфуд",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Good Food Academy |"
-    },
-    {
-      "ID": "10785",
-      "Name": "Google",
-      "TagKeyWords": "Google | гугл",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Google |"
-    },
-    {
-      "ID": "10814",
-      "Name": "Headquarters",
-      "TagKeyWords": "Headquarters |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Headquarters |"
-    },
-    {
-      "ID": "10893",
-      "Name": "IL PATIO",
-      "TagKeyWords": "IL PATIO | эль патио | патио | patio | эльпатио",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "IL PATIO |"
-    },
-    {
-      "ID": "11050",
-      "Name": "Ile de Beaute",
-      "TagKeyWords": "Ile de Beaute | иль де бьюти | ильдебьюти",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ile de Beaute |"
-    },
-    {
-      "ID": "10811",
-      "Name": "INTICKETS",
-      "TagKeyWords": "INTICKETS.RU | inticket | intickets | интикет | интикетс",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "INTICKETS.RU |"
-    },
-    {
-      "ID": "10826",
-      "Name": "KFC",
-      "TagKeyWords": "KFC | кфс | кфси ",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "KFC |"
-    },
-    {
-      "ID": "10942",
-      "Name": "Krispy Kreme",
-      "TagKeyWords": "Krispy Kreme | krispy | криспи",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Krispy Kreme |"
-    },
-    {
-      "ID": "10971",
-      "Name": "Lacoste",
-      "TagKeyWords": "Lacoste | лакоста",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Lacoste |"
-    },
-    {
-      "ID": "10866",
-      "Name": "Lamoda",
-      "TagKeyWords": "Lamoda | ламода",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Lamoda |"
-    },
-    {
-      "ID": "11042",
-      "Name": "LC Waikiki",
-      "TagKeyWords": "LC Waikiki | вайкики | вакики | waikiki",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "LC Waikiki |"
-    },
-    {
-      "ID": "10869",
-      "Name": "Lidl",
-      "TagKeyWords": "Lidl | лидл",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Lidl |"
-    },
-    {
-      "ID": "10885",
-      "Name": "Lingualeo",
-      "TagKeyWords": "Lingualeo | lingua | лингвалео | лингволео | лингво лео | лингва лео",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Lingualeo |"
-    },
-    {
-      "ID": "10904",
-      "Name": "market-place",
-      "TagKeyWords": "market-place | маркет пласе | маркетпласе",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "market-place |"
-    },
-    {
-      "ID": "10771",
-      "Name": "McDonald's",
-      "TagKeyWords": "McDonald's | мак | макдоналд | макдоналдс | маккафе",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "McDonald's |"
-    },
-    {
-      "ID": "10801",
-      "Name": "METRO Cash&Carry",
-      "TagKeyWords": "METRO Cash&Carry | metroCC | metro cash and carry | metro cash",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "METRO Cash&Carry |"
-    },
-    {
-      "ID": "10997",
-      "Name": "MINISO",
-      "TagKeyWords": "MINISO | минисо",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "MINISO |"
-    },
-    {
-      "ID": "11021",
-      "Name": "MIUZ Diamonds",
-      "TagKeyWords": "MIUZ Diamonds | miuz",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "MIUZ Diamonds |"
-    },
-    {
-      "ID": "10910",
-      "Name": "MODI",
-      "TagKeyWords": "MODI | моди",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "MODI |"
-    },
-    {
-      "ID": "10810",
-      "Name": "Mothercare",
-      "TagKeyWords": "Mothercare | ",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Mothercare |"
-    },
-    {
-      "ID": "10894",
-      "Name": "Muzey",
-      "TagKeyWords": "Muzey |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Muzey |"
-    },
-    {
-      "ID": "11017",
-      "Name": "My Gelato",
-      "TagKeyWords": "My Gelato | gelato",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "My Gelato |"
-    },
-    {
-      "ID": "10829",
-      "Name": "Netprint",
-      "TagKeyWords": "Netprint.ru | netprint | нетпринт",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Netprint.ru |"
-    },
-    {
-      "ID": "10969",
-      "Name": "New Balance",
-      "TagKeyWords": "New Balance | Balance | нью беленс | беленс | баланс",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "New Balance |"
-    },
-    {
-      "ID": "10915",
-      "Name": "Nike",
-      "TagKeyWords": "Nike | найк",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Nike |"
-    },
-    {
-      "ID": "10870",
-      "Name": "Oktogo",
-      "TagKeyWords": "Oktogo.ru | ortogo | октого",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Oktogo.ru |"
-    },
-    {
-      "ID": "10941",
-      "Name": "OLDI",
-      "TagKeyWords": "OLDI | олди",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "OLDI |"
-    },
-    {
-      "ID": "10979",
-      "Name": "OMEGA",
-      "TagKeyWords": "OMEGA | омега",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "OMEGA |"
-    },
-    {
-      "ID": "10935",
-      "Name": "One&Double",
-      "TagKeyWords": "One&Double | double",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "One&Double |"
-    },
-    {
-      "ID": "11007",
-      "Name": "O'stin",
-      "TagKeyWords": "O'stin | ostin | остин",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "O'stin |"
-    },
-    {
-      "ID": "10769",
-      "Name": "Ozon",
-      "TagKeyWords": "Ozon.ru | озон | ozon",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ozon.ru |"
-    },
-    {
-      "ID": "10789",
-      "Name": "PANORAMA360",
-      "TagKeyWords": "PANORAMA360 | панорама360 | 360",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "PANORAMA360 |"
-    },
-    {
-      "ID": "11002",
-      "Name": "Papa John’s",
-      "TagKeyWords": "Papa John’s | папа джонс | джонс | johns | papa",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Papa John’s |"
-    },
-    {
-      "ID": "10887",
-      "Name": "Paul Bakery",
-      "TagKeyWords": "Paul Bakery | paul | паул",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Paul Bakery |"
-    },
-    {
-      "ID": "10999",
-      "Name": "PayMaster",
-      "TagKeyWords": "PayMaster |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "PayMaster |"
-    },
-    {
-      "ID": "10863",
-      "Name": "PayPal",
-      "TagKeyWords": "PayPal | пейпал ",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "PayPal |"
-    },
-    {
-      "ID": "10902",
-      "Name": "PICK-UP",
-      "TagKeyWords": "PICK-UP | pickup",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "PICK-UP |"
-    },
-    {
-      "ID": "10912",
-      "Name": "Ponominalu",
-      "TagKeyWords": "Ponominalu |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ponominalu |"
-    },
-    {
-      "ID": "11016",
-      "Name": "Prime Star",
-      "TagKeyWords": "Prime Star |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Prime Star |"
-    },
-    {
-      "ID": "10977",
-      "Name": "PROBKA",
-      "TagKeyWords": "PROBKA | пробка",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "PROBKA |"
-    },
-    {
-      "ID": "10848",
-      "Name": "Qiwi",
-      "TagKeyWords": "Qiwi | киви",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Qiwi |"
-    },
-    {
-      "ID": "10903",
-      "Name": "Radario",
-      "TagKeyWords": "Radario |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Radario |"
-    },
-    {
-      "ID": "10833",
-      "Name": "REG",
-      "TagKeyWords": "REG.RU | регру  | regru",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "REG.RU |"
-    },
-    {
-      "ID": "10919",
-      "Name": "Samsonite",
-      "TagKeyWords": "Samsonite | самсонайт",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Samsonite |"
-    },
-    {
-      "ID": "11015",
-      "Name": "SantPrice",
-      "TagKeyWords": "SantPrice.ru | santprice",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "SantPrice.ru |"
-    },
-    {
-      "ID": "10856",
-      "Name": "Save Time",
-      "TagKeyWords": "Save Time | savetime",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Save Time |"
-    },
-    {
-      "ID": "11026",
-      "Name": "SELA",
-      "TagKeyWords": "SELA | села",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "SELA |"
-    },
-    {
-      "ID": "11029",
-      "Name": "Shell",
-      "TagKeyWords": "Shell | шелл",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Shell |"
-    },
-    {
-      "ID": "10966",
-      "Name": "SKYENG",
-      "TagKeyWords": "SKYENG | скайэнг",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "SKYENG |"
-    },
-    {
-      "ID": "10782",
-      "Name": "SmartMed",
-      "TagKeyWords": "SmartMed | смартмед",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "SmartMed |"
-    },
-    {
-      "ID": "10851",
-      "Name": "SPAR",
-      "TagKeyWords": "SPAR | спар",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "SPAR |"
-    },
-    {
-      "ID": "10802",
-      "Name": "Starbucks Coffee",
-      "TagKeyWords": "Starbucks Coffee | старбакс | starbucks",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Starbucks Coffee |"
-    },
-    {
-      "ID": "10897",
-      "Name": "StarHit сafe",
-      "TagKeyWords": "StarHit сafe | starhit | стархит",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "StarHit сafe |"
-    },
-    {
-      "ID": "10932",
-      "Name": "Street Beat",
-      "TagKeyWords": "Street Beat | ",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Street Beat |"
-    },
-    {
-      "ID": "11049",
-      "Name": "SUBWAY",
-      "TagKeyWords": "SUBWAY | сабвей | сабуэй",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "SUBWAY |"
-    },
-    {
-      "ID": "10822",
-      "Name": "Super Kitchen",
-      "TagKeyWords": "Super Kitchen | супер китчен",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Super Kitchen |"
-    },
-    {
-      "ID": "11011",
-      "Name": "TATNEFT",
-      "TagKeyWords": "TATNEFT | татнефть",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "TATNEFT |"
-    },
-    {
-      "ID": "10867",
-      "Name": "TELE2",
-      "TagKeyWords": "TELE2 | теле2",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "TELE2 |"
-    },
-    {
-      "ID": "10954",
-      "Name": "Tesla",
-      "TagKeyWords": "Tesla | тесла",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Tesla |"
-    },
-    {
-      "ID": "10936",
-      "Name": "Tezenis",
-      "TagKeyWords": "Tezenis |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Tezenis |"
-    },
-    {
-      "ID": "10937",
-      "Name": "TGI Fridays",
-      "TagKeyWords": "TGI Fridays | фрайдис | fridays",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "TGI Fridays |"
-    },
-    {
-      "ID": "11028",
-      "Name": "TimePad",
-      "TagKeyWords": "TimePad | таймпад",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "TimePad |"
-    },
-    {
-      "ID": "10985",
-      "Name": "Toy",
-      "TagKeyWords": "Toy.ru | тойру | toyru",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Toy.ru |"
-    },
-    {
-      "ID": "10781",
-      "Name": "Uber",
-      "TagKeyWords": "Uber | убер",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Uber |"
-    },
-    {
-      "ID": "11035",
-      "Name": "UNIQLO",
-      "TagKeyWords": "UNIQLO | юникло | уникло",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "UNIQLO |"
-    },
-    {
-      "ID": "10913",
-      "Name": "Ural Airlines",
-      "TagKeyWords": "Ural Airlines | ural | уральские",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ural Airlines |"
-    },
-    {
-      "ID": "10847",
-      "Name": "Urent",
-      "TagKeyWords": "Urent | юрент",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Urent |"
-    },
-    {
-      "ID": "10960",
-      "Name": "VISA",
-      "TagKeyWords": "VISA |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "VISA |"
-    },
-    {
-      "ID": "10992",
-      "Name": "whoosh",
-      "TagKeyWords": "whoosh |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "whoosh |"
-    },
-    {
-      "ID": "10787",
-      "Name": "WILDBERRIES",
-      "TagKeyWords": "WILDBERRIES | вайлберис | вайлбериз",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "WILDBERRIES |"
-    },
-    {
-      "ID": "10882",
-      "Name": "Wix",
-      "TagKeyWords": "Wix | викс",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Wix |"
-    },
-    {
-      "ID": "11018",
-      "Name": "XTAXI",
-      "TagKeyWords": "XTAXI |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "XTAXI |"
-    },
-    {
-      "ID": "10914",
-      "Name": "Zarina",
-      "TagKeyWords": "Zarina |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Zarina |"
-    },
-    {
-      "ID": "10994",
-      "Name": "Zava",
-      "TagKeyWords": "Zava |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Zava |"
-    },
-    {
-      "ID": "10920",
-      "Name": "Zenden",
-      "TagKeyWords": "Zenden |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Zenden |"
-    },
-    {
-      "ID": "10947",
-      "Name": "Авиакомпания UTair",
-      "TagKeyWords": "Авиакомпания UTair | utair",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Авиакомпания UTair |"
-    },
-    {
-      "ID": "10896",
-      "Name": "Авиакомпания Победа",
-      "TagKeyWords": "Авиакомпания Победа | победа",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Авиакомпания Победа |"
-    },
-    {
-      "ID": "10865",
-      "Name": "Азбука Вкуса",
-      "TagKeyWords": "Азбука Вкуса |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Азбука Вкуса |"
-    },
-    {
-      "ID": "10927",
-      "Name": "Акушерство.ру",
-      "TagKeyWords": "Акушерство.ру | акушерство",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Акушерство.ру |"
-    },
-    {
-      "ID": "10983",
-      "Name": "Альфа-Банк",
-      "TagKeyWords": "Альфа-Банк | альфабанк | alfabank",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Альфа-Банк |"
-    },
-    {
-      "ID": "11014",
-      "Name": "Аптека «Апрель»",
-      "TagKeyWords": "Аптека «Апрель» | аптека апрель | апрель аптека",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аптека «Апрель» |"
-    },
-    {
-      "ID": "10849",
-      "Name": "Аптека Вита",
-      "TagKeyWords": "Аптека Вита | вита",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аптека Вита |"
-    },
-    {
-      "ID": "10993",
-      "Name": "Аптека Витафарм",
-      "TagKeyWords": "Аптека Витафарм | витафарм",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аптека Витафарм |"
-    },
-    {
-      "ID": "10840",
-      "Name": "Аптека Здоров.ру",
-      "TagKeyWords": "Аптека Здоров.ру | здоровру | здовор.ру | здоров",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аптека Здоров.ру |"
-    },
-    {
-      "ID": "10968",
-      "Name": "Аптека Ригла",
-      "TagKeyWords": "Аптека Ригла | ригла",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аптека Ригла |"
-    },
-    {
-      "ID": "10975",
-      "Name": "Аптеки «Максавит»",
-      "TagKeyWords": "Аптеки «Максавит» | максавит",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аптеки «Максавит» |"
-    },
-    {
-      "ID": "10996",
-      "Name": "Аптеки Здравстор",
-      "TagKeyWords": "Аптеки Здравстор | здравстор",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аптеки Здравстор |"
-    },
-    {
-      "ID": "10768",
-      "Name": "Аптеки Столички",
-      "TagKeyWords": "Аптеки Столички | столички",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аптеки Столички |"
-    },
-    {
-      "ID": "10804",
-      "Name": "Ароматный мир",
-      "TagKeyWords": "Ароматный мир | ароматный",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ароматный мир |"
-    },
-    {
-      "ID": "11005",
-      "Name": "Аскона",
-      "TagKeyWords": "Аскона | Askona",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аскона |"
-    },
-    {
-      "ID": "10886",
-      "Name": "АТАК Супермаркеты",
-      "TagKeyWords": "АТАК Супермаркеты | атак",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "АТАК Супермаркеты |"
-    },
-    {
-      "ID": "10991",
-      "Name": "АТРИУМ",
-      "TagKeyWords": "АТРИУМ |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "АТРИУМ |"
-    },
-    {
-      "ID": "10844",
-      "Name": "Ашан",
-      "TagKeyWords": "Ашан | Auchan",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ашан |"
-    },
-    {
-      "ID": "10929",
-      "Name": "Аэрофлот",
-      "TagKeyWords": "Аэрофлот | Aeroflot",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аэрофлот |"
-    },
-    {
-      "ID": "10861",
-      "Name": "Аэроэкспресс",
-      "TagKeyWords": "Аэроэкспресс | Aeroexpress",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Аэроэкспресс |"
-    },
-    {
-      "ID": "11030",
-      "Name": "Банк Зенит",
-      "TagKeyWords": "Банк Зенит |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Банк Зенит |"
-    },
-    {
-      "ID": "11008",
-      "Name": "Бар 1929",
-      "TagKeyWords": "Бар 1929 | 1929",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Бар 1929 |"
-    },
-    {
-      "ID": "10883",
-      "Name": "Бахетле",
-      "TagKeyWords": "Бахетле | Bakhetle",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Бахетле |"
-    },
-    {
-      "ID": "10843",
-      "Name": "Библио Глобус",
-      "TagKeyWords": "Библио Глобус | ",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Библио Глобус |"
-    },
-    {
-      "ID": "10795",
-      "Name": "Библио-Глобус",
-      "TagKeyWords": "Библио-Глобус |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Библио-Глобус |"
-    },
-    {
-      "ID": "10964",
-      "Name": "Бизон",
-      "TagKeyWords": "Бизон |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Бизон |"
-    },
-    {
-      "ID": "10846",
-      "Name": "Билайн",
-      "TagKeyWords": "Билайн | Beeline | Veon",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Билайн |"
-    },
-    {
-      "ID": "11023",
-      "Name": "Билеты в кино",
-      "TagKeyWords": "Билеты в кино |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Билеты в кино |"
-    },
-    {
-      "ID": "10972",
-      "Name": "БКС Банк",
-      "TagKeyWords": "БКС Банк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "БКС Банк |"
-    },
-    {
-      "ID": "10788",
-      "Name": "Братья Караваевы",
-      "TagKeyWords": "Братья Караваевы | Караваевы | karavaevi",
-      "Site": "https://www.karavaevi.ru/catalog/",
-      "IsChecked": true,
-      "BankKeyWords": "Братья Караваевы |"
-    },
-    {
-      "ID": "11006",
-      "Name": "Бристоль",
-      "TagKeyWords": "Бристоль | bristol",
-      "Site": "https://bristol.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Бристоль |"
-    },
-    {
-      "ID": "10879",
-      "Name": "Буше",
-      "TagKeyWords": "Буше | bushe",
-      "Site": "https://bushe.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Буше |"
-    },
-    {
-      "ID": "10921",
-      "Name": "ВАБИ САБИ",
-      "TagKeyWords": "ВАБИ САБИ | вабисаби | vabisabi",
-      "Site": "https://vabisabi.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "ВАБИ САБИ |"
-    },
-    {
-      "ID": "10813",
-      "Name": "Вега",
-      "TagKeyWords": "Вега |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Вега |"
-    },
-    {
-      "ID": "10855",
-      "Name": "Верный",
-      "TagKeyWords": "Верный |",
-      "Site": "https://www.verno-info.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Верный |"
-    },
-    {
-      "ID": "10945",
-      "Name": "Виктория",
-      "TagKeyWords": "Виктория | victoria",
-      "Site": "https://www.victoria-group.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Виктория |"
-    },
-    {
-      "ID": "11044",
-      "Name": "ВКонтакте",
-      "TagKeyWords": "ВКонтакте | vk.ru | vk | вк",
-      "Site": "https://vk.com/",
-      "IsChecked": true,
-      "BankKeyWords": "ВКонтакте |"
-    },
-    {
-      "ID": "10762",
-      "Name": "ВкусВилл",
-      "TagKeyWords": "ВкусВилл | vkusvill | вкусвил",
-      "Site": "https://vkusvill.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "ВкусВилл |"
-    },
-    {
-      "ID": "10948",
-      "Name": "ВТБ",
-      "TagKeyWords": "ВТБ | vtb",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ВТБ |"
-    },
-    {
-      "ID": "10926",
-      "Name": "ВымпелКом",
-      "TagKeyWords": "ВымпелКом |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ВымпелКом |"
-    },
-    {
-      "ID": "10974",
-      "Name": "Газпромбанк",
-      "TagKeyWords": "Газпромбанк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Газпромбанк |"
-    },
-    {
-      "ID": "10962",
-      "Name": "Газпромнефть",
-      "TagKeyWords": "Газпромнефть |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Газпромнефть |"
-    },
-    {
-      "ID": "10835",
-      "Name": "Гемотест",
-      "TagKeyWords": "Гемотест | gemotest",
-      "Site": "https://gemotest.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Гемотест |"
-    },
-    {
-      "ID": "10891",
-      "Name": "Гипермаркет Карусель",
-      "TagKeyWords": "Гипермаркет Карусель | Карусель ",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Гипермаркет Карусель |"
-    },
-    {
-      "ID": "10783",
-      "Name": "Горздрав",
-      "TagKeyWords": "Горздрав | gorzdrav",
-      "Site": "https://gorzdrav.org/",
-      "IsChecked": true,
-      "BankKeyWords": "Горздрав |"
-    },
-    {
-      "ID": "10925",
-      "Name": "Госуслуги",
-      "TagKeyWords": "Госуслуги | gosuslugi",
-      "Site": "https://www.gosuslugi.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Госуслуги |"
-    },
-    {
-      "ID": "10805",
-      "Name": "Грабли",
-      "TagKeyWords": "Грабли | grabli",
-      "Site": "https://grabli.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Грабли |"
-    },
-    {
-      "ID": "11004",
-      "Name": "Гриль Хаус",
-      "TagKeyWords": "Гриль Хаус |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Гриль Хаус |"
-    },
-    {
-      "ID": "10772",
-      "Name": "Да!",
-      "TagKeyWords": "Да! | Да | yes",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Да! |"
-    },
-    {
-      "ID": "10791",
-      "Name": "Даблби",
-      "TagKeyWords": "Даблби |",
-      "Site": "https://double-b.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Даблби |"
-    },
-    {
-      "ID": "11037",
-      "Name": "Две палочки",
-      "TagKeyWords": "Две палочки |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Две палочки |"
-    },
-    {
-      "ID": "10916",
-      "Name": "Декатлон",
-      "TagKeyWords": "Декатлон |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Декатлон |"
-    },
-    {
-      "ID": "10774",
-      "Name": "Детский Мир",
-      "TagKeyWords": "Детский Мир |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Детский Мир |"
-    },
-    {
-      "ID": "10852",
-      "Name": "Дикси",
-      "TagKeyWords": "Дикси |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Дикси |"
-    },
-    {
-      "ID": "10798",
-      "Name": "Додо Пицца",
-      "TagKeyWords": "Додо Пицца | додо",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Додо Пицца |"
-    },
-    {
-      "ID": "10928",
-      "Name": "Дочки-Сыночки",
-      "TagKeyWords": "Дочки-Сыночки |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Дочки-Сыночки |"
-    },
-    {
-      "ID": "11024",
-      "Name": "Живика",
-      "TagKeyWords": "Живика |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Живика |"
-    },
-    {
-      "ID": "10989",
-      "Name": "Живое Кафе",
-      "TagKeyWords": "Живое Кафе |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Живое Кафе |"
-    },
-    {
-      "ID": "10765",
-      "Name": "ЖКУ-Москва",
-      "TagKeyWords": "ЖКУ-Москва |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ЖКУ-Москва |"
-    },
-    {
-      "ID": "10803",
-      "Name": "Издательство «МИФ»",
-      "TagKeyWords": "Издательство «МИФ» | миф",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Издательство «МИФ» |"
-    },
-    {
-      "ID": "10815",
-      "Name": "ИКЕА",
-      "TagKeyWords": "ИКЕА | икея | икеа",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ИКЕА |"
-    },
-    {
-      "ID": "10973",
-      "Name": "Караван",
-      "TagKeyWords": "Караван |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Караван |"
-    },
-    {
-      "ID": "10976",
-      "Name": "Каро Фильм",
-      "TagKeyWords": "Каро Фильм | каро",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Каро Фильм |"
-    },
-    {
-      "ID": "10922",
-      "Name": "КиберПлат",
-      "TagKeyWords": "КиберПлат |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "КиберПлат |"
-    },
-    {
-      "ID": "11025",
-      "Name": "Киномакс",
-      "TagKeyWords": "Киномакс |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Киномакс |"
-    },
-    {
-      "ID": "10952",
-      "Name": "Киноход",
-      "TagKeyWords": "Киноход |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Киноход |"
-    },
-    {
-      "ID": "10939",
-      "Name": "Киноцентр на Красной Пресне",
-      "TagKeyWords": "Киноцентр на Красной Пресне | ",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Киноцентр на Красной Пресне |"
-    },
-    {
-      "ID": "10918",
-      "Name": "Конфаэль",
-      "TagKeyWords": "Конфаэль |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Конфаэль |"
-    },
-    {
-      "ID": "10944",
-      "Name": "Кораблик",
-      "TagKeyWords": "Кораблик |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Кораблик |"
-    },
-    {
-      "ID": "10880",
-      "Name": "Красное и белое",
-      "TagKeyWords": "Красное и белое | красное белое",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Красное и белое |"
-    },
-    {
-      "ID": "10986",
-      "Name": "Кредит Европа Банк",
-      "TagKeyWords": "Кредит Европа Банк | европа банк",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Кредит Европа Банк |"
-    },
-    {
-      "ID": "10812",
-      "Name": "Крошка КАРТОШКА",
-      "TagKeyWords": "Крошка КАРТОШКА | картошка",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Крошка КАРТОШКА |"
-    },
-    {
-      "ID": "10836",
-      "Name": "Кухня на районе",
-      "TagKeyWords": "Кухня на районе |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Кухня на районе |"
-    },
-    {
-      "ID": "10850",
-      "Name": "Лабиринт.ру",
-      "TagKeyWords": "Лабиринт.ру | лабиринт",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Лабиринт.ру |"
-    },
-    {
-      "ID": "10808",
-      "Name": "Лаборатории CMD",
-      "TagKeyWords": "Лаборатории CMD | смд | cmd",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Лаборатории CMD |"
-    },
-    {
-      "ID": "10901",
-      "Name": "Лента",
-      "TagKeyWords": "Лента |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Лента |"
-    },
-    {
-      "ID": "10806",
-      "Name": "Леруа Мерлен",
-      "TagKeyWords": "Леруа Мерлен | leroymerlin",
-      "Site": "https://leroymerlin.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Леруа Мерлен |"
-    },
-    {
-      "ID": "11020",
-      "Name": "Ливан Хаус",
-      "TagKeyWords": "Ливан Хаус |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ливан Хаус |"
-    },
-    {
-      "ID": "11031",
-      "Name": "Линзмастер",
-      "TagKeyWords": "Линзмастер |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Линзмастер |"
-    },
-    {
-      "ID": "11003",
-      "Name": "ЛУКОЙЛ",
-      "TagKeyWords": "ЛУКОЙЛ | Lukoil",
-      "Site": "https://lukoil.ru",
-      "IsChecked": true,
-      "BankKeyWords": "ЛУКОЙЛ |"
-    },
-    {
-      "ID": "10943",
-      "Name": "Л'Этуаль",
-      "TagKeyWords": "Л'Этуаль | этуаль | лэтуаль",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Л'Этуаль |"
-    },
-    {
-      "ID": "10780",
-      "Name": "Магнит",
-      "TagKeyWords": "Магнит |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Магнит |"
-    },
-    {
-      "ID": "10834",
-      "Name": "Магнолия",
-      "TagKeyWords": "Магнолия |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Магнолия |"
-    },
-    {
-      "ID": "11022",
-      "Name": "Марукамэ",
-      "TagKeyWords": "Марукамэ |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Марукамэ |"
-    },
-    {
-      "ID": "10905",
-      "Name": "МастерХост",
-      "TagKeyWords": "МастерХост |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "МастерХост |"
-    },
-    {
-      "ID": "10854",
-      "Name": "Мвидео",
-      "TagKeyWords": "Мвидео | видео",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мвидео |"
-    },
-    {
-      "ID": "10842",
-      "Name": "Мегафон",
-      "TagKeyWords": "Мегафон |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мегафон |"
-    },
-    {
-      "ID": "10797",
-      "Name": "МЕДСИ",
-      "TagKeyWords": "МЕДСИ | Medsi ",
-      "Site": "https://medsi.ru",
-      "IsChecked": true,
-      "BankKeyWords": "МЕДСИ |"
-    },
-    {
-      "ID": "10878",
-      "Name": "Метро Санкт-Петербург",
-      "TagKeyWords": "Метро Санкт-Петербург |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Метро Санкт-Петербург |"
-    },
-    {
-      "ID": "11043",
-      "Name": "Мини-игры@Mail.Ru",
-      "TagKeyWords": "Мини-игры@Mail.Ru |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мини-игры@Mail.Ru |"
-    },
-    {
-      "ID": "10907",
-      "Name": "Мираторг",
-      "TagKeyWords": "Мираторг |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мираторг |"
-    },
-    {
-      "ID": "10981",
-      "Name": "Мистерия Вендинг Машинз",
-      "TagKeyWords": "Мистерия Вендинг Машинз |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мистерия Вендинг Машинз |"
-    },
-    {
-      "ID": "11032",
-      "Name": "МКБ",
-      "TagKeyWords": "МКБ |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "МКБ |"
-    },
-    {
-      "ID": "10930",
-      "Name": "МОЙ магазин",
-      "TagKeyWords": "МОЙ магазин |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "МОЙ магазин |"
-    },
-    {
-      "ID": "11000",
-      "Name": "Мосгортранс",
-      "TagKeyWords": "Мосгортранс |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мосгортранс |"
-    },
-    {
-      "ID": "10938",
-      "Name": "Мосигра",
-      "TagKeyWords": "Мосигра |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мосигра |"
-    },
-    {
-      "ID": "10940",
-      "Name": "Московский зоопарк",
-      "TagKeyWords": "Московский зоопарк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Московский зоопарк |"
-    },
-    {
-      "ID": "10777",
-      "Name": "Московский метрополитен",
-      "TagKeyWords": "Московский метрополитен | метро",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Московский метрополитен |"
-    },
-    {
-      "ID": "10792",
-      "Name": "Московский транспорт",
-      "TagKeyWords": "Московский транспорт |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Московский транспорт |"
-    },
-    {
-      "ID": "10911",
-      "Name": "Мосхозторг",
-      "TagKeyWords": "Мосхозторг |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мосхозторг |"
-    },
-    {
-      "ID": "10767",
-      "Name": "Мосцветторг",
-      "TagKeyWords": "Мосцветторг |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мосцветторг |"
-    },
-    {
-      "ID": "10763",
-      "Name": "МосЭнергоСбыт",
-      "TagKeyWords": "МосЭнергоСбыт |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "МосЭнергоСбыт |"
-    },
-    {
-      "ID": "10875",
-      "Name": "МТС",
-      "TagKeyWords": "МТС | mtc",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "МТС |"
-    },
-    {
-      "ID": "10820",
-      "Name": "МТС-Банк",
-      "TagKeyWords": "МТС-Банк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "МТС-Банк |"
-    },
-    {
-      "ID": "10828",
-      "Name": "Му-Му",
-      "TagKeyWords": "Му-Му | муму | му му",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Му-Му |"
-    },
-    {
-      "ID": "10990",
-      "Name": "Неофарм",
-      "TagKeyWords": "Неофарм |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Неофарм |"
-    },
-    {
-      "ID": "10845",
-      "Name": "ОБИ",
-      "TagKeyWords": "ОБИ | obi",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ОБИ |"
-    },
-    {
-      "ID": "10988",
-      "Name": "Общественный транспорт города Саранск",
-      "TagKeyWords": "Общественный транспорт города Саранск |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Общественный транспорт города Саранск |"
-    },
-    {
-      "ID": "10956",
-      "Name": "О'КЕЙ",
-      "TagKeyWords": "О'КЕЙ | okey | окей",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "О'КЕЙ |"
-    },
-    {
-      "ID": "10984",
-      "Name": "ООО Аптечная сеть О3",
-      "TagKeyWords": "ООО Аптечная сеть О3 |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ООО Аптечная сеть О3 |"
-    },
-    {
-      "ID": "10953",
-      "Name": "Оптимист Оптика",
-      "TagKeyWords": "Оптимист Оптика | оптимист",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Оптимист Оптика |"
-    },
-    {
-      "ID": "10889",
-      "Name": "Пекарни Папан",
-      "TagKeyWords": "Пекарни Папан |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Пекарни Папан |"
-    },
-    {
-      "ID": "10776",
-      "Name": "Перекрёсток",
-      "TagKeyWords": "Перекрёсток | vprok | perekrestok",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Перекрёсток |"
-    },
-    {
-      "ID": "10951",
-      "Name": "Персона",
-      "TagKeyWords": "Персона | persona",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Персона |"
-    },
-    {
-      "ID": "10807",
-      "Name": "Планета Здоровья",
-      "TagKeyWords": "Планета Здоровья |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Планета Здоровья |"
-    },
-    {
-      "ID": "10766",
-      "Name": "Подружка",
-      "TagKeyWords": "Подружка |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Подружка |"
-    },
-    {
-      "ID": "10764",
-      "Name": "Портал госуслуг Москвы",
-      "TagKeyWords": "Портал госуслуг Москвы | мос.ру | мосру",
-      "Site": "https://www.mos.ru/uslugi/",
-      "IsChecked": true,
-      "BankKeyWords": "Портал госуслуг Москвы |"
-    },
-    {
-      "ID": "10816",
-      "Name": "Почта России",
-      "TagKeyWords": "Почта России |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Почта России |"
-    },
-    {
-      "ID": "10982",
-      "Name": "Президент Плаза",
-      "TagKeyWords": "Президент Плаза |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Президент Плаза |"
-    },
-    {
-      "ID": "11033",
-      "Name": "Промсвязьбанк",
-      "TagKeyWords": "Промсвязьбанк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Промсвязьбанк |"
-    },
-    {
-      "ID": "10775",
-      "Name": "Пятерочка",
-      "TagKeyWords": "Пятерочка | Pyaterochka",
-      "Site": "https://5ka.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Пятерочка |"
-    },
-    {
-      "ID": "11001",
-      "Name": "Райффайзенбанк",
-      "TagKeyWords": "Райффайзенбанк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Райффайзенбанк |"
-    },
-    {
-      "ID": "10888",
-      "Name": "Ремит",
-      "TagKeyWords": "Ремит | remit",
-      "Site": "https://remit.ru",
-      "IsChecked": true,
-      "BankKeyWords": "Ремит |"
-    },
-    {
-      "ID": "11010",
-      "Name": "РЕСО-Гарантия",
-      "TagKeyWords": "РЕСО-Гарантия |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "РЕСО-Гарантия |"
-    },
-    {
-      "ID": "10877",
-      "Name": "РЖД",
-      "TagKeyWords": "РЖД | rzd",
-      "Site": "https://www.rzd.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "РЖД |"
-    },
-    {
-      "ID": "10950",
-      "Name": "Рокетбанк",
-      "TagKeyWords": "Рокетбанк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Рокетбанк |"
-    },
-    {
-      "ID": "11041",
-      "Name": "Россельхозбанк",
-      "TagKeyWords": "Россельхозбанк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Россельхозбанк |"
-    },
-    {
-      "ID": "10958",
-      "Name": "Ростелеком",
-      "TagKeyWords": "Ростелеком |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ростелеком |"
-    },
-    {
-      "ID": "10908",
-      "Name": "Ростелеком Плати Просто",
-      "TagKeyWords": "Ростелеком Плати Просто |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ростелеком Плати Просто |"
-    },
-    {
-      "ID": "10872",
-      "Name": "Сбер Мега Маркет",
-      "TagKeyWords": "Сбер Мега Маркет |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Сбер Мега Маркет |"
-    },
-    {
-      "ID": "10799",
-      "Name": "Сбербанк",
-      "TagKeyWords": "Сбербанк | сбер | sberbank | sber",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Сбербанк |"
-    },
-    {
-      "ID": "10837",
-      "Name": "Сбермаркет",
-      "TagKeyWords": "Сбермаркет |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Сбермаркет |"
-    },
-    {
-      "ID": "10946",
-      "Name": "Связной",
-      "TagKeyWords": "Связной  | Svyaznoy",
-      "Site": "https://www.svyaznoy.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Связной |"
-    },
-    {
-      "ID": "10970",
-      "Name": "Синема Парк",
-      "TagKeyWords": "Синема Парк | синема",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Синема Парк |"
-    },
-    {
-      "ID": "10965",
-      "Name": "Ситибанк",
-      "TagKeyWords": "Ситибанк | Citibank",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ситибанк |"
-    },
-    {
-      "ID": "10800",
-      "Name": "Ситимобил",
-      "TagKeyWords": "Ситимобил |",
-      "Site": "https://www.citibank.ru",
-      "IsChecked": true,
-      "BankKeyWords": "Ситимобил |"
-    },
-    {
-      "ID": "11027",
-      "Name": "СМП Банк",
-      "TagKeyWords": "СМП Банк | смп",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "СМП Банк |"
-    },
-    {
-      "ID": "10995",
-      "Name": "Спортмастер",
-      "TagKeyWords": "Спортмастер | Sportmaster",
-      "Site": "https://www.sportmaster.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Спортмастер |"
-    },
-    {
-      "ID": "10827",
-      "Name": "Столото",
-      "TagKeyWords": "Столото | stoloto",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Столото |"
-    },
-    {
-      "ID": "10770",
-      "Name": "Стрелка",
-      "TagKeyWords": "Стрелка |",
-      "Site": "https://www.stoloto.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Стрелка |"
-    },
-    {
-      "ID": "10949",
-      "Name": "Супермаркет \"Я Любимый\"",
-      "TagKeyWords": "Супермаркет \"Я Любимый\" | я любимый",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Супермаркет \"Я Любимый\" |"
-    },
-    {
-      "ID": "10899",
-      "Name": "Счастливый взгляд",
-      "TagKeyWords": "Счастливый взгляд |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Счастливый взгляд |"
-    },
-    {
-      "ID": "10853",
-      "Name": "Тануки",
-      "TagKeyWords": "Тануки | tanuki",
-      "Site": "https://www.tanuki.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Тануки |"
-    },
-    {
-      "ID": "11045",
-      "Name": "Твое",
-      "TagKeyWords": "Твое | tvoe",
-      "Site": "https://tvoe.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Твое |"
-    },
-    {
-      "ID": "10959",
-      "Name": "ТВТ",
-      "TagKeyWords": "ТВТ | tvt | твт",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ТВТ ( ТВТ) |"
-    },
-    {
-      "ID": "10884",
-      "Name": "Те самые пончики",
-      "TagKeyWords": "Те самые пончики | пончики",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Те самые пончики |"
-    },
-    {
-      "ID": "10779",
-      "Name": "Терволина",
-      "TagKeyWords": "Терволина | Tervolina",
-      "Site": "https://www.tervolina.ru",
-      "IsChecked": true,
-      "BankKeyWords": "Терволина |"
-    },
-    {
-      "ID": "10794",
-      "Name": "Теремок",
-      "TagKeyWords": "Теремок |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Теремок |"
-    },
-    {
-      "ID": "10823",
-      "Name": "Тинькофф Банк",
-      "TagKeyWords": "Тинькофф Банк | тинькофф | tinkoff | tinkof | тинькоф",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Тинькофф Банк |"
-    },
-    {
-      "ID": "10898",
-      "Name": "ТК Подорожник",
-      "TagKeyWords": "ТК Подорожник |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ТК Подорожник |"
-    },
-    {
-      "ID": "11034",
-      "Name": "Транскапиталбанк",
-      "TagKeyWords": "Транскапиталбанк |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Транскапиталбанк |"
-    },
-    {
-      "ID": "10862",
-      "Name": "Три правила",
-      "TagKeyWords": "Три правила | 3 правила",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Три правила |"
-    },
-    {
-      "ID": "11040",
-      "Name": "Тройка",
-      "TagKeyWords": "Тройка |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Тройка |"
-    },
-    {
-      "ID": "11038",
-      "Name": "Тутти-фрутти",
-      "TagKeyWords": "Тутти-фрутти |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Тутти-фрутти |"
-    },
-    {
-      "ID": "10838",
-      "Name": "Утконос",
-      "TagKeyWords": "Утконос | utkonos",
-      "Site": "https://www.utkonos.ru",
-      "IsChecked": true,
-      "BankKeyWords": "Утконос |"
-    },
-    {
-      "ID": "11036",
-      "Name": "Фасоль",
-      "TagKeyWords": "Фасоль |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Фасоль |"
-    },
-    {
-      "ID": "11048",
-      "Name": "Фаэтон",
-      "TagKeyWords": "Фаэтон |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Фаэтон |"
-    },
-    {
-      "ID": "10830",
-      "Name": "Федеральная Налоговая Служба",
-      "TagKeyWords": "Федеральная Налоговая Служба | фнс | fns",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Федеральная Налоговая Служба |"
-    },
-    {
-      "ID": "11039",
-      "Name": "Хлеб Насущный",
-      "TagKeyWords": "Хлеб Насущный | Насущный ",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Хлеб Насущный |"
-    },
-    {
-      "ID": "10817",
-      "Name": "ЦППК",
-      "TagKeyWords": "ЦППК |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ЦППК |"
-    },
-    {
-      "ID": "10980",
-      "Name": "Чайхона №1",
-      "TagKeyWords": "Чайхона №1 | чайхона1 | чайхона",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Чайхона №1 |"
-    },
-    {
-      "ID": "10857",
-      "Name": "Читай-город",
-      "TagKeyWords": "Читай-город | читайгород | читай",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Читай-город |"
-    },
-    {
-      "ID": "10892",
-      "Name": "ШефМаркет",
-      "TagKeyWords": "ШефМаркет |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ШефМаркет |"
-    },
-    {
-      "ID": "10784",
-      "Name": "Шоколадница",
-      "TagKeyWords": "Шоколадница |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Шоколадница |"
-    },
-    {
-      "ID": "10957",
-      "Name": "Элекснет",
-      "TagKeyWords": "Элекснет |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Элекснет |"
-    },
-    {
-      "ID": "10825",
-      "Name": "ЮMoney",
-      "TagKeyWords": "ЮMoney | яндексденьги",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ЮMoney |"
-    },
-    {
-      "ID": "10931",
-      "Name": "Якитория",
-      "TagKeyWords": "Якитория |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Якитория |"
-    },
-    {
-      "ID": "10773",
-      "Name": "Яндекс Такси",
-      "TagKeyWords": "Яндекс Такси |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Яндекс Такси |"
-    },
-    {
-      "ID": "10832",
-      "Name": "Яндекс.Еда",
-      "TagKeyWords": "Яндекс.Еда |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Яндекс.Еда |"
-    },
-    {
-      "ID": "10809",
-      "Name": "Яндекс.Маркет",
-      "TagKeyWords": "Яндекс.Маркет |",
-      "Site": "https://market.yandex.ru/",
-      "IsChecked": true,
-      "BankKeyWords": "Яндекс.Маркет |"
-    },
-    {
-      "ID": "10793",
-      "Name": "Яндекс.Плюс",
-      "TagKeyWords": "Яндекс.Плюс | ЯндексПлюс",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Яндекс.Плюс |"
-    },
-    {
-      "ID": "10890",
-      "Name": "Яндекс.Шеф",
-      "TagKeyWords": "Яндекс.Шеф | ЯндексШеф",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Яндекс.Шеф |"
-    },
-    {
-      "ID": "11053",
-      "Name": "Яндекс.Афиша",
-      "TagKeyWords": "Яндекс.Афиша | Афиша",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Яндекс.Афиша |"
-    },
-    {
-      "ID": "11054",
-      "Name": "Эльдорадо",
-      "TagKeyWords": "Эльдорадо |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Эльдорадо |"
-    },
-    {
-      "ID": "11056",
-      "Name": "iHerb",
-      "TagKeyWords": "iHerb | Херб | Хёрб",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "iHerb |"
-    },
-    {
-      "ID": "11057",
-      "Name": "Avon",
-      "TagKeyWords": "Avon | авон | айвон",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Avon |"
-    },
-    {
-      "ID": "11058",
-      "Name": "litresru",
-      "TagKeyWords": "litresru | litres | литрес",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "litresru |"
-    },
-    {
-      "ID": "11059",
-      "Name": "TERRANOVA",
-      "TagKeyWords": "TERRANOVA | терранова | терра нова",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "TERRANOVA |"
-    },
-    {
-      "ID": "11060",
-      "Name": "Zolla",
-      "TagKeyWords": "Zolla | зола | золла | zola",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Zolla |"
-    },
-    {
-      "ID": "11061",
-      "Name": "Леонардо",
-      "TagKeyWords": "Леонардо |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Леонардо |"
-    },
-    {
-      "ID": "11062",
-      "Name": "Снежная Королева",
-      "TagKeyWords": "Снежная Королева | снежнаяКоролева",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Снежная Королева |"
-    },
-    {
-      "ID": "11063",
-      "Name": "Mama Mia",
-      "TagKeyWords": "Mama Mia |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Mama Mia |"
-    },
-    {
-      "ID": "11064",
-      "Name": "Тинькофф Авиа",
-      "TagKeyWords": "Тинькофф Авиа |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Тинькофф Авиа |"
-    },
-    {
-      "ID": "11065",
-      "Name": "Согаз",
-      "TagKeyWords": "Согаз |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Согаз |"
-    },
-    {
-      "ID": "11066",
-      "Name": "Ticketland",
-      "TagKeyWords": "Ticketland.ru | тикетленд | ticketland",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Ticketland.ru |"
-    },
-    {
-      "ID": "11067",
-      "Name": "Джонджоли",
-      "TagKeyWords": "Джонджоли |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Джонджоли |"
-    },
-    {
-      "ID": "11068",
-      "Name": "NEW YORKER",
-      "TagKeyWords": "NEW YORKER | нью йоркер",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "NEW YORKER |"
-    },
-    {
-      "ID": "11069",
-      "Name": "ZARA",
-      "TagKeyWords": "ZARA | зара",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "ZARA |"
-    },
-    {
-      "ID": "11070",
-      "Name": "РЕСПУБЛИКА*",
-      "TagKeyWords": "РЕСПУБЛИКА* | республика",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "РЕСПУБЛИКА* |"
-    },
-    {
-      "ID": "11071",
-      "Name": "Kari",
-      "TagKeyWords": "Kari | кари",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Kari |"
-    },
-    {
-      "ID": "11072",
-      "Name": "Книжный магазин Москва",
-      "TagKeyWords": "Книжный магазин Москва |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Книжный магазин Москва |"
-    },
-    {
-      "ID": "11073",
-      "Name": "Yves Rocher",
-      "TagKeyWords": "Yves Rocher | ив рошер",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Yves Rocher |"
-    },
-    {
-      "ID": "11074",
-      "Name": "Мастер Вендор",
-      "TagKeyWords": "Мастер Вендор |",
-      "Site": "NULL",
-      "IsChecked": true,
-      "BankKeyWords": "Мастер Вендор |"
-    }
-  ]
+  {
+    "ID": "10790",
+    "Name": "#FARШ",
+    "TagKeyWords": "#FARШ | Фарш | Farsh | FARШ",
+    "Site": "https://farshburger.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "#FARШ |"
+  },
+  {
+    "ID": "10864",
+    "Name": "«Алёнка»",
+    "TagKeyWords": "«Алёнка» | Алёнка",
+    "Site": "https://www.alenka.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "«Алёнка» |"
+  },
+  {
+    "ID": "10924",
+    "Name": "A.V.E",
+    "TagKeyWords": "A.V.E | ave | аве",
+    "IsChecked": false,
+    "BankKeyWords": "A.V.E |"
+  },
+  {
+    "ID": "10874",
+    "Name": "Airbnb",
+    "TagKeyWords": "Airbnb | Айрбнб | bnb | бнб | Эрбнб",
+    "Site": "https://airbnb.com/",
+    "IsChecked": true,
+    "BankKeyWords": "Airbnb |"
+  },
+  {
+    "ID": "10868",
+    "Name": "ALDI",
+    "TagKeyWords": "ALDI ",
+    "Site": "https://www.aldi.it/",
+    "IsChecked": true,
+    "BankKeyWords": "ALDI |"
+  },
+  {
+    "ID": "11047",
+    "Name": "Alfa-Hotel",
+    "TagKeyWords": "Alfa-Hotel | АльфаОтель | Альфа хотель",
+    "IsChecked": true,
+    "BankKeyWords": "Alfa-Hotel |"
+  },
+  {
+    "ID": "10831",
+    "Name": "Aliexpress",
+    "TagKeyWords": "Aliexpress | Аллиэкспресс | Алиэкспрес | Али",
+    "Site": "https://www.aliexpress.com/",
+    "IsChecked": true,
+    "BankKeyWords": "Aliexpress.com |"
+  },
+  {
+    "ID": "10978",
+    "Name": "App Store & iTunes",
+    "TagKeyWords": "App Store & iTunes | itunes | appstore | app store | эпл стор | эплстор",
+    "IsChecked": true,
+    "BankKeyWords": "App Store & iTunes |"
+  },
+  {
+    "ID": "10967",
+    "Name": "Apple",
+    "TagKeyWords": "Apple | эпл",
+    "IsChecked": true,
+    "BankKeyWords": "Apple |"
+  },
+  {
+    "ID": "10841",
+    "Name": "Avito",
+    "TagKeyWords": "Avito | Авито",
+    "Site": "https://www.avito.ru",
+    "IsChecked": true,
+    "BankKeyWords": "Avito |"
+  },
+  {
+    "ID": "10955",
+    "Name": "Biglion",
+    "TagKeyWords": "Biglion | Биглион",
+    "Site": "https://www.biglion.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Biglion |"
+  },
+  {
+    "ID": "10859",
+    "Name": "Billa",
+    "TagKeyWords": "Billa | Била | Билла",
+    "Site": "https://www.billa.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Billa |"
+  },
+  {
+    "ID": "10998",
+    "Name": "Blizzard",
+    "TagKeyWords": "Blizzard | биззард | базард",
+    "IsChecked": true,
+    "BankKeyWords": "Blizzard |"
+  },
+  {
+    "ID": "10860",
+    "Name": "Bolt",
+    "TagKeyWords": "Bolt | Болт",
+    "Site": "https://bolt.eu",
+    "IsChecked": true,
+    "BankKeyWords": "Bolt |"
+  },
+  {
+    "ID": "10895",
+    "Name": "Book24",
+    "TagKeyWords": "Book24 | бук24 | бук | book",
+    "Site": "https://book24.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Book24 |"
+  },
+  {
+    "ID": "10906",
+    "Name": "Booking",
+    "TagKeyWords": "Booking.com | Booking | Букинг | Букин",
+    "Site": "https://www.booking.com",
+    "IsChecked": true,
+    "BankKeyWords": "Booking.com |"
+  },
+  {
+    "ID": "10876",
+    "Name": "BQ Bar",
+    "TagKeyWords": "BQ Bar | БКбар | бикъю | бикъю бар | бикю | BQBar",
+    "Site": "https://barbqcafe.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "BQ Bar |"
+  },
+  {
+    "ID": "11019",
+    "Name": "Brandshop",
+    "TagKeyWords": "Brandshop | ",
+    "IsChecked": true,
+    "BankKeyWords": "Brandshop |"
+  },
+  {
+    "ID": "10821",
+    "Name": "Burger King",
+    "TagKeyWords": "Burger King | Бургер | кинг | бургер кинг |  бургеркинг",
+    "Site": "https://burgerking.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Burger King |"
+  },
+  {
+    "ID": "10934",
+    "Name": "Cinnabon",
+    "TagKeyWords": "Cinnabon | Канибон | Каннабон | Канабон",
+    "Site": "https://cinnabonrussia.com/",
+    "IsChecked": true,
+    "BankKeyWords": "Cinnabon |"
+  },
+  {
+    "ID": "10961",
+    "Name": "Coffee Like",
+    "TagKeyWords": "Coffee Like | лайк | кофе лайк | кофелайк",
+    "IsChecked": true,
+    "BankKeyWords": "Coffee Like |"
+  },
+  {
+    "ID": "11012",
+    "Name": "CoffeeHouse",
+    "TagKeyWords": "CoffeeHouse | кофе хауз | кофехауз | Coffe house",
+    "IsChecked": true,
+    "BankKeyWords": "CoffeeHouse |"
+  },
+  {
+    "ID": "10778",
+    "Name": "Cofix",
+    "TagKeyWords": "Cofix | Кофикс",
+    "Site": "https://www.cofix.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Cofix |"
+  },
+  {
+    "ID": "11046",
+    "Name": "COLIN'S",
+    "TagKeyWords": "COLIN'S | колинс | колинз | collins | collin",
+    "IsChecked": true,
+    "BankKeyWords": "COLIN'S |"
+  },
+  {
+    "ID": "11013",
+    "Name": "Compass group",
+    "TagKeyWords": "Compass group |",
+    "IsChecked": true,
+    "BankKeyWords": "Compass group |"
+  },
+  {
+    "ID": "11009",
+    "Name": "Correas Cafetera",
+    "TagKeyWords": "Correas Cafetera | корес | correas",
+    "IsChecked": true,
+    "BankKeyWords": "Correas Cafetera |"
+  },
+  {
+    "ID": "10871",
+    "Name": "Costa Coffee",
+    "TagKeyWords": "Costa Coffee | Коста кофи | Costa | КостаКофи | Коста кофе | КостаКофе",
+    "Site": "https://www.costacoffee.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Costa Coffee |"
+  },
+  {
+    "ID": "10909",
+    "Name": "Daily food",
+    "TagKeyWords": "Daily food | ДейлиФуд | Дейли фуд | Дейли",
+    "Site": "https://dailyfood.cafe/",
+    "IsChecked": true,
+    "BankKeyWords": "Daily food |"
+  },
+  {
+    "ID": "10839",
+    "Name": "Delivery Club",
+    "TagKeyWords": "Delivery Club | Деливери | ДеливериКлаб | Деливери клаб | Деливери клуб | Delivary",
+    "Site": "https://www.delivery-club.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Delivery Club |"
+  },
+  {
+    "ID": "10963",
+    "Name": "DNS",
+    "TagKeyWords": "DNS | днс",
+    "IsChecked": true,
+    "BankKeyWords": "DNS |"
+  },
+  {
+    "ID": "10858",
+    "Name": "Dominos pizza",
+    "TagKeyWords": "Dominos pizza | Доминос | Домино | Dominos ",
+    "Site": "https://dominospizza.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Dominos pizza |"
+  },
+  {
+    "ID": "10881",
+    "Name": "Elementaree",
+    "TagKeyWords": "Elementaree | элементари | elementare",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Elementaree |"
+  },
+  {
+    "ID": "10818",
+    "Name": "Facebook",
+    "TagKeyWords": "Facebook | фейсбук",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Facebook |"
+  },
+  {
+    "ID": "10933",
+    "Name": "Fissman",
+    "TagKeyWords": "Fissman.ru | fissman | физмен",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Fissman.ru |"
+  },
+  {
+    "ID": "10786",
+    "Name": "Fix Price",
+    "TagKeyWords": "Fix Price | fix | фикс | фикспрайс | фикс прайс",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Fix Price |"
+  },
+  {
+    "ID": "10873",
+    "Name": "Flowwow",
+    "TagKeyWords": "Flowwow | флоуоу | флоу | Floww",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Flowwow |"
+  },
+  {
+    "ID": "10917",
+    "Name": "French Kiss",
+    "TagKeyWords": "French Kiss | френч кис | френчкис",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "French Kiss |"
+  },
+  {
+    "ID": "10900",
+    "Name": "FUNDAY",
+    "TagKeyWords": "FUNDAY | фандей",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "FUNDAY |"
+  },
+  {
+    "ID": "10923",
+    "Name": "Gipfel",
+    "TagKeyWords": "Gipfel | гипфел",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Gipfel |"
+  },
+  {
+    "ID": "10824",
+    "Name": "Gloria Jeans",
+    "TagKeyWords": "Gloria Jeans | глория | глория джинс | gloria",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Gloria Jeans |"
+  },
+  {
+    "ID": "10796",
+    "Name": "Good Food Academy",
+    "TagKeyWords": "Good Food Academy | good food | гудфуд академия | гудфуд",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Good Food Academy |"
+  },
+  {
+    "ID": "10785",
+    "Name": "Google",
+    "TagKeyWords": "Google | гугл",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Google |"
+  },
+  {
+    "ID": "10814",
+    "Name": "Headquarters",
+    "TagKeyWords": "Headquarters |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Headquarters |"
+  },
+  {
+    "ID": "10893",
+    "Name": "IL PATIO",
+    "TagKeyWords": "IL PATIO | эль патио | патио | patio | эльпатио",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "IL PATIO |"
+  },
+  {
+    "ID": "11050",
+    "Name": "Ile de Beaute",
+    "TagKeyWords": "Ile de Beaute | иль де бьюти | ильдебьюти",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ile de Beaute |"
+  },
+  {
+    "ID": "10811",
+    "Name": "INTICKETS",
+    "TagKeyWords": "INTICKETS.RU | inticket | intickets | интикет | интикетс",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "INTICKETS.RU |"
+  },
+  {
+    "ID": "10826",
+    "Name": "KFC",
+    "TagKeyWords": "KFC | кфс | кфси ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "KFC |"
+  },
+  {
+    "ID": "10942",
+    "Name": "Krispy Kreme",
+    "TagKeyWords": "Krispy Kreme | krispy | криспи",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Krispy Kreme |"
+  },
+  {
+    "ID": "10971",
+    "Name": "Lacoste",
+    "TagKeyWords": "Lacoste | лакоста",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Lacoste |"
+  },
+  {
+    "ID": "10866",
+    "Name": "Lamoda",
+    "TagKeyWords": "Lamoda | ламода",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Lamoda |"
+  },
+  {
+    "ID": "11042",
+    "Name": "LC Waikiki",
+    "TagKeyWords": "LC Waikiki | вайкики | вакики | waikiki",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "LC Waikiki |"
+  },
+  {
+    "ID": "10869",
+    "Name": "Lidl",
+    "TagKeyWords": "Lidl | лидл",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Lidl |"
+  },
+  {
+    "ID": "10885",
+    "Name": "Lingualeo",
+    "TagKeyWords": "Lingualeo | lingua | лингвалео | лингволео | лингво лео | лингва лео",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Lingualeo |"
+  },
+  {
+    "ID": "10904",
+    "Name": "market-place",
+    "TagKeyWords": "market-place | маркет пласе | маркетпласе",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "market-place |"
+  },
+  {
+    "ID": "10771",
+    "Name": "McDonald's",
+    "TagKeyWords": "McDonald's | мак | макдоналд | макдоналдс | маккафе",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "McDonald's |"
+  },
+  {
+    "ID": "10801",
+    "Name": "METRO Cash&Carry",
+    "TagKeyWords": "METRO Cash&Carry | metroCC | metro cash and carry | metro cash | METRO Cash and Cary",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "METRO Cash&Carry |"
+  },
+  {
+    "ID": "10997",
+    "Name": "MINISO",
+    "TagKeyWords": "MINISO | минисо",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "MINISO |"
+  },
+  {
+    "ID": "11021",
+    "Name": "MIUZ Diamonds",
+    "TagKeyWords": "MIUZ Diamonds | miuz",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "MIUZ Diamonds |"
+  },
+  {
+    "ID": "10910",
+    "Name": "MODI",
+    "TagKeyWords": "MODI | моди",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "MODI |"
+  },
+  {
+    "ID": "10810",
+    "Name": "Mothercare",
+    "TagKeyWords": "Mothercare | ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Mothercare |"
+  },
+  {
+    "ID": "10894",
+    "Name": "Muzey",
+    "TagKeyWords": "Muzey |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Muzey |"
+  },
+  {
+    "ID": "11017",
+    "Name": "My Gelato",
+    "TagKeyWords": "My Gelato | gelato",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "My Gelato |"
+  },
+  {
+    "ID": "10829",
+    "Name": "Netprint",
+    "TagKeyWords": "Netprint.ru | netprint | нетпринт",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Netprint.ru |"
+  },
+  {
+    "ID": "10969",
+    "Name": "New Balance",
+    "TagKeyWords": "New Balance | Balance | нью беленс | беленс | баланс",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "New Balance |"
+  },
+  {
+    "ID": "10915",
+    "Name": "Nike",
+    "TagKeyWords": "Nike | найк",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Nike |"
+  },
+  {
+    "ID": "10870",
+    "Name": "Oktogo",
+    "TagKeyWords": "Oktogo.ru | ortogo | октого",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Oktogo.ru |"
+  },
+  {
+    "ID": "10941",
+    "Name": "OLDI",
+    "TagKeyWords": "OLDI | олди",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "OLDI |"
+  },
+  {
+    "ID": "10979",
+    "Name": "OMEGA",
+    "TagKeyWords": "OMEGA | омега",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "OMEGA |"
+  },
+  {
+    "ID": "10935",
+    "Name": "One&Double",
+    "TagKeyWords": "One&Double | double",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "One&Double |"
+  },
+  {
+    "ID": "11007",
+    "Name": "O'stin",
+    "TagKeyWords": "O'stin | ostin | остин",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "O'stin |"
+  },
+  {
+    "ID": "10769",
+    "Name": "Ozon",
+    "TagKeyWords": "Ozon.ru | озон | ozon",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ozon.ru |"
+  },
+  {
+    "ID": "10789",
+    "Name": "PANORAMA360",
+    "TagKeyWords": "PANORAMA360 | панорама360 | 360",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "PANORAMA360 |"
+  },
+  {
+    "ID": "11002",
+    "Name": "Papa John’s",
+    "TagKeyWords": "Papa John’s | папа джонс | джонс | johns | papa",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Papa John’s |"
+  },
+  {
+    "ID": "10887",
+    "Name": "Paul Bakery",
+    "TagKeyWords": "Paul Bakery | paul | паул",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Paul Bakery |"
+  },
+  {
+    "ID": "10999",
+    "Name": "PayMaster",
+    "TagKeyWords": "PayMaster |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "PayMaster |"
+  },
+  {
+    "ID": "10863",
+    "Name": "PayPal",
+    "TagKeyWords": "PayPal | пейпал ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "PayPal |"
+  },
+  {
+    "ID": "10902",
+    "Name": "PICK-UP",
+    "TagKeyWords": "PICK-UP | pickup",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "PICK-UP |"
+  },
+  {
+    "ID": "10912",
+    "Name": "Ponominalu",
+    "TagKeyWords": "Ponominalu |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ponominalu |"
+  },
+  {
+    "ID": "11016",
+    "Name": "Prime Star",
+    "TagKeyWords": "Prime Star |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Prime Star |"
+  },
+  {
+    "ID": "10977",
+    "Name": "PROBKA",
+    "TagKeyWords": "PROBKA | пробка",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "PROBKA |"
+  },
+  {
+    "ID": "10848",
+    "Name": "Qiwi",
+    "TagKeyWords": "Qiwi | киви",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Qiwi |"
+  },
+  {
+    "ID": "10903",
+    "Name": "Radario",
+    "TagKeyWords": "Radario |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Radario |"
+  },
+  {
+    "ID": "10833",
+    "Name": "REG",
+    "TagKeyWords": "REG.RU | регру  | regru",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "REG.RU |"
+  },
+  {
+    "ID": "10919",
+    "Name": "Samsonite",
+    "TagKeyWords": "Samsonite | самсонайт",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Samsonite |"
+  },
+  {
+    "ID": "11015",
+    "Name": "SantPrice",
+    "TagKeyWords": "SantPrice.ru | santprice",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "SantPrice.ru |"
+  },
+  {
+    "ID": "10856",
+    "Name": "Save Time",
+    "TagKeyWords": "Save Time | savetime",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Save Time |"
+  },
+  {
+    "ID": "11026",
+    "Name": "SELA",
+    "TagKeyWords": "SELA | села",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "SELA |"
+  },
+  {
+    "ID": "11029",
+    "Name": "Shell",
+    "TagKeyWords": "Shell | шелл",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Shell |"
+  },
+  {
+    "ID": "10966",
+    "Name": "SKYENG",
+    "TagKeyWords": "SKYENG | скайэнг",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "SKYENG |"
+  },
+  {
+    "ID": "10782",
+    "Name": "SmartMed",
+    "TagKeyWords": "SmartMed | смартмед",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "SmartMed |"
+  },
+  {
+    "ID": "10851",
+    "Name": "SPAR",
+    "TagKeyWords": "SPAR | спар",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "SPAR |"
+  },
+  {
+    "ID": "10802",
+    "Name": "Starbucks Coffee",
+    "TagKeyWords": "Starbucks Coffee | старбакс | starbucks",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Starbucks Coffee |"
+  },
+  {
+    "ID": "10897",
+    "Name": "StarHit сafe",
+    "TagKeyWords": "StarHit сafe | starhit | стархит",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "StarHit сafe |"
+  },
+  {
+    "ID": "10932",
+    "Name": "Street Beat",
+    "TagKeyWords": "Street Beat | ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Street Beat |"
+  },
+  {
+    "ID": "11049",
+    "Name": "SUBWAY",
+    "TagKeyWords": "SUBWAY | сабвей | сабуэй",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "SUBWAY |"
+  },
+  {
+    "ID": "10822",
+    "Name": "Super Kitchen",
+    "TagKeyWords": "Super Kitchen | супер китчен",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Super Kitchen |"
+  },
+  {
+    "ID": "11011",
+    "Name": "TATNEFT",
+    "TagKeyWords": "TATNEFT | татнефть",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "TATNEFT |"
+  },
+  {
+    "ID": "10867",
+    "Name": "TELE2",
+    "TagKeyWords": "TELE2 | теле2",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "TELE2 |"
+  },
+  {
+    "ID": "10954",
+    "Name": "Tesla",
+    "TagKeyWords": "Tesla | тесла",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Tesla |"
+  },
+  {
+    "ID": "10936",
+    "Name": "Tezenis",
+    "TagKeyWords": "Tezenis |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Tezenis |"
+  },
+  {
+    "ID": "10937",
+    "Name": "TGI Fridays",
+    "TagKeyWords": "TGI Fridays | фрайдис | fridays",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "TGI Fridays |"
+  },
+  {
+    "ID": "11028",
+    "Name": "TimePad",
+    "TagKeyWords": "TimePad | таймпад",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "TimePad |"
+  },
+  {
+    "ID": "10985",
+    "Name": "Toy",
+    "TagKeyWords": "Toy.ru | тойру | toyru",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Toy.ru |"
+  },
+  {
+    "ID": "10781",
+    "Name": "Uber",
+    "TagKeyWords": "Uber | убер",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Uber |"
+  },
+  {
+    "ID": "11035",
+    "Name": "UNIQLO",
+    "TagKeyWords": "UNIQLO | юникло | уникло",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "UNIQLO |"
+  },
+  {
+    "ID": "10913",
+    "Name": "Ural Airlines",
+    "TagKeyWords": "Ural Airlines | ural | уральские",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ural Airlines |"
+  },
+  {
+    "ID": "10847",
+    "Name": "Urent",
+    "TagKeyWords": "Urent | юрент",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Urent |"
+  },
+  {
+    "ID": "10960",
+    "Name": "VISA",
+    "TagKeyWords": "VISA |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "VISA |"
+  },
+  {
+    "ID": "10992",
+    "Name": "whoosh",
+    "TagKeyWords": "whoosh |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "whoosh |"
+  },
+  {
+    "ID": "10787",
+    "Name": "WILDBERRIES",
+    "TagKeyWords": "WILDBERRIES | вайлберис | вайлбериз | wildberies | wildberis",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "WILDBERRIES |"
+  },
+  {
+    "ID": "10882",
+    "Name": "Wix",
+    "TagKeyWords": "Wix | викс",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Wix |"
+  },
+  {
+    "ID": "11018",
+    "Name": "XTAXI",
+    "TagKeyWords": "XTAXI |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "XTAXI |"
+  },
+  {
+    "ID": "10914",
+    "Name": "Zarina",
+    "TagKeyWords": "Zarina |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Zarina |"
+  },
+  {
+    "ID": "10994",
+    "Name": "Zava",
+    "TagKeyWords": "Zava |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Zava |"
+  },
+  {
+    "ID": "10920",
+    "Name": "Zenden",
+    "TagKeyWords": "Zenden |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Zenden |"
+  },
+  {
+    "ID": "10947",
+    "Name": "Авиакомпания UTair",
+    "TagKeyWords": "Авиакомпания UTair | utair",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Авиакомпания UTair |"
+  },
+  {
+    "ID": "10896",
+    "Name": "Авиакомпания Победа",
+    "TagKeyWords": "Авиакомпания Победа | победа",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Авиакомпания Победа |"
+  },
+  {
+    "ID": "10865",
+    "Name": "Азбука Вкуса",
+    "TagKeyWords": "Азбука Вкуса |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Азбука Вкуса |"
+  },
+  {
+    "ID": "10927",
+    "Name": "Акушерство.ру",
+    "TagKeyWords": "Акушерство.ру | акушерство",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Акушерство.ру |"
+  },
+  {
+    "ID": "10983",
+    "Name": "Альфа-Банк",
+    "TagKeyWords": "Альфа-Банк | альфабанк | alfabank",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Альфа-Банк |"
+  },
+  {
+    "ID": "11014",
+    "Name": "Аптека «Апрель»",
+    "TagKeyWords": "Аптека «Апрель» | аптека апрель | апрель аптека",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аптека «Апрель» |"
+  },
+  {
+    "ID": "10849",
+    "Name": "Аптека Вита",
+    "TagKeyWords": "Аптека Вита | вита",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аптека Вита |"
+  },
+  {
+    "ID": "10993",
+    "Name": "Аптека Витафарм",
+    "TagKeyWords": "Аптека Витафарм | витафарм",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аптека Витафарм |"
+  },
+  {
+    "ID": "10840",
+    "Name": "Аптека Здоров.ру",
+    "TagKeyWords": "Аптека Здоров.ру | здоровру | здовор.ру | здоров",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аптека Здоров.ру |"
+  },
+  {
+    "ID": "10968",
+    "Name": "Аптека Ригла",
+    "TagKeyWords": "Аптека Ригла | ригла",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аптека Ригла |"
+  },
+  {
+    "ID": "10975",
+    "Name": "Аптеки «Максавит»",
+    "TagKeyWords": "Аптеки «Максавит» | максавит",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аптеки «Максавит» |"
+  },
+  {
+    "ID": "10996",
+    "Name": "Аптеки Здравстор",
+    "TagKeyWords": "Аптеки Здравстор | здравстор",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аптеки Здравстор |"
+  },
+  {
+    "ID": "10768",
+    "Name": "Аптеки Столички",
+    "TagKeyWords": "Аптеки Столички | столички",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аптеки Столички |"
+  },
+  {
+    "ID": "10804",
+    "Name": "Ароматный мир",
+    "TagKeyWords": "Ароматный мир | ароматный",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ароматный мир |"
+  },
+  {
+    "ID": "11005",
+    "Name": "Аскона",
+    "TagKeyWords": "Аскона | Askona",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аскона |"
+  },
+  {
+    "ID": "10886",
+    "Name": "АТАК Супермаркеты",
+    "TagKeyWords": "АТАК Супермаркеты | атак",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "АТАК Супермаркеты |"
+  },
+  {
+    "ID": "10991",
+    "Name": "АТРИУМ",
+    "TagKeyWords": "АТРИУМ |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "АТРИУМ |"
+  },
+  {
+    "ID": "10844",
+    "Name": "Ашан",
+    "TagKeyWords": "Ашан | Auchan",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ашан |"
+  },
+  {
+    "ID": "10929",
+    "Name": "Аэрофлот",
+    "TagKeyWords": "Аэрофлот | Aeroflot",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аэрофлот |"
+  },
+  {
+    "ID": "10861",
+    "Name": "Аэроэкспресс",
+    "TagKeyWords": "Аэроэкспресс | Aeroexpress",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Аэроэкспресс |"
+  },
+  {
+    "ID": "11030",
+    "Name": "Банк Зенит",
+    "TagKeyWords": "Банк Зенит |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Банк Зенит |"
+  },
+  {
+    "ID": "11008",
+    "Name": "Бар 1929",
+    "TagKeyWords": "Бар 1929 | 1929",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Бар 1929 |"
+  },
+  {
+    "ID": "10883",
+    "Name": "Бахетле",
+    "TagKeyWords": "Бахетле | Bakhetle",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Бахетле |"
+  },
+  {
+    "ID": "10843",
+    "Name": "Библио Глобус",
+    "TagKeyWords": "Библио Глобус | ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Библио Глобус |"
+  },
+  {
+    "ID": "10795",
+    "Name": "Библио-Глобус",
+    "TagKeyWords": "Библио-Глобус |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Библио-Глобус |"
+  },
+  {
+    "ID": "10964",
+    "Name": "Бизон",
+    "TagKeyWords": "Бизон |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Бизон |"
+  },
+  {
+    "ID": "10846",
+    "Name": "Билайн",
+    "TagKeyWords": "Билайн | Beeline | Veon",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Билайн |"
+  },
+  {
+    "ID": "11023",
+    "Name": "Билеты в кино",
+    "TagKeyWords": "Билеты в кино |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Билеты в кино |"
+  },
+  {
+    "ID": "10972",
+    "Name": "БКС Банк",
+    "TagKeyWords": "БКС Банк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "БКС Банк |"
+  },
+  {
+    "ID": "10788",
+    "Name": "Братья Караваевы",
+    "TagKeyWords": "Братья Караваевы | Караваевы | karavaevi",
+    "Site": "https://www.karavaevi.ru/catalog/",
+    "IsChecked": true,
+    "BankKeyWords": "Братья Караваевы |"
+  },
+  {
+    "ID": "11006",
+    "Name": "Бристоль",
+    "TagKeyWords": "Бристоль | bristol",
+    "Site": "https://bristol.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Бристоль |"
+  },
+  {
+    "ID": "10879",
+    "Name": "Буше",
+    "TagKeyWords": "Буше | bushe",
+    "Site": "https://bushe.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Буше |"
+  },
+  {
+    "ID": "10921",
+    "Name": "ВАБИ САБИ",
+    "TagKeyWords": "ВАБИ САБИ | вабисаби | vabisabi",
+    "Site": "https://vabisabi.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "ВАБИ САБИ |"
+  },
+  {
+    "ID": "10813",
+    "Name": "Вега",
+    "TagKeyWords": "Вега |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Вега |"
+  },
+  {
+    "ID": "10855",
+    "Name": "Верный",
+    "TagKeyWords": "Верный |",
+    "Site": "https://www.verno-info.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Верный |"
+  },
+  {
+    "ID": "10945",
+    "Name": "Виктория",
+    "TagKeyWords": "Виктория | victoria",
+    "Site": "https://www.victoria-group.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Виктория |"
+  },
+  {
+    "ID": "11044",
+    "Name": "ВКонтакте",
+    "TagKeyWords": "ВКонтакте | vk.ru | vk | вк",
+    "Site": "https://vk.com/",
+    "IsChecked": true,
+    "BankKeyWords": "ВКонтакте |"
+  },
+  {
+    "ID": "10762",
+    "Name": "ВкусВилл",
+    "TagKeyWords": "ВкусВилл | vkusvill | вкусвил",
+    "Site": "https://vkusvill.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "ВкусВилл |"
+  },
+  {
+    "ID": "10948",
+    "Name": "ВТБ",
+    "TagKeyWords": "ВТБ | vtb",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ВТБ |"
+  },
+  {
+    "ID": "10926",
+    "Name": "ВымпелКом",
+    "TagKeyWords": "ВымпелКом |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ВымпелКом |"
+  },
+  {
+    "ID": "10974",
+    "Name": "Газпромбанк",
+    "TagKeyWords": "Газпромбанк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Газпромбанк |"
+  },
+  {
+    "ID": "10962",
+    "Name": "Газпромнефть",
+    "TagKeyWords": "Газпромнефть |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Газпромнефть |"
+  },
+  {
+    "ID": "10835",
+    "Name": "Гемотест",
+    "TagKeyWords": "Гемотест | gemotest",
+    "Site": "https://gemotest.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Гемотест |"
+  },
+  {
+    "ID": "10891",
+    "Name": "Гипермаркет Карусель",
+    "TagKeyWords": "Гипермаркет Карусель | Карусель ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Гипермаркет Карусель |"
+  },
+  {
+    "ID": "10783",
+    "Name": "Горздрав",
+    "TagKeyWords": "Горздрав | gorzdrav",
+    "Site": "https://gorzdrav.org/",
+    "IsChecked": true,
+    "BankKeyWords": "Горздрав |"
+  },
+  {
+    "ID": "10925",
+    "Name": "Госуслуги",
+    "TagKeyWords": "Госуслуги | gosuslugi",
+    "Site": "https://www.gosuslugi.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Госуслуги |"
+  },
+  {
+    "ID": "10805",
+    "Name": "Грабли",
+    "TagKeyWords": "Грабли | grabli",
+    "Site": "https://grabli.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Грабли |"
+  },
+  {
+    "ID": "11004",
+    "Name": "Гриль Хаус",
+    "TagKeyWords": "Гриль Хаус |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Гриль Хаус |"
+  },
+  {
+    "ID": "10772",
+    "Name": "Да!",
+    "TagKeyWords": "Да! | Да | yes | Да магазин | Да магаз",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Да! |"
+  },
+  {
+    "ID": "10791",
+    "Name": "Даблби",
+    "TagKeyWords": "Даблби |",
+    "Site": "https://double-b.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Даблби |"
+  },
+  {
+    "ID": "11037",
+    "Name": "Две палочки",
+    "TagKeyWords": "Две палочки |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Две палочки |"
+  },
+  {
+    "ID": "10916",
+    "Name": "Декатлон",
+    "TagKeyWords": "Декатлон |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Декатлон |"
+  },
+  {
+    "ID": "10774",
+    "Name": "Детский Мир",
+    "TagKeyWords": "Детский Мир |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Детский Мир |"
+  },
+  {
+    "ID": "10852",
+    "Name": "Дикси",
+    "TagKeyWords": "Дикси |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Дикси |"
+  },
+  {
+    "ID": "10798",
+    "Name": "Додо Пицца",
+    "TagKeyWords": "Додо Пицца | додо | Dodo",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Додо Пицца |"
+  },
+  {
+    "ID": "10928",
+    "Name": "Дочки-Сыночки",
+    "TagKeyWords": "Дочки-Сыночки |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Дочки-Сыночки |"
+  },
+  {
+    "ID": "11024",
+    "Name": "Живика",
+    "TagKeyWords": "Живика |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Живика |"
+  },
+  {
+    "ID": "10989",
+    "Name": "Живое Кафе",
+    "TagKeyWords": "Живое Кафе |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Живое Кафе |"
+  },
+  {
+    "ID": "10765",
+    "Name": "ЖКУ-Москва",
+    "TagKeyWords": "ЖКУ-Москва |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ЖКУ-Москва |"
+  },
+  {
+    "ID": "10803",
+    "Name": "Издательство «МИФ»",
+    "TagKeyWords": "Издательство «МИФ» | миф",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Издательство «МИФ» |"
+  },
+  {
+    "ID": "10815",
+    "Name": "ИКЕА",
+    "TagKeyWords": "ИКЕА | икея | икеа",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ИКЕА |"
+  },
+  {
+    "ID": "10973",
+    "Name": "Караван",
+    "TagKeyWords": "Караван |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Караван |"
+  },
+  {
+    "ID": "10976",
+    "Name": "Каро Фильм",
+    "TagKeyWords": "Каро Фильм | каро",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Каро Фильм |"
+  },
+  {
+    "ID": "10922",
+    "Name": "КиберПлат",
+    "TagKeyWords": "КиберПлат |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "КиберПлат |"
+  },
+  {
+    "ID": "11025",
+    "Name": "Киномакс",
+    "TagKeyWords": "Киномакс |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Киномакс |"
+  },
+  {
+    "ID": "10952",
+    "Name": "Киноход",
+    "TagKeyWords": "Киноход |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Киноход |"
+  },
+  {
+    "ID": "10939",
+    "Name": "Киноцентр на Красной Пресне",
+    "TagKeyWords": "Киноцентр на Красной Пресне | ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Киноцентр на Красной Пресне |"
+  },
+  {
+    "ID": "10918",
+    "Name": "Конфаэль",
+    "TagKeyWords": "Конфаэль |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Конфаэль |"
+  },
+  {
+    "ID": "10944",
+    "Name": "Кораблик",
+    "TagKeyWords": "Кораблик |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Кораблик |"
+  },
+  {
+    "ID": "10880",
+    "Name": "Красное и белое",
+    "TagKeyWords": "Красное и белое | красное белое",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Красное и белое |"
+  },
+  {
+    "ID": "10986",
+    "Name": "Кредит Европа Банк",
+    "TagKeyWords": "Кредит Европа Банк | европа банк",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Кредит Европа Банк |"
+  },
+  {
+    "ID": "10812",
+    "Name": "Крошка КАРТОШКА",
+    "TagKeyWords": "Крошка КАРТОШКА | картошка | КрошкаКартошка ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Крошка КАРТОШКА |"
+  },
+  {
+    "ID": "10836",
+    "Name": "Кухня на районе",
+    "TagKeyWords": "Кухня на районе |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Кухня на районе |"
+  },
+  {
+    "ID": "10850",
+    "Name": "Лабиринт.ру",
+    "TagKeyWords": "Лабиринт.ру | лабиринт",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Лабиринт.ру |"
+  },
+  {
+    "ID": "10808",
+    "Name": "Лаборатории CMD",
+    "TagKeyWords": "Лаборатории CMD | смд | cmd",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Лаборатории CMD |"
+  },
+  {
+    "ID": "10901",
+    "Name": "Лента",
+    "TagKeyWords": "Лента |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Лента |"
+  },
+  {
+    "ID": "10806",
+    "Name": "Леруа Мерлен",
+    "TagKeyWords": "Леруа Мерлен | leroymerlin",
+    "Site": "https://leroymerlin.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Леруа Мерлен |"
+  },
+  {
+    "ID": "11020",
+    "Name": "Ливан Хаус",
+    "TagKeyWords": "Ливан Хаус |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ливан Хаус |"
+  },
+  {
+    "ID": "11031",
+    "Name": "Линзмастер",
+    "TagKeyWords": "Линзмастер |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Линзмастер |"
+  },
+  {
+    "ID": "11003",
+    "Name": "ЛУКОЙЛ",
+    "TagKeyWords": "ЛУКОЙЛ | Lukoil",
+    "Site": "https://lukoil.ru",
+    "IsChecked": true,
+    "BankKeyWords": "ЛУКОЙЛ |"
+  },
+  {
+    "ID": "10943",
+    "Name": "Л'Этуаль",
+    "TagKeyWords": "Л'Этуаль | этуаль | лэтуаль",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Л'Этуаль |"
+  },
+  {
+    "ID": "10780",
+    "Name": "Магнит",
+    "TagKeyWords": "Магнит |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Магнит |"
+  },
+  {
+    "ID": "10834",
+    "Name": "Магнолия",
+    "TagKeyWords": "Магнолия |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Магнолия |"
+  },
+  {
+    "ID": "11022",
+    "Name": "Марукамэ",
+    "TagKeyWords": "Марукамэ |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Марукамэ |"
+  },
+  {
+    "ID": "10905",
+    "Name": "МастерХост",
+    "TagKeyWords": "МастерХост |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "МастерХост |"
+  },
+  {
+    "ID": "10854",
+    "Name": "Мвидео",
+    "TagKeyWords": "Мвидео | видео",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мвидео |"
+  },
+  {
+    "ID": "10842",
+    "Name": "Мегафон",
+    "TagKeyWords": "Мегафон |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мегафон |"
+  },
+  {
+    "ID": "10797",
+    "Name": "МЕДСИ",
+    "TagKeyWords": "МЕДСИ | Medsi ",
+    "Site": "https://medsi.ru",
+    "IsChecked": true,
+    "BankKeyWords": "МЕДСИ |"
+  },
+  {
+    "ID": "10878",
+    "Name": "Метро Санкт-Петербург",
+    "TagKeyWords": "Метро Санкт-Петербург |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Метро Санкт-Петербург |"
+  },
+  {
+    "ID": "11043",
+    "Name": "Мини-игры@Mail.Ru",
+    "TagKeyWords": "Мини-игры@Mail.Ru |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мини-игры@Mail.Ru |"
+  },
+  {
+    "ID": "10907",
+    "Name": "Мираторг",
+    "TagKeyWords": "Мираторг |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мираторг |"
+  },
+  {
+    "ID": "10981",
+    "Name": "Мистерия Вендинг Машинз",
+    "TagKeyWords": "Мистерия Вендинг Машинз |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мистерия Вендинг Машинз |"
+  },
+  {
+    "ID": "11032",
+    "Name": "МКБ",
+    "TagKeyWords": "МКБ |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "МКБ |"
+  },
+  {
+    "ID": "10930",
+    "Name": "МОЙ магазин",
+    "TagKeyWords": "МОЙ магазин |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "МОЙ магазин |"
+  },
+  {
+    "ID": "11000",
+    "Name": "Мосгортранс",
+    "TagKeyWords": "Мосгортранс |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мосгортранс |"
+  },
+  {
+    "ID": "10938",
+    "Name": "Мосигра",
+    "TagKeyWords": "Мосигра |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мосигра |"
+  },
+  {
+    "ID": "10940",
+    "Name": "Московский зоопарк",
+    "TagKeyWords": "Московский зоопарк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Московский зоопарк |"
+  },
+  {
+    "ID": "10777",
+    "Name": "Московский метрополитен",
+    "TagKeyWords": "Московский метрополитен | метро",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Московский метрополитен |"
+  },
+  {
+    "ID": "10792",
+    "Name": "Московский транспорт",
+    "TagKeyWords": "Московский транспорт |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Московский транспорт |"
+  },
+  {
+    "ID": "10911",
+    "Name": "Мосхозторг",
+    "TagKeyWords": "Мосхозторг |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мосхозторг |"
+  },
+  {
+    "ID": "10767",
+    "Name": "Мосцветторг",
+    "TagKeyWords": "Мосцветторг |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мосцветторг |"
+  },
+  {
+    "ID": "10763",
+    "Name": "МосЭнергоСбыт",
+    "TagKeyWords": "МосЭнергоСбыт |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "МосЭнергоСбыт |"
+  },
+  {
+    "ID": "10875",
+    "Name": "МТС",
+    "TagKeyWords": "МТС | mtc",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "МТС |"
+  },
+  {
+    "ID": "10820",
+    "Name": "МТС-Банк",
+    "TagKeyWords": "МТС-Банк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "МТС-Банк |"
+  },
+  {
+    "ID": "10828",
+    "Name": "Му-Му",
+    "TagKeyWords": "Му-Му | муму | му му",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Му-Му |"
+  },
+  {
+    "ID": "10990",
+    "Name": "Неофарм",
+    "TagKeyWords": "Неофарм |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Неофарм |"
+  },
+  {
+    "ID": "10845",
+    "Name": "ОБИ",
+    "TagKeyWords": "ОБИ | obi",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ОБИ |"
+  },
+  {
+    "ID": "10988",
+    "Name": "Общественный транспорт города Саранск",
+    "TagKeyWords": "Общественный транспорт города Саранск |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Общественный транспорт города Саранск |"
+  },
+  {
+    "ID": "10956",
+    "Name": "О'КЕЙ",
+    "TagKeyWords": "О'КЕЙ | okey | окей",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "О'КЕЙ |"
+  },
+  {
+    "ID": "10984",
+    "Name": "ООО Аптечная сеть О3",
+    "TagKeyWords": "ООО Аптечная сеть О3 |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ООО Аптечная сеть О3 |"
+  },
+  {
+    "ID": "10953",
+    "Name": "Оптимист Оптика",
+    "TagKeyWords": "Оптимист Оптика | оптимист",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Оптимист Оптика |"
+  },
+  {
+    "ID": "10889",
+    "Name": "Пекарни Папан",
+    "TagKeyWords": "Пекарни Папан |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Пекарни Папан |"
+  },
+  {
+    "ID": "10776",
+    "Name": "Перекрёсток",
+    "TagKeyWords": "Перекрёсток | vprok | perekrestok | Перекресток",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Перекрёсток |"
+  },
+  {
+    "ID": "10951",
+    "Name": "Персона",
+    "TagKeyWords": "Персона | persona",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Персона |"
+  },
+  {
+    "ID": "10807",
+    "Name": "Планета Здоровья",
+    "TagKeyWords": "Планета Здоровья |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Планета Здоровья |"
+  },
+  {
+    "ID": "10766",
+    "Name": "Подружка",
+    "TagKeyWords": "Подружка |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Подружка |"
+  },
+  {
+    "ID": "10764",
+    "Name": "Портал госуслуг Москвы",
+    "TagKeyWords": "Портал госуслуг Москвы | мос.ру | мосру",
+    "Site": "https://www.mos.ru/uslugi/",
+    "IsChecked": true,
+    "BankKeyWords": "Портал госуслуг Москвы |"
+  },
+  {
+    "ID": "10816",
+    "Name": "Почта России",
+    "TagKeyWords": "Почта России |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Почта России |"
+  },
+  {
+    "ID": "10982",
+    "Name": "Президент Плаза",
+    "TagKeyWords": "Президент Плаза |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Президент Плаза |"
+  },
+  {
+    "ID": "11033",
+    "Name": "Промсвязьбанк",
+    "TagKeyWords": "Промсвязьбанк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Промсвязьбанк |"
+  },
+  {
+    "ID": "10775",
+    "Name": "Пятерочка",
+    "TagKeyWords": "Пятерочка | Pyaterochka",
+    "Site": "https://5ka.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Пятерочка |"
+  },
+  {
+    "ID": "11001",
+    "Name": "Райффайзенбанк",
+    "TagKeyWords": "Райффайзенбанк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Райффайзенбанк |"
+  },
+  {
+    "ID": "10888",
+    "Name": "Ремит",
+    "TagKeyWords": "Ремит | remit",
+    "Site": "https://remit.ru",
+    "IsChecked": true,
+    "BankKeyWords": "Ремит |"
+  },
+  {
+    "ID": "11010",
+    "Name": "РЕСО-Гарантия",
+    "TagKeyWords": "РЕСО-Гарантия |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "РЕСО-Гарантия |"
+  },
+  {
+    "ID": "10877",
+    "Name": "РЖД",
+    "TagKeyWords": "РЖД | rzd",
+    "Site": "https://www.rzd.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "РЖД |"
+  },
+  {
+    "ID": "10950",
+    "Name": "Рокетбанк",
+    "TagKeyWords": "Рокетбанк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Рокетбанк |"
+  },
+  {
+    "ID": "11041",
+    "Name": "Россельхозбанк",
+    "TagKeyWords": "Россельхозбанк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Россельхозбанк |"
+  },
+  {
+    "ID": "10958",
+    "Name": "Ростелеком",
+    "TagKeyWords": "Ростелеком |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ростелеком | Ростелеком Плати Просто |"
+  },
+  {
+    "ID": "10872",
+    "Name": "Сбер Мега Маркет",
+    "TagKeyWords": "Сбер Мега Маркет |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Сбер Мега Маркет |"
+  },
+  {
+    "ID": "10799",
+    "Name": "Сбербанк",
+    "TagKeyWords": "Сбербанк | сбер | sberbank | sber",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Сбербанк |"
+  },
+  {
+    "ID": "10837",
+    "Name": "Сбермаркет",
+    "TagKeyWords": "Сбермаркет |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Сбермаркет |"
+  },
+  {
+    "ID": "10946",
+    "Name": "Связной",
+    "TagKeyWords": "Связной  | Svyaznoy",
+    "Site": "https://www.svyaznoy.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Связной |"
+  },
+  {
+    "ID": "10970",
+    "Name": "Синема Парк",
+    "TagKeyWords": "Синема Парк | синема",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Синема Парк |"
+  },
+  {
+    "ID": "10965",
+    "Name": "Ситибанк",
+    "TagKeyWords": "Ситибанк | Citibank",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ситибанк |"
+  },
+  {
+    "ID": "10800",
+    "Name": "Ситимобил",
+    "TagKeyWords": "Ситимобил |",
+    "Site": "https://www.citibank.ru",
+    "IsChecked": true,
+    "BankKeyWords": "Ситимобил |"
+  },
+  {
+    "ID": "11027",
+    "Name": "СМП Банк",
+    "TagKeyWords": "СМП Банк | смп",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "СМП Банк |"
+  },
+  {
+    "ID": "10995",
+    "Name": "Спортмастер",
+    "TagKeyWords": "Спортмастер | Sportmaster",
+    "Site": "https://www.sportmaster.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Спортмастер |"
+  },
+  {
+    "ID": "10827",
+    "Name": "Столото",
+    "TagKeyWords": "Столото | stoloto | лотерея",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Столото |"
+  },
+  {
+    "ID": "10770",
+    "Name": "Стрелка",
+    "TagKeyWords": "Стрелка |",
+    "Site": "https://www.stoloto.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Стрелка |"
+  },
+  {
+    "ID": "10949",
+    "Name": "Супермаркет \"Я Любимый\"",
+    "TagKeyWords": "Супермаркет \"Я Любимый\" | я любимый",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Супермаркет \"Я Любимый\" |"
+  },
+  {
+    "ID": "10899",
+    "Name": "Счастливый взгляд",
+    "TagKeyWords": "Счастливый взгляд |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Счастливый взгляд |"
+  },
+  {
+    "ID": "10853",
+    "Name": "Тануки",
+    "TagKeyWords": "Тануки | tanuki",
+    "Site": "https://www.tanuki.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Тануки |"
+  },
+  {
+    "ID": "11045",
+    "Name": "Твое",
+    "TagKeyWords": "Твое | tvoe",
+    "Site": "https://tvoe.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Твое |"
+  },
+  {
+    "ID": "10959",
+    "Name": "ТВТ",
+    "TagKeyWords": "ТВТ | tvt | твт",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ТВТ ( ТВТ) |"
+  },
+  {
+    "ID": "10884",
+    "Name": "Те самые пончики",
+    "TagKeyWords": "Те самые пончики | пончики",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Те самые пончики |"
+  },
+  {
+    "ID": "10779",
+    "Name": "Терволина",
+    "TagKeyWords": "Терволина | Tervolina",
+    "Site": "https://www.tervolina.ru",
+    "IsChecked": true,
+    "BankKeyWords": "Терволина |"
+  },
+  {
+    "ID": "10794",
+    "Name": "Теремок",
+    "TagKeyWords": "Теремок |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Теремок |"
+  },
+  {
+    "ID": "10823",
+    "Name": "Тинькофф Банк",
+    "TagKeyWords": "Тинькофф Банк | тинькофф | tinkoff | tinkof | тинькоф | тинькофбанк",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Тинькофф Банк |"
+  },
+  {
+    "ID": "10898",
+    "Name": "ТК Подорожник",
+    "TagKeyWords": "ТК Подорожник |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ТК Подорожник |"
+  },
+  {
+    "ID": "11034",
+    "Name": "Транскапиталбанк",
+    "TagKeyWords": "Транскапиталбанк |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Транскапиталбанк |"
+  },
+  {
+    "ID": "10862",
+    "Name": "Три правила",
+    "TagKeyWords": "Три правила | 3 правила",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Три правила |"
+  },
+  {
+    "ID": "11040",
+    "Name": "Тройка",
+    "TagKeyWords": "Тройка |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Тройка |"
+  },
+  {
+    "ID": "11038",
+    "Name": "Тутти-фрутти",
+    "TagKeyWords": "Тутти-фрутти |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Тутти-фрутти |"
+  },
+  {
+    "ID": "10838",
+    "Name": "Утконос",
+    "TagKeyWords": "Утконос | utkonos",
+    "Site": "https://www.utkonos.ru",
+    "IsChecked": true,
+    "BankKeyWords": "Утконос |"
+  },
+  {
+    "ID": "11036",
+    "Name": "Фасоль",
+    "TagKeyWords": "Фасоль |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Фасоль |"
+  },
+  {
+    "ID": "11048",
+    "Name": "Фаэтон",
+    "TagKeyWords": "Фаэтон |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Фаэтон |"
+  },
+  {
+    "ID": "10830",
+    "Name": "Федеральная Налоговая Служба",
+    "TagKeyWords": "Федеральная Налоговая Служба | фнс | fns",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Федеральная Налоговая Служба |"
+  },
+  {
+    "ID": "11039",
+    "Name": "Хлеб Насущный",
+    "TagKeyWords": "Хлеб Насущный | Насущный ",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Хлеб Насущный |"
+  },
+  {
+    "ID": "10817",
+    "Name": "ЦППК",
+    "TagKeyWords": "ЦППК |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ЦППК |"
+  },
+  {
+    "ID": "10980",
+    "Name": "Чайхона №1",
+    "TagKeyWords": "Чайхона №1 | чайхона1 | чайхона",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Чайхона №1 |"
+  },
+  {
+    "ID": "10857",
+    "Name": "Читай-город",
+    "TagKeyWords": "Читай-город | читайгород | читай",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Читай-город |"
+  },
+  {
+    "ID": "10892",
+    "Name": "ШефМаркет",
+    "TagKeyWords": "ШефМаркет |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ШефМаркет |"
+  },
+  {
+    "ID": "10784",
+    "Name": "Шоколадница",
+    "TagKeyWords": "Шоколадница |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Шоколадница |"
+  },
+  {
+    "ID": "10957",
+    "Name": "Элекснет",
+    "TagKeyWords": "Элекснет |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Элекснет |"
+  },
+  {
+    "ID": "10825",
+    "Name": "ЮMoney",
+    "TagKeyWords": "ЮMoney | яндексденьги",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ЮMoney |"
+  },
+  {
+    "ID": "10931",
+    "Name": "Якитория",
+    "TagKeyWords": "Якитория |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Якитория |"
+  },
+  {
+    "ID": "10773",
+    "Name": "Яндекс Такси",
+    "TagKeyWords": "Яндекс Такси | Yandex.Go | Go | Yandex Go",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Яндекс Такси |"
+  },
+  {
+    "ID": "10832",
+    "Name": "Яндекс.Еда",
+    "TagKeyWords": "Яндекс.Еда |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Яндекс.Еда |"
+  },
+  {
+    "ID": "10809",
+    "Name": "Яндекс.Маркет",
+    "TagKeyWords": "Яндекс.Маркет | Yandex.Market | YandexMarket",
+    "Site": "https://market.yandex.ru/",
+    "IsChecked": true,
+    "BankKeyWords": "Яндекс.Маркет |"
+  },
+  {
+    "ID": "10793",
+    "Name": "Яндекс.Плюс",
+    "TagKeyWords": "Яндекс.Плюс | ЯндексПлюс",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Яндекс.Плюс |"
+  },
+  {
+    "ID": "10890",
+    "Name": "Яндекс.Шеф",
+    "TagKeyWords": "Яндекс.Шеф | ЯндексШеф",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Яндекс.Шеф |"
+  },
+  {
+    "ID": "11053",
+    "Name": "Яндекс.Афиша",
+    "TagKeyWords": "Яндекс.Афиша | Афиша",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Яндекс.Афиша |"
+  },
+  {
+    "ID": "11054",
+    "Name": "Эльдорадо",
+    "TagKeyWords": "Эльдорадо |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Эльдорадо |"
+  },
+  {
+    "ID": "11056",
+    "Name": "iHerb",
+    "TagKeyWords": "iHerb | Херб | Хёрб",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "iHerb |"
+  },
+  {
+    "ID": "11057",
+    "Name": "Avon",
+    "TagKeyWords": "Avon | авон | айвон",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Avon |"
+  },
+  {
+    "ID": "11058",
+    "Name": "litresru",
+    "TagKeyWords": "litresru | litres | литрес",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "litresru |"
+  },
+  {
+    "ID": "11059",
+    "Name": "TERRANOVA",
+    "TagKeyWords": "TERRANOVA | терранова | терра нова",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "TERRANOVA |"
+  },
+  {
+    "ID": "11060",
+    "Name": "Zolla",
+    "TagKeyWords": "Zolla | зола | золла | zola",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Zolla |"
+  },
+  {
+    "ID": "11061",
+    "Name": "Леонардо",
+    "TagKeyWords": "Леонардо |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Леонардо |"
+  },
+  {
+    "ID": "11062",
+    "Name": "Снежная Королева",
+    "TagKeyWords": "Снежная Королева | снежнаяКоролева",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Снежная Королева |"
+  },
+  {
+    "ID": "11063",
+    "Name": "Mama Mia",
+    "TagKeyWords": "Mama Mia |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Mama Mia |"
+  },
+  {
+    "ID": "11064",
+    "Name": "Тинькофф Авиа",
+    "TagKeyWords": "Тинькофф Авиа |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Тинькофф Авиа |"
+  },
+  {
+    "ID": "11065",
+    "Name": "Согаз",
+    "TagKeyWords": "Согаз |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Согаз |"
+  },
+  {
+    "ID": "11066",
+    "Name": "Ticketland",
+    "TagKeyWords": "Ticketland.ru | тикетленд | ticketland",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Ticketland.ru |"
+  },
+  {
+    "ID": "11067",
+    "Name": "Джонджоли",
+    "TagKeyWords": "Джонджоли |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Джонджоли |"
+  },
+  {
+    "ID": "11068",
+    "Name": "NEW YORKER",
+    "TagKeyWords": "NEW YORKER | нью йоркер",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "NEW YORKER |"
+  },
+  {
+    "ID": "11069",
+    "Name": "ZARA",
+    "TagKeyWords": "ZARA | зара",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "ZARA |"
+  },
+  {
+    "ID": "11070",
+    "Name": "РЕСПУБЛИКА*",
+    "TagKeyWords": "РЕСПУБЛИКА* | республика",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "РЕСПУБЛИКА* |"
+  },
+  {
+    "ID": "11071",
+    "Name": "Kari",
+    "TagKeyWords": "Kari | кари",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Kari |"
+  },
+  {
+    "ID": "11072",
+    "Name": "Книжный магазин Москва",
+    "TagKeyWords": "Книжный магазин Москва |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Книжный магазин Москва |"
+  },
+  {
+    "ID": "11073",
+    "Name": "Yves Rocher",
+    "TagKeyWords": "Yves Rocher | ив рошер",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Yves Rocher |"
+  },
+  {
+    "ID": "11074",
+    "Name": "Мастер Вендор",
+    "TagKeyWords": "Мастер Вендор |",
+    "Site": "NULL",
+    "IsChecked": true,
+    "BankKeyWords": "Мастер Вендор |"
+  }
+]

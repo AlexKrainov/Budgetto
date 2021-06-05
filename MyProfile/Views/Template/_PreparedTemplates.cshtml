@@ -1,0 +1,307 @@
+﻿<div class="modal modal-top fade" id="prepared-template-model">
+    <div class="modal-dialog modal-lg" style="max-width: 65rem;">
+        <article class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title">
+                    Подготовленные шаблоны
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3 justify-content-md-center">
+                    <div class="col-md-6 mb-2"
+                         v-show="isDetailsView">
+                        <a class="d-flex justify-content-center align-items-center text-body py-3" href="javascript:void(0)"
+                           v-on:click="isDetailsView = false;">
+                            <i class="ion ion-md-arrow-round-back mr-4 text-large"></i>
+                            Вернуться к списку
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-2"
+                         v-for="period in preparedTemplate.periods"
+                         v-show="isDetailsView == false || period.isSelected == true">
+                        <a class="d-flex justify-content-center align-items-center  rounded ui-bordered text-body py-3" data-toggle="tab"
+                           v-bind:href="'#prepared-templates-' + period.periodTypeID"
+                           v-bind:class="period.isSelected ? 'border-primary' : ''"
+                           v-on:click="selectPeriod(period); ">
+                            {{ period.periodTypeName }}
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-tabs-top nav-responsive-sm">
+                    <ul class="nav nav-tabs " style="display: none;">
+                        <li class="nav-item"
+                            v-for="period in preparedTemplate.periods">
+                            <a class="nav-link" data-toggle="tab" v-bind:href="'#prepared-templates-' + period.periodTypeID">Discounts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#selected-prepared-templates">Images</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="background: none; border: none;">
+                        <div class="tab-pane fade"
+                             v-for="period in preparedTemplate.periods"
+                             v-bind:class="isDetailsView == false && period.isSelected ? 'active show': ''"
+                             v-bind:id="'prepared-templates-' + period.periodTypeID">
+
+                            <div class="row">
+                                <div class="col-sm-6 col-xl-6"
+                                     v-for="(template, index) in period.templates">
+                                    <div class="card  mb-3">
+                                        <div class="ui-bg-cover rounded-top" style="height: 300px;overflow: hidden;overflow-x: auto;">
+                                            <table class="table table-bordered dataTable" style="zoom: .7;">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th data-toggle="tooltip" data-html="true"
+                                                            v-for="(column, columnIndex) in template.columns"
+                                                            v-html="column.name"
+                                                            v-bind:class="column.styleForTableView"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="(row, rowIndex) in template.rows"
+                                                        class="text-right">
+                                                        <td v-for="(cell, cellIndex) in row"
+                                                            v-html="cell.value"
+                                                            class=" pb-0"
+                                                            v-bind:class="template.columns[cellIndex].styleForTableView">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr class="text-right">
+                                                        <td v-for="(cell, cellIndex) in template.footerRow"
+                                                            v-html="cell.value"
+                                                            class="cell-hover p-1">
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <div class="card-body pb-3">
+                                            <div>
+                                                <a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ template.name }}</a>
+                                                @*<div class="text-muted small mt-1">{{ template.description }}</div>*@
+                                            </div>
+                                        </div>
+                                        <div class="card-footer py-3">
+                                            <button class="btn btn-primary btn-sm"
+                                                    v-bind:disabled="isSaving"
+                                                    v-on:click="showTemplate(template)">
+                                                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                                                <i class="far fa-eye pr-2" v-show="isSaving == false"></i>Посмотреть
+                                            </button>
+                                            <button class="btn btn-sm border-secondary"
+                                                    v-bind:disabled="currentCount >= limitCount || isSaving"
+                                                    v-on:click="saveTemplate(template)">
+                                                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                                                <i class="fas fa-plus pr-2" v-show="isSaving == false"></i>Добавить
+                                            </button>
+                                            <button class="btn btn-sm border-secondary"
+                                                    v-bind:disabled="currentCount >= limitCount || isSaving"
+                                                    v-on:click="saveTemplate(template, true)">
+                                                <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                                                <i class="far fa-edit pr-2" v-show="isSaving == false"></i>Добавить и отредактировать
+                                            </button>
+                                            @*<a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary">
+                                                    <i class="far fa-edit pr-2"></i>
+                                                </a>*@
+                                            <div class="text-muted small mt-1"
+                                                 v-show="currentCount >= limitCount">Для вашего тарифа лимит шаблонов исчерпан.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade"
+                             v-bind:class="isDetailsView ? 'active show': ''"
+                             id="selected-prepared-templates">
+                            <div class="row mb-2 justify-content-md-center">
+                                <div class="col-md-2 mb-2">
+                                    <a class="d-flex justify-content-center align-items-center   rounded ui-bordered text-body" href="javascript:void(0)"
+                                       v-bind:class="isDetailsViewTable ? 'border-secondary' : ''"
+                                       v-on:click="isDetailsViewTable = true;">
+                                        Таблица
+                                    </a>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <a class="d-flex justify-content-center align-items-center rounded ui-bordered text-body" href="javascript:void(0)"
+                                       v-bind:class="isDetailsViewTable == false ? 'border-secondary' : ''"
+                                       v-on:click="isDetailsViewTable = false;">
+                                        Содержимое
+                                    </a>
+                                </div>
+                            </div>
+                            <article class="card ui p-3" style="zoom: .7;"
+                                     v-show="isDetailsViewTable">
+                                <div class="ui-bg-cover rounded-top" style="height: 400px;">
+                                    <table class="table table-bordered dataTable" style="zoom: .7;">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th data-toggle="tooltip" data-html="true"
+                                                    v-for="(column, columnIndex) in template.columns"
+                                                    v-html="column.name"
+                                                    v-bind:class="column.styleForTableView"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(row, rowIndex) in template.rows"
+                                                class="text-right">
+                                                <td v-for="(cell, cellIndex) in row"
+                                                    v-html="cell.value"
+                                                    class="pb-0"
+                                                    v-bind:class="template.columns[cellIndex].styleForTableView">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="text-right">
+                                                <td v-for="(cell, cellIndex) in template.footerRow"
+                                                    v-html="cell.value"
+                                                    class="cell-hover p-1">
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </article>
+
+                            <article class="card ui p-3" style="zoom: .7;"
+                                     v-show="isDetailsViewTable == false">
+                                <div class="lists">
+                                    <div class="list" v-for="(column, indexColumn) in template.columns" v-bind:columnid="column.id">
+                                        <div class="card border-primary mb-3" v-if="isBudgetSection(column.templateColumnType)">
+                                            <div>
+                                                <ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" data-toggle="tab" href="javascript:void(0)">
+                                                            Основное
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+                                                    <div class="d-flex justify-content-between align-items-start ignore-dnd">
+                                                        <input type="text" class="form-control disabled" placeholder="Название колонки" disabled v-model="column.name">
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        @*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+                                                    </div>
+
+                                                    <hr class="m-0" />
+                                                    <div class="px-2 pt-2">
+                                                        <div class="ui-bordered p-2 mb-2 badge-default" v-for="(templateBudgetSection, indexSection) in column.templateBudgetSections">
+                                                            {{ templateBudgetSection.sectionName }}
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card border-secondary mb-3" v-if="isDaysForMonth(column.templateColumnType)">
+                                            <div>
+                                                <ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" data-toggle="tab" href="javascript:void(0)">
+                                                            Основное
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+                                                    <div class="d-flex justify-content-between align-items-start">
+                                                        <input type="text" class="form-control disabled" placeholder="Name column" disabled v-model="column.name">
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        @*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+                                                    </div>
+
+                                                    <hr class="m-0" />
+                                                    <div class=" px-2 pt-2">
+                                                        <div class="ui-bordered p-2 mb-2 badge-secondary">
+                                                            Дни
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card border-secondary mb-3" v-if="isMonthsForYear(column.templateColumnType)">
+                                            <div>
+                                                <ul class="nav nav-sm nav-tabs tabs-alt" style="overflow: hidden;">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" data-toggle="tab" href="javascript:void(0)">
+                                                            Основное
+                                                        </a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="card-body tab-pane pb-0 pt-2 pr-2 pl-2 active" v-bind:id="'general'+column.id">
+                                                    <div class="d-flex justify-content-between align-items-start">
+                                                        <input type="text" class="form-control " placeholder="Name column" disabled v-model="column.name">
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        @*Aliquam sem elit, semper sed ante ut, aliquam molestie risus.*@
+                                                    </div>
+
+                                                    <hr class="m-0" />
+                                                    <div class="px-2 pt-2">
+                                                        <div class="ui-bordered p-2 mb-2 badge-secondary">
+                                                            Месяц
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                            <div class="card-body pb-3">
+                                <div>
+                                    <a href="javascript:void(0)" class="text-body text-big font-weight-semibold">{{ template.name }}</a>
+                                    <div class="btn-group project-actions">
+                                        <span class="badge badge-success align-text-bottom ml-1" v-show="template.periodTypeID == 1">{{ template.periodName }}</span>
+                                        <span class="badge badge-info align-text-bottom ml-1" v-show="template.periodTypeID == 3">{{ template.periodName }}</span>
+                                    </div>
+                                    <div class="text-muted small mt-1">{{ template.description }}</div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right pt-3 pb-0">
+                                <button class="btn btn-sm btn-primary border-secondary"
+                                        v-bind:disabled="currentCount >= limitCount || isSaving"
+                                        v-on:click="saveTemplate(template)">
+                                    <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                                    <i class="fas fa-plus pr-2" v-show="isSaving == false"></i>Добавить
+                                </button>
+                                <button class="btn btn-sm border-secondary"
+                                        v-bind:disabled="currentCount >= limitCount || isSaving"
+                                        v-on:click="saveTemplate(template, true)">
+                                    <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                                    <i class="far fa-edit pr-2" v-show="isSaving == false"></i>Добавить и отредактировать
+                                </button>
+                                <div class="text-muted small mt-1"
+                                     v-show="currentCount >= limitCount">Для вашего тарифа лимит шаблонов исчерпан.</div>
+                                @*<a href="javascript:void(0)" title="Удалить" class="btn icon-btn btn-sm btn-outline-secondary">
+                                        <i class="far fa-edit pr-2"></i>
+                                    </a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button class="btn btn-primary" type="button"
+                            v-bind:disabled="isSaving">
+                        <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+                        Добавить
+                    </button>*@
+                <a class="btn btn-default" href="/Template/Edit"
+                   v-bind:class="currentCount >= limitCount ? 'disabled' : ''">Создать свой шаблон</a>
+                <button type="button" class="btn btn-default button-close-record" data-dismiss="modal">Закрыть</button>
+            </div>
+        </article>
+    </div>
+</div>

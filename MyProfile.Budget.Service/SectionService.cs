@@ -1,26 +1,20 @@
-﻿using LinqKit;
+﻿using Common.Service;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
-using MyProfile.Entity.ModelView.CommonViewModels;
+using MyProfile.Entity.ModelView.AreaAndSection;
+using MyProfile.Entity.ModelView.Section;
+using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
+using MyProfile.Progress.Service;
+using MyProfile.User.Service;
+using MyProfile.UserLog.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using MyProfile.Entity.ModelEntitySave;
-using MyProfile.User.Service;
-using MyProfile.Entity.ModelView.AreaAndSection;
-using Common.Service;
-using MyProfile.Entity.ModelView.TemplateModelView;
-using MyProfile.UserLog.Service;
-using Microsoft.Extensions.Caching.Memory;
-using MyProfile.Entity.ModelView.Section;
-using MyProfile.Progress.Service;
 
 namespace MyProfile.Budget.Service
 {
@@ -63,6 +57,7 @@ namespace MyProfile.Budget.Service
                     Description = x.Description,
                     IsShowOnSite = x.IsShowOnSite,
                     IsShowInCollective = x.IsShowInCollective,
+                    BaseAreaID = x.BaseAreaID,
                     Sections = x.BudgetSectinos
                         .OrderBy(p => p.ID)
                         .Select(y => new BudgetSectionModelView
@@ -87,6 +82,7 @@ namespace MyProfile.Budget.Service
                             IsShow_Filtered = true,
                             IsShow = true,
                             IsCashback = y.IsCashback,
+                            IsRegularPayment = y.IsRegularPayment
                             //CollectiveSections = y.CollectiveSections
                             //.Select(z => new BudgetSectionModelView
                             //{
@@ -173,29 +169,37 @@ namespace MyProfile.Budget.Service
             return sections;
         }
 
-        public IEnumerable<AreaLightModelView> GetAllAreaAndSectionByPerson()
+        public IEnumerable<AreaLightModelView> GetAllAreaAndSectionByPerson(Guid? userID = null)
         {
-            var currentUserID = UserInfo.Current.ID;
+            if (userID == null)
+            {
+                userID = UserInfo.Current.ID;
+            }
+
             List<AreaLightModelView> sections;
 
-            if (cache.TryGetValue(typeof(AreaLightModelView).Name + "_" + currentUserID, out sections) == false)
+            if (cache.TryGetValue(typeof(AreaLightModelView).Name + "_" + userID, out sections) == false)
             {
-                sections = repository.GetAll<BudgetArea>(x => x.UserID == currentUserID && x.IsShowOnSite)
+                sections = repository.GetAll<BudgetArea>(x => x.UserID == userID && x.IsShowOnSite)
                     .Select(x => new AreaLightModelView
                     {
                         ID = x.ID,
                         Name = x.Name,
+                        CodeName = x.BaseAreaID != null ? x.BaseArea.CodeName : null,
                         BudgetSections = x.BudgetSectinos
-                            .Where(y => y.BudgetArea.UserID == currentUserID)
+                            .Where(y => y.BudgetArea.UserID == userID)
                             .Select(y => new SectionLightModelView
                             {
                                 ID = y.ID,
                                 Name = y.Name,
+                                CodeName = y.BaseSectionID != null ? y.BaseSection.CodeName : null,
+                                SectionTypeID = y.SectionTypeID,
+                                SectionTypeCodeName = y.SectionType.CodeName
                             })
                     })
                     .ToList();
 
-                cache.Set(typeof(AreaLightModelView).Name + "_" + currentUserID, sections, DateTime.Now.AddDays(1));
+                cache.Set(typeof(AreaLightModelView).Name + "_" + userID, sections, DateTime.Now.AddDays(1));
             }
             return sections;
         }
@@ -220,7 +224,7 @@ namespace MyProfile.Budget.Service
             }
             else
             {
-                await repository .CreateAsync(budgetArea, true);
+                await repository.CreateAsync(budgetArea, true);
                 await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Area_Create);
             }
 
@@ -260,6 +264,7 @@ namespace MyProfile.Budget.Service
                 IsShowOnSite = section.IsShowOnSite,
                 IsCashback = section.IsCashback,
                 BaseSectionID = section.BaseSectionID,
+                IsRegularPayment = section.IsRegularPayment,
             };
             if (budgetSection.ID > 0)
             {
@@ -372,6 +377,7 @@ namespace MyProfile.Budget.Service
                  {
                      AreaID = x.BaseAreaID,
                      AreaName = x.BaseArea.Name,
+                     BaseAreaID= x.BaseAreaID,
                      SectionID = x.ID,
                      SectionName = x.Name,
                      Background = x.Background,

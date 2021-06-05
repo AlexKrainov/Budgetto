@@ -56,7 +56,7 @@ namespace MyProfile.Progress.Service
 
             #region  ProgressItemTypeEnum.EarnMoreThanSpend
 
-            SetCompleteProgressItemType(currentUser.ID, ProgressTypeEnum.FinancialLiteracyMonth, ProgressItemTypeEnum.EarnMoreThanSpend, isComplete: totalEarnings >= totalSpendings);
+            SetCompleteProgressItemType(currentUser.ID, ProgressTypeEnum.FinancialLiteracyMonth, ProgressItemTypeEnum.EarnMoreThanSpend, isComplete: totalEarnings > totalSpendings);
 
             #endregion
 

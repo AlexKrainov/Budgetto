@@ -55,6 +55,8 @@ namespace MyProfile.Areas.Identity.Controllers
                 user.UserSettings.Month_Accounts = dbUserSettings.Month_Accounts = userSettings.Month_Accounts;
 
                 user.UserSettings.Month_ToDoLists = dbUserSettings.Month_ToDoLists = userSettings.Month_ToDoLists;
+
+                user.UserSettings.Month_ProgressBar = dbUserSettings.Month_ProgressBar = userSettings.Month_ProgressBar;
             }
             else if (userSettings.PageName == "Budget/Year")
             {

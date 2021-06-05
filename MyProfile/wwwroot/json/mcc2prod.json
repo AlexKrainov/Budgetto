@@ -1,0 +1,1153 @@
+[
+
+  {
+    "MccCodes": [
+      {
+        "ID": 2257,
+        "Mcc": 5814,
+        "MccCategoryID": 1219
+      }
+    ],
+    "ID": 1219,
+    "Name": "Фастфуд",
+    "IsSystem": false,
+    "bankCategoryID": 60,
+    "bankParentCategoryID": 3,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2258,
+        "Mcc": 5411,
+        "MccCategoryID": 1220
+      },
+      {
+        "ID": 2285,
+        "Mcc": 5499,
+        "MccCategoryID": 1220
+      },
+      {
+        "ID": 2293,
+        "Mcc": 5921,
+        "MccCategoryID": 1220
+      },
+      {
+        "ID": 2307,
+        "Mcc": 5441,
+        "MccCategoryID": 1220
+      },
+      {
+        "ID": 2332,
+        "Mcc": 5462,
+        "MccCategoryID": 1220
+      },
+      {
+        "ID": 2336,
+        "Mcc": 5300,
+        "MccCategoryID": 1220
+      },
+      {
+        "ID": 2382,
+        "Mcc": 5451,
+        "MccCategoryID": 1220
+      },
+      {
+        "ID": 2383,
+        "Mcc": 5422,
+        "MccCategoryID": 1220
+      }
+    ],
+    "ID": 1220,
+    "Name": "Супермаркеты",
+    "IsSystem": false,
+    "bankCategoryID": 10,
+    "bankParentCategoryID": 3,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2259,
+        "Mcc": 8,
+        "MccCategoryID": 1221
+      },
+      {
+        "ID": 2342,
+        "Mcc": 4900,
+        "MccCategoryID": 1221
+      }
+    ],
+    "ID": 1221,
+    "Name": "Жкх/иб",
+    "IsSystem": false,
+    "bankCategoryID": 46,
+    "bankParentCategoryID": 5,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2260,
+        "Mcc": 9399,
+        "MccCategoryID": 1222
+      },
+      {
+        "ID": 2306,
+        "Mcc": 9402,
+        "MccCategoryID": 1222
+      },
+      {
+        "ID": 2314,
+        "Mcc": 9311,
+        "MccCategoryID": 1222
+      },
+      {
+        "ID": 2367,
+        "Mcc": 9,
+        "MccCategoryID": 1222
+      }
+    ],
+    "ID": 1222,
+    "Name": "Гос. сборы",
+    "IsSystem": false,
+    "bankCategoryID": 31,
+    "bankParentCategoryID": null,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2261,
+        "Mcc": 1,
+        "MccCategoryID": 1223
+      }
+    ],
+    "ID": 1223,
+    "Name": "Переводы/иб",
+    "IsSystem": true,
+    "bankCategoryID": 39,
+    "bankParentCategoryID": 8,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2262,
+        "Mcc": 0,
+        "MccCategoryID": 1224
+      }
+    ],
+    "ID": 1224,
+    "Name": "Другое",
+    "IsSystem": false,
+    "bankCategoryID": 33,
+    "bankParentCategoryID": null,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2263,
+        "Mcc": 5977,
+        "MccCategoryID": 1225
+      },
+      {
+        "ID": 2264,
+        "Mcc": 7230,
+        "MccCategoryID": 1225
+      },
+      {
+        "ID": 2385,
+        "Mcc": 7298,
+        "MccCategoryID": 1225
+      }
+    ],
+    "ID": 1225,
+    "Name": "Красота",
+    "IsSystem": false,
+    "bankCategoryID": 35,
+    "bankParentCategoryID": 4,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2265,
+        "Mcc": 5193,
+        "MccCategoryID": 1226
+      },
+      {
+        "ID": 2323,
+        "Mcc": 5992,
+        "MccCategoryID": 1226
+      }
+    ],
+    "ID": 1226,
+    "Name": "Цветы",
+    "IsSystem": false,
+    "bankCategoryID": 25,
+    "bankParentCategoryID": 2,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2266,
+        "Mcc": 5912,
+        "MccCategoryID": 1227
+      }
+    ],
+    "ID": 1227,
+    "Name": "Аптеки",
+    "IsSystem": false,
+    "bankCategoryID": 12,
+    "bankParentCategoryID": 4,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2267,
+        "Mcc": 4131,
+        "MccCategoryID": 1228
+      },
+      {
+        "ID": 2271,
+        "Mcc": 4121,
+        "MccCategoryID": 1228
+      },
+      {
+        "ID": 2275,
+        "Mcc": 4111,
+        "MccCategoryID": 1228
+      },
+      {
+        "ID": 2292,
+        "Mcc": 7523,
+        "MccCategoryID": 1228
+      },
+      {
+        "ID": 2363,
+        "Mcc": 11,
+        "MccCategoryID": 1228
+      }
+    ],
+    "ID": 1228,
+    "Name": "Транспорт",
+    "IsSystem": false,
+    "bankCategoryID": 36,
+    "bankParentCategoryID": 4,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2268,
+        "Mcc": 5942,
+        "MccCategoryID": 1229
+      },
+      {
+        "ID": 2327,
+        "Mcc": 5994,
+        "MccCategoryID": 1229
+      },
+      {
+        "ID": 2346,
+        "Mcc": 5192,
+        "MccCategoryID": 1229
+      }
+    ],
+    "ID": 1229,
+    "Name": "Книги",
+    "IsSystem": false,
+    "bankCategoryID": 17,
+    "bankParentCategoryID": 2,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2269,
+        "Mcc": 5947,
+        "MccCategoryID": 1230
+      }
+    ],
+    "ID": 1230,
+    "Name": "Сувениры",
+    "IsSystem": false,
+    "bankCategoryID": 8,
+    "bankParentCategoryID": 1,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2270,
+        "Mcc": 5533,
+        "MccCategoryID": 1231
+      }
+    ],
+    "ID": 1231,
+    "Name": "Авто услуги",
+    "IsSystem": false,
+    "bankCategoryID": 27,
+    "bankParentCategoryID": 5,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2272,
+        "Mcc": 5812,
+        "MccCategoryID": 1232
+      },
+      {
+        "ID": 2361,
+        "Mcc": 5811,
+        "MccCategoryID": 1232
+      },
+      {
+        "ID": 2364,
+        "Mcc": 5813,
+        "MccCategoryID": 1232
+      }
+    ],
+    "ID": 1232,
+    "Name": "Рестораны",
+    "IsSystem": false,
+    "bankCategoryID": 32,
+    "bankParentCategoryID": 3,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2273,
+        "Mcc": 5945,
+        "MccCategoryID": 1233
+      },
+      {
+        "ID": 2277,
+        "Mcc": 5399,
+        "MccCategoryID": 1233
+      },
+      {
+        "ID": 2282,
+        "Mcc": 5311,
+        "MccCategoryID": 1233
+      },
+      {
+        "ID": 2298,
+        "Mcc": 5732,
+        "MccCategoryID": 1233
+      },
+      {
+        "ID": 2325,
+        "Mcc": 5331,
+        "MccCategoryID": 1233
+      },
+      {
+        "ID": 2343,
+        "Mcc": 5999,
+        "MccCategoryID": 1233
+      },
+      {
+        "ID": 2351,
+        "Mcc": 5993,
+        "MccCategoryID": 1233
+      },
+      {
+        "ID": 2359,
+        "Mcc": 7278,
+        "MccCategoryID": 1233
+      },
+      {
+        "ID": 2370,
+        "Mcc": 5948,
+        "MccCategoryID": 1233
+      }
+    ],
+    "ID": 1233,
+    "Name": "Разные товары",
+    "IsSystem": false,
+    "bankCategoryID": 29,
+    "bankParentCategoryID": 8,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2274,
+        "Mcc": 8011,
+        "MccCategoryID": 1234
+      },
+      {
+        "ID": 2290,
+        "Mcc": 8043,
+        "MccCategoryID": 1234
+      },
+      {
+        "ID": 2296,
+        "Mcc": 8099,
+        "MccCategoryID": 1234
+      },
+      {
+        "ID": 2317,
+        "Mcc": 8071,
+        "MccCategoryID": 1234
+      },
+      {
+        "ID": 2319,
+        "Mcc": 8021,
+        "MccCategoryID": 1234
+      },
+      {
+        "ID": 2344,
+        "Mcc": 8062,
+        "MccCategoryID": 1234
+      },
+      {
+        "ID": 2380,
+        "Mcc": 8042,
+        "MccCategoryID": 1234
+      }
+    ],
+    "ID": 1234,
+    "Name": "Мед. услуги",
+    "IsSystem": false,
+    "bankCategoryID": 26,
+    "bankParentCategoryID": 4,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2276,
+        "Mcc": 8661,
+        "MccCategoryID": 1235
+      },
+      {
+        "ID": 2305,
+        "Mcc": 8398,
+        "MccCategoryID": 1235
+      },
+      {
+        "ID": 2386,
+        "Mcc": 8641,
+        "MccCategoryID": 1235
+      }
+    ],
+    "ID": 1235,
+    "Name": "Нко",
+    "IsSystem": false,
+    "bankCategoryID": 14,
+    "bankParentCategoryID": 8,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2278,
+        "Mcc": 5661,
+        "MccCategoryID": 1236
+      },
+      {
+        "ID": 2284,
+        "Mcc": 5691,
+        "MccCategoryID": 1236
+      },
+      {
+        "ID": 2288,
+        "Mcc": 5651,
+        "MccCategoryID": 1236
+      },
+      {
+        "ID": 2297,
+        "Mcc": 5641,
+        "MccCategoryID": 1236
+      },
+      {
+        "ID": 2302,
+        "Mcc": 5699,
+        "MccCategoryID": 1236
+      },
+      {
+        "ID": 2329,
+        "Mcc": 5621,
+        "MccCategoryID": 1236
+      },
+      {
+        "ID": 2360,
+        "Mcc": 5631,
+        "MccCategoryID": 1236
+      }
+    ],
+    "ID": 1236,
+    "Name": "Одежда, обувь",
+    "IsSystem": false,
+    "bankCategoryID": 20,
+    "bankParentCategoryID": 4,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2279,
+        "Mcc": 4,
+        "MccCategoryID": 1237
+      }
+    ],
+    "ID": 1237,
+    "Name": "Мобильные/иб",
+    "IsSystem": false,
+    "bankCategoryID": 42,
+    "bankParentCategoryID": 5,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2280,
+        "Mcc": 0,
+        "MccCategoryID": 1238
+      }
+    ],
+    "ID": 1238,
+    "Name": "Проценты",
+    "IsSystem": true,
+    "bankCategoryID": null,
+    "bankParentCategoryID": null,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2281,
+        "Mcc": 4722,
+        "MccCategoryID": 1239
+      }
+    ],
+    "ID": 1239,
+    "Name": "Турагентства",
+    "IsSystem": false,
+    "bankCategoryID": 6,
+    "bankParentCategoryID": 1,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2283,
+        "Mcc": 5815,
+        "MccCategoryID": 1240
+      },
+      {
+        "ID": 2289,
+        "Mcc": 5262,
+        "MccCategoryID": 1240
+      },
+      {
+        "ID": 2304,
+        "Mcc": 5818,
+        "MccCategoryID": 1240
+      },
+      {
+        "ID": 2338,
+        "Mcc": 5817,
+        "MccCategoryID": 1240
+      },
+      {
+        "ID": 2377,
+        "Mcc": 5816,
+        "MccCategoryID": 1240
+      }
+    ],
+    "ID": 1240,
+    "Name": "ДРУГИЕ ОПЕРАЦИИ",
+    "IsSystem": false,
+    "bankCategoryID": 33,
+    "bankParentCategoryID": 8,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2286,
+        "Mcc": 7991,
+        "MccCategoryID": 1241
+      },
+      {
+        "ID": 2301,
+        "Mcc": 7922,
+        "MccCategoryID": 1241
+      },
+      {
+        "ID": 2330,
+        "Mcc": 7999,
+        "MccCategoryID": 1241
+      },
+      {
+        "ID": 2347,
+        "Mcc": 7996,
+        "MccCategoryID": 1241
+      },
+      {
+        "ID": 2357,
+        "Mcc": 7997,
+        "MccCategoryID": 1241
+      },
+      {
+        "ID": 2378,
+        "Mcc": 7993,
+        "MccCategoryID": 1241
+      }
+    ],
+    "ID": 1241,
+    "Name": "Развлечения",
+    "IsSystem": false,
+    "bankCategoryID": 19,
+    "bankParentCategoryID": 2,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2287,
+        "Mcc": 5712,
+        "MccCategoryID": 1242
+      },
+      {
+        "ID": 2294,
+        "Mcc": 5200,
+        "MccCategoryID": 1242
+      },
+      {
+        "ID": 2303,
+        "Mcc": 5719,
+        "MccCategoryID": 1242
+      },
+      {
+        "ID": 2324,
+        "Mcc": 5722,
+        "MccCategoryID": 1242
+      },
+      {
+        "ID": 2345,
+        "Mcc": 5261,
+        "MccCategoryID": 1242
+      },
+      {
+        "ID": 2369,
+        "Mcc": 5074,
+        "MccCategoryID": 1242
+      },
+      {
+        "ID": 2379,
+        "Mcc": 5211,
+        "MccCategoryID": 1242
+      }
+    ],
+    "ID": 1242,
+    "Name": "Дом, ремонт",
+    "IsSystem": false,
+    "bankCategoryID": 5,
+    "bankParentCategoryID": 7,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2291,
+        "Mcc": 6012,
+        "MccCategoryID": 1243
+      },
+      {
+        "ID": 2311,
+        "Mcc": 6051,
+        "MccCategoryID": 1243
+      },
+      {
+        "ID": 2337,
+        "Mcc": 6300,
+        "MccCategoryID": 1243
+      },
+      {
+        "ID": 2389,
+        "Mcc": 6538,
+        "MccCategoryID": 1243
+      },
+      {
+        "ID": 2393,
+        "Mcc": 6536,
+        "MccCategoryID": 1243
+      }
+    ],
+    "ID": 1243,
+    "Name": "Финан. услуги",
+    "IsSystem": false,
+    "bankCategoryID": 7,
+    "bankParentCategoryID": 8,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2295,
+        "Mcc": 5968,
+        "MccCategoryID": 1244
+      },
+      {
+        "ID": 2309,
+        "Mcc": 7311,
+        "MccCategoryID": 1244
+      },
+      {
+        "ID": 2315,
+        "Mcc": 5964,
+        "MccCategoryID": 1244
+      },
+      {
+        "ID": 2318,
+        "Mcc": 4215,
+        "MccCategoryID": 1244
+      },
+      {
+        "ID": 2322,
+        "Mcc": 8999,
+        "MccCategoryID": 1244
+      },
+      {
+        "ID": 2350,
+        "Mcc": 4214,
+        "MccCategoryID": 1244
+      },
+      {
+        "ID": 2387,
+        "Mcc": 7399,
+        "MccCategoryID": 1244
+      }
+    ],
+    "ID": 1244,
+    "Name": "Сервис. услуги",
+    "IsSystem": false,
+    "bankCategoryID": 15,
+    "bankParentCategoryID": 5,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2299,
+        "Mcc": 7011,
+        "MccCategoryID": 1245
+      },
+      {
+        "ID": 2308,
+        "Mcc": 3750,
+        "MccCategoryID": 1245
+      },
+      {
+        "ID": 2341,
+        "Mcc": 3665,
+        "MccCategoryID": 1245
+      }
+    ],
+    "ID": 1245,
+    "Name": "Отели",
+    "IsSystem": false,
+    "bankCategoryID": 28,
+    "bankParentCategoryID": 1,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2300,
+        "Mcc": 8299,
+        "MccCategoryID": 1246
+      }
+    ],
+    "ID": 1246,
+    "Name": "Образование",
+    "IsSystem": false,
+    "bankCategoryID": 30,
+    "bankParentCategoryID": 4,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2384,
+        "Mcc": 6010,
+        "MccCategoryID": 1247
+      },
+      {
+        "ID": 2394,
+        "Mcc": 6011,
+        "MccCategoryID": 1247
+      }
+    ],
+    "ID": 1247,
+    "Name": "Наличные",
+    "IsSystem": false,
+    "bankCategoryID": 21,
+    "bankParentCategoryID": 8,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2312,
+        "Mcc": 7299,
+        "MccCategoryID": 1248
+      }
+    ],
+    "ID": 1248,
+    "Name": "Частные услуги",
+    "IsSystem": false,
+    "bankCategoryID": 11,
+    "bankParentCategoryID": 5,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2313,
+        "Mcc": 7395,
+        "MccCategoryID": 1249
+      },
+      {
+        "ID": 2328,
+        "Mcc": 5946,
+        "MccCategoryID": 1249
+      },
+      {
+        "ID": 2335,
+        "Mcc": 7338,
+        "MccCategoryID": 1249
+      },
+      {
+        "ID": 2354,
+        "Mcc": 5045,
+        "MccCategoryID": 1249
+      },
+      {
+        "ID": 2362,
+        "Mcc": 5044,
+        "MccCategoryID": 1249
+      }
+    ],
+    "ID": 1249,
+    "Name": "Фото/видео",
+    "IsSystem": false,
+    "bankCategoryID": 23,
+    "bankParentCategoryID": 2,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2316,
+        "Mcc": 7372,
+        "MccCategoryID": 1250
+      },
+      {
+        "ID": 2320,
+        "Mcc": 4812,
+        "MccCategoryID": 1250
+      },
+      {
+        "ID": 2331,
+        "Mcc": 4816,
+        "MccCategoryID": 1250
+      },
+      {
+        "ID": 2356,
+        "Mcc": 4814,
+        "MccCategoryID": 1250
+      },
+      {
+        "ID": 2371,
+        "Mcc": 7375,
+        "MccCategoryID": 1250
+      }
+    ],
+    "ID": 1250,
+    "Name": "Связь, телеком",
+    "IsSystem": false,
+    "bankCategoryID": 9,
+    "bankParentCategoryID": 5,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2321,
+        "Mcc": 7512,
+        "MccCategoryID": 1251
+      },
+      {
+        "ID": 2373,
+        "Mcc": 7519,
+        "MccCategoryID": 1251
+      }
+    ],
+    "ID": 1251,
+    "Name": "Аренда авто",
+    "IsSystem": false,
+    "bankCategoryID": 24,
+    "bankParentCategoryID": 1,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2326,
+        "Mcc": 0,
+        "MccCategoryID": 1252
+      }
+    ],
+    "ID": 1252,
+    "Name": "Пополнение вклада",
+    "IsSystem": true,
+    "bankCategoryID": null,
+    "bankParentCategoryID": null,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2333,
+        "Mcc": 4112,
+        "MccCategoryID": 1253
+      }
+    ],
+    "ID": 1253,
+    "Name": "Ж/д билеты",
+    "IsSystem": false,
+    "bankCategoryID": 13,
+    "bankParentCategoryID": 1,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2334,
+        "Mcc": 5541,
+        "MccCategoryID": 1254
+      },
+      {
+        "ID": 2368,
+        "Mcc": 5542,
+        "MccCategoryID": 1254
+      },
+      {
+        "ID": 2388,
+        "Mcc": 5983,
+        "MccCategoryID": 1254
+      }
+    ],
+    "ID": 1254,
+    "Name": "Топливо",
+    "IsSystem": false,
+    "bankCategoryID": 16,
+    "bankParentCategoryID": 7,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2339,
+        "Mcc": 3301,
+        "MccCategoryID": 1255
+      },
+      {
+        "ID": 2349,
+        "Mcc": 4511,
+        "MccCategoryID": 1255
+      },
+      {
+        "ID": 2358,
+        "Mcc": 3011,
+        "MccCategoryID": 1255
+      },
+      {
+        "ID": 2366,
+        "Mcc": 3029,
+        "MccCategoryID": 1255
+      }
+    ],
+    "ID": 1255,
+    "Name": "Авиабилеты",
+    "IsSystem": false,
+    "bankCategoryID": 4,
+    "bankParentCategoryID": 1,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2340,
+        "Mcc": 5309,
+        "MccCategoryID": 1256
+      }
+    ],
+    "ID": 1256,
+    "Name": "Duty free",
+    "IsSystem": false,
+    "bankCategoryID": 1,
+    "bankParentCategoryID": 1,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2348,
+        "Mcc": 7832,
+        "MccCategoryID": 1257
+      },
+      {
+        "ID": 2381,
+        "Mcc": 13,
+        "MccCategoryID": 1257
+      }
+    ],
+    "ID": 1257,
+    "Name": "Кино",
+    "IsSystem": false,
+    "bankCategoryID": 37,
+    "bankParentCategoryID": 2,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2352,
+        "Mcc": 5995,
+        "MccCategoryID": 1258
+      },
+      {
+        "ID": 2374,
+        "Mcc": 742,
+        "MccCategoryID": 1258
+      }
+    ],
+    "ID": 1258,
+    "Name": "Животные",
+    "IsSystem": false,
+    "bankCategoryID": 22,
+    "bankParentCategoryID": 7,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2353,
+        "Mcc": 2,
+        "MccCategoryID": 1259
+      }
+    ],
+    "ID": 1259,
+    "Name": "Интернет, voip/иб",
+    "IsSystem": false,
+    "bankCategoryID": 40,
+    "bankParentCategoryID": 5,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2355,
+        "Mcc": 5941,
+        "MccCategoryID": 1260
+      },
+      {
+        "ID": 2375,
+        "Mcc": 5655,
+        "MccCategoryID": 1260
+      }
+    ],
+    "ID": 1260,
+    "Name": "Спорттовары",
+    "IsSystem": false,
+    "bankCategoryID": 47,
+    "bankParentCategoryID": 2,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2365,
+        "Mcc": 5944,
+        "MccCategoryID": 1261
+      }
+    ],
+    "ID": 1261,
+    "Name": "Ювелирные изделия и часы",
+    "IsSystem": false,
+    "bankCategoryID": 48,
+    "bankParentCategoryID": 4,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2372,
+        "Mcc": 5735,
+        "MccCategoryID": 1262
+      }
+    ],
+    "ID": 1262,
+    "Name": "Музыка",
+    "IsSystem": false,
+    "bankCategoryID": 3,
+    "bankParentCategoryID": 2,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2376,
+        "Mcc": 0,
+        "MccCategoryID": 1263
+      }
+    ],
+    "ID": 1263,
+    "Name": "Переводы",
+    "IsSystem": false,
+    "bankCategoryID": 57,
+    "bankParentCategoryID": null,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2391,
+        "Mcc": 0,
+        "MccCategoryID": 1264
+      }
+    ],
+    "ID": 1264,
+    "Name": "Вклад",
+    "IsSystem": false,
+    "bankCategoryID": null,
+    "bankParentCategoryID": null,
+    "BankID": 6
+  },
+  {
+    "MccCodes": [
+      {
+        "ID": 2392,
+        "Mcc": 5970,
+        "MccCategoryID": 1265
+      }
+    ],
+    "ID": 1265,
+    "Name": "Искусство",
+    "IsSystem": false,
+    "bankCategoryID": 18,
+    "bankParentCategoryID": 2,
+    "BankID": 6
+  }
+]

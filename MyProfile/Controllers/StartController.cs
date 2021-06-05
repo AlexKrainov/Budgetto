@@ -155,7 +155,8 @@ namespace MyProfile.Controllers
                         IsShowInCollective = true,
                         UserID = currentUser.ID,
                         BudgetSectinos = budgetSections,
-                        IsCreatedByConstructor = true
+                        IsCreatedByConstructor = true,
+                        BaseAreaID = area.ID
                     });
                 }
 
@@ -324,6 +325,8 @@ namespace MyProfile.Controllers
                     IsShowOnSite = true,
                     AreaID = x.AreaID,
                     AreaName = x.AreaName,
+                    BaseAreaID = x.BaseAreaID,
+
                     IsSelected = false,
                     IsShow_Filtered = true,
                     IsShow = true,

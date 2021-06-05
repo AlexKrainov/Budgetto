@@ -208,6 +208,7 @@ namespace MyProfile.User.Service
                          Month_Accounts = x.UserSettings.Month_Accounts,
                          Month_Summary = x.UserSettings.Month_Summary,
                          Month_ToDoLists = x.UserSettings.Month_ToDoLists,
+                         Month_ProgressBar = x.UserSettings.Month_ProgressBar,
 
                          Year_EarningWidget = x.UserSettings.Year_EarningWidget,
                          Year_InvestingWidget = x.UserSettings.Year_InvestingWidget,
@@ -373,6 +374,7 @@ namespace MyProfile.User.Service
                         DateCreate = now,
                         IsDefault = false,
                         Name = "Все наличные",
+                        IsCountBalanceInMainAccount = true,
                         ChildAccounts = new List<Account>{new Account
                         {
                             UserID = newUser.ID,
@@ -382,6 +384,8 @@ namespace MyProfile.User.Service
                             DateCreate = now,
                             IsDefault = true,
                             Name = "Наличные",
+                            IsCountBalanceInMainAccount = true,
+                            IsCountTheBalance = true,
                         } }
                     }
                 };

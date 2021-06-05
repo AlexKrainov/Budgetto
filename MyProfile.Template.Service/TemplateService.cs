@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
+﻿using Common.Service;
+using Microsoft.EntityFrameworkCore;
+using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
-using MyProfile.Entity.ModelEntitySave;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.Repository;
@@ -25,13 +25,16 @@ namespace MyProfile.Template.Service
         private UserLogService userLogService;
         private ProgressService progressService;
         private UserCounterService userCounterService;
+        private CommonService commonService;
 
-        public TemplateService(IBaseRepository repository, UserLogService userLogService, ProgressService progressService, UserCounterService userCounterService)
+        public TemplateService(IBaseRepository repository, UserLogService userLogService, ProgressService progressService,
+            UserCounterService userCounterService, CommonService commonService)
         {
             this.repository = repository;
             this.userLogService = userLogService;
             this.progressService = progressService;
             this.userCounterService = userCounterService;
+            this.commonService = commonService;
         }
 
         public async Task<TemplateViewModel> GetTemplateByID(Expression<Func<Template, bool>> predicate, bool addCollectiveBudget = true)
@@ -73,7 +76,7 @@ namespace MyProfile.Template.Service
                                             ID = z.ID,
                                             SectionID = z.BudgetSection.ID,
                                             SectionName = z.BudgetSection.Name,
-                                            CollectionSections = z.BudgetSection.CollectiveSections.Select(q => new BudgetSectionModelView { ID = q.ChildSection.ID }).ToList()
+                                            //CollectionSections = z.BudgetSection.CollectiveSections.Select(q => new BudgetSectionModelView { ID = q.ChildSection.ID }).ToList()
                                         })
                                         .ToList()
                                 })
@@ -289,7 +292,7 @@ namespace MyProfile.Template.Service
                         .ToListAsync();
         }
 
-        public async Task<TemplateErrorModelView> SaveTemplate(TemplateViewModel template, bool saveAs, bool isContstructorSave = false)
+        public async Task<TemplateErrorModelView> SaveTemplate(TemplateViewModel template, bool saveAs, bool isContstructorSave = false, bool isPreparedTemplate = false)
         {
             TemplateErrorModelView modelView = new TemplateErrorModelView { Template = template };
             var currentUser = UserInfo.Current;
@@ -347,6 +350,7 @@ namespace MyProfile.Template.Service
                     templateDB.Description = template.Description;
                     templateDB.IsDefault = template.IsDefault;
                     templateDB.IsCreatedByConstructor = template.IsCreatedByConstructor;
+                    templateDB.IsCreatedByPrepared = template.IsCreatedAsPrepared;
 
                     repository.Create(templateDB, true);
 
@@ -444,7 +448,14 @@ namespace MyProfile.Template.Service
             }
             else
             {
-                await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Template_Create, errorLogIDs: errorLogCreateIDs);
+                if (isPreparedTemplate)
+                {
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.PreparedTemplate_Create, errorLogIDs: errorLogCreateIDs);
+                }
+                else
+                {
+                    await userLogService.CreateUserLogAsync(currentUser.UserSessionID, UserLogActionType.Template_Create, errorLogIDs: errorLogCreateIDs);
+                }
             }
 
             #region Progress

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Common.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.Counter;
@@ -22,16 +24,22 @@ namespace MyProfile.Controllers
         private TemplateService templateService;
         private UserLogService userLogService;
         private UserCounterService userCounterService;
+        private CommonService commonService;
+        private SectionService sectionService;
 
         public TemplateController(IBaseRepository repository,
             TemplateService templateService,
             UserLogService userLogService,
-            UserCounterService userCounterService)
+            UserCounterService userCounterService,
+            CommonService commonService,
+            SectionService sectionService)
         {
             this.repository = repository;
             this.templateService = templateService;
             this.userLogService = userLogService;
             this.userCounterService = userCounterService;
+            this.commonService = commonService;
+            this.sectionService = sectionService;
         }
 
         public async Task<IActionResult> List()
@@ -92,6 +100,45 @@ namespace MyProfile.Controllers
 
             return Json(templateResult);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SavePreparedTemplate([FromBody] TemplateViewModel template)
+        {
+            TemplateErrorModelView templateResult = new TemplateErrorModelView();
+
+            try
+            {
+                templateResult = await templateService.SaveTemplate(template, false, isPreparedTemplate: true);
+            }
+            catch (Exception ex)
+            {
+                templateResult.IsOk = false;
+                await userLogService.CreateErrorLogAsync(UserInfo.Current.UserSessionID, where: "Template.SavePreparedTemplate", ex);
+            }
+
+            return Json(templateResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SavePreparedTemplateAndEdit([FromBody] TemplateViewModel template)
+        {
+            TemplateErrorModelView templateResult = new TemplateErrorModelView();
+
+            try
+            {
+                templateResult = await templateService.SaveTemplate(template, false, isPreparedTemplate: true);
+                await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.PreparedTemplate_GoToEdit);
+                templateResult.Href = "/Template/Edit/" + templateResult.Template.ID;
+            }
+            catch (Exception ex)
+            {
+                templateResult.IsOk = false;
+                await userLogService.CreateErrorLogAsync(UserInfo.Current.UserSessionID, where: "Template.SavePreparedTemplateAndEdit", ex);
+            }
+
+            return Json(templateResult);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> SaveAs([FromBody] TemplateViewModel template)
@@ -170,5 +217,17 @@ namespace MyProfile.Controllers
             return Json(new { isOk = true });
         }
 
+        [HttpGet]
+        public IActionResult GetPreparedTemplates()
+        {
+            var currentUser = UserInfo.Current;
+            var periodTypes = commonService.GetPeriodTypes();
+            var groupedAreaAndSection = sectionService.GetAllAreaAndSectionByPerson(currentUser.ID);
+
+            PreparedTemplateService preparedTemplate
+                = new PreparedTemplateService(periodTypes, groupedAreaAndSection);
+            var z = preparedTemplate.GetPreparedItems();
+            return Json(new { isOk = true, preparedTemplate = z });
+        }
     }
 }

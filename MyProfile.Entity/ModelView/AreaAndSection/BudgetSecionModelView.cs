@@ -19,7 +19,8 @@ namespace MyProfile.Entity.ModelView
 		public bool IsShowOnSite { get; set; }
         public bool IsShowInCollective { get; set; }
 
-		public int AreaID { get; set; }
+        public int? BaseAreaID { get; set; }
+        public int AreaID { get; set; }
 		public string AreaName { get; set; }
 		public bool IsUpdated { get; set; }
         public bool IsSaved { get; set; }
@@ -42,5 +43,6 @@ namespace MyProfile.Entity.ModelView
 		public bool IsSelected { get; set; } = true;
         public IList<TagSectionModelView> Tags { get; set; }
         public bool IsCashback { get; set; }
+        public bool IsRegularPayment { get; set; }
     }
 }

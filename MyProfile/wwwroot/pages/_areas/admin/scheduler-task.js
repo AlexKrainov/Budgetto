@@ -5,7 +5,7 @@
         statuses: [1, 2, 3, 4, 5],
 
         row: [],
-        forceTaskIDs: [1, 2, 3, 4, 5, 9, 10, 11],
+        forceTaskIDs: [1, 2, 3, 4, 5, 9, 10, 11, 12],
         //metadata
         dataTable: undefined,
         tableAjax: null,

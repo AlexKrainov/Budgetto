@@ -56,7 +56,65 @@ namespace MyProfile.Code
             //CheckUserProgress();
             //LoadTinkoffOperations();
             //UpdateCompanies();
-            //LinkUserTagsAndCompanies();
+            //CompaniesToJson();
+
+            CompaniesToProd();
+            LinkUserTagsAndCompanies();
+        }
+
+
+        private void CompaniesToProd()
+        {
+            if (repository.GetAll<Company>().Any() == false)
+            {
+
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\companies2prod.json"))
+                {
+                   var companies = (List<Company>)JsonConvert.DeserializeObject<List<Company>>(reader.ReadToEnd());
+                    foreach (var company in companies)
+                    {
+                        company.ID = 0;
+                    }
+                    repository.CreateRange(companies, true);
+                }
+
+                using (StreamReader reader = new StreamReader(hostingEnvironment.WebRootPath + @"\\json\\mcc2prod.json"))
+                {
+                    List<MccCategory> mccCategories = (List<MccCategory>)JsonConvert.DeserializeObject<List<MccCategory>>(reader.ReadToEnd());
+
+                    foreach (var mccCategory in mccCategories)
+                    {
+                        mccCategory.ID = 0;
+                        foreach (var mccCode in mccCategory.MccCodes)
+                        {
+                            mccCode.ID = 0;
+                        }
+                    }
+
+                    repository.CreateRange(mccCategories, true);
+                }
+            }
+        }
+
+        private void CompaniesToJson()
+        {
+            using (StreamWriter writer = new StreamWriter(hostingEnvironment.WebRootPath + @"\\json\\companies2prod.json"))
+            {
+                var cards = repository.GetAll<Company>()
+                     .ToList();
+                var s = JsonConvert.SerializeObject(cards);
+                writer.Write(s);
+                writer.Close();
+            }
+
+            using (StreamWriter writer = new StreamWriter(hostingEnvironment.WebRootPath + @"\\json\\mcc2prod.json"))
+            {
+                var cards = repository.GetAll<MccCategory>()
+                     .ToList();
+                var s = JsonConvert.SerializeObject(cards);
+                writer.Write(s);
+                writer.Close();
+            }
         }
 
         private void CreateProgressTypes()
@@ -412,13 +470,16 @@ namespace MyProfile.Code
                 {
                     var company = companies.FirstOrDefault(x => x.ID == file_company.ID);
 
-                    company.TagKeyWords = file_company.TagKeyWords;
-                    company.BankKeyWords = file_company.BankKeyWords;
-                    company.Site = file_company.Site;
-                    company.IsChecked = file_company.IsChecked;
-                    company.Name = file_company.Name;
+                    if (company != null)
+                    {
+                        company.TagKeyWords = file_company.TagKeyWords;
+                        company.BankKeyWords = file_company.BankKeyWords;
+                        company.Site = file_company.Site;
+                        company.IsChecked = file_company.IsChecked;
+                        company.Name = file_company.Name;
 
-                    repository.Update(company, true);
+                        repository.Update(company, true);
+                    }
                 }
             }
         }

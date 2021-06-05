@@ -24,5 +24,6 @@ namespace MyProfile.Entity.ModelView
 
 		public IEnumerable<BudgetSectionModelView> Sections { get; set; } = new List<BudgetSectionModelView>();
         public string CodeName { get; set; }
+        public int? BaseAreaID { get; set; }
     }
 }

@@ -146,6 +146,7 @@ namespace MyProfile.Identity
                     Dashboard_Month_IsShow_Summary = currentUser.UserSettings.Month_Summary,
                     Dashboard_Month_IsShow_Accounts = currentUser.UserSettings.Month_Accounts,
                     Dashboard_Month_IsShow_ToDoLists = currentUser.UserSettings.Month_ToDoLists,
+                    Dashboard_Month_IsShow_ProgressBar = currentUser.UserSettings.Month_ProgressBar,
 
                     Dashboard_Year_IsShow_BigCharts = currentUser.UserSettings.Year_BigCharts,
                     Dashboard_Year_IsShow_EarningChart = currentUser.UserSettings.Year_EarningWidget,

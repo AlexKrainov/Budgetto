@@ -139,8 +139,8 @@ namespace MyProfile.Budget.Service
                                 if (formulaItem.Type == FormulaFieldType.Section)
                                 {
                                     total = budgetRecordsDay
-                                    .Where(x => x.SectionID == formulaItem.ID)
-                                    .Sum(x => x.Total);
+                                        .Where(x => x.SectionID == formulaItem.ID)
+                                        .Sum(x => x.Total);
 
                                     expression = expression.Replace($"[{formulaItem.ID}]", total.ToString());
                                 }

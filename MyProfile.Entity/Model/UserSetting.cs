@@ -52,6 +52,7 @@ namespace MyProfile.Entity.Model
         public bool Month_Summary { get; set; }
         public bool Month_Accounts { get; set; }
         public bool Month_ToDoLists { get; set; }
+        public bool Month_ProgressBar { get; set; }
         #endregion
 
         #region Year page

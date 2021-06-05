@@ -11,11 +11,9 @@ namespace MyProfile.Entity.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
         [Required]
+        [MaxLength(128)]
         public string Name { get; set; }
-        /// <summary>
-        /// It needs for isolate the section created by the system
-        /// </summary>
-        public string CodeName { get; set; }
+        [MaxLength(512)]
         public string Description { get; set; }
         [MaxLength(64)]
         public string CssIcon { get; set; }
@@ -41,6 +39,10 @@ namespace MyProfile.Entity.Model
         /// Take into account cashback
         /// </summary>
         public bool IsCashback { get; set; }
+        /// <summary>
+        /// is budgetSection a regular payment ?
+        /// </summary>
+        public bool IsRegularPayment { get; set; }
 
         [ForeignKey("BudgetArea")]
         public int BudgetAreaID { get; set; }

@@ -41,10 +41,11 @@ namespace MyProfile.Entity.Model
 		/// Created by constructor after registration
 		/// </summary>
 		public bool IsCreatedByConstructor { get; set; }
+        public bool IsCreatedByPrepared { get; set; }
 
 
 
-		[ForeignKey("User")]
+        [ForeignKey("User")]
 		public Guid UserID { get; set; }
 		[ForeignKey("PeriodType")]
 		public int PeriodTypeID { get; set; }

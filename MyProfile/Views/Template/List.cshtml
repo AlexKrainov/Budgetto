@@ -4,6 +4,7 @@
 }
 
 @section Styles {
+    <link href="~/css/template.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts {
@@ -31,6 +32,9 @@
         <span class="px-0 pb-2 ml-4">
             <a class="btn btn-outline-primary rounded-pill" href="/Template/Edit"
                v-bind:class="currentCount >= limitCount ? 'disabled' : ''"> Добавить новый шаблон</a>
+            <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)"
+               v-bind:class="Object.keys(preparedTemplate).length === 0 ? 'disabled' : ''"
+               v-on:click="showPreparedModel"> Выбрать шаблон из подготовленных</a>
             <span class="badge align-text-bottom ml-1"
                   v-show="(limitCount - currentCount) < 10"
                   v-bind:class="currentCount >= limitCount ? 'badge-danger' : (limitCount - currentCount) <= 3 ? 'badge-warning' : 'badge-success'">Доступно {{ limitCount - currentCount }} </span>
@@ -113,32 +117,5 @@
 
     <hr class="border-light mt-2 mb-4">
 
-    @*
-            pages
-            <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="javascript:void(0)">«</a>
-                </li>
-                <li class="page-item active">
-                    <a class="page-link" href="javascript:void(0)">1</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0)">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0)">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0)">4</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0)">5</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="javascript:void(0)">»</a>
-                </li>
-            </ul>
-        </nav>*@
-
-</section>
+    @await Html.PartialAsync("_PreparedTemplates")
+</section>  

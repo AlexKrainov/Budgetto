@@ -80,6 +80,8 @@
         public const string Template_Recovery = "Template_Recovery";
         public const string Template_ColumnOrder = "Template_ColumnOrder";
         public const string Template_ToggleIsDefault = "Template_ToggleIsDefault";
+        public const string PreparedTemplate_Create = "PreparedTemplate_Create";
+        public const string PreparedTemplate_GoToEdit = "PreparedTemplate_GoToEdit";
 
         public const string Area_Create = "Area_Create";
         public const string Area_Edit = "Area_Edit";

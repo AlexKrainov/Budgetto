@@ -9,6 +9,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Limit.Service;
+using MyProfile.Progress.Service;
 using MyProfile.Reminder.Service;
 using MyProfile.Tag.Service;
 using MyProfile.UserLog.Service;
@@ -31,6 +32,7 @@ namespace MyProfile.Areas.Admin.Controllers
         private ReminderService reminderService;
         private HubManager hubManager;
         private LimitService limitService;
+        private ProgressService progressService;
 
         public SchedulerTaskController(BaseRepository repository,
             CommonService commonService,
@@ -40,7 +42,8 @@ namespace MyProfile.Areas.Admin.Controllers
             BaseTaskJob baseTaskJob,
             ReminderService reminderService,
             HubManager hubManager,
-            LimitService limitService)
+            LimitService limitService,
+            ProgressService progressService)
         {
             this.repository = repository;
             this.commonService = commonService;
@@ -51,6 +54,7 @@ namespace MyProfile.Areas.Admin.Controllers
             this.reminderService = reminderService;
             this.hubManager = hubManager;
             this.limitService = limitService;
+            this.progressService = progressService;
 
             if (UserInfo.Current.UserTypeID != (int)UserTypeEnum.Admin)
             {
@@ -123,7 +127,6 @@ namespace MyProfile.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult ForceStart(TaskType taskID)
         {
-
             switch (taskID)
             {
                 case TaskType.AccountRemoveCachback:
@@ -155,6 +158,9 @@ namespace MyProfile.Areas.Admin.Controllers
                     break;
                 case TaskType.AccountDailyWork:
                     baseTaskJob.BaseExecute(repository, TaskType.AccountDailyWork, accountService.AccountDailyWork);
+                    break;
+                case TaskType.ProgressMonthly:
+                    baseTaskJob.BaseExecute(repository, TaskType.ProgressMonthly, progressService.CopyToHistory);
                     break;
                 case TaskType.Test:
                     break;

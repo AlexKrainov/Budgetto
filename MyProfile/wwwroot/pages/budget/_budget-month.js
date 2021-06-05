@@ -272,12 +272,11 @@
 
     //Progress
     loadProgress: function () {
-        //if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_ToDoLists)) {
-        //    return false;
-        //}
+        if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_ProgressBar)) {
+            return false;
+        }
 
         setTimeout(function () {
-
 
             if (BudgetVue.progressAjax && (BudgetVue.progressAjax.readyState == 1 || BudgetVue.progressAjax.readyState == 3)) { // OPENED & LOADING
                 BudgetVue.progressAjax.abort();

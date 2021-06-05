@@ -24,9 +24,18 @@ namespace Common.Service
         }
         public List<PeriodType> GetPeriodTypes()
         {
-            return repository.GetAll<PeriodType>()
-                .Where(x => x.ID == (int)PeriodTypesEnum.Month || x.ID == (int)PeriodTypesEnum.Year)
-                .ToList();
+            List<PeriodType> periodTypes;
+
+            if (cache.TryGetValue(typeof(PeriodType).Name, out periodTypes) == false)
+            {
+                return repository.GetAll<PeriodType>()
+                   .Where(x => x.ID == (int)PeriodTypesEnum.Month || x.ID == (int)PeriodTypesEnum.Year)
+                   .ToList();
+
+                cache.Set(typeof(PeriodType).Name, periodTypes, DateTime.Now.AddDays(15));
+            }
+            return periodTypes;
+           
         }
 
         public string GenerateFormulaBySections(List<TemplateBudgetSectionPlusViewModel> sections)

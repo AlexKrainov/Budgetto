@@ -8,6 +8,7 @@ namespace MyProfile.Entity.ModelView.TemplateModelView
     {
         public bool IsOk { get; set; } = true;
         public TemplateViewModel Template { get; set; }
+        public string Href { get; set; }
 
 
         public bool NameAlreadyExist { get; set; } = false;

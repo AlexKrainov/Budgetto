@@ -56,15 +56,15 @@
                     v-else=""
                      v-bind:style="searchText ? '' : dataRecordsStyle">
                     <div v-for="area in areas">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center ui-bordered1">
-                        <div class="d-flex flex-wrap align-items-center">
-                            <a data-toggle="collapse" v-bind:href="'#order-' + area.areaID" class="d-block ml-3 collapsed" aria-expanded="true">
-                                <i class="collapse-icon" style=" display: inline-block;"></i>
-                                <strong class="ml-2"
-                                    v-bind:class="privateModeClass">{{ area.areaName }}</strong>
-                            </a>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center ui-bordered1">
+                            <div class="d-flex flex-wrap align-items-center">
+                                <a data-toggle="collapse" v-bind:href="'#order-' + area.areaID" class="d-block ml-3 collapsed" aria-expanded="true">
+                                    <i class="collapse-icon" style=" display: inline-block;"></i>
+                                    <strong class="ml-2"
+                                        v-bind:class="privateModeClass">{{ area.areaName }}</strong>
+                                </a>
+                            </div>
                         </div>
-                    </div>
                     <div class="collapse cards cards-small show" 
                         v-bind:id="'order-' + area.areaID" 
                         v-bind:class="dataClass">

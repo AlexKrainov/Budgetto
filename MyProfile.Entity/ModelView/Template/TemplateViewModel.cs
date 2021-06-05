@@ -1,4 +1,5 @@
 ﻿using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.BudgetView;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +23,10 @@ namespace MyProfile.Entity.ModelView
         public bool IsDefault { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsCreatedByConstructor { get; set; }
+        public bool IsCreatedAsPrepared { get; set; }
+
+        public List<List<Cell>> Rows { get; set; } = new List<List<Cell>>();
+        public List<List<FooterCell>> FooterRow { get; set; } = new List<List<FooterCell>>();
     }
 
     public class TemplateViewModel_Short
@@ -42,7 +47,7 @@ namespace MyProfile.Entity.ModelView
         public string Format { get; set; }
         public ushort PlaceAfterCommon { get; set; } = 2;
         public List<FormulaItem> Formula { get; set; } = new List<FormulaItem>();
-        public FooterActionType TotalAction { get; set; } = FooterActionType.Undefined;
+        public FooterActionType TotalAction { get; set; } = FooterActionType.Sum;
         public TemplateColumnType TemplateColumnType { get; set; } = TemplateColumnType.Undefined;
         public List<TemplateBudgetSection> TemplateBudgetSections { get; set; } = new List<TemplateBudgetSection>();
         public string ColumnSectionType { get; set; }
@@ -97,12 +102,13 @@ namespace MyProfile.Entity.ModelView
         public string BudgetAreaName { get; set; }
         public long SectionID { get; set; }
         public string SectionName { get; set; }
+        public int? SectionTypeID { get; set; }
 
 
         #region Collection budget
-        public long MainSectionID { get; set; } = -1;
-        public bool IsCollectSection { get; set; } = false;
-        public List<BudgetSectionModelView> CollectionSections { get; set; }
+        //public long MainSectionID { get; set; } = -1;
+        //public bool IsCollectSection { get; set; } = false;
+        //public List<BudgetSectionModelView> CollectionSections { get; set; }
         #endregion
     }
 }

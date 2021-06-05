@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210605093107_24")]
+    partial class _24
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,8 +353,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BaseAreaID");
-
                     b.Property<string>("Description");
 
                     b.Property<bool>("IsCreatedByConstructor");
@@ -366,14 +366,11 @@ namespace MyProfile.Entity.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128);
+                        .IsRequired();
 
                     b.Property<Guid?>("UserID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("BaseAreaID");
 
                     b.HasIndex("UserID");
 
@@ -389,6 +386,8 @@ namespace MyProfile.Entity.Migrations
                     b.Property<int?>("BaseSectionID");
 
                     b.Property<int>("BudgetAreaID");
+
+                    b.Property<string>("CodeName");
 
                     b.Property<string>("CssBackground")
                         .ValueGeneratedOnAdd()
@@ -406,14 +405,11 @@ namespace MyProfile.Entity.Migrations
                     b.Property<string>("CssIcon")
                         .HasMaxLength(64);
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(512);
+                    b.Property<string>("Description");
 
                     b.Property<bool>("IsCashback");
 
                     b.Property<bool>("IsCreatedByConstructor");
-
-                    b.Property<bool>("IsRegularPayment");
 
                     b.Property<bool>("IsShowInCollective")
                         .ValueGeneratedOnAdd()
@@ -424,8 +420,7 @@ namespace MyProfile.Entity.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128);
+                        .IsRequired();
 
                     b.Property<int?>("SectionTypeID");
 
@@ -2835,8 +2830,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("Month_ProgressBar");
-
                     b.Property<bool>("Month_SpendingWidget")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
@@ -3157,10 +3150,6 @@ namespace MyProfile.Entity.Migrations
 
             modelBuilder.Entity("MyProfile.Entity.Model.BudgetArea", b =>
                 {
-                    b.HasOne("MyProfile.Entity.Model.BaseArea", "BaseArea")
-                        .WithMany()
-                        .HasForeignKey("BaseAreaID");
-
                     b.HasOne("MyProfile.Entity.Model.User", "User")
                         .WithMany("BudgetAreas")
                         .HasForeignKey("UserID");

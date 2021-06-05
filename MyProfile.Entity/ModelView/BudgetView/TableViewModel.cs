@@ -5,9 +5,6 @@ using System.Collections.Generic;
 
 namespace MyProfile.Entity.ModelView.BudgetView
 {
-    public class TableViewModel
-    {
-    }
     public class Cell : ICloneable
     {
         /// <summary>
