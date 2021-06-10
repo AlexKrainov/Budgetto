@@ -58,8 +58,8 @@ namespace MyProfile.Code
             //UpdateCompanies();
             //CompaniesToJson();
 
-            CompaniesToProd();
-            LinkUserTagsAndCompanies();
+            //CompaniesToProd();
+           // LinkUserTagsAndCompanies();
         }
 
 

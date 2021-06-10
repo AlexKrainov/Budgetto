@@ -321,7 +321,7 @@ namespace MyProfile.Template.Service
             string defaultFormatColumn = GetDefaultFormatColumn(periodTypesEnum);
             var template = new TemplateViewModel
             {
-                Name = "Шаблон по путешествия",
+                Name = "Шаблон по путешествиям",
                 Description = "",
                 PeriodTypeID = (int)periodTypesEnum,
                 PeriodName = periodTypes.FirstOrDefault(x => x.ID == (int)periodTypesEnum).Name,
