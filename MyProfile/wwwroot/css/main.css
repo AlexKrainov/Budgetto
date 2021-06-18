@@ -870,3 +870,11 @@ html.dark-style .tagify__input::before {
 .cursor-not-click:hover {
     cursor: not-allowed !important;
 }
+
+.total-view-element {
+    height: 96px;
+    padding-top: 0px;
+}
+.total-view-element-selected {
+    border: 1px solid #26B4FF !important;
+}

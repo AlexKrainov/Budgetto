@@ -114,6 +114,15 @@
                 setTimeout(BudgetVue.refrehViewTable, 50);
             }
         },
+        toggleElement: function (fieldname, dataProp, dashboardname) {
+            let checked = document.querySelector("[data-prop=" + dataProp + "]").checked;
+
+            UserInfo.UserSettings[dashboardname] = BudgetVue[fieldname].isShow = checked;
+
+            if (typeof (BudgetVue.refrehViewTable) == "function") {
+                setTimeout(BudgetVue.refrehViewTable, 50);
+            }
+        },
 
         callMethod: function (method) {
             var fn = window.getFunctionFromString(method);

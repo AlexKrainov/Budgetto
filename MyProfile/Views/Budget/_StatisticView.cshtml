@@ -1,0 +1,170 @@
+﻿<div class="card mb-4 col-md-12"
+     v-show="statisticsData.isShow">
+    <h5 class="card-header with-elements border-0 pt-3 pb-0">
+        <span class="card-header-title"><i class="ion ion-md-stats text-primary"></i>&nbsp; Статистика</span>
+
+        <div class="card-header-elements ml-auto">
+
+        </div>
+    </h5>
+    <hr class="border-light mb-0">
+    <div class="row no-gutters row-bordered">
+        <div class="col-md-8 col-lg-12 col-xl-8" style="padding-top: 0px">
+            <div id="total-view1" class="row no-gutters row-bordered total-view" style="overflow: inherit; border-top: 1px solid lightgray;margin-top: -1px;">
+                <div class="col-sm-6 col-xl-4 total-view-element"
+                     v-for="totalView in statisticsData.totalView">
+                    @*v-bind:class="totalView.isSelected ? 'total-view-element-selected' : ''"*@
+                    <div class="card-body row" style="">
+                        <div class="col-md-6">
+                            <a class="text-body" href="javascript:void(0)"
+                               v-bind:class="totalView.isSelected ? 'text-primary' : ''"
+                               v-bind:style="totalView.sectionTypeEnum == 0 ? 'cursor: default' : 'text-decoration: underline;'"
+                               v-on:click="selectTotalView(totalView)">
+                                {{ totalView.name }}
+                            </a>
+                            <i data-toggle="tooltip" data-html="true" class="fas fa-info-circle cursor-help"
+                               v-bind:data-original-title="getSectionsTitle(totalView.sections, totalView.sectionTypeEnum )"></i>
+                            <strong class="text-large font-weight-normal d-block"
+                                    v-text="totalView.total"></strong>
+                            <sup v-show="totalView.percent != 0 && totalView.isGood" class="text-success small">+ {{ totalView.percent }}%</sup>
+                            <sup v-show="totalView.percent != 0 && !totalView.isGood" class="text-danger small">- {{ totalView.percent }}%</sup>
+                        </div>
+                        <div class="col-md-6" style="height: 65px;">
+                            <canvas v-bind:id="totalView.chartID" data-toggle="tooltip" data-html="true"
+                                    v-bind:data-original-title="totalView.title"></canvas>
+                            @*style="display: block; height: 65px; width: 192px;" width="240" height="81"*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100" style="height: 330px;">
+                <canvas id="main-chart" style="display: block; height: 100%; width: 95%;"></canvas>
+            </div>
+        </div>
+
+        <!-- Sources -->
+        <div class="col-md-4 col-lg-12 col-xl-4">
+            <div class="col-md-12 text-right p-2" style="border-bottom: 1px solid rgba(24,28,33,0.06)">
+                @*<a href="javascript:void(0)" class="small"
+                       v-bind:class="statisticsChartViewType == 1 ? 'text-dark' : ''"
+                       v-on:click="statisticsChartViewType = 1">Категориям</a>
+                    <a href="javascript:void(0)" class="small"
+                       v-bind:class="statisticsChartViewType == 2 ? 'text-dark' : ''"
+                       v-on:click="statisticsChartViewType = 2">Тегам</a>*@
+                <a href="javascript:void(0)" class="badge"
+                   v-bind:class="statisticsChartViewType == 1 ? 'badge-primary' : ''"
+                   v-on:click="statisticsChartViewType = 1">Категории</a>
+                <a href="javascript:void(0)" class="badge"
+                   v-bind:class="statisticsChartViewType == 2 ? 'badge-primary' : ''"
+                   v-on:click="statisticsChartViewType = 2">Теги</a>
+            </div>
+            <article class="px-4 pt-2"
+                     v-bind:style="{ overflow: 'auto', maxHeight: statisticsChartHeight + 'px' }">
+                <section class="mb-4"
+                         v-for="section in statisticsData.sections"
+                         v-show="statisticsChartViewType == 1 && section.isShow">
+                    <div class="media align-items-center pb-1 mb-1">
+                        <div class="ui-w-50">
+                            <div class="ui-square rounded-circle text-white"
+                                 v-bind:style="'background-color: ' + section.cssBackground">
+                                <div class="d-flex ui-square-content">
+                                    <div class="m-auto text-large"
+                                         v-bind:class="section.cssIcon"
+                                         v-bind:style="'color: ' + section.cssColor"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="media-body ml-3">
+                            <a href="javascript:void(0)" class="text-body"
+                               v-text="section.name"></a>
+                            <div class="text-muted small"
+                                 v-text="section.budgetAreaname"></div>
+                        </div>
+                        <div class="float-right">
+                            <span class=" pt-1"
+                                  v-text="getCurrencyValue(section.total, 'RUB')">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1" style="height:3px;">
+                        <div class="progress-bar"
+                             v-bind:class="section.sectionTypeID == 1 ? 'bg-success' : 'bg-danger'"
+                             v-bind:style="{ width: section.percent + '%'}"></div>
+                    </div>
+                    <a data-toggle="collapse" class="float-left ml-3 mt-1 collapsed" aria-expanded="false"
+                       v-bind:href="'#tags-' + section.id"
+                       v-show="section.tags && section.tags.length > 0">
+                        <i class="collapse-icon"></i>
+                    </a>
+                    <div class="float-right small mt-1">
+                        <span class="text-muted"
+                              v-text="section.percent + '%'"></span>
+                    </div>
+                    <div class="collapse"
+                         v-bind:id="'tags-' + section.id">
+                        <br />
+                        <div class="tagify__tag tagify--noAnim"
+                             v-for="tag in section.tags"
+                             v-bind:id="tag.id"
+                             v-bind:title="tag.title">
+                            <div>
+                                <img class="ui-w-20 rounded-circle mr-2"
+                                     v-bind:alt="tag.companyName"
+                                     v-bind:src="tag.companyLogo"
+                                     v-show="tag.companyLogo">
+                                <span class="tagify__tag-text">{{ tag.title }} - {{ getCurrencyValue(tag.total, 'RUB') }} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-4" />
+                </section>
+                <section class="mb-4"
+                         v-for="tag in statisticsData.tags"
+                         v-show="statisticsChartViewType == 2 && tag.isShow">
+                    <div class="media align-items-center pb-1 mb-1">
+                        <div class="ui-w-50">
+                            <img class="ui-w-50 rounded-circle" alt=""
+                                 v-bind:src="tag.companyLogo"
+                                 v-if="tag.companyLogo">
+                            @*<div class="ui-square rounded-circle text-white" style="background-color: rgb(255, 205, 210);"
+                                     v-else-if="tag.isSpending">
+                                    <div class="d-flex ui-square-content">
+                                    </div>
+                                </div>
+                                <div class="ui-square rounded-circle text-white" style="background-color: rgb(185, 246, 202);"
+                                     v-else-if="tag.isEarning">
+                                    <div class="d-flex ui-square-content">
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="media-body ml-3">
+                            <a href="javascript:void(0)" class="text-body"
+                               v-text="tag.title"></a>
+                            @*<div class="text-muted small"
+                                v-text="section.budgetAreaname"></div>*@
+                        </div>
+                        <div class="float-right">
+                            <span class=" pt-1"
+                                  v-text="getCurrencyValue(tag.total, 'RUB')">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1" style="height:3px;">
+                        <div class="progress-bar"
+                             v-bind:class="tag.isEarning ? 'bg-success' : 'bg-danger'"
+                             v-bind:style="{ width: tag.percent + '%'}"></div>
+                    </div>
+                    <div class="float-right small mt-1">
+                        <span class="text-muted"
+                              v-text="tag.percent + '%'"></span>
+                    </div>
+                    <hr class="mt-4" />
+                </section>
+
+                <hr />
+            </article>
+        </div>
+        <!-- / Sources -->
+
+    </div>
+</div>

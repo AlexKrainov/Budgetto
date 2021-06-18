@@ -55,6 +55,9 @@
         public const string BudgetPage_HideLimit = "BudgetPage_HideLimit";
         public const string BudgetPage_HideChirt = "BudgetPage_HideChirt";
 
+        public const string BudgetMonthPage_SettingsToggle = "BudgetMonthPage_SettingsToggle";
+        public const string BudgetYearPage_SettingsToggle = "BudgetYearPage_SettingsToggle";
+
         public const string Reminder_Part = "Reminder_Part";
         public const string ToDoListEdit_Part = "ToDoListEdit_Part";
 

@@ -109,7 +109,7 @@ namespace MyProfile.Progress.Service
             progressItems.Add(new ProgressItemViewModel
             {
                 CssClass = "pe-7s-date",
-                Tooltip = "Систематически заносить раходы/доходы",
+                Tooltip = "Систематически заносить расходы/доходы",
                 Description = countRecordsDays + " " + commonService.GetDays(countRecordsDays) + " из " + needToBeCount + " дня",
                 IsComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth).IsComplete,
                 DateComplete = progresses.FirstOrDefault(x => x.ProgressItemTypeID == (int)ProgressItemTypeEnum.CreateRecords70PercentAMonth).DateComplete,

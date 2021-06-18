@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.AreaAndSection;
+using MyProfile.Entity.ModelView.BudgetView;
+using MyProfile.Entity.ModelView.Chart;
+using MyProfile.Entity.ModelView.Tag;
 using MyProfile.Entity.ModelView.TotalBudgetView;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
@@ -44,18 +47,42 @@ namespace MyProfile.Budget.Service
             rates = new Dictionary<DateTime, List<CurrencyRateHistory>>();
         }
 
-        public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByYear(int year)
+        public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByYear(int year, bool isStatisticChart = false)
         {
             DateTime from = new DateTime(year, 1, 1, 0, 0, 0);
             DateTime to = new DateTime(year, 12, 31, 23, 59, 59);
             var currentUser = UserInfo.Current;
             var sections = sectionService.GetAllSectionForRecords();
 
-            TotalModelView spendingData = new TotalModelView { IsShow = currentUser.UserSettings.Year_SpendingWidget };
-            TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.Year_EarningWidget };
-            TotalModelView investingData = new TotalModelView { IsShow = currentUser.UserSettings.Year_InvestingWidget };
+            TotalModelView spendingData = new TotalModelView
+            {
+                IsShow = isStatisticChart || currentUser.UserSettings.Year_SpendingWidget,
+                ChartID = "spendingChart",
+                BackgroundColor = "rgba(217, 83, 79, .2)",
+                BorderColor = "rgba(217, 83, 79, 1)",
+                Title = "Динамика расходов за выбранный год",
+                IsSelected = true
+            };
+            TotalModelView earningData = new TotalModelView
+            {
+                IsShow = isStatisticChart || currentUser.UserSettings.Year_EarningWidget,
+                ChartID = "earningChart",
+                BackgroundColor = "rgba(2, 188, 119, .2)",
+                BorderColor = "rgba(2, 188, 119, 1)",
+                Title = "Динамика доходов за выбранный год",
+                IsSelected = true
+            };
+            TotalModelView investingData = new TotalModelView
+            {
+                IsShow = isStatisticChart || currentUser.UserSettings.Year_InvestingWidget,
+                ChartID = "investmentsChart",
+                BackgroundColor = "rgba(136, 151, 170, .2)",
+                BorderColor = "rgba(136, 151, 170, 1)",
+                Title = "Динамика пополений инвестиционных счетов за выбранный год",
+                IsSelected = false
+            };
 
-            if (currentUser.UserSettings.Year_SpendingWidget)
+            if (isStatisticChart || currentUser.UserSettings.Year_SpendingWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Spendings);
 
@@ -96,7 +123,7 @@ namespace MyProfile.Budget.Service
                 //}
             }
 
-            if (currentUser.UserSettings.Year_EarningWidget)
+            if (isStatisticChart || currentUser.UserSettings.Year_EarningWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Earnings);
 
@@ -136,7 +163,7 @@ namespace MyProfile.Budget.Service
                 // }
             }
 
-            if (currentUser.UserSettings.Year_InvestingWidget)
+            if (isStatisticChart || currentUser.UserSettings.Year_InvestingWidget)
             {
                 var accountHistories = repository.GetAll<AccountHistory>(x => x.Account.UserID == currentUser.ID
                     && (InvestAccountTypes.Contains(x.Account.AccountTypeID)
@@ -200,18 +227,167 @@ namespace MyProfile.Budget.Service
             return new Tuple<TotalModelView, TotalModelView, TotalModelView>(spendingData, earningData, investingData);
         }
 
-        public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByMonth(DateTime to)
+        public void GetTotalBySections(DateTime start, DateTime finish, List<UniversalChartSectionViewModel> sections, List<UniversalChartTagViewModel> tags)
+        {
+            var groupBySections = budgetRecordService.GetBudgetRecordsGroup(start, finish, x => x.SectionID).ToList();
+            var temp = budgetRecordService.GetBudgetRecordsGroup(start, finish, x => x.SectionTypeID).ToList();
+            var totalEarning = temp.Count == 0 ? 0 : temp.FirstOrDefault(x => x.Key == (int)SectionTypeEnum.Earnings).Sum(x => x.Total);
+            var totalSpending = temp.Count == 0 ? 0 : temp.FirstOrDefault(x => x.Key == (int)SectionTypeEnum.Spendings).Sum(x => x.Total);
+
+            for (int i = 0; i < groupBySections.Count; i++)
+            {
+                var section = sections.FirstOrDefault(x => x.ID == groupBySections[i].Key);
+                section.Total = groupBySections[i].Sum(x => x.Total);
+
+                if (section.Total != 0)
+                {
+                    if (section.SectionTypeID == (int)SectionTypeEnum.Earnings)
+                    {
+                        section.Percent = Math.Round(section.Total / totalEarning * 100, 2);
+                    }
+                    else
+                    {
+                        section.Percent = Math.Round(section.Total / totalSpending * 100, 2);
+                    }
+
+
+                    section.Tags = repository.GetAll<Record>(x => x.UserID == UserInfo.Current.ID
+                            && x.DateTimeOfPayment >= start && x.DateTimeOfPayment <= finish
+                            && x.IsDeleted != true
+                            && x.BudgetSectionID == section.ID
+                            && x.Tags.Count > 0)
+                        .SelectMany(x => x.Tags)
+                        .Select(x => new
+                        {
+                            x.UserTagID,
+                            x.Record.Total
+                        })
+                        .GroupBy(x => x.UserTagID)
+                        .Select(x => new
+                        {
+                            UserTagID = x.Key,
+                            Total = x.Sum(y => y.Total)
+                        })
+                        .Join(tags, x => x.UserTagID, y => y.ID, (x, y) => new UniversalChartTagViewModel
+                        {
+                            CompanyID = y.CompanyID,
+                            CompanyLogo = y.CompanyLogo,
+                            CompanyName = y.CompanyName,
+                            Title = y.Title,
+                            ID = x.UserTagID,
+                            SpendingSum = x.Total,
+                        })
+                        .OrderByDescending(x => x.SpendingSum)
+                        .ToList();
+                }
+            }
+        }
+
+        public List<UniversalChartTagViewModel> GetTotalByTags(DateTime start, DateTime finish, List<UniversalChartTagViewModel> tags)
+        {
+            tags = repository.GetAll<MyProfile.Entity.Model.RecordTag>(x => x.Record.UserID == UserInfo.Current.ID
+                && x.Record.DateTimeOfPayment >= start && x.Record.DateTimeOfPayment <= finish
+                && x.Record.IsDeleted != true
+                && x.UserTag.IsDeleted != true)
+                 .Select(x => new
+                 {
+                     x.UserTagID,
+                     x.Record.Total,
+                     x.Record.BudgetSection.SectionTypeID,
+                 })
+                 .GroupBy(x => x.UserTagID)
+                 .Select(x => new TmpTagModelView
+                 {
+                     UserTagID = x.Key,
+                     EarningSum = x.Where(y => y.SectionTypeID == (int)SectionTypeEnum.Earnings).Sum(y => y.Total),
+                     SpendingSum = x.Where(y => y.SectionTypeID == (int)SectionTypeEnum.Spendings).Sum(y => y.Total),
+                 })
+                 .Join(tags, x => x.UserTagID, y => y.ID, (x, y) => new UniversalChartTagViewModel
+                 {
+                     CompanyID = y.CompanyID,
+                     CompanyLogo = y.CompanyLogo,
+                     CompanyName = y.CompanyName,
+                     Title = y.Title,
+                     ID = x.UserTagID,
+                     EarningSum = x.EarningSum,
+                     SpendingSum = x.SpendingSum
+                 })
+                 .ToList();
+
+            if (tags.Count > 0)
+            {
+                var earningsTags = new List<UniversalChartTagViewModel>();
+                var temp = budgetRecordService.GetBudgetRecordsGroup(start, finish, x => x.SectionTypeID).ToList();
+                var totalEarning = temp.Count == 0 ? 0 : temp.FirstOrDefault(x => x.Key == (int)SectionTypeEnum.Earnings).Sum(x => x.Total);
+                var totalSpending = temp.Count == 0 ? 0 : temp.FirstOrDefault(x => x.Key == (int)SectionTypeEnum.Spendings).Sum(x => x.Total);
+
+                foreach (var tag in tags)
+                {
+                    if (tag.IsEarning)
+                    {
+                        earningsTags.Add(new UniversalChartTagViewModel
+                        {
+                            CompanyLogo = tag.CompanyLogo,
+                            CompanyID = tag.CompanyID,
+                            CompanyName = tag.CompanyName,
+                            ID = tag.ID,
+                            Title = tag.Title,
+                            EarningSum = tag.EarningSum,
+                            Percent = Math.Round(tag.EarningSum / totalEarning * 100, 2),
+                        });
+                    }
+
+                    if (tag.IsSpending)
+                    {
+                        tag.Percent = Math.Round(tag.SpendingSum / totalSpending * 100, 2);
+                    }
+                }
+
+                tags = tags
+                    .Union(earningsTags)
+                    .ToList();
+            }
+
+            return tags;
+        }
+
+
+        public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByMonth(DateTime to, bool isStatisticChart = false)
         {
             DateTime from = to.AddMonths(-11);
-            to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month), 23,59,59);
+            to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month), 23, 59, 59);
             var currentUser = UserInfo.Current;
             var sections = sectionService.GetAllSectionForRecords();
 
-            TotalModelView spendingData = new TotalModelView { IsShow = currentUser.UserSettings.Month_SpendingWidget };
-            TotalModelView earningData = new TotalModelView { IsShow = currentUser.UserSettings.Month_EarningWidget };
-            TotalModelView investingData = new TotalModelView { IsShow = currentUser.UserSettings.Month_InvestingWidget };
+            TotalModelView spendingData = new TotalModelView
+            {
+                IsShow = isStatisticChart || currentUser.UserSettings.Month_SpendingWidget,
+                ChartID = "spendingChart",
+                BackgroundColor = "rgba(217, 83, 79, .2)",
+                BorderColor = "rgba(217, 83, 79, 1)",
+                Title = "Динамика расходов за последний 12 месяцев",
+                IsSelected = true
+            };
+            TotalModelView earningData = new TotalModelView
+            {
+                IsShow = isStatisticChart || currentUser.UserSettings.Month_EarningWidget,
+                ChartID = "earningChart",
+                BackgroundColor = "rgba(2, 188, 119, .2)",
+                BorderColor = "rgba(2, 188, 119, 1)",
+                Title = "Динамика доходов за последний 12 месяцев",
+                IsSelected = true
+            };
+            TotalModelView investingData = new TotalModelView
+            {
+                IsShow = isStatisticChart || currentUser.UserSettings.Month_InvestingWidget,
+                ChartID = "investmentsChart",
+                BackgroundColor = "rgba(136, 151, 170, .2)",
+                BorderColor = "rgba(136, 151, 170, 1)",
+                Title = "Динамика пополений инвестиционных счетов за последний 12 месяцев",
+                IsSelected = false
+            };
 
-            if (currentUser.UserSettings.Month_SpendingWidget)
+            if (isStatisticChart || currentUser.UserSettings.Month_SpendingWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Spendings);
                 spendingData.data = tuple.Item1.ToArray();
@@ -247,7 +423,7 @@ namespace MyProfile.Budget.Service
                 }
             }
 
-            if (currentUser.UserSettings.Month_EarningWidget)
+            if (isStatisticChart || currentUser.UserSettings.Month_EarningWidget)
             {
                 var tuple = GetChartTotalByMonth(from, to, SectionTypeEnum.Earnings);
 
@@ -284,7 +460,7 @@ namespace MyProfile.Budget.Service
                 }
             }
 
-            if (currentUser.UserSettings.Month_InvestingWidget)
+            if (isStatisticChart || currentUser.UserSettings.Month_InvestingWidget)
             {
                 var from2 = to.AddMonths(-1);
 

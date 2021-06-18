@@ -189,6 +189,49 @@
 
         return this.bigChartsAjax;
     },
+    //STATISTICS
+    loadStatistics: function () {
+        if (!UserInfo.UserSettings.Dashboard_Month_IsShow_Statistics) {
+            return false;
+        }
+
+        if (this.statisticsAjax && (this.statisticsAjax.readyState == 1 || this.statisticsAjax.readyState == 3)) { // OPENED & LOADING
+            this.statisticsAjax.abort();
+        }
+
+
+        if (this.totalCharts) {
+
+            for (var i = 0; i < this.totalCharts.length; i++) {
+                this.totalCharts[i].destroy();
+            }
+            this.totalCharts = [];
+        }
+
+        this.statisticsAjax = $.ajax({
+            type: "GET",
+            url: "/Chart/StatisticChart?date=" + this.budgetDate + "&periodType=1",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+
+                //if (!UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts) {
+                //    return false;
+                //}
+
+                this.statisticsData = response.model;
+
+                //for (var i = 0; i < this.bigChartsData.length; i++) {
+                //    HideLoading('#bigChart_' + this.bigChartsData[i].chartID);
+                //}
+
+                setTimeout(function () { BudgetVue.initStatisticsChart(true) }, 100);
+            }
+        });
+
+        return this.bigChartsAjax;
+    },
     //Accounts 
     loadAccounts: function () {
         if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Accounts)) {

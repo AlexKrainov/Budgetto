@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210615105856_28")]
+    partial class _28
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2841,10 +2843,6 @@ namespace MyProfile.Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("Month_Statistics")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
                     b.Property<bool>("Month_Summary")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
@@ -2880,10 +2878,6 @@ namespace MyProfile.Entity.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<bool>("Year_SpendingWidget")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("Year_Statistics")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 

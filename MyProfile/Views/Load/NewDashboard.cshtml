@@ -72,11 +72,265 @@
                     console.log(error);
                 }
             });
+
+
+            var chart1 = new Chart(document.getElementById('statistics-chart-1').getContext("2d"), {
+                type: 'line',
+                data: {
+                    labels: ['2017-03', '2017-04', '2017-05', '2017-06', '2017-07', '2017-08', '2017-09', '2017-10', '2017-11', '2017-12', '2018-01', '2018-02'],
+                    datasets: [{
+                        label: 'Расходы',
+                        data: [14, 17, 20, 26, 30, 42, 43, 43, 45, 56, 68, 69],
+                        borderWidth: 1,
+                        //borderDash: [5, 5],
+                        backgroundColor: 'rgba(231,76,60, 0.27)',
+                        borderColor: "#E74C3C",
+                        fill: true,
+                        //fill: false
+                    }, {
+                        label: 'Доходы',
+                        data: [0, 0, 25, 25, 25, 25, 25, 25, 40, 40, 40, 40],
+                        borderWidth: 2,
+                        //backgroundColor: 'rgba(39,174,96, 0.27)',
+                        borderColor: '#27AE60',
+                        fill: false,
+
+                    }],
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: true
+                            },
+                            ticks: {
+                                fontColor: '#aaa',
+                                autoSkipPadding: 50
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: true
+                            },
+                            ticks: {
+                                fontColor: '#aaa',
+                                maxTicksLimit: 5
+                            }
+                        }],
+                    },
+                    legend: {},
+                    //interaction: {
+                    //    mode: 'index',
+                    //    intersect: false
+                    //},
+                    responsive: false,
+                    maintainAspectRatio: false
+                }
+            });
         });
 
         // $('#modal-record1').modal('show');
     </script>
 }
+
+<div id="chart">
+    <div class="card mb-4">
+        <h5 class="card-header with-elements border-0 pt-3 pb-0">
+            <span class="card-header-title"><i class="ion ion-md-stats text-primary"></i>&nbsp; Статистика</span>
+
+            <div class="card-header-elements ml-auto">
+
+            </div>
+        </h5>
+        <hr class="border-light mb-0">
+        <div class="row no-gutters row-bordered">
+            <div class="col-md-8 col-lg-12 col-xl-8" style="padding-top: 0px">
+                <div id="total-view" class="row no-gutters row-bordered total-view" style="overflow: inherit; border-top: 1px solid lightgray;margin-top: -1px;">
+                    <div class="col-sm-6 col-xl-4" style="height: 96px; border: 1px solid #26B4FF !important;padding-top: 0px;">
+                        <div class="card-body row" style="">
+                            <div class="col-md-6">
+                                <div class="text-muted small">
+                                    Доходы <i data-toggle="tooltip" data-html="true" data-original-title="Доходы за месяц по категориям: <ul class='my-1 pl-3'><li>Зарплата</li><li>Кэшбэки</li><li>Доп. доходы</li><li>Доходы Аня</li><li>Дивиденды</li></ul>" class="fas fa-info-circle cursor-help"></i>
+                                </div>
+                                <strong class="text-large font-weight-normal">39&nbsp;772 ₽</strong>
+                                <sup class="text-success small" style="display: none;">+ 0%</sup>
+                                <sup class="text-danger small" style="display: none;">- 0%</sup>
+                            </div>
+                            <div class="col-md-6" style="height: 65px;">
+                                <canvas id="earningChart" style="display: block; height: 65px; width: 192px;" width="240" height="81"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" style="height: 96px; border: 1px solid #26B4FF !important;padding-top: 0px;">
+                        <div class="card-body row" style="">
+                            <div class="col-md-6">
+                                <div class="text-muted small">
+                                    Расходы <i data-toggle="tooltip" data-html="true" data-original-title="Расходы за  месяц по категориям: <ul class='my-1 pl-3'><li>Продукты</li><li>Другие расходы</li><li>Траты на ребенка</li><li>Транспорт</li><li>Фастфуд</li><li>Аптека</li><li>Связь</li><li>За квартиру</li><li>Электричество</li><li>Вода</li><li>Комиссия брокера</li><li>Ремонт</li><li>Рестораны</li><li>Интернет</li><li>Банкинг</li><li>Подписки</li><li>Услуги</li><li>Одежда</li><li>Гаджеты и бытовая тех.</li><li>Красота</li><li>Налоги</li><li>Книги</li><li>Посещение врача</li><li>Мед процедуры</li><li>Стоматология</li><li>Подарки</li><li>Развлечения</li><li>Цветы</li><li>Анализы</li><li>Тестировщик</li><li>Детский садик</li><li>Мебель (декор)</li><li>Налоги по инвестициям</li><li>Обучение</li><li>Отели</li><li>Реклама</li><li>Комиссии</li></ul>" class="fas fa-info-circle cursor-help"></i>
+                                </div> <strong class="text-large font-weight-normal">25&nbsp;223 ₽</strong> <sup class="text-danger small" style="display: none;">+ 0%</sup> <sup class="text-success small" style="display: none;">- 0%</sup>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="height: 70px;">
+                                    <canvas id="spendingChart" width="240" height="87" style="display: block; height: 70px; width: 192px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" style="height: 96px;padding-top: 0px;">
+                        <div class="card-body row" style="">
+                            <div class="col-md-6">
+                                <div class="text-muted small">
+                                    Инвестиции <i data-toggle="tooltip" data-html="true" data-original-title="Пополнения за  месяц по счетам: <ul class='my-1 pl-3'><li>Брокер Открытие</li><li>Тинькофф Инвестиции</li><li>Портфель 2</li><li>ИИС</li><li>№165562</li><li>Вклад</li></ul>" class="fas fa-info-circle cursor-help"></i>
+                                </div> <strong class="text-large font-weight-normal">0 ₽</strong> <sup class="text-danger small" style="display: none;">- 0%</sup> <sup class="text-success small" style="display: none;">+ 0%</sup>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="height: 70px;">
+                                    <canvas id="investmentsChart" width="240" height="87" style="display: block; height: 70px; width: 192px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100" style="height: 330px;">
+                    <canvas id="statistics-chart-1" style="display: block; height: 100%; width: 100%;"></canvas>
+                </div>
+            </div>
+
+            <!-- Sources -->
+            <div class="col-md-4 col-lg-12 col-xl-4">
+                <div class="col-md-12 text-right" style="border-bottom: 1px solid rgba(24,28,33,0.06)">
+                    <a href="javascript:void(0)" class="small text-dark">By sections</a>
+                    <a href="javascript:void(0)" class="small">By tags</a>
+                    <button type="button" class="btn icon-btn borderless btn-outline-primary">
+                        <i class="ion ion-ios-arrow-round-up"></i>
+                        <i class="ion ion-ios-arrow-round-down "></i>
+                    </button>
+                </div>
+                <article class="px-4 pt-2">
+                    <section class="mb-4">
+                        <div class="media align-items-center pb-1 mb-1">
+                            <div class="ui-w-50">
+                                <div class="ui-square rounded-circle text-white" style="background-color: #ffcdd2">
+                                    <div class="d-flex ui-square-content">
+                                        <div class="m-auto text-large fas fa-cocktail" style="color: rgba(24,28,33,0.8)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="media-body ml-3">
+                                <a href="javascript:void(0)" class="text-body">Красота</a>
+                                <div class="text-muted small">
+                                    <tag title="ВкусВилл" class="tagify__tag tagify--noAnim" id="28">
+                                        <div>
+                                            <img src="/resources/companies/vkusvill-1.png" class="ui-w-20 rounded-circle mr-2" alt="">
+                                            <span class="tagify__tag-text">ВкусВилл - 3000&nbsp;₽</span>
+                                        </div>
+                                    </tag>
+                                </div>
+                            </div>
+                            <div class="float-right">
+                                <span class=" pt-1">
+                                    5000&nbsp;₽
+                                </span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1" style="height:3px;">
+                            <div class="progress-bar bg-danger" style="width: 79.77%;"></div>
+                        </div>
+                        <div class="float-right small mt-1">
+                            <span class="text-muted">79.77%</span>
+                        </div>
+                    </section>
+                    <hr />
+                    <section class="mb-4">
+                        <div class="media align-items-center pb-1 mb-1">
+                            <div class="ui-w-50">
+                                <div class="ui-square rounded-circle text-white" style="background-color: #ffcdd2">
+                                    <div class="d-flex ui-square-content">
+                                        <div class="m-auto text-large fas fa-shopping-cart" style="color: rgba(24,28,33,0.8)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="media-body ml-3">
+                                <a href="javascript:void(0)" class="text-body">Продукты</a>
+                                @*<div class="text-muted small">1 mutual friend</div>*@
+                            </div>
+                            <div class="float-right">
+                                <span class=" pt-1">
+                                    4000&nbsp;₽
+                                </span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1" style="height:3px;">
+                            <div class="progress-bar bg-danger" style="width: 59.77%;"></div>
+                        </div>
+                        <a data-toggle="collapse" href="#order-4153148974123" class="float-left ml-3 mt-1 collapsed" aria-expanded="false">
+                            <i class="collapse-icon"></i>
+                        </a>
+                        <div class="float-right small mt-1">
+                            <span class="text-muted">59.77%</span>
+                        </div>
+                        <div class="collapse" id="order-4153148974123" style="">
+                            <br />
+                            <tag title="ВкусВилл" class="tagify__tag tagify--noAnim" id="28">
+                                <div>
+                                    <img src="/resources/companies/vkusvill-1.png" class="ui-w-20 rounded-circle mr-2" alt="">
+                                    <span class="tagify__tag-text">ВкусВилл - 6000&nbsp;₽</span>
+                                </div>
+                            </tag>
+                            <tag title="ВкусВилл" class="tagify__tag tagify--noAnim" id="28">
+                                <div>
+                                    <img src="/resources/companies/apteka_aprel.png" class="ui-w-20 rounded-circle mr-2" alt="">
+                                    <span class="tagify__tag-text">ВкусВилл - 3000&nbsp;₽</span>
+                                </div>
+                            </tag>
+                            <tag title="ВкусВилл" class="tagify__tag tagify--noAnim" id="28">
+                                <div>
+                                    <img src="/resources/companies/airbnb.png" class="ui-w-20 rounded-circle mr-2" alt="">
+                                    <span class="tagify__tag-text">ВкусВилл - 1000&nbsp;₽</span>
+                                </div>
+                            </tag>
+                            <tag title="ВкусВилл" class="tagify__tag tagify--noAnim" id="28">
+                                <div>
+                                    <img src="/resources/companies/vkusvill-1.png" class="ui-w-20 rounded-circle mr-2" alt="">
+                                    <span class="tagify__tag-text">ВкусВилл - 3000&nbsp;₽</span>
+                                </div>
+                            </tag>
+                        </div>
+                    </section>
+                    <hr />
+                    <section class="mb-4">
+                        <div class="media align-items-center pb-1 mb-1">
+                            <div class="ui-w-50">
+                                <div class="ui-square rounded-circle text-white" style="background-color: #ffcdd2">
+                                    <div class="d-flex ui-square-content">
+                                        <div class="m-auto text-large fas fa-hamburger" style="color: rgba(24,28,33,0.8)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="media-body ml-3">
+                                <a href="javascript:void(0)" class="text-body">Фастфуд</a>
+                                <div class="text-muted small">1 mutual friend</div>
+                            </div>
+                            <div class="float-right">
+                                <span class=" pt-1">
+                                    3000&nbsp;₽
+                                </span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1" style="height:3px;">
+                            <div class="progress-bar bg-danger" style="width: 49.77%;"></div>
+                        </div>
+                        <div class="float-right small mt-1">
+                            <span class="text-muted">49.77%</span>
+                        </div>
+                    </section>
+                    <hr />
+                </article>
+            </div>
+            <!-- / Sources -->
+
+        </div>
+    </div>
+</div>
 
 <div id="budget-vue" style="margin-top: -12px;">
     <input type="hidden" id="templateID_hidden" value="-1" />

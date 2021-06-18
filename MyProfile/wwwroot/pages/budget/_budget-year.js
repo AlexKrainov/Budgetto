@@ -179,7 +179,7 @@
     },
     //Accounts 
     loadAccounts: function () {
-        if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Accounts)) {
+        if (!(UserInfo.UserSettings.Dashboard_Year_IsShow_Accounts)) {
             return false;
         }
 
@@ -205,7 +205,7 @@
     },
     //Summary
     loadSummaries: function () {
-        if (!(UserInfo.UserSettings.Dashboard_Month_IsShow_Summary)) {
+        if (!(UserInfo.UserSettings.Dashboard_Year_IsShow_Summary)) {
             return false;
         }
 
@@ -259,6 +259,49 @@
     //Progress
     loadProgress: function () {
         return null;
+    },
+    //STATISTICS
+    loadStatistics: function () {
+        if (!UserInfo.UserSettings.Dashboard_Year_IsShow_Statistics) {
+            return false;
+        }
+
+        if (this.statisticsAjax && (this.statisticsAjax.readyState == 1 || this.statisticsAjax.readyState == 3)) { // OPENED & LOADING
+            this.statisticsAjax.abort();
+        }
+
+
+        if (this.totalCharts) {
+
+            for (var i = 0; i < this.totalCharts.length; i++) {
+                this.totalCharts[i].destroy();
+            }
+            this.totalCharts = [];
+        }
+
+        this.statisticsAjax = $.ajax({
+            type: "GET",
+            url: "/Chart/StatisticChart?year=" + this.budgetYear + "&periodType=3",
+            contentType: "application/json",
+            dataType: 'json',
+            context: this,
+            success: function (response) {
+
+                //if (!UserInfo.UserSettings.Dashboard_Month_IsShow_GoalCharts) {
+                //    return false;
+                //}
+
+                this.statisticsData = response.model;
+
+                //for (var i = 0; i < this.bigChartsData.length; i++) {
+                //    HideLoading('#bigChart_' + this.bigChartsData[i].chartID);
+                //}
+
+                setTimeout(function () { BudgetVue.initStatisticsChart(true) }, 100);
+            }
+        });
+
+        return this.bigChartsAjax;
     },
 };
 

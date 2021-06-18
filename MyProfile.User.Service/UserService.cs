@@ -209,6 +209,7 @@ namespace MyProfile.User.Service
                          Month_Summary = x.UserSettings.Month_Summary,
                          Month_ToDoLists = x.UserSettings.Month_ToDoLists,
                          Month_ProgressBar = x.UserSettings.Month_ProgressBar,
+                         Month_Statistics = x.UserSettings.Month_Statistics,
 
                          Year_EarningWidget = x.UserSettings.Year_EarningWidget,
                          Year_InvestingWidget = x.UserSettings.Year_InvestingWidget,
@@ -219,6 +220,7 @@ namespace MyProfile.User.Service
                          Year_Accounts = x.UserSettings.Year_Accounts,
                          Year_Summary = x.UserSettings.Year_Summary,
                          Year_ToDoLists = x.UserSettings.Year_ToDoLists,
+                         Year_Statistics = x.UserSettings.Year_Statistics,
 
                          GoalPage_IsShow_Collective = x.UserSettings.GoalPage_IsShow_Collective,
                          GoalPage_IsShow_Finished = x.UserSettings.GoalPage_IsShow_Finished,

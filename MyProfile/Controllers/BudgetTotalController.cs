@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProfile.Budget.Service;
+using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using System;
 using System.Threading.Tasks;
@@ -35,5 +36,7 @@ namespace MyProfile.Controllers
 
             return Json(new { SpendingData = values.Item1, EarningData = values.Item2, InvestingData = values.Item3 });
         }
+
+
     }
 }

@@ -53,6 +53,7 @@ namespace MyProfile.Entity.Model
         public bool Month_Accounts { get; set; }
         public bool Month_ToDoLists { get; set; }
         public bool Month_ProgressBar { get; set; }
+        public bool Month_Statistics { get; set; }
         #endregion
 
         #region Year page
@@ -84,6 +85,7 @@ namespace MyProfile.Entity.Model
         public bool Year_Summary { get; set; }
         public bool Year_Accounts { get; set; }
         public bool Year_ToDoLists { get; set; }
+        public bool Year_Statistics { get; set; }
         #endregion
 
         #region Limit page

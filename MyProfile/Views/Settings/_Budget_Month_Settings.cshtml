@@ -149,6 +149,21 @@
     </div>
 </label>
 
+<h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Статистика</span> </h5>
+<label class="m-0 px-4 pb-3 d-flex media align-items-middle">
+    <div class="media-body">
+        <span class="theme-settings-t-rtl_switcher">Показывать статистику</span>
+    </div>
+    <div class="switcher switcher-sm d-block m-0">
+        <input class="switcher-input" type="checkbox" checked="@UserInfo.UserSettings.Month_Statistics" name="user_settings" data-prop="Month_Statistics"
+               v-on:change="toggleElement('statisticsData', 'Month_Statistics', 'Dashboard_Month_IsShow_Statistics'); change(false, ['BudgetVue.loadStatistics']);">
+        <span class="switcher-indicator">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+        </span>
+    </div>
+</label>
+
 </label>
 <h5 class="m-0 px-4 py-3 line-height-1 text-light d-block"> <span class="theme-settings-t-layout_header">Финансовая грамотность</span> </h5>
 <label class="m-0 px-4 pb-3 d-flex media align-items-middle">

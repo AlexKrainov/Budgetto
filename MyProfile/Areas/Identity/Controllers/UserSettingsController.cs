@@ -57,6 +57,10 @@ namespace MyProfile.Areas.Identity.Controllers
                 user.UserSettings.Month_ToDoLists = dbUserSettings.Month_ToDoLists = userSettings.Month_ToDoLists;
 
                 user.UserSettings.Month_ProgressBar = dbUserSettings.Month_ProgressBar = userSettings.Month_ProgressBar;
+
+                user.UserSettings.Month_Statistics = dbUserSettings.Month_Statistics = userSettings.Month_Statistics;
+
+                await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.BudgetMonthPage_SettingsToggle);
             }
             else if (userSettings.PageName == "Budget/Year")
             {
@@ -76,6 +80,10 @@ namespace MyProfile.Areas.Identity.Controllers
                 user.UserSettings.Year_Accounts = dbUserSettings.Year_Accounts = userSettings.Year_Accounts;
 
                 user.UserSettings.Year_ToDoLists = dbUserSettings.Year_ToDoLists = userSettings.Year_ToDoLists;
+
+                user.UserSettings.Year_Statistics = dbUserSettings.Year_Statistics= userSettings.Year_Statistics;
+
+                await userLogService.CreateUserLogAsync(user.UserSessionID, UserLogActionType.BudgetYearPage_SettingsToggle);
             }
             else if (userSettings.PageName == "Goal/List")
             {
@@ -91,7 +99,7 @@ namespace MyProfile.Areas.Identity.Controllers
             await UserInfo.AddOrUpdate_Authenticate(user);
 
             await repository.UpdateAsync(dbUserSettings, true);
-
+           
             return Json(new { isOk = true });
         }
 

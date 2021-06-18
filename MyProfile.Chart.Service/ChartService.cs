@@ -119,24 +119,22 @@ namespace MyProfile.Chart.Service
 
         public async Task<List<ChartViewModel>> GetChartData(DateTime start, DateTime finish, PeriodTypesEnum periodTypesEnum)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            List<string> stopwatchs = new List<string>();
+            //Stopwatch stopwatch = new Stopwatch();
+            //List<string> stopwatchs = new List<string>();
             bool isShow = true;
 
-
-            stopwatch.Start();//1
+            //stopwatch.Start();//1
 
             var currentUser = UserInfo.Current;
 
-            stopwatch.Stop();
-            stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
-            stopwatch.Reset();
+            //stopwatch.Stop();
+            //stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
+            //stopwatch.Reset();
 
             List<ChartEditModel> charts = new List<ChartEditModel>();
             Func<TmpBudgetRecord, int> groupBy = x => x.DateTimeOfPayment.Day;
 
-
-            stopwatch.Start();//2
+            //stopwatch.Start();//2
 
             if (periodTypesEnum == PeriodTypesEnum.Month)
             {
@@ -150,11 +148,11 @@ namespace MyProfile.Chart.Service
                 groupBy = x => x.DateTimeOfPayment.Month;
             }
 
-            stopwatch.Stop();
-            stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
-            stopwatch.Reset();
+            //stopwatch.Stop();
+            //stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
+            //stopwatch.Reset();
 
-            stopwatch.Start();//3
+            //stopwatch.Start();//3
 
             var chartIDs = charts.Select(x => x.ID);
             var allSections = repository.GetAll<Chart>(x => chartIDs.Contains(x.ID))
@@ -162,42 +160,28 @@ namespace MyProfile.Chart.Service
                 .SelectMany(x => x.SectionGroupCharts)
                 .Select(x => x.BudgetSectionID);
 
-            stopwatch.Stop();
-            stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
-            stopwatch.Reset();
+            //stopwatch.Stop();
+            //stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
+            //stopwatch.Reset();
 
-            stopwatch.Start();//4
+            //stopwatch.Start();//4
 
             var dataGroupByDay = budgetRecordService.GetBudgetRecordsGroup(start, finish,
                 groupBy,
                 y => allSections.Contains(y.BudgetSectionID)).ToList();
 
-            stopwatch.Stop();
-            stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
-            stopwatch.Reset();
+            //stopwatch.Stop();
+            //stopwatchs.Add((stopwatch.ElapsedMilliseconds).ToString());
+            //stopwatch.Reset();
 
             List<ChartViewModel> chartData = new List<ChartViewModel>();
 
             var labels = new List<string>();
-            int totalDaysOrMonth = 12;
-
-            if (charts.Count > 0 && periodTypesEnum == PeriodTypesEnum.Month)
-            {
-                totalDaysOrMonth = (int)((finish - start).TotalDays + 1);
-
-                for (int day = 1; day < totalDaysOrMonth; day++)
-                {
-                    labels.Add(day.ToString());
-                }
-            }
-            else if (charts.Count > 0 && periodTypesEnum == PeriodTypesEnum.Year)
-            {
-                labels = new List<string> { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
-            }
+            int totalDaysOrMonth = GetLabels(ref labels, start, finish, periodTypesEnum);
 
             foreach (var chart in charts.OrderBy(x => x.IsBig))
             {
-                stopwatch.Start();//5
+                //stopwatch.Start();//5
 
                 ChartViewModel chartViewModel = new ChartViewModel
                 {
@@ -352,12 +336,204 @@ namespace MyProfile.Chart.Service
 
                 chartData.Add(chartViewModel);
 
-                stopwatch.Stop();
-                stopwatchs.Add(chart.ChartTypeCodeName + " : " + (stopwatch.ElapsedMilliseconds).ToString());
-                stopwatch.Reset();
+                //stopwatch.Stop();
+                //stopwatchs.Add(chart.ChartTypeCodeName + " : " + (stopwatch.ElapsedMilliseconds).ToString());
+                //stopwatch.Reset();
             }
 
             return chartData;
+        }
+
+        public ChartViewModel GetUniversalChartData(DateTime start, DateTime finish, PeriodTypesEnum periodTypesEnum, List<UniversalChartSectionViewModel> allSections)
+        {
+            bool isShow = true;
+            var now = DateTime.Now;
+            var currentUser = UserInfo.Current;
+            decimal maxTotal = 0;
+
+            Func<TmpBudgetRecord, int> groupBy = x => x.DateTimeOfPayment.Day;
+
+            if (periodTypesEnum == PeriodTypesEnum.Month)
+            {
+                isShow = currentUser.UserSettings.Month_Statistics;
+
+            }
+            else if (periodTypesEnum == PeriodTypesEnum.Year)
+            {
+                isShow = currentUser.UserSettings.Year_Statistics;
+                groupBy = x => x.DateTimeOfPayment.Month;
+            }
+            var chart = new ChartEditModel
+            {
+                ID = 1,
+                Name = string.Empty,
+                Description = string.Empty,
+                DateCreate = now,
+                LastDateEdit = now,
+                ChartTypeID = ChartTypesEnum.Line,
+                ChartTypeCodeName = Enum.GetName(typeof(ChartTypesEnum), ChartTypesEnum.Line),
+                ChartTypeName = Enum.GetName(typeof(ChartTypesEnum), ChartTypesEnum.Line),
+                //IsShowBudgetMonth = currentUser.is.VisibleElement.IsShow_BudgetMonth,
+                //IsShowBudgetYear = x.VisibleElement.IsShow_BudgetYear,
+                //IsBig = x.ChartType.IsBig,
+                Fields = new List<ChartFieldItem> { new ChartFieldItem
+                        {
+                            CssColor = "#27AE60",
+                            Name = "Доходы",
+                            Sections =allSections
+                                .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Earnings)
+                                .Select(y => y.ID)
+                        }, new ChartFieldItem
+                        {
+                            CssColor = "#E74C3C",
+                            CssBackground = "rgba(231,76,60, 0.27)",
+                            Name = "Расходы",
+                            Sections =allSections
+                                .Where(x => x.SectionTypeID == (int)SectionTypeEnum.Spendings)
+                                .Select(y => y.ID)
+                        },
+                    }
+            };
+
+            var allSectionIDs = allSections.Select(x => x.ID);
+
+            var dataGroupByDay = budgetRecordService.GetBudgetRecordsGroup(start, finish,
+                groupBy,
+                y => allSectionIDs.Contains(y.BudgetSectionID)).ToList();
+
+            List<ChartViewModel> chartData = new List<ChartViewModel>();
+
+            var labels = new List<string>();
+            int totalDaysOrMonth = GetLabels(ref labels, start, finish, periodTypesEnum);
+
+            ChartViewModel chartViewModel = new ChartViewModel
+            {
+                ID = chart.ID,
+                ChartID = "bigChart_" + chart.ID,
+                Name = chart.Name,
+                Decription = chart.Description,
+                ChartTypesEnum = chart.ChartTypeID,
+                ChartTypeCodeName = chart.ChartTypeCodeName,
+                DataSets = new List<IChartDataSet>(),
+                Labels = labels,
+                IsShow = isShow,
+                IsBig = chart.IsBig,
+            };
+
+            if (periodTypesEnum == PeriodTypesEnum.Month)
+            {
+                foreach (var fieldItem in chart.Fields)
+                {
+                    IChartData chartLine;
+                    decimal lastTotal = 0;
+                    DateTime dateTime = start;
+
+                    chartLine = new ChartLineViewModel
+                    {
+                        Label = fieldItem.Name,
+                        BorderColor = fieldItem.CssColor,
+                        Fill = true,
+                        Data = new decimal[totalDaysOrMonth + 1]
+                    };
+                    do
+                    {
+                        if (dateTime >= now)
+                        {
+                            chartLine.Data[dateTime.Day] = 0;
+                        }
+                        if (dataGroupByDay.Any(x => x.Key == dateTime.Day))
+                        {
+                            chartLine.Data[dateTime.Day] = lastTotal = dataGroupByDay.FirstOrDefault(x => x.Key == dateTime.Day).Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total) + lastTotal;
+                        }
+                        else
+                        {
+                            chartLine.Data[dateTime.Day] = lastTotal;
+                        }
+
+                        dateTime = dateTime.AddDays(1);
+                    } while (dateTime <= finish);
+
+                    //foreach (var _data in dataGroupByDay)
+                    //{
+                    //    chartLine.Data[_data.Key] = lastTotal = _data.Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total) + lastTotal;
+                    //}
+
+                    chartLine.TotalValue = chartLine.Data.Sum();
+                    chartLine.AvgValue = chartLine.Data.Average();
+                    chartLine.MinValue = chartLine.Data.Min();
+                    chartLine.MaxValue = chartLine.Data.Max();
+
+                    chartLine.Data = chartLine.Data.Skip(1).ToArray();
+
+                    chartViewModel.DataSets.Add(chartLine);
+                }
+                maxTotal = chartViewModel.DataSets.Select(x => x as IChartData).Max(x => x.MaxValue);
+            }
+            else if (periodTypesEnum == PeriodTypesEnum.Year)
+            {
+                foreach (var fieldItem in chart.Fields)
+                {
+                    IChartData chartLine;
+                    decimal lastTotal = 0;
+                    DateTime dateTime = start;
+
+                    chartLine = new ChartLineViewModel
+                    {
+                        Label = fieldItem.Name,
+                        BorderColor = fieldItem.CssColor,
+                        Fill = true,
+                        Data = new decimal[totalDaysOrMonth + 1]
+                    };
+
+                    while (dateTime <= finish && dateTime <= now)
+                    {
+                        if (dataGroupByDay.Any(x => x.Key == dateTime.Month))
+                        {
+                            chartLine.Data[dateTime.Month] = lastTotal = dataGroupByDay.FirstOrDefault(x => x.Key == dateTime.Month).Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total) + lastTotal;
+                        }
+                        else
+                        {
+                            chartLine.Data[dateTime.Month] = lastTotal;
+                        }
+
+                        dateTime = dateTime.AddMonths(1);
+                    }
+                    chartLine.TotalValue = chartLine.Data.Sum();
+                    chartLine.AvgValue = chartLine.Data.Average();
+                    chartLine.MinValue = chartLine.Data.Min();
+                    chartLine.MaxValue = chartLine.Data.Max();
+
+                    chartLine.Data = chartLine.Data.Skip(1).ToArray();
+
+                    chartViewModel.DataSets.Add(chartLine);
+                }
+                maxTotal = chartViewModel.DataSets.Select(x => x as IChartData).Max(x => x.MaxValue);
+            }
+
+            chartViewModel.MaxTotal = maxTotal + (maxTotal * (decimal)0.2);
+
+            return chartViewModel;
+        }
+
+        private int GetLabels(ref List<string> labels, DateTime start, DateTime finish, PeriodTypesEnum periodTypesEnum)
+        {
+            if (periodTypesEnum == PeriodTypesEnum.Month)
+            {
+                var totalDaysOrMonth = (int)((finish - start).TotalDays + 1);
+
+                for (int day = 1; day <= totalDaysOrMonth; day++)
+                {
+                    labels.Add(day.ToString());
+                }
+                return totalDaysOrMonth;
+            }
+            else if (periodTypesEnum == PeriodTypesEnum.Year)
+            {
+                labels = new List<string> { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
+            }
+
+
+            return 12;
         }
 
         public async Task<List<ChartEditModel>> GetChartListView(Expression<Func<Chart, bool>> expression = null)
@@ -371,7 +547,7 @@ namespace MyProfile.Chart.Service
 
             if (expression != null) { predicate = predicate.And(expression); }
 
-            return await repository.GetAll<Chart>(predicate)
+            return await repository.GetAll(predicate)
                 .Select(x => new ChartEditModel
                 {
                     ID = x.ID,

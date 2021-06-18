@@ -115,6 +115,12 @@ namespace MyProfile.Entity.Model
               .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.Year_Summary)
+              .HasDefaultValue(true); 
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Month_Statistics)
+              .HasDefaultValue(true);
+            modelBuilder.Entity<UserSettings>()
+              .Property(b => b.Year_Statistics)
               .HasDefaultValue(true);
 
             //modelBuilder.Entity<VisibleElement>()

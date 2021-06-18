@@ -33,7 +33,7 @@ namespace MyProfile.Entity.ModelView
 		/// For CollectiveBudget
 		/// </summary>
 		public IEnumerable<BudgetSectionModelView> CollectiveSections { get; set; } = new List<BudgetSectionModelView>();
-		public int? SectionTypeID { get; set; }
+		public int SectionTypeID { get; set; }
 		public string SectionTypeName { get; set; }
         public int RecordCount { get; set; }
 		public bool IsShow { get; set; } = true;

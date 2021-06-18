@@ -99,7 +99,7 @@ namespace MyProfile.Budget.Service
             return sections;
         }
 
-        public async Task<IEnumerable<SectionLightModelView>> GetAllSectionByUser()
+        public async Task<IEnumerable<SectionLightModelView>> GetAllSectionByUserAsync()
         {
             var currentUserID = UserInfo.Current.ID;
             List<SectionLightModelView> sections;
@@ -118,6 +118,33 @@ namespace MyProfile.Budget.Service
                      IsCashback = x.IsCashback,
                  })
                  .ToListAsync();
+
+                cache.Set(typeof(SectionLightModelView).Name + "_" + currentUserID, sections, DateTime.Now.AddDays(1));
+            }
+
+            return sections;
+        }
+        public IEnumerable<SectionLightModelView> GetAllSectionByUser()
+        {
+            var currentUserID = UserInfo.Current.ID;
+            List<SectionLightModelView> sections;
+
+            if (cache.TryGetValue(typeof(SectionLightModelView).Name + "_" + currentUserID, out sections) == false)
+            {
+                sections = repository.GetAll<BudgetSection>(x => x.BudgetArea.UserID == UserInfo.Current.ID && x.IsShowOnSite)
+                 .Select(x => new SectionLightModelView
+                 {
+                     ID = x.ID,
+                     Name = x.Name,
+                     BudgetAreaID = x.BudgetArea.ID,
+                     BudgetAreaname = x.BudgetArea.Name,
+                     CssBackground = x.CssBackground,
+                     CssIcon = x.CssIcon,
+                     CssColor = x.CssColor,
+                     SectionTypeID = x.SectionTypeID,
+                     IsCashback = x.IsCashback,
+                 })
+                 .ToList();
 
                 cache.Set(typeof(SectionLightModelView).Name + "_" + currentUserID, sections, DateTime.Now.AddDays(1));
             }
@@ -151,7 +178,17 @@ namespace MyProfile.Budget.Service
                         IsShow = true,
                         SectionTypeID = x.SectionTypeID,
                         IsCashback = x.IsCashback,
-                        Tags = x.BudgetRecords.SelectMany(y => y.Tags).GroupBy(y => y.UserTag).Select(y => new TagSectionModelView { ID = y.Key.ID, Title = y.Key.Title, Count = y.Count() }).OrderByDescending(y => y.Count).ToList()
+                        Tags = x.BudgetRecords
+                            .SelectMany(y => y.Tags)
+                            .GroupBy(y => y.UserTag)
+                            .Select(y => new TagSectionModelView
+                            {
+                                ID = y.Key.ID,
+                                Title = y.Key.Title,
+                                Count = y.Count()
+                            })
+                            .OrderByDescending(y => y.Count)
+                            .ToList()
                         //CollectiveSections = x.CollectiveSections.Select(y => new BudgetSectionModelView
                         //{
                         //    ID = y.ChildSection.ID,
@@ -377,7 +414,7 @@ namespace MyProfile.Budget.Service
                  {
                      AreaID = x.BaseAreaID,
                      AreaName = x.BaseArea.Name,
-                     BaseAreaID= x.BaseAreaID,
+                     BaseAreaID = x.BaseAreaID,
                      SectionID = x.ID,
                      SectionName = x.Name,
                      Background = x.Background,

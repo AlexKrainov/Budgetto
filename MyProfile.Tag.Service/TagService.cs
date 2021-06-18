@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.Chart;
+using MyProfile.Entity.ModelView.Tag;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using System;
@@ -148,17 +150,25 @@ namespace MyProfile.Tag.Service
             if (cache.TryGetValue(typeof(RecordTag).Name + "_" + currentUserID, out tags) == false)
             {
                 tags = repository.GetAll<UserTag>(x => x.UserID == currentUserID && x.IsDeleted == false)
-                .Select(x => new RecordTag
-                {
-                    ID = x.ID,
-                    Title = x.Title,
-                    DateCreate = x.DateCreate,
-                    //Sections = x.RecordTags.Select(y => y.Record).GroupBy(y => y.BudgetSectionID).Select(y => new TagSectionModelView { ID = y.Key, Count = y.Count() }).OrderBy(y => y.Count)
+                    .Select(x => new RecordTag
+                    {
+                        ID = x.ID,
+                        Title = x.Title,
+                        DateCreate = x.DateCreate,
+                        CompanyID = x.CompanyID,
+                        CompanyName = x.Company != null ? x.Company.Name : null,
+                        CompanyLogo = x.Company != null ? x.Company.LogoSquare : null,
 
-                    //IconCss = x.IconCss,
-                    //Image = x.Image
-                })
-                .ToList();
+                        //Sections = x.RecordTags
+                        //.Select(y => y.Record)
+                        //.GroupBy(y => y.BudgetSectionID)
+                        //.Select(y => new TagSectionModelView { ID = y.Key, Count = y.Count() })
+                        //.OrderBy(y => y.Count)
+
+                        //IconCss = x.IconCss,
+                        //Image = x.Image
+                    })
+                    .ToList();
 
                 cache.Set(typeof(RecordTag).Name + "_" + currentUserID, tags, DateTime.Now.AddDays(1));
             }

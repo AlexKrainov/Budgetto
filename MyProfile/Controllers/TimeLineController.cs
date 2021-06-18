@@ -97,7 +97,7 @@ namespace MyProfile.Controllers
             var result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
 
             #region For select sections
-            var sections = (await sectionService.GetAllSectionByUser()).ToList();
+            var sections = (await sectionService.GetAllSectionByUserAsync()).ToList();
 
             for (int i = 0; i < sections.Count(); i++)
             {

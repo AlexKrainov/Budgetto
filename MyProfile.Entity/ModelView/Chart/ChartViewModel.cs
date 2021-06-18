@@ -17,5 +17,6 @@ namespace MyProfile.Entity.ModelView.Chart
 		public bool IsShow { get; set; }
         public bool IsBig { get; set; }
         public int ID { get; set; }
+        public decimal MaxTotal { get; set; }
     }
 }

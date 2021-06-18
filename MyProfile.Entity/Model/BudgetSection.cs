@@ -47,7 +47,7 @@ namespace MyProfile.Entity.Model
         [ForeignKey("BudgetArea")]
         public int BudgetAreaID { get; set; }
         [ForeignKey("SectionType")]
-        public int? SectionTypeID { get; set; }
+        public int SectionTypeID { get; set; }
         [ForeignKey("BaseSection")]
         public int? BaseSectionID { get; set; }
 

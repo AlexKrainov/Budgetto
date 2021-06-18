@@ -52,6 +52,14 @@
         bigCharts: [],
         bigChartHeight: 310,
 
+        //Main chart
+        statisticsAjax: null,
+        statisticsData: {},
+        statisticsChart: undefined,
+        statisticsChartHeight: 310,
+        totalCharts: [],
+        statisticsChartViewType: 1, //1-by sections, 2 - by tags
+
         //Summary
         summary: {
             isShow: BudgetMethods.isShowSummary,
@@ -529,6 +537,186 @@
                 }
             });
         },
+
+        //STATISTICS
+        loadStatistics: BudgetMethods.loadStatistics,
+        initStatisticsChart: function (isRefreshTotalCharts) {
+            if (isRefreshTotalCharts) {
+                this.resizeStatisticsChartsTotal();
+            }
+
+            let options = null;
+            let fontColor = themeSettings.isDarkStyle() ? '#fff' : '#aaa';
+
+            if (this.statisticsChart) {
+                this.statisticsChart.destroy();
+            }
+
+            let datasets = [];
+            let maxValue = 0;
+
+            for (var i = 0; i < this.statisticsData.totalView.length; i++) {
+                let index = this.statisticsData.dataSets.findIndex(x => x.label == this.statisticsData.totalView[i].name);
+                if (this.statisticsData.totalView[i].isSelected) {
+                    datasets.push(this.statisticsData.dataSets[index]);
+                    if (this.statisticsData.dataSets[index].maxValue > maxValue) {
+                        maxValue = this.statisticsData.dataSets[index].maxValue;
+                    }
+                }
+            }
+
+            if (maxValue != 0) {
+                maxValue = maxValue + (maxValue * 0.2);
+            }
+
+            console.log(maxValue);
+
+            options = {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: false,// bigChartData.chartTypesEnum == 2,
+                    //text: bigChartData.name,
+                },
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontColor: fontColor
+                        }
+                    }],
+                    yAxes: [{
+                        //stacked: true,
+                        ticks: {
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, values) {
+                                return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(value).split(",")[0] + " ₽"//.replace(/\D00(?=\D*$)/, '')
+                            },
+                            fontColor: fontColor,
+                            // minimum value
+                            // max: maxValue,// this.statisticsData.maxTotal, // maximum value
+                            beginAtZero: true,
+                        },
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value).split(",")[0] + " ₽"; //.replace(/\D00(?=\D*$)/, '');
+                        }
+                    }
+                },
+                //legend: {
+                //    display: true,
+                //    fontColor: fontColor
+                //},
+                responsive: false,
+                maintainAspectRatio: false,
+            };
+
+            this.statisticsChart = new Chart(document.getElementById("main-chart"), {
+                type: "line",
+                data: {
+                    labels: this.statisticsData.labels,
+                    datasets: datasets,
+                },
+                options: options
+            });
+
+            //setTimeout(this.resizeBigCharts, 10);
+            this.resizeStatisticsChart();
+
+        },
+        resizeStatisticsChart: function () {
+            let chartSize = 0;
+
+            this.statisticsChart.resize();
+            chartSize = this.statisticsChart.height;
+
+            if (chartSize < 300) {
+                this.statisticsChartHeight = 310;
+            } else if (chartSize >= 300 && chartSize <= 450) {
+                this.statisticsChartHeight = 370;
+            } else if (chartSize > 450) {
+                this.statisticsChartHeight = 600;
+            }
+            this.refrehHeaderTable();
+        },
+        resizeStatisticsChartsTotal: function () {
+            for (var i = 0; i < this.statisticsData.totalView.length; i++) {
+                let chartData = this.statisticsData.totalView[i];
+                let index = this.totalCharts.findIndex(x => x.canvas && x.canvas.id == chartData.chartID);
+                let chart = {};
+
+                if (index >= 0) {
+                    chart = this.totalCharts[index];
+                    chart.destroy();
+                }
+
+                //  if (this.earningData.data) {
+                chart = new Chart(document.getElementById(chartData.chartID).getContext("2d"), {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            data: chartData.data,
+                            borderWidth: 1,
+                            backgroundColor: chartData.backgroundColor,
+                            borderColor: chartData.borderColor,
+                            pointBorderColor: 'rgba(0,0,0,0)',
+                            pointRadius: 1,
+                            lineTension: 0
+                        }],
+                        labels: chartData.labels
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                display: false,
+                            }],
+                            yAxes: [{
+                                display: false
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            enabled: false
+                        },
+                        responsive: false,
+                        maintainAspectRatio: false
+                    }
+                });
+                if (index == -1) {
+                    this.totalCharts.push(chart);
+                }
+            }
+            setTimeout(this.resizeMainTotalCharts, 50);
+        },
+        resizeMainTotalCharts: function () {
+            for (var i = 0; i < this.totalCharts.length; i++) {
+
+                if (this.totalCharts[i]) {
+                    this.totalCharts[i].resize();
+                }
+            }
+
+            this.refrehHeaderTable();
+        },
+        selectTotalView: function (totalView) {
+            if (totalView.sectionTypeEnum == 0) {
+                return false;
+            }
+
+            totalView.isSelected = !totalView.isSelected;
+            this.initStatisticsChart();
+
+            for (var i = 0; i < this.statisticsData.sections.length; i++) {
+                if (this.statisticsData.sections[i].sectionTypeID == totalView.sectionTypeEnum) {
+                    this.statisticsData.sections[i].isShow = totalView.isSelected;
+                }
+            }
+        },
         //Summary
         loadSummaries: BudgetMethods.loadSummaries,
         initSummaryCharts: function () {
@@ -862,6 +1050,7 @@
 
             if (typeRefresh == "runtimeData") {
                 this.loadBigCharts();
+                this.loadStatistics();
                 this.loadTotalCharts();
                 this.loadLimitCharts();
                 this.loadAccounts();
@@ -886,6 +1075,7 @@
             }
 
             this.loadBigCharts();
+            this.loadStatistics();
             this.loadTotalCharts();
             this.loadLimitCharts();
             this.loadGoalCharts();
@@ -1316,7 +1506,7 @@
 
         //helpers
         getCurrencyValue: function (value, currency) {
-            if (currency == undefined || currency.codeName == "RUB") {
+            if (currency == undefined || currency == "RUB" || currency.codeName == "RUB") {
                 return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName })
                     .format(value)
                     .split(",")[0] + " ₽";

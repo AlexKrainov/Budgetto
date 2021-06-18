@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyProfile.Entity.ModelView.Chart
+﻿namespace MyProfile.Entity.ModelView.Chart
 {
     public class ChartLineViewModel : IChartData
     {
@@ -14,5 +10,6 @@ namespace MyProfile.Entity.ModelView.Chart
         public decimal MaxValue { get; set; }
         public decimal AvgValue { get; set; }
         public decimal TotalValue { get; set; }
+        public bool Hidden { get; set; }
     }
 }

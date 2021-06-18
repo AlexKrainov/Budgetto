@@ -91,7 +91,7 @@ namespace MyProfile.Budget.Service
             decimal recordCashback = 0;
             decimal _money = 0;
             List<Account> accounts = new List<Account>();
-            List<SectionLightModelView> sections = (await sectionService.GetAllSectionByUser()).ToList();
+            List<SectionLightModelView> sections = (await sectionService.GetAllSectionByUserAsync()).ToList();
             bool isSpending = false;
             CurrencyRateHistory accountCurrency;
             List<RecordHistory> histories = new List<RecordHistory>();
@@ -314,7 +314,7 @@ namespace MyProfile.Budget.Service
                             {
                                 var dbRecord = repository.GetAll<Record>(x => x.ID == record.ID).FirstOrDefault(); ;
                                 long oldAccountID = dbRecord.AccountID ?? -1,
-                                    oldSectionTypeID = dbRecord.BudgetSection.SectionTypeID ?? 0;
+                                    oldSectionTypeID = dbRecord.BudgetSection.SectionTypeID;
                                 decimal oldTotal = dbRecord.Total,
                                     oldCashback = dbRecord.Cashback;
                                 bool isChangeAccount = record.AccountID != dbRecord.AccountID;
@@ -757,6 +757,29 @@ namespace MyProfile.Budget.Service
                     AreaID = x.BudgetSection.BudgetArea.ID,
                     AreaName = x.BudgetSection.BudgetArea.Name,
                     CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0),
+                    TagIDs = x.Tags.Select(u => u.UserTagID),
+                })
+              .GroupBy(groupBy)
+              .AsQueryable();
+        }
+        public IQueryable<IGrouping<long, TmpBudgetRecord>> GetBudgetRecordsGroup(
+           DateTime from,
+           DateTime to,
+           Func<TmpBudgetRecord, long> groupBy,
+           Expression<Func<Record, bool>> expression = null)
+        {
+            return _getBudgetRecords(from, to, expression)
+                .Select(x => new TmpBudgetRecord
+                {
+                    Total = x.Total,
+                    DateTimeOfPayment = x.DateTimeOfPayment,
+                    SectionID = x.BudgetSectionID,
+                    SectionName = x.BudgetSection.Name,
+                    SectionTypeID = x.BudgetSection.SectionTypeID,
+                    AreaID = x.BudgetSection.BudgetArea.ID,
+                    AreaName = x.BudgetSection.BudgetArea.Name,
+                    CollectionSectionIDs = x.BudgetSection.CollectiveSections.Select(u => u.ChildSectionID ?? 0),
+                    TagIDs = x.Tags.Select(u => u.UserTagID),
                 })
               .GroupBy(groupBy)
               .AsQueryable();
@@ -1125,7 +1148,7 @@ namespace MyProfile.Budget.Service
 
             if (filter.SectionTypes != null)// by sections
             {
-                expression = expression.And(x => filter.SectionTypes.Contains(x.BudgetSection.SectionTypeID ?? 0));
+                expression = expression.And(x => filter.SectionTypes.Contains(x.BudgetSection.SectionTypeID));
             }
             else if (filter.Sections != null)
             {

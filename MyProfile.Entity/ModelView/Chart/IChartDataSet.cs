@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace MyProfile.Entity.ModelView.Chart
 {
-	public interface IChartDataSet
+    public interface IChartDataSet
 	{
-	}
+    }
 }

@@ -48,7 +48,7 @@ namespace MyProfile.Controllers
             CalendarFilterModels filter = new CalendarFilterModels { Sections = new List<long>() };
             filter.StartDate = new DateTime(date.Year, date.Month, date.Day, 00, 00, 00);
             filter.EndDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
-            filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
+            filter.Sections = (await sectionService.GetAllSectionByUserAsync()).Select(x => x.ID).ToList();
             filter.UserID = UserInfo.Current.ID;
 
             var result = await budgetRecordService.GetBudgetRecordsByFilterAsync(filter);
@@ -66,7 +66,7 @@ namespace MyProfile.Controllers
             filter.EndDate = new DateTime(filter.EndDate.Year, filter.EndDate.Month, filter.EndDate.Day, 23, 59, 59);
             if (filter.IsSearchAllUserSections)
             {
-                filter.Sections = (await sectionService.GetAllSectionByUser()).Select(x => x.ID).ToList();
+                filter.Sections = (await sectionService.GetAllSectionByUserAsync()).Select(x => x.ID).ToList();
             }
             filter.UserID = currentUser.ID;
 
