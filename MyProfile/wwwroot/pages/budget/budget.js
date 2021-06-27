@@ -573,7 +573,7 @@
 
             options = {
                 legend: {
-                    display: false
+                    display: false,
                 },
                 title: {
                     display: false,// bigChartData.chartTypesEnum == 2,
@@ -602,7 +602,15 @@
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            return new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value).split(",")[0] + " ₽"; //.replace(/\D00(?=\D*$)/, '');
+                            let values = data.datasets[tooltipItem.datasetIndex].data;
+                            var total = values[tooltipItem.index];
+                            if (tooltipItem.index != 0) {
+                                total = total - values[tooltipItem.index - 1];
+                            }
+
+                            return " + "
+                                + new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(total).split(",")[0] + " ₽"
+                                + " = " + new Intl.NumberFormat(UserInfo.Currency.SpecificCulture, { style: 'currency', currency: UserInfo.Currency.CodeName }).format(tooltipItem.value).split(",")[0] + " ₽"; //.replace(/\D00(?=\D*$)/, '');
                         }
                     }
                 },
@@ -771,7 +779,7 @@
 
             this.refrehHeaderTable();
         },
-        //Accounts
+        //ACCOUNTS
         loadAccounts: BudgetMethods.loadAccounts,
         editMainAccount: function (account, isCash) {
             if (account == undefined) {

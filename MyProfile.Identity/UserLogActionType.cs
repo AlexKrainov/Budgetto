@@ -50,6 +50,7 @@
         public const string HelpCenter_Page = "HelpCenter_Page";
         public const string HelpCenter_Article_Page = "HelpCenter_Article_Page";
         public const string History_Page = "History_Page";
+        public const string Account_Page = "Account_Page";
 
         public const string BudgetPage_HideGoal = "BudgetPage_HideGoal";
         public const string BudgetPage_HideLimit = "BudgetPage_HideLimit";

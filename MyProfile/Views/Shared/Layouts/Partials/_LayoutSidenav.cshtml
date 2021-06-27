@@ -39,17 +39,36 @@
     <li class="sidenav-divider mb-1"></li>
     @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
 
+    <li class="sidenav-item@(currentPage == "Account/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
+        title="">
+        <a asp-area="" asp-controller="Account" asp-action="List" class="sidenav-link"><i class="sidenav-icon pe-7s-cash"></i><div>Счета</div></a>
+    </li>
+
     <li class="sidenav-item@(currentPage == "Limit/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
         title="Лимиты позволяют контролировать траты по выбранным категориям. В одном лимите можно совмещать несколько категорий.
            Например, поставьте себе лимит на фастфуд или продукты и отслеживайте его на страницах 'Финансы на месяц' и 'Финансы на год'.">
         <a asp-area="" asp-controller="Limit" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-frame-expand"></i><div>Лимиты</div></a>
     </li>
 
-    <li class="sidenav-item@(currentPage == "Goal/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
-        title="На этой странице можно создавать финансовые цели.
-           Отслеживать прогресс по цели можно на страницах 'Финансы на месяц' и 'Финансы на год'.">
-        <a asp-area="" asp-controller="Goal" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-rocket"></i><div>Цели</div></a>
+    <li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
+        title="На этой странице вы можете создавать шаблоны для таблиц, которые отображаются на страницах «Финансы на месяц» и «Финансы на год».
+           Шаблон со звёздочкой является шаблоном по умолчанию.">
+        <a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-layers"></i><div>Шаблоны</div></a>
     </li>
+
+    <li class="sidenav-item@(currentPage == "Section/Edit" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
+        title="На этой странице вы можете создавать категории трат и объединять их в группы для вашего удобства.
+Если вы хотите создать новую группу, введите её название в поисковой строке и нажмите «Создать группу категорий».">
+        <a asp-area="" asp-controller="Section" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon pe-7s-albums"></i><div>Категории</div></a>
+    </li>
+
+    <li class="sidenav-item@(currentPage == "History/Records" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
+        title="В истории отображаются все совершенные вами финансовые операции за выбранный период.">
+        <a asp-area="" asp-controller="History" asp-action="Records" class="sidenav-link"><i class="sidenav-icon lnr lnr-history"></i><div>История</div></a>
+    </li>
+
+    <li class="sidenav-divider mb-1"></li>
+
 
     <li class="sidenav-item@(currentPage == "ToDoList/List" ? " active" : "")">
         <a asp-area="" asp-controller="ToDoList" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr lnr-list"></i><div>Списки</div></a>
@@ -61,36 +80,21 @@
         <a asp-area="" asp-controller="Chart" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-pie-chart"></i><div>Графики</div></a>
     </li>
 
-    <li class="sidenav-item@(currentPage == "Template/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
-        title="На этой странице вы можете создавать шаблоны для таблиц, которые отображаются на страницах «Финансы на месяц» и «Финансы на год».
-           Шаблон со звёздочкой является шаблоном по умолчанию.">
-        <a asp-area="" asp-controller="Template" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-layers"></i><div>Шаблоны</div></a>
-    </li>
-
     <li class="sidenav-item@(currentPage == "Subscription/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
         title="">
         <a asp-area="" asp-controller="Subscription" asp-action="List" class="sidenav-link"><i class="sidenav-icon ion ion-ios-pricetags"></i><div>Подписки</div></a>@*lnr lnr-tag*@
     </li>
 
-
-    <li class="sidenav-divider mb-1"></li>
-    @*<li class="sidenav-header small font-weight-semibold">ELEMENTS</li>*@
-
-    <li class="sidenav-item@(currentPage == "Section/Edit" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
-        title="На этой странице вы можете создавать категории трат и объединять их в группы для вашего удобства.
-Если вы хотите создать новую группу, введите её название в поисковой строке и нажмите «Создать группу категорий».">
-        <a asp-area="" asp-controller="Section" asp-action="Edit" class="sidenav-link"><i class="sidenav-icon pe-7s-albums"></i><div>Категории</div></a>
+    <li class="sidenav-item@(currentPage == "Goal/List" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
+        title="На этой странице можно создавать финансовые цели.
+           Отслеживать прогресс по цели можно на страницах 'Финансы на месяц' и 'Финансы на год'.">
+        <a asp-area="" asp-controller="Goal" asp-action="List" class="sidenav-link"><i class="sidenav-icon lnr lnr-rocket"></i><div>Цели</div></a>
     </li>
 
     <li class="sidenav-item@(currentPage == "Budget/TimeLine" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
         title="В календаре отображаются все совершенные вами финансовые операции за выбранный год.
 При наведении на интересующую дату вы можете увидеть сумму трат за день или количество внесённых операций.">
         <a asp-area="" asp-controller="Budget" asp-action="TimeLine" class="sidenav-link"><i class="sidenav-icon lnr lnr-calendar-full"></i><div>Календарь</div></a>
-    </li>
-
-    <li class="sidenav-item@(currentPage == "History/Records" ? " active" : "")" data-toggle="tooltip" data-delay='{"show":"1000", "hide":"0"}' data-placement="right"
-        title="В истории отображаются все совершенные вами финансовые операции за выбранный период.">
-        <a asp-area="" asp-controller="History" asp-action="Records" class="sidenav-link"><i class="sidenav-icon lnr lnr-history"></i><div>История</div></a>
     </li>
 
     @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin)

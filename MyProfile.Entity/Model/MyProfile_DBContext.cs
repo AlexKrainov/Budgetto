@@ -106,13 +106,13 @@ namespace MyProfile.Entity.Model
             .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.Month_Accounts)
-              .HasDefaultValue(true);
+              .HasDefaultValue(false);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.Month_Summary)
               .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.Year_Accounts)
-              .HasDefaultValue(true);
+              .HasDefaultValue(false);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.Year_Summary)
               .HasDefaultValue(true); 

@@ -32,6 +32,13 @@ namespace MyProfile.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.Account_Page);
+            return View();
+        }
+
+        [HttpGet]
         public JsonResult GetEnvironment()
         {
             var bankTypes = accountService.GetBankTypesAndAcountTypes();
@@ -61,10 +68,14 @@ namespace MyProfile.Controllers
                 start = new DateTime(date.Value.Year, date.Value.Month, 01, 00, 00, 00);
                 finish = new DateTime(date.Value.Year, date.Value.Month, DateTime.DaysInMonth(date.Value.Year, date.Value.Month), 23, 59, 59);
             }
-            else
+            else if (year > 0)
             {
                 start = new DateTime(year, 1, 01, 00, 00, 00);
                 finish = new DateTime(year, 12, 31, 23, 59, 59);
+            }else
+            {
+                start = new DateTime(now.Year, now.Month, 01, 00, 00, 00);
+                finish = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59);
             }
 
             mainAccounts = accountService.GetMainAccounts(UserInfo.Current.ID); // current data of accounts (month is now or year is now)

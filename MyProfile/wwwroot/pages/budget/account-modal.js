@@ -49,7 +49,10 @@ var MainAccountVue = new Vue({
             if (account) {
                 this.account = account;
                 this.account.isCash = account.accountType == 1;
-                $("#main_account_card").val("").trigger('change');
+                if (this.account.isCash == false) {
+                    $("#main-account-bank").append(`<option value="${this.account.bankID}">${this.account.bankName}</option>`).select2("data", { id: this.account.bankID, text: this.account.bankName });
+                    $("#main-account-bank").trigger('change');
+                }
             } else {
                 this.account = {
                     id: undefined,
@@ -108,6 +111,9 @@ var MainAccountVue = new Vue({
                             BudgetVue.accounts = notHideAccounts.concat(hideAccounts);
                         }
                     }
+                    if (typeof (AccountListVue) == "object") {
+                        AccountListVue.load();
+                    }
                     $('[data-toggle="tooltip"]').tooltip();
                     return response;
                 },
@@ -145,6 +151,9 @@ var MainAccountVue = new Vue({
                         }
                         if (typeof (RecordVue) == "object") {
                             RecordVue.recordComponent.loadAccounts();
+                        }
+                        if (typeof (AccountListVue) == "object") {
+                            AccountListVue.load();
                         }
                         $("#modal-main-account").modal("hide");
                     }
@@ -489,6 +498,10 @@ var AccountVue = new Vue({
                                 }
                             }
                         }
+
+                        if (typeof (AccountListVue) == "object") {
+                            AccountListVue.load();
+                        }
                     }
                     $('[data-toggle="tooltip"]').tooltip();
                     return response;
@@ -528,6 +541,10 @@ var AccountVue = new Vue({
                         if (typeof (RecordVue) == "object") {
                             RecordVue.recordComponent.loadAccounts();
                         }
+                        if (typeof (AccountListVue) == "object") {
+                            AccountListVue.load();
+                        }
+
                         $("#modal-account").modal("hide");
                     }
                     this.isSaving = false;
@@ -611,6 +628,10 @@ var AccountVue = new Vue({
                     return;
                 }
             }
+            if (typeof (AccountListVue) == "object") {
+                AccountListVue.load();
+            }
+
             let el_id = "#account_" + account.id;
             ShowLoading(el_id);
             //bug with .dropdown-menu
@@ -652,6 +673,10 @@ var AccountVue = new Vue({
                         //refresh record metadata
                         if (typeof (RecordVue) == "object") {
                             RecordVue.recordComponent.loadAccounts();
+                        }
+
+                        if (typeof (AccountListVue) == "object") {
+                            AccountListVue.load();
                         }
 
                         if (this.account.isDeleted) {
@@ -838,6 +863,9 @@ var AccountTransferVue = new Vue({
 
                         if (typeof (BudgetVue) == "object") {
                             BudgetVue.refresh("onlySummery");
+                        }
+                        if (typeof (AccountListVue) == "object") {
+                            AccountListVue.load();
                         }
                         $("#modal-account-transfer").modal("hide");
                     }

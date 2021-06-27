@@ -14,7 +14,9 @@ namespace MyProfile.Entity.ModelView.Account
         public AccountTypes AccountType { get; set; }
         public string Name { get; set; }
         public decimal Balance { get; set; }
-        public string BalanceString { get
+        public string BalanceString
+        {
+            get
             {
                 return Balance.ToString("C0", CultureInfo.CreateSpecificCulture(Currency.specificCulture));
             }
@@ -61,7 +63,31 @@ namespace MyProfile.Entity.ModelView.Account
         /// </summary>
         public bool IsDisabled { get; set; }
 
-        public CurrencyClientModelView Currency { get; set; }
+        public CurrencyClientModelView _currency { get; set; }
+        public CurrencyClientModelView Currency
+        {
+            get
+            {
+                if (_currency != null)
+                {
+                    return _currency;
+                }
+                else
+                {
+                    return new CurrencyClientModelView
+                    {
+                        id = 1,
+                        codeName = "RUB",
+                        specificCulture = "ru-RU",
+                        icon = "₽",
+                    };
+                }
+            }
+            set
+            {
+                _currency = value;
+            }
+        }
         public string CurrencyIcon { get; set; }
         public decimal BalanceEarnings { get; set; }
         public decimal BalanceInvestments { get; set; }

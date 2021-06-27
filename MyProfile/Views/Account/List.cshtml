@@ -1,0 +1,83 @@
+﻿@*@model MyProfile.Entity.ModelView.Counter.CounterViewModel*@
+@{
+    ViewData["Title"] = "Счета";
+}
+
+@section Styles {
+    <link href="~/vendor/libs/select2/select2.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/vendor/libs/select2/select2.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/masonry/masonry.js" asp-append-version="true"></script>
+
+    <environment names="Development">
+        <script src="~/pages/budget/account-modal.js" asp-append-version="true"></script>
+        <script src="~/pages/account/account-list.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/pages/budget/account-modal.min.js" asp-append-version="true"></script>
+        <script src="~/pages/account/account-list.js"></script>
+    </environment>
+}
+
+<section id="account-list-vue" v-cloak>
+    @*data-current-count="@Model.CurrentCount" data-limit-count="@Model.CanBeCount">*@
+
+    <h4 class="d-flex flex-wrap w-100 font-weight-bold">
+        <span class="pe-7s-cash display-4 text-primary mr-2"></span>
+        <span class="px-0 pb-2 pt-2">
+            Счета
+        </span>
+        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom"
+           title="">
+            <i class="pe-7s-info d-block text-primary"></i>
+        </a>
+        @*<span class="px-0 pb-2 ml-4">
+                <a class="btn btn-outline-primary rounded-pill" href="javascript:void(0)"
+                   v-on:click="edit()">Добавить новый счет</a>
+            </span>*@
+        <button id="add-main-account" type="button" class="btn btn-outline-primary rounded-pill btn-sm ml-4" data-toggle="dropdown" aria-expanded="false">
+            <i class="ion ion-md-add navbar-icon pr-2"></i>
+            Добавить группу наличных/организацию
+        </button>
+        <div class="dropdown-menu" style="">
+            <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, true)">
+                <span class="text-primary text-xlarge pr-2 pe-7s-cash text-center"></span>
+                Добавить группу наличных
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)" onclick="MainAccountVue.edit(null, false)">
+                <span class="text-primary text-xlarge pr-2 pe-7s-culture text-center"></span>
+                Добавить организацию
+            </a>
+        </div>
+    </h4>
+
+    <ul class="nav container-m-nx bg-lighter container-p-x py-1 mb-4">
+        <li class="nav-item">
+            <a v-bind:class="['nav-link', activeBankTypeID == -1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
+               v-on:click="reloadView(-1)">Все счета</a>
+        </li>
+        <li class="nav-item">
+            <a v-bind:class="['nav-link', activeBankTypeID == null ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
+               v-on:click="reloadView(null)">Наличные</a>
+        </li>
+        <li class="nav-item">
+            <a v-bind:class="['nav-link', activeBankTypeID == 1 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
+               v-on:click="reloadView(1)">Банки</a>
+        </li>
+        <li class="nav-item">
+            <a v-bind:class="['nav-link', activeBankTypeID == 2 ? 'font-weight-bold pl-0 text-body':'text-muted']" href="javascript:void(0)"
+               v-on:click="reloadView(2)">Брокеры</a>
+        </li>
+    </ul>
+    <div class="row" id="accounts">
+        <div class="col-sm-6 col-xl-4 pt-5 masonry-item-sizer position-absolute"></div>
+        @await Html.PartialAsync("../Budget/_AccountsView.cshtml")
+    </div>
+    <hr class="border-light mt-2 mb-4">
+
+</section>
+@await Html.PartialAsync("../Account/_AccountModal.cshtml")
+@await Html.PartialAsync("../Account/_MainAccountModal.cshtml")
+@await Html.PartialAsync("../Account/_AccountTransferModal.cshtml")

@@ -456,6 +456,9 @@ namespace MyProfile.Code
             }
         }
 
+        /// <summary>
+        /// https://beautifytools.com/excel-to-json-converter.php
+        /// </summary>
         private void UpdateCompanies()
         {
             var now = DateTime.Now.ToUniversalTime();

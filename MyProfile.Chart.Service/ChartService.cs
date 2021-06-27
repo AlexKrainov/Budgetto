@@ -441,13 +441,16 @@ namespace MyProfile.Chart.Service
                         {
                             chartLine.Data[dateTime.Day] = 0;
                         }
-                        if (dataGroupByDay.Any(x => x.Key == dateTime.Day))
-                        {
-                            chartLine.Data[dateTime.Day] = lastTotal = dataGroupByDay.FirstOrDefault(x => x.Key == dateTime.Day).Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total) + lastTotal;
-                        }
                         else
                         {
-                            chartLine.Data[dateTime.Day] = lastTotal;
+                            if (dataGroupByDay.Any(x => x.Key == dateTime.Day))
+                            {
+                                chartLine.Data[dateTime.Day] = lastTotal = dataGroupByDay.FirstOrDefault(x => x.Key == dateTime.Day).Where(x => fieldItem.Sections.Contains(x.SectionID)).Sum(x => x.Total) + lastTotal;
+                            }
+                            else
+                            {
+                                chartLine.Data[dateTime.Day] = lastTotal;
+                            }
                         }
 
                         dateTime = dateTime.AddDays(1);

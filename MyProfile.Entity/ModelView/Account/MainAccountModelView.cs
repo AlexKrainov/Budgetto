@@ -46,7 +46,31 @@ namespace MyProfile.Entity.ModelView.Account
         public bool IsShow { get; set; }
         public bool IsHideCurrentAccount { get; set; }
         public int? CurrencyID { get; set; }
-        public CurrencyClientModelView Currency { get; set; }
+        public CurrencyClientModelView _currency { get; set; }
+        public CurrencyClientModelView Currency
+        {
+            get
+            {
+                if (_currency != null)
+                {
+                    return _currency;
+                }
+                else
+                {
+                    return new CurrencyClientModelView
+                    {
+                        id = 1,
+                        codeName = "RUB",
+                        specificCulture = "ru-RU",
+                        icon = "₽",
+                    };
+                }
+            }
+            set
+            {
+                _currency = value;
+            }
+        }
         public bool ConvertError { get; set; }
     }
 }
