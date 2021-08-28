@@ -6,6 +6,7 @@ using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelEntitySave;
 using MyProfile.Entity.ModelView;
 using MyProfile.Entity.ModelView.Counter;
+using MyProfile.Entity.ModelView.SystemMailing;
 using MyProfile.Entity.ModelView.TemplateModelView;
 using MyProfile.Entity.ModelView.User;
 using MyProfile.Entity.Repository;
@@ -63,8 +64,8 @@ namespace MyProfile.User.Service
                 UserSettings = new UserSettingsClientSide
                 {
                     WebSiteTheme = currentUser.UserSettings.WebSiteTheme,
-                    Mail_News = currentUser.UserSettings.Mail_News,
-                    Mail_Reminders = currentUser.UserSettings.Mail_Reminders,
+                    //Mail_News = currentUser.UserSettings.Mail_News,
+                    //Mail_Reminders = currentUser.UserSettings.Mail_Reminders,
                     CanUseAlgorithm = currentUser.UserSettings.CanUseAlgorithm,
                     IsShowHints = currentUser.UserSettings.IsShowHints,
                     IsShowFirstEnterHint = currentUser.UserSettings.IsShowFirstEnterHint,
@@ -131,6 +132,24 @@ namespace MyProfile.User.Service
                     StatusName = x.Status.Name
                 })
                 .ToList();
+            #endregion
+
+            #region Mailing
+
+            var mailings = repository.GetAll<SystemMailing>(x => x.IsActive)
+                    .Select(x => x.ID)
+                    .ToList();
+            user.Mailings = repository.GetAll<Notification>(x => x.UserID == currentUser.ID && x.SystemMailingID != null && mailings.Contains(x.SystemMailingID ?? 0))
+                .Select(x => new UserSettingMailingItem
+                {
+                    ID = x.ID,
+                    SystemMailingID = x.SystemMailingID,
+                    Name = x.SystemMailing.Name,
+                    Tooltip = x.SystemMailing.Tooltip,
+                    IsMail = x.IsMail
+                })
+                .ToList();
+
             #endregion
 
             return user;
@@ -231,8 +250,8 @@ namespace MyProfile.User.Service
                          WebSiteTheme = x.UserSettings.WebSiteTheme,
                          CanUseAlgorithm = x.UserSettings.CanUseAlgorithm,
 
-                         Mail_News = x.UserSettings.Mail_News,
-                         Mail_Reminders = x.UserSettings.Mail_Reminders,
+                         //Mail_News = x.UserSettings.Mail_News,
+                         //Mail_Reminders = x.UserSettings.Mail_Reminders,
 
                          IsShowHints = x.UserSettings.IsShowHints,
                          IsShowFirstEnterHint = x.UserSettings.IsShowFirstEnterHint,
@@ -632,8 +651,8 @@ namespace MyProfile.User.Service
                 .FirstOrDefaultAsync();
 
             user.UserSettings.WebSiteTheme = dbUser.UserSettings.WebSiteTheme = userSettings.WebSiteTheme;
-            user.UserSettings.Mail_News = dbUser.UserSettings.Mail_News = userSettings.Mail_News;
-            user.UserSettings.Mail_Reminders = dbUser.UserSettings.Mail_Reminders = userSettings.Mail_Reminders;
+            //user.UserSettings.Mail_News = dbUser.UserSettings.Mail_News = userSettings.Mail_News;
+            //user.UserSettings.Mail_Reminders = dbUser.UserSettings.Mail_Reminders = userSettings.Mail_Reminders;
             user.UserSettings.CanUseAlgorithm = dbUser.UserSettings.CanUseAlgorithm = userSettings.CanUseAlgorithm;
             user.UserSettings.IsShowHints = dbUser.UserSettings.IsShowHints = userSettings.IsShowHints;
 
@@ -643,5 +662,20 @@ namespace MyProfile.User.Service
             return 1;
         }
         #endregion
+
+        public void UpdateUserNotifications(List<UserSettingMailingItem> mailings)
+        {
+            var currentUser = UserInfo.Current;
+
+            foreach (var mailing in mailings)
+            {
+                var mailingItem = repository.GetAll<Notification>(x => x.UserID == currentUser.ID && x.SystemMailingID == mailing.SystemMailingID).FirstOrDefault();
+                mailingItem.IsMail = mailing.IsMail;
+                repository.Update(mailingItem);
+            }
+            repository.Save();
+
+            userLogService.CreateUserLog(currentUser.UserSessionID, UserLogActionType.User_Mailing_Change);
+        }
     }
 }

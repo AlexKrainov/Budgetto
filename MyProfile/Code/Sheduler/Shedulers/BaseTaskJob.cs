@@ -71,6 +71,7 @@ namespace MyProfile.Code.Sheduler.Shedulers
                             ChangedItems = -1,
                             Start = now,
                             End = TimeZoner.GetCurrentDateTimeUTC(),
+                            IsError = true,
                         }, true);
                     }
                 }

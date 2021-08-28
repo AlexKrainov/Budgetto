@@ -56,7 +56,13 @@ namespace MyProfile.Code.Sheduler.Shedulers
                            NotificationTypeID = x.NotificationTypeID,
                            UserID = x.UserID,
                            Email = x.User.Email,
-                           Name = x.LimitID != null ? x.Limit.Name : x.ReminderDateID != null ? x.ReminderDate.Reminder.Title : "",
+                           Name = x.LimitID != null 
+                                ? x.Limit.Name 
+                                : x.ReminderDateID != null 
+                                    ? x.ReminderDate.Reminder.Title 
+                                    : x.SystemMailingID != null
+                                        ? x.SystemMailing.Name
+                                        : "",
 
                            //Limit
                            Total = x.Total,
@@ -67,6 +73,9 @@ namespace MyProfile.Code.Sheduler.Shedulers
                            ExpirationDateTime = x.ReminderDateID != null ? x.ReminderDate.DateReminder : x.ExpirationDateTime,
                            ReminderUTCOffsetMinutes = x.ReminderDateID != null ? x.ReminderDate.Reminder.OlsonTZ.TimeZone.UTCOffsetMinutes : 0,
                            Icon = x.ReminderDateID != null ? x.ReminderDate.Reminder.CssIcon : null,
+
+                           //SystemMailing
+                           SystemMailngType =  x.SystemMailingID == null ? SystemMailingType.Undefined : (SystemMailingType)x.SystemMailingID,
                        })
                        .ToList();
 
@@ -81,7 +90,9 @@ namespace MyProfile.Code.Sheduler.Shedulers
                                 var dbNotification = repository.GetAll<Entity.Model.Notification>(x => x.ID == notification.NotificationID)
                                                        .FirstOrDefault();
                                 dbNotification.IsSentOnMail = true;
-                                dbNotification.IsDone = dbNotification.IsSite == dbNotification.IsSentOnSite && dbNotification.IsMail == dbNotification.IsSentOnMail && dbNotification.IsTelegram == dbNotification.IsSentOnTelegram;
+                                dbNotification.IsDone = dbNotification.IsSite == dbNotification.IsSentOnSite 
+                                    && dbNotification.IsMail == dbNotification.IsSentOnMail 
+                                    && dbNotification.IsTelegram == dbNotification.IsSentOnTelegram;
                                 repository.Save();
                                 items += 1;
                             }

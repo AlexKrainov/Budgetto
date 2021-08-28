@@ -86,9 +86,9 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.WebSiteTheme)
               .HasDefaultValue(WebSiteThemeEnum.Light);
-            modelBuilder.Entity<UserSettings>()
-              .Property(b => b.Mail_News)
-              .HasDefaultValue(true);
+            //modelBuilder.Entity<UserSettings>()
+            //  .Property(b => b.Mail_News)
+            //  .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.IsShowHints)
               .HasDefaultValue(true);
@@ -98,9 +98,9 @@ namespace MyProfile.Entity.Model
             modelBuilder.Entity<UserSettings>()
              .Property(b => b.IsShowCookie)
              .HasDefaultValue(true);
-            modelBuilder.Entity<UserSettings>()
-            .Property(b => b.Mail_Reminders)
-            .HasDefaultValue(true);
+            //modelBuilder.Entity<UserSettings>()
+            //.Property(b => b.Mail_Reminders)
+            //.HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
             .Property(b => b.CanUseAlgorithm)
             .HasDefaultValue(true);
@@ -115,7 +115,7 @@ namespace MyProfile.Entity.Model
               .HasDefaultValue(false);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.Year_Summary)
-              .HasDefaultValue(true); 
+              .HasDefaultValue(true);
             modelBuilder.Entity<UserSettings>()
               .Property(b => b.Month_Statistics)
               .HasDefaultValue(true);
@@ -320,7 +320,8 @@ namespace MyProfile.Entity.Model
         public virtual DbSet<ProgressLog> ProgressLogs { get; set; }
         public virtual DbSet<ProgressItemType> ProgressItemTypes { get; set; }
         public virtual DbSet<ProgressType> ProgressTypes { get; set; }
-        public virtual DbSet<PaymentLog> PaymentLogs{ get; set; }
+        public virtual DbSet<PaymentLog> PaymentLogs { get; set; }
+        public virtual DbSet<SystemMailing> SystemMailings { get; set; }
 
     }
 }

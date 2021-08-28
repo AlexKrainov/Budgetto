@@ -129,6 +129,7 @@
         public const string User_AutoAuthorization = "User_AutoAuthorization";
         public const string User_LeaveSite = "User_LeaveSite";
         public const string User_Connection_ChangeStatus = "User_Connection_ChangeStatus";
+        public const string User_Mailing_Change = "User_Mailing_Change";
 
         public const string Document_CookiePolicy = "Document_CookiePolicy";
         public const string Document_PersonalDataProcessingPolicy = "Document_PersonalDataProcessingPolicy";

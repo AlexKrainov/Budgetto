@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MyProfile.Entity.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -54,6 +55,7 @@ namespace MyProfile.Entity.ModelView.Notification
         public long? ReminderDateID { get; set; }
         public int ReminderUTCOffsetMinutes { get; set; }
         public int UserUTCOffsetMinutes { get; set; }
+        public SystemMailingType SystemMailngType { get; set; }
         #endregion
     }
 

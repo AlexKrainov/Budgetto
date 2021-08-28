@@ -50,6 +50,7 @@ INSERT [MailTypes] ([ID], [CodeName]) VALUES (4, N'LoginLimitEnter')
 INSERT [MailTypes] ([ID], [CodeName]) VALUES (5, N'ResendByUser')
 INSERT [MailTypes] ([ID], [CodeName]) VALUES (6, N'NotificationLimit')
 INSERT [MailTypes] ([ID], [CodeName]) VALUES (7, N'NotificationReminder')
+INSERT [MailTypes] ([ID], [CodeName]) VALUES (8, N'NotificationSystemMailing')
 SET IDENTITY_INSERT [MailTypes] OFF
 GO
 
@@ -208,7 +209,8 @@ INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpre
 VALUES (11,'AccountDailyWork', 'New', 'AccountDailyWork','0 0 10 * * ?', 'At 07:00:00am every day', 'Обновление данных счетов, например начисление процентов по вкладам.')
 INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment], [Comment])
 VALUES (12,'ProgressMonthly', 'New', 'ProgressMonthly','0 30 4 1 * ?', 'At 01:30:00am, on the 1st day, every month', 'В начале каждого месяца переносим данные из прогресс бара в историю')
-
+INSERT INTO [SchedulerTasks] ([ID], [Name], [TaskStatus], [TaskType], [CronExpression], [CronComment], [Comment])
+VALUES (13,'SystemMailing', 'New', 'SystemMailing','0 */30 * ? * *', 'Every 30 minutes', 'Каждые 30 минут запускает и проеверяет не появились ли новые SystemMailings и не подошла ли следующая дата экспирации')
 
 SET IDENTITY_INSERT [SchedulerTasks] OFF
 
@@ -230,3 +232,40 @@ INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('American E
 INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('PayPal', 'Paypal', '/resources/payment_system/paypal.png', 0)
 INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('Western Union', 'WesternUnion', '/resources/payment_system/western-union.png', 0)
 INSERT INTO PaymentSystems (Name, CodeName, Logo, IsVisible) values ('Mir', 'Mir', '/resources/payment_system/mir.svg', 1)
+
+
+
+SET IDENTITY_INSERT [SystemMailings] ON 
+
+INSERT [SystemMailings] ([ID],[Name], [Tooltip], [CodeName], [CronExpression], [CronComment], [IsActive], [IsMail]) 
+	VALUES (1, N'Обратная связь от пользователя','1 раз в месяц', 'FeedbackMonth', '0 0 12 L * ?', 'Every month on the last day of the month, at noon', 1, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (2, N'Пользователь не активен в течении 1 дня после регистрации', 'NotActive1DayAfterRegistration', 0, 1440, 1)
+
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (3, N'Пользователь не активен в течении 2 дней после регистрации', 'NotActive2DaysAfterRegistration', 0, 2880, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (4, N'Пользователь не активен в течении 3 дней после регистрации', 'NotActive3DaysAfterRegistration', 0, 4320, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (5, N'Пользователь не активен в течении 4 дней после регистрации', 'NotActive4DaysAfterRegistration', 0, 5760, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (6, N'Пользователь не активен в течении 5 дней после регистрации', 'NotActive5DaysAfterRegistration', 0, 7200, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (7, N'Пользователь не активен в течении 6 дней после регистрации', 'NotActive6DaysAfterRegistration', 0, 8640, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (8, N'Пользователь не активен в течении 7 дней после регистрации', 'NotActive7DaysAfterRegistration', 0, 10080, 1)
+
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [CronExpression], [CronComment], [IsActive], [IsMail]) 
+	VALUES (9, N'Статистика личных финансов за неделю', 'StatisticsWeek', '0 0 23 ? * SUN *', 'Every Sunday at noon', 0, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [CronExpression], [CronComment], [IsActive], [IsMail]) 
+	VALUES (10, N'Статистика личных финансов за неделю', 'StatisticsWeek', '0 0 23 L * ?', 'Every month on the last day of the month, at 10pm', 0, 1)
+
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (11, N'Пользователь не заполнял записи в течении 2 дней', 'NotEnterRecords2Days', 0, 2880, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (12, N'Пользователь не заполнял записи в течении 3 дней', 'NotEnterRecords3Days', 0, 4320, 1)
+INSERT [SystemMailings] ([ID],[Name], [CodeName], [IsActive], [TotalMinutes], [IsMail]) 
+	VALUES (13, N'Пользователь не заполнял записи в течении 4 дней', 'NotEnterRecords4Days', 0, 5760, 1)
+
+SET IDENTITY_INSERT [SystemMailings] OFF
+GO

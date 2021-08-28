@@ -45,6 +45,7 @@
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-settings">Общие настройки</a>
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-change-password">Смена пароля</a>
                 @*<a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#collective-budget">Коллективные настройки</a>*@
+                <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-mailing">Рассылка</a>
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-statistic">Учет рабочего времени</a>
                 <a class="list-group-item list-group-item-action not-dark" data-toggle="list" href="#user-connection">Подключения</a>
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
@@ -65,6 +66,9 @@
                 <div class="tab-pane fade" id="user-change-password">
                     @await Html.PartialAsync("_UserSettings_ChangePassword")
                 </div>
+                <div class="tab-pane fade" id="user-mailing">
+                    @await Html.PartialAsync("_UserSettings_Mailing")
+                </div>
                 <div class="tab-pane fade" id="user-statistic">
                     @await Html.PartialAsync("_UserSettings_StatisticSettings")
                 </div>
@@ -75,7 +79,7 @@
             @await Html.PartialAsync("_UserSettings_CollectiveBudget")
         </div>*@
                 @if (currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Admin
-             || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
+            || currentUser.UserTypeID == (int)MyProfile.Entity.Model.UserTypeEnum.Tester)
                 {
                     <div class="tab-pane fade" id="admin-menu-budget">
                         @await Html.PartialAsync("_UserSettings_AdminSettings")

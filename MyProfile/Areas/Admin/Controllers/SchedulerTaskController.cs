@@ -33,6 +33,7 @@ namespace MyProfile.Areas.Admin.Controllers
         private HubManager hubManager;
         private LimitService limitService;
         private ProgressService progressService;
+        private SystemMailingService systemMailingService;
 
         public SchedulerTaskController(BaseRepository repository,
             CommonService commonService,
@@ -43,7 +44,8 @@ namespace MyProfile.Areas.Admin.Controllers
             ReminderService reminderService,
             HubManager hubManager,
             LimitService limitService,
-            ProgressService progressService)
+            ProgressService progressService,
+            SystemMailingService systemMailingService)
         {
             this.repository = repository;
             this.commonService = commonService;
@@ -55,6 +57,7 @@ namespace MyProfile.Areas.Admin.Controllers
             this.hubManager = hubManager;
             this.limitService = limitService;
             this.progressService = progressService;
+            this.systemMailingService = systemMailingService;
 
             if (UserInfo.Current.UserTypeID != (int)UserTypeEnum.Admin)
             {
@@ -161,6 +164,9 @@ namespace MyProfile.Areas.Admin.Controllers
                     break;
                 case TaskType.ProgressMonthly:
                     baseTaskJob.BaseExecute(repository, TaskType.ProgressMonthly, progressService.CopyToHistory);
+                    break;
+                case TaskType.SystemMailing:
+                    baseTaskJob.BaseExecute(repository, TaskType.SystemMailing, systemMailingService.CheckSystemMailings);
                     break;
                 case TaskType.Test:
                     break;

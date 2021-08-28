@@ -1,0 +1,39 @@
+﻿@*https://uxpowered.com/products/appwork/v160/html-demo/pages_users_edit.html*@
+<div class="card-body pb-2">
+
+    <h6 class="mb-2">Рассылка</h6>
+    <div class="table-responsive">
+        <table class="table card-table m-0" style="width: 50%">
+            <tbody>
+                <tr>
+                    <th>Название рассылки</th>
+                    <th>Почта</th>
+                </tr>
+                <tr v-for="mailing in mailings">
+                    <td>
+                        {{ mailing.name }}
+                        <div class="text-muted small text-nowrap">{{ mailing.tooltip}}</div>
+                    </td>
+                    <td>
+                        <label class="custom-control custom-checkbox px-2 m-0">
+                            <input type="checkbox" class="custom-control-input" 
+                                   v-model="mailing.isMail">
+                            <span class="custom-control-label"></span>
+                        </label>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card-footer">
+    <div class="text-left">
+        <button type="button" class="btn btn-primary"
+                v-on:click="saveMailingSettings"
+                v-bind:disabled="isSaving">
+            <span class="spinner-border" role="status" aria-hidden="true" v-show="isSaving"></span>
+            Сохранить
+        </button>
+    </div>
+</div>

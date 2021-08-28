@@ -12,14 +12,20 @@ using MyProfile.Budget.Service;
 using MyProfile.Chart.Service;
 using MyProfile.Chat.Service;
 using MyProfile.Code;
+using MyProfile.Code.Hubs;
+using MyProfile.Code.Sheduler.Shedulers;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.Repository;
 using MyProfile.File.Service;
 using MyProfile.Goal.Service;
 using MyProfile.HelpCenter.Service;
+using MyProfile.Hubs;
 using MyProfile.Limit.Service;
+using MyProfile.Notification.Service;
 using MyProfile.Payment.Service;
+using MyProfile.Progress.Service;
 using MyProfile.Reminder.Service;
+using MyProfile.SubScription.Service;
 using MyProfile.Tag.Service;
 using MyProfile.Template.Service;
 using MyProfile.ToDoList.Service;
@@ -29,14 +35,7 @@ using MyProfile.UserLog.Service;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
-using MyProfile.Code.Sheduler.Shedulers;
-using MyProfile.Hubs;
-using MyProfile.Code.Hubs;
-using MyProfile.Models;
-using MyProfile.Notification.Service;
 using Telegram.Service;
-using MyProfile.SubScription.Service;
-using MyProfile.Progress.Service;
 
 namespace MyProfile
 {
@@ -92,6 +91,7 @@ namespace MyProfile
             services.AddTransient<NotificationService>();
             services.AddTransient<TelegramService>();
             services.AddTransient<NotificationEmailService>();
+            services.AddTransient<SystemMailingService>();
 
             services.AddTransient<BaseTaskJob>();
             services.AddTransient<HubManager>();
@@ -160,8 +160,8 @@ namespace MyProfile
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(NotificationOnTelegramTask),
                  cronExpression: "0 * * ? * *")); //Every 1 minute
-            CronExpression.ValidateExpression("0 * * ? * *"); 
-            
+            CronExpression.ValidateExpression("0 * * ? * *");
+
             services.AddTransient<NotificationOnMailTask>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(NotificationOnMailTask),
@@ -185,6 +185,16 @@ namespace MyProfile
                 jobType: typeof(ProgressMonthlyTask),
                  cronExpression: "0 30 4 1 * ?")); //At 01:30:00am, on the 1st day, every month
             CronExpression.ValidateExpression("0 30 4 1 * ?");
+
+            //ToDo: fix
+            if (true)// PublishSettings.IsOnlyProdTask)
+            {
+                services.AddTransient<CheckerSystemMailingTask>();
+                services.AddSingleton(new JobSchedule(
+                    jobType: typeof(CheckerSystemMailingTask),
+                     cronExpression: "0 */5 * ? * *")); //Every 30 minutes
+                CronExpression.ValidateExpression("0 */30 * ? * *");
+            }
 
             //CronExpression cronExpression = new CronExpression("0 30 4 1 * ?");
             //var test = cronExpression.GetNextValidTimeAfter(System.DateTime.Now).GetValueOrDefault().DateTime;
@@ -251,21 +261,22 @@ namespace MyProfile
             }
             else
             {
-                app.UseExceptionHandler("/Error/StatusCode");//For 500 error
+                //app.UseExceptionHandler("/Error/StatusCode");//For 500 error
                 app.UseHsts();
             }
             app.Use(async (context, next) =>
             {
                 await next();
-                if (context.Response.StatusCode == 404)
-                {
-                    context.Request.Path = "/Error/Error_404";
-                    await next();
-                }else if (context.Response.StatusCode == 500)
-                {
-                    context.Request.Path = "/Error/Error_500";
-                    await next();
-                }
+                //if (context.Response.StatusCode == 404)
+                //{
+                //    context.Request.Path = "/Error/Error_404";
+                //    await next();
+                //}
+                //else if (context.Response.StatusCode == 500)
+                //{
+                //    context.Request.Path = "/Error/Error_500";
+                //    await next();
+                //}
             });
 
             app.UseHttpsRedirection();

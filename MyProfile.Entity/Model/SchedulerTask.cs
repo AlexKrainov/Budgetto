@@ -27,6 +27,7 @@ namespace MyProfile.Entity.Model
         NotificationReset = 10,
         AccountDailyWork = 11,
         ProgressMonthly = 12,
+        SystemMailing = 13,
 
         Test,
     }

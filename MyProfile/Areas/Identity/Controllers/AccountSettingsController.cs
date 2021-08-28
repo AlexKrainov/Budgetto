@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyProfile.Entity.Model;
 using MyProfile.Entity.ModelView;
+using MyProfile.Entity.ModelView.SystemMailing;
 using MyProfile.Identity;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MyProfile.Areas.Identity.Controllers
@@ -153,6 +155,17 @@ namespace MyProfile.Areas.Identity.Controllers
         {
             await telegramService.SetNewStatus(accountID, newStatusID);
             await userLogService.CreateUserLogAsync(UserInfo.Current.UserSessionID, UserLogActionType.User_Connection_ChangeStatus);
+
+            return Json(new { isOk = true });
+        }
+        #endregion
+
+        #region Mailings
+
+        [HttpPost]
+        public IActionResult UpdateUserNotifications([FromBody] List<UserSettingMailingItem> mailings)
+        {
+            userService.UpdateUserNotifications(mailings);
 
             return Json(new { isOk = true });
         }

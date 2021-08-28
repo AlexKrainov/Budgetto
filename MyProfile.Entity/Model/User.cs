@@ -15,12 +15,17 @@ namespace MyProfile.Entity.Model
         [Required]
         public string Name { get; set; }
         public string LastName { get; set; }
+        /// <summary>
+        /// Male, Female
+        /// </summary>
+        [MaxLength(8)]
+        public string Gender { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public bool IsConfirmEmail { get; set; }
-        [Required]
-        [MaxLength(44)]
+        [Required, MaxLength(44)]
         public string HashPassword { get; set; }
         [Required]
         [MaxLength(44)]
@@ -75,6 +80,8 @@ namespace MyProfile.Entity.Model
         public virtual IEnumerable<UserSubScription> UserSubScriptions { get; set; }
         public virtual IEnumerable<UserEntityCounter> UserEntityCounters { get; set; }
         public virtual IEnumerable<Progress> Progresses { get; set; }
+        public virtual IEnumerable<Notification> Notifications { get; set; }
+        public virtual IEnumerable<UserSession> UserSessions { get; set; }
 
         public User()
         {
@@ -94,6 +101,8 @@ namespace MyProfile.Entity.Model
             this.UserSubScriptions = new HashSet<UserSubScription>();
             this.UserEntityCounters = new HashSet<UserEntityCounter>();
             this.Progresses = new HashSet<Progress>();
+            this.Notifications = new HashSet<Notification>();
+            this.UserSessions = new HashSet<UserSession>();
         }
     }
 }

@@ -59,9 +59,43 @@ namespace MyProfile.Code
             //CompaniesToJson();
 
             //CompaniesToProd();
-           // LinkUserTagsAndCompanies();
+            // LinkUserTagsAndCompanies();
+
+            AddSystemMailing();
         }
 
+        private void AddSystemMailing()
+        {
+            List<ProgressType> progressTypes = new List<ProgressType>();
+
+            foreach (var type in Enum.GetNames(typeof(ProgressTypeEnum)))
+            {
+                if (!repository.Any<ProgressType>(x => x.CodeName == type))
+                {
+                    progressTypes.Add(new ProgressType { CodeName = type });
+                }
+            }
+
+            if (progressTypes.Count > 0)
+            {
+                repository.CreateRange(progressTypes, true);
+            }
+
+            List<ProgressItemType> progressItemTypes = new List<ProgressItemType>();
+
+            foreach (var type in Enum.GetNames(typeof(ProgressItemTypeEnum)))
+            {
+                if (!repository.Any<ProgressItemType>(x => x.CodeName == type))
+                {
+                    progressItemTypes.Add(new ProgressItemType { CodeName = type });
+                }
+            }
+
+            if (progressItemTypes.Count > 0)
+            {
+                repository.CreateRange(progressItemTypes, true);
+            }
+        }
 
         private void CompaniesToProd()
         {

@@ -27,6 +27,7 @@ var UserSettingsVue = new Vue({
         newPassword: null,
         telegramLogin: "",
         telegramAccounts: [],
+        mailings: [],
 
         //Collective tab
         collectiveSearchedUser: {},
@@ -82,6 +83,7 @@ var UserSettingsVue = new Vue({
                     UserSettingsVue.earningsPerHour = result.user.earningsPerHour;
                     UserSettingsVue.telegramAccounts = result.user.telegramAccounts;
                     UserSettingsVue.telegramLogin = result.user.telegramLogin;
+                    UserSettingsVue.mailings = result.user.mailings;
 
                     UserSettingsVue.refreshCollectiveList();
                     UserSettingsVue.checkOffers();
@@ -457,6 +459,29 @@ var UserSettingsVue = new Vue({
             }
         },
 
+
+        // Mailing settings
+        saveMailingSettings: function () {
+            console.log(this.mailings);
+            this.isSaving = true;
+
+            return $.ajax({
+                type: "POST",
+                url: "/Identity/Account/UpdateUserNotifications",
+                data: JSON.stringify(this.mailings),
+                context: this,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    this.isSaving = false;
+                    return response;
+                },
+                error: function (xhr, status, error) {
+                    this.isSaving = false;
+                    console.log(error);
+                }
+            });
+        },
 
 
         getDateByFormat: function (date, format) {

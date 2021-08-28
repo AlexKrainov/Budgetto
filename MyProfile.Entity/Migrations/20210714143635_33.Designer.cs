@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProfile.Entity.Model;
 
 namespace MyProfile.Entity.Migrations
 {
     [DbContext(typeof(MyProfile_DBContext))]
-    partial class MyProfile_DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210714143635_33")]
+    partial class _33
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2349,9 +2351,6 @@ namespace MyProfile.Entity.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.Property<string>("Tooltip")
-                        .HasMaxLength(128);
-
                     b.Property<int?>("TotalMinutes");
 
                     b.HasKey("ID");
@@ -2616,13 +2615,8 @@ namespace MyProfile.Entity.Migrations
 
                     b.Property<DateTime?>("DateDelete");
 
-                    b.Property<DateTime?>("DateOfBirth");
-
                     b.Property<string>("Email")
                         .IsRequired();
-
-                    b.Property<string>("Gender")
-                        .HasMaxLength(8);
 
                     b.Property<string>("HashPassword")
                         .IsRequired()

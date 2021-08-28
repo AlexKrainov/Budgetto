@@ -5,7 +5,7 @@
         statuses: [1, 2, 3, 4, 5],
 
         row: [],
-        forceTaskIDs: [1, 2, 3, 4, 5, 9, 10, 11, 12],
+        forceTaskIDs: [1, 2, 3, 4, 5, 9, 10, 11, 12, 13],
         //metadata
         dataTable: undefined,
         tableAjax: null,
@@ -114,7 +114,7 @@
             html += "<td data-id-status='" + data.id + "'>" + this.status(data.id, data.taskStatus) + "</td>";
             html += "<td>" + data.cronComment + "</td>";
             html += "<td>" + data.cronExpression + "</td>";
-            //html += "<td>" + (data.comment ? data.comment : "") + "</td>";
+            html += "<td>" + (data.comment ? data.comment : "") + "</td>";
 
             return html;
         },

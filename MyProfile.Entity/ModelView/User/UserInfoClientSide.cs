@@ -1,4 +1,5 @@
 ﻿using MyProfile.Entity.Model;
+using MyProfile.Entity.ModelView.SystemMailing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,6 +31,7 @@ namespace MyProfile.Entity.ModelView.User
 
         public string TelegramLogin { get; set; }
         public List<TelegramAccountClientSide> TelegramAccounts { get; set; }
+        public List<UserSettingMailingItem> Mailings { get; set; }
     }
 
     public class UserSettingsClientSide

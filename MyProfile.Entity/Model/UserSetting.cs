@@ -112,14 +112,14 @@ namespace MyProfile.Entity.Model
 
         public string WebSiteTheme { get; set; }
 
-        /// <summary>
-        /// send news mailing
-        /// </summary>
-        public bool Mail_News { get; set; }
-        /// <summary>
-        /// can send reminders mailing
-        /// </summary>
-        public bool Mail_Reminders { get; set; }
+        ///// <summary>
+        ///// send news mailing
+        ///// </summary>
+        //public bool Mail_News { get; set; }
+        ///// <summary>
+        ///// can send reminders mailing
+        ///// </summary>
+        //public bool Mail_Reminders { get; set; }
 
         public bool CanUseAlgorithm { get; set; }
 

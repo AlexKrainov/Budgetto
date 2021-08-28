@@ -8,10 +8,10 @@ namespace MyProfile.Entity.Model
     public enum NotificationType
     {
         Undefined = 0,
-        Limit,
-        Reminder,
-        Telegram,
-        Notification,
+        Limit = 1,
+        Reminder = 2,
+        Telegram = 3,
+        SystemMailing = 4
     }
     public class Notification
     {
@@ -60,14 +60,17 @@ namespace MyProfile.Entity.Model
         public long? ReminderDateID { get; set; }
         [ForeignKey("TelegramAccount")]
         public int? TelegramAccountID { get; set; }
+        [ForeignKey("SystemMailing")]
+        public int? SystemMailingID { get; set; }
 
         public virtual User User { get; set; }
-        public virtual Limit Limit{ get; set; }
+        public virtual Limit Limit { get; set; }
         public virtual ReminderDate ReminderDate { get; set; }
         /// <summary>
         /// Notify when the user has connect to telegram bot
         /// </summary>
         public virtual TelegramAccount TelegramAccount { get; set; }
+        public virtual SystemMailing SystemMailing { get; set; }
 
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace MyProfile.Entity.Model
 {
@@ -16,6 +13,7 @@ namespace MyProfile.Entity.Model
         ResendByUser = 5,
         NotificationLimit = 6,
         NotificationReminder = 7,
+        NotificationSystemMailing = 8,
     }
 
     public class MailType
