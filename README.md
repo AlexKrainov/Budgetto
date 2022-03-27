@@ -8,4 +8,5 @@
   <li><b>Tag system with icons of popular global companies</b></li>
   <li><b>Website notifications using the SignalR library</b></li>
   <li><b>Synchronization of the exchange rate with the API of the Central Bank</b></li>
+  <li>etc</li>
 </ul>
