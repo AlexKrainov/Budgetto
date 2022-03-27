@@ -85,10 +85,10 @@
     </div>
 
     <div class="row summary-view">
-        @await Html.PartialAsync("_SummaryView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+        @await Html.PartialAsync("_SummaryView", MyProfile.Entity.Model.PeriodTypesEnum.Year)
     </div>
     <div class="row accounts-view" id="accounts-view">
-        @await Html.PartialAsync("_AccountsView", MyProfile.Entity.Model.PeriodTypesEnum.Month)
+        @await Html.PartialAsync("_AccountsView", MyProfile.Entity.Model.PeriodTypesEnum.Year)
     </div>
     @*<div class="row total-view">
             @await Html.PartialAsync("_TotalsBySectionView", MyProfile.Entity.Model.PeriodTypesEnum.Year)

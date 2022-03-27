@@ -1,4 +1,5 @@
 ﻿using Common.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Areas.Admin.Models;
@@ -20,6 +21,7 @@ using System.Threading.Tasks;
 
 namespace MyProfile.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class SchedulerTaskController : Controller
     {

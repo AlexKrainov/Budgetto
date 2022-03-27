@@ -2,7 +2,7 @@
     template: `
 <div class="ui-timeline ui-timeline-with-info history-records">
     <div v-for="(groupRecord, index) in groupRecords">
-        <div class="ui-timeline-separator text-big" style="    z-index: 5;"
+        <div class="ui-timeline-separator text-big" style="z-index: 5;"
                 v-show="isShowDate">
             <div class="ui-timeline-track-bg d-inline-block rounded small font-weight-semibold py-2 px-4">{{ getDate(groupRecord) }}</div>
         </div>

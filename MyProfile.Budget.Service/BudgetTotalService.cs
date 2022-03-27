@@ -352,10 +352,8 @@ namespace MyProfile.Budget.Service
         }
 
 
-        public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByMonth(DateTime to, bool isStatisticChart = false)
+        public Tuple<TotalModelView, TotalModelView, TotalModelView> GetDataByMonth(DateTime from, DateTime to, bool isStatisticChart = false)
         {
-            DateTime from = to.AddMonths(-11);
-            to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month), 23, 59, 59);
             var currentUser = UserInfo.Current;
             var sections = sectionService.GetAllSectionForRecords();
 

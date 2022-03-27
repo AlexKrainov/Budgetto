@@ -24,7 +24,9 @@ namespace MyProfile.Controllers
         [HttpGet]
         public IActionResult LoadByMonth(DateTime to)
         {
-            var values = budgetTotalService.GetDataByMonth(to);
+            var from  = new DateTime(to.Year, to.Month, 01, 00, 00, 00);
+            to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month), 23, 59, 59);
+            var values = budgetTotalService.GetDataByMonth(from, to);
 
             return Json(new { SpendingData = values.Item1, EarningData = values.Item2, InvestingData = values.Item3 });
         }

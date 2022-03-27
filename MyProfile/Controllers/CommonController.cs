@@ -1,29 +1,18 @@
 ﻿using Common.Service;
-using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using MyProfile.Budget.Service;
 using MyProfile.Entity.Model;
-using MyProfile.Entity.ModelView.Account;
-using MyProfile.Entity.ModelView.Currency;
 using MyProfile.Entity.Repository;
 using MyProfile.Identity;
 using MyProfile.Limit.Service;
 using MyProfile.Progress.Service;
 using MyProfile.Tag.Service;
 using MyProfile.UserLog.Service;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace MyProfile.Controllers
 {

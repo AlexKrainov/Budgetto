@@ -149,7 +149,7 @@ namespace MyProfile.Controllers
             var chartData = chartService.GetUniversalChartData(start, finish, periodType, allSections);
             budgetTotalService.GetTotalBySections(start, finish, allSections, allTags);
             allTags = budgetTotalService.GetTotalByTags(start, finish, allTags);
-            var values = periodType == PeriodTypesEnum.Month ? budgetTotalService.GetDataByMonth(finish, true) : budgetTotalService.GetDataByYear(finish.Year, true);
+            var values = periodType == PeriodTypesEnum.Month ? budgetTotalService.GetDataByMonth(start, finish, true) : budgetTotalService.GetDataByYear(finish.Year, true);
             #region ID
             values.Item1.ChartID = values.Item1.ChartID + "_statistic";
             values.Item2.ChartID = values.Item2.ChartID + "_statistic";
