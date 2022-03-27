@@ -1,4 +1,4 @@
-# Budgetto
+# Budgetto - Personal finance website 
 <ul>
   <li><b>Possibility of adding expenses, income, investments</b></li>
   <li><b>System of accounts, deposits (with calculation of interest rates for each month)</b></li>
